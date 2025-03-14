@@ -45,14 +45,14 @@ export default function Navbar() {
 
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50  bg-background/95 backdrop-blur-sm ">
+    <header className="fixed top-0 left-0 right-0 z-50  bg-background/95 backdrop-blur-xs ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center">
             <svg className="h-8 w-8 text-orange-500" fill="currentColor" viewBox="0 0 24 24">
               <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
             </svg>
-            <span className="ml-2 text-xl font-bold bg-gradient-to-bl from-primary to-primary-foreground bg-clip-text text-transparent">Waitlizt</span>
+            <span className="ml-2 text-xl font-bold bg-linear-to-bl from-primary to-primary-foreground bg-clip-text text-transparent">Waitlizt</span>
           </Link>
           <nav className="hidden md:flex space-x-8">
             {navItems.map((item) => (
@@ -105,7 +105,7 @@ export default function Navbar() {
                     <svg className="h-8 w-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
                     </svg>
-                    <span className="ml-2 text-xl font-bold bg-gradient-to-r from-primary to-primary-foreground bg-clip-text text-transparent">Konect</span>
+                    <span className="ml-2 text-xl font-bold bg-linear-to-r from-primary to-primary-foreground bg-clip-text text-transparent">Konect</span>
                   </div>
                 </DrawerTitle>
               </DrawerHeader>
