@@ -27,13 +27,22 @@ export const authRouter = j.router({
 
       if (!user) {
         // If no user, create one
+        const currentDate = new Date();
         const newUser = await db.user.create({
           data: {
-            quotaLimit: 100,
             clerkId: auth.id,
             email: primaryEmail.emailAddress,
-            name: auth.firstName ?? "",
-            plan: "FREE"
+            firstName: auth.firstName ?? null,
+            lastName: auth.lastName ?? null,
+            imageUrl: auth.imageUrl ?? null,
+            plan: "FREE",
+            quota: {
+              create: {
+                year: currentDate.getFullYear(),
+                month: currentDate.getMonth() + 1,
+                count: 0
+              }
+            }
           },
         })
         console.log('Created new user:', newUser)
