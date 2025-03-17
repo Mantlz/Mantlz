@@ -15,8 +15,10 @@ import {
 } from "lucide-react"
 
 import { NavMain } from "@/components/sidebar/nav-main"
+import { useUser } from "@/hooks/users/useUser"
 import { NavProjects } from "@/components/sidebar/nav-projects"
 import { NavUser } from "@/components/sidebar/nav-user"
+
 import { TeamSwitcher } from "@/components/sidebar/team-switcher"
 import {
   Sidebar,
@@ -25,9 +27,14 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { useUser as useClerkUser } from "@clerk/nextjs"
+
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { isSynced } = useUser()
+  const { user } = useClerkUser()
+  console.log("user loggin: ", user)
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -38,7 +45,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
       </SidebarContent>
       <SidebarFooter>
-        {/* <NavUser user={data.user} /> */}
+        {isSynced && user && user.emailAddresses?.[0] ? (
+          <NavUser
+            user={{
+              name: user.firstName ?? "",
+              email: user.emailAddresses[0].emailAddress,
+              avatar: user.imageUrl ?? "",
+            }}
+            
+          />
+        ) : null}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
