@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator"
 import { currentUser } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
 import BreadcrumbNav from "@/components/dashboard/breadcum-nav"
+import { SiteHeader } from "@/components/sidebar/site-header"
 
 
 
@@ -22,21 +23,29 @@ export default async function DashboardLayout({
 }) {
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)", 
+        } as React.CSSProperties
+      }
+    >
+      <AppSidebar variant="inset"  />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center border-b gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-            <BreadcrumbNav />
-          </div>
-        </header>
+        <SiteHeader />
+        <div className="flex flex-1 flex-col ">
+          <div className="@container/main flex flex-1 flex-col gap-2 ">
+            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6  ">
+              <div className="px-4 lg:px-6 ">
+                {children}
+              </div>
 
-        <main className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          {children}
-        </main>
+            </div>
+          </div>
+        </div>
       </SidebarInset>
     </SidebarProvider>
+      
   )
 }

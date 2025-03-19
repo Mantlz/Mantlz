@@ -22,7 +22,15 @@ export default function RootLayout({
 
     <html lang="en">
       <body className="antialiased">
-          <Providers>{children}</Providers>
+
+
+
+      <main className="min-h-[calc(100vh-1px)] flex flex-col font-sans bg-white  text-foreground">
+          
+          <Providers>
+            {children}
+            </Providers>
+          </main>
         </body>
       </html>
     </ClerkProvider>
