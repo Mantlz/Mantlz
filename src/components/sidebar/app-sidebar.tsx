@@ -163,7 +163,7 @@ const { user, isLoaded } = useUser()
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavDocuments items={data.documents} />
-        {/* <NavSecondary/> */}
+        <NavSecondary/>
       </SidebarContent>
       <SidebarFooter>
       {!isLoaded ? (

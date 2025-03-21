@@ -2,9 +2,11 @@ import type { Metadata } from "next"
 import { Providers } from "../components/global/providers"
 import { ClerkProvider } from "@clerk/nextjs"
 
+
 import { cn } from "@/lib/utils"
 
 import "./globals.css"
+import { ThemeProvider } from "@/components/global/theme-provider"
 
 export const metadata: Metadata = {
   title: "FormsQuay",
@@ -20,17 +22,19 @@ export default function RootLayout({
   return (
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
 
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
+       
 
 
 
-      <main className="min-h-[calc(100vh-1px)] flex flex-col font-sans bg-white  text-foreground">
+      <main className="min-h-[calc(100vh-1px)] flex flex-col font-sans bg-white dark:bg-zinc-800  text-foreground">
           
           <Providers>
             {children}
             </Providers>
           </main>
+
         </body>
       </html>
     </ClerkProvider>

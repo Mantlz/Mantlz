@@ -1,24 +1,36 @@
 import { ForwardRefExoticComponent, RefAttributes } from 'react';
 import { LucideProps } from 'lucide-react';
 
-export type Icon = ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
+export type NavIcon = ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
 
-import { Settings as IconSettings, HelpCircle as IconHelp, Search as IconSearch } from 'lucide-react';
+export interface NavItem {
+  title: string;
+  icon: NavIcon;
+  url: string;
+}
+
+import { Settings, HelpCircle, Search } from 'lucide-react';
+
+export const icons = {
+  settings: Settings as NavIcon,
+  help: HelpCircle as NavIcon,
+  search: Search as NavIcon,
+} as const;
 
 export const secondaryNavItems = [
   {
     title: 'Settings',
-    icon: IconSettings as Icon,
+    icon: icons.settings,
     url: '/settings',
   },
   {
     title: 'Help',
-    icon: IconHelp as Icon,
+    icon: icons.help,
     url: '/help',
   },
   {
     title: 'Search',
-    icon: IconSearch as Icon,
+    icon: icons.search,
     url: '/search',
   },
 ];

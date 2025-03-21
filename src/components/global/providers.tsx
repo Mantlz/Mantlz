@@ -5,6 +5,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query"
+import { ThemeProvider } from "next-themes"
 import { HTTPException } from "hono/http-exception"
 import { PropsWithChildren, useState } from "react"
 
@@ -16,7 +17,6 @@ export const Providers = ({ children }: PropsWithChildren) => {
           onError: (err) => {
             if (err instanceof HTTPException) {
               // global error handling, e.g. toast notification ...
-              
             }
           },
         }),
@@ -24,6 +24,15 @@ export const Providers = ({ children }: PropsWithChildren) => {
   )
 
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider 
+        attribute="class"
+        defaultTheme="dark"
+        enableSystem
+        disableTransitionOnChange
+      >
+        {children}
+      </ThemeProvider>
+    </QueryClientProvider>
   )
 }

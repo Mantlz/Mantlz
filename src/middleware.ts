@@ -14,6 +14,7 @@ const isProtectedRoute = createRouteMatcher([
 // Define auth routes that need user context but shouldn't redirect
 const isAuthRoute = createRouteMatcher([
   '/api/auth/getDatabaseSyncStatus',
+  '/welcome-back',
   '/welcome'  // Add the welcome page too
 ]);
 

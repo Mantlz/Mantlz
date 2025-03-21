@@ -87,7 +87,7 @@ export default function Navbar() {
                 <Button variant="ghost" size="sm" className="transition-colors duration-200">Sign In</Button>
               </Link>
               <Link href="/sign-up">
-                <Button size="sm" className=" cursor-pointer bg-zinc-800  text-white hover:bg-primary/90 transition-colors duration-200">Sign Up</Button>
+                <Button size="sm" className=" cursor-pointer bg-zinc-700  text-white hover:bg-zinc-900 transition-colors duration-200">Sign Up</Button>
               </Link>
             </SignedOut>
           </div>
@@ -138,9 +138,7 @@ export default function Navbar() {
                 </SignedIn>
 
 
-                <SignOutButton>
-                  <Button variant="ghost" size="sm" className="text-muted-foreground  hover:text-foreground transition-colors duration-200 bg-orange-500 text-white dark:bg-white hover:bg-orange-500 dark:text-black">Sign Out</Button>
-                </SignOutButton>
+
               
               </div>
               <DrawerFooter>

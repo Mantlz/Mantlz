@@ -1,60 +1,63 @@
 // components/nav-main.tsx
 "use client"
 
-import { ChevronRight } from "lucide-react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
-import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
+  SidebarMenuButton,
 } from "@/components/ui/sidebar"
 
-import { secondaryNavItems } from "@/config/SecondaryNavIcons"
-import type { NavItem } from "@/types/navigation/nagivation"
+import { secondaryNavItems } from "@/types/navigation/secondaryNavData"
+import { SettingsDialog } from "@/components/settings/settings-dialog"
+import type { NavItem } from "@/types//navigation/secondaryNavData"
 
-export function NavMain() {
+export function NavSecondary() {
   const pathname = usePathname()
 
-  const isNavItemActive = (item: NavItem) => {
-    return pathname.startsWith(item.url)
+  const renderNavItem = (item: NavItem) => {
+    // Special handling for Settings
+    if (item.url === '/settings') {
+      return (
+        <SidebarMenuItem key={item.title}>
+          <SettingsDialog>
+            <SidebarMenuButton 
+              tooltip={item.title}
+              className="opacity-75 hover:opacity-100"
+              size="sm"
+            >
+              <item.icon className="h-4 w-4" />
+              <span className="text-sm">{item.title}</span>
+            </SidebarMenuButton>
+          </SettingsDialog>
+        </SidebarMenuItem>
+      )
+    }
+
+    // Regular nav items
+    return (
+      <SidebarMenuItem key={item.title}>
+        <Link href={item.url}>
+          <SidebarMenuButton 
+            tooltip={item.title}
+            className={pathname === item.url ? "bg-accent/50" : "opacity-75 hover:opacity-100"}
+            size="sm"
+          >
+            <item.icon className="h-4 w-4" />
+            <span className="text-sm">{item.title}</span>
+          </SidebarMenuButton>
+        </Link>
+      </SidebarMenuItem>
+    )
   }
 
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel>Waitlizt</SidebarGroupLabel>
+    <SidebarGroup className="mt-auto pb-4">
       <SidebarMenu>
-        {secondaryNavItems.map((item) => {
-          const isActive = isNavItemActive(item)
-          
-          // If the item has no subitems (like Settings), render a direct link
-          if (!item.items?.length) {
-            return (
-              <SidebarMenuItem key={item.title}>
-                <Link href={item.url}>
-                  <SidebarMenuButton 
-                    tooltip={item.title}
-                    className={pathname === item.url ? "bg-accent" : ""}
-                  >
-                    {item.icon && <item.icon className="h-4 w-4" />}
-                    <span>{item.title}</span>
-                  </SidebarMenuButton>
-                </Link>
-              </SidebarMenuItem>
-            )
-          }
-        })}
+        {secondaryNavItems.map(renderNavItem)}
       </SidebarMenu>
     </SidebarGroup>
   )

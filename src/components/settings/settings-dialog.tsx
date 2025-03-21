@@ -38,8 +38,8 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuButton,
   SidebarProvider,
 } from "@/components/ui/sidebar"
 
@@ -47,47 +47,95 @@ import { navigationData } from '@/config/settings';
 import { AppearanceSettings } from './AppearanceSettings';
 import NotificationSettings  from './NotificationSettings';
 import { getIcon, iconMap } from '@/types/iconMap';
+import { cn } from '@/lib/utils';
 
 const data = navigationData as Array<{ name: string; icon: keyof typeof iconMap } & { [key: string]: any }>;
 
-export function SettingsDialog() {
+interface SettingsDialogProps {
+  children: React.ReactNode
+}
+
+export function SettingsDialog({ children }: SettingsDialogProps) {
   const [open, setOpen] = React.useState(false)
-  const [selectedTab, setSelectedTab] = React.useState('');
+  const [selectedTab, setSelectedTab] = React.useState('Appearance')
 
   const handleOpenChange = (isOpen: boolean) => {
-    setOpen(isOpen);
+    setOpen(isOpen)
     if (isOpen) {
-      setSelectedTab('Appearance');
+      setSelectedTab('Appearance')
     }
-  };
+  }
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button size="sm">Open Dialog</Button>
+        {children}
       </DialogTrigger>
-      <DialogContent className="overflow-hidden bg-white p-0 md:max-h-[500px] md:max-w-[700px] lg:max-w-[800px]">
+      <DialogContent className={cn(
+        "overflow-hidden p-0",
+
+        "w-[95vw] md:w-[900px] lg:w-[1100px] xl:w-[1200px]",
+        "h-[600px]",
+        "border border-zinc-200 dark:border-zinc-800",
+        "shadow-lg"
+      )}>
         <DialogTitle className="sr-only">Settings</DialogTitle>
         <DialogDescription className="sr-only">
           Customize your settings here.
         </DialogDescription>
         <SidebarProvider className="items-start">
-          <Sidebar collapsible="none" className="hidden md:flex">
+          {/* Navigation Sidebar - Darker background */}
+          <Sidebar 
+            collapsible="none" 
+            className={cn(
+              "hidden md:flex border-r w-[280px]",
+              // Light mode - darker gray
+              "bg-zinc-900 border-zinc-800",
+              // Dark mode - deep black
+              "dark:bg-black dark:border-zinc-800/50"
+            )}
+          >
             <SidebarContent>
               <SidebarGroup>
                 <SidebarGroupContent>
-                  <SidebarMenu>
+                  <div className="px-4 py-6">
+                    <h2 className="text-sm font-semibold text-zinc-400 dark:text-zinc-500">
+                      Settings
+                    </h2>
+                  </div>
+                  <SidebarMenu className="px-2 space-y-1">
                     {data.map((item) => (
                       <SidebarMenuItem key={item.name}>
                         <SidebarMenuButton
                           asChild
                           isActive={item.name === selectedTab}
                           onClick={() => setSelectedTab(item.name)}
+                          className={cn(
+                            "w-full text-sm rounded-md",
+                            "transition-colors duration-200",
+                            // Default state
+                            "text-zinc-400 dark:text-zinc-500",
+                            // Hover state
+                            "hover:bg-zinc-800 hover:text-zinc-200",
+                            "dark:hover:bg-zinc-900 dark:hover:text-zinc-300",
+                            // Active state
+                            item.name === selectedTab && [
+                              "bg-zinc-300 text-zinc-200",
+                              "dark:bg-zinc-300 dark:text-zinc-200"
+                            ]
+                          )}
                         >
-                          <a>
+                          <a className="flex items-center gap-3 px-3 py-2">
                             {(() => {
-                              const iconComponent = getIcon(item.icon);
-                              return iconComponent ? React.createElement(iconComponent, {}) : null;
+                              const IconComponent = getIcon(item.icon)
+                              return IconComponent ? (
+                                <IconComponent className={cn(
+                                  "h-4 w-4",
+                                  item.name === selectedTab 
+                                    ? "text-zinc-200" 
+                                    : "text-zinc-400 dark:text-zinc-500"
+                                )} />
+                              ) : null
                             })()}
                             <span>{item.name}</span>
                           </a>
@@ -95,27 +143,21 @@ export function SettingsDialog() {
                       </SidebarMenuItem>
                     ))}
                   </SidebarMenu>
-                  
                 </SidebarGroupContent>
               </SidebarGroup>
-              
             </SidebarContent>
-            
           </Sidebar>
-          <main className="flex h-[580px] flex-1 flex-col overflow-hidden">
-            <header className="flex h-[--header-height] p-2 shrink-0 items-center gap-2 transition-[width,height] ease-linear w-full">
-              <div className="flex items-center gap-2 px-4">
-              <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-0">
-                <div className="settings-content">
-                  {selectedTab === 'Appearance' && <AppearanceSettings />}
-                  {selectedTab === 'Notifications' && <NotificationSettings />}
-                </div>
+
+          {/* Content Area - Light background */}
+          <main className="flex flex-1 flex-col overflow-hidden bg-white dark:bg-zinc-950">
+            <div className="flex flex-1 flex-col overflow-y-auto">
+              <div className="flex-1 p-8">
+                {selectedTab === 'Appearance' && <AppearanceSettings />}
+                {selectedTab === 'Notifications' && <NotificationSettings />}
+                
               </div>
             </div>
-            </header>
-            
           </main>
-         
         </SidebarProvider>
       </DialogContent>
     </Dialog>
