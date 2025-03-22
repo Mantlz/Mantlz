@@ -20,7 +20,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
                 <div className="flex-1 flex items-center justify-center p-8">
                     <div className="w-full max-w-md">
                         {/* Auth card */}
-                        <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.1)]">
+                        <div className="rounded-xl border border-zinc-200 bg-black dark:bg-white p-8 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.1)]">
                             {children}
                         </div>
                     </div>

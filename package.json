@@ -89,5 +89,10 @@
     "prisma": "^6.5.0",
     "tailwindcss": "^4.0.0",
     "typescript": "^5"
-  }
+  },
+  "description": "Ship high-performance Next.js apps for extremely cheap # formQuay",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

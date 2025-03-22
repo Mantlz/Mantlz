@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Menu, LayoutDashboard } from 'lucide-react'
 import { usePathname } from 'next/navigation'
-import { UserButton, SignedIn, SignedOut, SignOutButton } from '@clerk/nextjs'
+import { UserButton, SignedIn, SignedOut, SignOutButton, useClerk } from '@clerk/nextjs'
 import {
   Drawer,
   DrawerClose,
@@ -15,6 +15,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
+import { Logo } from '@/components/global/logo'
 
 type NavItem = {
   name: string
@@ -29,11 +30,7 @@ const navItems: NavItem[] = [
 
 export default function Navbar() {
   const currentPath = usePathname()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  const { loaded } = useClerk()
 
   const isActive = (href: string) => {
     if (href === '/') {
@@ -42,124 +39,129 @@ export default function Navbar() {
     return currentPath?.startsWith(href) || false
   }
 
-
-
   return (
-    <header className="fixed top-0 left-0 right-0 z-50  bg-background/95 backdrop-blur-xs ">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <Link href="/" className="flex items-center">
-            <svg className="h-8 w-8 text-orange-500" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-            </svg>
-            <span className="ml-2 text-xl font-bold bg-linear-to-bl from-primary to-primary-foreground bg-clip-text text-transparent">Waitlizt</span>
-          </Link>
-          <nav className="hidden md:flex space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`inline-flex flex-col items-center px-1 pt-1 text-sm font-medium transition-colors duration-200 ${
-                  isActive(item.href)
-                    ? 'text-orange-500'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                {item.name}
-                {isActive(item.href) && (
-                  <span className="h-1 w-1 mt-1 rounded-full bg-orange-600" aria-hidden="true" />
-                )}
-              </Link>
-            ))}
-          </nav>
-          <div className="hidden md:flex items-center space-x-4">
-            <SignedIn>
-              <Link href="/dashboard">
-                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground transition-colors duration-200 bg-orange-500 text-white dark:bg-white hover:bg-orange-500 dark:text-black">
-                  {/* <LayoutDashboard className="w-4 h-4 mr-2" /> */}
-                  Dashboard
-                </Button>
-              </Link>
-              <UserButton afterSignOutUrl="/" />
-            </SignedIn>
-            <SignedOut>
-              <Link href="/sign-in">
-                <Button variant="ghost" size="sm" className="transition-colors duration-200">Sign In</Button>
-              </Link>
-              <Link href="/sign-up">
-                <Button size="sm" className=" cursor-pointer bg-zinc-700  text-white hover:bg-zinc-900 transition-colors duration-200">Sign Up</Button>
-              </Link>
-            </SignedOut>
-          </div>
-          <Drawer>
-            <DrawerTrigger asChild>
-              <Button variant="outline" size="icon" className="md:hidden">
-                <Menu className="h-4 w-4" />
-                <span className="sr-only">Open menu</span>
-              </Button>
-            </DrawerTrigger>
-            <DrawerContent>
-              <DrawerHeader>
-                <DrawerTitle>
-                  <div className="flex items-center justify-center">
-                    <svg className="h-8 w-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                    </svg>
-                    <span className="ml-2 text-xl font-bold bg-linear-to-r from-primary to-primary-foreground bg-clip-text text-transparent">Konect</span>
-                  </div>
-                </DrawerTitle>
-              </DrawerHeader>
-              <div className="px-4 py-2">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={`flex items-center px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
-                      isActive(item.href)
-                        ? 'text-primary bg-primary/10'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                    }`}
-                  >
-                    {item.name}
-                    {isActive(item.href) && (
-                      <span className="ml-2 h-1 w-1 rounded-full bg-primary" aria-hidden="true" />
-                    )}
-                  </Link>
-                ))}
-                <SignedIn>
-                  <Link
-                    href="/dashboard"
-                    className="flex items-center px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:text-foreground hover:bg-orange-500 transition-colors duration-200"
-                  >
-                    {/* <LayoutDashboard className="w-4 h-4 mr-2" /> */}
-                    Dashboard
-                  </Link>
-
-                </SignedIn>
-
-
-
-              
-              </div>
-              <DrawerFooter>
-                <div className="flex flex-col items-center space-y-4">
-                  
-    
-                  <SignedOut>
-                    <Link href="/sign-in" className="w-full">
-                      <Button variant="outline" className="w-full transition-colors duration-200">Sign In</Button>
-                    </Link>
-                    <Link href="/sign-up" className="w-full">
-                      <Button className="w-full bg-red-500 text-primary-foreground hover:bg-primary/90 transition-colors duration-200">Sign Up</Button>
-                    </Link>
-                  </SignedOut>
-                  <DrawerClose asChild>
-                    <Button variant="outline" className="w-full">Close</Button>
-                  </DrawerClose>
+    <header className="fixed top-0 left-0 right-0 z-50">
+      <div className="absolute inset-0 bg-white/[0.02] dark:bg-black/[0.02] backdrop-blur-[12px] border-b border-white/[0.05] dark:border-gray-800/[0.2]" />
+      <div className="relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <Link href="/" className="flex items-center group">
+              <Logo className="h-8 w-8" size={32} />
+              <div className="flex items-center relative">
+                <span className="ml-1 text-lg font-semibold text-gray-900 dark:text-white">
+                  Mantlz
+                </span>
+                <div className="absolute -top-2 -right-9 inline-flex items-center justify-center px-1 h-[14px] rounded-sm bg-blue-500/10 dark:bg-blue-400/10 border border-blue-500/20 dark:border-blue-400/20">
+                  <span className="text-[10px] leading-none font-medium text-blue-500 dark:text-blue-400 tracking-wider">BETA</span>
                 </div>
-              </DrawerFooter>
-            </DrawerContent>
-          </Drawer>
+              </div>
+            </Link>
+
+            <nav className="hidden md:flex items-center space-x-6">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`relative py-2 text-sm transition-colors duration-200 ${
+                    isActive(item.href)
+                      ? 'text-gray-900 dark:text-white'
+                      : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white'
+                  }`}
+                >
+                  {item.name}
+                  {isActive(item.href) && (
+                    <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-gray-200 dark:bg-white/30 rounded-full" />
+                  )}
+                </Link>
+              ))}
+            </nav>
+
+            <div className="hidden md:flex items-center space-x-4">
+              <SignedIn>
+                <Link href="/dashboard">
+                  <Button variant="ghost" size="sm" className="h-9 px-4 cursor-pointer bg-zinc-500 text-white dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors duration-200">
+                    Dashboard
+                  </Button>
+                </Link>
+                {loaded && <UserButton afterSignOutUrl="/" />}
+              </SignedIn>
+              <SignedOut>
+                <Link href="/sign-in">
+                  <Button variant="ghost" size="sm" className="h-9 px-4 text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.06] transition-colors duration-200">
+                    Sign in
+                  </Button>
+                </Link>
+                <Link href="/sign-up">
+                  <Button size="sm" className="h-9 px-4 bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-white/90 transition-colors duration-200">
+                    Sign up
+                  </Button>
+                </Link>
+              </SignedOut>
+            </div>
+
+            <Drawer>
+              <DrawerTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden h-9 w-9 text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/[0.06]">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </DrawerTrigger>
+              <DrawerContent className="bg-white dark:bg-black/95 backdrop-blur-md border-t border-gray-200 dark:border-white/[0.05]">
+                <DrawerHeader>
+                  <DrawerTitle>
+                    <div className="flex items-center justify-center">
+                      <Logo className="h-8 w-8" />
+                      <div className="flex items-center">
+                        <span className="ml-3 text-lg font-semibold text-white">
+                          Mantlz
+                        </span>
+                        <div className="ml-2 inline-flex items-center px-1.5 h-[18px] rounded-md bg-blue-500/10 border border-blue-500/20">
+                          <span className="text-[10px] leading-none font-medium text-blue-400">BETA</span>
+                        </div>
+                      </div>
+                    </div>
+                  </DrawerTitle>
+                </DrawerHeader>
+                <div className="px-4 py-2">
+                  <div className="space-y-1">
+                    {navItems.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className={`block px-4 py-2 text-base rounded-lg transition-colors duration-200 ${
+                          isActive(item.href)
+                            ? 'text-white bg-white/[0.06]'
+                            : 'text-white/60 hover:text-white hover:bg-white/[0.03]'
+                        }`}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                    {!loaded && (
+                      <>
+                        <div className="h-10 w-full bg-gray-200 dark:bg-gray-800 animate-pulse rounded-md" />
+                      </>
+                    )}
+                  </div>
+                </div>
+                <DrawerFooter>
+                  <div className="space-y-2">
+                    {!loaded && (
+                      <div className="space-y-2">
+                        <div className="h-10 w-full bg-gray-200 dark:bg-gray-800 animate-pulse rounded-md" />
+                        <div className="h-10 w-full bg-gray-200 dark:bg-gray-800 animate-pulse rounded-md" />
+                      </div>
+                    )}
+                    <DrawerClose asChild>
+                      <Button variant="ghost" className="w-full h-10 text-white/70 hover:text-white hover:bg-white/[0.06] transition-colors duration-200">
+                        Close
+                      </Button>
+                    </DrawerClose>
+                  </div>
+                </DrawerFooter>
+              </DrawerContent>
+            </Drawer>
+          </div>
         </div>
       </div>
     </header>

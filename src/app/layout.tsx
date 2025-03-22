@@ -6,7 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs"
 import { cn } from "@/lib/utils"
 
 import "./globals.css"
-import { ThemeProvider } from "@/components/global/theme-provider"
+
 
 export const metadata: Metadata = {
   title: "FormsQuay",

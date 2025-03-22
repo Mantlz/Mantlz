@@ -1,4 +1,4 @@
-import Navbar from "@/components/global/landing/navbar";
+  import Navbar from "@/components/global/landing/navbar";
 
 
 import { Container } from "@/components/global/container";
