@@ -21,6 +21,7 @@ model User {
   updatedAt  DateTime @updatedAt
   forms      Form[]
   quota      Quota[]
+  apiKeys    ApiKey[]
 
   @@index([clerkId])
 }
@@ -53,6 +54,19 @@ model Submission {
   formId    String
   createdAt DateTime @default(now())
   form      Form     @relation(fields: [formId], references: [id])
+}
+
+model ApiKey {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  name        String
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  lastUsedAt  DateTime @updatedAt
+  isActive    Boolean  @default(true)
+
+  @@index([key])
 }
 
 enum Plan {

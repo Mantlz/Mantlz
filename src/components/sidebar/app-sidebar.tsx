@@ -35,6 +35,7 @@ import {
 import { useUser as useClerkUser, useUser } from "@clerk/nextjs"
 import { NavUserSkeleton } from "./navUser-skeleton"
 import { secondaryNavItems } from '../../types/navigation/secondaryNavData';
+import { CreateFormButton } from "../dashboard/CreateFormButton"
 
 
 const data = {
@@ -164,6 +165,23 @@ const { user, isLoaded } = useUser()
         <NavMain items={data.navMain} />
         <NavDocuments items={data.documents} />
         <NavSecondary/>
+        
+        <div>
+          <CreateFormButton 
+            templateId="feedback" 
+            onSuccess={(formId) => {
+              console.log('Feedback form created:', formId);
+              // Optional: Add any success handling
+            }}
+          />
+          <CreateFormButton 
+            templateId="waitlist" 
+            onSuccess={(formId) => {
+              console.log('Waitlist form created:', formId);
+              // Optional: Add any success handling
+            }}
+          />
+        </div>
       </SidebarContent>
       <SidebarFooter>
       {!isLoaded ? (

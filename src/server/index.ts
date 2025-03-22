@@ -2,6 +2,7 @@ import { j } from "./jstack"
 import { postRouter } from "./routers/post-router"
 import { formRouter } from "./routers/form-router"
 import { authRouter } from "./routers/auth-route"
+import { apiKeyRouter } from "./routers/api-key-router"
 
 /**
  * This is your base API.
@@ -20,8 +21,8 @@ const api = j
  * All routers in /server/routers should be added here manually.
  */
 const appRouter = j.mergeRouters(api, {
-  post: postRouter,
-  form: formRouter,
+  forms: formRouter,
+  apiKey: apiKeyRouter,
   auth: authRouter,
 })
 
