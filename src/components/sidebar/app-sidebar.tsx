@@ -33,9 +33,10 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { useUser as useClerkUser, useUser } from "@clerk/nextjs"
-import { NavUserSkeleton } from "./navUser-skeleton"
+import { NavUserSkeleton } from "../skeletons/navUser-skeleton"
 import { secondaryNavItems } from '../../types/navigation/secondaryNavData';
 import { CreateFormButton } from "../dashboard/CreateFormButton"
+import { Logo } from "../global/logo"
 
 
 const data = {
@@ -153,9 +154,9 @@ const { user, isLoaded } = useUser()
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
+              <a href="#" className="flex items-center gap-2">
+                <Logo/>
+                <span className="text-base font-semibold">Mantlz</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

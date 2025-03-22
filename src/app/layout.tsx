@@ -21,7 +21,10 @@ export default function RootLayout({
         <body className="antialiased">
           <main className="min-h-[calc(100vh-1px)] flex flex-col font-sans bg-white dark:bg-zinc-800 text-foreground">
             <Providers>
-              <MantlzWrapper apiKey={process.env.MANTLZ_KEY!}>
+              <MantlzWrapper apiKey={process.env.MANTLZ_KEY}
+              
+              
+              >
                 {children}
               </MantlzWrapper>
             </Providers>

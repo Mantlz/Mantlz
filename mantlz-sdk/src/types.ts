@@ -1,48 +1,34 @@
-import { z } from 'zod';
+import { ToastHandler } from './utils/toast';
 
-export type FormTemplate = {
-  id: string;
-  name: string;
-  description: string;
-};
+// Client configuration
+export interface MantlzClientConfig {
+  toastHandler?: ToastHandler;
+  notifications?: boolean;  // Enable/disable toast notifications
+}
+
+export interface MantlzError {
+  message: string;
+  code: number;
+  userMessage?: string;
+  details?: any;
+}
 
 export interface FormSubmitOptions {
   formId: string;
-  apiKey: string;
-  data: Record<string, any>;
+  data: any;
+  apiKey?: string;  // Optional override for the API key
 }
 
 export interface FormSubmitResponse {
   success: boolean;
-  message?: string;
-  error?: string;
-  formId?: string;
-  details?: any;
+  data?: any;
+  error?: MantlzError;
 }
 
 export interface MantlzClient {
   submitForm: (type: string, options: FormSubmitOptions) => Promise<FormSubmitResponse>;
-  createForm: (config: {
-    name: string;
-    description?: string;
-    schema: z.ZodSchema;
-  }) => Promise<{
-    id: string;
-  }>;
-  getTemplates: () => Promise<FormTemplate[]>;
-  createFromTemplate: (config: {
-    templateId: 'feedback' | 'waitlist';
-    name?: string;
-    description?: string;
-  }) => Promise<{
-    id: string;
-    name: string;
-    description: string;
-  }>;
+  createForm: (config: any) => Promise<any>;
+  getTemplates: () => Promise<any>;
+  createFromTemplate: (config: any) => Promise<any>;
+  configureNotifications: (enabled: boolean, handler?: ToastHandler) => { notifications: boolean };
 }
-
-declare global {
-  interface Window {
-    mantlz: MantlzClient;
-  }
-} 

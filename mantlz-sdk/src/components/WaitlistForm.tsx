@@ -22,15 +22,25 @@ export type WaitlistFormProps = {
   onSubmitError?: (error: Error) => void;
   className?: string;
   variant?: "default" | "glass";
+  toastProvider?: any;
+  enableToast?: boolean;
 };
 
 export function WaitlistForm({ 
   onSubmitSuccess, 
   onSubmitError,
   className,
-  variant = "default"
+  variant = "default",
+  toastProvider,
+  enableToast = true
 }: WaitlistFormProps) {
-  const { apiKey } = useMantlz();
+  const { apiKey, client } = useMantlz();
+  
+  React.useEffect(() => {
+    if (enableToast && toastProvider && client.configureNotifications) {
+      client.configureNotifications(true, toastProvider);
+    }
+  }, [client, enableToast, toastProvider]);
   
   const form = useForm({
     resolver: zodResolver(waitlistSchema),
@@ -43,7 +53,7 @@ export function WaitlistForm({
 
   const onSubmit = async (data: z.infer<typeof waitlistSchema>) => {
     try {
-      const response = await window.mantlz.submitForm('waitlist', {
+      const response = await client.submitForm('waitlist', {
         formId: 'waitlist-form',
         apiKey,
         data

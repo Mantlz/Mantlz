@@ -1,8 +1,9 @@
 import { z } from "zod";
-import { j } from "../jstack";
+import { j, privateProcedure } from "../jstack";
 import { db } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs/server";
 import { HTTPException } from "hono/http-exception";
+import { User } from "@prisma/client";
 
 // Define available form templates
 const formTemplates = {
@@ -30,6 +31,50 @@ const formTemplates = {
 type FormTemplateType = keyof typeof formTemplates;
 
 export const formRouter = j.router({
+  // Get all forms created by the authenticated user
+  getUserForms: privateProcedure
+    .input(z.object({
+      limit: z.number().min(1).max(100).default(10),
+      cursor: z.string().optional(),
+    }).optional())
+    .query(async ({ c, input, ctx }) => {
+      if (!ctx.user) {
+        throw new HTTPException(401, { message: "User not authenticated" });
+      }
+      
+      // Get forms with pagination
+      const take = input?.limit ?? 10;
+      const cursor = input?.cursor;
+      
+      const forms = await db.form.findMany({
+        where: { userId: ctx.user.id },
+        take: take + 1, // Get one extra to determine if there's a next page
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: { createdAt: 'desc' },
+        include: {
+          _count: {
+            select: { submissions: true }
+          }
+        }
+      });
+      
+      // Check if we have more results
+      const hasMore = forms.length > take;
+      const data = hasMore ? forms.slice(0, take) : forms;
+      
+      return c.superjson({
+        forms: data.map(form => ({
+          id: form.id,
+          name: form.name,
+          description: form.description,
+          submissionCount: form._count.submissions,
+          createdAt: form.createdAt,
+          updatedAt: form.updatedAt,
+        })),
+        nextCursor: hasMore && data.length > 0 ? data[data.length - 1]?.id : undefined,
+      });
+    }),
+
   // Get available templates
   getTemplates: j.procedure.query(({ c }) => {
     return c.superjson(
@@ -102,3 +147,6 @@ export const formRouter = j.router({
       });
     }),
 });
+
+
+// getform made by users:

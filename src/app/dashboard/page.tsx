@@ -1,8 +1,10 @@
+import { UserForms } from '@/components/dashboard/UserForms'
+import React from 'react'
 
-
-
-export default function Page() {
+const page = () => {
   return (
-   <div>dashboard</div>
+    <UserForms/>
   )
 }
+
+export default page

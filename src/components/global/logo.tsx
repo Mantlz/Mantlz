@@ -1,17 +1,27 @@
 import Image from 'next/image'
+import { useTheme } from 'next-themes'
 
 interface LogoProps {
   className?: string
   size?: number
-  forFavicon?: boolean
+  variant?: 'auto' | 'light' | 'dark'
 }
 
-export function Logo({ className = '', size = 32, forFavicon = false }: LogoProps) {
-  const src = forFavicon ? '/logo-favicon.svg' : '/logo-favicon.svg'
+export function Logo({ 
+  className = '', 
+  size = 32,
+  variant = 'auto'
+}: LogoProps) {
+  const { resolvedTheme } = useTheme()
+  
+  // Determine which logo to show based on theme or forced variant
+  const logoSrc = variant === 'auto' 
+    ? resolvedTheme === 'dark' ? '/logo-light.svg' : '/logo-dark.svg'
+    : variant === 'light' ? '/logo-light.svg' : '/logo-dark.svg'
   
   return (
     <Image
-      src={src}
+      src={logoSrc}
       width={size}
       height={size}
       alt="Logo"

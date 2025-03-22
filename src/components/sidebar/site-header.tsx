@@ -44,7 +44,7 @@ export function SiteHeader() {
     <header className={cn(
       "flex h-(--header-height) shrink-0 items-center",
       "border-b transition-[width,height] ease-linear",
-      "bg-white/50 dark:bg-zinc-900/50",
+      "bg-white/50 dark:bg-zinc-800",
       "border-zinc-200 dark:border-zinc-800",
       "backdrop-blur-sm",
       "group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)"
