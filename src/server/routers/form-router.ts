@@ -224,6 +224,102 @@ export const formRouter = j.router({
       });
     }),
 
+  // Get form analytics data
+  getFormAnalytics: privateProcedure
+    .input(z.object({
+      formId: z.string(),
+    }))
+    .query(async ({ c, ctx, input }) => {
+      const { formId } = input;
+      const userId = ctx.user.id;
+      
+      // Verify form ownership
+      const form = await db.form.findUnique({
+        where: {
+          id: formId,
+          userId,
+        }
+      });
+      
+      if (!form) {
+        throw new Error('Form not found');
+      }
+      
+      // Get all submissions for this form
+      const submissions = await db.submission.findMany({
+        where: { formId },
+        orderBy: { createdAt: 'asc' }
+      });
+      
+      // Count unique emails (if available in submissions)
+      const uniqueEmails = new Set();
+      submissions.forEach(sub => {
+        if (sub.email) uniqueEmails.add(sub.email);
+      });
+      
+      // Get submission metrics for various time periods
+      const now = new Date();
+      
+      // Last 24 hours
+      const oneDayAgo = new Date(now);
+      oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+      const last24HoursSubmissions = submissions.filter(sub => 
+        new Date(sub.createdAt) >= oneDayAgo
+      );
+      
+      // Last 7 days
+      const oneWeekAgo = new Date(now);
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+      const lastWeekSubmissions = submissions.filter(sub => 
+        new Date(sub.createdAt) >= oneWeekAgo
+      );
+      
+      // Last 30 days
+      const oneMonthAgo = new Date(now);
+      oneMonthAgo.setDate(oneMonthAgo.getDate() - 30);
+      const lastMonthSubmissions = submissions.filter(sub => 
+        new Date(sub.createdAt) >= oneMonthAgo
+      );
+      
+      // Create time series data (hourly for the last 24 hours)
+      const timeSeriesData = Array.from({ length: 24 }, (_, i) => {
+        const hour = new Date(now);
+        hour.setHours(now.getHours() - 23 + i);
+        hour.setMinutes(0, 0, 0);
+        
+        const nextHour = new Date(hour);
+        nextHour.setHours(hour.getHours() + 1);
+        
+        // Filter submissions for this hour
+        const hourSubmissions = submissions.filter(sub => {
+          const subDate = new Date(sub.createdAt);
+          return subDate >= hour && subDate < nextHour;
+        });
+        
+        // Count unique emails in this hour if available
+        const hourUniqueEmails = new Set();
+        hourSubmissions.forEach(sub => {
+          if (sub.email) hourUniqueEmails.add(sub.email);
+        });
+        
+        return {
+          time: `${hour.getHours()}:00`,
+          submissions: hourSubmissions.length || 0,       // Total submissions in this hour
+          uniqueEmails: hourUniqueEmails.size || 0,       // Unique emails in this hour (if available)
+        };
+      });
+      
+      // Return analytics data that matches our actual schema
+      return c.superjson({
+        totalSubmissions: submissions.length,
+        uniqueSubmitters: uniqueEmails.size,
+        last24Hours: last24HoursSubmissions.length,
+        lastWeek: lastWeekSubmissions.length,
+        lastMonth: lastMonthSubmissions.length,
+        timeSeriesData,
+      });
+    }),
+
   // Get public form
   getPublicForm: j.procedure
     .input(z.object({
