@@ -14,6 +14,7 @@ import {
   Paintbrush,
   Settings,
   Video,
+  BarChart,
 } from "lucide-react"
 
 import {
@@ -46,6 +47,7 @@ import {
 import { navigationData } from '@/config/settings';
 import { AppearanceSettings } from './AppearanceSettings';
 import NotificationSettings  from './NotificationSettings';
+import UsageSettings from './usage';
 import { getIcon, iconMap } from '@/types/iconMap';
 import { cn } from '@/lib/utils';
 
@@ -147,6 +149,41 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}
+                    <SidebarMenuItem key="Usage">
+                      <SidebarMenuButton
+                        asChild
+                        isActive={selectedTab === 'Usage'}
+                        onClick={() => setSelectedTab('Usage')}
+                        className={cn(
+                          "w-full text-sm font-medium rounded-md",
+                          "transition-all duration-150",
+                          "border",
+                          // Default state
+                          "text-zinc-700 dark:text-zinc-300",
+                          "border-transparent",
+                          // Hover state
+                          "hover:bg-zinc-200 hover:text-zinc-900",
+                          "dark:hover:bg-zinc-800 dark:hover:text-white",
+                          // Active state
+                          selectedTab === 'Usage' && [
+                            "bg-zinc-200 text-zinc-900 border-zinc-300",
+                            "dark:bg-zinc-800 dark:text-white dark:border-zinc-700",
+                            "shadow-[2px_2px_0px_0px_rgba(0,0,0,0.05)]",
+                            "dark:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)]"
+                          ]
+                        )}
+                      >
+                        <a className="flex items-center gap-3 px-3 py-2.5">
+                          <BarChart className={cn(
+                            "h-4 w-4",
+                            selectedTab === 'Usage'
+                              ? "text-zinc-900 dark:text-white" 
+                              : "text-zinc-500 dark:text-zinc-400"
+                          )} />
+                          <span>Usage</span>
+                        </a>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
                   </SidebarMenu>
                 </SidebarGroupContent>
               </SidebarGroup>
@@ -159,7 +196,7 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
               <div className="flex-1 p-8">
                 {selectedTab === 'Appearance' && <AppearanceSettings />}
                 {selectedTab === 'Notifications' && <NotificationSettings />}
-                
+                {selectedTab === 'Usage' && <UsageSettings />}
               </div>
             </div>
           </main>
