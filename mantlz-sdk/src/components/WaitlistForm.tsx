@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 import { cn } from '../utils/cn';
 import { ArrowRight } from 'lucide-react';
 import { useMantlz } from '../context/mantlzContext';
+import { toast } from '../utils/toast';
 
 const waitlistSchema = z.object({
   email: z.string().email('Please enter a valid email'),
@@ -66,7 +67,15 @@ export function WaitlistForm({
 
   const onSubmit = async (data: z.infer<typeof waitlistSchema>) => {
     if (!client) {
-      onSubmitError?.(new Error('API key not configured properly'));
+      const error = new Error('API key not configured properly');
+      onSubmitError?.(error);
+      
+      // Show toast notification even if onSubmitError handler is not provided
+      toast.error('API Key Missing', {
+        description: 'Please configure your MANTLZ_KEY in environment variables.',
+        duration: 5000
+      });
+      
       return;
     }
     
@@ -77,6 +86,13 @@ export function WaitlistForm({
       });
       
       if (response.success) {
+        // Show success toast if callback not provided
+        if (!onSubmitSuccess) {
+          toast.success('Submission successful', {
+            description: 'Thank you for joining our waitlist!',
+            duration: 3000
+          });
+        }
         onSubmitSuccess?.(data);
       } else {
         onSubmitError?.(new Error('Submission failed'));
@@ -91,18 +107,21 @@ export function WaitlistForm({
     return (
       <Card variant={variant} className={cn("w-full max-w-md mx-auto bg-red-50 border-red-200", className)}>
         <CardHeader>
-          <CardTitle className="text-red-700">Configuration Error</CardTitle>
+          <CardTitle className="text-red-700">API Key Not Configured</CardTitle>
           <CardDescription className="text-red-600">
-            MANTLZ_KEY is not set
+            Your forms won't work without a valid MANTLZ_KEY
           </CardDescription>
         </CardHeader>
         <CardContent>
           <p className="text-red-600 mb-4">
-            Please add your MANTLZ_KEY to your environment variables:
+            Add your API key to your environment variables:
           </p>
-          <div className="bg-gray-800 text-white p-3 rounded font-mono text-sm overflow-x-auto">
+          <div className="bg-gray-800 text-white p-3 rounded font-mono text-sm overflow-x-auto mb-4">
             MANTLZ_KEY=mk_xxxxxxxxxxxxxxxxxxxx
           </div>
+          <p className="text-sm text-gray-600 mt-2">
+            Get your API key from the <a href="/dashboard/api-keys" className="underline text-blue-600 hover:text-blue-800">Mantlz Dashboard</a>.
+          </p>
         </CardContent>
       </Card>
     );

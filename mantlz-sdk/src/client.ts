@@ -46,7 +46,13 @@ export function createMantlzClient(apiKey: string, config?: MantlzClientConfig):
           
           // Add user-friendly messages
           if (status === 401) {
-            error.userMessage = 'Authentication failed. Please check your API key.';
+            if (errorData.error?.includes('inactive')) {
+              error.userMessage = 'Your API key is inactive. Please activate it in your dashboard.';
+            } else if (errorData.error?.includes('not found')) {
+              error.userMessage = 'API key does not exist. Please check your API key.';
+            } else {
+              error.userMessage = 'Authentication failed. Please check your API key.';
+            }
           } else if (status === 404) {
             error.userMessage = 'The requested form could not be found.';
           } else if (status === 400) {
@@ -57,11 +63,39 @@ export function createMantlzClient(apiKey: string, config?: MantlzClientConfig):
             error.userMessage = 'An error occurred. Please try again.';
           }
           
-          // Show toast notification for error if enabled
-          if (notificationsEnabled) {
-            toast.error(error.userMessage || error.message, {
-              description: error.code ? `Error ${error.code}` : undefined,
-              duration: 5000,
+          // Always log the error
+          console.error('Form submission error:', { status, error: errorData.error, userMessage: error.userMessage });
+          
+          // Show toast notification for API key errors regardless of notificationsEnabled setting
+          if (status === 401) {
+            // Force show API key errors even if notifications are disabled
+            const title = error.userMessage || 'API Key Error';
+            const description = 'Check your MANTLZ_KEY in the environment variables.';
+            
+            // Use direct console log to ensure visibility for debugging
+            console.log('SHOWING API KEY ERROR TOAST:', title, description);
+            
+            // Call toast directly for critical errors
+            toast.error(title, {
+              description,
+              duration: 5000, // Longer duration for important errors
+            });
+            
+            // Delay before throwing to ensure toast has time to appear
+            await new Promise(resolve => setTimeout(resolve, 500));
+          }
+          // Show toast for other errors if notifications are enabled
+          else if (notificationsEnabled) {
+            const title = error.userMessage || error.message;
+            let description = error.code ? `Error ${error.code}` : undefined;
+            
+            if (status === 404 && formId) {
+              description = `Form ID ${formId} not found. Please check your formId.`;
+            }
+            
+            toast.error(title, {
+              description,
+              duration: 7000,
             });
           }
           

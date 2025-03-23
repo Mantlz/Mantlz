@@ -27,8 +27,18 @@ export function MantlzProvider({ apiKey, children }: { apiKey?: string; children
       console.warn('MANTLZ_KEY is not set. Forms will not work correctly.');
       if (typeof window !== 'undefined') {
         setTimeout(() => {
-          toast.error('MANTLZ_KEY is missing', {
-            description: 'Please add your MANTLZ_KEY in your environment variables.',
+          toast.error('MANTLZ_KEY is not configured', {
+            description: 'Add your API key to your .env.local file: MANTLZ_KEY=mk_xxxxxxxxxx',
+            duration: 10000,
+          });
+        }, 1000);
+      }
+    } else if (apiKey.trim() === '') {
+      console.warn('MANTLZ_KEY is empty. Forms will not work correctly.');
+      if (typeof window !== 'undefined') {
+        setTimeout(() => {
+          toast.error('MANTLZ_KEY is empty', {
+            description: 'Your API key cannot be empty. Get your key from the Mantlz dashboard.',
             duration: 10000,
           });
         }, 1000);

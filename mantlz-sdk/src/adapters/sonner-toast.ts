@@ -1,35 +1,51 @@
-import { ToastHandler, ToastOptions, ToastType } from '../utils/toast';
+'use client';
 
-// Interface for Sonner toast functions
-interface SonnerToast {
-  success: (message: string, options?: any) => void;
-  error: (message: string, options?: any) => void;
-  info: (message: string, options?: any) => void;
-  warning: (message: string, options?: any) => void;
-}
+import { ToastHandler, ToastOptions } from '../utils/toast';
 
-export function createSonnerToastAdapter(sonnerToast: SonnerToast): ToastHandler {
+/**
+ * Creates a toast adapter for the Sonner toast library
+ * This allows the SDK to use Sonner toasts in React applications
+ */
+export function createSonnerToastAdapter(sonnerToast: any): ToastHandler {
   return {
-    show: (message: string, type: ToastType, options?: ToastOptions) => {
-      const sonnerOptions = options ? {
-        duration: options.duration,
-        description: options.description,
-        position: options.position,
-      } : {};
+    show: (message: string, type: string, options?: ToastOptions) => {
+      const { description, duration } = options || {};
       
-      switch (type) {
-        case 'success':
-          sonnerToast.success(message, sonnerOptions);
-          break;
-        case 'error':
-          sonnerToast.error(message, sonnerOptions);
-          break;
-        case 'info':
-          sonnerToast.info(message, sonnerOptions);
-          break;
-        case 'warning':
-          sonnerToast.warning(message, sonnerOptions);
-          break;
+      if (typeof sonnerToast === 'object' && sonnerToast !== null) {
+        switch (type) {
+          case 'success':
+            sonnerToast.success(message, {
+              description,
+              duration,
+            });
+            break;
+          case 'error':
+            sonnerToast.error(message, {
+              description,
+              duration,
+            });
+            break;
+          case 'info':
+            sonnerToast.info(message, {
+              description,
+              duration,
+            });
+            break;
+          case 'warning':
+            sonnerToast.warning(message, {
+              description,
+              duration,
+            });
+            break;
+          default:
+            sonnerToast.message(message, {
+              description,
+              duration,
+            });
+        }
+      } else {
+        // Fallback to console if sonnerToast is not available
+        console.log(`[Toast ${type}] ${message}${description ? `: ${description}` : ''}`);
       }
     }
   };
