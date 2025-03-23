@@ -3,6 +3,7 @@
 import React, { createContext, useContext } from 'react';
 import { createMantlzClient } from '../client';
 import { MantlzClient } from '../types';
+import { toast } from '../utils/toast';
 
 interface MantlzContextType {
   apiKey: string | undefined;
@@ -20,6 +21,21 @@ export function useMantlz() {
 }
 
 export function MantlzProvider({ apiKey, children }: { apiKey?: string; children: React.ReactNode }) {
+  // Show a warning toast if apiKey is missing
+  React.useEffect(() => {
+    if (!apiKey) {
+      console.warn('MANTLZ_KEY is not set. Forms will not work correctly.');
+      if (typeof window !== 'undefined') {
+        setTimeout(() => {
+          toast.error('MANTLZ_KEY is missing', {
+            description: 'Please add your MANTLZ_KEY in your environment variables.',
+            duration: 10000,
+          });
+        }, 1000);
+      }
+    }
+  }, [apiKey]);
+
   // Create client inside the provider using useMemo for performance
   const client = React.useMemo(() => 
     apiKey ? createMantlzClient(apiKey) : null, 

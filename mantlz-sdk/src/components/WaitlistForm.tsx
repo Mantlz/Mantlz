@@ -41,6 +41,13 @@ export function WaitlistForm({
   enableToast = true
 }: WaitlistFormProps) {
   const { client } = useMantlz();
+  const [apiKeyError, setApiKeyError] = React.useState<boolean>(false);
+  
+  React.useEffect(() => {
+    if (!client) {
+      setApiKeyError(true);
+    }
+  }, [client]);
   
   React.useEffect(() => {
     if (enableToast && toastProvider && client && client.configureNotifications) {
@@ -78,6 +85,28 @@ export function WaitlistForm({
       onSubmitError?.(error as Error);
     }
   };
+
+  // Show API key error UI
+  if (apiKeyError) {
+    return (
+      <Card variant={variant} className={cn("w-full max-w-md mx-auto bg-red-50 border-red-200", className)}>
+        <CardHeader>
+          <CardTitle className="text-red-700">Configuration Error</CardTitle>
+          <CardDescription className="text-red-600">
+            MANTLZ_KEY is not set
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-red-600 mb-4">
+            Please add your MANTLZ_KEY to your environment variables:
+          </p>
+          <div className="bg-gray-800 text-white p-3 rounded font-mono text-sm overflow-x-auto">
+            MANTLZ_KEY=mk_xxxxxxxxxxxxxxxxxxxx
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card variant={variant} className={cn("w-full max-w-md mx-auto", 
