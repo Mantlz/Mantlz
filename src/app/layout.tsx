@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { Providers } from "../components/global/providers"
 import { ClerkProvider } from "@clerk/nextjs"
 import "./globals.css"
-import MantlzWrapper from "../components/MantlzWrapper"
+import { MantlzProvider } from "@mantlz/nextjs"
 
 export const metadata: Metadata = {
   title: "Mantlz",
@@ -21,12 +21,9 @@ export default function RootLayout({
         <body className="antialiased">
           <main className="min-h-[calc(100vh-1px)] flex flex-col font-sans bg-white dark:bg-zinc-800 text-foreground">
             <Providers>
-              <MantlzWrapper apiKey={process.env.MANTLZ_KEY}
-              
-              
-              >
+              <MantlzProvider apiKey={process.env.MANTLZ_KEY}>
                 {children}
-              </MantlzWrapper>
+              </MantlzProvider>
             </Providers>
           </main>
         </body>

@@ -1,9 +1,15 @@
+"use client"
 import React from 'react'
+import { useParams } from 'next/navigation'
+import FormDetails from '@/components/dashboard/FormDetails'
 
-const page = () => {
+const FormDetailPage = () => {
+  const params = useParams()
+  const formId = params.id as string
+
   return (
-    <div>page</div>
+    <FormDetails formId={formId} />
   )
 }
 
-export default page
+export default FormDetailPage

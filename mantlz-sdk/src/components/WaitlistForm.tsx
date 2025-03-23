@@ -17,27 +17,33 @@ const waitlistSchema = z.object({
   referralSource: z.string().optional(),
 });
 
-export type WaitlistFormProps = {
-  onSubmitSuccess?: (data: z.infer<typeof waitlistSchema>) => void;
-  onSubmitError?: (error: Error) => void;
+export interface WaitlistFormProps {
+  formId: string;
+  theme?: 'light' | 'dark';
+  customSubmitText?: string;
+  onSubmitSuccess?: (data: any) => void;
+  onSubmitError?: (error: any) => void;
   className?: string;
   variant?: "default" | "glass";
   toastProvider?: any;
   enableToast?: boolean;
-};
+}
 
 export function WaitlistForm({ 
-  onSubmitSuccess, 
+  formId,
+  theme = 'light',
+  customSubmitText = 'Join Waitlist',
+  onSubmitSuccess,
   onSubmitError,
-  className,
+  className = '',
   variant = "default",
   toastProvider,
   enableToast = true
 }: WaitlistFormProps) {
-  const { apiKey, client } = useMantlz();
+  const { client } = useMantlz();
   
   React.useEffect(() => {
-    if (enableToast && toastProvider && client.configureNotifications) {
+    if (enableToast && toastProvider && client && client.configureNotifications) {
       client.configureNotifications(true, toastProvider);
     }
   }, [client, enableToast, toastProvider]);
@@ -52,10 +58,14 @@ export function WaitlistForm({
   });
 
   const onSubmit = async (data: z.infer<typeof waitlistSchema>) => {
+    if (!client) {
+      onSubmitError?.(new Error('API key not configured properly'));
+      return;
+    }
+    
     try {
       const response = await client.submitForm('waitlist', {
-        formId: 'waitlist-form',
-        apiKey,
+        formId,
         data
       });
       
@@ -70,10 +80,13 @@ export function WaitlistForm({
   };
 
   return (
-    <Card variant={variant} className={cn("w-full max-w-md mx-auto", className)}>
+    <Card variant={variant} className={cn("w-full max-w-md mx-auto", 
+      theme === 'dark' ? "bg-zinc-900 text-white" : "bg-white text-zinc-900",
+      className
+    )}>
       <CardHeader>
         <CardTitle>Join the Waitlist</CardTitle>
-        <CardDescription>
+        <CardDescription className={theme === 'dark' ? "text-zinc-300" : "text-zinc-600"}>
           Be the first to know when we launch. Get early access and exclusive updates.
         </CardDescription>
       </CardHeader>
@@ -130,7 +143,7 @@ export function WaitlistForm({
             className="w-full"
             disabled={form.formState.isSubmitting}
           >
-            Join Waitlist
+            {customSubmitText}
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </form>

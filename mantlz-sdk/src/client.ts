@@ -1,4 +1,4 @@
-import { MantlzClient, FormSubmitOptions, FormSubmitResponse, MantlzError, MantlzClientConfig } from './types';
+import { MantlzClient, FormSubmitResponse, MantlzError, MantlzClientConfig } from './types';
 import * as formsApi from './api/forms';
 import * as templatesApi from './api/templates';
 import { toast, ToastHandler } from './utils/toast';
@@ -13,21 +13,23 @@ export function createMantlzClient(apiKey: string, config?: MantlzClientConfig):
   const notificationsEnabled = config?.notifications !== false;
 
   return {
-    submitForm: async (type: string, options: FormSubmitOptions): Promise<FormSubmitResponse> => {
+    submitForm: async (type: string, options: { formId: string; data: any }): Promise<FormSubmitResponse> => {
       try {
-        const url = '/api/v1/forms/submit';
-        console.log('Submitting form to:', url, { type, formId: options.formId });
+        const { formId, data } = options;
+        const url = `/api/v1/forms/submit`;
+        console.log('Submitting form to:', url, { type, formId });
         
         const response = await fetch(url, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'X-API-Key': apiKey,
           },
           body: JSON.stringify({
             type,
-            formId: options.formId,
-            apiKey: options.apiKey || apiKey,
-            data: options.data,
+            formId,
+            apiKey,
+            data
           }),
         });
 

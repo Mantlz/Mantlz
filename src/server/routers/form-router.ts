@@ -146,6 +146,152 @@ export const formRouter = j.router({
         schema: input.schema,
       });
     }),
+
+  // Get form by ID
+  getFormById: privateProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .query(async ({ c, ctx, input }) => {
+      const { id } = input;
+      const userId = ctx.user.id;
+      
+      const form = await db.form.findUnique({
+        where: {
+          id,
+          userId,
+        },
+        include: {
+          _count: {
+            select: {
+              submissions: true,
+            },
+          },
+        },
+      });
+      
+      if (!form) {
+        throw new Error('Form not found');
+      }
+      
+      return c.superjson({
+        id: form.id,
+        name: form.name,
+        description: form.description,
+        createdAt: form.createdAt,
+        updatedAt: form.updatedAt,
+        submissionCount: form._count.submissions,
+      });
+    }),
+    
+  // Get form submissions
+  getFormSubmissions: privateProcedure
+    .input(z.object({
+      formId: z.string(),
+    }))
+    .query(async ({ c, ctx, input }) => {
+      const { formId } = input;
+      const userId = ctx.user.id;
+      
+      // Verify form ownership
+      const form = await db.form.findUnique({
+        where: {
+          id: formId,
+          userId,
+        },
+      });
+      
+      if (!form) {
+        throw new Error('Form not found');
+      }
+      
+      const submissions = await db.submission.findMany({
+        where: {
+          formId,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+        select: {
+          id: true,
+          createdAt: true,
+          data: true,
+        },
+      });
+      
+      return c.superjson({
+        submissions,
+      });
+    }),
+
+  // Get public form
+  getPublicForm: j.procedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .query(async ({ c, input }) => {
+      const { id } = input;
+      
+      const form = await db.form.findUnique({
+        where: { id },
+      });
+      
+      if (!form) {
+        throw new Error('Form not found');
+      }
+      
+      // Parse the schema to get form fields
+      const schemaObj = JSON.parse(form.schema);
+      const fields = Object.entries(schemaObj).map(([name, fieldSchema]: [string, any]) => {
+        return {
+          name,
+          label: name.charAt(0).toUpperCase() + name.slice(1).replace(/([A-Z])/g, ' $1'),
+          type: fieldSchema.type === 'string' && fieldSchema.format === 'email' ? 'email' : 
+                fieldSchema.type === 'string' ? 'text' : 
+                'textarea',
+          required: !fieldSchema.optional
+        };
+      });
+      
+      return c.superjson({
+        id: form.id,
+        name: form.name,
+        description: form.description,
+        fields
+      });
+    }),
+
+  // Submit form
+  submitForm: j.procedure
+    .input(z.object({
+      formId: z.string(),
+      data: z.record(z.any())
+    }))
+    .mutation(async ({ c, input }) => {
+      const { formId, data } = input;
+      
+      // Get the form to validate the submission
+      const form = await db.form.findUnique({
+        where: { id: formId },
+      });
+      
+      if (!form) {
+        throw new Error('Form not found');
+      }
+      
+      // Create the submission
+      const submission = await db.submission.create({
+        data: {
+          formId,
+          data: data,
+        },
+      });
+      
+      return c.superjson({
+        id: submission.id,
+        message: 'Form submitted successfully'
+      });
+    })
 });
 
 
