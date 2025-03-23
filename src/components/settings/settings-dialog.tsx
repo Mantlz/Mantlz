@@ -73,37 +73,38 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
       </DialogTrigger>
       <DialogContent className={cn(
         "overflow-hidden p-0",
-
         "w-[95vw] md:w-[900px] lg:w-[1100px] xl:w-[1200px]",
         "h-[600px]",
-        "border border-zinc-200 dark:border-zinc-800",
-        "shadow-lg"
+        "border-2 border-zinc-300 dark:border-zinc-800",
+        "shadow-[5px_5px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[5px_5px_0px_0px_rgba(0,0,0,0.3)]",
+        "bg-white dark:bg-zinc-950",
+        "rounded-lg"
       )}>
         <DialogTitle className="sr-only">Settings</DialogTitle>
         <DialogDescription className="sr-only">
           Customize your settings here.
         </DialogDescription>
         <SidebarProvider className="items-start">
-          {/* Navigation Sidebar - Darker background */}
+          {/* Navigation Sidebar - Subtle retro style */}
           <Sidebar 
             collapsible="none" 
             className={cn(
               "hidden md:flex border-r w-[280px]",
-              // Light mode - darker gray
-              "bg-zinc-900 border-zinc-800",
-              // Dark mode - deep black
-              "dark:bg-black dark:border-zinc-800/50"
+              // Light mode - light gray sidebar
+              "bg-zinc-100 border-zinc-200",
+              // Dark mode - dark gray sidebar
+              "dark:bg-zinc-900 dark:border-zinc-800"
             )}
           >
             <SidebarContent>
               <SidebarGroup>
                 <SidebarGroupContent>
-                  <div className="px-4 py-6">
-                    <h2 className="text-sm font-semibold text-zinc-400 dark:text-zinc-500">
+                  <div className="px-6 py-6">
+                    <h2 className="text-lg font-bold tracking-wide text-zinc-900 dark:text-white">
                       Settings
                     </h2>
                   </div>
-                  <SidebarMenu className="px-2 space-y-1">
+                  <SidebarMenu className="px-3 space-y-1">
                     {data.map((item) => (
                       <SidebarMenuItem key={item.name}>
                         <SidebarMenuButton
@@ -111,29 +112,33 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
                           isActive={item.name === selectedTab}
                           onClick={() => setSelectedTab(item.name)}
                           className={cn(
-                            "w-full text-sm rounded-md",
-                            "transition-colors duration-200",
+                            "w-full text-sm font-medium rounded-md",
+                            "transition-all duration-150",
+                            "border",
                             // Default state
-                            "text-zinc-400 dark:text-zinc-500",
+                            "text-zinc-700 dark:text-zinc-300",
+                            "border-transparent",
                             // Hover state
-                            "hover:bg-zinc-800 hover:text-zinc-200",
-                            "dark:hover:bg-zinc-900 dark:hover:text-zinc-300",
+                            "hover:bg-zinc-200 hover:text-zinc-900",
+                            "dark:hover:bg-zinc-800 dark:hover:text-white",
                             // Active state
                             item.name === selectedTab && [
-                              "bg-zinc-300 text-zinc-200",
-                              "dark:bg-zinc-300 dark:text-zinc-200"
+                              "bg-zinc-200 text-zinc-900 border-zinc-300",
+                              "dark:bg-zinc-800 dark:text-white dark:border-zinc-700",
+                              "shadow-[2px_2px_0px_0px_rgba(0,0,0,0.05)]",
+                              "dark:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)]"
                             ]
                           )}
                         >
-                          <a className="flex items-center gap-3 px-3 py-2">
+                          <a className="flex items-center gap-3 px-3 py-2.5">
                             {(() => {
                               const IconComponent = getIcon(item.icon)
                               return IconComponent ? (
                                 <IconComponent className={cn(
                                   "h-4 w-4",
                                   item.name === selectedTab 
-                                    ? "text-zinc-200" 
-                                    : "text-zinc-400 dark:text-zinc-500"
+                                    ? "text-zinc-900 dark:text-white" 
+                                    : "text-zinc-500 dark:text-zinc-400"
                                 )} />
                               ) : null
                             })()}
@@ -148,7 +153,7 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
             </SidebarContent>
           </Sidebar>
 
-          {/* Content Area - Light background */}
+          {/* Content Area - Subtle retro style */}
           <main className="flex flex-1 flex-col overflow-hidden bg-white dark:bg-zinc-950">
             <div className="flex flex-1 flex-col overflow-y-auto">
               <div className="flex-1 p-8">

@@ -21,28 +21,28 @@ const ThemeOption: React.FC<ThemeOptionProps> = React.memo(({ type, isSelected, 
       className={cn(
         // Base styles
         'relative overflow-hidden cursor-pointer',
-        'rounded-xl border',
-        'transition-all duration-200',
-        'backdrop-blur-sm',
+        'rounded-lg border',
+        'transition-all duration-150',
         // Hover effects
-        'hover:shadow-sm hover:shadow-primary/5',
-        'group-hover:border-primary/20',
+        'hover:shadow-md dark:hover:shadow-md/20',
+        'hover:-translate-y-0.5',
         // Border and background
-        'bg-white/5 dark:bg-zinc-900/50',
-        'border-zinc-200/30 dark:border-zinc-800/50',
+        'bg-white dark:bg-zinc-900',
+        'border-zinc-200 dark:border-zinc-800',
         // Selected state
         isSelected && [
-          'border-primary/50 dark:border-primary/50',
-          'shadow-sm shadow-primary/10',
-          'bg-primary/5 dark:bg-primary/5'
+          'border-zinc-400 dark:border-zinc-600',
+          'shadow-md dark:shadow-lg/10',
+          '-translate-y-0.5',
+          'bg-white dark:bg-zinc-900'
         ]
       )}
       onClick={onClick}
     >
       {/* Gradient overlay */}
       <div className={cn(
-        "absolute inset-0 opacity-0 transition-opacity duration-200",
-        "bg-gradient-to-br from-primary/5 via-transparent to-primary/5",
+        "absolute inset-0 opacity-0 transition-opacity duration-150",
+        "bg-gradient-to-br from-zinc-100/40 via-transparent to-zinc-100/40 dark:from-zinc-800/20 dark:to-zinc-800/20",
         "group-hover:opacity-100"
       )} />
 
@@ -58,17 +58,17 @@ const ThemeOption: React.FC<ThemeOptionProps> = React.memo(({ type, isSelected, 
         {/* Label */}
         <div className={cn(
           "mt-2 flex items-center justify-between",
-          "border-t border-zinc-200/10 dark:border-zinc-800/50",
+          "border-t border-zinc-200 dark:border-zinc-800",
           "pt-2"
         )}>
           <div className="flex items-center gap-2">
             {type === 'System' && (
-              <Sparkles className="h-3.5 w-3.5  mt-3 text-primary/70" />
+              <Sparkles className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
             )}
             <span className={cn(
-              "text-sm mt-3 font-medium",
-              isSelected ? "text-primary" : "text-zinc-600 dark:text-zinc-400",
-              "group-hover:text-primary/80 transition-colors duration-200"
+              "text-sm font-medium",
+              isSelected ? "text-zinc-900 dark:text-white" : "text-zinc-700 dark:text-zinc-400",
+              "group-hover:text-zinc-900 dark:group-hover:text-white transition-colors duration-150"
             )}>
               {type}
             </span>
@@ -77,15 +77,16 @@ const ThemeOption: React.FC<ThemeOptionProps> = React.memo(({ type, isSelected, 
           {/* Selected indicator */}
           <div className={cn(
             "flex items-center justify-center",
-            "size-4 rounded-full",
-            "transition-colors duration-200",
-            isSelected ? "bg-primary" : "bg-zinc-200/50 dark:bg-zinc-800/50",
-            "group-hover:bg-primary/70"
+            "size-5 rounded-full",
+            "transition-colors duration-150",
+            "border",
+            isSelected ? "bg-zinc-900 border-zinc-800 dark:bg-white dark:border-zinc-200" : "bg-zinc-200 border-zinc-300 dark:bg-zinc-800 dark:border-zinc-700",
+            "group-hover:bg-zinc-800 group-hover:border-zinc-700 dark:group-hover:bg-zinc-300 dark:group-hover:border-zinc-400"
           )}>
             <Check className={cn(
               "size-3",
-              isSelected ? "text-black dark:text-white" : "text-transparent",
-              "transition-opacity duration-200"
+              isSelected ? "text-white dark:text-zinc-900" : "text-transparent",
+              "transition-opacity duration-150"
             )} />
           </div>
         </div>
@@ -112,11 +113,11 @@ export default function DarkModeToggle() {
 
   if (!mounted) {
     return (
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-4">
         {[...Array(3)].map((_, i) => (
           <div 
             key={i} 
-            className="h-[160px]  animate-pulse bg-zinc-100/5 dark:bg-zinc-800/5 rounded-xl border border-zinc-200/30 dark:border-zinc-800/30"
+            className="h-[160px] animate-pulse bg-zinc-100/5 dark:bg-zinc-800/5 rounded-lg border border-zinc-200 dark:border-zinc-800"
           />
         ))}
       </div>
@@ -124,8 +125,8 @@ export default function DarkModeToggle() {
   }
 
   return (
-    <div className="w-full ">
-      <div className="grid grid-cols-3 gap-3 ">
+    <div className="w-full">
+      <div className="grid grid-cols-3 gap-4">
         {themeOptions.map(({ type, value, Component }) => (
           <ThemeOption
             key={value}

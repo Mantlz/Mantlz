@@ -40,79 +40,90 @@ export default function NotificationSettings() {
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto bg-background rounded-lg p-2 space-y-6">
-      <header className="pb-2 space-y-1">
-        <h2 className="text-2xl font-semibold">Notification Settings</h2>
-        <p className="text-muted-foreground">Manage how you receive notifications and updates</p>
+    <div className="w-full space-y-6">
+      <header className="p-5 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">Notification Settings</h2>
+        <div className="w-16 h-0.5 bg-zinc-300 dark:bg-zinc-700 my-2"></div>
+        <p className="text-sm text-zinc-600 dark:text-zinc-400">Manage how you receive notifications and updates</p>
       </header>
 
       <main className="space-y-6">
-        <div className="space-y-4">
-          <h3 className="text-lg font-medium">Notification Channels</h3>
+        <div className="p-5 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+          <h3 className="text-base font-medium text-zinc-900 dark:text-white mb-4">Notification Channels</h3>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Mail className="h-5 w-5 text-muted-foreground" />
-              <div>
-                <Label htmlFor="emailNotifications" className="font-medium">
-                  Email Notifications
-                </Label>
-                <p className="text-sm text-muted-foreground">Receive updates via email</p>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between p-3 border border-zinc-200 dark:border-zinc-800 rounded-md bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center justify-center w-9 h-9 rounded-md bg-zinc-200 dark:bg-zinc-800">
+                  <Mail className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
+                </div>
+                <div>
+                  <Label htmlFor="emailNotifications" className="font-medium text-zinc-800 dark:text-zinc-200">
+                    Email Notifications
+                  </Label>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">Receive updates via email</p>
+                </div>
               </div>
+              <Switch
+                id="emailNotifications"
+                checked={settings.emailNotifications}
+                onCheckedChange={() => handleToggleChange("emailNotifications")}
+              />
             </div>
-            <Switch
-              id="emailNotifications"
-              checked={settings.emailNotifications}
-              onCheckedChange={() => handleToggleChange("emailNotifications")}
-            />
-          </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Bell className="h-5 w-5 text-muted-foreground" />
-              <div>
-                <Label htmlFor="pushNotifications" className="font-medium">
-                  Push Notifications
-                </Label>
-                <p className="text-sm text-muted-foreground">Receive notifications in your browser</p>
+            <div className="flex items-center justify-between p-3 border border-zinc-200 dark:border-zinc-800 rounded-md bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center justify-center w-9 h-9 rounded-md bg-zinc-200 dark:bg-zinc-800">
+                  <Bell className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
+                </div>
+                <div>
+                  <Label htmlFor="pushNotifications" className="font-medium text-zinc-800 dark:text-zinc-200">
+                    Push Notifications
+                  </Label>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">Receive notifications in your browser</p>
+                </div>
               </div>
+              <Switch
+                id="pushNotifications"
+                checked={settings.pushNotifications}
+                onCheckedChange={() => handleToggleChange("pushNotifications")}
+              />
             </div>
-            <Switch
-              id="pushNotifications"
-              checked={settings.pushNotifications}
-              onCheckedChange={() => handleToggleChange("pushNotifications")}
-            />
-          </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Phone className="h-5 w-5 text-muted-foreground" />
-              <div>
-                <Label htmlFor="smsNotifications" className="font-medium">
-                  SMS Notifications
-                </Label>
-                <p className="text-sm text-muted-foreground">Receive text messages for important updates</p>
+            <div className="flex items-center justify-between p-3 border border-zinc-200 dark:border-zinc-800 rounded-md bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center justify-center w-9 h-9 rounded-md bg-zinc-200 dark:bg-zinc-800">
+                  <Phone className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
+                </div>
+                <div>
+                  <Label htmlFor="smsNotifications" className="font-medium text-zinc-800 dark:text-zinc-200">
+                    SMS Notifications
+                  </Label>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">Receive text messages for important updates</p>
+                </div>
               </div>
+              <Switch
+                id="smsNotifications"
+                checked={settings.smsNotifications}
+                onCheckedChange={() => handleToggleChange("smsNotifications")}
+              />
             </div>
-            <Switch
-              id="smsNotifications"
-              checked={settings.smsNotifications}
-              onCheckedChange={() => handleToggleChange("smsNotifications")}
-            />
           </div>
         </div>
 
-        <div className="space-y-4">
-          <h3 className="text-lg font-medium">Notification Types</h3>
+        <div className="p-5 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+          <h3 className="text-base font-medium text-zinc-900 dark:text-white mb-4">Notification Types</h3>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between p-3 border border-zinc-200 dark:border-zinc-800 rounded-md bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors">
             <div className="flex items-center space-x-4">
-              <Shield className="h-5 w-5 text-muted-foreground" />
+              <div className="flex items-center justify-center w-9 h-9 rounded-md bg-zinc-200 dark:bg-zinc-800">
+                <Shield className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
+              </div>
               <div>
-                <Label htmlFor="securityAlerts" className="font-medium">
+                <Label htmlFor="securityAlerts" className="font-medium text-zinc-800 dark:text-zinc-200">
                   Security Alerts
                 </Label>
-                <p className="text-sm text-muted-foreground">Get notified about security-related events</p>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">Get notified about security-related events</p>
               </div>
             </div>
             <Switch
@@ -124,10 +135,18 @@ export default function NotificationSettings() {
         </div>
       </main>
 
-      <footer className="pt-4 flex justify-end">
-        <Button onClick={saveSettings}>Save Settings</Button>
+      <footer className="flex justify-end mt-6">
+        <Button 
+          onClick={saveSettings}
+          className="bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white font-medium px-4 py-2 rounded-md border border-zinc-700 dark:border-zinc-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] hover:translate-y-[-1px] transition-all"
+        >
+          Save Settings
+        </Button>
       </footer>
     </div>
   )
 }
+
+
+
 
