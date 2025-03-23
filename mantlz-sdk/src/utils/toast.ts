@@ -58,13 +58,16 @@ const createDOMToast = (message: string, type: ToastType, options?: ToastOptions
   
   // Create toast element
   const toast = document.createElement('div');
-  toast.style.padding = '12px 16px';
-  toast.style.borderRadius = '6px';
-  toast.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
-  toast.style.marginBottom = '8px';
+  toast.style.padding = '14px 18px';
+  toast.style.borderRadius = '8px';
+  toast.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.1)';
+  toast.style.marginBottom = '10px';
   toast.style.width = '320px';
   toast.style.transition = 'all 0.3s ease';
   toast.style.opacity = '0';
+  toast.style.fontFamily = '"SF Mono", "Roboto Mono", Menlo, Monaco, Consolas, monospace';
+  toast.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+  toast.style.backdropFilter = 'blur(6px)';
   
   // Set transform based on position
   if (position.includes('top')) {
@@ -98,38 +101,75 @@ const createDOMToast = (message: string, type: ToastType, options?: ToastOptions
   
   toast.style.animation = `${animationName} 0.3s forwards`;
   
-  // Set colors based on type
+  // Create icon container
+  const iconContainer = document.createElement('div');
+  iconContainer.style.display = 'flex';
+  iconContainer.style.alignItems = 'center';
+  iconContainer.style.marginBottom = '8px';
+  
+  // Create icon element
+  const icon = document.createElement('div');
+  icon.style.width = '16px';
+  icon.style.height = '16px';
+  icon.style.borderRadius = '50%';
+  icon.style.marginRight = '10px';
+  icon.style.display = 'flex';
+  icon.style.alignItems = 'center';
+  icon.style.justifyContent = 'center';
+  icon.style.flexShrink = '0';
+  
+  // Set colors and icons based on type
+  let iconContent = '';
   switch (type) {
     case 'success':
-      toast.style.backgroundColor = '#10B981';
+      toast.style.background = 'linear-gradient(to right, #1f8a70, #10B981)';
       toast.style.color = 'white';
+      icon.style.background = 'rgba(255, 255, 255, 0.2)';
+      iconContent = '✓';
       break;
     case 'error':
-      toast.style.backgroundColor = '#EF4444';
+      toast.style.background = 'linear-gradient(to right, #d03050, #EF4444)';
       toast.style.color = 'white';
+      icon.style.background = 'rgba(255, 255, 255, 0.2)';
+      iconContent = '✕';
       break;
     case 'warning':
-      toast.style.backgroundColor = '#F59E0B';
+      toast.style.background = 'linear-gradient(to right, #d97706, #F59E0B)';
       toast.style.color = 'white';
+      icon.style.background = 'rgba(255, 255, 255, 0.2)';
+      iconContent = '!';
       break;
     case 'info':
-      toast.style.backgroundColor = '#3B82F6';
+      toast.style.background = 'linear-gradient(to right, #2563eb, #3B82F6)';
       toast.style.color = 'white';
+      icon.style.background = 'rgba(255, 255, 255, 0.2)';
+      iconContent = 'i';
       break;
   }
+  
+  icon.textContent = iconContent;
+  icon.style.fontSize = '10px';
+  icon.style.fontWeight = 'bold';
   
   // Create title
   const title = document.createElement('div');
   title.style.fontWeight = 'bold';
-  title.style.marginBottom = options?.description ? '4px' : '0';
+  title.style.fontSize = '14px';
+  title.style.letterSpacing = '0.5px';
   title.textContent = message;
-  toast.appendChild(title);
+  
+  // Add icon and title to the container
+  iconContainer.appendChild(icon);
+  iconContainer.appendChild(title);
+  toast.appendChild(iconContainer);
   
   // Add description if provided
   if (options?.description) {
     const description = document.createElement('div');
-    description.style.fontSize = '14px';
+    description.style.fontSize = '12px';
     description.style.opacity = '0.9';
+    description.style.marginLeft = '26px'; // Align with title after icon
+    description.style.lineHeight = '1.4';
     description.textContent = options.description;
     toast.appendChild(description);
   }

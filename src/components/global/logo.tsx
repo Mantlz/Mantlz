@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
 
 interface LogoProps {
   className?: string
@@ -13,11 +14,20 @@ export function Logo({
   variant = 'auto'
 }: LogoProps) {
   const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
   
-  // Determine which logo to show based on theme or forced variant
-  const logoSrc = variant === 'auto' 
-    ? resolvedTheme === 'dark' ? '/logo-light.svg' : '/logo-dark.svg'
-    : variant === 'light' ? '/logo-light.svg' : '/logo-dark.svg'
+  // Use useEffect to handle client-side rendering only
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+  
+  // During SSR and initial mount, use a consistent logo
+  // Only use theme-aware logo after client-side hydration
+  const logoSrc = !mounted
+    ? '/logo-dark.svg' // Default for SSR and initial render
+    : variant === 'auto' 
+      ? resolvedTheme === 'dark' ? '/logo-light.svg' : '/logo-dark.svg'
+      : variant === 'light' ? '/logo-light.svg' : '/logo-dark.svg'
   
   return (
     <Image

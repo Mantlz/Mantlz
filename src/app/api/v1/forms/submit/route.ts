@@ -68,10 +68,12 @@ export async function POST(request: NextRequest) {
     console.log(`Form submission of type ${type} received for ${formId}:`, data);
 
     // Store the submission in the database
+    const email = data.email || null; // Extract email from form data
     const submission = await db.submission.create({
       data: {
         formId,
         data,
+        email, // Add the extracted email
       }
     });
 

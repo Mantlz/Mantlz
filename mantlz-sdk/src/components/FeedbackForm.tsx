@@ -21,6 +21,7 @@ const feedbackSchema = z.object({
 });
 
 export type FeedbackFormProps = {
+  formId: string;
   onSubmitSuccess?: (data: z.infer<typeof feedbackSchema>) => void;
   onSubmitError?: (error: Error) => void;
   className?: string;
@@ -28,12 +29,13 @@ export type FeedbackFormProps = {
 };
 
 export function FeedbackForm({ 
+  formId,
   onSubmitSuccess, 
   onSubmitError,
   className,
   variant = "default"
 }: FeedbackFormProps) {
-  const { apiKey } = useMantlz();
+  const { client } = useMantlz();
   
   const form = useForm({
     resolver: zodResolver(feedbackSchema),
@@ -46,12 +48,20 @@ export function FeedbackForm({
 
   const onSubmit = async (data: z.infer<typeof feedbackSchema>) => {
     try {
-      await window.mantlz.submitForm('feedback', {
-        formId: 'feedback-form',
-        apiKey,
+      if (!client) {
+        throw new Error('API key not configured properly');
+      }
+      
+      const response = await client.submitForm('feedback', {
+        formId,
         data
       });
-      onSubmitSuccess?.(data);
+      
+      if (response.success) {
+        onSubmitSuccess?.(data);
+      } else {
+        onSubmitError?.(new Error('Submission failed'));
+      }
     } catch (error) {
       onSubmitError?.(error as Error);
     }

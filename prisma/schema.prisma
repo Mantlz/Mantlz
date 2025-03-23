@@ -52,8 +52,12 @@ model Submission {
   id        String   @id @default(cuid())
   data      Json
   formId    String
+  email     String?
   createdAt DateTime @default(now())
   form      Form     @relation(fields: [formId], references: [id])
+
+  @@unique([formId, email])
+  @@index([email])
 }
 
 model ApiKey {
