@@ -51,15 +51,6 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0 }: FormHead
               Copy ID
             </Button>
           )}
-          
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="border-gray-200 dark:border-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800"
-          >
-            <ExternalLink className="h-4 w-4 mr-2" />
-            View Live
-          </Button>
         </div>
       </div>
     </Card>

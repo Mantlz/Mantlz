@@ -5,23 +5,29 @@ import React from 'react'
 const page = () => {
   return (
     <div>
-        <WaitlistForm 
-          formId="Cm8kuld3k00010jin56id9grj"
+        {/* <WaitlistForm 
+          formId="cm8koux7d0017o7ept68qas45"
           onSubmitSuccess={() => {}}
           onSubmitError={() => {}}
           className=""
           toastProvider={null}
-        />
+        /> */}
         {/* <FeedbackForm /> */}
 
-        {/* <FeedbackForm 
-          formId="cm8kuld3k00010jin56id9grj"
-          onSubmitSuccess={() => {}}
-          onSubmitError={() => {}}
-          className=""
-          //toastProvider={null}
-        />
-         */}
+    
+      
+
+<FeedbackForm 
+  formId="cm8kuld3k00010jin56id9grj"
+  theme="minimal"
+  
+  
+  // Event handlers
+  onSubmitSuccess={(data) => console.log(data)}
+/>
+
+
+        
         
         
         </div>

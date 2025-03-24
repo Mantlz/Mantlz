@@ -3,6 +3,7 @@
 
 import { Container } from "@/components/global/container";
 import { Waitlist } from "@clerk/nextjs";
+import { FeedbackForm } from "@mantlz/nextjs";
 // import Footer from "@/components/landing/footer";
 // import CTA from "@/components/landing/cta";
 
@@ -15,7 +16,7 @@ export default function LandingPage() {
       <Navbar />
       {/* <CTA /> */}
 
-      <Waitlist />
+     
 
     
        

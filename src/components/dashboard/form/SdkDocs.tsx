@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState } from 'react';
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { CodeBlock } from "@/components/ui/code-block"
@@ -6,114 +6,142 @@ import { Copy, CheckCheck } from "lucide-react"
 
 interface SdkDocsProps {
   formId: string
-  formType: string
+  formType: 'Form'
 }
 
 export function SdkDocs({ formId, formType }: SdkDocsProps) {
-  const [copiedItem, setCopiedItem] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<string>("1")
-
-  // Handle copy to clipboard
-  const copyToClipboard = (text: string, item: string) => {
-    navigator.clipboard.writeText(text)
-    setCopiedItem(item)
-    setTimeout(() => setCopiedItem(null), 2000)
-  }
-
-  const installCode = `npm install @mantlz/nextjs
-# or
-yarn add @mantlz/nextjs
-# or 
-pnpm add @mantlz/nextjs`
-
-  const basicUsageCode = `import { ${formType} } from "@mantlz/nextjs";
-
-export default function MyPage() {
-  return (
-    <div className="max-w-2xl mx-auto py-12">
-      <${formType} formId="${formId}" />
-    </div>
-  );
-}`
-
-  const customizationCode = `import { ${formType} } from "@mantlz/nextjs";
-
-export default function MyPage() {
-  return (
-    <div className="max-w-2xl mx-auto py-12">
-      <${formType}
-        formId="${formId}"
-        theme="dark" // 'light' or 'dark'
-        customSubmitText="Join our waitlist"
-        onSubmitSuccess={(data) => {
-          console.log('Form submitted:', data);
-          // Custom success handling
-        }}
-        onSubmitError={(error) => {
-          console.error('Form error:', error);
-          // Custom error handling
-        }}
-      />
-    </div>
-  );
-}`
-
-  const advancedUsageCode = `import { useForm } from "@mantlz/nextjs";
-
-export default function CustomFormComponent() {
-  const { form, isLoading, error, submitForm } = useForm({
-    formId: "${formId}",
-  });
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData);
-    
-    try {
-      await submitForm(data);
-      // Success handling
-    } catch (error) {
-      // Error handling
-    }
+  const [activeTab, setActiveTab] = useState<'javascript' | 'react' | 'html'>('javascript');
+  const [copied, setCopied] = useState(false);
+  
+  const handleCopy = (code: string) => {
+    navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading form</div>;
+  const javascriptCode = `
+// Install the SDK:
+// npm install @mantle/client-sdk
+import { MantleForm } from '@mantle/client-sdk';
 
+// Initialize form with your ID
+const form = new MantleForm('${formId}');
+
+// Submit form data
+form.submit({
+  email: 'user@example.com',
+  name: 'John Doe',
+  message: 'Hello World!'
+})
+.then(response => {
+  console.log('Success:', response);
+})
+.catch(error => {
+  console.error('Error:', error);
+});
+`.trim();
+
+  const reactCode = `
+// Install the SDK:
+// npm install @mantle/react
+import { useForm } from '@mantle/react';
+import { useState } from 'react';
+
+export default function ContactForm() {
+  const [formData, setFormData] = useState({
+    email: '',
+    name: '',
+    message: ''
+  });
+  
+  const { submit, isSubmitting, error, success } = useForm('${formId}');
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await submit(formData);
+    if (success) {
+      setFormData({ email: '', name: '', message: '' });
+    }
+  };
+  
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {form.fields.map((field) => (
-        <div key={field.id} className="space-y-2">
-          <label htmlFor={field.id} className="block font-medium">
-            {field.label} {field.required && <span className="text-red-500">*</span>}
-          </label>
-          <input
-            id={field.id}
-            name={field.id}
-            type={field.type}
-            required={field.required}
-            className="w-full p-2 border rounded-md"
-          />
-        </div>
-      ))}
+      {success && <div className="text-green-600">Form submitted successfully!</div>}
+      {error && <div className="text-red-600">{error}</div>}
       
-      <button 
-        type="submit" 
-        className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-      >
-        Submit
+      <input
+        type="email"
+        value={formData.email}
+        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        placeholder="Email"
+        required
+      />
+      
+      <input
+        type="text"
+        value={formData.name}
+        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+        placeholder="Name"
+        required
+      />
+      
+      <textarea
+        value={formData.message}
+        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+        placeholder="Message"
+        required
+      />
+      
+      <button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'Submitting...' : 'Submit'}
       </button>
     </form>
   );
-}`
+}
+`.trim();
 
-  const tabs = [
-    { id: "1", label: "Installation" },
-    { id: "2", label: "Basic Usage" },
-    { id: "3", label: "Customization" },
-    { id: "4", label: "Advanced Usage" },
-  ]
+  const htmlCode = `
+<!-- Include the SDK via CDN -->
+<script src="https://cdn.mantle.app/forms/v1/mantle-forms.js"></script>
+
+<form id="contactForm">
+  <input type="email" name="email" placeholder="Email" required>
+  <input type="text" name="name" placeholder="Name" required>
+  <textarea name="message" placeholder="Message" required></textarea>
+  <button type="submit">Submit</button>
+</form>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contactForm');
+    
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      
+      MantleForm.submit('${formId}', data)
+        .then(response => {
+          alert('Form submitted successfully!');
+          form.reset();
+        })
+        .catch(error => {
+          alert('Error submitting form: ' + error.message);
+        });
+    });
+  });
+</script>
+`.trim();
+
+  const getActiveCode = () => {
+    switch (activeTab) {
+      case 'javascript': return javascriptCode;
+      case 'react': return reactCode;
+      case 'html': return htmlCode;
+      default: return javascriptCode;
+    }
+  };
 
   return (
     <Card className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-sm">
@@ -128,23 +156,44 @@ export default function CustomFormComponent() {
                 variant="ghost" 
                 size="sm" 
                 className="font-mono text-xs"
-                onClick={() => copyToClipboard(installCode, "install")}
+                onClick={() => handleCopy(getActiveCode())}
               >
                 Copy
               </Button>
             </div>
-            <pre className="bg-gray-100 dark:bg-gray-900 p-3 rounded-sm border border-gray-300 dark:border-gray-700 overflow-x-auto">
-              {installCode}
-            </pre>
+            <div className="relative">
+              <pre className="bg-gray-100 dark:bg-gray-900 p-3 rounded-sm border border-gray-300 dark:border-gray-700 overflow-x-auto">
+                <code>{getActiveCode()}</code>
+              </pre>
+              <button
+                className="absolute top-2 right-2 p-2 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 rounded-md border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
+                aria-label="Copy code"
+              >
+                {copied ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 text-green-600 dark:text-green-400">
+                    <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                    <path d="M7 3.5A1.5 1.5 0 018.5 2h3.879a1.5 1.5 0 011.06.44l3.122 3.12A1.5 1.5 0 0117 6.622V12.5a1.5 1.5 0 01-1.5 1.5h-1v-3.379a3 3 0 00-.879-2.121L10.5 5.379A3 3 0 008.379 4.5H7v-1z" />
+                    <path d="M4.5 6A1.5 1.5 0 003 7.5v9A1.5 1.5 0 004.5 18h7a1.5 1.5 0 001.5-1.5v-5.879a1.5 1.5 0 00-.44-1.06L9.44 6.439A1.5 1.5 0 008.378 6H4.5z" />
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
           
           {/* Tab navigation with retro styling */}
           <div className="border-b-2 border-gray-200 dark:border-gray-800">
             <div className="flex space-x-1">
-              {tabs.map((tab) => (
+              {[
+                { id: 'javascript', label: 'JavaScript' },
+                { id: 'react', label: 'React' },
+                { id: 'html', label: 'HTML' }
+              ].map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  onClick={() => setActiveTab(tab.id as any)}
                   className={`font-mono tracking-tight px-4 py-2 border-2 border-b-0 rounded-t-md ${
                     activeTab === tab.id
                     ? "bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 border-gray-300 dark:border-gray-700"
@@ -159,150 +208,55 @@ export default function CustomFormComponent() {
           
           {/* Tab content with retro styling */}
           <div className="bg-white dark:bg-gray-800 p-4 border-2 border-gray-200 dark:border-gray-700 rounded-sm">
-            {activeTab === "1" && (
+            {activeTab === "javascript" && (
               <>
                 <div className="mb-8">
                   <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-lg font-mono font-semibold text-gray-700 dark:text-gray-300">1. Installation</h4>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="h-8 px-3 font-mono border-gray-300 dark:border-zinc-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800"
-                      onClick={() => copyToClipboard(installCode, "install")}
-                    >
-                      {copiedItem === "install" ? (
-                        <>
-                          <CheckCheck className="h-3.5 w-3.5 mr-1.5" />
-                          COPIED
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="h-3.5 w-3.5 mr-1.5" />
-                          COPY
-                        </>
-                      )}
-                    </Button>
+                    <h4 className="text-lg font-mono font-semibold text-gray-700 dark:text-gray-300">1. JavaScript</h4>
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                    Install the Mantlz SDK in your Next.js project:
+                    Integrate this form into your website or application using our SDK.
                   </p>
                   <CodeBlock
-                    language="bash"
-                    filename="Terminal"
-                    code={installCode}
+                    language="javascript"
+                    filename="JavaScript"
+                    code={javascriptCode}
                   />
                 </div>
               </>
             )}
             
-            {activeTab === "2" && (
+            {activeTab === "react" && (
               <>
                 <div className="mb-8">
                   <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-lg font-mono font-semibold text-gray-700 dark:text-gray-300">2. Basic Usage</h4>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="h-8 px-3 font-mono border-gray-300 dark:border-zinc-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800"
-                      onClick={() => copyToClipboard(basicUsageCode, "basic")}
-                    >
-                      {copiedItem === "basic" ? (
-                        <>
-                          <CheckCheck className="h-3.5 w-3.5 mr-1.5" />
-                          COPIED
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="h-3.5 w-3.5 mr-1.5" />
-                          COPY
-                        </>
-                      )}
-                    </Button>
+                    <h4 className="text-lg font-mono font-semibold text-gray-700 dark:text-gray-300">2. React</h4>
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                    Import and use the component in your page:
+                    Integrate this form into your React application.
                   </p>
                   <CodeBlock
-                    language="jsx"
-                    filename="app/my-form/page.jsx"
-                    code={basicUsageCode}
-                  />
-                  <div className="mt-4 p-4 bg-gray-100 dark:bg-zinc-800 rounded-md border border-gray-200 dark:border-zinc-700">
-                    <p className="text-sm text-gray-700 dark:text-gray-300">
-                      <strong>Note:</strong> The SDK automatically handles form rendering, submission, validation, and success/error states.
-                    </p>
-                  </div>
-                </div>
-              </>
-            )}
-            
-            {activeTab === "3" && (
-              <>
-                <div className="mb-8">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-lg font-mono font-semibold text-gray-700 dark:text-gray-300">3. Customization</h4>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="h-8 px-3 font-mono border-gray-300 dark:border-zinc-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800"
-                      onClick={() => copyToClipboard(customizationCode, "custom")}
-                    >
-                      {copiedItem === "custom" ? (
-                        <>
-                          <CheckCheck className="h-3.5 w-3.5 mr-1.5" />
-                          COPIED
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="h-3.5 w-3.5 mr-1.5" />
-                          COPY
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                    Customize appearance and behavior:
-                  </p>
-                  <CodeBlock
-                    language="jsx"
-                    filename="app/my-custom-form/page.jsx"
-                    code={customizationCode}
+                    language="react"
+                    filename="React"
+                    code={reactCode}
                   />
                 </div>
               </>
             )}
             
-            {activeTab === "4" && (
+            {activeTab === "html" && (
               <>
-                <div className="mb-4">
+                <div className="mb-8">
                   <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-lg font-mono font-semibold text-gray-700 dark:text-gray-300">4. Advanced Usage</h4>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="h-8 px-3 font-mono border-gray-300 dark:border-zinc-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800"
-                      onClick={() => copyToClipboard(advancedUsageCode, "advanced")}
-                    >
-                      {copiedItem === "advanced" ? (
-                        <>
-                          <CheckCheck className="h-3.5 w-3.5 mr-1.5" />
-                          COPIED
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="h-3.5 w-3.5 mr-1.5" />
-                          COPY
-                        </>
-                      )}
-                    </Button>
+                    <h4 className="text-lg font-mono font-semibold text-gray-700 dark:text-gray-300">3. HTML</h4>
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-                    For full control, use the <code className="font-mono text-xs bg-gray-100 dark:bg-zinc-800 px-1 py-0.5 rounded">useForm</code> hook:
+                    Integrate this form into your HTML page.
                   </p>
                   <CodeBlock
-                    language="jsx"
-                    filename="components/CustomForm.jsx"
-                    code={advancedUsageCode}
+                    language="html"
+                    filename="HTML"
+                    code={htmlCode}
                   />
                 </div>
               </>

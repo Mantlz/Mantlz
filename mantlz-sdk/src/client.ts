@@ -111,7 +111,8 @@ export function createMantlzClient(apiKey: string, config?: MantlzClientConfig):
           });
         }
 
-        return result;
+        // Add type assertion to ensure result matches FormSubmitResponse type
+        return result as FormSubmitResponse;
       } catch (error: any) {
         // If it's already a structured MantlzError, just rethrow it
         if (error && typeof error === 'object' && 'code' in error) {

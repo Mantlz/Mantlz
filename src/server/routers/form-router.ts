@@ -4,6 +4,8 @@ import { db } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs/server";
 import { HTTPException } from "hono/http-exception";
 import { User } from "@prisma/client";
+import { getQuotaByPlan } from "@/config/usage";
+import { startOfMonth } from "date-fns";
 
 // Define available form templates
 const formTemplates = {
@@ -87,29 +89,39 @@ export const formRouter = j.router({
   }),
 
   // Create form from template
-  createFromTemplate: j.procedure
+  createFromTemplate: privateProcedure
     .input(z.object({
       templateId: z.enum(['feedback', 'waitlist'] as const),
       name: z.string().optional(),
       description: z.string().optional(),
     }))
-    .mutation(async ({ c, input }) => {
-      const auth = await currentUser();
-      if (!auth) throw new HTTPException(401, { message: "Unauthorized" });
+    .mutation(async ({ c, input, ctx }) => {
+      const { user } = ctx;
+      if (!user) throw new HTTPException(401, { message: "Unauthorized" });
 
-      const user = await db.user.findUnique({
-        where: { clerkId: auth.id },
-        include: { forms: true }
+      // Get user with plan
+      const userWithPlan = await db.user.findUnique({
+        where: { id: user.id },
+        select: { 
+          plan: true,
+          id: true
+        }
       });
 
-      if (!user) throw new HTTPException(404, { message: "User not found" });
+      if (!userWithPlan) throw new HTTPException(404, { message: "User not found" });
+
+      // Get form count
+      const formCount = await db.form.count({
+        where: { userId: user.id }
+      });
 
       // Check form limits based on plan
-      const formLimit = user.plan === 'FREE' ? 1 : 
-                       user.plan === 'STANDARD' ? 10 : Infinity;
+      const quota = getQuotaByPlan(userWithPlan.plan);
       
-      if (user.forms.length >= formLimit) {
-        throw new HTTPException(403, { message: "Form limit reached for your plan" });
+      if (formCount >= quota.maxForms) {
+        throw new HTTPException(403, { 
+          message: `Form limit reached (${formCount}/${quota.maxForms}) for your plan`
+        });
       }
 
       const template = formTemplates[input.templateId];
@@ -119,7 +131,7 @@ export const formRouter = j.router({
           name: input.name || template.name,
           description: input.description || template.description,
           schema: template.schema.toString(), // Serialize the schema
-          userId: user.id,
+          userId: userWithPlan.id,
         },
       });
 
@@ -131,19 +143,55 @@ export const formRouter = j.router({
     }),
 
   // Create custom form (existing create endpoint)
-  create: j.procedure
+  create: privateProcedure
     .input(z.object({
       name: z.string(),
       description: z.string().optional(),
       schema: z.string(),
     }))
-    .mutation(async ({ c, input }) => {
-      // TODO: Implement form creation logic
+    .mutation(async ({ c, input, ctx }) => {
+      const { user } = ctx;
+      if (!user) throw new HTTPException(401, { message: "Unauthorized" });
+
+      // Get user with plan
+      const userWithPlan = await db.user.findUnique({
+        where: { id: user.id },
+        select: { 
+          plan: true,
+          id: true
+        }
+      });
+
+      if (!userWithPlan) throw new HTTPException(404, { message: "User not found" });
+
+      // Get form count
+      const formCount = await db.form.count({
+        where: { userId: user.id }
+      });
+
+      // Check form limits based on plan
+      const quota = getQuotaByPlan(userWithPlan.plan);
+      
+      if (formCount >= quota.maxForms) {
+        throw new HTTPException(403, { 
+          message: `Form limit reached (${formCount}/${quota.maxForms}) for your plan`
+        });
+      }
+      
+      const form = await db.form.create({
+        data: {
+          name: input.name,
+          description: input.description,
+          schema: input.schema,
+          userId: userWithPlan.id,
+        },
+      });
+
       return c.superjson({
-        id: "temp-id",
-        name: input.name,
-        description: input.description,
-        schema: input.schema,
+        id: form.id,
+        name: form.name,
+        description: form.description,
+        schema: form.schema,
       });
     }),
 
@@ -369,10 +417,42 @@ export const formRouter = j.router({
       // Get the form to validate the submission
       const form = await db.form.findUnique({
         where: { id: formId },
+        include: {
+          user: {
+            select: {
+              id: true,
+              plan: true
+            }
+          }
+        }
       });
       
       if (!form) {
-        throw new Error('Form not found');
+        throw new HTTPException(404, { message: 'Form not found' });
+      }
+
+      // Check if user has reached their monthly submission limit
+      const currentDate = startOfMonth(new Date());
+      
+      // Count the submissions for the current month for all user forms
+      const monthlySubmissionsCount = await db.submission.count({
+        where: {
+          form: {
+            userId: form.user.id
+          },
+          createdAt: {
+            gte: currentDate
+          }
+        }
+      });
+      
+      // Get the quota for the user's plan
+      const quota = getQuotaByPlan(form.user.plan);
+      
+      if (monthlySubmissionsCount >= quota.maxSubmissionsPerMonth) {
+        throw new HTTPException(403, { 
+          message: `Monthly submission limit reached (${monthlySubmissionsCount}/${quota.maxSubmissionsPerMonth}) for this plan`
+        });
       }
       
       // Create the submission

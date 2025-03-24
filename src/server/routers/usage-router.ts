@@ -3,6 +3,8 @@ import { j, privateProcedure } from "../jstack";
 import { db } from "@/lib/db";
 import { HTTPException } from "hono/http-exception";
 import { Plan } from "@/types/users/user";
+import { addMonths, startOfMonth } from "date-fns";
+import { getQuotaByPlan } from "@/config/usage";
 
 /**
  * Router for handling user usage information
@@ -112,66 +114,99 @@ export const usageRouter = j.router({
   }),
 
   /**
-   * Reset a user's monthly quota (admin only)
-   * This is primarily for testing or admin purposes
+   * Get current user usage with form and submission counts/limits
    */
-  resetMonthlyQuota: privateProcedure
-    .input(z.object({
-      userId: z.string().optional(),
-    }))
-    .mutation(async ({ ctx, c, input }) => {
-      const { user } = ctx;
-      const { userId = user.id } = input;
+  getUsage: privateProcedure.query(async ({ c, ctx }) => {
+    const { user } = ctx;
+
+    try {
+      const currentDate = startOfMonth(new Date());
       
-      // Check if the user is an admin if trying to reset another user's quota
-      if (userId !== user.id) {
-        const requestingUser = await db.user.findUnique({
-          where: { id: user.id },
-        });
-        
-        // Check if user is admin (HACKER or INDIE plan)
-        const isAdmin = 
-          (requestingUser?.plan as string) === "HACKER" || 
-          (requestingUser?.plan as string) === "INDIE";
-        if (!isAdmin) {
-          throw new HTTPException(403, { 
-            message: "Only admins can reset other users' quotas" 
-          });
+      // Get form count
+      const formCount = await db.form.count({
+        where: { userId: user.id },
+      });
+      
+      // Get submission count for current month
+      const submissionsCount = await db.submission.count({
+        where: {
+          form: {
+            userId: user.id
+          },
+          createdAt: {
+            gte: currentDate
+          }
         }
+      });
+      
+      // Get user's plan from the database
+      const userWithPlan = await db.user.findUnique({
+        where: { id: user.id },
+        select: { plan: true }
+      });
+      
+      // Get the limits based on user's plan
+      const plan = userWithPlan?.plan || 'FREE';
+      const quota = getQuotaByPlan(plan);
+      
+      // Calculate reset date
+      const resetDate = addMonths(currentDate, 1);
+
+      return c.superjson({
+        formsUsed: formCount,
+        formsLimit: quota.maxForms,
+        submissionsUsed: submissionsCount,
+        submissionsLimit: quota.maxSubmissionsPerMonth,
+        resetDate,
+        plan
+      });
+    } catch (error) {
+      throw new HTTPException(500, { 
+        message: "Failed to retrieve usage information" 
+      });
+    }
+  }),
+
+
+  /**
+   * Get total submissions across all user forms
+   * Returns count of all submissions received from all forms created by the user
+   */
+  getTotalSubmissions: privateProcedure.query(async ({ ctx, c, input }) => {
+    const { user } = ctx;
+
+    try {
+      // Get all forms created by the user
+      const userForms = await db.form.findMany({
+        where: { userId: user.id },
+        select: { id: true }
+      });
+
+      // If user has no forms, return zero
+      if (userForms.length === 0) {
+        return c.superjson({ totalSubmissions: 0 });
       }
 
-      try {
-        const now = new Date();
-        const currentYear = now.getFullYear();
-        const currentMonth = now.getMonth() + 1;
+      // Get form IDs
+      const formIds = userForms.map(form => form.id);
 
-        // Delete current month's quota entry
-        await db.quota.deleteMany({
-          where: {
-            userId,
-            year: currentYear,
-            month: currentMonth,
-          },
-        });
+      // Count submissions for all forms
+      const totalSubmissions = await db.submission.count({
+        where: {
+          formId: {
+            in: formIds
+          }
+        }
+      });
 
-        // Create a fresh quota entry with zero count
-        await db.quota.create({
-          data: {
-            userId,
-            year: currentYear,
-            month: currentMonth,
-            count: 0,
-          },
-        });
-
-        return c.superjson({
-          success: true,
-          message: "Monthly quota has been reset",
-        });
-      } catch (error) {
-        throw new HTTPException(500, { 
-          message: "Failed to reset monthly quota" 
-        });
-      }
-    }),
+      return c.superjson({
+        totalSubmissions
+      });
+    } catch (error) {
+      if (error instanceof HTTPException) throw error;
+      throw new HTTPException(500, { 
+        message: "Failed to retrieve submission information"
+      });
+    }
+  }),
 }); 
