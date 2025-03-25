@@ -339,13 +339,12 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
   }
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-[1200px] mx-auto p-4 sm:p-6">
-      {/* Form Header with enhanced styling */}
+    <div className="flex flex-col gap-4 md:gap-6 w-full max-w-[1400px] mx-auto p-2 sm:p-4 lg:p-6">
+      {/* Form Header - improved responsiveness */}
       {form && (
-        <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 p-4 sm:p-6 shadow-sm relative overflow-hidden">
-          {/* Decorative elements */}
-          <div className="absolute top-0 left-0 h-full w-2 bg-gradient-to-b from-purple-500 to-pink-500"></div>
-          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 rounded-full -translate-y-16 translate-x-16"></div>
+        <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 p-3 sm:p-4 lg:p-6 shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 left-0 h-full w-1 sm:w-2 bg-gradient-to-b from-gray-400 to-gray-600 dark:from-zinc-600 dark:to-zinc-800"></div>
+          <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-gradient-to-br from-gray-100/20 to-gray-200/20 dark:from-zinc-800/20 dark:to-zinc-700/20 rounded-full -translate-y-12 translate-x-12"></div>
           
           <FormHeader 
             id={formId as string} 
@@ -356,23 +355,24 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
         </div>
       )}
 
-      {/* Dashboard stats with enhanced styling */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {/* Dashboard stats - improved grid responsiveness */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+        {/* Card 1 */}
         <Card className="group bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
-          <CardHeader className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border-b border-gray-100 dark:border-zinc-800">
+          <CardHeader className="p-3 sm:p-4 bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-200 dark:border-zinc-800">
             <div className="flex items-center gap-2">
-              <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400">
-                <FileSpreadsheet className="w-4 h-4" />
+              <div className="p-1.5 sm:p-2 rounded-lg bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300">
+                <FileSpreadsheet className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
-              <CardTitle className="text-zinc-800 dark:text-white text-sm font-medium">Total Submissions</CardTitle>
+              <CardTitle className="text-gray-900 dark:text-gray-100 text-xs sm:text-sm font-medium">Total Submissions</CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             {isLoadingAnalytics ? (
-              <div className="h-8 bg-gray-200 dark:bg-zinc-800 rounded-lg animate-pulse" />
+              <div className="h-6 sm:h-8 bg-gray-200 dark:bg-zinc-800 rounded-lg animate-pulse" />
             ) : (
               <div className="flex items-baseline">
-                <span className="text-2xl font-mono font-bold text-gray-900 dark:text-white tabular-nums">{analytics?.totalSubmissions?.toLocaleString() || "0"}</span>
+                <span className="text-xl sm:text-2xl font-mono font-bold text-gray-900 dark:text-white tabular-nums">{analytics?.totalSubmissions?.toLocaleString() || "0"}</span>
                 <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">responses</span>
               </div>
             )}
@@ -380,12 +380,12 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
         </Card>
         
         <Card className="group bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
-          <CardHeader className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-b border-gray-100 dark:border-zinc-800">
+          <CardHeader className="p-4 bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-200 dark:border-zinc-800">
             <div className="flex items-center gap-2">
-              <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+              <div className="p-2 rounded-lg bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300">
                 <Users className="w-4 h-4" />
               </div>
-              <CardTitle className="text-zinc-800 dark:text-white text-sm font-medium">Unique Submitters</CardTitle>
+              <CardTitle className="text-gray-900 dark:text-gray-100 text-sm font-medium">Unique Submitters</CardTitle>
             </div>
           </CardHeader>
           <CardContent className="p-4">
@@ -401,12 +401,12 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
         </Card>
         
         <Card className="group bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
-          <CardHeader className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-b border-gray-100 dark:border-zinc-800">
+          <CardHeader className="p-4 bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-200 dark:border-zinc-800">
             <div className="flex items-center gap-2">
-              <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+              <div className="p-2 rounded-lg bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300">
                 <Activity className="w-4 h-4" />
               </div>
-              <CardTitle className="text-zinc-800 dark:text-white text-sm font-medium">Recent Activity</CardTitle>
+              <CardTitle className="text-gray-900 dark:text-gray-100 text-sm font-medium">Recent Activity</CardTitle>
             </div>
           </CardHeader>
           <CardContent className="p-4">
@@ -422,20 +422,22 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
         </Card>
       </div>
 
-      {/* Chart section with time range control */}
-      <FormAnalyticsChart 
-        chartData={chartData}
-        latestDataPoint={latestDataPoint}
-        analytics={analytics}
-        isLoading={isLoadingAnalytics}
-        formCreatedAt={form?.createdAt}
-        timeRange={timeRange}
-        onTimeRangeChange={handleTimeRangeChange}
-      />
+      {/* Chart section - improved responsiveness */}
+      <div className="col-span-1 sm:col-span-2 lg:col-span-3">
+        <FormAnalyticsChart 
+          chartData={chartData}
+          latestDataPoint={latestDataPoint}
+          analytics={analytics}
+          isLoading={isLoadingAnalytics}
+          formCreatedAt={form?.createdAt}
+          timeRange={timeRange}
+          onTimeRangeChange={handleTimeRangeChange}
+        />
+      </div>
 
-      {/* Tabs section with enhanced styling */}
-      <div className="flex flex-col bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 shadow-sm overflow-hidden">
-        <nav className="flex border-b border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-800/50 p-1">
+      {/* Tabs section - improved responsiveness */}
+      <div className="col-span-1 sm:col-span-2 lg:col-span-3 flex flex-col bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 shadow-sm overflow-hidden">
+        <nav className="flex flex-wrap sm:flex-nowrap border-b border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-800/50 p-1">
           {[
             { id: 'responses', label: 'Responses', icon: MessageSquare },
             { id: 'settings', label: 'Settings', icon: Settings },
@@ -444,20 +446,20 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
             <button
               key={tab.id}
               className={clsx(
-                "px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 flex items-center gap-2",
+                "flex-1 sm:flex-none px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-medium rounded-lg transition-all duration-200 flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2",
                 activeTab === tab.id 
                   ? "bg-white dark:bg-zinc-900 text-gray-900 dark:text-gray-100 shadow-sm" 
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-white/50 dark:hover:bg-zinc-800"
+                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/50 dark:hover:bg-zinc-800"
               )}
               onClick={() => handleTabClick(tab.id as any)}
             >
-              <tab.icon className="w-4 h-4" />
-              {tab.label}
+              <tab.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <span className="truncate">{tab.label}</span>
             </button>
           ))}
         </nav>
 
-        <div className="p-4 sm:p-6">
+        <div className="p-3 sm:p-4 lg:p-6">
           {activeTab === 'responses' && (
             <FormResponsesList 
               isLoading={isLoadingSubmissions}

@@ -60,11 +60,11 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0, emailSetti
     : new Date();
 
   return (
-    <Card className="p-5 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg shadow-sm mb-6">
+    <Card className="p-5 bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-900 rounded-lg shadow-md mb-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-xl font-medium text-gray-800 dark:text-gray-200">{name}</h1>
-          <div className="flex items-center mt-2 text-sm text-gray-500 dark:text-gray-400">
+          <h1 className="text-xl font-medium text-slate-900 dark:text-slate-50">{name}</h1>
+          <div className="flex items-center mt-2 text-sm text-slate-600 dark:text-slate-400">
             <Calendar className="h-4 w-4 mr-1" />
             Created {format(createdAtDate, "MMM d, yyyy")}
             {responsesCount > 0 && (
@@ -77,11 +77,11 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0, emailSetti
         </div>
         
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-3 bg-gray-50 dark:bg-zinc-800 px-4 py-2 rounded-lg">
-            <Mail className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+          <div className="flex items-center gap-3 bg-slate-100 dark:bg-zinc-900 px-4 py-2 rounded-lg">
+            <Mail className="h-4 w-4 text-slate-600 dark:text-slate-400" />
             <div className="flex flex-col">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Email Notifications</span>
-              <span className="text-xs text-gray-500 dark:text-gray-400">{emailEnabled ? 'Enabled' : 'Disabled'}</span>
+              <span className="text-sm font-medium text-slate-800 dark:text-slate-200">Email Notifications</span>
+              <span className="text-xs text-slate-600 dark:text-slate-400">{emailEnabled ? 'Enabled' : 'Disabled'}</span>
             </div>
             <Switch
               checked={emailEnabled}
@@ -94,7 +94,7 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0, emailSetti
             <Button 
               variant="outline" 
               size="sm" 
-              className="border-gray-200 dark:border-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800"
+              className="border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-zinc-900"
               onClick={copyId}
             >
               <Copy className="h-4 w-4 mr-2" />

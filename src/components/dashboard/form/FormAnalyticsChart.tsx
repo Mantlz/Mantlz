@@ -1,26 +1,27 @@
-import React, { useState, useEffect } from 'react';
+"use client"
+
+import * as React from "react"
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import { ChevronDown } from "lucide-react"
+
 import {
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent
-} from '@/components/ui/card';
+} from "@/components/ui/card"
 import {
+  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  ChartLegend,
-  ChartLegendContent
-} from '@/components/ui/chart';
-import * as RechartsPrimitive from "recharts";
+} from "@/components/ui/chart"
 
-// Define different data types for different time ranges
 interface TimeSeriesPoint {
   time: string;
   submissions: number;
   uniqueEmails: number;
-  [key: string]: any; // For flexibility with additional metrics
 }
 
 interface FormAnalyticsChartProps {
@@ -39,76 +40,37 @@ interface FormAnalyticsChartProps {
   onTimeRangeChange: (range: 'day' | 'week' | 'month') => void;
 }
 
+const chartConfig = {
+  submissions: {
+    label: "Total Submissions",
+    color: "hsl(var(--chart-1))",
+  },
+  uniqueEmails: {
+    label: "Unique Submitters",
+    color: "hsl(var(--chart-2))",
+  },
+} satisfies ChartConfig
+
 export function FormAnalyticsChart({
   chartData,
   latestDataPoint,
   analytics,
   isLoading,
   formCreatedAt,
-  timeRange = 'day',
+  timeRange,
   onTimeRangeChange
 }: FormAnalyticsChartProps) {
-  const [isExpanded, setIsExpanded] = useState(true);
-  const [chartWidth, setChartWidth] = useState(0);
-  const [chartHeight, setChartHeight] = useState(0);
-  const chartRef = React.useRef<HTMLDivElement>(null);
+  const [activeMetric, setActiveMetric] = 
+    React.useState<keyof typeof chartConfig>("submissions")
+  const [isCollapsed, setIsCollapsed] = React.useState(false)
 
-  // Dynamically update chart dimensions based on container size
-  useEffect(() => {
-    if (chartRef.current) {
-      const observer = new ResizeObserver(entries => {
-        for (let entry of entries) {
-          setChartWidth(entry.contentRect.width);
-          setChartHeight(entry.contentRect.height);
-        }
-      });
-      
-      observer.observe(chartRef.current);
-      return () => observer.disconnect();
-    }
-  }, []);
-
-  // Determine if we're in dark mode for chart colors
-  const isDarkMode = typeof window !== 'undefined' ? 
-    document.documentElement.classList.contains('dark') : false;
-
-  // Updated colors with MUCH higher contrast for dark mode
-  const chartConfig = {
-    submissions: { 
-      color: isDarkMode ? "#ffffff" : "#000000" 
-    },
-    uniqueEmails: { 
-      color: isDarkMode ? "#f8fafc" : "#525252" // Much lighter for dark mode
-    }
-  };
-
-  // Stroke and fill colors - significantly improved for dark mode
-  const submissionsStroke = isDarkMode ? "#ffffff" : "#000000";
-  const submissionsFill = isDarkMode ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.1)";
-  const emailsStroke = isDarkMode ? "#f8fafc" : "#525252"; // Almost white in dark mode
-  const emailsFill = isDarkMode ? "rgba(248, 250, 252, 0.15)" : "rgba(82, 82, 82, 0.1)";
-
-  // Grid and axis colors - dramatically improved for dark mode
-  const gridColor = isDarkMode ? "#64748b" : "#e5e5e5"; // Much more visible grid in dark mode
-  const axisColor = isDarkMode ? "#f1f5f9" : "#a3a3a3"; // Almost white text in dark mode
-
-  // Simplified formatter that shows appropriate labels based on timeRange
-  const formatXAxis = (value: string) => {
-    if (timeRange === 'day') {
-      // For day, show simple hour format (e.g., 3PM)
-      try {
-        const hour = parseInt(value?.split(':')?.[0] ?? '0', 10);
-        if (isNaN(hour)) return value;
-        const ampm = hour >= 12 ? 'PM' : 'AM';
-        const hour12 = hour % 12 || 12;
-        return `${hour12}${ampm}`;
-      } catch (e) {
-        return value;
-      }
-    } 
-    // For week and month, we'll just use the label as-is (days will be formatted in the data)
-    return value;
-  };
+  const total = React.useMemo(
+    () => ({
+      submissions: chartData.reduce((acc, curr) => acc + curr.submissions, 0),
+      uniqueEmails: chartData.reduce((acc, curr) => acc + curr.uniqueEmails, 0),
+    }),
+    [chartData]
+  )
 
   // Get the appropriate time range label
   const getTimeRangeLabel = () => {
@@ -118,274 +80,159 @@ export function FormAnalyticsChart({
       case 'month': return 'Last 30 days';
       default: return 'Submission data';
     }
-  };
+  }
 
-  // Get stats based on time range
-  const getRecentStats = () => {
-    switch (timeRange) {
-      case 'day': return {
-        label: 'Today',
-        value: analytics?.last24Hours || 0
-      };
-      case 'week': return {
-        label: 'This week',
-        value: analytics?.lastWeek || 0
-      };
-      case 'month': return {
-        label: 'This month',
-        value: analytics?.lastMonth || 0
-      };
-      default: return {
-        label: 'Recent',
-        value: 0
-      };
-    }
-  };
-
-  // Calculate average per period
-  const getAverageStats = () => {
-    switch (timeRange) {
-      case 'day': return {
-        label: 'Hourly avg',
-        value: analytics?.last24Hours 
-          ? Math.round(analytics.last24Hours / 24) 
-          : 0
-      };
-      case 'week': return {
-        label: 'Daily avg',
-        value: analytics?.lastWeek 
-          ? Math.round(analytics.lastWeek / 7) 
-          : 0
-      };
-      case 'month': return {
-        label: 'Daily avg',
-        value: analytics?.lastMonth 
-          ? Math.round(analytics.lastMonth / 30) 
-          : 0
-      };
-      default: return {
-        label: 'Average',
-        value: 0
-      };
-    }
-  };
-
-  const recentStats = getRecentStats();
-  const averageStats = getAverageStats();
+  if (isLoading) {
+    return (
+      <Card className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800">
+        <CardContent className="flex h-[400px] items-center justify-center">
+          <div className="flex flex-col items-center gap-2">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 dark:border-zinc-700 border-t-gray-500 dark:border-t-zinc-400" />
+            <p className="text-sm text-gray-500 dark:text-zinc-400 font-mono">Loading data...</p>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
 
   return (
-    <Card className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-md overflow-hidden">
-      <CardHeader className="p-4 sm:p-6 border-b border-gray-200 dark:border-zinc-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-        <div>
-          <CardTitle className="text-lg font-mono font-bold text-gray-900 dark:text-white tracking-tight uppercase">SUBMISSION ACTIVITY</CardTitle>
-          <CardDescription className="text-gray-500 dark:text-gray-400 mt-1 text-xs tracking-wide">
-            {getTimeRangeLabel()}
-          </CardDescription>
+    <Card className="relative bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 overflow-hidden">
+      {/* Retro grid background */}
+      <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.10] pointer-events-none" 
+           style={{
+             backgroundImage: `linear-gradient(to right, currentColor 1px, transparent 1px),
+                              linear-gradient(to bottom, currentColor 1px, transparent 1px)`,
+             backgroundSize: '20px 20px'
+           }} />
+      
+      {/* Accent line */}
+      <div className="absolute top-0 left-0 h-full w-1 bg-gradient-to-br from-zinc-300 to-zinc-600 dark:bg-zinc-300/20" />
+
+      <CardHeader className="relative flex flex-col items-stretch space-y-0 border-b border-gray-200 dark:border-zinc-800 p-0 sm:flex-row">
+        <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-gray-900 dark:text-zinc-50 font-mono text-lg tracking-wider flex items-center gap-2">
+              <span className="relative">
+                <span className="absolute -inset-1 bg-gradient-to-tr from-zinc-50 to-zinc-200 blur-sm rounded-lg" />
+                <span className="relative">FORM ANALYTICS</span>
+              </span>
+            </CardTitle>
+            <button
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="group p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-md transition-all duration-200"
+              aria-label={isCollapsed ? 'Expand chart' : 'Collapse chart'}
+            >
+              <ChevronDown 
+                className={`h-5 w-5 text-gray-500 dark:text-zinc-400 transition-transform duration-300 group-hover:text-gray-900 dark:group-hover:text-zinc-50 ${
+                  isCollapsed ? 'rotate-180' : ''
+                }`}
+              />
+            </button>
+          </div>
+          <CardDescription className="text-gray-500 dark:text-zinc-400 font-mono text-xs tracking-wide">{getTimeRangeLabel()}</CardDescription>
         </div>
         
-        <div className="flex items-center gap-3">
-          {/* Time range selector */}
-          <div className="bg-gray-100 dark:bg-zinc-800 rounded-lg p-1 flex">
-            {[
-              { value: 'day', label: 'Day' },
-              { value: 'week', label: 'Week' },
-              { value: 'month', label: 'Month' }
-            ].map(range => (
+        {/* Metric Selector */}
+        <div className={`flex overflow-hidden transition-all duration-300 ${
+          isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[200px] opacity-100'
+        }`}>
+          {["submissions", "uniqueEmails"].map((key) => {
+            const metric = key as keyof typeof chartConfig
+            return (
               <button
-                key={range.value}
-                onClick={() => onTimeRangeChange(range.value as 'day' | 'week' | 'month')}
-                className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                  timeRange === range.value
-                    ? 'bg-white dark:bg-zinc-700 text-gray-900 dark:text-white shadow-sm'
-                    : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
-                }`}
+                key={metric}
+                data-active={activeMetric === metric}
+                className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t border-gray-200 dark:border-zinc-800 px-6 py-4 text-left even:border-l data-[active=true]:bg-gray-50 dark:data-[active=true]:bg-zinc-800/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-zinc-800/50"
+                onClick={() => setActiveMetric(metric)}
               >
-                {range.label}
+                <span className="text-xs text-gray-500 dark:text-zinc-400 font-mono tracking-wide">
+                  {chartConfig[metric].label}
+                </span>
+                <span className="text-lg font-mono font-bold leading-none sm:text-3xl text-gray-900 dark:text-zinc-50">
+                  {total[metric].toLocaleString()}
+                </span>
               </button>
-            ))}
-          </div>
-        
-          <button 
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="p-1.5 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-gray-700 dark:text-gray-300 transition-colors"
-            aria-label={isExpanded ? "Collapse chart" : "Expand chart"}
-          >
-            {isExpanded ? (
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
-              </svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-              </svg>
-            )}
-          </button>
+            )
+          })}
+        </div>
+
+        {/* Time Range Selector */}
+        <div className={`flex border-t border-gray-200 dark:border-zinc-800 sm:border-l sm:border-t-0 overflow-hidden transition-all duration-300 ${
+          isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[200px] opacity-100'
+        }`}>
+          {['day', 'week', 'month'].map((range) => (
+            <button
+              key={range}
+              onClick={() => onTimeRangeChange(range as 'day' | 'week' | 'month')}
+              data-active={timeRange === range}
+              className="flex-1 px-4 py-4 text-sm font-mono text-gray-500 dark:text-zinc-400 data-[active=true]:bg-gray-50 dark:data-[active=true]:bg-zinc-800/50 data-[active=true]:text-gray-900 dark:data-[active=true]:text-zinc-50 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-zinc-800/50"
+            >
+              {range.charAt(0).toUpperCase() + range.slice(1)}
+            </button>
+          ))}
         </div>
       </CardHeader>
-      
-      {isExpanded && (
-        <div className="flex flex-col lg:flex-row">
-          <CardContent className="p-4 sm:p-6 lg:w-2/3">
-            {isLoading ? (
-              <div className="h-48 sm:h-64 lg:h-80 max-h-[340px] bg-gray-50 dark:bg-zinc-800/50 rounded-lg flex items-center justify-center">
-                <div className="flex flex-col items-center">
-                  <div className="w-8 h-8 border-4 border-gray-200 dark:border-zinc-700 border-t-gray-500 dark:border-t-gray-300 rounded-full animate-spin mb-3"></div>
-                  <p className="text-gray-500 dark:text-gray-400 text-sm font-mono tracking-wide uppercase">Loading data...</p>
-                </div>
-              </div>
-            ) : (
-              <div ref={chartRef} className="h-48 sm:h-64 lg:h-80 max-h-[340px] w-full bg-white dark:bg-zinc-900 rounded-lg">
-                <ChartContainer config={chartConfig}>
-                  <RechartsPrimitive.ResponsiveContainer width="100%" height="100%">
-                    <RechartsPrimitive.AreaChart
-                      data={chartData}
-                      margin={timeRange === 'week' 
-                        ? { top: 20, right: 30, left: 10, bottom: 30 }
-                        : timeRange === 'month'
-                        ? { top: 20, right: 30, left: 10, bottom: 25 }
-                        : { top: 20, right: 20, left: 0, bottom: 0 }
-                      }
-                    >
-                      <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
-                      <RechartsPrimitive.XAxis 
-                        dataKey="time" 
-                        stroke={axisColor}
-                        tick={{ 
-                          fill: axisColor, 
-                          fontFamily: 'monospace',
-                          fontSize: 12,
-                        }}
-                        tickLine={{ stroke: gridColor }}
-                        tickFormatter={formatXAxis}
-                        interval={timeRange === 'week' ? 0 : 'preserveStart'}
-                        angle={timeRange === 'month' ? -30 : 0}
-                        textAnchor={timeRange === 'month' ? 'end' : 'middle'}
-                        height={timeRange === 'week' || timeRange === 'month' ? 50 : 30}
-                        minTickGap={timeRange === 'week' ? 30 : 10}
-                        padding={{ left: 15, right: 15 }}
-                      />
-                      <RechartsPrimitive.YAxis 
-                        stroke={axisColor}
-                        tick={{ 
-                          fill: axisColor, 
-                          fontFamily: 'monospace',
-                          fontSize: 12 
-                        }}
-                        tickLine={{ stroke: gridColor }}
-                        allowDecimals={false}
-                        width={45}
-                      />
-                      <ChartTooltip
-                        content={<ChartTooltipContent />}
-                        wrapperStyle={{ 
-                          color: isDarkMode ? '#f1f5f9' : 'inherit' 
-                        }}
-                      />
-                      <RechartsPrimitive.Area
-                        type="monotone"
-                        dataKey="submissions"
-                        name="Submissions"
-                        stroke={submissionsStroke}
-                        fill={submissionsFill}
-                        strokeWidth={2}
-                      />
-                      <RechartsPrimitive.Area
-                        type="monotone"
-                        dataKey="uniqueEmails"
-                        name="Unique Submitters"
-                        stroke={emailsStroke}
-                        fill={emailsFill}
-                        strokeWidth={2}
-                      />
-                      <ChartLegend 
-                        content={<ChartLegendContent />}
-                      />
-                    </RechartsPrimitive.AreaChart>
-                  </RechartsPrimitive.ResponsiveContainer>
-                </ChartContainer>
-              </div>
-            )}
-          </CardContent>
-          
-          <div className="p-4 sm:p-6 lg:w-1/3 lg:border-l lg:border-gray-200 lg:dark:border-zinc-800">
-            <div className="flex flex-col sm:flex-row lg:flex-col gap-4">
-              <div className="bg-gray-50 dark:bg-zinc-800 px-4 py-4 rounded-lg border border-gray-100 dark:border-zinc-700 flex-1">
-                <p className="text-gray-700 dark:text-gray-100 font-mono font-bold uppercase tracking-wide mb-4 text-xs">Activity Summary</p>
-                <div className="grid gap-2">
-                  <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-zinc-700">
-                    <span className="text-gray-600 dark:text-gray-300 text-sm">
-                      {timeRange === 'day' 
-                        ? 'Current hour' 
-                        : timeRange === 'week' 
-                          ? 'Today' 
-                          : 'Current day'}
-                    </span>
-                    <span className="font-mono font-bold text-gray-900 dark:text-white tabular-nums">
-                      {latestDataPoint?.submissions?.toLocaleString() || "0"}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-zinc-700">
-                    <span className="text-gray-600 dark:text-gray-300 text-sm">Unique submitters</span>
-                    <span className="font-mono font-bold text-gray-900 dark:text-white tabular-nums">
-                      {latestDataPoint?.uniqueEmails?.toLocaleString() || "0"}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center py-2">
-                    <span className="text-gray-600 dark:text-gray-300 text-sm">{recentStats.label}</span>
-                    <span className="font-mono font-bold text-gray-900 dark:text-white tabular-nums">
-                      {recentStats.value.toLocaleString()}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-gray-50 dark:bg-zinc-800 px-4 py-4 rounded-lg border border-gray-100 dark:border-zinc-700 flex-1">
-                <p className="text-gray-700 dark:text-zinc-100 font-mono font-bold uppercase tracking-wide mb-4 text-xs">Form Stats</p>
-                <div className="grid gap-2">
-                  <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-zinc-700">
-                    <span className="text-gray-600 dark:text-gray-300 text-sm">{averageStats.label}</span>
-                    <span className="font-mono font-bold text-gray-900 dark:text-white tabular-nums">
-                      {averageStats.value.toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-zinc-700">
-                    <span className="text-gray-600 dark:text-gray-300 text-sm">Form age</span>
-                    <span className="font-mono font-bold text-gray-900 dark:text-white tabular-nums">
-                      {formCreatedAt ? formatAge(new Date(formCreatedAt)) : "N/A"}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center py-2">
-                    <span className="text-gray-600 dark:text-gray-300 text-sm">Conversion rate</span>
-                    <span className="font-mono font-bold text-gray-900 dark:text-white tabular-nums">
-                      {analytics?.totalSubmissions && analytics?.uniqueSubmitters 
-                        ? `${Math.round((analytics.uniqueSubmitters / analytics.totalSubmissions) * 100)}%` 
-                        : "0%"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </Card>
-  );
-}
 
-// Helper function to format form age
-function formatAge(date: Date): string {
-  const now = new Date();
-  const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-  
-  if (diffInDays < 1) return "Today";
-  if (diffInDays === 1) return "1 day";
-  if (diffInDays < 30) return `${diffInDays} days`;
-  
-  const diffInMonths = Math.floor(diffInDays / 30);
-  if (diffInMonths === 1) return "1 month";
-  if (diffInMonths < 12) return `${diffInMonths} months`;
-  
-  const diffInYears = Math.floor(diffInMonths / 12);
-  if (diffInYears === 1) return "1 year";
-  return `${diffInYears} years`;
+      <CardContent className={`relative px-2 sm:p-6 overflow-hidden transition-all duration-300 ${
+        isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[400px] opacity-100'
+      }`}>
+        <ChartContainer
+          config={chartConfig}
+          className="aspect-auto h-[250px] w-full"
+        >
+          <BarChart
+            data={chartData}
+            margin={{
+              left: 12,
+              right: 12,
+            }}
+          >
+            <CartesianGrid vertical={false} stroke="currentColor" className="text-gray-200 dark:text-zinc-700" />
+            <XAxis
+              dataKey="time"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              minTickGap={32}
+              tick={{ 
+                fill: 'currentColor',
+                fontFamily: 'monospace', 
+                fontSize: 12,
+                className: 'text-gray-500 dark:text-zinc-400'
+              }}
+              tickFormatter={(value) => {
+                if (timeRange === 'day') {
+                  const hour = parseInt(value?.split(':')?.[0] ?? '0', 10);
+                  const ampm = hour >= 12 ? 'PM' : 'AM';
+                  const hour12 = hour % 12 || 12;
+                  return `${hour12}${ampm}`;
+                }
+                return value;
+              }}
+            />
+            <ChartTooltip
+              content={
+                <ChartTooltipContent
+                  className="w-[150px] bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 p-3 rounded-md shadow-lg"
+                  nameKey={activeMetric}
+                  labelFormatter={(value) => {
+                    if (timeRange === 'day') {
+                      return value;
+                    }
+                    return value;
+                  }}
+                />
+              }
+            />
+            <Bar 
+              dataKey={activeMetric}
+              fill={`var(--color-${activeMetric})`}
+              radius={[4, 4, 0, 0]}
+              className="transition-all duration-200 hover:opacity-80"
+            />
+          </BarChart>
+        </ChartContainer>
+      </CardContent>
+    </Card>
+  )
 } 
