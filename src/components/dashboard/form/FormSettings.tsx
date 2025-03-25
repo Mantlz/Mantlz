@@ -2,18 +2,30 @@ import React, { useState } from 'react';
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
+import { useMantlz } from '@/hooks/use-mantlz';
+import { toast } from 'sonner';
 
 interface FormSettingsProps {
+  formId: string;
   name: string;
   description?: string;
+  emailSettings?: {
+    enabled: boolean;
+    fromEmail?: string;
+    subject?: string;
+    template?: string;
+    replyTo?: string;
+  };
   onUpdate: (data: { name: string; description: string }) => void;
 }
 
-export function FormSettings({ name, description = '', onUpdate }: FormSettingsProps) {
+export function FormSettings({ formId, name, description = '', emailSettings, onUpdate }: FormSettingsProps) {
   const [formName, setFormName] = useState(name);
   const [formDescription, setFormDescription] = useState(description);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
+  const [emailEnabled, setEmailEnabled] = useState(emailSettings?.enabled ?? false);
+  const { client } = useMantlz();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,6 +40,25 @@ export function FormSettings({ name, description = '', onUpdate }: FormSettingsP
 
   const togglePublished = () => {
     setIsPublished(!isPublished);
+  };
+
+  const handleEmailToggle = async (checked: boolean) => {
+    try {
+      if (!client) {
+        throw new Error('Client not initialized');
+      }
+      
+      await client.updateFormEmailSettings(formId, {
+        enabled: checked,
+        ...emailSettings
+      });
+      
+      setEmailEnabled(checked);
+      toast.success('Email settings updated successfully');
+    } catch (error) {
+      console.error('Failed to update email settings:', error);
+      toast.error('Failed to update email settings');
+    }
   };
 
   return (
@@ -64,6 +95,19 @@ export function FormSettings({ name, description = '', onUpdate }: FormSettingsP
               rows={4}
               className="w-full p-2.5 bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-gray-400 dark:focus:ring-zinc-600 focus:border-gray-400 dark:focus:border-zinc-600"
               placeholder="Enter form description (optional)"
+            />
+          </div>
+
+          <div className="flex items-center justify-between py-4">
+            <div>
+              <h4 className="text-sm font-medium text-gray-900 dark:text-white">Email Notifications</h4>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Send confirmation emails to users when they submit this form
+              </p>
+            </div>
+            <Switch
+              checked={emailEnabled}
+              onCheckedChange={handleEmailToggle}
             />
           </div>
         </div>

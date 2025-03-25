@@ -1,10 +1,24 @@
-import { UserForms } from '@/components/dashboard/UserForms'
+'use client'
+import { FormsList } from '@/components/dashboard/form/FormsList'
+import { FormDetails } from '@/components/dashboard/form/FormDetails'
+import { useParams } from 'next/navigation'
 import React from 'react'
 
-const page = () => {
+const DashboardPage = () => {
+  const params = useParams()
+  const formId = params?.id as string | undefined
+
   return (
-    <UserForms/>
+    <div className="container py-6">
+      {formId ? (
+        <FormDetails formId={formId} />
+      ) : (
+        <>
+          <FormsList itemsPerPage={6} />
+        </>
+      )}
+    </div>
   )
 }
 
-export default page
+export default DashboardPage

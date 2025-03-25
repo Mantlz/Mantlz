@@ -37,41 +37,10 @@ import { NavUserSkeleton } from "../skeletons/navUser-skeleton"
 import { secondaryNavItems } from '../../types/navigation/secondaryNavData';
 import { CreateFormButton } from "../dashboard/CreateFormButton"
 import { Logo } from "../global/logo"
+import { mainNavItems } from "@/types/navigation/mainNavData"
 
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "#",
-      icon: IconDashboard,
-    },
-    {
-      title: "Lifecycle",
-      url: "#",
-      icon: IconListDetails,
-    },
-    {
-      title: "Analytics",
-      url: "#",
-      icon: IconChartBar,
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
-    },
-    {
-      title: "Team",
-      url: "#",
-      icon: IconUsers,
-    },
-  ],
   navClouds: [
     {
       title: "Capture",
@@ -163,26 +132,9 @@ const { user, isLoaded } = useUser()
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={mainNavItems} />
         <NavDocuments items={data.documents} />
         <NavSecondary/>
-        
-        <div>
-          <CreateFormButton 
-            templateId="feedback" 
-            onSuccess={(formId) => {
-              console.log('Feedback form created:', formId);
-              // Optional: Add any success handling
-            }}
-          />
-          <CreateFormButton 
-            templateId="waitlist" 
-            onSuccess={(formId) => {
-              console.log('Waitlist form created:', formId);
-              // Optional: Add any success handling
-            }}
-          />
-        </div>
       </SidebarContent>
       <SidebarFooter>
       {!isLoaded ? (

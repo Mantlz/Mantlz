@@ -6,6 +6,20 @@ import { HTTPException } from "hono/http-exception";
 import { User } from "@prisma/client";
 import { getQuotaByPlan } from "@/config/usage";
 import { startOfMonth } from "date-fns";
+import { Resend } from 'resend';
+import { FormSubmissionEmail } from '@/emails/form-submission';
+import { render } from '@react-email/components';
+import { Prisma } from "@prisma/client";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+interface EmailSettings {
+  enabled: boolean;
+  fromEmail?: string;
+  subject?: string;
+  template?: string;
+  replyTo?: string;
+}
 
 // Define available form templates
 const formTemplates = {
@@ -27,10 +41,19 @@ const formTemplates = {
       referralSource: z.string().optional(),
     }),
   },
+  contact: {
+    name: "Contact Form",
+    description: "Simple contact form for inquiries",
+    schema: z.object({
+      name: z.string().min(2),
+      email: z.string().email(),
+      message: z.string().min(10),
+    }),
+  },
   // Add more templates as needed
 } as const;
 
-type FormTemplateType = keyof typeof formTemplates;
+type FormTemplateType = 'feedback' | 'waitlist' | 'contact';
 
 export const formRouter = j.router({
   // Get all forms created by the authenticated user
@@ -91,7 +114,7 @@ export const formRouter = j.router({
   // Create form from template
   createFromTemplate: privateProcedure
     .input(z.object({
-      templateId: z.enum(['feedback', 'waitlist'] as const),
+      templateId: z.enum(['feedback', 'waitlist', 'contact'] as const),
       name: z.string().optional(),
       description: z.string().optional(),
     }))
@@ -132,6 +155,11 @@ export const formRouter = j.router({
           description: input.description || template.description,
           schema: template.schema.toString(), // Serialize the schema
           userId: userWithPlan.id,
+          emailSettings: {
+            create: {
+              enabled: false
+            }
+          }
         },
       });
 
@@ -184,6 +212,18 @@ export const formRouter = j.router({
           description: input.description,
           schema: input.schema,
           userId: userWithPlan.id,
+          emailSettings: {
+            create: {
+              enabled: false,
+              fromEmail: process.env.RESEND_FROM_EMAIL || 'contact@mantlz.app',
+              subject: `Form Submission Confirmation - ${input.name}`,
+              template: `
+                <h1>Thank you for your submission!</h1>
+                <p>We have received your submission for the form "${input.name}".</p>
+                <p>We will review your submission and get back to you soon.</p>
+              `.trim(),
+            }
+          }
         },
       });
 
@@ -215,6 +255,7 @@ export const formRouter = j.router({
               submissions: true,
             },
           },
+          emailSettings: true,
         },
       });
       
@@ -229,6 +270,7 @@ export const formRouter = j.router({
         createdAt: form.createdAt,
         updatedAt: form.updatedAt,
         submissionCount: form._count.submissions,
+        emailSettings: form.emailSettings || { enabled: false, fromEmail: process.env.RESEND_FROM_EMAIL || 'contact@mantlz.app' },
       });
     }),
     
@@ -247,6 +289,16 @@ export const formRouter = j.router({
           id: formId,
           userId,
         },
+        include: {
+          user: {
+            select: {
+              id: true,
+              plan: true,
+              email: true
+            }
+          },
+          emailSettings: true
+        }
       });
       
       if (!form) {
@@ -406,12 +458,12 @@ export const formRouter = j.router({
     }),
 
   // Submit form
-  submitForm: j.procedure
+  submit: privateProcedure
     .input(z.object({
       formId: z.string(),
       data: z.record(z.any())
     }))
-    .mutation(async ({ c, input }) => {
+    .mutation(async ({ c, input, ctx }) => {
       const { formId, data } = input;
       
       // Get the form to validate the submission
@@ -421,9 +473,11 @@ export const formRouter = j.router({
           user: {
             select: {
               id: true,
-              plan: true
+              plan: true,
+              email: true
             }
-          }
+          },
+          emailSettings: true
         }
       });
       
@@ -460,14 +514,68 @@ export const formRouter = j.router({
         data: {
           formId,
           data: data,
+          email: data.email, // Store email if provided in form
         },
       });
-      
+
+      // Send confirmation email for STANDARD and PRO users
+      if (
+        (form.user.plan === 'STANDARD' || form.user.plan === 'PRO') && 
+        (form.emailSettings as unknown as EmailSettings)?.enabled &&
+        data.email && 
+        typeof data.email === 'string'
+      ) {
+        try {
+          const htmlContent = await render(
+            FormSubmissionEmail({
+              formName: form.name,
+              submissionData: data,
+            })
+          );
+
+          await resend.emails.send({
+            from: 'contact@mantlz.app',
+            to: data.email,
+            subject: `Confirmation: ${form.name} Submission`,
+            html: htmlContent,
+          });
+        } catch (error) {
+          // Log error but don't fail the submission
+          console.error('Failed to send confirmation email:', error);
+        }
+      }
+
       return c.superjson({
         id: submission.id,
         message: 'Form submitted successfully'
       });
-    })
+    }),
+
+  // Add this new procedure
+  toggleEmailSettings: privateProcedure
+    .input(z.object({
+      formId: z.string(),
+      enabled: z.boolean(),
+    }))
+    .mutation(async ({ c, input, ctx }) => {
+      const { formId, enabled } = input;
+      
+      const form = await db.form.update({
+        where: {
+          id: formId,
+          userId: ctx.user.id, // Ensure user owns the form
+        },
+        data: {
+          emailSettings: {
+            update: {
+              enabled,
+            }
+          }
+        },
+      });
+
+      return c.superjson({ success: true });
+    }),
 });
 
 

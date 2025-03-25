@@ -17,6 +17,7 @@ model User {
   imageUrl   String?
   quotaLimit Int
   plan       Plan     @default(FREE)
+  resendApiKey String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   forms      Form[]
@@ -46,6 +47,20 @@ model Form {
   updatedAt   DateTime     @updatedAt
   user        User         @relation(fields: [userId], references: [id])
   submissions Submission[]
+  emailSettings EmailSettings?
+}
+
+model EmailSettings {
+  id          String   @id @default(cuid())
+  formId      String   @unique
+  form        Form     @relation(fields: [formId], references: [id])
+  enabled     Boolean  @default(false)
+  fromEmail   String?
+  subject     String?
+  template    String?
+  replyTo     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Submission {

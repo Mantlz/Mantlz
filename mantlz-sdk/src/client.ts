@@ -1,4 +1,4 @@
-import { MantlzClient, FormSubmitResponse, MantlzError, MantlzClientConfig } from './types';
+import { MantlzClient, FormSubmitResponse, MantlzError, MantlzClientConfig, EmailSettings } from './types';
 import * as formsApi from './api/forms';
 import * as templatesApi from './api/templates';
 import { toast, ToastHandler } from './utils/toast';
@@ -207,6 +207,93 @@ export function createMantlzClient(apiKey: string, config?: MantlzClientConfig):
       
       // Update the notification mode
       return { notifications: enabled };
-    }
+    },
+
+    updateResendApiKey: async (resendApiKey: string) => {
+      try {
+        const response = await fetch('/api/v1/user/resend-key', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-Key': apiKey,
+          },
+          body: JSON.stringify({ resendApiKey }),
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || 'Failed to update Resend API key');
+        }
+
+        if (notificationsEnabled) {
+          toast.success('Resend API key updated successfully');
+        }
+      } catch (error) {
+        if (notificationsEnabled) {
+          toast.error('Failed to update Resend API key');
+        }
+        throw error;
+      }
+    },
+
+    getResendApiKey: async () => {
+      try {
+        const response = await fetch('/api/v1/user/resend-key', {
+          headers: {
+            'X-API-Key': apiKey,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch Resend API key');
+        }
+
+        const data = await response.json();
+        return data.resendApiKey;
+      } catch (error) {
+        console.error('Error fetching Resend API key:', error);
+        return null;
+      }
+    },
+
+    updateFormEmailSettings: async (formId: string, settings: EmailSettings): Promise<void> => {
+      try {
+        const response = await fetch(`/api/v1/forms/${formId}/email-settings`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-Key': apiKey,
+          },
+          body: JSON.stringify(settings),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to update email settings');
+        }
+      } catch (error) {
+        console.error('Error updating email settings:', error);
+        throw error;
+      }
+    },
+
+    getFormEmailSettings: async (formId: string) => {
+      try {
+        const response = await fetch(`/api/v1/forms/${formId}/email-settings`, {
+          headers: {
+            'X-API-Key': apiKey,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch email settings');
+        }
+
+        const data = await response.json();
+        return data.emailSettings;
+      } catch (error) {
+        console.error('Error fetching email settings:', error);
+        return null;
+      }
+    },
   };
 }

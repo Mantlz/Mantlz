@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { TemplateDialog } from "@/components/forms/template-dialog"
 
 export function NavMain({
   items,
@@ -25,21 +26,17 @@ export function NavMain({
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
-            <SidebarMenuButton
-              tooltip="Quick Create"
-              className="bg-zinc-500 text-white hover:bg-zinc-600 hover:text-white active:bg-zinc-600 active:text-white min-w-8 duration-200 ease-linear"
-            >
-              <IconCirclePlusFilled />
-              <span>Quick Create</span>
-            </SidebarMenuButton>  
-            {/* <Button
-              size="icon"
-              className="size-8 group-data-[collapsible=icon]:opacity-0"
-              variant="outline"
-            >
-              <IconMail />
-              <span className="sr-only">Inbox</span>
-            </Button> */}
+            <TemplateDialog
+              trigger={
+                <SidebarMenuButton
+                  tooltip="Quick Create"
+                  className="bg-zinc-500 text-white hover:bg-zinc-600 hover:text-white active:bg-zinc-600 active:text-white min-w-8 duration-200 ease-linear"
+                >
+                  <IconCirclePlusFilled />
+                  <span>Quick Create</span>
+                </SidebarMenuButton>
+              }
+            />
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>

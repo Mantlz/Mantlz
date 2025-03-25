@@ -148,19 +148,6 @@ export function NavUser({
                     "flex items-center gap-2"
                   )}
                 >
-                 
-                </DropdownMenuItem>
-
-                <DropdownMenuItem 
-                  className={cn(
-                    "rounded-lg",
-                    "text-zinc-700 dark:text-zinc-300",
-                    "hover:bg-zinc-100 dark:hover:bg-zinc-800",
-                    "focus:bg-zinc-100 dark:focus:bg-zinc-800",
-                    "cursor-pointer",
-                    "flex items-center gap-2"
-                  )}
-                >
                   <IconCreditCard className="size-4 text-zinc-600 dark:text-zinc-400" />
                   <span>Billing</span>
                 </DropdownMenuItem>
@@ -192,7 +179,7 @@ export function NavUser({
                 )}
               >
                 <IconLogout className="size-4" />
-                <SignOutButton  />
+                <SignOutButton />
               </DropdownMenuItem>
             </div>
           </DropdownMenuContent>

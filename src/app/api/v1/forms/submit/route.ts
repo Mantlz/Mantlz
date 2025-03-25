@@ -1,101 +1,161 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { db } from "@/lib/db";
+import { Resend } from 'resend';
+import { FormSubmissionEmail } from '@/emails/form-submission';
+import { render } from '@react-email/components';
+import { Plan, Prisma } from '@prisma/client';
 
 const submitSchema = z.object({
-  type: z.string(),
   formId: z.string(),
   apiKey: z.string(),
-  data: z.record(z.any()),
+  data: z.record(z.any()).refine((data) => {
+    return typeof data.email === 'string' || data.email === undefined;
+  }, {
+    message: 'Email must be a string or undefined'
+  }),
 });
 
-// Function to validate API key against database
-async function isValidApiKey(apiKey: string): Promise<boolean> {
-  // Ensure the environment variable exists as a fallback
-  if (!process.env.MANTLZ_KEY) {
-    console.error('MANTLZ_KEY environment variable is not set');
-    return false;
-  }
-  
-  try {
-    // Check if the API key exists in the database and is active
-    const apiKeyRecord = await db.apiKey.findFirst({
-      where: {
-        key: apiKey,
-        isActive: true
-      }
-    });
-    
-    if (!apiKeyRecord) {
-      console.warn('API key not found in database or inactive');
-      return false;
-    }
-    
-    // Update last used timestamp
-    await db.apiKey.update({
-      where: { id: apiKeyRecord.id },
-      data: { lastUsedAt: new Date() }
-    });
-    
-    console.log(`Valid API key used: ${apiKeyRecord.id}`);
-    return true;
-  } catch (error) {
-    console.error('Error validating API key:', error);
-    
-    // Fallback to environment variable if database check fails
-    const isValid = apiKey === process.env.MANTLZ_KEY;
-    console.log(`Fallback validation ${isValid ? 'succeeded' : 'failed'}`);
-    return isValid;
-  }
-}
 
-export async function POST(request: NextRequest) {
-  try {
-    // Parse the JSON body from the request
-    const body = await request.json();
-    const { type, formId, apiKey, data } = submitSchema.parse(body);
 
-    // Validate API key with database check
-    if (!(await isValidApiKey(apiKey))) {
-      console.warn('Invalid API key attempt:', apiKey.substring(0, 4) + '***');
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const { formId, apiKey, data } = submitSchema.parse(body);
+
+    // Validate API key
+    const apiKeyRecord = await db.apiKey.findUnique({
+      where: { key: apiKey },
+      include: { user: true },
+    });
+
+    if (!apiKeyRecord || !apiKeyRecord.isActive) {
       return NextResponse.json(
-        { success: false, error: 'Invalid API key' },
+        { message: 'Invalid or inactive API key' },
         { status: 401 }
       );
     }
 
-    // Process the form submission based on form ID
-    console.log(`Form submission of type ${type} received for ${formId}:`, data);
+    // Get form with user data and email settings
+    const form = await db.form.findUnique({
+      where: { id: formId },
+      include: {
+        user: {
+          select: {
+            plan: true,
+          },
+        },
+        emailSettings: {
+          select: {
+            enabled: true,
+            fromEmail: true,
+            subject: true,
+            template: true,
+            replyTo: true,
+          },
+        },
+      },
+    });
 
-    // Store the submission in the database
-    const email = data.email || null; // Extract email from form data
+    if (!form) {
+      return NextResponse.json(
+        { message: 'Form not found' },
+        { status: 404 }
+      );
+    }
+
+    // Debug log to check form data
+    console.log('Form data:', {
+      formId,
+      userId: form.userId,
+      plan: form.user.plan,
+      emailSettings: form.emailSettings,
+    });
+
+    // Validate form ownership
+    if (form.userId !== apiKeyRecord.userId) {
+      return NextResponse.json(
+        { message: 'Unauthorized' },
+        { status: 403 }
+      );
+    }
+
+    // Create submission
     const submission = await db.submission.create({
       data: {
         formId,
         data,
-        email, // Add the extracted email
-      }
+        email: typeof data.email === 'string' ? data.email : undefined,
+      },
     });
 
-    // Return success response
-    return NextResponse.json({
-      success: true,
+    // Send confirmation email if:
+    // 1. User is STANDARD or PRO
+    // 2. Form has email settings enabled
+    // 3. Submission includes a valid email
+    if (
+      (form.user.plan === Plan.STANDARD || form.user.plan === Plan.PRO) && 
+      form.emailSettings?.enabled && 
+      typeof data.email === 'string'
+    ) {
+      try {
+        console.log('Attempting to send confirmation email:', {
+          plan: form.user.plan,
+          email: data.email,
+          formName: form.name,
+          emailSettings: form.emailSettings,
+        });
+
+        const resendApiKey = process.env.RESEND_API_KEY;
+        if (!resendApiKey) {
+          throw new Error('No Resend API key configured');
+        }
+
+        const resendClient = new Resend(resendApiKey);
+        const fromEmail = form.emailSettings.fromEmail || process.env.RESEND_FROM_EMAIL || 'contact@mantlz.app';
+        const subject = form.emailSettings.subject || `Form Submission Confirmation - ${form.name}`;
+
+        await resendClient.emails.send({
+          from: fromEmail,
+          to: data.email,
+          subject,
+          replyTo: form.emailSettings.replyTo ?? undefined,
+          html: form.emailSettings.template || `
+            <h1>Thank you for your submission!</h1>
+            <p>We have received your submission for the form "${form.name}".</p>
+            <p>We will review your submission and get back to you soon.</p>
+          `.trim(),
+        });
+
+        console.log('Confirmation email sent successfully');
+      } catch (error) {
+        console.error('Failed to send confirmation email:', error);
+        // Don't throw the error, just log it
+      }
+    } else {
+      console.log('Email not sent:', {
+        plan: form.user.plan,
+        hasEmail: !!data.email,
+        emailType: typeof data.email,
+        emailEnabled: form.emailSettings?.enabled,
+      });
+    }
+
+    return NextResponse.json({ 
       message: 'Form submitted successfully',
       submissionId: submission.id,
-      formId,
     });
   } catch (error) {
     console.error('Error processing form submission:', error);
-    
     if (error instanceof z.ZodError) {
+      const message = error.errors[0]?.message || 'Invalid form data';
       return NextResponse.json(
-        { success: false, error: 'Invalid form data', details: error.errors },
+        { message },
         { status: 400 }
       );
     }
-    
     return NextResponse.json(
-      { success: false, error: 'Failed to process form submission' },
+      { message: 'Internal server error' },
       { status: 500 }
     );
   }
