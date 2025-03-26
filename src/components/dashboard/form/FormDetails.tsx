@@ -543,73 +543,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
         </div>
       )}
 
-      {/* Dashboard stats - improved grid responsiveness */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-        {/* Card 1 */}
-        {/* <Card className="group bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
-          <CardHeader className="p-3 sm:p-4 bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-200 dark:border-zinc-800">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 sm:p-2 rounded-lg bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300">
-                <FileSpreadsheet className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </div>
-              <CardTitle className="text-gray-900 dark:text-gray-100 text-xs sm:text-sm font-medium">Total Submissions</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="p-3 sm:p-4">
-            {isLoadingAnalytics ? (
-              <div className="h-6 sm:h-8 bg-gray-200 dark:bg-zinc-800 rounded-lg animate-pulse" />
-            ) : (
-              <div className="flex items-baseline">
-                <span className="text-xl sm:text-2xl font-mono font-bold text-gray-900 dark:text-white tabular-nums">{analytics?.totalSubmissions?.toLocaleString() || "0"}</span>
-                <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">responses</span>
-              </div>
-            )}
-          </CardContent>
-        </Card> */}
-        
-        {/* <Card className="group bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
-          <CardHeader className="p-4 bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-200 dark:border-zinc-800">
-            <div className="flex items-center gap-2">
-              <div className="p-2 rounded-lg bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300">
-                <Users className="w-4 h-4" />
-              </div>
-              <CardTitle className="text-gray-900 dark:text-gray-100 text-sm font-medium">Unique Submitters</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="p-4">
-            {isLoadingAnalytics ? (
-              <div className="h-8 bg-gray-200 dark:bg-zinc-800 rounded-lg animate-pulse" />
-            ) : (
-              <div className="flex items-baseline">
-                <span className="text-2xl font-mono font-bold text-gray-900 dark:text-white tabular-nums">{analytics?.uniqueSubmitters?.toLocaleString() || "0"}</span>
-                <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">users</span>
-              </div>
-            )}
-          </CardContent>
-        </Card> */}
-{/*         
-        <Card className="group bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
-          <CardHeader className="p-4 bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-200 dark:border-zinc-800">
-            <div className="flex items-center gap-2">
-              <div className="p-2 rounded-lg bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300">
-                <Activity className="w-4 h-4" />
-              </div>
-              <CardTitle className="text-gray-900 dark:text-gray-100 text-sm font-medium">Recent Activity</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="p-4">
-            {isLoadingAnalytics ? (
-              <div className="h-8 bg-gray-200 dark:bg-zinc-800 rounded-lg animate-pulse" />
-            ) : (
-              <div className="flex items-baseline">
-                <span className="text-2xl font-mono font-bold text-gray-900 dark:text-white tabular-nums">{analytics?.last24Hours?.toLocaleString() || "0"}</span>
-                <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">in 24h</span>
-              </div>
-            )}
-          </CardContent>
-        </Card> */}
-      </div>
-
+     
       {/* Chart section */}
       <div className="col-span-1 sm:col-span-2 lg:col-span-3">
         <FormAnalyticsChart 

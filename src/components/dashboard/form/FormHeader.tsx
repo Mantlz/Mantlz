@@ -87,7 +87,7 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0, emailSetti
 
   return (
     <>
-      <Card className="p-5 bg-slate-50 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-500 rounded-lg shadow-md mb-6">
+      <Card className="p-5 bg-zinc-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-500 rounded-lg shadow-md mb-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-xl font-medium text-slate-900 dark:text-slate-50">{name}</h1>
@@ -182,10 +182,10 @@ function UpgradeModal({ isOpen, onClose, featureName }: UpgradeModalProps) {
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="bg-white dark:bg-zinc-900 p-6 rounded-md max-w-md w-full border border-slate-200 dark:border-zinc-800 shadow-xl">
         {/* Modern minimal header */}
-        <div className="relative -mt-6 -mx-6 mb-5 bg-zinc-100 dark:bg-black p-6 rounded-t-md border-b border-slate-200 dark:border-zinc-800">
-          <div className="absolute top-0 left-0 w-full h-px bg-slate-100 dark:bg-white/10"></div>
+        <div className="relative -mt-6 -mx-6 mb-5  bg-zinc-100 dark:bg-black p-6 rounded-t-md border-b border-slate-200 dark:border-zinc-800">
+          <div className="absolute top-0 left-0 w-full h-px  bg-slate-100 dark:bg-white/10"></div>
           <h2 className="text-slate-900 dark:text-white text-xl font-medium tracking-tight flex items-center space-x-2">
-            {/* <span className="w-2 h-2 rounded-full bg-slate-800 dark:bg-white inline-block"></span> */}
+            <span className="w-2 h-2  rounded-full bg-slate-800 dark:bg-white inline-block"></span>
             <span>Upgrade Required</span>
           </h2>
         </div>
@@ -194,7 +194,7 @@ function UpgradeModal({ isOpen, onClose, featureName }: UpgradeModalProps) {
         <div className="space-y-5">
           <div className="flex items-start">
             <div className="mr-4 h-10 w-10 flex items-center justify-center rounded-md bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700">
-              <Mail className="h-5 w-5 m-2 text-slate-700 dark:text-slate-300" />
+              <Mail className="h-5 w-5 text-slate-700 dark:text-slate-300" />
             </div>
             <div>
               <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200">{featureName}</h3>
