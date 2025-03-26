@@ -534,9 +534,10 @@ export const formRouter = j.router({
           );
 
           await resend.emails.send({
-            from: 'contact@mantlz.app',
+            from: (form.emailSettings as unknown as EmailSettings)?.fromEmail || 'contact@mantlz.app',
             to: data.email,
-            subject: `Confirmation: ${form.name} Submission`,
+            subject: (form.emailSettings as unknown as EmailSettings)?.subject || `Confirmation: ${form.name} Submission`,
+            replyTo: 'contact@mantlz.app',
             html: htmlContent,
           });
         } catch (error) {
@@ -575,6 +576,104 @@ export const formRouter = j.router({
       });
 
       return c.superjson({ success: true });
+    }),
+
+  delete: privateProcedure
+    .input(z.object({
+      formId: z.string()
+    }))
+    .mutation(async ({ c, input, ctx }) => {
+      const { formId } = input;
+
+      try {
+        // First verify the user owns this form
+        const form = await db.form.findFirst({
+          where: {
+            id: formId,
+            userId: ctx.user.id, // Ensure user owns the form
+          },
+        });
+
+        if (!form) {
+          throw new Error('Form not found or you do not have permission to delete it');
+        }
+
+        // Delete everything in a transaction to ensure data consistency
+        await db.$transaction(async (tx) => {
+          // 1. Delete all submissions for this form
+          await tx.submission.deleteMany({
+            where: {
+              formId: formId,
+            },
+          });
+
+          // 2. Delete email settings if they exist
+          await tx.emailSettings.deleteMany({
+            where: {
+              formId: formId,
+            },
+          });
+
+          // 3. Finally delete the form itself
+          await tx.form.delete({
+            where: {
+              id: formId,
+              userId: ctx.user.id, // Double check user owns the form
+            },
+          });
+        });
+
+        return c.superjson({ success: true });
+      } catch (error) {
+        console.error('Error deleting form:', error);
+        throw new Error('Failed to delete form and its related data');
+      }
+    }),
+
+  // Delete a single submission
+  deleteSubmission: privateProcedure
+    .input(z.object({
+      submissionId: z.string()
+    }))
+    .mutation(async ({ c, input, ctx }) => {
+      const { submissionId } = input;
+      const userId = ctx.user.id;
+
+      try {
+        // First get the submission to verify ownership
+        const submission = await db.submission.findUnique({
+          where: { id: submissionId },
+          include: {
+            form: {
+              select: {
+                userId: true
+              }
+            }
+          }
+        });
+
+        if (!submission) {
+          throw new HTTPException(404, { message: 'Submission not found' });
+        }
+
+        // Check if the user owns the form associated with this submission
+        if (submission.form.userId !== userId) {
+          throw new HTTPException(403, { message: 'You do not have permission to delete this submission' });
+        }
+
+        // Delete the submission
+        await db.submission.delete({
+          where: { id: submissionId }
+        });
+
+        return c.superjson({ success: true });
+      } catch (error) {
+        console.error('Error deleting submission:', error);
+        if (error instanceof HTTPException) {
+          throw error;
+        }
+        throw new HTTPException(500, { message: 'Failed to delete submission' });
+      }
     }),
 });
 

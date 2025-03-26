@@ -1,8 +1,8 @@
 import { Icon } from "@tabler/icons-react"
 import {
-  IconDashboard,
-  IconListDetails,
-  IconChartBar,
+  IconLayoutDashboard,
+  IconBrandCampaignmonitor,
+  IconChartHistogram,
   IconFolder,
   IconUsers,
 } from "@tabler/icons-react"
@@ -17,17 +17,17 @@ export const mainNavItems: MainNavItem[] = [
   {
     title: "Dashboard",
     url: "/dashboard",
-    icon: IconDashboard,
+    icon: IconLayoutDashboard,
   },
   {
-    title: "Lifecycle",
-    url: "/lifecycle",
-    icon: IconListDetails,
+    title: "Campaigns",
+    url: "/dashboard/campaigns",
+    icon: IconBrandCampaignmonitor,
   },
   {
     title: "Analytics",
     url: "/analytics",
-    icon: IconChartBar,
+    icon: IconChartHistogram,
   },
   
 ] 

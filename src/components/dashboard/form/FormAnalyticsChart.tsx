@@ -98,7 +98,7 @@ export function FormAnalyticsChart({
   return (
     <Card className="relative bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 overflow-hidden">
       {/* Retro grid background */}
-      <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.10] pointer-events-none" 
+      <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.01] bg-white dark:bg-zinc-900 pointer-events-none" 
            style={{
              backgroundImage: `linear-gradient(to right, currentColor 1px, transparent 1px),
                               linear-gradient(to bottom, currentColor 1px, transparent 1px)`,
@@ -113,7 +113,7 @@ export function FormAnalyticsChart({
           <div className="flex items-center justify-between">
             <CardTitle className="text-gray-900 dark:text-zinc-50 font-mono text-lg tracking-wider flex items-center gap-2">
               <span className="relative">
-                <span className="absolute -inset-1 bg-gradient-to-tr from-zinc-50 to-zinc-200 blur-sm rounded-lg" />
+                <span className="absolute -inset-1  blur-sm rounded-lg" />
                 <span className="relative">FORM ANALYTICS</span>
               </span>
             </CardTitle>
@@ -157,7 +157,7 @@ export function FormAnalyticsChart({
         </div>
 
         {/* Time Range Selector */}
-        <div className={`flex border-t border-gray-200 dark:border-zinc-800 sm:border-l sm:border-t-0 overflow-hidden transition-all duration-300 ${
+        <div className={`flex border-t text-white border-gray-200 dark:border-zinc-800 sm:border-l sm:border-t-0 overflow-hidden transition-all duration-300 ${
           isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[200px] opacity-100'
         }`}>
           {['day', 'week', 'month'].map((range) => (
@@ -165,7 +165,7 @@ export function FormAnalyticsChart({
               key={range}
               onClick={() => onTimeRangeChange(range as 'day' | 'week' | 'month')}
               data-active={timeRange === range}
-              className="flex-1 px-4 py-4 text-sm font-mono text-gray-500 dark:text-zinc-400 data-[active=true]:bg-gray-50 dark:data-[active=true]:bg-zinc-800/50 data-[active=true]:text-gray-900 dark:data-[active=true]:text-zinc-50 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-zinc-800/50"
+              className="flex-1 px-4 py-4 text-sm font-mono text-zinc-200 dark:text-white data-[active=true]:bg-gray-50 dark:data-[active=true]:bg-zinc-800/50 data-[active=true]:text-gray-900 dark:data-[active=true]:text-zinc-50 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-zinc-800/50"
             >
               {range.charAt(0).toUpperCase() + range.slice(1)}
             </button>
@@ -173,7 +173,7 @@ export function FormAnalyticsChart({
         </div>
       </CardHeader>
 
-      <CardContent className={`relative px-2 sm:p-6 overflow-hidden transition-all duration-300 ${
+      <CardContent className={`relative px-2 dark:text-white sm:p-6 overflow-hidden transition-all duration-300 ${
         isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[400px] opacity-100'
       }`}>
         <ChartContainer
@@ -187,7 +187,7 @@ export function FormAnalyticsChart({
               right: 12,
             }}
           >
-            <CartesianGrid vertical={false} stroke="currentColor" className="text-gray-200 dark:text-zinc-700" />
+            <CartesianGrid vertical={false} stroke="currentColor" className="text-zinc-200 dark:text-white" />
             <XAxis
               dataKey="time"
               tickLine={false}
@@ -198,7 +198,7 @@ export function FormAnalyticsChart({
                 fill: 'currentColor',
                 fontFamily: 'monospace', 
                 fontSize: 12,
-                className: 'text-gray-500 dark:text-zinc-400'
+                className: 'text-zinc-200 dark:text-white'
               }}
               tickFormatter={(value) => {
                 if (timeRange === 'day') {
@@ -213,7 +213,7 @@ export function FormAnalyticsChart({
             <ChartTooltip
               content={
                 <ChartTooltipContent
-                  className="w-[150px] bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 p-3 rounded-md shadow-lg"
+                  className="w-[150px] bg-white text-zinc-200 dark:text-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 p-3 rounded-md shadow-lg"
                   nameKey={activeMetric}
                   labelFormatter={(value) => {
                     if (timeRange === 'day') {
@@ -228,7 +228,7 @@ export function FormAnalyticsChart({
               dataKey={activeMetric}
               fill={`var(--color-${activeMetric})`}
               radius={[4, 4, 0, 0]}
-              className="transition-all duration-200 hover:opacity-80"
+              className="transition-all duration-200 dark:text-white hover:opacity-80"
             />
           </BarChart>
         </ChartContainer>

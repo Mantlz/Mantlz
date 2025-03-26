@@ -1,15 +1,19 @@
 import { z } from "zod";
-import { j } from "../jstack";
+import { j, privateProcedure } from '../jstack';
 import { db } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs/server";
 import { HTTPException } from "hono/http-exception";
 import { nanoid } from 'nanoid';
+import { eq } from 'drizzle-orm';
+
+// All inputs are validated using Zod
+const createApiKeySchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+})
 
 export const apiKeyRouter = j.router({
-  create: j.procedure
-    .input(z.object({
-      name: z.string().min(1),
-    }))
+  create: privateProcedure
+    .input(createApiKeySchema)
     .mutation(async ({ c, input }) => {
       const auth = await currentUser();
       if (!auth) throw new HTTPException(401, { message: "Unauthorized" });
@@ -50,7 +54,7 @@ export const apiKeyRouter = j.router({
       });
     }),
 
-  getCurrentKey: j.procedure.query(async ({ c }) => {
+  getCurrentKey: privateProcedure.query(async ({ c }) => {
     const auth = await currentUser();
     if (!auth) throw new HTTPException(401, { message: "Unauthorized" });
 
@@ -74,30 +78,50 @@ export const apiKeyRouter = j.router({
       },
     });
 
-    return c.superjson(apiKey);
+    return c.superjson({ data: apiKey });
   }),
 
-  revoke: j.procedure
-    .mutation(async ({ c }) => {
-      const auth = await currentUser();
-      if (!auth) throw new HTTPException(401, { message: "Unauthorized" });
+  revoke: privateProcedure.mutation(async ({ c }) => {
+    const auth = await currentUser();
+    if (!auth) throw new HTTPException(401, { message: "Unauthorized" });
 
-      const user = await db.user.findUnique({
-        where: { clerkId: auth.id },
+    const user = await db.user.findUnique({
+      where: { clerkId: auth.id },
+    });
+
+    if (!user) throw new HTTPException(404, { message: "User not found" });
+
+    // Delete the API key instead of marking it as inactive
+    await db.apiKey.deleteMany({
+      where: {
+        userId: user.id,
+        isActive: true,
+      },
+    });
+
+    return c.superjson({ success: true });
+  }),
+
+  validate: privateProcedure
+    .input(z.object({ key: z.string() }))
+    .mutation(async ({ c, input }) => {
+      const apiKey = await db.apiKey.findFirst({
+        where: { 
+          key: input.key,
+          isActive: true
+        },
       });
 
-      if (!user) throw new HTTPException(404, { message: "User not found" });
+      if (!apiKey) {
+        throw new HTTPException(401, { message: "Invalid API key" });
+      }
 
-      await db.apiKey.updateMany({
-        where: {
-          userId: user.id,
-          isActive: true,
-        },
-        data: {
-          isActive: false,
-        },
+      // Update last used timestamp
+      await db.apiKey.update({
+        where: { id: apiKey.id },
+        data: { lastUsedAt: new Date() },
       });
 
-      return c.superjson({ success: true });
+      return c.superjson({ valid: true });
     }),
 }); 

@@ -484,7 +484,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
 }
 
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-offset-white dark:ring-offset-zinc-950 transition-[width,height,padding] hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-50 focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-800 active:bg-zinc-100 dark:active:bg-zinc-800 disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-zinc-100 dark:data-[active=true]:bg-zinc-800 data-[active=true]:font-medium data-[active=true]:text-zinc-900 dark:data-[active=true]:text-zinc-50",
+  "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden ring-offset-white dark:ring-offset-zinc-950 transition-[width,height,padding] hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-50 focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-800 active:bg-zinc-100 dark:active:bg-zinc-800 disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-zinc-100 dark:data-[active=true]:bg-zinc-800 data-[active=true]:font-medium data-[active=true]:text-zinc-900 dark:data-[active=true]:text-zinc-50 cursor-pointer",
   {
     variants: {
       variant: {
@@ -522,11 +522,13 @@ function SidebarMenuButton({
 
   const button = (
     <Comp
-      data-slot="sidebar-menu-button"
       data-sidebar="menu-button"
       data-size={size}
       data-active={isActive}
       className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
+      type="button"
+      aria-haspopup={props["aria-haspopup"]}
+      aria-expanded={props["aria-expanded"]}
       {...props}
     />
   )

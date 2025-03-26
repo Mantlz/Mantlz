@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { client } from '@/lib/client';
 import { format, subDays, subHours, startOfDay, endOfDay } from 'date-fns';
@@ -9,6 +9,7 @@ import { FormSettings } from './FormSettings';
 import { FormResponsesList } from './FormResponsesList';
 import { SdkDocs } from './SdkDocs';
 import { FormAnalyticsChart } from './FormAnalyticsChart';
+import { toast } from 'sonner';
 import { 
   Users, 
   FileSpreadsheet, 
@@ -63,16 +64,27 @@ interface FormData {
   } | null;
 }
 
-interface TimeSeriesDataItem {
+interface TimeSeriesPoint {
   time: string;
   submissions: number;
   uniqueEmails: number;
   fullDate?: string;
 }
 
+// Add this interface before the FormDetails function
+interface FormAnalytics {
+  totalSubmissions: number;
+  uniqueSubmitters: number;
+  last24Hours: number;
+  lastWeek: number;
+  lastMonth: number;
+  timeSeriesData: TimeSeriesPoint[];
+}
+
 function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
   const router = useRouter();
   const params = useParams();
+  const queryClient = useQueryClient();
   
   // Get formId from either props or params
   const paramId = params?.id || '';
@@ -87,7 +99,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
     isLoading, 
     isError,
     error,
-    refetch
+    refetch: refetchForm
   } = useQuery<FormData>({
     queryKey: ["formDetails", formId],
     queryFn: async () => {
@@ -127,7 +139,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
     data: submissions, 
     isLoading: isLoadingSubmissions, 
     isError: isSubmissionsError,
-    refetch: refetchSubmissions
+    refetch: refetchSubmissions,
   } = useQuery({
     queryKey: ["formSubmissions", formId],
     queryFn: async () => {
@@ -139,7 +151,25 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
         const response = await client.forms.getFormSubmissions.$get({
           formId: formId
         });
-        return response.json();
+        const data = await response.json();
+
+        // Add mock location data for demonstration
+        const mockLocations = [
+          { lat: 40.7128, lng: -74.0060, city: "New York", country: "USA" },
+          { lat: 51.5074, lng: -0.1278, city: "London", country: "UK" },
+          { lat: 48.8566, lng: 2.3522, city: "Paris", country: "France" },
+          { lat: 35.6762, lng: 139.6503, city: "Tokyo", country: "Japan" },
+          { lat: -33.8688, lng: 151.2093, city: "Sydney", country: "Australia" }
+        ];
+
+        return {
+          submissions: data.submissions.map((sub: any, index: number) => ({
+            ...sub,
+            submittedAt: sub.createdAt,
+            // Assign a random location from the mock data
+            location: mockLocations[Math.floor(Math.random() * mockLocations.length)]
+          }))
+        };
       } catch (err) {
         console.error("Error fetching form submissions:", err);
         throw err;
@@ -151,8 +181,9 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
   // Fetch form analytics data with time range
   const { 
     data: analytics, 
-    isLoading: isLoadingAnalytics
-  } = useQuery({
+    isLoading: isLoadingAnalytics,
+    refetch: refetchAnalytics
+  } = useQuery<FormAnalytics>({
     queryKey: ["formAnalytics", formId, timeRange],
     queryFn: async () => {
       try {
@@ -183,6 +214,151 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
     enabled: !!formId,
   });
 
+  // Define delete submission mutation using v5 syntax
+  const deleteSubmissionMutation = useMutation({
+    mutationFn: async (submissionId: string) => {
+      try {
+        const response = await client.forms.deleteSubmission.$post({
+          submissionId
+        });
+        return response;
+      } catch (error) {
+        // If it's a 404 error, the submission was already deleted
+        if (error instanceof Error && error.message.includes("404")) {
+          console.log("Submission already deleted or not found");
+          return { success: true }; // Treat as success - it's already gone
+        }
+        throw error; // Rethrow other errors
+      }
+    },
+    onMutate: async (submissionId: string) => {
+      // Cancel any outgoing refetches to avoid overwriting our optimistic update
+      await queryClient.cancelQueries({ queryKey: ["formSubmissions", formId] });
+      await queryClient.cancelQueries({ queryKey: ["formDetails", formId] });
+      await queryClient.cancelQueries({ queryKey: ["formAnalytics", formId, timeRange] });
+      
+      // Get current data from queries
+      const previousSubmissions = queryClient.getQueryData(["formSubmissions", formId]);
+      const previousForm = queryClient.getQueryData<FormData>(["formDetails", formId]);
+      const previousAnalytics = queryClient.getQueryData<FormAnalytics>(["formAnalytics", formId, timeRange]);
+      
+      // Find the submission to delete (for updating analytics)
+      const submissionToDelete = submissions?.submissions?.find(sub => sub.id === submissionId);
+      
+      // Optimistically update submissions list
+      if (submissions) {
+        queryClient.setQueryData(["formSubmissions", formId], {
+          submissions: submissions.submissions.filter(sub => sub.id !== submissionId)
+        });
+      }
+      
+      // Optimistically update form details (submission count)
+      if (previousForm) {
+        queryClient.setQueryData(["formDetails", formId], {
+          ...previousForm,
+          submissionCount: Math.max(0, previousForm.submissionCount - 1)
+        });
+      }
+      
+      // Optimistically update analytics data
+      if (previousAnalytics && submissionToDelete) {
+        const submissionDate = new Date(submissionToDelete.createdAt);
+        const now = new Date();
+        const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        const oneMonthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        
+        const updatedAnalytics: FormAnalytics = {
+          ...previousAnalytics,
+          totalSubmissions: Math.max(0, previousAnalytics.totalSubmissions - 1),
+        };
+        
+        if (submissionDate >= oneDayAgo) {
+          updatedAnalytics.last24Hours = Math.max(0, (updatedAnalytics.last24Hours || 0) - 1);
+        }
+        
+        if (submissionDate >= oneWeekAgo) {
+          updatedAnalytics.lastWeek = Math.max(0, (updatedAnalytics.lastWeek || 0) - 1);
+        }
+        
+        if (submissionDate >= oneMonthAgo) {
+          updatedAnalytics.lastMonth = Math.max(0, (updatedAnalytics.lastMonth || 0) - 1);
+        }
+        
+        // Update time series data if it exists
+        if (updatedAnalytics.timeSeriesData && updatedAnalytics.timeSeriesData.length > 0) {
+          const timePoint = getTimePointFromDate(submissionDate, timeRange);
+          
+          updatedAnalytics.timeSeriesData = updatedAnalytics.timeSeriesData.map((point: TimeSeriesPoint) => {
+            if (point.time === timePoint) {
+              return {
+                ...point,
+                submissions: Math.max(0, point.submissions - 1)
+              };
+            }
+            return point;
+          });
+        }
+        
+        queryClient.setQueryData(["formAnalytics", formId, timeRange], updatedAnalytics);
+      }
+      
+      // Return previous data for rollback
+      return { previousSubmissions, previousForm, previousAnalytics };
+    },
+    onError: (error, submissionId, context) => {
+      // Check if it's a 404 error (submission already deleted)
+      if (error instanceof Error && error.message.includes("404")) {
+        console.log("Submission already deleted or not found, skipping rollback");
+        // Show a less alarming toast
+        toast.info("This submission has already been deleted");
+        // We still need to ensure our UI is up to date
+        queryClient.invalidateQueries({ queryKey: ["formSubmissions", formId] });
+        return;
+      }
+      
+      console.error("Error deleting submission:", error);
+      if (context?.previousSubmissions) {
+        queryClient.setQueryData(["formSubmissions", formId], context.previousSubmissions);
+      }
+      if (context?.previousForm) {
+        queryClient.setQueryData(["formDetails", formId], context.previousForm);
+      }
+      if (context?.previousAnalytics) {
+        queryClient.setQueryData(["formAnalytics", formId, timeRange], context.previousAnalytics);
+      }
+      
+      // Show error toast
+      toast.error("Failed to delete submission", {
+        description: error instanceof Error ? error.message : "An unexpected error occurred",
+      });
+    },
+    onSuccess: () => {
+      // Invalidate relevant queries to refetch data
+      queryClient.invalidateQueries({ queryKey: ["formSubmissions", formId] });
+      queryClient.invalidateQueries({ queryKey: ["formDetails", formId] });
+      queryClient.invalidateQueries({ queryKey: ["formAnalytics", formId, timeRange] });
+      
+      toast.success("Submission deleted successfully");
+    }
+  });
+  
+  // Clean handler that uses the mutation
+  const handleSubmissionDelete = useCallback((submissionId: string) => {
+    deleteSubmissionMutation.mutate(submissionId);
+  }, [deleteSubmissionMutation]);
+  
+  // Helper function to get the time point string from a date based on time range
+  const getTimePointFromDate = (date: Date, range: 'day' | 'week' | 'month'): string => {
+    if (range === 'day') {
+      return format(date, 'HH:00');
+    } else if (range === 'week') {
+      return format(date, 'EEE');
+    } else { // month
+      return format(date, 'd');
+    }
+  };
+
   const handleTabClick = (tab: 'responses' | 'settings' | 'integration') => {
     setActiveTab(tab);
   };
@@ -192,7 +368,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
   }, []);
   
   // Generate appropriate sample data if real data is missing
-  const getFormattedChartData = () => {
+  const getFormattedChartData = useCallback(() => {
     if (!analytics?.timeSeriesData || analytics.timeSeriesData.length === 0) {
       // Generate placeholder data based on the selected time range
       if (timeRange === 'day') {
@@ -233,7 +409,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
     }
     
     // If we have real data, format it appropriately based on timeRange
-    return analytics.timeSeriesData.map((item: TimeSeriesDataItem) => {
+    return analytics.timeSeriesData.map((item: TimeSeriesPoint) => {
       if (timeRange === 'week') {
         // Try to parse the date and format it as day name
         try {
@@ -261,19 +437,23 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
       }
       return item;
     });
-  };
+  }, [analytics, timeRange]);
   
-  // Format chart data
-  const chartData = getFormattedChartData();
+  // Format chart data - memoize based on analytics
+  const chartData = React.useMemo(() => getFormattedChartData(), [getFormattedChartData]);
 
   // Get the most recent data point for the tooltip
-  const latestDataPoint = analytics?.timeSeriesData?.length 
-    ? analytics.timeSeriesData[analytics.timeSeriesData.length - 1]
-    : {
-        time: "12:00", 
-        submissions: 0, 
-        uniqueEmails: 0
-      };
+  const latestDataPoint: TimeSeriesPoint = React.useMemo(() => {
+    if (analytics?.timeSeriesData && analytics.timeSeriesData.length > 0) {
+      // We know this is safe because we've checked length > 0
+      return analytics.timeSeriesData[analytics.timeSeriesData.length - 1] as TimeSeriesPoint;
+    }
+    return {
+      time: "12:00", 
+      submissions: 0, 
+      uniqueEmails: 0
+    };
+  }, [analytics]);
 
   // Custom tooltip to show full date information
   const CustomTooltipContent = ({ active, payload, label }: any) => {
@@ -329,7 +509,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
           <p className="text-gray-700 dark:text-gray-300 mb-2 text-sm">{(error as Error)?.message || "An unknown error occurred"}</p>
           <button 
             className="px-4 py-2 bg-gray-800 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-white text-sm font-medium rounded-lg shadow-sm transition-colors"
-            onClick={() => refetch()}
+            onClick={() => refetchForm()}
           >
             Try Again
           </button>
@@ -340,7 +520,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
 
   return (
     <div className="flex flex-col gap-4 md:gap-6 w-full max-w-[1400px] mx-auto p-2 sm:p-4 lg:p-6">
-      {/* Form Header - improved responsiveness */}
+      {/* Form Header */}
       {form && (
         <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 p-3 sm:p-4 lg:p-6 shadow-sm relative overflow-hidden">
           <div className="absolute top-0 left-0 h-full w-1 sm:w-2 bg-gradient-to-b from-gray-400 to-gray-600 dark:from-zinc-600 dark:to-zinc-800"></div>
@@ -350,7 +530,15 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
             id={formId as string} 
             name={form.name} 
             createdAt={form.createdAt} 
-            responsesCount={submissions?.submissions?.length || 0} 
+            responsesCount={form.submissionCount} 
+            emailSettings={form.emailSettings ? {
+              enabled: form.emailSettings.enabled,
+              fromEmail: form.emailSettings.fromEmail || undefined,
+              subject: form.emailSettings.subject || undefined,
+              template: form.emailSettings.template || undefined,
+              replyTo: form.emailSettings.replyTo || undefined
+            } : undefined}
+            onRefresh={() => refetchForm()}
           />
         </div>
       )}
@@ -358,7 +546,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
       {/* Dashboard stats - improved grid responsiveness */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {/* Card 1 */}
-        <Card className="group bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
+        {/* <Card className="group bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
           <CardHeader className="p-3 sm:p-4 bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-200 dark:border-zinc-800">
             <div className="flex items-center gap-2">
               <div className="p-1.5 sm:p-2 rounded-lg bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300">
@@ -377,9 +565,9 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
               </div>
             )}
           </CardContent>
-        </Card>
+        </Card> */}
         
-        <Card className="group bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
+        {/* <Card className="group bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
           <CardHeader className="p-4 bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-200 dark:border-zinc-800">
             <div className="flex items-center gap-2">
               <div className="p-2 rounded-lg bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300">
@@ -398,8 +586,8 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
               </div>
             )}
           </CardContent>
-        </Card>
-        
+        </Card> */}
+{/*         
         <Card className="group bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
           <CardHeader className="p-4 bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-200 dark:border-zinc-800">
             <div className="flex items-center gap-2">
@@ -419,10 +607,10 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
               </div>
             )}
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
 
-      {/* Chart section - improved responsiveness */}
+      {/* Chart section */}
       <div className="col-span-1 sm:col-span-2 lg:col-span-3">
         <FormAnalyticsChart 
           chartData={chartData}
@@ -435,7 +623,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
         />
       </div>
 
-      {/* Tabs section - improved responsiveness */}
+      {/* Tabs section */}
       <div className="col-span-1 sm:col-span-2 lg:col-span-3 flex flex-col bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 shadow-sm overflow-hidden">
         <nav className="flex flex-wrap sm:flex-nowrap border-b border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-800/50 p-1">
           {[
@@ -466,14 +654,15 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
               isError={isSubmissionsError}
               submissions={submissions} 
               onRetry={() => refetchSubmissions()}
+              onSubmissionDelete={handleSubmissionDelete}
             />
           )}
           {activeTab === 'settings' && (
             <FormSettings 
               formId={formId as string}
-              name={form.name}
-              description={form.description ?? undefined}
-              emailSettings={form.emailSettings as any}
+              name={form?.name || ''}
+              description={form?.description ?? undefined}
+              emailSettings={form?.emailSettings as any}
               onUpdate={(data) => console.log('Update form:', data)}
             />
           )}

@@ -18,7 +18,7 @@ const page = () => {
       
 
 <FeedbackForm 
-  formId="cm8olcdhl0001o74h5g2yo45x"
+  formId="cm8q6hbad0009o7572hpdxxxc"
   theme="rounded"
   
   

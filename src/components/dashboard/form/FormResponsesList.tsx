@@ -1,9 +1,8 @@
 import React from 'react';
 import { useState } from "react"
 import { format } from "date-fns"
-import { AlertCircle, Inbox, Eye } from "lucide-react"
+import { Eye } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import {SubmissionDetails} from "@/components/dashboard/form/SubmissionDetails"
 import {
@@ -26,13 +25,47 @@ interface FormResponsesListProps {
   isError: boolean
   submissions?: { submissions: Submission[] }
   onRetry: () => void
+  onSubmissionDelete?: (id: string) => void
 }
 
-export function FormResponsesList({ isLoading, isError, submissions, onRetry }: FormResponsesListProps) {
+export function FormResponsesList({ 
+  isLoading, 
+  isError, 
+  submissions, 
+  onRetry,
+  onSubmissionDelete
+}: FormResponsesListProps) {
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null)
   const [sheetOpen, setSheetOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 5
+  const [localSubmissions, setLocalSubmissions] = useState<Submission[]>(submissions?.submissions || [])
+
+  React.useEffect(() => {
+    if (submissions?.submissions) {
+      setLocalSubmissions(submissions.submissions);
+    }
+  }, [submissions?.submissions]);
+
+  React.useEffect(() => {
+    if (localSubmissions.length > 0) {
+      const totalPages = Math.ceil(localSubmissions.length / itemsPerPage);
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = Math.min(startIndex + itemsPerPage, localSubmissions.length);
+      const currentPageItems = localSubmissions.slice(startIndex, endIndex);
+      
+      if (currentPageItems.length === 0 && currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      }
+    }
+  }, [localSubmissions, currentPage, itemsPerPage]);
+
+  const handleDeleteSubmission = (id: string) => {
+    setLocalSubmissions(prev => prev.filter(sub => sub.id !== id));
+    setSheetOpen(false);
+    setSelectedSubmission(null);
+    onSubmissionDelete?.(id);
+  };
 
   if (isLoading) {
     return (
@@ -85,7 +118,7 @@ export function FormResponsesList({ isLoading, isError, submissions, onRetry }: 
     )
   }
 
-  if (!submissions?.submissions || submissions.submissions.length === 0) {
+  if (!localSubmissions.length) {
     return (
       <div className="bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-800 p-6">
         <div className="flex flex-col items-center text-center gap-4">
@@ -103,18 +136,19 @@ export function FormResponsesList({ isLoading, isError, submissions, onRetry }: 
     )
   }
 
-  // Calculate pagination
-  const totalSubmissions = submissions?.submissions?.length || 0
+  const totalSubmissions = localSubmissions.length;
   const totalPages = Math.ceil(totalSubmissions / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = Math.min(startIndex + itemsPerPage, totalSubmissions)
-  const paginatedSubmissions = submissions?.submissions?.slice(startIndex, endIndex) || []
+  const paginatedSubmissions = localSubmissions.slice(startIndex, endIndex)
 
   return (
     <div className="flex flex-col space-y-4">
+     
+      
       <div className="flex justify-between items-center pb-4 border-b border-gray-100 dark:border-zinc-800">
         <h3 className="text-lg font-medium text-gray-900 dark:text-white">Form Responses</h3>
-        <span className="text-sm px-3 py-1 bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-300 rounded-full font-mono">{submissions.submissions.length} responses</span>
+        <span className="text-sm px-3 py-1 bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-300 rounded-full font-mono">{localSubmissions.length} responses</span>
       </div>
       
       <div className="overflow-hidden border border-gray-200 dark:border-zinc-800 rounded-lg">
@@ -167,6 +201,8 @@ export function FormResponsesList({ isLoading, isError, submissions, onRetry }: 
                           submittedAt: selectedSubmission.createdAt,
                           data: selectedSubmission.data
                         }} 
+                        onBack={() => setSheetOpen(false)}
+                        onDelete={handleDeleteSubmission}
                       />
                     )}
                   </SheetContent>

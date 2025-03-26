@@ -45,7 +45,7 @@ export function SiteHeader() {
       "flex h-(--header-height) shrink-0 items-center",
       "border-b transition-[width,height] ease-linear",
       "bg-white/50 dark:bg-zinc-800",
-      "border-zinc-200 dark:border-zinc-800",
+      "border-zinc-200 dark:border-zinc-900",
       "backdrop-blur-sm",
       "group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)"
     )}>
@@ -66,7 +66,7 @@ export function SiteHeader() {
             orientation="vertical"
             className={cn(
               "mx-2 ",
-              "bg-zinc-300 dark:bg-white data-[orientation=vertical]:h-4"
+              "bg-zinc-300 dark:bg-zinc-900 data-[orientation=vertical]:h-4"
             )}
           />
           <BreadcrumbNav />

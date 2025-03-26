@@ -3,6 +3,8 @@ import { Providers } from "../components/global/providers"
 import { ClerkProvider } from "@clerk/nextjs"
 import "./globals.css"
 import { MantlzProvider } from "@mantlz/nextjs"
+import { Toaster } from "@/components/ui/sonner"
+
 
 export const metadata: Metadata = {
   title: "Mantlz",
@@ -26,6 +28,7 @@ export default function RootLayout({
               </MantlzProvider>
             </Providers>
           </main>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

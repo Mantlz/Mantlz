@@ -26,6 +26,7 @@ const appRouter = j.mergeRouters(api, {
   apiKey: apiKeyRouter,
   auth: authRouter,
   usage: usageRouter,
+  
 })
 
 export type AppRouter = typeof appRouter

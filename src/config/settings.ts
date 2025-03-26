@@ -1,9 +1,12 @@
 export const navigationData = [
-  { name: "Notifications", icon: "Bell" },
+
   { name: "Appearance", icon: "Paintbrush" },
   { name: "Language & region", icon: "Globe" },
   { name: "Accessibility", icon: "Keyboard" },
   { name: "Advanced", icon: "Settings" },
+  { name: "Usage", icon: "BarChart" },
+  { name: "API Keys", icon: "Key" },
+  
 ];
 
 export const secondaryNavItems = [

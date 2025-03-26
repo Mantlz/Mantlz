@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, type PropsWithChildren } from 'react';
 import { createMantlzClient } from '../client';
 import { MantlzClient } from '../types';
 import { toast } from '../utils/toast';
@@ -20,7 +20,11 @@ export function useMantlz() {
   return context;
 }
 
-export function MantlzProvider({ apiKey, children }: { apiKey?: string; children: React.ReactNode }) {
+interface MantlzProviderProps extends PropsWithChildren {
+  apiKey?: string;
+}
+
+export function MantlzProvider({ apiKey, children }: MantlzProviderProps) {
   // Show a warning toast if apiKey is missing
   React.useEffect(() => {
     if (!apiKey) {

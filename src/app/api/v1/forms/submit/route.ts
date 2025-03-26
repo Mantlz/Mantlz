@@ -16,14 +16,12 @@ const submitSchema = z.object({
   }),
 });
 
-
-
 export async function POST(req: Request) {
   try {
     const body = await req.json();
     const { formId, apiKey, data } = submitSchema.parse(body);
 
-    // Validate API key
+    // Validate API key and update last used timestamp
     const apiKeyRecord = await db.apiKey.findUnique({
       where: { key: apiKey },
       include: { user: true },
@@ -35,6 +33,12 @@ export async function POST(req: Request) {
         { status: 401 }
       );
     }
+
+    // Update last used timestamp
+    await db.apiKey.update({
+      where: { id: apiKeyRecord.id },
+      data: { lastUsedAt: new Date() },
+    });
 
     // Get form with user data and email settings
     const form = await db.form.findUnique({
@@ -115,16 +119,21 @@ export async function POST(req: Request) {
         const fromEmail = form.emailSettings.fromEmail || process.env.RESEND_FROM_EMAIL || 'contact@mantlz.app';
         const subject = form.emailSettings.subject || `Form Submission Confirmation - ${form.name}`;
 
+        // Use our branded template with your logo
+        const htmlContent = await render(
+          FormSubmissionEmail({
+            formName: form.name,
+            submissionData: data,
+          })
+        );
+
         await resendClient.emails.send({
           from: fromEmail,
           to: data.email,
           subject,
-          replyTo: form.emailSettings.replyTo ?? undefined,
-          html: form.emailSettings.template || `
-            <h1>Thank you for your submission!</h1>
-            <p>We have received your submission for the form "${form.name}".</p>
-            <p>We will review your submission and get back to you soon.</p>
-          `.trim(),
+          // Always set reply-to as contact@mantlz.app unless specifically overridden in settings
+          replyTo: form.emailSettings.replyTo || 'contact@mantlz.app',
+          html: htmlContent,
         });
 
         console.log('Confirmation email sent successfully');

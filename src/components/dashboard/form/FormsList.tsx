@@ -84,132 +84,131 @@ export function FormsList({ itemsPerPage = 8 }: FormsListProps) {
   return (
     <div className="space-y-8">
       {/* Dashboard Header with Enhanced Retro Grid */}
-      <div className="relative flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-8 bg-white dark:bg-zinc-900 rounded-2xl border-2 border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden">
-        {/* Retro Grid Pattern with Glow */}
-        <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `linear-gradient(to right, #000 1px, transparent 1px),
-                             linear-gradient(to bottom, #000 1px, transparent 1px)`,
-            backgroundSize: '24px 24px'
-          }}></div>
-        </div>
-        
-        {/* Retro Corner Accents */}
-        <div className="absolute top-0 left-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform -translate-x-16 -translate-y-16 rotate-45"></div>
-        <div className="absolute bottom-0 right-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform translate-x-16 translate-y-16 rotate-45"></div>
-        
-        <div className="relative">
-          <h1 className="text-4xl font-mono font-bold text-zinc-900 dark:text-white tracking-tight">
-            Welcome back, {user?.firstName || 'there'} 👋
-          </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2 font-mono">
-            Here's an overview of your forms
-          </p>
-        </div>
-        <Button
-          className="relative bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 border-2 border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-300 px-6 py-6 text-base group"
-          onClick={() => window.location.href = '/dashboard/form/new'}
-        >
-          <span className="absolute inset-0 bg-black dark:bg-white opacity-0 group-hover:opacity-10 transition-opacity"></span>
-          <Plus className="h-5 w-5 mr-2 relative" />
-          Create New Form
-        </Button>
-      </div>
-
-      {/* Statistics Cards with Enhanced Retro Style */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <Card className="p-6 bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+      <div className="space-y-4 sm:space-y-8">
+        <div className="relative flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 sm:p-6 md:p-8 bg-white dark:bg-zinc-900 rounded-xl sm:rounded-2xl border-2 border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden">
+          {/* Retro Grid Pattern with Glow */}
+          <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]">
+            <div className="absolute inset-0" style={{
+              backgroundImage: `linear-gradient(to right, #000 1px, transparent 1px),
+                               linear-gradient(to bottom, #000 1px, transparent 1px)`,
+              backgroundSize: '24px 24px'
+            }}></div>
+          </div>
+          
           {/* Retro Corner Accents */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform rotate-45 translate-x-16 -translate-y-16"></div>
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform rotate-45 -translate-x-16 translate-y-16"></div>
+          <div className="absolute top-0 left-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform -translate-x-16 -translate-y-16 rotate-45"></div>
+          <div className="absolute bottom-0 right-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform translate-x-16 translate-y-16 rotate-45"></div>
           
-          <div className="flex items-center gap-4 relative">
-            <div className="p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 group-hover:scale-110 transition-transform duration-300">
-              <FileSpreadsheet className="h-6 w-6 text-zinc-900 dark:text-white" />
-            </div>
-            <div>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 font-mono">Total Forms</p>
-              <p className="text-3xl font-bold font-mono text-zinc-900 dark:text-white">{forms.length}</p>
-            </div>
+          <div className="relative w-full sm:w-auto">
+            <h1 className="text-2xl sm:text-3xl font-mono font-bold text-zinc-900 dark:text-white tracking-tight">
+              Welcome back, {user?.firstName || 'there'} 
+            </h1>
+            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1 sm:mt-2 font-mono">
+              Here's an overview of your forms
+            </p>
           </div>
-        </Card>
-
-        <Card className="p-6 bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform rotate-45 translate-x-16 -translate-y-16"></div>
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform rotate-45 -translate-x-16 translate-y-16"></div>
-          
-          <div className="flex items-center gap-4 relative">
-            <div className="p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 group-hover:scale-110 transition-transform duration-300">
-              <Users className="h-6 w-6 text-zinc-900 dark:text-white" />
-            </div>
-            <div>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 font-mono">Total Responses</p>
-              <p className="text-3xl font-bold font-mono text-zinc-900 dark:text-white">{totalResponses}</p>
-            </div>
-          </div>
-        </Card>
-
-        <Card className="p-6 bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform rotate-45 translate-x-16 -translate-y-16"></div>
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform rotate-45 -translate-x-16 translate-y-16"></div>
-          
-          <div className="flex items-center gap-4 relative">
-            <div className="p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 group-hover:scale-110 transition-transform duration-300">
-              <Calendar className="h-6 w-6 text-zinc-900 dark:text-white" />
-            </div>
-            <div>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 font-mono">Latest Form</p>
-              <p className="text-3xl font-bold font-mono text-zinc-900 dark:text-white">
-                {mostRecentForm ? format(new Date(mostRecentForm.createdAt), "MMM d") : "N/A"}
-              </p>
-            </div>
-          </div>
-        </Card>
-      </div>
-
-      {/* Forms Grid with Enhanced Retro Style */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {currentForms.map((form: Form) => (
-          <Card 
-            key={form.id}
-            className="group relative bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden rounded-xl"
+          <Button
+            className="relative w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 border-2 border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-300 px-4 sm:px-6 py-4 sm:py-6 text-sm sm:text-base group"
+            onClick={() => window.location.href = '/dashboard/form/new'}
           >
-            {/* Retro Accent Elements */}
-            <div className="absolute top-0 left-0 h-full w-1 bg-black dark:bg-white"></div>
+            <span className="absolute inset-0 bg-black dark:bg-white opacity-0 group-hover:opacity-10 transition-opacity"></span>
+            <Plus className="h-5 w-5 mr-2 relative" />
+            Create New Form
+          </Button>
+        </div>
+
+        {/* Statistics Cards with Enhanced Retro Style */}
+        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
+          <Card className="p-4 sm:p-6 bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+            {/* Retro Corner Accents */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform rotate-45 translate-x-16 -translate-y-16"></div>
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform rotate-45 -translate-x-16 translate-y-16"></div>
             
-            <div className="p-6 pl-7 relative">
+            <div className="flex items-center gap-3 sm:gap-4 relative">
+              <div className="p-2 sm:p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 group-hover:scale-110 transition-transform duration-300">
+                <FileSpreadsheet className="h-5 w-5 sm:h-6 sm:w-6 text-zinc-900 dark:text-white" />
+              </div>
+              <div>
+                <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-mono">Total Forms</p>
+                <p className="text-2xl sm:text-3xl font-bold font-mono text-zinc-900 dark:text-white">{forms.length}</p>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-4 sm:p-6 bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform rotate-45 translate-x-16 -translate-y-16"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform rotate-45 -translate-x-16 translate-y-16"></div>
+            
+            <div className="flex items-center gap-3 sm:gap-4 relative">
+              <div className="p-2 sm:p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 group-hover:scale-110 transition-transform duration-300">
+                <Users className="h-5 w-5 sm:h-6 sm:w-6 text-zinc-900 dark:text-white" />
+              </div>
+              <div>
+                <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-mono">Total Responses</p>
+                <p className="text-2xl sm:text-3xl font-bold font-mono text-zinc-900 dark:text-white">{totalResponses}</p>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-4 sm:p-6 bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform rotate-45 translate-x-16 -translate-y-16"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform rotate-45 -translate-x-16 translate-y-16"></div>
+            
+            <div className="flex items-center gap-3 sm:gap-4 relative">
+              <div className="p-2 sm:p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 group-hover:scale-110 transition-transform duration-300">
+                <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-zinc-900 dark:text-white" />
+              </div>
+              <div>
+                <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-mono">Latest Form</p>
+                <p className="text-2xl sm:text-3xl font-bold font-mono text-zinc-900 dark:text-white">
+                  {mostRecentForm ? format(new Date(mostRecentForm.createdAt), "MMM d") : "N/A"}
+                </p>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </div>
+
+      {/* Forms Grid with Enhanced Retro Style */}
+      <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
+        {currentForms.map((form: Form) => (
+          <Card 
+            key={form.id}
+            className="group relative bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden rounded-xl cursor-pointer"
+            onClick={() => window.location.href = `/dashboard/form/${form.id}`}
+          >
+            {/* Retro Accent Elements */}
+            <div className="absolute top-0 left-0 h-full w-0.5 xs:w-1 bg-black dark:bg-white"></div>
+            <div className="absolute top-0 right-0 w-24 xs:w-32 h-24 xs:h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform rotate-45 translate-x-16 -translate-y-16"></div>
+            <div className="absolute bottom-0 left-0 w-24 xs:w-32 h-24 xs:h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform rotate-45 -translate-x-16 translate-y-16"></div>
+            
+            <div className="p-3 xs:p-4 sm:p-6 pl-4 xs:pl-5 sm:pl-7 relative">
               {/* Icon and title with hover effect */}
-              <div className="flex items-center gap-3 mb-5">
-                <div className="rounded-lg p-2.5 bg-zinc-100 dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 group-hover:scale-110 transition-transform duration-300">
-                  <FileSpreadsheet className="h-5 w-5 text-zinc-900 dark:text-white" />
+              <div className="flex items-center gap-1.5 xs:gap-2 sm:gap-3 mb-2 xs:mb-3 sm:mb-5">
+                <div className="rounded-lg p-1.5 xs:p-2 sm:p-2.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 group-hover:scale-110 transition-transform duration-300">
+                  <FileSpreadsheet className="h-3 w-3 xs:h-4 xs:w-4 sm:h-5 sm:w-5 text-zinc-900 dark:text-white" />
                 </div>
-                <div className="font-mono font-bold text-lg line-clamp-1 text-zinc-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300">
+                <div className="font-mono font-bold text-sm xs:text-base sm:text-lg line-clamp-1 text-zinc-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300">
                   {form.name}
                 </div>
               </div>
               
               {/* Form metadata with retro style */}
-              <div className="flex items-center text-xs text-zinc-500 dark:text-zinc-400 mb-4 font-mono">
-                <Clock className="h-3.5 w-3.5 mr-1.5" />
+              <div className="flex items-center text-[8px] xs:text-[10px] sm:text-xs text-zinc-500 dark:text-zinc-400 mb-2 xs:mb-3 sm:mb-4 font-mono">
+                <Clock className="h-2.5 xs:h-3 sm:h-3.5 w-2.5 xs:w-3 sm:w-3.5 mr-1 sm:mr-1.5" />
                 <span>Created {format(new Date(form.createdAt), "MMM d, yyyy")}</span>
               </div>
               
-              {/* View button area with modern hover */}
+              {/* Response count and view indicator */}
               <div className="flex items-center justify-between">
-                <div className="text-xs font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white px-3 py-1 rounded-full border-2 border-zinc-200 dark:border-zinc-700 group-hover:scale-105 transition-transform duration-300">
+                <div className="text-[8px] xs:text-[10px] sm:text-xs font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white px-1.5 xs:px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border border-zinc-200 dark:border-zinc-700 group-hover:scale-105 transition-transform duration-300">
                   {form.responsesCount} responses
                 </div>
                 
-                <Button
-                  variant="ghost"
-                  className="inline-flex items-center gap-1 text-sm font-mono font-bold text-zinc-900 dark:text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:text-zinc-700 dark:hover:text-zinc-300"
-                  onClick={() => window.location.href = `/dashboard/form/${form.id}`}
-                >
-                  VIEW FORM
-                  <ArrowRight className="h-4 w-4 transform translate-x-0 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <div className="flex items-center gap-1 text-[10px] xs:text-xs sm:text-sm font-mono font-bold text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">
+                  <span>VIEW</span>
+                  <ArrowRight className="h-2.5 xs:h-3 sm:h-4 w-2.5 xs:w-3 sm:w-4 transform translate-x-0 group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
             </div>
             
@@ -221,7 +220,7 @@ export function FormsList({ itemsPerPage = 8 }: FormsListProps) {
       
       {/* Empty State with Enhanced Retro Grid */}
       {forms.length === 0 && (
-        <div className="relative text-center py-12 bg-white dark:bg-zinc-900 rounded-2xl border-2 border-dashed border-zinc-200 dark:border-zinc-800 overflow-hidden">
+        <div className="relative text-center py-8 sm:py-12 bg-white dark:bg-zinc-900 rounded-xl sm:rounded-2xl border-2 border-dashed border-zinc-200 dark:border-zinc-800 overflow-hidden">
           {/* Retro Grid Pattern */}
           <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]">
             <div className="absolute inset-0" style={{
@@ -236,11 +235,11 @@ export function FormsList({ itemsPerPage = 8 }: FormsListProps) {
           <div className="absolute bottom-0 right-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform translate-x-16 translate-y-16 rotate-45"></div>
           
           <div className="relative">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-zinc-100 dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 flex items-center justify-center">
-              <FileSpreadsheet className="h-8 w-8 text-zinc-400 dark:text-zinc-500" />
+            <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full bg-zinc-100 dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 flex items-center justify-center">
+              <FileSpreadsheet className="h-6 w-6 sm:h-8 sm:w-8 text-zinc-400 dark:text-zinc-500" />
             </div>
-            <h3 className="text-lg font-mono font-bold text-zinc-900 dark:text-white mb-2">No forms yet</h3>
-            <p className="text-zinc-500 dark:text-zinc-400 mb-4">Create your first form to get started</p>
+            <h3 className="text-base sm:text-lg font-mono font-bold text-zinc-900 dark:text-white mb-2">No forms yet</h3>
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">Create your first form to get started</p>
             <Button
               className="bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 border-2 border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-300"
               onClick={() => window.location.href = '/dashboard/form/new'}
@@ -254,21 +253,21 @@ export function FormsList({ itemsPerPage = 8 }: FormsListProps) {
       
       {/* Pagination with Enhanced Retro Style */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between pt-4 border-t-2 border-zinc-200 dark:border-zinc-800">
-          <div className="text-sm text-zinc-500 dark:text-zinc-400 font-mono">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-4 border-t-2 border-zinc-200 dark:border-zinc-800 gap-4 sm:gap-0">
+          <div className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-mono">
             Showing {startIndex + 1} to {Math.min(endIndex, forms.length)} of {forms.length} forms
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="border-2 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+              className="text-xs sm:text-sm border-2 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800"
             >
-              <ChevronLeft className="h-4 w-4" />
-              Previous
+              <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">Previous</span>
             </Button>
             
             <div className="flex items-center gap-1">
@@ -278,7 +277,7 @@ export function FormsList({ itemsPerPage = 8 }: FormsListProps) {
                   variant={currentPage === page ? "default" : "outline"}
                   size="sm"
                   onClick={() => setCurrentPage(page)}
-                  className={`w-8 border-2 ${
+                  className={`w-6 sm:w-8 text-xs sm:text-sm border-2 ${
                     currentPage === page 
                       ? 'bg-black dark:bg-white text-white dark:text-black border-transparent' 
                       : 'border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800'
@@ -294,10 +293,10 @@ export function FormsList({ itemsPerPage = 8 }: FormsListProps) {
               size="sm"
               onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="border-2 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+              className="text-xs sm:text-sm border-2 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800"
             >
-              Next
-              <ChevronRight className="h-4 w-4" />
+              <span className="hidden sm:inline">Next</span>
+              <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
             </Button>
           </div>
         </div>

@@ -96,6 +96,11 @@ export function TemplateDialog({ trigger }: TemplateDialogProps) {
   
   const router = useRouter()
 
+  interface ErrorResponse {
+    code?: string;
+    message?: string;
+  }
+
   const handleCreateForm = async () => {
     if (!selectedTemplate) return
 
@@ -105,17 +110,35 @@ export function TemplateDialog({ trigger }: TemplateDialogProps) {
         templateId: selectedTemplate,
       })
       
+      if (!response.ok) {
+        const errorData = await response.json() as ErrorResponse
+        
+        if (response.status === 403 && errorData.code === 'quota_exceeded') {
+          toast.error("Form Limit Reached", {
+            description: "You've reached the form limit on your free plan. Upgrade to create more forms.",
+            action: {
+              label: "Upgrade",
+              onClick: () => router.push("/settings/billing"),
+            },
+            duration: 5000,
+          })
+          return
+        }
+        
+        throw new Error(errorData.message || 'Failed to create form')
+      }
+      
       const result = await response.json()
       
       toast.success("Form created", {
         description: `Successfully created ${formTemplates[selectedTemplate].name}`,
       })
       
-      router.push(`/dashboard/forms/${result.id}`)
+      router.push(`/dashboard/form/${result.id}`)
       setOpen(false)
     } catch (error) {
       toast.error("Error", {
-        description: "Failed to create form. Please try again.",
+        description: error instanceof Error ? error.message : "Failed to create form. Please try again.",
       })
     } finally {
       setIsCreating(false)

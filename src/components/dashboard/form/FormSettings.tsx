@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Switch } from "@/components/ui/switch"
-import { useMantlz } from '@/hooks/use-mantlz';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+
 import { toast } from 'sonner';
+import { client } from '@/lib/client';
+import { useRouter } from 'next/navigation';
+import { cn } from "@/lib/utils"
 
 interface FormSettingsProps {
   formId: string;
@@ -17,47 +27,55 @@ interface FormSettingsProps {
     replyTo?: string;
   };
   onUpdate: (data: { name: string; description: string }) => void;
+  onDelete?: (id: string) => Promise<void>;
 }
 
-export function FormSettings({ formId, name, description = '', emailSettings, onUpdate }: FormSettingsProps) {
-  const [formName, setFormName] = useState(name);
-  const [formDescription, setFormDescription] = useState(description);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+export function FormSettings({ formId, name, description = '', emailSettings, onUpdate, onDelete }: FormSettingsProps) {
   const [isPublished, setIsPublished] = useState(false);
-  const [emailEnabled, setEmailEnabled] = useState(emailSettings?.enabled ?? false);
-  const { client } = useMantlz();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      onUpdate({ name: formName, description: formDescription });
-      setIsSubmitting(false);
-    }, 800);
-  };
+  const handleDelete = async () => {
+    console.log('Starting delete process for formId:', formId);
+    if (deleteConfirmation !== 'delete') {
+      console.log('Delete confirmation text does not match');
+      return;
+    }
 
-  const togglePublished = () => {
-    setIsPublished(!isPublished);
-  };
-
-  const handleEmailToggle = async (checked: boolean) => {
     try {
-      if (!client) {
-        throw new Error('Client not initialized');
-      }
+      console.log('Setting deleting state to true');
+      setIsDeleting(true);
       
-      await client.updateFormEmailSettings(formId, {
-        enabled: checked,
-        ...emailSettings
+      console.log('Making API call to delete form...');
+      const response = await client.forms.delete.$post({
+        formId: formId
       });
+      console.log('Delete API response:', response);
+
+      console.log('Form deleted successfully, showing toast');
+      toast.success('Form deleted successfully');
+      setIsDeleteModalOpen(false);
       
-      setEmailEnabled(checked);
-      toast.success('Email settings updated successfully');
+      console.log('Redirecting to dashboard');
+      router.push('/dashboard');
+      router.refresh();
+      
     } catch (error) {
-      console.error('Failed to update email settings:', error);
-      toast.error('Failed to update email settings');
+      console.error('Detailed error information:', {
+        error,
+        errorMessage: error instanceof Error ? error.message : 'Unknown error',
+        errorStack: error instanceof Error ? error.stack : undefined,
+        formId: formId
+      });
+
+      toast.error('Failed to delete form', {
+        description: error instanceof Error ? error.message : 'An unexpected error occurred',
+      });
+    } finally {
+      console.log('Cleanup: Setting deleting state to false');
+      setIsDeleting(false);
     }
   };
 
@@ -67,71 +85,27 @@ export function FormSettings({ formId, name, description = '', emailSettings, on
         <h3 className="text-lg font-medium text-gray-900 dark:text-white">Form Settings</h3>
       </div>
       
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="space-y-6">
         <div className="space-y-4">
           <div>
-            <label htmlFor="formName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Form Name
             </label>
-            <input
-              id="formName"
-              type="text"
-              value={formName}
-              onChange={(e) => setFormName(e.target.value)}
-              className="w-full p-2.5 bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-gray-400 dark:focus:ring-zinc-600 focus:border-gray-400 dark:focus:border-zinc-600"
-              placeholder="Enter form name"
-              required
-            />
+            <div className="w-full p-2.5 bg-gray-50 dark:bg-zinc-800/50 border border-gray-200 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white text-sm">
+              {name}
+            </div>
           </div>
           
           <div>
-            <label htmlFor="formDescription" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Description
             </label>
-            <textarea
-              id="formDescription"
-              value={formDescription}
-              onChange={(e) => setFormDescription(e.target.value)}
-              rows={4}
-              className="w-full p-2.5 bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-gray-400 dark:focus:ring-zinc-600 focus:border-gray-400 dark:focus:border-zinc-600"
-              placeholder="Enter form description (optional)"
-            />
-          </div>
-
-          <div className="flex items-center justify-between py-4">
-            <div>
-              <h4 className="text-sm font-medium text-gray-900 dark:text-white">Email Notifications</h4>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Send confirmation emails to users when they submit this form
-              </p>
+            <div className="w-full min-h-[60px] max-h-[80px] overflow-y-auto p-2.5 bg-gray-50 dark:bg-zinc-800/50 border border-gray-200 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white text-sm">
+              {description || <span className="text-gray-500 dark:text-gray-400 italic">No description provided</span>}
             </div>
-            <Switch
-              checked={emailEnabled}
-              onCheckedChange={handleEmailToggle}
-            />
           </div>
         </div>
-        
-        <div className="pt-4 border-t border-gray-100 dark:border-zinc-800 flex justify-end">
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="px-4 py-2 bg-gray-800 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-white text-sm font-medium rounded-lg shadow-sm transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
-          >
-            {isSubmitting ? (
-              <span className="flex items-center">
-                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Saving...
-              </span>
-            ) : (
-              'Save Changes'
-            )}
-          </button>
-        </div>
-      </form>
+      </div>
 
       <div className="mt-12 pt-6 border-t border-gray-100 dark:border-zinc-800">
         <div className="flex items-center justify-between pb-4">
@@ -143,11 +117,114 @@ export function FormSettings({ formId, name, description = '', emailSettings, on
           <p className="text-sm text-red-700 dark:text-red-300 mb-4">
             Once you delete a form, there is no going back. All form submissions will be permanently deleted.
           </p>
-          <button className="px-4 py-2 bg-white dark:bg-zinc-900 border border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 text-sm font-medium rounded-lg transition-colors">
+          <button 
+            onClick={() => setIsDeleteModalOpen(true)}
+            className="px-4 py-2 bg-white dark:bg-zinc-900 border border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 text-sm font-medium rounded-lg transition-colors"
+          >
             Delete Form
           </button>
         </div>
       </div>
+
+      <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
+        <DialogContent className="w-[95vw] max-w-[400px] sm:max-w-[600px] p-0 bg-transparent border-none">
+          <div className="flex flex-col bg-white dark:bg-zinc-900/90 rounded-3xl border border-gray-200 dark:border-white/5 shadow-2xl overflow-hidden dark:backdrop-blur-xl">
+            {/* Header */}
+            <div className="p-6 sm:p-8 bg-white dark:bg-transparent border-b border-gray-200 dark:border-white/5">
+              <DialogTitle className={cn(
+                "text-2xl sm:text-3xl",
+                "font-sans font-bold",
+                "text-gray-900 dark:text-white",
+                "flex items-center gap-2",
+                "tracking-tight"
+              )}>
+                Delete Form
+              </DialogTitle>
+              <DialogDescription className={cn(
+                "mt-3",
+                "font-sans text-base",
+                "text-gray-600 dark:text-gray-300",
+                "leading-relaxed"
+              )}>
+                This action cannot be undone. All form submissions will be permanently deleted.
+                <br className="hidden sm:block" />
+                Type <span className="font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 px-2.5 py-1 rounded-full text-sm">delete</span> to confirm.
+              </DialogDescription>
+            </div>
+
+            {/* Input section */}
+            <div className="p-6 sm:p-8 bg-white dark:bg-zinc-800/30">
+              <Input
+                value={deleteConfirmation}
+                onChange={(e) => setDeleteConfirmation(e.target.value)}
+                placeholder="Type 'delete' to confirm"
+                className={cn(
+                  "font-sans",
+                  "px-4 py-3",
+                  "bg-gray-50 dark:bg-zinc-800/50",
+                  "border border-gray-200 dark:border-zinc-700/50",
+                  "rounded-xl",
+                  "text-gray-900 dark:text-gray-100",
+                  "placeholder:text-gray-400 dark:placeholder:text-gray-500",
+                  "focus:ring-4 focus:ring-red-500/10 dark:focus:ring-red-500/10",
+                  "focus:border-red-400 dark:focus:border-red-400",
+                  "transition-all duration-200"
+                )}
+              />
+            </div>
+
+            {/* Footer */}
+            <div className={cn(
+              "flex flex-col sm:flex-row justify-end gap-2 sm:gap-3",
+              "p-6 sm:p-8",
+              "bg-white dark:bg-zinc-800/30",
+              "border-t border-gray-200 dark:border-white/5"
+            )}>
+              <Button
+                variant="outline"
+                onClick={() => setIsDeleteModalOpen(false)}
+                className={cn(
+                  "font-sans font-medium",
+                  "px-6 py-2.5",
+                  "bg-white dark:bg-transparent",
+                  "border border-gray-200 dark:border-zinc-700",
+                  "text-gray-700 dark:text-gray-200",
+                  "hover:bg-gray-50 dark:hover:bg-zinc-800/50",
+                  "rounded-xl",
+                  "transition-all duration-200"
+                )}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={handleDelete}
+                disabled={deleteConfirmation !== 'delete' || isDeleting}
+                className={cn(
+                  "font-sans font-medium",
+                  "px-6 py-2.5",
+                  "bg-red-500 dark:bg-red-500",
+                  "text-white",
+                  "hover:bg-red-600 dark:hover:bg-red-600",
+                  "disabled:opacity-50 disabled:cursor-not-allowed",
+                  "rounded-xl",
+                  "transition-all duration-200",
+                  "disabled:hover:bg-red-500"
+                )}
+              >
+                {isDeleting ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <span>Deleting...</span>
+                  </div>
+                ) : (
+                  "Delete Form"
+                )}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 } 
