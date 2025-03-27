@@ -4,6 +4,7 @@ import { formRouter } from "./routers/form-router"
 import { authRouter } from "./routers/auth-route"
 import { apiKeyRouter } from "./routers/api-key-router"
 import { usageRouter } from "./routers/usage-router"
+import { userRouter } from "./routers/user-router"
 
 /**
  * This is your base API.
@@ -26,7 +27,7 @@ const appRouter = j.mergeRouters(api, {
   apiKey: apiKeyRouter,
   auth: authRouter,
   usage: usageRouter,
-  
+  user: userRouter,
 })
 
 export type AppRouter = typeof appRouter

@@ -16,6 +16,7 @@ import {
   Video,
   BarChart,
   Key,
+  AtSign,
 } from "lucide-react"
 
 
@@ -45,6 +46,7 @@ import UsageSettings from './usage';
 import { getIcon, iconMap } from '@/types/iconMap';
 import { cn } from '@/lib/utils';
 import ApiKeySettings from './ApiKeySettings';
+import EmailSettings from './EmailSettings';
 
 const data = navigationData as Array<{ name: string; icon: keyof typeof iconMap } & { [key: string]: any }>;
 
@@ -158,6 +160,7 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
                 {selectedTab === 'Notifications' && <NotificationSettings />}
                 {selectedTab === 'Usage' && <UsageSettings />}
                 {selectedTab === 'API Keys' && <ApiKeySettings />}
+                {selectedTab === 'Email Settings' && <EmailSettings />}
               </div>
             </div>
           </main>

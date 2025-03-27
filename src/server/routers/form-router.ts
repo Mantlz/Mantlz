@@ -19,6 +19,12 @@ interface EmailSettings {
   subject?: string;
   template?: string;
   replyTo?: string;
+  // Developer notification settings
+  developerNotificationsEnabled?: boolean;
+  developerEmail?: string;
+  maxNotificationsPerHour?: number;
+  notificationConditions?: any;
+  lastNotificationSentAt?: Date;
 }
 
 // Define available form templates
@@ -240,7 +246,7 @@ export const formRouter = j.router({
     .input(z.object({
       id: z.string(),
     }))
-    .query(async ({ c, ctx, input }) => {
+    .query(async ({ c, input, ctx }) => {
       const { id } = input;
       const userId = ctx.user.id;
       
@@ -557,6 +563,18 @@ export const formRouter = j.router({
     .input(z.object({
       formId: z.string(),
       enabled: z.boolean(),
+      // Add new fields for developer notifications
+      developerNotifications: z.object({
+        enabled: z.boolean(),
+        digestFrequency: z.enum(['realtime', 'hourly', 'daily', 'weekly']),
+        // Notification conditions
+        conditions: z.array(z.object({
+          field: z.string(),
+          operator: z.enum(['equals', 'contains', 'greaterThan', 'lessThan']),
+          value: z.string()
+        })).optional(),
+        maxNotificationsPerHour: z.number().min(1).max(100).default(10),
+      }).optional(),
     }))
     .mutation(async ({ c, input, ctx }) => {
       const { formId, enabled } = input;
@@ -673,6 +691,114 @@ export const formRouter = j.router({
           throw error;
         }
         throw new HTTPException(500, { message: 'Failed to delete submission' });
+      }
+    }),
+
+  // Get email settings for a form
+  getEmailSettings: privateProcedure
+    .input(z.object({
+      formId: z.string(),
+    }))
+    .query(async ({ c, input, ctx }) => {
+      const { formId } = input;
+      const userId = ctx.user.id;
+      
+      // First verify the user owns this form
+      const form = await db.form.findFirst({
+        where: {
+          id: formId,
+          userId, // Ensure user owns the form
+        },
+        include: {
+          emailSettings: true,
+        }
+      });
+
+      if (!form) {
+        throw new HTTPException(404, { message: 'Form not found or you do not have permission to access it' });
+      }
+
+      return c.superjson(form.emailSettings || {
+        id: '',
+        formId,
+        enabled: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        fromEmail: null,
+        subject: null,
+        template: null,
+        replyTo: null,
+        developerNotificationsEnabled: false,
+        developerEmail: null,
+        maxNotificationsPerHour: 10,
+        notificationConditions: null,
+        lastNotificationSentAt: null,
+      });
+    }),
+
+  // Update email settings for a form
+  updateEmailSettings: privateProcedure
+    .input(z.object({
+      formId: z.string(),
+      enabled: z.boolean().optional(),
+      fromEmail: z.string().email().optional().nullable(),
+      subject: z.string().optional().nullable(),
+      template: z.string().optional().nullable(),
+      replyTo: z.string().email().optional().nullable(),
+      // Developer notification settings
+      developerNotificationsEnabled: z.boolean().optional(),
+      developerEmail: z.string().email().optional().nullable(),
+      maxNotificationsPerHour: z.number().min(1).max(100).optional(),
+      notificationConditions: z.any().optional(),
+    }))
+    .mutation(async ({ c, input, ctx }) => {
+      const { formId, ...settings } = input;
+      const userId = ctx.user.id;
+      
+      // First verify the user owns this form
+      const form = await db.form.findFirst({
+        where: {
+          id: formId,
+          userId, // Ensure user owns the form
+        },
+        include: {
+          user: {
+            select: {
+              plan: true,
+            }
+          }
+        }
+      });
+
+      if (!form) {
+        throw new HTTPException(404, { message: 'Form not found or you do not have permission to update it' });
+      }
+
+      // Check if user is trying to enable developer notifications but isn't on PRO plan
+      if (settings.developerNotificationsEnabled && form.user.plan !== 'PRO') {
+        throw new HTTPException(403, { message: 'Developer notifications are only available on the PRO plan' });
+      }
+
+      try {
+        // Update or create email settings
+        const emailSettings = await db.emailSettings.upsert({
+          where: {
+            formId,
+          },
+          update: settings,
+          create: {
+            formId,
+            ...settings,
+            enabled: settings.enabled ?? false,
+            developerNotificationsEnabled: settings.developerNotificationsEnabled ?? false,
+            maxNotificationsPerHour: settings.maxNotificationsPerHour ?? 10,
+          },
+        });
+
+        return c.superjson({ success: true });
+      } catch (error) {
+        console.error('Error updating email settings:', error);
+        throw new HTTPException(500, { message: 'Failed to update email settings' });
       }
     }),
 });

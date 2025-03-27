@@ -5,6 +5,7 @@ import { Resend } from 'resend';
 import { FormSubmissionEmail } from '@/emails/form-submission';
 import { render } from '@react-email/components';
 import { Plan, Prisma } from '@prisma/client';
+import { sendDeveloperNotification } from '@/services/notifcation-service';
 
 const submitSchema = z.object({
   formId: z.string(),
@@ -56,6 +57,7 @@ export async function POST(req: Request) {
             subject: true,
             template: true,
             replyTo: true,
+            developerNotificationsEnabled: true,
           },
         },
       },
@@ -148,6 +150,25 @@ export async function POST(req: Request) {
         emailType: typeof data.email,
         emailEnabled: form.emailSettings?.enabled,
       });
+    }
+
+    // Send notification to developer if PRO plan and notifications enabled
+    if (form.user.plan === Plan.PRO) {
+      try {
+        console.log('🔔 Attempting to send developer notification', {
+          formId,
+          submissionId: submission.id,
+          hasEmailSettings: !!form.emailSettings,
+          notificationsEnabled: form.emailSettings?.developerNotificationsEnabled
+        });
+        
+        const notificationResult = await sendDeveloperNotification(formId, submission.id, data);
+        
+        console.log('🔔 Developer notification result:', notificationResult);
+      } catch (error) {
+        console.error('❌ Failed to send developer notification:', error);
+        // Non-blocking, continue with response
+      }
     }
 
     return NextResponse.json({ 

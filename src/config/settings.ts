@@ -6,6 +6,7 @@ export const navigationData = [
   { name: "Advanced", icon: "Settings" },
   { name: "Usage", icon: "BarChart" },
   { name: "API Keys", icon: "Key" },
+  { name: "Email Settings", icon: "AtSign" },
   
 ];
 
