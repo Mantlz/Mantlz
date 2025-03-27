@@ -859,75 +859,87 @@ export const formRouter = j.router({
       }
     }),
 
-  // Get global settings for the user
-  getGlobalSettings: privateProcedure
-    .query(async ({ c, ctx }) => {
-      const userId = ctx.user.id;
-      
-      const globalSettings = await db.globalSettings.findUnique({
-        where: { userId }
-      });
-
-      return c.superjson(globalSettings || {
-        developerNotificationsEnabled: false,
-        maxNotificationsPerHour: 10,
-      });
-    }),
-
-  // Update global settings for the user
+  // Update global settings
   updateGlobalSettings: privateProcedure
     .input(z.object({
-      developerNotificationsEnabled: z.boolean().optional(),
-      maxNotificationsPerHour: z.number().min(1).max(100).optional(),
+      maxNotificationsPerHour: z.number().min(1).max(100),
+      developerNotificationsEnabled: z.boolean(),
+      debugMode: z.object({
+        enabled: z.boolean(),
+        webhookUrl: z.string().nullable(),
+        logLevel: z.enum(['basic', 'detailed', 'verbose']),
+        includeMetadata: z.boolean(),
+      }),
     }))
     .mutation(async ({ c, input, ctx }) => {
-      const userId = ctx.user.id;
-      
-      try {
-        // Get user with plan
-        const user = await db.user.findUnique({
-          where: { id: userId },
-          select: { plan: true }
-        });
+      const { user } = ctx;
+      if (!user) throw new HTTPException(401, { message: "Unauthorized" });
 
-        if (!user) {
-          throw new HTTPException(404, { message: 'User not found' });
+      // Get user with plan
+      const userWithPlan = await db.user.findUnique({
+        where: { id: user.id },
+        select: { 
+          plan: true,
+          id: true
         }
+      });
 
-        // Only PRO users can modify notification settings
-        if (user.plan !== 'PRO') {
-          throw new HTTPException(403, { 
-            message: 'You need to be on the PRO plan to modify notification settings' 
-          });
-        }
+      if (!userWithPlan) throw new HTTPException(404, { message: "User not found" });
 
-        const globalSettings = await db.globalSettings.upsert({
-          where: { userId },
-          update: {
-            developerNotificationsEnabled: input.developerNotificationsEnabled,
-            maxNotificationsPerHour: input.maxNotificationsPerHour,
-          },
-          create: {
-            userId,
-            developerNotificationsEnabled: input.developerNotificationsEnabled ?? false,
-            maxNotificationsPerHour: input.maxNotificationsPerHour ?? 10,
-          },
+      // Only PRO users can modify debug settings
+      if (userWithPlan.plan !== 'PRO') {
+        throw new HTTPException(403, { 
+          message: 'Debug mode settings are only available for PRO users'
         });
-
-        return c.superjson({ 
-          success: true, 
-          data: {
-            developerNotificationsEnabled: globalSettings.developerNotificationsEnabled,
-            maxNotificationsPerHour: globalSettings.maxNotificationsPerHour,
-          }
-        });
-      } catch (error) {
-        console.error('Error updating global settings:', error);
-        if (error instanceof HTTPException) {
-          throw error;
-        }
-        throw new HTTPException(500, { message: 'Failed to update global settings' });
       }
+
+      // Update settings
+      const settings = await db.globalSettings.upsert({
+        where: { userId: user.id },
+        create: {
+          userId: user.id,
+          maxNotificationsPerHour: input.maxNotificationsPerHour,
+          developerNotificationsEnabled: input.developerNotificationsEnabled,
+          debugMode: input.debugMode,
+        },
+        update: {
+          maxNotificationsPerHour: input.maxNotificationsPerHour,
+          developerNotificationsEnabled: input.developerNotificationsEnabled,
+          debugMode: input.debugMode,
+        },
+      });
+
+      // Update debug service configuration
+      const debugService = (await import('@/services/debug-service')).debugService;
+      debugService.setConfig(input.debugMode);
+
+      return c.superjson(settings);
+    }),
+
+  // Get global settings
+  getGlobalSettings: privateProcedure
+    .query(async ({ c, ctx }) => {
+      const { user } = ctx;
+      if (!user) throw new HTTPException(401, { message: "Unauthorized" });
+
+      const settings = await db.globalSettings.findUnique({
+        where: { userId: user.id },
+      });
+
+      if (!settings) {
+        return c.superjson({
+          maxNotificationsPerHour: 10,
+          developerNotificationsEnabled: false,
+          debugMode: {
+            enabled: false,
+            webhookUrl: null,
+            logLevel: 'basic',
+            includeMetadata: false,
+          },
+        });
+      }
+
+      return c.superjson(settings);
     }),
 
   // Get user's current plan

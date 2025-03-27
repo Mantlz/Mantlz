@@ -41,7 +41,7 @@ import {
 
 import { navigationData } from '@/config/settings';
 import { AppearanceSettings } from './AppearanceSettings';
-import NotificationSettings  from './NotificationSettings';
+import NotificationSettings from './NotificationSettings';
 import UsageSettings from './usage';
 import { getIcon, iconMap } from '@/types/iconMap';
 import { cn } from '@/lib/utils';
