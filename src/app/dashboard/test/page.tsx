@@ -18,12 +18,12 @@ const page = () => {
       
 
 <FeedbackForm 
-  formId="cm8qiiwc200020jnk5f5pf3eh"
+  formId="cm8qrrlr5000a0jgxmjgt7i6u"
   theme="rounded"
   
   
   // Event handlers
-  onSubmitSuccess={(data) => console.log(data)}
+ // onSubmitSuccess={(data) => console.log(data)}
 />
 
 {/* <WaitlistForm

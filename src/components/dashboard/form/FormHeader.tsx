@@ -87,7 +87,16 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0, emailSetti
 
   return (
     <>
-      <Card className="p-5 bg-zinc-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-500 rounded-lg shadow-md mb-6">
+      <Card className="p-5  bg-gradient-to-b from-slate-50 via-slate-50 to-slate-100 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-800 border-none rounded-lg shadow-md mb-6">
+
+
+
+              {/* Subtle gradient background */}
+      {/* <div className="absolute inset-0 bg-gradient-to-br from-slate-50/50 to-slate-100/50 dark:from-zinc-900/50 dark:to-zinc-800/50 pointer-events-none" /> */}
+      
+      {/* Accent line */}
+      {/* <div className="absolute top-0 left-0 h-full w-1 bg-gradient-to-b from-slate-300 via-slate-400 to-slate-500 dark:from-zinc-700 dark:via-zinc-600 dark:to-zinc-500" /> */}
+        
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div>
             <h1 className="text-xl font-medium text-slate-900 dark:text-slate-50">{name}</h1>
@@ -143,7 +152,7 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0, emailSetti
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="flex items-center gap-3 bg-slate-100 dark:bg-zinc-950 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200 h-[52px] w-full sm:w-auto"
+                className="flex items-center gap-3 cursor-pointer bg-slate-100 dark:bg-zinc-950 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200 h-[52px] w-full sm:w-auto"
                 onClick={copyId}
               >
                 <Copy className="h-4 w-4 text-slate-600 dark:text-slate-300" />
@@ -178,6 +187,12 @@ function UpgradeModal({ isOpen, onClose, featureName }: UpgradeModalProps) {
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="bg-white dark:bg-zinc-900 p-6 rounded-md max-w-md w-full border border-slate-200 dark:border-zinc-800 shadow-xl">
+
+              {/* Subtle gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50/50 to-slate-100/50 dark:from-zinc-900/50 dark:to-zinc-800/50 pointer-events-none" />
+      
+      {/* Accent line */}
+      <div className="absolute top-0 left-0 h-full w-1 bg-gradient-to-b from-slate-300 via-slate-400 to-slate-500 dark:from-zinc-700 dark:via-zinc-600 dark:to-zinc-500" />
         {/* Modern minimal header */}
         <div className="relative -mt-6 -mx-6 mb-5  bg-zinc-100 dark:bg-black p-6 rounded-t-md border-b border-slate-200 dark:border-zinc-800">
           <div className="absolute top-0 left-0 w-full h-px  bg-slate-100 dark:bg-white/10"></div>

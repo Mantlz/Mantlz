@@ -96,44 +96,39 @@ export function FormAnalyticsChart({
   }
 
   return (
-    <Card className="relative bg-zinc-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-lg shadow-md">
-      {/* Retro grid background */}
-      <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.01] bg-zinc-100 dark:bg-zinc-900 pointer-events-none" 
-           style={{
-             backgroundImage: `linear-gradient(to right, currentColor 1px, transparent 1px),
-                              linear-gradient(to bottom, currentColor 1px, transparent 1px)`,
-             backgroundSize: '20px 20px'
-           }} />
+    <Card className="relative bg-zinc-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-lg shadow-md w-full">
+      {/* Subtle gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50/50 to-slate-100/50 dark:from-zinc-900/50 dark:to-zinc-800/50 pointer-events-none" />
       
       {/* Accent line */}
-      <div className="absolute top-0 left-0 h-full w-1 bg-gradient-to-br from-slate-300 to-slate-600 dark:from-zinc-700 dark:to-zinc-900" />
+      <div className="absolute top-0 left-0 h-full w-1 bg-gradient-to-b from-slate-300 via-slate-400 to-slate-500 dark:from-zinc-700 dark:via-zinc-600 dark:to-zinc-500" />
 
-      <CardHeader className="relative flex flex-col items-stretch space-y-0 border-b border-slate-200 dark:border-zinc-800 p-0 sm:flex-row">
-        <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-slate-900 dark:text-zinc-50 font-mono text-lg tracking-wider flex items-center gap-2">
-              <span className="relative">
-                <span className="absolute -inset-1 blur-sm rounded-lg" />
-                <span className="relative">FORM ANALYTICS</span>
-              </span>
+      <CardHeader className="relative space-y-4 border-b border-slate-200 dark:border-zinc-800 p-4 sm:p-6">
+        {/* Header Section */}
+        <div className="flex items-center justify-between">
+          <div className="space-y-1">
+            <CardTitle className="text-slate-900 dark:text-zinc-50 font-mono text-lg sm:text-xl tracking-wider">
+              Form Analytics
             </CardTitle>
-            <button
-              onClick={() => setIsCollapsed(!isCollapsed)}
-              className="group p-2 hover:bg-slate-100 dark:hover:bg-zinc-800 rounded-md transition-all duration-200"
-              aria-label={isCollapsed ? 'Expand chart' : 'Collapse chart'}
-            >
-              <ChevronDown 
-                className={`h-5 w-5 text-slate-500 dark:text-zinc-400 transition-transform duration-300 group-hover:text-slate-900 dark:group-hover:text-zinc-50 ${
-                  isCollapsed ? 'rotate-180' : ''
-                }`}
-              />
-            </button>
+            <CardDescription className="text-slate-600 dark:text-zinc-400 font-mono text-sm">
+              {getTimeRangeLabel()}
+            </CardDescription>
           </div>
-          <CardDescription className="text-slate-600 dark:text-zinc-400 font-mono text-xs tracking-wide">{getTimeRangeLabel()}</CardDescription>
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="group p-2 hover:bg-slate-100 dark:hover:bg-zinc-800 rounded-md transition-all duration-200"
+            aria-label={isCollapsed ? 'Expand chart' : 'Collapse chart'}
+          >
+            <ChevronDown 
+              className={`h-5 w-5 text-slate-500 dark:text-zinc-400 transition-transform duration-300 group-hover:text-slate-900 dark:group-hover:text-zinc-50 ${
+                isCollapsed ? 'rotate-180' : ''
+              }`}
+            />
+          </button>
         </div>
-        
-        {/* Metric Selector */}
-        <div className={`flex overflow-hidden transition-all duration-300 ${
+
+        {/* Metrics Grid */}
+        <div className={`grid grid-cols-2 gap-4 sm:gap-6 transition-all duration-300 ${
           isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[200px] opacity-100'
         }`}>
           {["submissions", "uniqueEmails"].map((key) => {
@@ -142,13 +137,13 @@ export function FormAnalyticsChart({
               <button
                 key={metric}
                 data-active={activeMetric === metric}
-                className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t border-slate-200 dark:border-zinc-800 px-6 py-4 text-left even:border-l data-[active=true]:bg-slate-100 dark:data-[active=true]:bg-zinc-800 data-[active=true]:text-slate-900 dark:data-[active=true]:text-zinc-50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6 transition-all duration-200 hover:bg-slate-50 dark:hover:bg-zinc-800"
                 onClick={() => setActiveMetric(metric)}
+                className="group relative flex flex-col items-start p-4 rounded-lg border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 transition-all duration-200 hover:border-slate-300 dark:hover:border-zinc-700 data-[active=true]:border-slate-400 dark:data-[active=true]:border-zinc-600 data-[active=true]:bg-slate-50 dark:data-[active=true]:bg-zinc-800"
               >
-                <span className="text-xs text-slate-500 dark:text-zinc-400 font-mono tracking-wide">
+                <span className="text-xs font-medium text-slate-500 dark:text-zinc-400 mb-1">
                   {chartConfig[metric].label}
                 </span>
-                <span className="text-lg font-mono font-bold leading-none sm:text-3xl text-slate-900 dark:text-zinc-50">
+                <span className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-zinc-50">
                   {total[metric].toLocaleString()}
                 </span>
               </button>
@@ -157,7 +152,7 @@ export function FormAnalyticsChart({
         </div>
 
         {/* Time Range Selector */}
-        <div className={`flex border-t border-slate-200 dark:border-zinc-800 sm:border-l sm:border-t-0 overflow-hidden transition-all duration-300 ${
+        <div className={`flex items-center gap-2 transition-all duration-300 ${
           isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[200px] opacity-100'
         }`}>
           {['day', 'week', 'month'].map((range) => (
@@ -165,7 +160,10 @@ export function FormAnalyticsChart({
               key={range}
               onClick={() => onTimeRangeChange(range as 'day' | 'week' | 'month')}
               data-active={timeRange === range}
-              className="flex-1 px-4 py-4 text-sm font-mono text-slate-700 dark:text-zinc-300 data-[active=true]:bg-slate-100 dark:data-[active=true]:bg-zinc-800 data-[active=true]:text-slate-900 dark:data-[active=true]:text-zinc-50"
+              className="px-4 py-2 text-sm font-medium rounded-md transition-all duration-200
+                text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-50
+                data-[active=true]:bg-slate-900 dark:data-[active=true]:bg-zinc-50
+                data-[active=true]:text-slate-50 dark:data-[active=true]:text-zinc-900"
             >
               {range.charAt(0).toUpperCase() + range.slice(1)}
             </button>
@@ -173,18 +171,20 @@ export function FormAnalyticsChart({
         </div>
       </CardHeader>
 
-      <CardContent className={`relative px-2 sm:p-6 overflow-hidden transition-all duration-300 ${
+      <CardContent className={`relative p-4 sm:p-6 overflow-hidden transition-all duration-300 ${
         isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[400px] opacity-100'
       }`}>
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
+          className="aspect-auto h-[250px] sm:h-[300px] lg:h-[350px] w-full"
         >
           <BarChart
             data={chartData}
             margin={{
-              left: 12,
-              right: 12,
+              left: 16,
+              right: 16,
+              top: 16,
+              bottom: 16,
             }}
           >
             <CartesianGrid vertical={false} stroke="currentColor" className="text-slate-200 dark:text-zinc-800" />
@@ -213,7 +213,7 @@ export function FormAnalyticsChart({
             <ChartTooltip
               content={
                 <ChartTooltipContent
-                  className="w-[150px] bg-zinc-100 dark:bg-zinc-900 text-slate-900 dark:text-zinc-50 border border-slate-200 dark:border-zinc-800 p-3 rounded-md shadow-lg"
+                  className="w-[160px] bg-white dark:bg-zinc-900 text-slate-900 dark:text-zinc-50 border border-slate-200 dark:border-zinc-800 p-3 rounded-lg shadow-lg"
                   nameKey={activeMetric}
                   labelFormatter={(value) => {
                     if (timeRange === 'day') {
@@ -227,7 +227,7 @@ export function FormAnalyticsChart({
             <Bar 
               dataKey={activeMetric}
               fill={`var(--color-${activeMetric})`}
-              radius={[4, 4, 0, 0]}
+              radius={[6, 6, 0, 0]}
               className="transition-all duration-200 hover:opacity-80"
             />
           </BarChart>

@@ -608,7 +608,7 @@ export const formRouter = j.router({
         const form = await db.form.findFirst({
           where: {
             id: formId,
-            userId: ctx.user.id, // Ensure user owns the form
+            userId: ctx.user.id,
           },
         });
 
@@ -617,33 +617,39 @@ export const formRouter = j.router({
         }
 
         // Delete everything in a transaction to ensure data consistency
-        await db.$transaction(async (tx) => {
-          // 1. Delete all submissions for this form
-          await tx.submission.deleteMany({
-            where: {
-              formId: formId,
-            },
-          });
+        await db.$transaction([
+          // 1. Delete notification logs first (they reference both form and submissions)
+          db.notificationLog.deleteMany({
+            where: { formId }
+          }),
 
-          // 2. Delete email settings if they exist
-          await tx.emailSettings.deleteMany({
-            where: {
-              formId: formId,
-            },
-          });
+          // 2. Delete submissions
+          db.submission.deleteMany({
+            where: { formId }
+          }),
 
-          // 3. Finally delete the form itself
-          await tx.form.delete({
+          // 3. Delete email settings
+          db.emailSettings.deleteMany({
+            where: { formId }
+          }),
+
+          // 4. Finally delete the form itself
+          db.form.delete({
             where: {
               id: formId,
-              userId: ctx.user.id, // Double check user owns the form
+              userId: ctx.user.id,
             },
-          });
-        });
+          })
+        ]);
 
         return c.superjson({ success: true });
       } catch (error) {
         console.error('Error deleting form:', error);
+        
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          throw new Error(`Database error: ${error.message}`);
+        }
+        
         throw new Error('Failed to delete form and its related data');
       }
     }),
@@ -679,7 +685,11 @@ export const formRouter = j.router({
           throw new HTTPException(403, { message: 'You do not have permission to delete this submission' });
         }
 
-        // Delete the submission
+        // Delete notifications first, then the submission
+        await db.notificationLog.deleteMany({
+          where: { submissionId }
+        });
+
         await db.submission.delete({
           where: { id: submissionId }
         });

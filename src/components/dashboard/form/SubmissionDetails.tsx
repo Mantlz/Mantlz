@@ -1,13 +1,9 @@
-import { format } from "date-fns";
 import { Copy, CheckCheck, Calendar, Hash, Database, AlertCircle, ExternalLink, ChevronLeft, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { formatDistanceToNow } from "date-fns";
-import { toast } from "sonner";
-import { client } from "@/lib/client";
 import { 
   AlertDialog,
   AlertDialogAction,
