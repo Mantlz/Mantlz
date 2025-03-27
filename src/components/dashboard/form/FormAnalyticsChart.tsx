@@ -161,9 +161,9 @@ export function FormAnalyticsChart({
               onClick={() => onTimeRangeChange(range as 'day' | 'week' | 'month')}
               data-active={timeRange === range}
               className="px-4 py-2 text-sm font-medium rounded-md transition-all duration-200
-                text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-50
-                data-[active=true]:bg-slate-900 dark:data-[active=true]:bg-zinc-50
-                data-[active=true]:text-slate-50 dark:data-[active=true]:text-zinc-900"
+                text-slate-600 dark:text-white hover:text-slate-900 dark:hover:text-white
+                data-[active=true]:bg-slate-900 dark:data-[active=true]:bg-white
+                data-[active=true]:text-white dark:data-[active=true]:text-zinc-900"
             >
               {range.charAt(0).toUpperCase() + range.slice(1)}
             </button>
@@ -176,7 +176,7 @@ export function FormAnalyticsChart({
       }`}>
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[250px] sm:h-[300px] lg:h-[350px] w-full"
+          className="aspect-auto h-[250px]  sm:h-[300px] lg:h-[350px] w-full"
         >
           <BarChart
             data={chartData}
@@ -198,7 +198,7 @@ export function FormAnalyticsChart({
                 fill: 'currentColor',
                 fontFamily: 'monospace', 
                 fontSize: 12,
-                className: 'text-slate-500 dark:text-zinc-400'
+                className: 'text-slate-900 dark:text-white'
               }}
               tickFormatter={(value) => {
                 if (timeRange === 'day') {
@@ -228,7 +228,7 @@ export function FormAnalyticsChart({
               dataKey={activeMetric}
               fill={`var(--color-${activeMetric})`}
               radius={[6, 6, 0, 0]}
-              className="transition-all duration-200 hover:opacity-80"
+              className="transition-all duration-200 hover:opacity-80 dark:fill-white"
             />
           </BarChart>
         </ChartContainer>
