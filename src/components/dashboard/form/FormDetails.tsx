@@ -74,10 +74,13 @@ interface TimeSeriesPoint {
 // Add this interface before the FormDetails function
 interface FormAnalytics {
   totalSubmissions: number;
-  uniqueSubmitters: number;
-  last24Hours: number;
-  lastWeek: number;
-  lastMonth: number;
+  dailySubmissionRate: number;
+  weekOverWeekGrowth: number;
+  last24HoursSubmissions: number;
+  engagementScore: number;
+  peakSubmissionHour: number;
+  completionRate: number;
+  averageResponseTime: number;
   timeSeriesData: TimeSeriesPoint[];
 }
 
@@ -203,10 +206,13 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
         // Return default data structure to avoid breaking the UI
         return {
           totalSubmissions: 0,
-          uniqueSubmitters: 0,
-          last24Hours: 0,
-          lastWeek: 0,
-          lastMonth: 0,
+          dailySubmissionRate: 0,
+          weekOverWeekGrowth: 0,
+          last24HoursSubmissions: 0,
+          engagementScore: 0,
+          peakSubmissionHour: 0,
+          completionRate: 0,
+          averageResponseTime: 0,
           timeSeriesData: []
         };
       }
@@ -274,15 +280,15 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
         };
         
         if (submissionDate >= oneDayAgo) {
-          updatedAnalytics.last24Hours = Math.max(0, (updatedAnalytics.last24Hours || 0) - 1);
+          updatedAnalytics.last24HoursSubmissions = Math.max(0, (updatedAnalytics.last24HoursSubmissions || 0) - 1);
         }
         
         if (submissionDate >= oneWeekAgo) {
-          updatedAnalytics.lastWeek = Math.max(0, (updatedAnalytics.lastWeek || 0) - 1);
+          updatedAnalytics.weekOverWeekGrowth = Math.max(0, (updatedAnalytics.weekOverWeekGrowth || 0) - 1);
         }
         
         if (submissionDate >= oneMonthAgo) {
-          updatedAnalytics.lastMonth = Math.max(0, (updatedAnalytics.lastMonth || 0) - 1);
+          updatedAnalytics.dailySubmissionRate = Math.max(0, (updatedAnalytics.dailySubmissionRate || 0) - 1);
         }
         
         // Update time series data if it exists

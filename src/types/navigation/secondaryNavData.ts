@@ -28,9 +28,4 @@ export const secondaryNavItems = [
     icon: icons.help,
     url: '/help',
   },
-  {
-    title: 'Search',
-    icon: icons.search,
-    url: '/search',
-  },
 ];

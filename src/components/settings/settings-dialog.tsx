@@ -47,6 +47,8 @@ import { getIcon, iconMap } from '@/types/iconMap';
 import { cn } from '@/lib/utils';
 import ApiKeySettings from './ApiKeySettings';
 import EmailSettings from './EmailSettings';
+import { AccessibilitySettings } from "./AccessibilitySettings"
+import { AdvancedSettings } from "./AdvancedSettings"
 
 const data = navigationData as Array<{ name: string; icon: keyof typeof iconMap } & { [key: string]: any }>;
 
@@ -72,7 +74,12 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
       </DialogTrigger>
       <DialogContent className={cn(
         "overflow-hidden p-0",
-        "w-[95vw] md:w-[900px] lg:w-[1100px] xl:w-[1200px]",
+        "w-[95vw]",
+        "sm:w-[90vw]",
+        "md:w-[90vw]",
+        "lg:w-[85vw]",
+        "xl:w-[70vw]",
+        "max-w-[1200px]",
         "h-[600px]",
         "border-2 border-zinc-300 dark:border-zinc-800",
         "shadow-[5px_5px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[5px_5px_0px_0px_rgba(0,0,0,0.3)]",
@@ -88,7 +95,7 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
           <Sidebar 
             collapsible="none" 
             className={cn(
-              "hidden md:flex border-r w-[280px]",
+              "hidden md:flex border-r w-[230px]",
               // Light mode - light gray sidebar
               "bg-zinc-100 border-zinc-200",
               // Dark mode - dark gray sidebar
@@ -158,9 +165,11 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
               <div className="flex-1 p-8">
                 {selectedTab === 'Appearance' && <AppearanceSettings />}
                 {selectedTab === 'Notifications' && <NotificationSettings />}
+                {selectedTab === 'Accessibility' && <AccessibilitySettings />}
                 {selectedTab === 'Usage' && <UsageSettings />}
                 {selectedTab === 'API Keys' && <ApiKeySettings />}
                 {selectedTab === 'Email Settings' && <EmailSettings />}
+                {selectedTab === 'Advanced' && <AdvancedSettings />}
               </div>
             </div>
           </main>

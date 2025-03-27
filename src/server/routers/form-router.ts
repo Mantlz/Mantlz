@@ -354,39 +354,96 @@ export const formRouter = j.router({
       // Get all submissions for this form
       const submissions = await db.submission.findMany({
         where: { formId },
-        orderBy: { createdAt: 'asc' }
+        orderBy: { createdAt: 'asc' },
+        select: {
+          id: true,
+          createdAt: true,
+          data: true,
+          email: true,
+        }
       });
       
-      // Count unique emails (if available in submissions)
-      const uniqueEmails = new Set();
-      submissions.forEach(sub => {
-        if (sub.email) uniqueEmails.add(sub.email);
-      });
-      
-      // Get submission metrics for various time periods
       const now = new Date();
+      const formCreatedAt = new Date(form.createdAt);
       
-      // Last 24 hours
+      // Calculate daily submission rate
+      const daysSinceCreation = Math.max(1, (now.getTime() - formCreatedAt.getTime()) / (1000 * 60 * 60 * 24));
+      const dailySubmissionRate = submissions.length / daysSinceCreation;
+      
+      // Calculate week-over-week growth
+      const oneWeekAgo = new Date(now);
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+      const twoWeeksAgo = new Date(now);
+      twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+      
+      const lastWeekSubmissions = submissions.filter(sub => 
+        new Date(sub.createdAt) >= oneWeekAgo
+      );
+      const previousWeekSubmissions = submissions.filter(sub => 
+        new Date(sub.createdAt) >= twoWeeksAgo && new Date(sub.createdAt) < oneWeekAgo
+      );
+      
+      const weekOverWeekGrowth = previousWeekSubmissions.length === 0
+        ? lastWeekSubmissions.length > 0 ? 1 : 0
+        : (lastWeekSubmissions.length - previousWeekSubmissions.length) / previousWeekSubmissions.length;
+      
+      // Calculate response rate (submissions in last 24 hours)
       const oneDayAgo = new Date(now);
       oneDayAgo.setDate(oneDayAgo.getDate() - 1);
       const last24HoursSubmissions = submissions.filter(sub => 
         new Date(sub.createdAt) >= oneDayAgo
       );
       
-      // Last 7 days
-      const oneWeekAgo = new Date(now);
-      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-      const lastWeekSubmissions = submissions.filter(sub => 
-        new Date(sub.createdAt) >= oneWeekAgo
-      );
+      // Calculate engagement score (based on submission frequency)
+      const submissionFrequency = submissions.length / daysSinceCreation;
+      const recentActivity = last24HoursSubmissions.length > 0 ? 1 : 0;
+      const engagementScore = (submissionFrequency * 0.7) + (recentActivity * 0.3);
+
+      // Calculate peak submission times
+      const submissionHours = submissions.map(sub => new Date(sub.createdAt).getHours());
+      const hourCounts = submissionHours.reduce((acc, hour) => {
+        acc[hour] = (acc[hour] || 0) + 1;
+        return acc;
+      }, {} as Record<number, number>);
       
-      // Last 30 days
-      const oneMonthAgo = new Date(now);
-      oneMonthAgo.setDate(oneMonthAgo.getDate() - 30);
-      const lastMonthSubmissions = submissions.filter(sub => 
-        new Date(sub.createdAt) >= oneMonthAgo
+      const peakHour = Object.entries(hourCounts).reduce((max, [hour, count]) => 
+        count > (hourCounts[parseInt(max[0])] || 0) ? [hour, count] : max
+      , ['0', 0])[0];
+
+      // Calculate completion rate (if we have abandonment data)
+      const abandonedSubmissions = submissions.filter(sub => {
+        const data = sub.data as any;
+        return data.isAbandoned === true;
+      });
+      const completionRate = submissions.length > 0 
+        ? (submissions.length - abandonedSubmissions.length) / submissions.length 
+        : 0;
+
+      // Calculate average response time (time between submissions)
+      const sortedSubmissions = [...submissions].sort((a, b) => 
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
       );
-      
+
+      // Calculate time differences between consecutive submissions
+      const responseTimes = sortedSubmissions.slice(1).map((sub, i) => {
+        const currentTime = new Date(sub.createdAt).getTime();
+        const previousTime = new Date(sortedSubmissions[i]!.createdAt).getTime();
+        return currentTime - previousTime;
+      });
+
+      // Calculate average response time in minutes
+      // Filter out any unreasonable gaps (e.g., > 24 hours) to avoid skewing the average
+      const reasonableResponseTimes = responseTimes.filter(time => 
+        time <= 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+      );
+
+      const avgResponseTime = reasonableResponseTimes.length > 0
+        ? reasonableResponseTimes.reduce((a, b) => a + b, 0) / reasonableResponseTimes.length
+        : 0;
+
+      // Convert to minutes and round to 1 decimal place
+      const avgResponseTimeInMinutes = Math.round((avgResponseTime / (1000 * 60)) * 10) / 10;
+
       // Create time series data (hourly for the last 24 hours)
       const timeSeriesData = Array.from({ length: 24 }, (_, i) => {
         const hour = new Date(now);
@@ -396,32 +453,26 @@ export const formRouter = j.router({
         const nextHour = new Date(hour);
         nextHour.setHours(hour.getHours() + 1);
         
-        // Filter submissions for this hour
         const hourSubmissions = submissions.filter(sub => {
           const subDate = new Date(sub.createdAt);
           return subDate >= hour && subDate < nextHour;
         });
         
-        // Count unique emails in this hour if available
-        const hourUniqueEmails = new Set();
-        hourSubmissions.forEach(sub => {
-          if (sub.email) hourUniqueEmails.add(sub.email);
-        });
-        
         return {
           time: `${hour.getHours()}:00`,
-          submissions: hourSubmissions.length || 0,       // Total submissions in this hour
-          uniqueEmails: hourUniqueEmails.size || 0,       // Unique emails in this hour (if available)
+          submissions: hourSubmissions.length,
         };
       });
       
-      // Return analytics data that matches our actual schema
       return c.superjson({
         totalSubmissions: submissions.length,
-        uniqueSubmitters: uniqueEmails.size,
-        last24Hours: last24HoursSubmissions.length,
-        lastWeek: lastWeekSubmissions.length,
-        lastMonth: lastMonthSubmissions.length,
+        dailySubmissionRate,
+        weekOverWeekGrowth,
+        last24HoursSubmissions: last24HoursSubmissions.length,
+        engagementScore,
+        peakSubmissionHour: parseInt(peakHour),
+        completionRate,
+        averageResponseTime: avgResponseTimeInMinutes,
         timeSeriesData,
       });
     }),

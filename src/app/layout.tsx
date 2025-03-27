@@ -28,7 +28,7 @@ export default function RootLayout({
               </MantlzProvider>
             </Providers>
           </main>
-          <Toaster />
+          <Toaster richColors position="top-center" />
         </body>
       </html>
     </ClerkProvider>

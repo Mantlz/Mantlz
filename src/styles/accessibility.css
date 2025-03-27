@@ -1,0 +1,99 @@
+/* Reduced Motion */
+.motion-reduce * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* High Contrast Mode */
+.high-contrast {
+  --background: #000000;
+  --foreground: #ffffff;
+  --muted: #666666;
+  --muted-foreground: #999999;
+  --border: #ffffff;
+  --input: #ffffff;
+  --ring: #ffffff;
+  
+  color: var(--foreground);
+  background-color: var(--background);
+}
+
+.high-contrast * {
+  border-color: var(--border);
+}
+
+.high-contrast button,
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+  background-color: var(--input);
+  color: var(--foreground);
+  border-color: var(--border);
+}
+
+/* Larger Text Mode */
+.larger-text {
+  font-size: var(--font-size-base, 120%);
+  line-height: var(--line-height-base, 1.5);
+}
+
+.larger-text h1 {
+  font-size: 2.4em;
+}
+
+.larger-text h2 {
+  font-size: 2em;
+}
+
+.larger-text h3 {
+  font-size: 1.8em;
+}
+
+.larger-text p, 
+.larger-text span, 
+.larger-text label, 
+.larger-text input {
+  font-size: 1.2em;
+}
+
+/* Keyboard Navigation */
+.keyboard-navigation *:focus {
+  outline: var(--focus-ring, 2px solid var(--ring));
+  outline-offset: var(--focus-ring-offset, 2px);
+}
+
+/* Screen Reader Only Content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus Visible */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--background);
+  color: var(--foreground);
+  padding: 8px;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 0;
+} 

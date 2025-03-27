@@ -3,8 +3,6 @@ import {
   IconLayoutDashboard,
   IconBrandCampaignmonitor,
   IconChartHistogram,
-  IconFolder,
-  IconUsers,
 } from "@tabler/icons-react"
 
 export interface MainNavItem {
