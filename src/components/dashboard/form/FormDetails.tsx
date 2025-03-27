@@ -466,8 +466,8 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
     const displayLabel = (timeRange === 'week' || timeRange === 'month') && fullDate ? fullDate : label;
     
     return (
-      <div className="bg-white dark:bg-zinc-800 p-3 border border-gray-200 dark:border-zinc-700 rounded-md shadow-lg">
-        <p className="font-mono text-xs font-medium text-gray-600 dark:text-gray-100 mb-2">
+      <div className="bg-zinc-100 dark:bg-zinc-800 p-3 border border-slate-200 dark:border-zinc-500 rounded-md shadow-lg">
+        <p className="font-mono text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
           {displayLabel}
         </p>
         <div className="space-y-1.5">
@@ -477,7 +477,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
                 className="w-3 h-3 mr-2"
                 style={{ backgroundColor: entry.color }}
               />
-              <span className="text-xs font-medium text-gray-800 dark:text-gray-100">
+              <span className="text-xs font-medium text-slate-900 dark:text-slate-50">
                 {entry.name}: {entry.value}
               </span>
             </div>
@@ -489,10 +489,10 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px] w-full bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 shadow-sm">
+      <div className="flex items-center justify-center min-h-[400px] w-full bg-zinc-100 dark:bg-zinc-900 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-md">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-3 border-gray-200 dark:border-zinc-700 border-t-gray-500 dark:border-t-gray-300 rounded-full animate-spin"></div>
-          <p className="text-gray-600 dark:text-gray-400 font-medium text-sm">Loading form data...</p>
+          <div className="w-10 h-10 border-3 border-slate-200 dark:border-zinc-800 border-t-slate-500 dark:border-t-zinc-600 rounded-full animate-spin"></div>
+          <p className="text-slate-600 dark:text-zinc-400 font-medium text-sm">Loading form data...</p>
         </div>
       </div>
     );
@@ -500,15 +500,15 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
 
   if (isError || !form) {
     return (
-      <div className="min-h-[400px] w-full flex items-center justify-center bg-white dark:bg-zinc-900 rounded-xl border border-red-200 dark:border-red-800 shadow-sm p-6">
+      <div className="min-h-[400px] w-full flex items-center justify-center bg-zinc-100 dark:bg-zinc-900 rounded-xl border border-red-200 dark:border-red-800/50 shadow-md p-6">
         <div className="flex flex-col items-center gap-4 max-w-md text-center">
           <div className="w-14 h-14 flex items-center justify-center bg-red-100 dark:bg-red-900/30 text-red-500 dark:text-red-400 rounded-full">
             <AlertCircle className="w-7 h-7" />
           </div>
           <h2 className="text-lg font-mono font-bold text-red-600 dark:text-red-400">Error Loading Form</h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-2 text-sm">{(error as Error)?.message || "An unknown error occurred"}</p>
+          <p className="text-slate-700 dark:text-zinc-300 mb-2 text-sm">{(error as Error)?.message || "An unknown error occurred"}</p>
           <button 
-            className="px-4 py-2 bg-gray-800 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-white text-sm font-medium rounded-lg shadow-sm transition-colors"
+            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white text-sm font-medium rounded-lg shadow-md transition-colors"
             onClick={() => refetchForm()}
           >
             Try Again
@@ -522,10 +522,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
     <div className="flex flex-col gap-4 md:gap-6 w-full max-w-[1400px] mx-auto p-2 sm:p-4 lg:p-6">
       {/* Form Header */}
       {form && (
-        <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 p-3 sm:p-4 lg:p-6 shadow-sm relative overflow-hidden">
-          <div className="absolute top-0 left-0 h-full w-1 sm:w-2 bg-gradient-to-b from-gray-400 to-gray-600 dark:from-zinc-600 dark:to-zinc-800"></div>
-          <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-gradient-to-br from-gray-100/20 to-gray-200/20 dark:from-zinc-800/20 dark:to-zinc-700/20 rounded-full -translate-y-12 translate-x-12"></div>
-          
+        <div className="bg-zinc-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-lg shadow-md mb-6">
           <FormHeader 
             id={formId as string} 
             name={form.name} 
@@ -543,7 +540,6 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
         </div>
       )}
 
-     
       {/* Chart section */}
       <div className="col-span-1 sm:col-span-2 lg:col-span-3">
         <FormAnalyticsChart 
@@ -558,8 +554,8 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
       </div>
 
       {/* Tabs section */}
-      <div className="col-span-1 sm:col-span-2 lg:col-span-3 flex flex-col bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 shadow-sm overflow-hidden">
-        <nav className="flex flex-wrap sm:flex-nowrap border-b border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-800/50 p-1">
+      <div className="col-span-1 sm:col-span-2 lg:col-span-3 flex flex-col bg-zinc-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-lg shadow-md overflow-hidden">
+        <nav className="flex flex-wrap sm:flex-nowrap border-b border-slate-200 dark:border-zinc-800 bg-slate-100 dark:bg-zinc-800/50 p-1">
           {[
             { id: 'responses', label: 'Responses', icon: MessageSquare },
             { id: 'settings', label: 'Settings', icon: Settings },
@@ -570,8 +566,8 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
               className={clsx(
                 "flex-1 sm:flex-none px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-medium rounded-lg transition-all duration-200 flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2",
                 activeTab === tab.id 
-                  ? "bg-white dark:bg-zinc-900 text-gray-900 dark:text-gray-100 shadow-sm" 
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/50 dark:hover:bg-zinc-800"
+                  ? "bg-zinc-100 dark:bg-zinc-800 text-slate-900 dark:text-zinc-50 shadow-sm" 
+                  : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-50 hover:bg-slate-100/50 dark:hover:bg-zinc-800"
               )}
               onClick={() => handleTabClick(tab.id as any)}
             >

@@ -87,7 +87,7 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0, emailSetti
 
   return (
     <>
-      <Card className="p-5 bg-zinc-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-500 rounded-lg shadow-md mb-6">
+      <Card className="p-5 bg-zinc-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-500 rounded-lg shadow-md mb-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-xl font-medium text-slate-900 dark:text-slate-50">{name}</h1>
@@ -117,7 +117,7 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0, emailSetti
                       <Button 
                         size="sm" 
                         variant="ghost" 
-                        className="text-xs h-6 px-2 text-amber-600 hover:text-amber-700 dark:text-amber-400 dark:hover:text-amber-300 -my-1 ml-1" 
+                        className="text-xs h-6 px-2 cursor-pointer text-amber-600 hover:text-amber-700 dark:text-amber-400 dark:hover:text-amber-300 -my-1 ml-1" 
                         onClick={() => setIsUpgradeModalOpen(true)}
                       >
                         Upgrade
@@ -143,14 +143,16 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0, emailSetti
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="border-slate-200 bg-slate-100 dark:bg-zinc-950 dark:border-zinc-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-zinc-900 cursor-pointer transition-all duration-200 hover:scale-105 shadow-sm"
+                className="flex items-center gap-3 bg-slate-100 dark:bg-zinc-950 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200"
                 onClick={copyId}
               >
-                <Copy className="h-4 w-4 mr-2" />
-                <span className="relative group">
-                  Copy ID
-                  <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-slate-700 dark:bg-slate-300 scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
-                </span>
+                <div className="bg-slate-200 dark:bg-zinc-800 rounded-full p-1.5">
+                  <Copy className="h-3.5 w-3.5 text-slate-600 dark:text-slate-300" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium text-slate-800 dark:text-slate-200 tracking-tight">Copy Form ID</span>
+                  <span className="text-xs text-slate-600 dark:text-slate-400">Click to copy</span>
+                </div>
               </Button>
             )}
           </div>
