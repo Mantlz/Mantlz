@@ -104,7 +104,7 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0, emailSetti
           </div>
           
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-3 bg-slate-100 dark:bg-zinc-950 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-center gap-3 bg-slate-100 dark:bg-zinc-950 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200 h-[52px]">
               <div className="bg-slate-200 dark:bg-zinc-800 rounded-full p-1.5">
                 <Mail className="h-3.5 w-3.5 text-slate-600 dark:text-slate-300" />
               </div>
@@ -143,16 +143,11 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0, emailSetti
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="flex items-center gap-3 bg-slate-100 dark:bg-zinc-950 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200"
+                className="flex items-center gap-3 bg-slate-100 dark:bg-zinc-950 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200 h-[52px]"
                 onClick={copyId}
               >
-                <div className="bg-slate-200 dark:bg-zinc-800 rounded-full p-1.5">
-                  <Copy className="h-3.5 w-3.5 text-slate-600 dark:text-slate-300" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-medium text-slate-800 dark:text-slate-200 tracking-tight">Copy Form ID</span>
-                  <span className="text-xs text-slate-600 dark:text-slate-400">Click to copy</span>
-                </div>
+                <Copy className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                <span className="text-sm font-medium text-slate-800 dark:text-slate-200">Copy ID</span>
               </Button>
             )}
           </div>
