@@ -164,12 +164,6 @@ export default function EmailSettings() {
               <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
                 Email Settings
               </h2>
-              {isPro && (
-                <Badge variant="outline" className="ml-2 flex items-center gap-1">
-                  <Mail className="h-3.5 w-3.5" />
-                  PRO
-                </Badge>
-              )}
             </div>
             <Button 
               variant="outline" 

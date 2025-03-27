@@ -23,6 +23,7 @@ model User {
   forms      Form[]
   quota      Quota[]
   apiKeys    ApiKey[]
+  globalSettings GlobalSettings?
 
   @@index([clerkId])
 }
@@ -43,6 +44,7 @@ model Form {
   description String?
   schema      String
   userId      String
+  settings    Json?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   user        User         @relation(fields: [userId], references: [id])
@@ -108,6 +110,17 @@ model NotificationLog {
 
   @@index([formId, type])
   @@index([createdAt])
+}
+
+// New model for global settings
+model GlobalSettings {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  developerNotificationsEnabled Boolean @default(false)
+  maxNotificationsPerHour Int @default(10)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 enum Plan {

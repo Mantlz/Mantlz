@@ -801,66 +801,150 @@ export const formRouter = j.router({
   updateEmailSettings: privateProcedure
     .input(z.object({
       formId: z.string(),
-      enabled: z.boolean().optional(),
-      fromEmail: z.string().email().optional().nullable(),
-      subject: z.string().optional().nullable(),
-      template: z.string().optional().nullable(),
-      replyTo: z.string().email().optional().nullable(),
-      // Developer notification settings
       developerNotificationsEnabled: z.boolean().optional(),
-      developerEmail: z.string().email().optional().nullable(),
       maxNotificationsPerHour: z.number().min(1).max(100).optional(),
-      notificationConditions: z.any().optional(),
     }))
     .mutation(async ({ c, input, ctx }) => {
       const { formId, ...settings } = input;
       const userId = ctx.user.id;
       
-      // First verify the user owns this form
-      const form = await db.form.findFirst({
-        where: {
-          id: formId,
-          userId, // Ensure user owns the form
-        },
-        include: {
-          user: {
-            select: {
-              plan: true,
-            }
-          }
-        }
-      });
-
-      if (!form) {
-        throw new HTTPException(404, { message: 'Form not found or you do not have permission to update it' });
-      }
-
-      // Check if user is trying to enable developer notifications but isn't on PRO plan
-      if (settings.developerNotificationsEnabled && form.user.plan !== 'PRO') {
-        throw new HTTPException(403, { message: 'Developer notifications are only available on the PRO plan' });
-      }
-
       try {
-        // Update or create email settings
+        // If formId is 'global', update user's global settings
+        if (formId === 'global') {
+          const globalSettings = await db.globalSettings.upsert({
+            where: {
+              userId,
+            },
+            update: {
+              developerNotificationsEnabled: settings.developerNotificationsEnabled,
+              maxNotificationsPerHour: settings.maxNotificationsPerHour,
+            },
+            create: {
+              userId,
+              developerNotificationsEnabled: settings.developerNotificationsEnabled ?? false,
+              maxNotificationsPerHour: settings.maxNotificationsPerHour ?? 10,
+            },
+          });
+
+          return c.superjson({ 
+            success: true, 
+            data: {
+              developerNotificationsEnabled: globalSettings.developerNotificationsEnabled,
+              maxNotificationsPerHour: globalSettings.maxNotificationsPerHour,
+            }
+          });
+        }
+
+        // Otherwise, update form-specific settings
         const emailSettings = await db.emailSettings.upsert({
           where: {
             formId,
           },
-          update: settings,
+          update: {
+            developerNotificationsEnabled: settings.developerNotificationsEnabled,
+            maxNotificationsPerHour: settings.maxNotificationsPerHour,
+          },
           create: {
             formId,
-            ...settings,
-            enabled: settings.enabled ?? false,
+            enabled: false,
             developerNotificationsEnabled: settings.developerNotificationsEnabled ?? false,
             maxNotificationsPerHour: settings.maxNotificationsPerHour ?? 10,
           },
         });
 
-        return c.superjson({ success: true });
+        return c.superjson({ success: true, data: emailSettings });
       } catch (error) {
         console.error('Error updating email settings:', error);
         throw new HTTPException(500, { message: 'Failed to update email settings' });
       }
+    }),
+
+  // Get global settings for the user
+  getGlobalSettings: privateProcedure
+    .query(async ({ c, ctx }) => {
+      const userId = ctx.user.id;
+      
+      const globalSettings = await db.globalSettings.findUnique({
+        where: { userId }
+      });
+
+      return c.superjson(globalSettings || {
+        developerNotificationsEnabled: false,
+        maxNotificationsPerHour: 10,
+      });
+    }),
+
+  // Update global settings for the user
+  updateGlobalSettings: privateProcedure
+    .input(z.object({
+      developerNotificationsEnabled: z.boolean().optional(),
+      maxNotificationsPerHour: z.number().min(1).max(100).optional(),
+    }))
+    .mutation(async ({ c, input, ctx }) => {
+      const userId = ctx.user.id;
+      
+      try {
+        // Get user with plan
+        const user = await db.user.findUnique({
+          where: { id: userId },
+          select: { plan: true }
+        });
+
+        if (!user) {
+          throw new HTTPException(404, { message: 'User not found' });
+        }
+
+        // Only PRO users can modify notification settings
+        if (user.plan !== 'PRO') {
+          throw new HTTPException(403, { 
+            message: 'You need to be on the PRO plan to modify notification settings' 
+          });
+        }
+
+        const globalSettings = await db.globalSettings.upsert({
+          where: { userId },
+          update: {
+            developerNotificationsEnabled: input.developerNotificationsEnabled,
+            maxNotificationsPerHour: input.maxNotificationsPerHour,
+          },
+          create: {
+            userId,
+            developerNotificationsEnabled: input.developerNotificationsEnabled ?? false,
+            maxNotificationsPerHour: input.maxNotificationsPerHour ?? 10,
+          },
+        });
+
+        return c.superjson({ 
+          success: true, 
+          data: {
+            developerNotificationsEnabled: globalSettings.developerNotificationsEnabled,
+            maxNotificationsPerHour: globalSettings.maxNotificationsPerHour,
+          }
+        });
+      } catch (error) {
+        console.error('Error updating global settings:', error);
+        if (error instanceof HTTPException) {
+          throw error;
+        }
+        throw new HTTPException(500, { message: 'Failed to update global settings' });
+      }
+    }),
+
+  // Get user's current plan
+  getUserPlan: privateProcedure
+    .query(async ({ c, ctx }) => {
+      const userId = ctx.user.id;
+      
+      const user = await db.user.findUnique({
+        where: { id: userId },
+        select: { plan: true }
+      });
+
+      if (!user) {
+        throw new HTTPException(404, { message: 'User not found' });
+      }
+
+      return c.superjson({ plan: user.plan });
     }),
 });
 
