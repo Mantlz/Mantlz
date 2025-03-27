@@ -88,7 +88,7 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0, emailSetti
   return (
     <>
       <Card className="p-5 bg-zinc-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-500 rounded-lg shadow-md mb-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div>
             <h1 className="text-xl font-medium text-slate-900 dark:text-slate-50">{name}</h1>
             <div className="flex items-center mt-2 text-sm text-slate-600 dark:text-slate-400">
@@ -103,8 +103,8 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0, emailSetti
             </div>
           </div>
           
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-3 bg-slate-100 dark:bg-zinc-950 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200 h-[52px]">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
+            <div className="flex items-center gap-3 bg-slate-100 dark:bg-zinc-950 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200 h-[52px] w-full sm:w-auto">
               <div className="bg-slate-200 dark:bg-zinc-800 rounded-full p-1.5">
                 <Mail className="h-3.5 w-3.5 text-slate-600 dark:text-slate-300" />
               </div>
@@ -143,7 +143,7 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0, emailSetti
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="flex items-center gap-3 bg-slate-100 dark:bg-zinc-950 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200 h-[52px]"
+                className="flex items-center gap-3 bg-slate-100 dark:bg-zinc-950 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200 h-[52px] w-full sm:w-auto"
                 onClick={copyId}
               >
                 <Copy className="h-4 w-4 text-slate-600 dark:text-slate-300" />
