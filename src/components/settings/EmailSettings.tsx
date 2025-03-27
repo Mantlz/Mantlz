@@ -227,7 +227,7 @@ export default function EmailSettings() {
                     <Button 
                       size="sm" 
                       variant="outline" 
-                      className="h-7 px-2 py-1 text-xs border-amber-300 text-amber-700 bg-amber-50 hover:bg-amber-100 dark:border-amber-700 dark:text-amber-400 dark:bg-amber-900/30 dark:hover:bg-amber-800/30 mt-2"
+                      className="h-7 px-2 py-1 text-xs border-amber-300 text-amber-700 bg-amber-50 cursor-pointer hover:bg-amber-100 dark:border-amber-700 dark:text-amber-400 dark:bg-amber-900/30 dark:hover:bg-amber-800/30 mt-2"
                     >
                       Upgrade to Pro
                     </Button>
@@ -241,27 +241,34 @@ export default function EmailSettings() {
                     control={form.control}
                     name="developerNotificationsEnabled"
                     render={({ field }) => (
-                      <FormItem className="flex flex-col sm:flex-row sm:items-center gap-3 bg-slate-100 dark:bg-zinc-950 px-3 sm:px-4 py-2.5 rounded-lg border border-slate-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200">
-                        <div className="flex items-center gap-3">
-                          <div className="bg-slate-200 dark:bg-zinc-800 rounded-full p-1.5">
-                            <Mail className="h-3.5 w-3.5 text-slate-600 dark:text-slate-300" />
+                      <FormItem className="flex flex-col sm:flex-row sm:items-center gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
+                        <div className="flex items-center gap-4 flex-1">
+                          <div className="bg-white dark:bg-zinc-900 rounded-full p-2 border border-zinc-200 dark:border-zinc-800">
+                            <Mail className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
                           </div>
-                          <div className="flex flex-col">
-                            <span className="text-sm font-medium text-slate-800 dark:text-slate-200 tracking-tight">Developer Notifications</span>
-                            <span className="text-xs text-slate-600 dark:text-slate-400">
-                              <span className={isDeveloperNotificationsEnabled ? "text-emerald-500" : "text-slate-500 dark:text-slate-400"}>
-                                {isDeveloperNotificationsEnabled ? 'Enabled' : 'Disabled'}
-                              </span>
+                          <div className="flex flex-col gap-0.5">
+                            <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                              Developer Notifications
+                            </span>
+                            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                              {isDeveloperNotificationsEnabled ? (
+                                <span className="text-emerald-600 dark:text-emerald-500 font-medium">
+                                  Enabled
+                                </span>
+                              ) : (
+                                <span className="text-zinc-500 dark:text-zinc-400">
+                                  Disabled
+                                </span>
+                              )}
                             </span>
                           </div>
                         </div>
-                        <div className="hidden sm:block w-px h-8 mx-1 bg-slate-200 dark:bg-zinc-700"></div>
                         <FormControl>
                           <Switch
                             checked={isDeveloperNotificationsEnabled}
                             onCheckedChange={handleDeveloperNotificationsToggle}
                             disabled={!hasApiKey}
-                            className="ml-auto sm:ml-1"
+                            className="data-[state=checked]:bg-emerald-500 dark:data-[state=checked]:bg-emerald-600"
                           />
                         </FormControl>
                       </FormItem>
