@@ -7,6 +7,13 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Eye, MousePointer2, Type } from "lucide-react";
 import { toast } from "sonner";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface AccessibilitySettingsProps {
   className?: string;
@@ -105,12 +112,14 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
   };
 
   const updateSetting = (key: keyof typeof settings, value: boolean) => {
+    // Prevent high contrast from being updated
+    if (key === 'highContrast') return;
+    
     const newSettings = { ...settings, [key]: value };
     setSettings(newSettings);
     localStorage.setItem('accessibility-settings', JSON.stringify(newSettings));
     applyAccessibilitySettings(newSettings);
     
-    // Show toast notification
     toast.success(`Accessibility setting updated: ${key.replace(/([A-Z])/g, ' $1').toLowerCase()}`, {
       className: "dark:bg-zinc-900 dark:text-white dark:border-zinc-800",
       duration: 2000,
@@ -126,95 +135,144 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-4">
-      <header className="p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-        <h2 className="text-base font-semibold text-zinc-900 dark:text-white">Accessibility Settings</h2>
-        <div className="w-12 h-0.5 bg-zinc-300 dark:bg-zinc-700 my-1.5"></div>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">Customize your accessibility preferences</p>
-      </header>
-
-      <main className="space-y-4">
-        <div className="p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-          <h3 className="text-sm font-medium text-zinc-900 dark:text-white mb-3">Display</h3>
-
-          <div className="space-y-2">
-            {/* High Contrast */}
-            <div className="flex items-center justify-between p-2.5 border border-zinc-200 dark:border-zinc-800 rounded-md bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors">
-              <div className="flex items-center space-x-3">
-                <div className="flex items-center justify-center w-8 h-8 rounded-md bg-zinc-200 dark:bg-zinc-800">
-                  <Eye className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
-                </div>
-                <div>
-                  <Label htmlFor="highContrast" className="text-sm font-medium text-zinc-900 dark:text-white">
-                    High Contrast
-                  </Label>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-400">Increase contrast for better readability</p>
-                </div>
+    <div className="w-full max-w-4xl mx-auto">
+      <ScrollArea className="h-[550px]">
+        <div className="w-full space-y-4 pr-4">
+          <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center">
+                <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
+                  Accessibility Settings
+                </h2>
               </div>
-              <Switch
-                id="highContrast"
-                checked={settings.highContrast}
-                onCheckedChange={(checked) => updateSetting('highContrast', checked)}
-              />
             </div>
+            <p className="text-xs text-zinc-600 dark:text-zinc-400">
+              Customize your accessibility preferences
+            </p>
+          </header>
 
-            {/* Larger Text */}
-            <div className="flex items-center justify-between p-2.5 border border-zinc-200 dark:border-zinc-800 rounded-md bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors">
-              <div className="flex items-center space-x-3">
-                <div className="flex items-center justify-center w-8 h-8 rounded-md bg-zinc-200 dark:bg-zinc-800">
-                  <Type className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
+          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+            <CardHeader className="pb-3 pt-4 px-5">
+              <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
+                <Eye className="h-4 w-4 mr-2 text-zinc-500" />
+                Display Settings
+              </CardTitle>
+              <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+                Adjust display settings for better visibility
+              </CardDescription>
+            </CardHeader>
+            
+            <CardContent className="px-5 pb-4 space-y-3">
+              {/* High Contrast */}
+              <div className="flex items-center justify-between gap-3 bg-zinc-100/50 dark:bg-zinc-950/50 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm opacity-75">
+                <div className="flex items-center gap-4">
+                  <div className="bg-white/50 dark:bg-zinc-900/50 rounded-full p-2 border border-zinc-200 dark:border-zinc-800">
+                    <Eye className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
+                  </div>
+                  <div className="flex flex-col gap-0.5">
+                    <Label htmlFor="highContrast" className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                      High Contrast
+                    </Label>
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                      Coming soon - Color scheme in development
+                    </span>
+                  </div>
                 </div>
-                <div>
-                  <Label htmlFor="largerText" className="text-sm font-medium text-zinc-900 dark:text-white">
-                    Larger Text
-                  </Label>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-400">Increase text size throughout the application</p>
-                </div>
+                <Switch
+                  id="highContrast"
+                  checked={false}
+                  disabled={true}
+                  className="data-[state=checked]:bg-emerald-500 dark:data-[state=checked]:bg-emerald-600 cursor-not-allowed opacity-50"
+                />
               </div>
-              <Switch
-                id="largerText"
-                checked={settings.largerText}
-                onCheckedChange={(checked) => updateSetting('largerText', checked)}
-              />
-            </div>
-          </div>
+
+              {/* Larger Text */}
+              <div className="flex items-center justify-between gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
+                <div className="flex items-center gap-4">
+                  <div className="bg-white dark:bg-zinc-900 rounded-full p-2 border border-zinc-200 dark:border-zinc-800">
+                    <Type className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+                  </div>
+                  <div className="flex flex-col gap-0.5">
+                    <Label htmlFor="largerText" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                      Larger Text
+                    </Label>
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                      {settings.largerText ? (
+                        <span className="text-emerald-600 dark:text-emerald-500 font-medium">
+                          Enabled
+                        </span>
+                      ) : (
+                        <span className="text-zinc-500 dark:text-zinc-400">
+                          Disabled
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                </div>
+                <Switch
+                  id="largerText"
+                  checked={settings.largerText}
+                  onCheckedChange={(checked) => updateSetting('largerText', checked)}
+                  className="data-[state=checked]:bg-emerald-500 dark:data-[state=checked]:bg-emerald-600"
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+            <CardHeader className="pb-3 pt-4 px-5">
+              <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
+                <MousePointer2 className="h-4 w-4 mr-2 text-zinc-500" />
+                Screen Reader Settings
+              </CardTitle>
+              <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+                Configure screen reader optimization
+              </CardDescription>
+            </CardHeader>
+            
+            <CardContent className="px-5 pb-4">
+              <div className="flex items-center justify-between gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
+                <div className="flex items-center gap-4">
+                  <div className="bg-white dark:bg-zinc-900 rounded-full p-2 border border-zinc-200 dark:border-zinc-800">
+                    <MousePointer2 className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+                  </div>
+                  <div className="flex flex-col gap-0.5">
+                    <Label htmlFor="screenReader" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                      Screen Reader Optimization
+                    </Label>
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                      {settings.screenReader ? (
+                        <span className="text-emerald-600 dark:text-emerald-500 font-medium">
+                          Enabled
+                        </span>
+                      ) : (
+                        <span className="text-zinc-500 dark:text-zinc-400">
+                          Disabled
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                </div>
+                <Switch
+                  id="screenReader"
+                  checked={settings.screenReader}
+                  onCheckedChange={(checked) => updateSetting('screenReader', checked)}
+                  className="data-[state=checked]:bg-emerald-500 dark:data-[state=checked]:bg-emerald-600"
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          <footer className="flex justify-end mt-4 pb-4">
+            <Button 
+              onClick={saveSettings}
+              className="bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white text-sm font-medium px-3 py-1.5 rounded-md border border-zinc-700 dark:border-zinc-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] hover:translate-y-[-1px] transition-all"
+            >
+              Save Settings
+            </Button>
+          </footer>
         </div>
-
-        <div className="p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-          <h3 className="text-sm font-medium text-zinc-900 dark:text-white mb-3">Screen Reader</h3>
-
-          <div className="space-y-2">
-            {/* Screen Reader */}
-            <div className="flex items-center justify-between p-2.5 border border-zinc-200 dark:border-zinc-800 rounded-md bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors">
-              <div className="flex items-center space-x-3">
-                <div className="flex items-center justify-center w-8 h-8 rounded-md bg-zinc-200 dark:bg-zinc-800">
-                  <MousePointer2 className="h-4 w-4 text-zinc-700 dark:text-zinc-300" />
-                </div>
-                <div>
-                  <Label htmlFor="screenReader" className="text-sm font-medium text-zinc-900 dark:text-white">
-                    Screen Reader Optimization
-                  </Label>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-400">Enhance compatibility with screen readers</p>
-                </div>
-              </div>
-              <Switch
-                id="screenReader"
-                checked={settings.screenReader}
-                onCheckedChange={(checked) => updateSetting('screenReader', checked)}
-              />
-            </div>
-          </div>
-        </div>
-      </main>
-
-      <footer className="flex justify-end mt-4">
-        <Button 
-          onClick={saveSettings}
-          className="bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white text-sm font-medium px-3 py-1.5 rounded-md border border-zinc-700 dark:border-zinc-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] hover:translate-y-[-1px] transition-all"
-        >
-          Save Settings
-        </Button>
-      </footer>
+      </ScrollArea>
     </div>
   );
 }

@@ -192,8 +192,8 @@ export default function UsageSettings() {
   }
 
   return (
-    <div className="w-full max-w-3xl mx-auto">
-      <div className="w-full space-y-4">
+    <div className="w-full max-w-5xl mx-auto">
+      <div className="w-full space-y-6">
         <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center">
@@ -235,10 +235,10 @@ export default function UsageSettings() {
           )}
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Forms usage card */}
           {planData && (
-            <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm min-h-[250px]">
+            <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm min-h-[250px] w-full">
               <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
                 <div>
                   <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
@@ -296,7 +296,7 @@ export default function UsageSettings() {
           
           {/* Submissions usage card */}
           {planData && (
-            <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm min-h-[250px]">
+            <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm min-h-[250px] w-full">
               <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
                 <div>
                   <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
@@ -355,7 +355,7 @@ export default function UsageSettings() {
         
         {/* All-time submissions card */}
         {submissionsData && (
-          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm min-h-[120px]">
+          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm min-h-[120px] w-full">
             <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
               <div>
                 <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
@@ -374,11 +374,6 @@ export default function UsageSettings() {
             </CardHeader>
           </Card>
         )}
-        
-       
-        
-        
-       
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react";
-import { Bell, Save, Crown, Loader2, RefreshCw, AlertCircle } from "lucide-react";
+import { Bell, Save, Crown, Loader2, RefreshCw, AlertCircle, Code } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,9 +18,11 @@ import { useUser } from "@clerk/nextjs";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface AdvancedSettings {
   maxNotificationsPerHour: number;
+  developerNotificationsEnabled: boolean;
 }
 
 export function AdvancedSettings() {
@@ -29,6 +31,7 @@ export function AdvancedSettings() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [settings, setSettings] = useState<AdvancedSettings>({
     maxNotificationsPerHour: 10,
+    developerNotificationsEnabled: false,
   });
 
   // Get user's plan
@@ -77,6 +80,7 @@ export function AdvancedSettings() {
     if (settingsData) {
       setSettings({
         maxNotificationsPerHour: settingsData.maxNotificationsPerHour ?? 10,
+        developerNotificationsEnabled: settingsData.developerNotificationsEnabled ?? false,
       });
     }
   }, [settingsData]);
@@ -123,120 +127,154 @@ export function AdvancedSettings() {
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <div className="w-full space-y-4">
-        <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center">
-              <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
-                Advanced Settings
-              </h2>
+      <ScrollArea className="h-[550px]">
+        <div className="w-full space-y-4 p-4">
+          <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center">
+                <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
+                  Advanced Settings
+                </h2>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleRefresh}
+                disabled={isRefreshing}
+                className="h-8 text-xs"
+              >
+                {isRefreshing ? (
+                  <>
+                    <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                    Refreshing...
+                  </>
+                ) : (
+                  <>
+                    <RefreshCw className="h-3 w-3 mr-1" />
+                    Refresh
+                  </>
+                )}
+              </Button>
             </div>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-              className="h-8 text-xs"
-            >
-              {isRefreshing ? (
-                <>
-                  <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-                  Refreshing...
-                </>
-              ) : (
-                <>
-                  <RefreshCw className="h-3 w-3 mr-1" />
-                  Refresh
-                </>
-              )}
-            </Button>
-          </div>
-          <p className="text-xs text-zinc-600 dark:text-zinc-400">
-            Configure advanced notification settings
-          </p>
-        </header>
+            <p className="text-xs text-zinc-600 dark:text-zinc-400">
+              Configure advanced notification settings
+            </p>
+          </header>
 
-        <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
-          <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
-            <div>
-              <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
-                <Bell className="h-4 w-4 mr-2 text-zinc-500" />
-                Notification Frequency
-              </CardTitle>
-              <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
-                Set the maximum number of notifications you want to receive per hour
-              </CardDescription>
-            </div>
-            <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-200 w-fit">
-              PRO
-            </Badge>
-          </CardHeader>
-          
-          <CardContent className="px-5 pb-4">
-            {!isProUser ? (
-              <div className="rounded-md bg-amber-50 border border-amber-200 p-3 sm:p-4 dark:bg-amber-900/20 dark:border-amber-800/30">
-                <div className="flex gap-2 sm:gap-3">
-                  <AlertCircle className="h-4 w-4 text-amber-500 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-                  <div className="space-y-1">
-                    <p className="text-xs font-medium text-amber-800 dark:text-amber-300">
-                      Pro Plan Required
+          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+            <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
+              <div>
+                <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
+                  <Bell className="h-4 w-4 mr-2 text-zinc-500" />
+                  Notification Frequency
+                </CardTitle>
+                <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+                  Set the maximum number of notifications you want to receive per hour
+                </CardDescription>
+              </div>
+              <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-200 w-fit">
+                PRO
+              </Badge>
+            </CardHeader>
+            
+            <CardContent className="px-5 pb-4">
+              {!isProUser ? (
+                <div className="rounded-md bg-amber-50 border border-amber-200 p-3 sm:p-4 dark:bg-amber-900/20 dark:border-amber-800/30">
+                  <div className="flex gap-2 sm:gap-3">
+                    <AlertCircle className="h-4 w-4 text-amber-500 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-amber-800 dark:text-amber-300">
+                        Pro Plan Required
+                      </p>
+                      <p className="text-xs text-amber-700 dark:text-amber-400">
+                        Upgrade to Pro to customize your notification frequency.
+                      </p>
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        className="h-7 px-2 py-1 text-xs border-amber-300 text-amber-700 bg-amber-50 cursor-pointer hover:bg-amber-100 dark:border-amber-700 dark:text-amber-400 dark:bg-amber-900/30 dark:hover:bg-amber-800/30 mt-2"
+                      >
+                        Upgrade to Pro
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
+                    <div className="flex items-center gap-4 flex-1">
+                      <div className="bg-white dark:bg-zinc-900 rounded-full p-2 border border-zinc-200 dark:border-zinc-800">
+                        <Bell className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+                      </div>
+                      <div className="flex flex-col gap-0.5">
+                        <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                          Maximum Notifications per Hour
+                        </span>
+                        <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                          Current limit: {settings.maxNotificationsPerHour}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        type="number"
+                        min={1}
+                        max={100}
+                        value={String(settings.maxNotificationsPerHour)}
+                        onChange={(e) => handleSettingChange(e.target.value)}
+                        className="h-9 w-24 border-zinc-200 dark:border-zinc-800"
+                      />
+                      <Button
+                        onClick={() => updateSettings(settings)}
+                        disabled={isUpdating}
+                        size="sm"
+                        className="h-9"
+                      >
+                        {isUpdating ? (
+                          <RefreshCw className="h-4 w-4 animate-spin mr-2" />
+                        ) : null}
+                        {isUpdating ? "Saving..." : "Save"}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+            <CardHeader className="pb-2 pt-3 px-4 flex flex-row items-start justify-between space-y-0">
+              <div>
+                <CardTitle className="text-zinc-900 dark:text-white text-xs flex items-center">
+                  <Code className="h-4 w-4 mr-1.5 text-zinc-500" />
+                  Debug Mode
+                </CardTitle>
+                <CardDescription className="text-zinc-600 dark:text-zinc-400 text-[11px]">
+                  Test and debug your form submissions
+                </CardDescription>
+              </div>
+              <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-200 text-[10px] px-1.5 py-0.5">
+                PRO
+              </Badge>
+            </CardHeader>
+            
+            <CardContent className="px-4 pb-3">
+              <div className="rounded-md bg-blue-50 border border-blue-200 p-2 dark:bg-blue-900/20 dark:border-blue-800/30">
+                <div className="flex gap-2">
+                  <div className="space-y-0.5">
+                    <p className="text-[11px] font-medium text-blue-800 dark:text-blue-300">
+                      Coming Soon
                     </p>
-                    <p className="text-xs text-amber-700 dark:text-amber-400">
-                      Upgrade to Pro to customize your notification frequency.
+                    <p className="text-[10px] text-blue-700 dark:text-blue-400">
+                      We're working on bringing you powerful debugging tools. Stay tuned!
                     </p>
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
-                      className="h-7 px-2 py-1 text-xs border-amber-300 text-amber-700 bg-amber-50 cursor-pointer hover:bg-amber-100 dark:border-amber-700 dark:text-amber-400 dark:bg-amber-900/30 dark:hover:bg-amber-800/30 mt-2"
-                    >
-                      Upgrade to Pro
-                    </Button>
                   </div>
                 </div>
               </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
-                  <div className="flex items-center gap-4 flex-1">
-                    <div className="bg-white dark:bg-zinc-900 rounded-full p-2 border border-zinc-200 dark:border-zinc-800">
-                      <Bell className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                      <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                        Maximum Notifications per Hour
-                      </span>
-                      <span className="text-xs text-zinc-500 dark:text-zinc-400">
-                        Current limit: {settings.maxNotificationsPerHour}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Input
-                      type="number"
-                      min={1}
-                      max={100}
-                      value={String(settings.maxNotificationsPerHour)}
-                      onChange={(e) => handleSettingChange(e.target.value)}
-                      className="h-9 w-24 border-zinc-200 dark:border-zinc-800"
-                    />
-                    <Button
-                      onClick={() => updateSettings(settings)}
-                      disabled={isUpdating}
-                      size="sm"
-                      className="h-9"
-                    >
-                      {isUpdating ? (
-                        <RefreshCw className="h-4 w-4 animate-spin mr-2" />
-                      ) : null}
-                      {isUpdating ? "Saving..." : "Save"}
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+            </CardContent>
+          </Card>
+        </div>
+      </ScrollArea>
     </div>
   );
 } 

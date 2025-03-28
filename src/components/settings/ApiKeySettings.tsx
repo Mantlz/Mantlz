@@ -104,7 +104,7 @@ export default function ApiKeySettings() {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full  mx-auto">
       <div className="w-full space-y-4">
         <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
           <div className="flex items-center justify-between mb-2">
@@ -112,7 +112,7 @@ export default function ApiKeySettings() {
               <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
                 API Key Management
               </h2>
-              <Badge variant="outline" className="ml-2 flex items-center gap-1">
+              <Badge variant="destructive" className="ml-2 flex items-center  text-white  dark:bg-red-950 bg-red-500 gap-1">
                 <Terminal className="h-3.5 w-3.5" />
                 API Access
               </Badge>
@@ -131,7 +131,7 @@ export default function ApiKeySettings() {
         </Alert>
 
         {apiKey ? (
-          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm min-h-[250px] w-full">
             <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
               <div>
                 <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center gap-2">
@@ -192,7 +192,7 @@ export default function ApiKeySettings() {
             </CardContent>
           </Card>
         ) : (
-          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm min-h-[250px]">
             <CardHeader className="pb-3 pt-4 px-5">
               <CardTitle className="text-zinc-900 dark:text-white text-sm">
                 Create New API Key

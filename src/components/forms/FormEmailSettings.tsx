@@ -26,19 +26,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { useUser } from "@clerk/nextjs";
-import { Badge } from "@/components/ui/badge";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { api } from "@/trpc/react";
+import { client } from "@/lib/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PlanBadge } from "@/components/billing/plan-badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
+
 import { useRouter } from "next/navigation";
 
 const formEmailSchema = z.object({
@@ -63,7 +55,8 @@ export default function FormEmailSettings({ formId }: FormEmailSettingsProps) {
   const { data: userData, isLoading: isUserLoading } = useQuery({
     queryKey: ["user-resend-key"],
     queryFn: async () => {
-      return await api.user.getResendApiKey.query();
+      const response = await client.user.getResendApiKey.$get();
+      return await response.json();
     },
   });
 
@@ -71,7 +64,8 @@ export default function FormEmailSettings({ formId }: FormEmailSettingsProps) {
   const { data: emailSettings, isLoading: isSettingsLoading } = useQuery({
     queryKey: ["form-email-settings", formId],
     queryFn: async () => {
-      return await api.forms.getEmailSettings.query({ formId });
+      const response = await client.forms.getEmailSettings.$get({ formId });
+      return await response.json();
     },
   });
 
@@ -103,10 +97,11 @@ export default function FormEmailSettings({ formId }: FormEmailSettingsProps) {
   // Update email settings
   const { mutate: updateEmailSettings, isPending } = useMutation({
     mutationFn: async (data: FormEmailValues) => {
-      await api.forms.updateEmailSettings.mutate({
+      const response = await client.forms.updateEmailSettings.$post({
         formId,
         ...data,
       });
+      return await response.json();
     },
     onSuccess: () => {
       toast.success("Email settings updated successfully");

@@ -23,6 +23,7 @@ import { NavDocuments } from "@/components/sidebar/nav-documents"
 import { NavMain } from "@/components/sidebar/nav-main"
 import { NavSecondary } from "@/components/sidebar/nav-secondary"
 import { NavUser } from "@/components/sidebar/nav-user"
+import { UpgradeCard } from "@/components/billing/upgrade-card"
 import {
   Sidebar,
   SidebarContent,
@@ -39,80 +40,8 @@ import { CreateFormButton } from "../dashboard/CreateFormButton"
 import { Logo } from "../global/logo"
 import { mainNavItems } from "@/types/navigation/mainNavData"
 
-
-const data = {
-  navClouds: [
-    {
-      title: "Capture",
-      icon: IconCamera,
-      isActive: true,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Proposal",
-      icon: IconFileDescription,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Prompts",
-      icon: IconFileAi,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-  ],
- 
-  documents: [
-    {
-      name: "Data Library",
-      url: "#",
-      icon: IconDatabase,
-    },
-    {
-      name: "Reports",
-      url: "#",
-      icon: IconReport,
-    },
-    {
-      name: "Word Assistant",
-      url: "#",
-      icon: IconFileWord,
-    },
-  ],
-}
-
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 const { user, isLoaded } = useUser()
-
-
 
   return (
     <Sidebar collapsible="offcanvas" {...props} >
@@ -133,22 +62,24 @@ const { user, isLoaded } = useUser()
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={mainNavItems} />
-        <NavDocuments items={data.documents} />
-        <NavSecondary/>
+        {/* <NavDocuments items={data.documents} /> */}
       </SidebarContent>
       <SidebarFooter>
-      {!isLoaded ? (
-          <NavUserSkeleton />
-        ) : user ? (
-          <NavUser
-            user={{
-              name: user.firstName || user.username || "User",
-              email: user.emailAddresses?.[0]?.emailAddress || 'No email provided',
-              avatar: user.imageUrl,
-            }}
-          />
-        ) : null}
-
+        <div className="flex flex-col gap-4">
+          <UpgradeCard />
+          <NavSecondary />
+          {!isLoaded ? (
+            <NavUserSkeleton />
+          ) : user ? (
+            <NavUser
+              user={{
+                name: user.firstName || user.username || "User",
+                email: user.emailAddresses?.[0]?.emailAddress || 'No email provided',
+                avatar: user.imageUrl,
+              }}
+            />
+          ) : null}
+        </div>
       </SidebarFooter>
     </Sidebar>
   )
