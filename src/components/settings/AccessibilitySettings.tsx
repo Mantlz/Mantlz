@@ -230,13 +230,13 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
               </CardDescription>
             </CardHeader>
             
-            <CardContent className="px-5 pb-4">
+            <CardContent className="px-2 pb-2">
               <div className="flex items-center justify-between gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
                 <div className="flex items-center gap-4">
                   <div className="bg-white dark:bg-zinc-900 rounded-full p-2 border border-zinc-200 dark:border-zinc-800">
                     <MousePointer2 className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
                   </div>
-                  <div className="flex flex-col gap-0.5">
+                  <div className="flex flex-col">
                     <Label htmlFor="screenReader" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                       Screen Reader Optimization
                     </Label>

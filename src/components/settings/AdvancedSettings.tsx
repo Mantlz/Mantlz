@@ -38,7 +38,7 @@ export function AdvancedSettings() {
   const { data: userData, isLoading: isLoadingPlan } = useQuery({
     queryKey: ["user-plan"],
     queryFn: async () => {
-      const response = await client.forms.getUserPlan.$get();
+      const response = await client.user.getUserPlan.$get();
       if (!response.ok) throw new Error('Failed to fetch user plan');
       return await response.json();
     },

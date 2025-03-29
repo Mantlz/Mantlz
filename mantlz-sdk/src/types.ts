@@ -4,6 +4,7 @@ import { ToastHandler } from './utils/toast';
 export interface MantlzClientConfig {
   toastHandler?: ToastHandler;
   notifications?: boolean;  // Enable/disable toast notifications
+  showApiKeyErrorToasts?: boolean;  // Control API key error toasts separately
 }
 
 export interface MantlzError {
@@ -17,6 +18,7 @@ export interface FormSubmitOptions {
   formId: string;
   data: any;
   apiKey?: string;  // Optional override for the API key
+  recaptchaToken?: string;  // Optional reCAPTCHA token for spam protection
 }
 
 export interface EmailSettings {

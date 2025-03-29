@@ -3,22 +3,25 @@ import * as React from "react"
 interface MetricCardProps {
   label: string;
   value: number;
-  format: 'number' | 'percentage' | 'time';
+  format: 'number' | 'percentage' | 'time' | 'custom';
   trend?: 'up' | 'down';
   suffix?: string;
+  customValue?: string;
 }
 
-export function MetricCard({ label, value, format, trend, suffix }: MetricCardProps) {
+export function MetricCard({ label, value, format, trend, suffix, customValue }: MetricCardProps) {
   const formattedValue = React.useMemo(() => {
     switch (format) {
       case 'percentage':
         return `${(value * 100).toFixed(1)}%`;
       case 'time':
         return `${value.toFixed(1)}s`;
+      case 'custom':
+        return customValue || value.toLocaleString();
       default:
         return value.toLocaleString();
     }
-  }, [value, format]);
+  }, [value, format, customValue]);
 
   return (
     <div className="flex flex-col items-start p-4 rounded-lg border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
@@ -27,7 +30,7 @@ export function MetricCard({ label, value, format, trend, suffix }: MetricCardPr
       </span>
       <div className="flex items-center gap-2">
         <span className="text-2xl font-bold text-slate-900 dark:text-zinc-50">
-          {formattedValue}{suffix ? ` ${suffix}` : ''}
+          {formattedValue}{format !== 'custom' && suffix ? ` ${suffix}` : ''}
         </span>
         {trend && (
           <span className={`text-sm ${trend === 'up' ? 'text-green-500' : 'text-red-500'}`}>

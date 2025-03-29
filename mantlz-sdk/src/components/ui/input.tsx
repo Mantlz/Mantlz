@@ -6,23 +6,29 @@ export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: 'default' | 'error';
   error?: string;
+  colorMode?: 'light' | 'dark';
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, variant = 'default', error, type, ...props }, ref) => {
+  ({ className, variant = 'default', error, type, colorMode = 'light', ...props }, ref) => {
     return (
       <div className="space-y-1">
         <input
           type={type}
           className={cn(
-            inputVariants({ variant }),
+            inputVariants({ variant, colorMode }),
             className
           )}
           ref={ref}
           {...props}
         />
         {error && (
-          <p className="text-sm text-red-500 dark:text-red-400">{error}</p>
+          <p className={cn(
+            "text-sm", 
+            colorMode === 'light' ? "text-red-500" : "text-red-400"
+          )}>
+            {error}
+          </p>
         )}
       </div>
     );

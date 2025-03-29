@@ -334,9 +334,10 @@ export const formRouter = j.router({
   getFormAnalytics: privateProcedure
     .input(z.object({
       formId: z.string(),
+      timeRange: z.enum(['day', 'week', 'month']).default('day'),
     }))
     .query(async ({ c, ctx, input }) => {
-      const { formId } = input;
+      const { formId, timeRange } = input;
       const userId = ctx.user.id;
       
       // Verify form ownership
@@ -444,25 +445,86 @@ export const formRouter = j.router({
       // Convert to minutes and round to 1 decimal place
       const avgResponseTimeInMinutes = Math.round((avgResponseTime / (1000 * 60)) * 10) / 10;
 
-      // Create time series data (hourly for the last 24 hours)
-      const timeSeriesData = Array.from({ length: 24 }, (_, i) => {
-        const hour = new Date(now);
-        hour.setHours(now.getHours() - 23 + i);
-        hour.setMinutes(0, 0, 0);
-        
-        const nextHour = new Date(hour);
-        nextHour.setHours(hour.getHours() + 1);
-        
-        const hourSubmissions = submissions.filter(sub => {
-          const subDate = new Date(sub.createdAt);
-          return subDate >= hour && subDate < nextHour;
-        });
-        
-        return {
-          time: `${hour.getHours()}:00`,
-          submissions: hourSubmissions.length,
+      // Generate time series data based on selected time range
+      interface TimeSeriesPoint {
+        time: string;
+        submissions: number;
+      }
+      
+      let timeSeriesData: TimeSeriesPoint[] = [];
+      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      
+      if (timeRange === 'day') {
+        // Hourly data for the last 24 hours
+        for (let i = 0; i < 24; i++) {
+          const hour = new Date(now);
+          hour.setHours(now.getHours() - 23 + i);
+          hour.setMinutes(0, 0, 0);
+          
+          const nextHour = new Date(hour);
+          nextHour.setHours(hour.getHours() + 1);
+          
+          const hourSubmissions = submissions.filter(sub => {
+            const subDate = new Date(sub.createdAt);
+            return subDate >= hour && subDate < nextHour;
+          });
+          
+          timeSeriesData.push({
+            time: `${hour.getHours()}:00`,
+            submissions: hourSubmissions.length,
+          });
+        }
+      } else if (timeRange === 'week') {
+        // Daily data for the last 7 days
+        for (let i = 0; i < 7; i++) {
+          const day = new Date(now);
+          day.setDate(day.getDate() - 6 + i);
+          day.setHours(0, 0, 0, 0);
+          
+          const nextDay = new Date(day);
+          nextDay.setDate(day.getDate() + 1);
+          
+          const daySubmissions = submissions.filter(sub => {
+            const subDate = new Date(sub.createdAt);
+            return subDate >= day && subDate < nextDay;
+          });
+          
+          timeSeriesData.push({
+            time: dayNames[day.getDay() % 7] || '',
+            submissions: daySubmissions.length,
+          });
+        }
+      } else if (timeRange === 'month') {
+        // Daily data for the last 30 days, grouped by date
+        for (let i = 0; i < 30; i++) {
+          const day = new Date(now);
+          day.setDate(day.getDate() - 29 + i);
+          day.setHours(0, 0, 0, 0);
+          
+          const nextDay = new Date(day);
+          nextDay.setDate(day.getDate() + 1);
+          
+          const daySubmissions = submissions.filter(sub => {
+            const subDate = new Date(sub.createdAt);
+            return subDate >= day && subDate < nextDay;
+          });
+          
+          timeSeriesData.push({
+            time: `${day.getMonth() + 1}/${day.getDate()}`,
+            submissions: daySubmissions.length,
+          });
+        }
+      }
+      
+      // Find the latest data point
+      let latestDataPoint: TimeSeriesPoint = { time: '', submissions: 0 };
+      if (timeSeriesData.length > 0) {
+        const lastItem = timeSeriesData[timeSeriesData.length - 1];
+        latestDataPoint = {
+          time: lastItem?.time || '',
+          submissions: lastItem?.submissions || 0
         };
-      });
+      }
       
       return c.superjson({
         totalSubmissions: submissions.length,
@@ -474,6 +536,8 @@ export const formRouter = j.router({
         completionRate,
         averageResponseTime: avgResponseTimeInMinutes,
         timeSeriesData,
+        latestDataPoint,
+        timeRange,
       });
     }),
 
@@ -930,22 +994,6 @@ export const formRouter = j.router({
       }
     }),
 
-  // Get user's current plan
-  getUserPlan: privateProcedure
-    .query(async ({ c, ctx }) => {
-      const userId = ctx.user.id;
-      
-      const user = await db.user.findUnique({
-        where: { id: userId },
-        select: { plan: true }
-      });
-
-      if (!user) {
-        throw new HTTPException(404, { message: 'User not found' });
-      }
-
-      return c.superjson({ plan: user.plan });
-    }),
 });
 
 

@@ -20,6 +20,12 @@ export function UpgradeCard() {
     },
   })
 
+  // Early return if the user is on PRO plan, even during loading
+  if (!isLoading && usageData?.plan === "PRO") {
+    return null
+  }
+
+  // Don't show skeleton for PRO users if we can determine their plan
   if (isLoading || !usageData) {
     return (
       <Card className="mx-auto mb-4 max-w-xl w-full border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
@@ -67,11 +73,6 @@ export function UpgradeCard() {
         </CardFooter>
       </Card>
     )
-  }
-
-  // Don't show the card for PRO users
-  if (usageData.plan === "PRO") {
-    return null
   }
 
   const currentQuota = usageData.plan === "STANDARD" ? STANDARD_QUOTA : FREE_QUOTA

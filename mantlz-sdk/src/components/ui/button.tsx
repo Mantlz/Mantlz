@@ -8,13 +8,14 @@ export interface ButtonProps
   variant?: 'default' | 'secondary' | 'outline' | 'ghost' | 'link';
   size?: 'default' | 'sm' | 'lg' | 'icon';
   isLoading?: boolean;
+  colorMode?: 'light' | 'dark';
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, isLoading, disabled, children, ...props }, ref) => {
+  ({ className, variant, size, isLoading, disabled, children, colorMode = 'light', ...props }, ref) => {
     return (
       <button
-        className={cn(buttonVariants({ variant, size }), className)}
+        className={cn(buttonVariants({ variant, size, colorMode }), className)}
         ref={ref}
         disabled={isLoading || disabled}
         {...props}

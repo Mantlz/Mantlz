@@ -4,13 +4,14 @@ import React from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Input } from './ui/input';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { cn } from '../utils/cn';
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { cn } from '../../utils/cn';
 import { ArrowRight } from 'lucide-react';
-import { useMantlz } from '../context/mantlzContext';
-import { toast } from '../utils/toast';
+import { useMantlz } from '../../context/mantlzContext';
+import { toast } from '../../utils/toast';
+import { ApiKeyErrorCard } from '../ui/ApiKeyErrorCard';
 
 const waitlistSchema = z.object({
   email: z.string().email('Please enter a valid email'),
@@ -70,12 +71,6 @@ export function WaitlistForm({
       const error = new Error('API key not configured properly');
       onSubmitError?.(error);
       
-      // Show toast notification even if onSubmitError handler is not provided
-      toast.error('API Key Missing', {
-        description: 'Please configure your MANTLZ_KEY in environment variables.',
-        duration: 5000
-      });
-      
       return;
     }
     
@@ -104,27 +99,11 @@ export function WaitlistForm({
 
   // Show API key error UI
   if (apiKeyError) {
-    return (
-      <Card variant={variant} className={cn("w-full max-w-md mx-auto bg-red-50 border-red-200", className)}>
-        <CardHeader>
-          <CardTitle className="text-red-700">API Key Not Configured</CardTitle>
-          <CardDescription className="text-red-600">
-            Your forms won't work without a valid MANTLZ_KEY
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-red-600 mb-4">
-            Add your API key to your environment variables:
-          </p>
-          <div className="bg-gray-800 text-white p-3 rounded font-mono text-sm overflow-x-auto mb-4">
-            MANTLZ_KEY=mk_xxxxxxxxxxxxxxxxxxxx
-          </div>
-          <p className="text-sm text-gray-600 mt-2">
-            Get your API key from the <a href="/dashboard/api-keys" className="underline text-blue-600 hover:text-blue-800">Mantlz Dashboard</a>.
-          </p>
-        </CardContent>
-      </Card>
-    );
+    return <ApiKeyErrorCard 
+      variant={variant} 
+      className={className} 
+      colorMode={theme === 'dark' ? 'dark' : 'light'} 
+    />;
   }
 
   return (

@@ -41,7 +41,7 @@ import {
 
 import { navigationData } from '@/config/settings';
 import { AppearanceSettings } from './AppearanceSettings';
-import NotificationSettings  from './NotificationSettings';
+// import NotificationSettings  from './NotificationSettings';
 import UsageSettings from './usage';
 import { getIcon, iconMap } from '@/types/iconMap';
 import { cn } from '@/lib/utils';
@@ -164,7 +164,7 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
             <div className="flex flex-1 flex-col overflow-y-auto">
               <div className="flex-1 p-8">
                 {selectedTab === 'Appearance' && <AppearanceSettings />}
-                {selectedTab === 'Notifications' && <NotificationSettings />}
+                {/* {selectedTab === 'Notifications' && <NotificationSettings />} */}
                 {selectedTab === 'Accessibility' && <AccessibilitySettings />}
                 {selectedTab === 'Usage' && <UsageSettings />}
                 {selectedTab === 'API Keys' && <ApiKeySettings />}

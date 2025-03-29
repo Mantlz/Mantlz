@@ -21,7 +21,7 @@ export default function RootLayout({
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="en" suppressHydrationWarning>
         <body className="antialiased">
-          <main className="min-h-[calc(100vh-1px)] flex flex-col font-sans bg-white dark:bg-zinc-800 text-foreground">
+          <main className="min-h-[calc(100vh-1px)] flex flex-col font-sans bg-white dark:bg-zinc-950 text-foreground">
             <Providers>
               <MantlzProvider apiKey={process.env.MANTLZ_KEY}>
                 {children}

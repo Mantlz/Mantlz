@@ -13,7 +13,7 @@ export function createMantlzClient(apiKey: string, config?: MantlzClientConfig):
   const notificationsEnabled = config?.notifications !== false;
 
   return {
-    submitForm: async (type: string, options: { formId: string; data: any }): Promise<FormSubmitResponse> => {
+    submitForm: async (type: string, options: { formId: string; data: any; }): Promise<FormSubmitResponse> => {
       try {
         const { formId, data } = options;
         const url = `/api/v1/forms/submit`;
@@ -29,7 +29,8 @@ export function createMantlzClient(apiKey: string, config?: MantlzClientConfig):
             type,
             formId,
             apiKey,
-            data
+            data,
+            //recaptchaToken
           }),
         });
 
@@ -68,21 +69,27 @@ export function createMantlzClient(apiKey: string, config?: MantlzClientConfig):
           
           // Show toast notification for API key errors regardless of notificationsEnabled setting
           if (status === 401) {
-            // Force show API key errors even if notifications are disabled
-            const title = error.userMessage || 'API Key Error';
-            const description = 'Check your MANTLZ_KEY in the environment variables.';
-            
-            // Use direct console log to ensure visibility for debugging
-            console.log('SHOWING API KEY ERROR TOAST:', title, description);
-            
-            // Call toast directly for critical errors
-            toast.error(title, {
-              description,
-              duration: 5000, // Longer duration for important errors
-            });
-            
-            // Delay before throwing to ensure toast has time to appear
-            await new Promise(resolve => setTimeout(resolve, 500));
+            // Only show API key errors if specifically requested via config
+            // This allows us to avoid duplicate messages with ApiKeyErrorCard
+            if (config?.showApiKeyErrorToasts) {
+              const title = error.userMessage || 'API Key Error';
+              const description = 'Check your MANTLZ_KEY in the environment variables.';
+              
+              // Use direct console log to ensure visibility for debugging
+              console.log('SHOWING API KEY ERROR TOAST:', title, description);
+              
+              // Call toast directly for critical errors
+              toast.error(title, {
+                description,
+                duration: 5000, // Longer duration for important errors
+              });
+              
+              // Delay before throwing to ensure toast has time to appear
+              await new Promise(resolve => setTimeout(resolve, 500));
+            } else {
+              // Just log the error without showing a toast
+              console.log('API Key error (toast suppressed):', error.userMessage);
+            }
           }
           // Show toast for other errors if notifications are enabled
           else if (notificationsEnabled) {

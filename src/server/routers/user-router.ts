@@ -94,4 +94,21 @@ export const userRouter = j.router({
         throw new HTTPException(500, { message: "Failed to update Resend API key", cause: error });
       }
     }),
+
+    // Get user's current plan
+  getUserPlan: privateProcedure
+  .query(async ({ c, ctx }) => {
+    const userId = ctx.user.id;
+    
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { plan: true }
+    });
+
+    if (!user) {
+      throw new HTTPException(404, { message: 'User not found' });
+    }
+
+    return c.superjson({ plan: user.plan });
+  }),
 }); 

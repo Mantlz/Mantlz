@@ -6,22 +6,28 @@ export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   variant?: "default" | "error";
   error?: string;
+  colorMode?: "light" | "dark";
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, variant = "default", error, ...props }, ref) => {
+  ({ className, variant = "default", error, colorMode = "light", ...props }, ref) => {
     return (
       <div className="space-y-1">
         <textarea
           className={cn(
-            textareaVariants({ variant }),
+            textareaVariants({ variant, colorMode }),
             className
           )}
           ref={ref}
           {...props}
         />
         {error && (
-          <p className="text-sm text-red-500 dark:text-red-400">{error}</p>
+          <p className={cn(
+            "text-sm", 
+            colorMode === 'light' ? "text-red-500" : "text-red-400"
+          )}>
+            {error}
+          </p>
         )}
       </div>
     )

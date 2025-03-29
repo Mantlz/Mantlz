@@ -1,22 +1,25 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 
-import { Button } from './ui/button';
-import { Textarea } from './ui/textarea';
-import { cn } from '../utils/cn';
-import { useMantlz } from '../context/mantlzContext';
+import { Button } from '../ui/button';
+import { Textarea } from '../ui/textarea';
+import { cn } from '../../utils/cn';
+import { useMantlz } from '../../context/mantlzContext';
+import { ApiKeyErrorCard } from '../ui/ApiKeyErrorCard';
 
-import { feedbackSchema, FeedbackFormProps } from './feedback/types';
-import { StarIcon, SendIcon } from './feedback/icons';
-import { useColorScheme } from './feedback/useColorScheme';
-import { processAppearance } from './feedback/styleUtils';
+import { feedbackSchema, FeedbackFormProps } from '../feedback/types';
+import { StarIcon, SendIcon } from '../feedback/icons';
+import { useColorScheme } from '../feedback/useColorScheme';
+import { processAppearance } from '../feedback/styleUtils';
 
-export { FEEDBACK_THEMES } from './feedback/sharedTypes';
-export type { FeedbackFormProps, FeedbackFormAppearance } from './feedback/types';
+export { FEEDBACK_THEMES } from '../feedback/sharedTypes';
+export type { FeedbackFormProps, FeedbackFormAppearance } from '../feedback/types';
+
+// Default reCAPTCHA site key for the SDK
 
 export function FeedbackForm({ 
   formId,
@@ -34,11 +37,21 @@ export function FeedbackForm({
   feedbackPlaceholder,
   successMessage = "Thank you for your feedback!",
   darkMode,
+  variant = "default"
 }: FeedbackFormProps) {
   const { client } = useMantlz();
   const [hoveredRating, setHoveredRating] = React.useState<number | null>(null);
   const [submitStatus, setSubmitStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [apiKeyError, setApiKeyError] = React.useState<boolean>(false);
+  
+  // Check if API key is configured
+  React.useEffect(() => {
+    if (!client) {
+      setApiKeyError(true);
+    }
+  }, [client]);
   
   // Reset status after 3 seconds
   React.useEffect((): (() => void) | undefined => {
@@ -114,14 +127,18 @@ export function FeedbackForm({
   };
 
   const onSubmit = async (data: typeof feedbackSchema._type) => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
     try {
       if (!client) {
         throw new Error('API key not configured properly');
       }
-      
+
+      // Submit form
       const response = await client.submitForm('feedback', {
         formId,
-        data
+        data,
       });
       
       if (response.success) {
@@ -132,7 +149,6 @@ export function FeedbackForm({
           email: '',
         });
         
-        // Show toast instead of inline message
         toast.success(successMessage || "Thank you for your feedback!");
         
         if (onSubmitSuccess) {
@@ -156,8 +172,19 @@ export function FeedbackForm({
         setSubmitStatus('error');
         setErrorMessage((error as Error).message || 'An unexpected error occurred');
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  // Show API key error UI
+  if (apiKeyError) {
+    return <ApiKeyErrorCard 
+      variant={variant} 
+      className={className} 
+      colorMode={darkMode ? 'dark' : 'light'} 
+    />;
+  }
 
   return (
     <div className={cn(
@@ -255,7 +282,7 @@ export function FeedbackForm({
             "w-full rounded-lg bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 text-white font-medium transition-all", 
             styles.elements?.submitButton
           )}
-          disabled={form.formState.isSubmitting}
+          disabled={isSubmitting}
         >
           <SendIcon className={cn("mr-2 h-4 w-4", styles.elements?.submitButtonIcon)} />
           <span className={cn(styles.elements?.submitButtonText)}>

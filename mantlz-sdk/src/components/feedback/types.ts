@@ -64,6 +64,7 @@ export interface FeedbackFormProps {
   onSubmitSuccess?: (data: z.infer<typeof feedbackSchema>) => void;
   onSubmitError?: (error: Error) => void;
   className?: string;
+  variant?: "default" | "glass";
   
   // Layout options
   title?: string;

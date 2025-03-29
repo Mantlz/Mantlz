@@ -40,8 +40,8 @@ export function BrandedEmailTemplate({
           
           {/* Main Content */}
           <Section style={styles.content}>
-            {/* Watermark */}
-            <div style={styles.watermark}>mantlz</div>
+
+
             
             {/* Content */}
             {children}

@@ -44,13 +44,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 const { user, isLoaded } = useUser()
 
   return (
-    <Sidebar collapsible="offcanvas" {...props} >
+    <Sidebar collapsible="offcanvas" {...props}  >
       <SidebarHeader >
         <SidebarMenu >
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
+              className="data-[slot=sidebar-menu-button]:!p-1.5 "
             >
               <a href="#" className="flex items-center gap-2">
                 <Logo/>
@@ -66,7 +66,7 @@ const { user, isLoaded } = useUser()
       </SidebarContent>
       <SidebarFooter>
         <div className="flex flex-col gap-4">
-          <UpgradeCard />
+          {/* <UpgradeCard /> */}
           <NavSecondary />
           {!isLoaded ? (
             <NavUserSkeleton />

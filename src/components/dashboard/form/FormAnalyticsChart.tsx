@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
-import { ChevronDown } from "lucide-react"
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+import { ChevronDown, Info } from "lucide-react"
 import {
   Card,
   CardContent,
@@ -49,8 +49,51 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
+// Helper function to generate demo data for week and month
+const generateDemoDataForRange = (
+  timeRange: 'day' | 'week' | 'month', 
+  baseSubmissions: number,
+): TimeSeriesPoint[] => {
+  // Get random number with base value and variability
+  const getRandomValue = (base: number) => {
+    const variability = base * 0.7; // 70% variability
+    return Math.max(0, Math.floor(base + (Math.random() * variability * 2 - variability)));
+  };
+  
+  if (timeRange === 'week') {
+    // Hardcoded week data to avoid type issues
+    return [
+      { time: "Mon", submissions: getRandomValue(Math.max(1, baseSubmissions / 7)) },
+      { time: "Tue", submissions: getRandomValue(Math.max(1, baseSubmissions / 7)) },
+      { time: "Wed", submissions: getRandomValue(Math.max(1, baseSubmissions / 7)) },
+      { time: "Thu", submissions: getRandomValue(Math.max(1, baseSubmissions / 7)) },
+      { time: "Fri", submissions: getRandomValue(Math.max(1, baseSubmissions / 7)) },
+      { time: "Sat", submissions: getRandomValue(Math.max(1, baseSubmissions / 7)) },
+      { time: "Sun", submissions: getRandomValue(Math.max(1, baseSubmissions / 7)) },
+    ];
+  } else if (timeRange === 'month') {
+    // Generate simplified month data (30 days)
+    const monthData: TimeSeriesPoint[] = [];
+    const date = new Date();
+    
+    for (let i = 0; i < 30; i++) {
+      const d = new Date(date);
+      d.setDate(date.getDate() - 29 + i);
+      monthData.push({
+        time: `${d.getMonth() + 1}/${d.getDate()}`,
+        submissions: i === 29 ? baseSubmissions : getRandomValue(Math.max(1, baseSubmissions / 30)),
+      });
+    }
+    
+    return monthData;
+  }
+  
+  // Default: return empty array (should never happen)
+  return [];
+};
+
 export function FormAnalyticsChart({
-  chartData,
+  chartData: rawChartData,
   latestDataPoint,
   analytics,
   isLoading,
@@ -61,6 +104,9 @@ export function FormAnalyticsChart({
   const [activeMetric, setActiveMetric] = 
     React.useState<keyof typeof chartConfig>("submissions")
   const [isCollapsed, setIsCollapsed] = React.useState(false)
+  
+  // Use the real data directly from the backend
+  const chartData = React.useMemo(() => rawChartData, [rawChartData]);
 
   const total = React.useMemo(
     () => ({
@@ -86,6 +132,19 @@ export function FormAnalyticsChart({
     return `${hour12}${ampm}`;
   }
 
+  // Format time labels based on time range
+  const formatTimeLabel = (value: string) => {
+    if (timeRange === 'day') {
+      const hour = parseInt(value?.split(':')?.[0] ?? '0', 10);
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      const hour12 = hour % 12 || 12;
+      return `${hour12}${ampm}`;
+    }
+    
+    // For week and month, return as is
+    return value;
+  };
+
   if (isLoading) {
     return (
       <Card className="bg-zinc-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800">
@@ -99,6 +158,9 @@ export function FormAnalyticsChart({
     )
   }
 
+  // Handle empty data scenario
+  const hasData = chartData.some(point => point.submissions > 0);
+  
   return (
     <Card className="relative bg-zinc-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-lg shadow-md w-full">
       {/* Subtle gradient background */}
@@ -167,8 +229,8 @@ export function FormAnalyticsChart({
           <MetricCard
             label="Peak Hour"
             value={analytics?.peakSubmissionHour ?? 0}
-            format="number"
-            suffix={getPeakHourLabel(analytics?.peakSubmissionHour ?? 0)}
+            format="custom"
+            customValue={getPeakHourLabel(analytics?.peakSubmissionHour ?? 0)}
           />
           <MetricCard
             label="Completion Rate"
@@ -212,64 +274,86 @@ export function FormAnalyticsChart({
       <CardContent className={`relative p-3 sm:p-4 md:p-6 overflow-hidden transition-all duration-300 ${
         isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[400px] opacity-100'
       }`}>
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[200px] sm:h-[250px] md:h-[300px] lg:h-[350px] w-full"
-        >
-          <BarChart
-            data={chartData}
-            margin={{
-              left: 8,
-              right: 8,
-              top: 8,
-              bottom: 8,
-            }}
-          >
-            <CartesianGrid vertical={false} stroke="currentColor" className="text-slate-200 dark:text-zinc-800" />
-            <XAxis
-              dataKey="time"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={4}
-              minTickGap={24}
-              tick={{ 
-                fill: 'currentColor',
-                fontFamily: 'monospace', 
-                fontSize: 10,
-                className: 'text-slate-900 dark:text-white'
-              }}
-              tickFormatter={(value) => {
-                if (timeRange === 'day') {
-                  const hour = parseInt(value?.split(':')?.[0] ?? '0', 10);
-                  const ampm = hour >= 12 ? 'PM' : 'AM';
-                  const hour12 = hour % 12 || 12;
-                  return `${hour12}${ampm}`;
-                }
-                return value;
-              }}
-            />
-            <ChartTooltip
-              content={
-                <ChartTooltipContent
-                  className="w-[140px] sm:w-[160px] bg-white dark:bg-zinc-900 text-slate-900 dark:text-zinc-50 border border-slate-200 dark:border-zinc-800 p-2 sm:p-3 rounded-lg shadow-lg text-xs sm:text-sm"
-                  nameKey={activeMetric}
-                  labelFormatter={(value) => {
-                    if (timeRange === 'day') {
-                      return value;
-                    }
-                    return value;
+        {!hasData && timeRange === 'day' ? (
+          <div className="flex flex-col items-center justify-center h-[200px] sm:h-[250px] md:h-[300px] lg:h-[350px]">
+            <p className="text-slate-500 dark:text-zinc-400 text-sm font-medium mb-2">No submissions in the last 24 hours</p>
+            <p className="text-slate-400 dark:text-zinc-500 text-xs">Try changing the time range to see more data</p>
+          </div>
+        ) : (
+          <>
+            <ChartContainer
+              config={chartConfig}
+              className="aspect-auto h-[200px] sm:h-[250px] md:h-[300px] lg:h-[350px] w-full"
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={chartData}
+                  margin={{
+                    left: 8,
+                    right: 16,
+                    top: 8,
+                    bottom: 8,
                   }}
-                />
-              }
-            />
-            <Bar 
-              dataKey={activeMetric}
-              fill={`var(--color-${activeMetric})`}
-              radius={[4, 4, 0, 0]}
-              className="transition-all duration-200 hover:opacity-80 dark:fill-white"
-            />
-          </BarChart>
-        </ChartContainer>
+                >
+                  <CartesianGrid vertical={false} stroke="currentColor" className="text-slate-200 dark:text-zinc-800" />
+                  <XAxis
+                    dataKey="time"
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={4}
+                    minTickGap={5}
+                    tick={{ 
+                      fill: 'currentColor',
+                      fontFamily: 'monospace', 
+                      fontSize: 10,
+                      className: 'text-slate-900 dark:text-white'
+                    }}
+                    tickFormatter={formatTimeLabel}
+                  />
+                  <YAxis 
+                    hide={false}
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    tick={{ 
+                      fill: 'currentColor',
+                      fontFamily: 'monospace', 
+                      fontSize: 10,
+                      className: 'text-slate-500 dark:text-zinc-400'
+                    }}
+                  />
+                  <Tooltip
+                    content={
+                      <ChartTooltipContent
+                        className="w-[140px] sm:w-[160px] bg-white dark:bg-zinc-900 text-slate-900 dark:text-zinc-50 border border-slate-200 dark:border-zinc-800 p-2 sm:p-3 rounded-lg shadow-lg text-xs sm:text-sm"
+                        nameKey={activeMetric}
+                        labelFormatter={(value) => {
+                          if (timeRange === 'day') {
+                            return formatTimeLabel(value);
+                          }
+                          return value;
+                        }}
+                      />
+                    }
+                  />
+                  <Bar 
+                    dataKey="submissions"
+                    fill={`var(--color-${activeMetric})`}
+                    radius={[4, 4, 0, 0]}
+                    className="transition-all duration-200 hover:opacity-80 dark:fill-white"
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+            
+            {timeRange !== 'day' && total.submissions === 0 && (
+              <div className="flex items-center justify-center mt-2 gap-1 text-xs text-slate-500 dark:text-zinc-400">
+                <Info className="h-3.5 w-3.5" />
+                <span>No submission data for {timeRange} view. Submit more forms to see analytics.</span>
+              </div>
+            )}
+          </>
+        )}
       </CardContent>
     </Card>
   )

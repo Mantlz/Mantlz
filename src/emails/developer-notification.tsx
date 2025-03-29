@@ -12,14 +12,14 @@ interface DeveloperNotificationEmailProps {
   formName: string;
   submissionData: Record<string, any>;
   formId: string;
-  submissionId: string;
+  _submissionId: string;
 }
 
 export function DeveloperNotificationEmail({ 
   formName, 
   submissionData,
   formId,
-  submissionId,
+  _submissionId,
 }: DeveloperNotificationEmailProps) {
   const submissionTime = new Date().toLocaleString();
   // Get a preview of important fields without showing all details
@@ -28,7 +28,7 @@ export function DeveloperNotificationEmail({
   
   return (
     <BrandedEmailTemplate previewText={`🎯 New submission waiting for your review on ${formName}`}>
-      <Heading>📬 New Submission Alert!</Heading>
+      <Heading>New Submission Alert!</Heading>
       
       <Text style={{ fontSize: '16px', color: '#666666' }}>
         Your form <strong>{formName}</strong> just received a new submission at {submissionTime}.
@@ -38,7 +38,7 @@ export function DeveloperNotificationEmail({
       
       <Section style={{ background: '#f9fafb', padding: '20px', borderRadius: '8px' }}>
         <Text style={{ fontSize: '16px', fontWeight: 'bold' }}>
-          📊 Quick Overview:
+          Quick Overview:
         </Text>
         
         <Text style={{ color: '#666666' }}>
@@ -59,7 +59,7 @@ export function DeveloperNotificationEmail({
         borderRadius: '8px'
       }}>
         <Text style={{ color: 'white', marginBottom: '15px' }}>
-          🔐 View the complete submission details in your secure dashboard
+          View the complete submission details in your secure dashboard
         </Text>
         <Button
           href={`${process.env.NEXT_PUBLIC_APP_URL}/dashboard/form/${formId}`}
@@ -83,7 +83,7 @@ export function DeveloperNotificationEmail({
         textAlign: 'center',
         fontStyle: 'italic' 
       }}>
-        💡 Quick access: Simply click the button above to review all submission details
+        Quick access: Simply click the button above to review all submission details
       </Text>
     </BrandedEmailTemplate>
   );
