@@ -31,7 +31,7 @@ export function NavMain({
               trigger={
                 <SidebarMenuButton
                   tooltip="Quick Create"
-                  className="bg-zinc-500 text-white hover:bg-zinc-600 hover:text-white active:bg-zinc-600 active:text-white min-w-8 duration-200 ease-linear"
+                  className="bg-zinc-300 dark:bg-zinc-800 dark:text-white hover:bg-zinc-400 hover:text-white active:bg-zinc-600 active:text-white min-w-8 duration-200 ease-linear"
                 >
                   <IconCirclePlusFilled />
                   <span>Quick Create</span>

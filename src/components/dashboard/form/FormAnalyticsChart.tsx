@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
-import { ChevronDown, Info } from "lucide-react"
+import { ChevronDown, Info, Lock } from "lucide-react"
 import {
   Card,
   CardContent,
@@ -17,10 +17,17 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { AdvancedAnalytics } from "./AdvancedAnalytics"
 
 interface TimeSeriesPoint {
   time: string;
   submissions: number;
+}
+
+interface UserInsight {
+  type: string;
+  value: string;
+  percentage: number;
 }
 
 interface FormAnalyticsChartProps {
@@ -35,6 +42,9 @@ interface FormAnalyticsChartProps {
     peakSubmissionHour: number;
     completionRate: number;
     averageResponseTime: number;
+    userPlan?: string;
+    // User insights data
+    userInsights?: UserInsight[];
   };
   isLoading: boolean;
   formCreatedAt?: Date;
@@ -104,6 +114,7 @@ export function FormAnalyticsChart({
   const [activeMetric, setActiveMetric] = 
     React.useState<keyof typeof chartConfig>("submissions")
   const [isCollapsed, setIsCollapsed] = React.useState(false)
+  const [activeTab, setActiveTab] = React.useState<'overview' | 'insights'>('overview')
   
   // Use the real data directly from the backend
   const chartData = React.useMemo(() => rawChartData, [rawChartData]);
@@ -114,6 +125,13 @@ export function FormAnalyticsChart({
     }),
     [chartData]
   )
+
+  // User insights data
+  const userInsights = analytics?.userInsights || [];
+
+  // Check if user has premium access (standard or pro tier)
+  const userPlan = analytics?.userPlan?.toUpperCase() || 'FREE'
+  const hasPremiumAccess = userPlan === 'STANDARD' || userPlan === 'PRO';
 
   // Get the appropriate time range label
   const getTimeRangeLabel = () => {
@@ -167,7 +185,7 @@ export function FormAnalyticsChart({
       <div className="absolute inset-0 bg-gradient-to-br from-slate-50/50 to-slate-100/50 dark:from-zinc-900/50 dark:to-zinc-800/50 pointer-events-none" />
       
       {/* Accent line */}
-      <div className="absolute top-0 left-0 h-full w-1 bg-gradient-to-b from-slate-300 via-slate-400 to-slate-500 dark:from-zinc-700 dark:via-zinc-600 dark:to-zinc-500" />
+
 
       <CardHeader className="relative space-y-4 border-b border-slate-200 dark:border-zinc-800 p-3 sm:p-4 md:p-6">
         {/* Header Section */}
@@ -193,62 +211,31 @@ export function FormAnalyticsChart({
           </button>
         </div>
 
-        {/* Metrics Grid */}
-        <div className={`grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 transition-all duration-300 ${
+        {/* Analytics Tab Selector */}
+        <div className={`flex items-center gap-1.5 sm:gap-2 transition-all duration-300 ${
           isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[200px] opacity-100'
         }`}>
-          <MetricCard
-            label="Total Submissions"
-            value={analytics?.totalSubmissions ?? 0}
-            format="number"
-          />
-          <MetricCard
-            label="Daily Rate"
-            value={analytics?.dailySubmissionRate ?? 0}
-            format="number"
-            suffix="/day"
-          />
-          <MetricCard
-            label="24h Activity"
-            value={analytics?.last24HoursSubmissions ?? 0}
-            format="number"
-            suffix="submissions"
-          />
-          <MetricCard
-            label="Week Growth"
-            value={analytics?.weekOverWeekGrowth ?? 0}
-            format="percentage"
-            trend={(analytics?.weekOverWeekGrowth ?? 0) > 0 ? 'up' : 'down'}
-          />
-        </div>
-
-        {/* Additional Metrics Grid */}
-        <div className={`grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 transition-all duration-300 ${
-          isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[200px] opacity-100'
-        }`}>
-          <MetricCard
-            label="Peak Hour"
-            value={analytics?.peakSubmissionHour ?? 0}
-            format="custom"
-            customValue={getPeakHourLabel(analytics?.peakSubmissionHour ?? 0)}
-          />
-          <MetricCard
-            label="Completion Rate"
-            value={analytics?.completionRate ?? 0}
-            format="percentage"
-          />
-          <MetricCard
-            label="Avg Response Time"
-            value={analytics?.averageResponseTime ?? 0}
-            format="number"
-            suffix="min"
-          />
-          <MetricCard
-            label="Engagement Score"
-            value={analytics?.engagementScore ?? 0}
-            format="number"
-            suffix="/10"
-          />
+          <button
+            onClick={() => setActiveTab('overview')}
+            data-active={activeTab === 'overview'}
+            className="px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-md transition-all duration-200
+              text-slate-600 dark:text-white hover:text-slate-900 dark:hover:text-white
+              data-[active=true]:bg-slate-900 dark:data-[active=true]:bg-white
+              data-[active=true]:text-white dark:data-[active=true]:text-zinc-900"
+          >
+            Overview
+          </button>
+          <button
+            onClick={() => setActiveTab('insights')}
+            data-active={activeTab === 'insights'}
+            className="px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-md transition-all duration-200
+              text-slate-600 dark:text-white hover:text-slate-900 dark:hover:text-white
+              data-[active=true]:bg-slate-900 dark:data-[active=true]:bg-white
+              data-[active=true]:text-white dark:data-[active=true]:text-zinc-900 flex items-center gap-1"
+          >
+            {!hasPremiumAccess && <Lock className="h-3 w-3" />}
+            User Insights
+          </button>
         </div>
 
         {/* Time Range Selector */}
@@ -269,10 +256,98 @@ export function FormAnalyticsChart({
             </button>
           ))}
         </div>
+
+        {/* OVERVIEW TAB CONTENT */}
+        {activeTab === 'overview' && (
+          <>
+            {/* Basic Metrics Grid (Free for all users) */}
+            <div className={`grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 transition-all duration-300 ${
+              isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[200px] opacity-100'
+            }`}>
+              <MetricCard
+                label="Total Submissions"
+                value={analytics?.totalSubmissions ?? 0}
+                format="number"
+              />
+              <MetricCard
+                label="Daily Rate"
+                value={analytics?.dailySubmissionRate ?? 0}
+                format="number"
+                suffix="/day"
+              />
+              <MetricCard
+                label="24h Activity"
+                value={analytics?.last24HoursSubmissions ?? 0}
+                format="number"
+                suffix="submissions"
+              />
+              <MetricCard
+                label="Week Growth"
+                value={analytics?.weekOverWeekGrowth ?? 0}
+                format="percentage"
+                trend={(analytics?.weekOverWeekGrowth ?? 0) > 0 ? 'up' : 'down'}
+              />
+            </div>
+
+            {/* Advanced Metrics Grid (Premium only) */}
+            <div className={`grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 relative transition-all duration-300 ${
+              isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[200px] opacity-100'
+            }`}>
+              {/* Overlay for free users */}
+              {!hasPremiumAccess && (
+                <div className="absolute inset-0 backdrop-blur-sm bg-white/30 dark:bg-black/30 rounded-lg z-10 flex flex-col items-center justify-center">
+                  <Lock className="h-5 w-5 text-slate-500 dark:text-zinc-400 mb-2" />
+                  <p className="text-sm font-medium text-slate-700 dark:text-zinc-300">Advanced Analytics</p>
+                  <p className="text-xs text-slate-500 dark:text-zinc-400 text-center max-w-[260px] mt-1">
+                    Upgrade to Standard or Pro plan to unlock advanced metrics
+                  </p>
+                </div>
+              )}
+              
+              <MetricCard
+                label="Peak Hour"
+                value={analytics?.peakSubmissionHour ?? 0}
+                format="custom"
+                customValue={getPeakHourLabel(analytics?.peakSubmissionHour ?? 0)}
+                locked={!hasPremiumAccess}
+              />
+              <MetricCard
+                label="Completion Rate"
+                value={analytics?.completionRate ?? 0}
+                format="percentage"
+                locked={!hasPremiumAccess}
+              />
+              <MetricCard
+                label="Avg Response Time"
+                value={analytics?.averageResponseTime ?? 0}
+                format="number"
+                suffix="min"
+                locked={!hasPremiumAccess}
+              />
+              <MetricCard
+                label="Engagement Score"
+                value={analytics?.engagementScore ?? 0}
+                format="number"
+                suffix="/10"
+                locked={!hasPremiumAccess}
+              />
+            </div>
+          </>
+        )}
+
+        {/* USER INSIGHTS TAB */}
+        {activeTab === 'insights' && (
+          <AdvancedAnalytics
+            activeTab="insights"
+            hasPremiumAccess={hasPremiumAccess}
+            userInsights={userInsights}
+            isCollapsed={isCollapsed}
+          />
+        )}
       </CardHeader>
 
       <CardContent className={`relative p-3 sm:p-4 md:p-6 overflow-hidden transition-all duration-300 ${
-        isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[400px] opacity-100'
+        isCollapsed || activeTab !== 'overview' ? 'max-h-0 opacity-0' : 'max-h-[400px] opacity-100'
       }`}>
         {!hasData && timeRange === 'day' ? (
           <div className="flex flex-col items-center justify-center h-[200px] sm:h-[250px] md:h-[300px] lg:h-[350px]">

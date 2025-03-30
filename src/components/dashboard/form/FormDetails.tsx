@@ -528,7 +528,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
     <div className="flex flex-col gap-4 md:gap-6 w-full max-w-[1400px] mx-auto p-2 sm:p-4 lg:p-6">
       {/* Form Header */}
       {form && (
-        <div className="bg-zinc-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-lg shadow-md mb-6">
+
           <FormHeader 
             id={formId as string} 
             name={form.name} 
@@ -543,7 +543,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
             } : undefined}
             onRefresh={() => refetchForm()}
           />
-        </div>
+
       )}
 
       {/* Chart section */}

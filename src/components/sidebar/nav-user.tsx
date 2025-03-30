@@ -57,8 +57,8 @@ export function NavUser({
                 "cursor-pointer transition-all duration-200",
                 "rounded-xl border",
                 // Colors
-                "bg-zinc-100/80 dark:bg-zinc-900",
-                "border-zinc-200/50 dark:border-zinc-800/50",
+                "bg-zinc-200 dark:bg-zinc-900",
+                "border-zinc-400/50 dark:border-zinc-800/50",
                 "hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50",
                 // Active state
                 "data-[state=open]:bg-zinc-200/80 dark:data-[state=open]:bg-zinc-800/80",
@@ -88,7 +88,7 @@ export function NavUser({
           <DropdownMenuContent
             className={cn(
               "w-(--radix-dropdown-menu-trigger-width) min-w-56",
-              "bg-white dark:bg-zinc-900",
+              "bg-zinc-50 dark:bg-zinc-900",
               "border border-zinc-200 dark:border-zinc-800",
               "rounded-xl shadow-lg",
               "backdrop-blur-sm"
