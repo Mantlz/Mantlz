@@ -30,6 +30,18 @@ interface UserInsight {
   percentage: number;
 }
 
+interface BrowserStat {
+  name: string;
+  count: number;
+  percentage: number;
+}
+
+interface CountryStat {
+  name: string;
+  count: number;
+  percentage: number;
+}
+
 interface FormAnalyticsChartProps {
   chartData: TimeSeriesPoint[];
   latestDataPoint: TimeSeriesPoint;
@@ -45,6 +57,8 @@ interface FormAnalyticsChartProps {
     userPlan?: string;
     // User insights data
     userInsights?: UserInsight[];
+    browserStats?: BrowserStat[];
+    locationStats?: CountryStat[];
   };
   isLoading: boolean;
   formCreatedAt?: Date;
@@ -340,8 +354,10 @@ export function FormAnalyticsChart({
           <AdvancedAnalytics
             activeTab="insights"
             hasPremiumAccess={hasPremiumAccess}
-            userInsights={userInsights}
+            userInsights={[]}
             isCollapsed={isCollapsed}
+            browserStats={analytics?.browserStats || []}
+            locationStats={analytics?.locationStats || []}
           />
         )}
       </CardHeader>

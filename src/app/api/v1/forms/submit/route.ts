@@ -7,6 +7,7 @@ import { render } from '@react-email/components';
 import { Plan, Prisma } from '@prisma/client';
 import { sendDeveloperNotification } from '@/services/notifcation-service';
 import { ratelimitConfig } from '@/lib/ratelimiter';
+import { enhanceDataWithAnalytics } from '@/lib/analytics-utils';
 
 const submitSchema = z.object({
   formId: z.string(),
@@ -145,10 +146,23 @@ export async function POST(req: Request) {
 
     // Create submission
     try {
+      // Capture user agent and location information
+      const enhancedData = enhanceDataWithAnalytics(data, {
+        userAgent: req.headers.get('user-agent'),
+        cfCountry: req.headers.get('cf-ipcountry'),
+        acceptLanguage: req.headers.get('accept-language'),
+        ip: req.headers.get('x-forwarded-for')
+      });
+      
+      console.log('Capture analytics data:', { 
+        browser: enhancedData._meta.browser, 
+        country: enhancedData._meta.country 
+      });
+      
       const submission = await db.submission.create({
         data: {
           formId,
-          data,
+          data: enhancedData,
           email: typeof data.email === 'string' ? data.email : undefined,
         },
       });
