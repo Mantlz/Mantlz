@@ -1,15 +1,15 @@
 import React, { type JSX } from 'react'
-import { type Icon } from '@tabler/icons-react'
-import { IconDashboard, IconSettings, IconMail, IconPlugConnected } from '@tabler/icons-react'
 
-// import CalIcon from '@/components/icons/cal-icon'
-// import WorkflowIcon from '@/components/icons/workflow-icon'
+
+
+
 import DashboardIcon from '@/components/icons/dashboard-icon'
 import EmailIcon from '@/components/icons/email-icon'
 import IntegrationsIcon from '@/components/icons/integration-icon'
-import SettingsIcon from '@/components/icons/settings-icon'
-// import NotesIcon from '@/components/icons/notes'
-// import BarChar from '@/components/icons/bar-char'
+import LogIcon from '@/components/icons/log'
+import TestIcon from '@/components/icons/test'
+
+
 
 
 
@@ -49,8 +49,13 @@ export const SIDE_BAR_DOMAIN_MENU: SIDE_BAR_DOMAIN_MENU_PROPS[] = [
 
 export const SIDE_BAR_DOCUMENT_MENU: SIDE_BAR_DOCUMENT_MENU_PROPS[] = [
   {
-    title: 'Email',
-    icon: <EmailIcon />,
-    url: 'email',
+    title: 'Logs',
+    icon: <LogIcon />,
+    url: 'dashboard/logs',
+  },
+  {
+    title: 'Test',
+    icon: <TestIcon />,
+    url: 'dashboard/test',
   },
 ]

@@ -988,6 +988,67 @@ export const formRouter = j.router({
       }
     }),
 
+  getSubmissionLogs: privateProcedure
+    .input(z.object({
+      formId: z.string().optional(),
+      page: z.number().default(1),
+      limit: z.number().default(10),
+    }))
+    .query(async ({ ctx, c, input }) => {
+      const { user } = ctx;
+      const { formId, page, limit } = input;
+      const skip = (page - 1) * limit;
+
+      try {
+        const where = {
+          form: {
+            userId: user.id,
+          },
+          ...(formId ? { formId } : {}),
+        };
+
+        const [submissions, total] = await Promise.all([
+          db.submission.findMany({
+            where,
+            orderBy: { createdAt: 'desc' },
+            take: limit,
+            skip,
+            select: {
+              id: true,
+              createdAt: true,
+              email: true,
+              data: true,
+              form: {
+                select: {
+                  id: true,
+                  name: true,
+                }
+              },
+              notificationLogs: {
+                select: {
+                  type: true,
+                  createdAt: true,
+                }
+              }
+            }
+          }),
+          db.submission.count({ where })
+        ]);
+
+        return c.superjson({
+          submissions,
+          pagination: {
+            total,
+            pages: Math.ceil(total / limit),
+            currentPage: page,
+          }
+        });
+      } catch (error) {
+        console.error('Error fetching submission logs:', error);
+        throw new HTTPException(500, { message: 'Failed to fetch submission logs' });
+      }
+    }),
+
 });
 
 
