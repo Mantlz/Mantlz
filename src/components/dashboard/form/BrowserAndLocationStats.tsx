@@ -1,11 +1,40 @@
 "use client"
 
 import * as React from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { cn } from "@/lib/utils"
-import { Globe, MapPin } from "lucide-react"
+import { Globe, MapPin, Loader2, AlertCircle, Maximize2, TrendingUp } from "lucide-react"
+import { 
+  ComposableMap, 
+  Geographies, 
+  Geography, 
+  Marker,
+  ZoomableGroup
+} from "react-simple-maps"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Bar, BarChart, XAxis, YAxis } from "recharts"
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart"
+
+// Add SVG namespace to JSX
+declare namespace JSX {
+  interface IntrinsicElements {
+    foreignObject: React.SVGProps<SVGForeignObjectElement>;
+  }
+}
 
 interface BrowserStat {
   name: string;
@@ -82,188 +111,507 @@ const COUNTRY_COORDINATES: Record<string, [number, number]> = {
   "Unknown": [0, 0] // Fallback for unknown countries
 };
 
+// GeoJSON for the world map
+const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"
+
 export function BrowserAndLocationStats({ 
   browsers, 
   countries, 
   isLoading = false 
 }: BrowserAndLocationStatsProps) {
+  // Add lazy loading for the map
+  const [mapLoaded, setMapLoaded] = React.useState(false);
+  const mapRef = React.useRef<HTMLDivElement>(null);
+  const [mapExpanded, setMapExpanded] = React.useState(false);
+
+  React.useEffect(() => {
+    // Use Intersection Observer to lazy load the map when it comes into view
+    if (typeof window !== "undefined" && !mapLoaded) {
+      console.log("Setting up map observer");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0]?.isIntersecting) {
+            console.log("Map is intersecting, setting mapLoaded to true");
+            setMapLoaded(true);
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.1 }
+      );
+      
+      if (mapRef.current) {
+        observer.observe(mapRef.current);
+      }
+      
+      return () => {
+        observer.disconnect();
+      };
+    }
+  }, [mapLoaded]);
+
+  // Transform browser data for the chart
+  const browserChartData = React.useMemo(() => {
+    return browsers.map(browser => ({
+      browser: browser.name.toLowerCase(),
+      visitors: browser.count,
+      fill: `var(--color-${browser.name.toLowerCase()})`,
+    }));
+  }, [browsers]);
+
+  // Chart configuration for browsers
+  const browserChartConfig = React.useMemo(() => {
+    const config: ChartConfig = {
+      visitors: {
+        label: "Visitors",
+      }
+    };
+    
+    // Add each browser to the config
+    browsers.forEach(browser => {
+      const key = browser.name.toLowerCase();
+      config[key] = {
+        label: browser.name,
+        color: `hsl(var(--chart-${browsers.indexOf(browser) + 1}))`,
+      };
+    });
+    
+    return config;
+  }, [browsers]);
+
+  // Transform country data for the chart
+  const locationChartData = React.useMemo(() => {
+    return countries.slice(0, 5).map(country => ({
+      country: country.name.toLowerCase(),
+      visitors: country.count,
+      fill: `var(--color-${countries.indexOf(country) + 1})`,
+    }));
+  }, [countries]);
+
+  // Chart configuration for countries
+  const locationChartConfig = React.useMemo(() => {
+    const config: ChartConfig = {
+      visitors: {
+        label: "Visitors",
+      }
+    };
+    
+    // Add each country to the config
+    countries.slice(0, 5).forEach(country => {
+      const key = country.name.toLowerCase().replace(/\s+/g, '-');
+      config[key] = {
+        label: country.name,
+        color: `hsl(var(--chart-${countries.indexOf(country) + 1}))`,
+      };
+    });
+    
+    return config;
+  }, [countries]);
+
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className="bg-zinc-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-slate-900 dark:text-white">Browser</CardTitle>
-          </CardHeader>
-          <CardContent className="h-[200px] flex items-center justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 dark:border-zinc-800 border-t-slate-500 dark:border-t-zinc-600" />
-          </CardContent>
-        </Card>
-        
-        <Card className="bg-zinc-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-slate-900 dark:text-white">Visitors</CardTitle>
-          </CardHeader>
-          <CardContent className="h-[200px] flex items-center justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 dark:border-zinc-800 border-t-slate-500 dark:border-t-zinc-600" />
-          </CardContent>
-        </Card>
+      <div className="flex flex-col items-center justify-center min-h-[30vh] w-full">
+        <div className="w-8 h-8 border-4 border-zinc-300 dark:border-zinc-600 border-t-transparent rounded-full animate-spin"></div>
+        <p className="mt-2 text-sm font-mono uppercase tracking-widest text-zinc-700 dark:text-zinc-300">
+          Loading Data...
+        </p>
       </div>
     )
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {/* Browser Stats Card */}
-      <Card className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-sm">
-        <CardHeader className="pb-2 flex flex-row items-center justify-between">
-          <CardTitle className="text-sm font-medium text-slate-900 dark:text-white">Browser</CardTitle>
-          <Badge variant="outline" className="font-mono text-xs">
-            Visitors
-          </Badge>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            {browsers.length > 0 ? (
-              browsers.map((browser) => (
-                <div key={browser.name} className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    {browser.icon}
-                    <span className="text-sm font-medium text-slate-700 dark:text-zinc-300">
-                      {browser.name}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-mono text-slate-900 dark:text-white">
-                      {browser.count}
-                    </span>
-                  </div>
+    <div className="w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Map Card - Visitors by Location - Updated to use chart */}
+        <Card className="border border-zinc-200/50 dark:border-zinc-800/50 
+          bg-white/80 dark:bg-zinc-900/70 backdrop-blur-sm
+          shadow-lg hover:shadow-xl transition-all duration-300
+          overflow-hidden min-h-[420px] rounded-xl">
+          <CardHeader className="border-b border-zinc-200 dark:border-zinc-800 pb-3 pt-4 px-5">
+            <div className="flex justify-between items-center w-full">
+              <CardTitle className="text-sm font-medium flex items-center">
+                <div className="flex items-center justify-center bg-indigo-100 dark:bg-indigo-900/30 w-6 h-6 rounded-md mr-2">
+                  <MapPin className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
                 </div>
-              ))
+                Location Analytics
+              </CardTitle>
+              <Badge className="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 
+                hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors px-2 py-0.5 text-xs rounded-md">
+                World Data
+              </Badge>
+            </div>
+            <CardDescription className="text-zinc-500 dark:text-zinc-400 text-xs mt-1">
+              Geographic distribution of your visitors
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent className="px-5 pb-4 pt-3 relative">
+            {countries.length > 0 ? (
+              <div className="relative">
+                {/* World Map reference - increased height */}
+                <div 
+                  ref={mapRef}
+                  className="bg-white dark:bg-zinc-800/50 h-[250px] mb-1 overflow-hidden relative 
+                    border border-zinc-200 dark:border-zinc-700/50 rounded-lg"
+                >
+                  {/* Expand button */}
+                  <button 
+                    onClick={() => setMapExpanded(true)} 
+                    className="absolute top-2 right-2 bg-white/90 dark:bg-zinc-800/90 p-1.5 
+                      rounded-md backdrop-blur-sm z-50 hover:bg-white dark:hover:bg-zinc-700 
+                      shadow-sm hover:shadow transition-all"
+                    aria-label="Expand map"
+                  >
+                    <Maximize2 className="h-3.5 w-3.5 text-zinc-700 dark:text-zinc-300" />
+                  </button>
+                  
+                  {/* Map content - existing code */}
+                  {mapLoaded && (
+                    <ComposableMap
+                      projectionConfig={{
+                        scale: 160,
+                        center: [0, 20]
+                      }}
+                      width={800}
+                      height={400}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        backgroundColor: "transparent"
+                      }}
+                    >
+                      <ZoomableGroup 
+                        zoom={1}
+                        maxZoom={3}
+                        minZoom={1}
+                        translateExtent={[
+                          [0, 0],
+                          [800, 400]
+                        ]}
+                      >
+                        <Geographies geography={geoUrl}>
+                          {({ geographies }: { geographies: any[] }) =>
+                            geographies.map((geo: any) => (
+                              <Geography
+                                key={geo.rsmKey}
+                                geography={geo}
+                                fill="currentColor"
+                                className="text-zinc-100 dark:text-zinc-800/80"
+                                stroke="#E4E4E7"
+                                strokeWidth={0.3}
+                              />
+                            ))
+                          }
+                        </Geographies>
+                        
+                        {/* Only show a few markers on the small map */}
+                        {countries.slice(0, 5).map((country) => {
+                          const coords = COUNTRY_COORDINATES[country.name];
+                          if (!coords) return null;
+                          const [lat, lng] = coords;
+                          
+                          return (
+                            <Marker key={country.name} coordinates={[lng, lat]}>
+                              <g transform="translate(-10, -10)" className="rsm-marker cursor-pointer">
+                                <foreignObject width={20} height={20}>
+                                  <div className="relative group">
+                                    <div className="flex flex-col items-center">
+                                      <div className="bg-indigo-500 dark:bg-indigo-400 flex items-center justify-center 
+                                        min-w-[16px] min-h-[16px] px-1 text-[8px] font-medium text-white dark:text-zinc-900
+                                        shadow-md rounded-md">
+                                        {country.count}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </foreignObject>
+                              </g>
+                            </Marker>
+                          );
+                        })}
+                      </ZoomableGroup>
+                    </ComposableMap>
+                  )}
+                  
+                  {/* Loading indicator */}
+                  {!mapLoaded && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-8 h-8 border-4 border-zinc-300 dark:border-zinc-600 border-t-indigo-500 dark:border-t-indigo-400 rounded-full animate-spin"></div>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Location Chart - Updated with less spacing */}
+                <div className="h-[160px] mt-1">
+                  <ChartContainer config={locationChartConfig}>
+                    <BarChart
+                      accessibilityLayer
+                      data={locationChartData}
+                      layout="vertical"
+                      margin={{
+                        left: 0,
+                        right: 20, // Reduced margin for labels
+                      }}
+                      barSize={24} // Even bigger bars
+                      barGap={0} // No gap between bars
+                    >
+                      <YAxis
+                        dataKey="country"
+                        type="category"
+                        tickLine={false}
+                        tickMargin={6}
+                        axisLine={false}
+                        tickFormatter={(value) => {
+                          const key = value.replace(/\s+/g, '-');
+                          return (locationChartConfig[key as keyof typeof locationChartConfig]?.label || value) as string;
+                        }}
+                        // Make Y-axis spacing tighter
+                        interval={0}
+                        tick={{ fontSize: 12 }}
+                        tickCount={5} // Control number of ticks displayed
+                      />
+                      <XAxis dataKey="visitors" type="number" hide />
+                      <Bar 
+                        dataKey="visitors" 
+                        layout="vertical" 
+                        radius={3}
+                        label={{ 
+                          position: 'right', 
+                          fill: 'var(--foreground)', 
+                          fontSize: 12,
+                          fontWeight: 500 // Make numbers more visible
+                        }}
+                      />
+                    </BarChart>
+                  </ChartContainer>
+                </div>
+              </div>
             ) : (
-              <div className="flex flex-col items-center justify-center py-10">
-                <Globe className="h-10 w-10 text-slate-300 dark:text-zinc-700 mb-2" />
-                <p className="text-sm text-slate-500 dark:text-zinc-400">No browser data yet</p>
-                <p className="text-xs text-slate-400 dark:text-zinc-500 mt-1 text-center">
-                  Browser stats will appear after your first form submission
+              <div className="flex flex-col items-center justify-center py-12">
+                <div className="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-full mb-3">
+                  <MapPin className="h-6 w-6 text-indigo-500 dark:text-indigo-400" />
+                </div>
+                <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">No Location Data</p>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 text-center">
+                  Waiting for first data transmission
                 </p>
               </div>
             )}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Map Card */}
-      <Card className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-sm">
-        <CardHeader className="pb-2 flex flex-row items-center justify-between">
-          <CardTitle className="text-sm font-medium text-slate-900 dark:text-white">Visitors</CardTitle>
-          <Badge variant="outline" className="font-mono text-xs">
-            Countries
-          </Badge>
-        </CardHeader>
-        <CardContent>
-          {countries.length > 0 ? (
-            <div className="relative">
-              {/* World Map with Country Markers */}
-              <div className="bg-slate-100 dark:bg-zinc-800 rounded-md h-[180px] mb-2 overflow-hidden relative">
-                {/* World map SVG */}
-                <svg 
-                  width="100%" 
-                  height="100%" 
-                  viewBox="0 0 360 180" 
-                  className="absolute inset-0 text-slate-300 dark:text-zinc-700 opacity-30"
-                >
-                  {/* Grid lines */}
-                  <path d="M180,0 L180,180" stroke="currentColor" strokeWidth="0.5" fill="none" strokeDasharray="2,2" />
-                  <path d="M0,90 L360,90" stroke="currentColor" strokeWidth="0.5" fill="none" />
-                  
-                  {/* North America */}
-                  <path d="M30,40 C40,35 50,40 60,35 C70,30 80,25 90,30 C95,35 100,40 110,45 C120,50 125,55 130,60 C133,65 135,70 133,75 C130,80 125,85 120,87 C110,90 100,85 95,80 C90,75 85,70 80,65 C75,60 70,55 65,50 C60,45 55,40 50,35 C45,30 40,35 35,40 C30,45 25,40 30,40Z" 
-                    stroke="currentColor" strokeWidth="1" fill="none" />
-                  
-                  {/* South America */}
-                  <path d="M90,90 C95,95 100,100 105,105 C110,110 115,115 118,120 C120,125 122,130 125,135 C127,140 130,145 125,150 C120,155 115,150 110,145 C105,140 100,135 95,130 C90,125 85,120 80,115 C78,110 76,105 80,100 C85,95 90,90 90,90Z" 
-                    stroke="currentColor" strokeWidth="1" fill="none" />
-                  
-                  {/* Europe */}
-                  <path d="M175,35 C180,30 185,32 190,35 C195,40 200,42 205,45 C210,48 215,50 220,45 C225,40 230,38 235,40 C240,42 245,45 247,50 C250,55 252,60 250,65 C248,70 245,75 240,77 C235,80 230,78 225,75 C220,72 215,70 210,68 C205,65 200,62 195,60 C190,58 185,55 180,53 C175,50 170,47 175,45 C178,40 175,35 175,35Z" 
-                    stroke="currentColor" strokeWidth="1" fill="none" />
-                  
-                  {/* Africa */}
-                  <path d="M185,80 C190,75 195,70 200,75 C205,80 210,85 215,90 C220,95 225,100 230,105 C235,110 240,115 245,120 C250,125 248,130 245,135 C240,140 235,145 230,140 C225,135 220,130 215,125 C210,120 205,115 200,110 C195,105 190,100 185,95 C180,90 180,85 185,80Z" 
-                    stroke="currentColor" strokeWidth="1" fill="none" />
-                  
-                  {/* Asia */}
-                  <path d="M250,30 C255,25 260,20 265,25 C270,30 275,35 280,40 C285,45 290,50 295,55 C300,60 305,65 310,70 C315,75 320,80 325,85 C330,90 325,95 320,93 C315,90 310,85 305,80 C300,75 295,70 290,65 C285,60 280,55 275,50 C270,45 265,40 260,35 C255,30 250,30 250,30Z" 
-                    stroke="currentColor" strokeWidth="1" fill="none" />
-                  
-                  {/* Australia */}
-                  <path d="M300,120 C305,115 310,110 315,115 C320,120 325,125 330,130 C335,135 330,140 325,138 C320,135 315,130 310,125 C305,120 300,120 300,120Z" 
-                    stroke="currentColor" strokeWidth="1" fill="none" />
-                </svg>
-                
-                {/* Country markers */}
-                {countries.map((country) => {
-                  // Get coordinates for this country
-                  const coords = COUNTRY_COORDINATES[country.name];
-                  if (!coords) return null;
-                  
-                  // Convert geographic coordinates to SVG viewBox coordinates
-                  const [lat, lng] = coords;
-                  const x = ((lng + 180) / 360) * 360; // Convert -180...180 to 0...360
-                  const y = ((90 - lat) / 180) * 180;  // Convert 90...-90 to 0...180
-                  
-                  return (
-                    <div
-                      key={country.name}
-                      className="absolute flex flex-col items-center"
-                      style={{
-                        left: `${(x / 360) * 100}%`,
-                        top: `${(y / 180) * 100}%`,
-                        transform: 'translate(-50%, -50%)'
-                      }}
-                    >
-                      <div className="relative">
-                        <MapPin className="h-5 w-5 text-blue-500 dark:text-blue-400" />
-                        <span className="absolute top-[-8px] right-[-8px] bg-blue-500 dark:bg-blue-400 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                          {country.count}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
+          </CardContent>
+          
+          {countries.length > 0 && (
+            <CardFooter className="flex-col items-start gap-2 text-sm px-5 py-3 border-t border-zinc-200 dark:border-zinc-800">
+              <div className="flex gap-2 font-medium leading-none">
+                Top Country: {countries[0]?.name} ({countries[0] ? Math.round(countries[0].percentage * 100) : 0}%)
+                <TrendingUp className="h-4 w-4 text-green-500" />
               </div>
-              
-              {/* Top Countries */}
-              <div className="mt-2 space-y-2">
-                {countries.slice(0, 3).map((country) => (
-                  <div key={country.name} className="flex items-center justify-between">
-                    <span className="text-sm text-slate-700 dark:text-zinc-300">
-                      {country.name}
-                    </span>
-                    <div className="flex items-center gap-2">
-                      <Progress 
-                        value={country.percentage * 100} 
-                        className="h-2 w-24 bg-slate-100 dark:bg-zinc-800" 
-                      />
-                      <span className="text-xs font-mono text-slate-500 dark:text-zinc-400 w-5 text-right">
-                        {country.count}
-                      </span>
-                    </div>
-                  </div>
-                ))}
+              <div className="leading-none text-muted-foreground text-xs">
+                Visitors from {countries.length} countries
               </div>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center py-10">
-              <MapPin className="h-10 w-10 text-slate-300 dark:text-zinc-700 mb-2" />
-              <p className="text-sm text-slate-500 dark:text-zinc-400">No location data yet</p>
-              <p className="text-xs text-slate-400 dark:text-zinc-500 mt-1 text-center">
-                Location stats will appear after your first form submission
-              </p>
-            </div>
+            </CardFooter>
           )}
-        </CardContent>
-      </Card>
+        </Card>
+
+        {/* Browser Stats Card */}
+        <Card className="border border-zinc-200/50 dark:border-zinc-800/50 
+          bg-white/80 dark:bg-zinc-900/70 backdrop-blur-sm
+          shadow-lg hover:shadow-xl transition-all duration-300
+          overflow-hidden min-h-[420px] rounded-xl">
+          <CardHeader className="border-b border-zinc-200 dark:border-zinc-800 pb-3 pt-4 px-5">
+            <div className="flex justify-between items-center w-full">
+              <CardTitle className="text-sm font-medium flex items-center">
+                <div className="flex items-center justify-center bg-violet-100 dark:bg-violet-900/30 w-6 h-6 rounded-md mr-2">
+                  <Globe className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />
+                </div>
+                Browser Analytics
+              </CardTitle>
+              <Badge className="bg-violet-50 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 
+                hover:bg-violet-100 dark:hover:bg-violet-900/50 transition-colors px-2 py-0.5 text-xs rounded-md">
+                Metrics
+              </Badge>
+            </div>
+            <CardDescription className="text-zinc-500 dark:text-zinc-400 text-xs mt-1">
+              Browser usage distribution
+            </CardDescription>
+          </CardHeader>
+          
+          <CardContent className="px-5 pb-4 pt-3 relative">
+            {browsers.length > 0 ? (
+              <div className="h-[300px]">
+                <ChartContainer config={browserChartConfig}>
+                  <BarChart
+                    accessibilityLayer
+                    data={browserChartData}
+                    layout="vertical"
+                    margin={{
+                      left: 0,
+                      right: 20, // Reduced margin for labels
+                    }}
+                    barSize={24} // Even bigger bars
+                    barGap={0} // No gap between bars
+                  >
+                    <YAxis
+                      dataKey="browser"
+                      type="category"
+                      tickLine={false}
+                      tickMargin={6}
+                      axisLine={false}
+                      tickFormatter={(value) =>
+                        (browserChartConfig[value as keyof typeof browserChartConfig]?.label || value) as string
+                      }
+                      // Make Y-axis spacing tighter
+                      interval={0}
+                      tick={{ fontSize: 12 }}
+                      tickCount={browsers.length} // Control number of ticks displayed
+                    />
+                    <XAxis dataKey="visitors" type="number" hide />
+                    <Bar 
+                      dataKey="visitors" 
+                      layout="vertical" 
+                      radius={3}
+                      label={{ 
+                        position: 'right', 
+                        fill: 'var(--foreground)', 
+                        fontSize: 12,
+                        fontWeight: 500 // Make numbers more visible
+                      }}
+                    />
+                  </BarChart>
+                </ChartContainer>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-12">
+                <div className="bg-violet-50 dark:bg-violet-900/20 p-4 rounded-full mb-3">
+                  <Globe className="h-6 w-6 text-violet-500 dark:text-violet-400" />
+                </div>
+                <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">No Browser Data</p>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 text-center">
+                  Waiting for first data transmission
+                </p>
+              </div>
+            )}
+          </CardContent>
+          
+          {browsers.length > 0 && (
+            <CardFooter className="flex-col items-start gap-2 text-sm px-5 py-3 border-t border-zinc-200 dark:border-zinc-800">
+              <div className="flex gap-2 font-medium leading-none">
+                Top Browser: {browsers[0]?.name} ({browsers[0] ? Math.round(browsers[0].percentage * 100) : 0}%)
+                <TrendingUp className="h-4 w-4 text-green-500" />
+              </div>
+              <div className="leading-none text-muted-foreground text-xs">
+                Showing browser distribution from {browsers.reduce((sum, b) => sum + b.count, 0)} visitors
+              </div>
+            </CardFooter>
+          )}
+        </Card>
+      </div>
+
+      {/* Dialog for expanded map view */}
+      <Dialog open={mapExpanded} onOpenChange={setMapExpanded}>
+        <DialogContent 
+          className="sm:max-w-[800px] p-0 overflow-hidden 
+            bg-white/95 dark:bg-zinc-900/95 backdrop-blur-lg
+            border border-zinc-200 dark:border-zinc-800
+            shadow-2xl rounded-xl"
+        >
+          <DialogHeader className="px-6 pt-6 pb-2 border-b border-zinc-200 dark:border-zinc-800">
+            <DialogTitle className="text-xl font-medium text-zinc-900 dark:text-zinc-100 flex items-center">
+              Location Analytics
+            </DialogTitle>
+            <DialogDescription className="text-zinc-500 dark:text-zinc-400 text-sm">
+              Explore visitor distribution across the world
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="p-6 pt-4">
+            <div className="bg-white dark:bg-zinc-800/50 h-[500px] overflow-hidden relative 
+              border border-zinc-200 dark:border-zinc-700/50 rounded-lg">
+              <ComposableMap
+                projectionConfig={{
+                  scale: 220,
+                  center: [0, 20]
+                }}
+                width={1000}
+                height={600}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "transparent"
+                }}
+              >
+                <ZoomableGroup 
+                  zoom={1}
+                  maxZoom={6}
+                  minZoom={1}
+                  translateExtent={[
+                    [0, 0],
+                    [1000, 600]
+                  ]}
+                >
+                  <Geographies geography={geoUrl}>
+                    {({ geographies }: { geographies: any[] }) =>
+                      geographies.map((geo: any) => (
+                        <Geography
+                          key={geo.rsmKey}
+                          geography={geo}
+                          fill="currentColor"
+                          className="text-zinc-100 dark:text-zinc-800/80"
+                          stroke="#E4E4E7"
+                          strokeWidth={0.3}
+                        />
+                      ))
+                    }
+                  </Geographies>
+                  
+                  {countries.map((country) => {
+                    const coords = COUNTRY_COORDINATES[country.name];
+                    if (!coords) return null;
+                    const [lat, lng] = coords;
+                    
+                    return (
+                      <Marker key={country.name} coordinates={[lng, lat]}>
+                        <g transform="translate(-12, -12)" className="rsm-marker cursor-pointer">
+                          <foreignObject width={24} height={24}>
+                            <div className="relative group">
+                              <div className="flex flex-col items-center">
+                                <div className="bg-indigo-500 dark:bg-indigo-400 flex items-center justify-center 
+                                  min-w-[24px] min-h-[24px] px-1 text-[11px] font-medium text-white dark:text-zinc-900
+                                  shadow-md rounded-md
+                                  group-hover:-translate-y-[2px] transition-transform z-30">
+                                  {country.count}
+                                </div>
+                              </div>
+                              
+                              {/* Tooltip */}
+                              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-6 px-3 py-2 
+                                bg-white dark:bg-zinc-800 text-xs whitespace-nowrap opacity-0 
+                                group-hover:opacity-100 pointer-events-none transition-all z-40 
+                                border border-zinc-200 dark:border-zinc-700
+                                shadow-lg rounded-lg">
+                                <div className="font-medium text-zinc-900 dark:text-zinc-100">{country.name}</div>
+                                <div className="flex items-center gap-1">
+                                  <span className="font-medium text-indigo-600 dark:text-indigo-400">{country.count}</span> 
+                                  <span className="text-zinc-500 dark:text-zinc-400">{country.count === 1 ? 'visitor' : 'visitors'}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </foreignObject>
+                        </g>
+                      </Marker>
+                    );
+                  })}
+                </ZoomableGroup>
+              </ComposableMap>
+            </div>
+            
+            <div className="mt-4 text-xs text-zinc-500 dark:text-zinc-400 
+              border-t border-zinc-200 dark:border-zinc-800 pt-3 flex justify-between items-center">
+              <p>Displaying {countries.length} territories</p>
+              <Badge className="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+                Use mouse wheel to zoom
+              </Badge>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 } 

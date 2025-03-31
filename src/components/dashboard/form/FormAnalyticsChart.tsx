@@ -255,7 +255,7 @@ export function FormAnalyticsChart({
         {/* Time Range Selector */}
         <div className={`flex items-center gap-1.5 sm:gap-2 transition-all duration-300 ${
           isCollapsed ? 'max-h-0 opacity-0' : 'max-h-[200px] opacity-100'
-        }`}>
+        } ${activeTab === 'insights' ? 'hidden' : ''}`}>
           {['day', 'week', 'month'].map((range) => (
             <button
               key={range}

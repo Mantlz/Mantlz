@@ -65,16 +65,16 @@ export function AdvancedAnalytics({
   const getBrowserIcon = (browserName: string) => {
     switch (browserName.toLowerCase()) {
       case 'chrome':
-        return <Chrome className="h-4 w-4 text-slate-500 dark:text-zinc-400" />;
+        return <Chrome className="h-5 w-5 text-white dark:text-zinc-900" />;
       case 'safari':
       case 'mobile safari':
-        return <MonitorSmartphone className="h-4 w-4 text-slate-500 dark:text-zinc-400" />;
+        return <MonitorSmartphone className="h-5 w-5 text-white dark:text-zinc-900" />;
       case 'firefox':
-        return <CircleIcon className="h-4 w-4 text-slate-500 dark:text-zinc-400" />;
+        return <CircleIcon className="h-5 w-5 text-white dark:text-zinc-900" />;
       case 'edge':
-        return <Globe className="h-4 w-4 text-slate-500 dark:text-zinc-400" />;
+        return <Globe className="h-5 w-5 text-white dark:text-zinc-900" />;
       default:
-        return <GlobeIcon className="h-4 w-4 text-slate-500 dark:text-zinc-400" />;
+        return <GlobeIcon className="h-5 w-5 text-white dark:text-zinc-900" />;
     }
   };
 
@@ -170,7 +170,7 @@ export function AdvancedAnalytics({
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-3 w-full">
+          <div className="space-y-6 w-full">
             {/* Browser and Location Stats Component */}
             <BrowserAndLocationStats 
               browsers={browsersWithIcons}

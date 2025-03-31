@@ -4,6 +4,7 @@ import {
   IconBrandCampaignmonitor,
   IconChartHistogram,
   IconSettings,
+  IconCurrencyDollar,
 } from "@tabler/icons-react"
 
 export interface MainNavItem {
@@ -32,6 +33,12 @@ export const mainNavItems: MainNavItem[] = [
     title: "Test",
     url: "/dashboard/test",
     icon: IconSettings,
+
+  },
+  {
+    title: "Pricing",
+    url: "/dashboard/pricing",
+    icon: IconCurrencyDollar,
   },
   
 ] 

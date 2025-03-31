@@ -1,17 +1,17 @@
 // Define plan quotas and limits
 export const FREE_QUOTA = {
   maxForms: 1,
-  maxSubmissionsPerMonth: 100,
+  maxSubmissionsPerMonth: 200,
 } as const
 
 export const STANDARD_QUOTA = {
   maxForms: 5,
-  maxSubmissionsPerMonth: 1000,
+  maxSubmissionsPerMonth: 5000,
 } as const
 
 export const PRO_QUOTA = {
   maxForms: 10,
-  maxSubmissionsPerMonth: 5000,
+  maxSubmissionsPerMonth: 10000,
 } as const
 
 // Helper function to get quota based on plan

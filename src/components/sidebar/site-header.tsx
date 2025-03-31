@@ -44,7 +44,7 @@ export function SiteHeader() {
     <header className={cn(
       "flex h-(--header-height) shrink-0 items-center",
       "border-b transition-[width,height] ease-linear",
-      "bg-white/50 dark:bg-zinc-800",
+      // "bg-accent-foreground dark:bg-black",
       "border-zinc-200 dark:border-zinc-900",
       "backdrop-blur-sm",
       "group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)"
@@ -57,7 +57,7 @@ export function SiteHeader() {
           <SidebarTrigger 
             className={cn(
               "-ml-1",
-              "text-zinc-600 dark:text-zinc-400",
+              "text-zinc-600 dark:text-zinc-300",
               "hover:bg-zinc-100 dark:hover:bg-zinc-800",
               "rounded-lg"
             )} 
@@ -66,7 +66,7 @@ export function SiteHeader() {
             orientation="vertical"
             className={cn(
               "mx-2 ",
-              "bg-zinc-300 dark:bg-zinc-900 data-[orientation=vertical]:h-4"
+              "bg-zinc-300 dark:bg-zinc-800 data-[orientation=vertical]:h-4"
             )}
           />
           <BreadcrumbNav />

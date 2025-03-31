@@ -2,13 +2,16 @@
 
 
 import { Container } from "@/components/global/container";
-import { Waitlist } from "@clerk/nextjs";
-import { FeedbackForm } from "@mantlz/nextjs";
-// import Footer from "@/components/landing/footer";
-// import CTA from "@/components/landing/cta";
 
 
-
+import Footer from "@/components/global/landing/footer";
+import Faq from "@/components/global/landing/faq";
+import Pricing from "@/components/global/landing/pricing";
+import BottomCTA from "@/components/global/landing/bottomcta";
+import BeforeAfter from "@/components/global/landing/before-after";
+import TrustedCompanies from "@/components/global/landing/trustedcompanies";
+import LogoClouds from "@/components/global/landing/logo.clouds";
+import { WobbleCardDemo } from "@/components/global/landing/bento-grid";
 export default function LandingPage() {
   return (
     <Container>
@@ -16,11 +19,30 @@ export default function LandingPage() {
       <Navbar />
       {/* <CTA /> */}
 
+
+      <LogoClouds />
+
+
+      <TrustedCompanies />
+
+
+
+      <BeforeAfter />
+
+      <WobbleCardDemo />
+
+      <Pricing />
+
+
+      <Faq />
+
+      <BottomCTA />
+
      
 
     
        
-      {/* <Footer /> */}
+      <Footer />
      </Container>
   );
 }
