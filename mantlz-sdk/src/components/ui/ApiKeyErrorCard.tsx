@@ -50,7 +50,7 @@ export function ApiKeyErrorCard({
             <span>Add your API key to your environment variables to enable form functionality.</span>
           </div>
           
-          <div className="bg-zinc-900 text-zinc-100 p-3 rounded font-mono text-xs overflow-x-auto mb-4">
+          <div className="bg-zinc-900 text-zinc-100 p-3 rounded text-xs overflow-x-auto mb-4">
             MANTLZ_KEY=mk_xxxxxxxxxxxxxxxxxxxx
           </div>
           

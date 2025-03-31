@@ -26,10 +26,10 @@ export function FormCardSkeleton({ count = 6 }: FormCardSkeletonProps) {
         <div className="absolute bottom-0 right-0 w-32 h-32 bg-black dark:bg-white opacity-[0.02] dark:opacity-[0.03] transform translate-x-16 translate-y-16 rotate-45"></div>
         
         <div className="relative">
-          <h1 className="text-4xl font-mono font-bold text-zinc-900 dark:text-white tracking-tight">
-            Welcome back, <Skeleton className="inline-block h-8 w-32 align-middle" /> 👋
+          <h1 className="text-4xl  font-bold text-zinc-900 dark:text-white tracking-tight">
+            Welcome back, <Skeleton className="inline-block h-8 w-32 align-middle" /> 
           </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2 font-mono">
+          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2 ">
             Here's an overview of your forms
           </p>
         </div>
@@ -57,9 +57,9 @@ export function FormCardSkeleton({ count = 6 }: FormCardSkeletonProps) {
             </div>
             <div>
               <Skeleton className="h-2 w-20  rounded-md" />
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 font-mono">Total Forms</p>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 ">Total Forms</p>
 
-              <div className="text-3xl font-bold font-mono text-zinc-900 dark:text-white">
+              <div className="text-3xl font-bold  text-zinc-900 dark:text-white">
                 <Skeleton className="h-8 w-10 rounded-md" />
               </div>
             </div>
@@ -76,9 +76,9 @@ export function FormCardSkeleton({ count = 6 }: FormCardSkeletonProps) {
             </div>
             <div>
               <Skeleton className="h-2 w-20 rounded-md" />
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 font-mono">Total Responses</p>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 ">Total Responses</p>
 
-              <div className="text-3xl font-bold font-mono text-zinc-900 dark:text-white">
+              <div className="text-3xl font-bold  text-zinc-900 dark:text-white">
                 <Skeleton className="h-8 w-10 rounded-md" />
               </div>
             </div>
@@ -95,8 +95,8 @@ export function FormCardSkeleton({ count = 6 }: FormCardSkeletonProps) {
             </div>
             <div>
               <Skeleton className="h-2 w-20  rounded-md" />
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 font-mono">Latest Form</p>
-              <div className="text-3xl font-bold font-mono text-zinc-900 dark:text-white">
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 ">Latest Form</p>
+              <div className="text-3xl font-bold  text-zinc-900 dark:text-white">
                 <Skeleton className="h-8 w-10 rounded-md" />
               </div>
             </div>
@@ -122,24 +122,24 @@ export function FormCardSkeleton({ count = 6 }: FormCardSkeletonProps) {
                 <div className="rounded-lg p-2.5 bg-zinc-100 dark:bg-zinc-800 border-2 border-zinc-200 dark:border-zinc-700 group-hover:scale-110 transition-transform duration-300">
                   <FileSpreadsheet className="h-5 w-5 text-zinc-900 dark:text-white" />
                 </div>
-                <div className="font-mono font-bold text-lg line-clamp-1 text-zinc-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300">
+                <div className=" font-bold text-lg line-clamp-1 text-zinc-900 dark:text-white group-hover:translate-x-1 transition-transform duration-300">
                   <Skeleton className="h-[1.125rem] w-32 rounded-md" />
                 </div>
               </div>
               
               {/* Form metadata with retro style */}
-              <div className="flex items-center text-xs text-zinc-500 dark:text-zinc-400 mb-4 font-mono">
+              <div className="flex items-center text-xs text-zinc-500 dark:text-zinc-400 mb-4 ">
                 <Clock className="h-3.5 w-3.5 mr-1.5" />
                 <span>Created <Skeleton className="inline-block h-3 w-24 align-middle ml-1" /></span>
               </div>
               
               {/* View button area with modern hover */}
               <div className="flex items-center justify-between">
-                <div className="text-xs font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white px-3 py-1 rounded-full border-2 border-zinc-200 dark:border-zinc-700 group-hover:scale-105 transition-transform duration-300">
+                <div className="text-xs  bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white px-3 py-1 rounded-full border-2 border-zinc-200 dark:border-zinc-700 group-hover:scale-105 transition-transform duration-300">
                   <Skeleton className="inline-block h-3 w-8 align-middle mr-1" />responses
                 </div>
                 
-                <div className="inline-flex items-center gap-1 text-sm font-mono font-bold text-zinc-900 dark:text-white opacity-0 group-hover:opacity-100 transition-all duration-300">
+                <div className="inline-flex items-center gap-1 text-sm  font-bold text-zinc-900 dark:text-white opacity-0 group-hover:opacity-100 transition-all duration-300">
                   VIEW FORM
                   <ArrowRight className="h-4 w-4 transform translate-x-0 group-hover:translate-x-1 transition-transform" />
                 </div>

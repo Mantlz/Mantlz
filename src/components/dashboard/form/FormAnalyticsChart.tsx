@@ -183,7 +183,7 @@ export function FormAnalyticsChart({
         <CardContent className="flex h-[400px] items-center justify-center">
           <div className="flex flex-col items-center gap-2">
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 dark:border-zinc-800 border-t-slate-500 dark:border-t-zinc-600" />
-            <p className="text-sm text-slate-500 dark:text-zinc-400 font-mono">Loading data...</p>
+            <p className="text-sm text-slate-500 dark:text-zinc-400">Loading data...</p>
           </div>
         </CardContent>
       </Card>
@@ -205,10 +205,10 @@ export function FormAnalyticsChart({
         {/* Header Section */}
         <div className="flex items-center justify-between">
           <div className="space-y-1">
-            <CardTitle className="text-slate-900 dark:text-zinc-50 font-mono text-base sm:text-lg md:text-xl tracking-wider">
+            <CardTitle className="text-slate-900 dark:text-zinc-50  text-base sm:text-lg md:text-xl tracking-wider">
               Form Analytics
             </CardTitle>
-            <CardDescription className="text-slate-600 dark:text-zinc-400 font-mono text-xs sm:text-sm">
+            <CardDescription className="text-slate-600 dark:text-zinc-400  text-xs sm:text-sm">
               {getTimeRangeLabel()}
             </CardDescription>
           </div>

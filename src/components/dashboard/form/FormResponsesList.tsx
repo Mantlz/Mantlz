@@ -104,7 +104,7 @@ export function FormResponsesList({
             </svg>
           </div>
           <div>
-            <h3 className="text-lg font-mono font-bold text-gray-900 dark:text-white mb-2">Failed to load responses</h3>
+            <h3 className="text-lg  font-bold text-gray-900 dark:text-white mb-2">Failed to load responses</h3>
             <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">There was an error loading the form responses. Please try again.</p>
             <button 
               className="px-4 py-2 bg-gray-800 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-white text-sm font-medium rounded-lg shadow-sm transition-colors"
@@ -148,7 +148,7 @@ export function FormResponsesList({
       
       <div className="flex justify-between items-center pb-4 border-b border-gray-100 dark:border-zinc-800">
         <h3 className="text-lg font-medium text-gray-900 dark:text-white">Form Responses</h3>
-        <span className="text-sm px-3 py-1 bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-300 rounded-full font-mono">{localSubmissions.length} responses</span>
+        <span className="text-sm px-3 py-1 bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-300 rounded-full ">{localSubmissions.length} responses</span>
       </div>
       
       <div className="overflow-hidden border border-gray-200 dark:border-zinc-800 rounded-lg">
@@ -180,7 +180,7 @@ export function FormResponsesList({
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className="font-mono text-xs border-gray-200 dark:border-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300 group"
+                      className=" text-xs border-gray-200 dark:border-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300 group"
                       onClick={() => {
                         setSelectedSubmission(submission);
                         setSheetOpen(true);
@@ -192,7 +192,7 @@ export function FormResponsesList({
                   </SheetTrigger>
                   <SheetContent className="sm:max-w-md">
                     <SheetHeader>
-                      <SheetTitle className="font-mono text-gray-800 dark:text-gray-200">Response Details</SheetTitle>
+                      <SheetTitle className=" text-gray-800 dark:text-gray-200">Response Details</SheetTitle>
                     </SheetHeader>
                     {selectedSubmission && (
                       <SubmissionDetails 

@@ -42,10 +42,10 @@ export default function Faq() {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center lg:flex-row lg:items-start lg:text-left gap-8">
           <div className="lg:w-1/3">
-            <h2 className="text-3xl font-bold mb-2 text-neutral-900 dark:text-neutral-50 max-w-7xl font-mono">
+            <h2 className="text-3xl font-bold mb-2 text-neutral-900 dark:text-neutral-50 max-w-7xl">
               Frequent questions and answers
             </h2>
-            <p className="text-neutral-600 dark:text-neutral-300 font-mono">
+            <p className="text-neutral-600 dark:text-neutral-300 ">
               Answers to commonly asked questions about our services/packages
             </p>
           </div>
@@ -55,7 +55,7 @@ export default function Faq() {
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="border-2 border-neutral-200 dark:border-neutral-800 rounded-sm overflow-hidden font-mono"
+                  className="border-2 border-neutral-200 dark:border-neutral-800 rounded-sm overflow-hidden "
                 >
                   <AccordionTrigger className="px-4 py-3 text-left font-medium text-neutral-900 dark:text-neutral-50 transition-colors bg-[#fffaf2] dark:bg-neutral-900 hover:bg-[#fff5e6] dark:hover:bg-neutral-800">
                     {item.question}

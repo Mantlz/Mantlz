@@ -1,23 +1,7 @@
 "use client"
 
 import * as React from "react"
-import {
-  IconCamera,
-  IconChartBar,
-  IconDashboard,
-  IconDatabase,
-  IconFileAi,
-  IconFileDescription,
-  IconFileWord,
-  IconFolder,
-  IconHelp,
-  IconInnerShadowTop,
-  IconListDetails,
-  IconReport,
-  IconSearch,
-  IconSettings,
-  IconUsers,
-} from "@tabler/icons-react"
+
 
 import { NavDocuments } from "@/components/sidebar/nav-documents"
 import { NavMain } from "@/components/sidebar/nav-main"
@@ -35,10 +19,10 @@ import {
 } from "@/components/ui/sidebar"
 import { useUser as useClerkUser, useUser } from "@clerk/nextjs"
 import { NavUserSkeleton } from "../skeletons/navUser-skeleton"
-import { secondaryNavItems } from '../../types/navigation/secondaryNavData';
-import { CreateFormButton } from "../dashboard/CreateFormButton"
+
+
 import { Logo } from "../global/logo"
-import { mainNavItems } from "@/types/navigation/mainNavData"
+import { SIDE_BAR_DOMAIN_MENU, SIDE_BAR_DOCUMENT_MENU } from "@/constants/menu"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 const { user, isLoaded } = useUser()
@@ -61,8 +45,8 @@ const { user, isLoaded } = useUser()
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={mainNavItems} />
-        {/* <NavDocuments items={data.documents} /> */}
+        <NavMain items={SIDE_BAR_DOMAIN_MENU} />
+        <NavDocuments items={SIDE_BAR_DOCUMENT_MENU} />
       </SidebarContent>
       <SidebarFooter>
         <div className="flex flex-col gap-4">

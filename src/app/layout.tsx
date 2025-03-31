@@ -5,14 +5,8 @@ import { ClerkProvider } from "@clerk/nextjs"
 import "./globals.css"
 import { MantlzProvider } from "@mantlz/nextjs"
 import { Toaster } from "@/components/ui/sonner"
-import { Fira_Code } from "next/font/google"
-
-// Load Fira Code font
-const firaCode = Fira_Code({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  display: "swap",
-})
+import { DM_Sans } from "next/font/google"
+const dmSans = DM_Sans({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: "Mantlz",
@@ -27,8 +21,8 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
-      <html lang="en" suppressHydrationWarning className={firaCode.className}>
-        <body className="antialiased font-mono">
+      <html lang="en" suppressHydrationWarning>
+        <body className={dmSans.className}>
           <main className="h-screen bg-background text-foreground transition-colors duration-300">
             <Providers>
               <MantlzProvider apiKey={process.env.MANTLZ_KEY}>{children}</MantlzProvider>

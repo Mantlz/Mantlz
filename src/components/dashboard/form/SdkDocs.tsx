@@ -146,16 +146,16 @@ export default function ContactForm() {
   return (
     <Card className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-sm">
       <div className="space-y-8 bg-white dark:bg-gray-900 p-6 rounded-md border-2 border-gray-200 dark:border-gray-800 shadow-md">
-        <div className="space-y-4">
-          <h2 className="text-xl font-mono font-bold tracking-wide text-gray-900 dark:text-white">SDK Documentation</h2>
+        <div className="space-y-4">   
+          <h2 className="text-xl d tracking-wide text-gray-900 dark:text-white">SDK Documentation</h2>
           
-          <div className="bg-gray-50 dark:bg-gray-800 p-4 border-2 border-gray-200 dark:border-gray-700 rounded-sm font-mono text-sm">
+          <div className="bg-gray-50 dark:bg-gray-800 p-4 border-2 border-gray-200 dark:border-gray-700 rounded-sm  text-sm">
             <div className="flex justify-between items-center mb-2">
               <div className="text-gray-500 dark:text-gray-400">Code Example</div>
               <Button 
                 variant="ghost" 
                 size="sm" 
-                className="font-mono text-xs"
+                className=" text-xs"
                 onClick={() => handleCopy(getActiveCode())}
               >
                 Copy
@@ -194,7 +194,7 @@ export default function ContactForm() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`font-mono tracking-tight px-4 py-2 border-2 border-b-0 rounded-t-md ${
+                  className={` tracking-tight px-4 py-2 border-2 border-b-0 rounded-t-md ${
                     activeTab === tab.id
                     ? "bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 border-gray-300 dark:border-gray-700"
                     : "bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-800"
@@ -212,7 +212,7 @@ export default function ContactForm() {
               <>
                 <div className="mb-8">
                   <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-lg font-mono font-semibold text-gray-700 dark:text-gray-300">1. JavaScript</h4>
+                      <h4 className="text-lg  font-semibold text-gray-700 dark:text-gray-300">1. JavaScript</h4>
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                     Integrate this form into your website or application using our SDK.
@@ -230,7 +230,7 @@ export default function ContactForm() {
               <>
                 <div className="mb-8">
                   <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-lg font-mono font-semibold text-gray-700 dark:text-gray-300">2. React</h4>
+                      <h4 className="text-lg  font-semibold text-gray-700 dark:text-gray-300">2. React</h4>
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                     Integrate this form into your React application.
@@ -248,7 +248,7 @@ export default function ContactForm() {
               <>
                 <div className="mb-8">
                   <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-lg font-mono font-semibold text-gray-700 dark:text-gray-300">3. HTML</h4>
+                    <h4 className="text-lg  font-semibold text-gray-700 dark:text-gray-300">3. HTML</h4>
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                     Integrate this form into your HTML page.
@@ -266,22 +266,22 @@ export default function ContactForm() {
         
         {/* Available Components */}
         <div className="mt-8 pt-6 border-t-2 border-gray-200 dark:border-zinc-700">
-          <h4 className="text-lg font-mono font-semibold mb-4">Available Components</h4>
+          <h4 className="text-lg  font-semibold mb-4">Available Components</h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Card className="p-4 border-2 border-gray-200 dark:border-zinc-700">
-              <h5 className="font-mono font-bold mb-1">waitlistForm</h5>
+              <h5 className=" font-bold mb-1">waitlistForm</h5>
               <p className="text-sm text-muted-foreground">Collect waitlist signups for your product.</p>
             </Card>
             <Card className="p-4 border-2 border-gray-200 dark:border-zinc-700">
-              <h5 className="font-mono font-bold mb-1">feedbackForm</h5>
+              <h5 className=" font-bold mb-1">feedbackForm</h5>
               <p className="text-sm text-muted-foreground">Gather user feedback and ratings.</p>
             </Card>
             <Card className="p-4 border-2 border-gray-200 dark:border-zinc-700">
-              <h5 className="font-mono font-bold mb-1">contactForm</h5>
+              <h5 className=" font-bold mb-1">contactForm</h5>
               <p className="text-sm text-muted-foreground">Allow users to send you messages.</p>
             </Card>
             <Card className="p-4 border-2 border-gray-200 dark:border-zinc-700">
-              <h5 className="font-mono font-bold mb-1">customForm</h5>
+              <h5 className=" font-bold mb-1">customForm</h5>
               <p className="text-sm text-muted-foreground">Render any custom form schema.</p>
             </Card>
           </div>
@@ -289,7 +289,7 @@ export default function ContactForm() {
         
         {/* Documentation Links */}
         <div className="mt-8 pt-6 border-t-2 border-gray-200 dark:border-zinc-700">
-          <h4 className="text-lg font-mono font-semibold mb-4">Resources</h4>
+          <h4 className="text-lg  font-semibold mb-4">Resources</h4>
           <ul className="space-y-3">
             <li className="flex items-center">
               <div className="w-2 h-2 rounded-full bg-black dark:bg-white mr-2"></div>

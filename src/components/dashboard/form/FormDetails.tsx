@@ -473,7 +473,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
     
     return (
       <div className="bg-zinc-100 dark:bg-zinc-800 p-3 border border-slate-200 dark:border-zinc-500 rounded-md shadow-lg">
-        <p className="font-mono text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
+        <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
           {displayLabel}
         </p>
         <div className="space-y-1.5">
@@ -511,7 +511,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
           <div className="w-14 h-14 flex items-center justify-center bg-red-100 dark:bg-red-900/30 text-red-500 dark:text-red-400 rounded-full">
             <AlertCircle className="w-7 h-7" />
           </div>
-          <h2 className="text-lg font-mono font-bold text-red-600 dark:text-red-400">Error Loading Form</h2>
+          <h2 className="text-lg  font-bold text-red-600 dark:text-red-400">Error Loading Form</h2>
           <p className="text-slate-700 dark:text-zinc-300 mb-2 text-sm">{(error as Error)?.message || "An unknown error occurred"}</p>
           <button 
             className="px-4 py-2 bg-slate-800 hover:bg-slate-700 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white text-sm font-medium rounded-lg shadow-md transition-colors"

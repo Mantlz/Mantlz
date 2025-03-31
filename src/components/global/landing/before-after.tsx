@@ -9,12 +9,12 @@ export default function BeforeAfter() {
             <div className="p-8 sm:p-10">
               <div className="flex items-center gap-2 text-neutral-600 dark:text-neutral-300 mb-4">
                 <XCircle className="h-6 w-6" />
-                <p className="text-lg font-bold font-mono">Before</p>
+                <p className="text-lg font-bold ">Before</p>
               </div>
-              <h3 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50 sm:text-3xl mb-6 font-mono">
+              <h3 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50 sm:text-3xl mb-6 ">
                 Traditional Teaching Limitations
               </h3>
-              <ul className="space-y-4 text-base text-neutral-700 dark:text-neutral-300 sm:text-lg font-mono">
+              <ul className="space-y-4 text-base text-neutral-700 dark:text-neutral-300 sm:text-lg ">
                 {[
                   "Forms are not customizable",
                   "Forms are not responsive",
@@ -36,12 +36,12 @@ export default function BeforeAfter() {
             <div className="p-8 sm:p-10">
               <div className="flex items-center gap-2 text-neutral-200 dark:text-neutral-800 mb-4">
                 <CheckCircle2 className="h-6 w-6" />
-                <p className="text-lg font-bold font-mono">After</p>
+                <p className="text-lg font-bold ">After</p>
               </div>
-              <h3 className="text-2xl font-bold tracking-tight text-neutral-50 dark:text-neutral-900 sm:text-3xl mb-6 font-mono">
+              <h3 className="text-2xl font-bold tracking-tight text-neutral-50 dark:text-neutral-900 sm:text-3xl mb-6 ">
                 AI-Powered Teaching Assistant
               </h3>
-              <ul className="space-y-4 text-base text-neutral-200 dark:text-neutral-800 sm:text-lg font-mono">
+              <ul className="space-y-4 text-base text-neutral-200 dark:text-neutral-800 sm:text-lg ">
                 {[
                   "Forms are customizable",
                   "Forms are responsive",

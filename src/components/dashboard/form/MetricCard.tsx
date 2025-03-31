@@ -35,7 +35,7 @@ export function MetricCard({ label, value, format, trend, suffix, customValue, l
       <div className="px-4 pt-4 pb-3">
         {/* Label section with icon indicator */}
         <div className="flex items-center justify-between mb-1.5">
-          <h3 className="text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-zinc-400 font-medium">
+          <h3 className="text-xs  uppercase tracking-wider text-slate-500 dark:text-zinc-400 font-medium">
             {label}
           </h3>
           {trend && !locked && (
@@ -54,7 +54,7 @@ export function MetricCard({ label, value, format, trend, suffix, customValue, l
         
         {/* Value section with additional details */}
         <div className="flex items-end gap-1.5">
-          <span className={`text-2xl font-bold font-mono text-slate-900 dark:text-zinc-50 ${locked ? 'blur-sm' : ''}`}>
+          <span className={`text-2xl font-bold  text-slate-900 dark:text-zinc-50 ${locked ? 'blur-sm' : ''}`}>
             {formattedValue}
           </span>
           {format !== 'custom' && suffix && (

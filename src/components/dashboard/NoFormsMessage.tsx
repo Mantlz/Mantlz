@@ -9,12 +9,12 @@ export function NoFormsMessage() {
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-200 dark:bg-zinc-800 mb-4 border-2 border-gray-300 dark:border-zinc-700">
           <FileSpreadsheet className="h-8 w-8 text-gray-700 dark:text-gray-300" />
         </div>
-        <h3 className="text-xl font-mono font-bold mb-2">No Forms Yet</h3>
+        <h3 className="text-xl  font-bold mb-2">No Forms Yet</h3>
         <p className="text-muted-foreground mb-6">
           You haven't created any forms yet. Create a form to get started.
         </p>
         <Link href="/dashboard/forms/new" passHref>
-          <Button className="font-mono bg-black hover:bg-gray-800 text-white dark:bg-white dark:hover:bg-gray-200 dark:text-black">
+          <Button className=" bg-black hover:bg-gray-800 text-white dark:bg-white dark:hover:bg-gray-200 dark:text-black">
             CREATE FORM
           </Button>
         </Link>

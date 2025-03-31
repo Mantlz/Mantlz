@@ -122,11 +122,11 @@ export function SubmissionDetails({
             <div className="space-y-2">
               <h2 className="text-lg font-bold text-gray-800 dark:text-gray-200 tracking-tight flex flex-wrap items-center gap-2">
                 <span>Submission Details</span>
-                <Badge className="uppercase text-[10px] bg-gray-200 text-gray-800 dark:bg-zinc-700 dark:text-gray-200 font-mono px-2 py-0">
+                <Badge className="uppercase text-[10px] bg-gray-200 text-gray-800 dark:bg-zinc-700 dark:text-gray-200  px-2 py-0">
                   ID: {submission.id.slice(0, 8)}
                 </Badge>
               </h2>
-              <div className="flex items-center text-sm text-gray-600 dark:text-gray-400 font-mono">
+              <div className="flex items-center text-sm text-gray-600 dark:text-gray-400 ">
                 <Calendar className="h-3.5 w-3.5 mr-1.5 shrink-0" /> 
                 <span className="truncate">Received {formatDistanceToNow(submission.submittedAt, { addSuffix: true })}</span>
               </div>
@@ -182,7 +182,7 @@ export function SubmissionDetails({
                     </span>
                   </Button>
                   <Badge 
-                    className="text-[10px] bg-gray-100 text-gray-600 dark:bg-zinc-800 dark:text-gray-400 font-mono"
+                    className="text-[10px] bg-gray-100 text-gray-600 dark:bg-zinc-800 dark:text-gray-400 "
                   >
                     {typeof value === 'string' ? `${value.length} chars` : typeof value}
                   </Badge>
@@ -190,7 +190,7 @@ export function SubmissionDetails({
               </div>
               <div className="h-px w-full bg-gray-100 dark:bg-zinc-800 mb-3"></div>
               <div className="overflow-x-auto">
-                <p className="text-gray-800 dark:text-gray-200 font-mono text-sm whitespace-pre-wrap break-words">
+                <p className="text-gray-800 dark:text-gray-200 text-sm whitespace-pre-wrap break-words">
                   {String(value)}
                 </p>
               </div>

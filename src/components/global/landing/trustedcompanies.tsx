@@ -5,7 +5,7 @@ const TrustedCompanies = () => {
     <section className="w-full py-12 border-y border-neutral-200 dark:border-neutral-800 bg-[#fffaf2] dark:bg-neutral-900">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-6 text-center">
-          <p className="text-sm font-medium text-neutral-600 dark:text-neutral-400 font-mono tracking-wide">
+          <p className="text-sm font-medium text-neutral-600 dark:text-neutral-400  tracking-wide">
             Trusted by innovative companies worldwide
           </p>
           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16">

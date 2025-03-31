@@ -46,9 +46,9 @@ export default function Navbar() {
             <Link href="/" className="flex items-center group">
               <Logo className="h-8 w-8" size={32} />
               <div className="flex items-center relative">
-                <span className="ml-1 text-lg font-bold text-neutral-900 dark:text-neutral-50 font-mono">Mantlz</span>
+                <span className="ml-1 text-lg font-bold text-neutral-900 dark:text-neutral-50 ">Mantlz</span>
                 <div className="absolute -top-2 -right-9 inline-flex items-center justify-center px-1 h-[14px] rounded-sm bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700">
-                  <span className="text-[10px] leading-none font-medium text-neutral-800 dark:text-neutral-200 tracking-wider font-mono">
+                  <span className="text-[10px] leading-none font-medium text-neutral-800 dark:text-neutral-200 tracking-wider ">
                     BETA
                   </span>
                 </div>
@@ -60,7 +60,7 @@ export default function Navbar() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`relative py-2 text-sm transition-colors duration-200 font-mono ${
+                  className={`relative py-2 text-sm transition-colors duration-200  ${
                     isActive(item.href)
                       ? "text-neutral-900 dark:text-neutral-50"
                       : "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-50"
@@ -80,7 +80,7 @@ export default function Navbar() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-9 px-4 cursor-pointer bg-neutral-800 text-neutral-50 dark:bg-neutral-200 dark:text-neutral-900 hover:bg-neutral-700 dark:hover:bg-neutral-300 border-2 border-neutral-700 dark:border-neutral-300 rounded-sm font-mono"
+                    className="h-9 px-4 cursor-pointer bg-neutral-800 text-neutral-50 dark:bg-neutral-200 dark:text-neutral-900 hover:bg-neutral-700 dark:hover:bg-neutral-300 border-2 border-neutral-700 dark:border-neutral-300 rounded-sm"
                   >
                     Dashboard
                   </Button>
@@ -92,7 +92,7 @@ export default function Navbar() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-9 px-4 text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-50 hover:bg-[#fff5e6] dark:hover:bg-neutral-800 transition-colors duration-200 font-mono rounded-sm"
+                    className="h-9 px-4 text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-50 hover:bg-[#fff5e6] dark:hover:bg-neutral-800 transition-colors duration-200  rounded-sm"
                   >
                     Sign in
                   </Button>
@@ -100,7 +100,7 @@ export default function Navbar() {
                 <Link href="/sign-up">
                   <Button
                     size="sm"
-                    className="h-9 px-4 bg-neutral-800 dark:bg-neutral-200 text-neutral-50 dark:text-neutral-900 hover:bg-neutral-700 dark:hover:bg-neutral-300 transition-colors duration-200 border-2 border-neutral-700 dark:border-neutral-300 font-mono rounded-sm"
+                    className="h-9 px-4 bg-neutral-800 dark:bg-neutral-200 text-neutral-50 dark:text-neutral-900 hover:bg-neutral-700 dark:hover:bg-neutral-300 transition-colors duration-200 border-2 border-neutral-700 dark:border-neutral-300  rounded-sm"
                   >
                     Sign up
                   </Button>
@@ -125,11 +125,11 @@ export default function Navbar() {
                     <div className="flex items-center justify-center">
                       <Logo className="h-8 w-8" />
                       <div className="flex items-center">
-                        <span className="ml-3 text-lg font-bold text-neutral-900 dark:text-neutral-50 font-mono">
+                        <span className="ml-3 text-lg font-bold text-neutral-900 dark:text-neutral-50 ">
                           Mantlz
                         </span>
                         <div className="ml-2 inline-flex items-center px-1.5 h-[18px] rounded-sm bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700">
-                          <span className="text-[10px] leading-none font-medium text-neutral-800 dark:text-neutral-200 font-mono">
+                          <span className="text-[10px] leading-none font-medium text-neutral-800 dark:text-neutral-200 ">
                             BETA
                           </span>
                         </div>
@@ -143,7 +143,7 @@ export default function Navbar() {
                       <Link
                         key={item.name}
                         href={item.href}
-                        className={`block px-4 py-2 text-base rounded-sm transition-colors duration-200 font-mono ${
+                        className={`block px-4 py-2 text-base rounded-sm transition-colors duration-200  ${
                           isActive(item.href)
                             ? "text-neutral-900 dark:text-neutral-50 bg-neutral-200 dark:bg-neutral-800"
                             : "text-neutral-700 dark:text-neutral-400 hover:text-neutral-900 hover:bg-neutral-200 dark:hover:text-neutral-50 dark:hover:bg-neutral-800"
@@ -170,7 +170,7 @@ export default function Navbar() {
                     <DrawerClose asChild>
                       <Button
                         variant="outline"
-                        className="w-full h-10 text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-50 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors duration-200 font-mono rounded-sm border-2 border-neutral-300 dark:border-neutral-700"
+                        className="w-full h-10 text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-50 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors duration-200 rounded-sm border-2 border-neutral-300 dark:border-neutral-700"
                       >
                         Close
                       </Button>

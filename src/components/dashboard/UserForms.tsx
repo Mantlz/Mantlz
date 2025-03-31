@@ -67,7 +67,7 @@ export function UserForms() {
         <div className="border-b-2 border-dashed border-gray-300 dark:border-zinc-700 pb-5 mb-4">
           <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="text-3xl font-mono font-bold tracking-tight flex items-center gap-2 text-black dark:text-white">
+              <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2 text-black dark:text-white">
                 <ClipboardList className="h-7 w-7 text-gray-700 dark:text-gray-300" />
                 Form Workspace
               </h1>
@@ -78,11 +78,11 @@ export function UserForms() {
           </div>
           
           <div className="flex mt-6">
-            <div className="pb-3 border-b-2 border-black dark:border-white text-black dark:text-white font-mono font-medium flex items-center gap-1.5">
+            <div className="pb-3 border-b-2 border-black dark:border-white text-black dark:text-white  font-medium flex items-center gap-1.5">
               <LayoutGrid className="h-4 w-4" /> 
               ALL FORMS
             </div>
-            <div className="ml-auto text-sm font-mono text-muted-foreground">
+            <div className="ml-auto text-sm  text-muted-foreground">
               <Skeleton className="h-4 w-16" />
             </div>
           </div>
@@ -95,7 +95,7 @@ export function UserForms() {
         <div className="flex justify-center">
           <button 
             disabled
-            className="mx-auto block mt-8 font-mono font-bold px-8 py-2 border-2 border-gray-300 dark:border-zinc-700 text-black dark:text-white opacity-50 rounded-md cursor-not-allowed"
+            className="mx-auto block mt-8  font-bold px-8 py-2 border-2 border-gray-300 dark:border-zinc-700 text-black dark:text-white opacity-50 rounded-md cursor-not-allowed"
           >
             LOAD MORE
           </button>
@@ -110,11 +110,11 @@ export function UserForms() {
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-200 dark:bg-zinc-800 mb-4 border-2 border-gray-300 dark:border-zinc-700">
           <AlertCircle className="h-8 w-8 text-gray-700 dark:text-gray-300" />
         </div>
-        <h3 className="text-lg font-medium mb-2 font-mono">Failed to load forms</h3>
+        <h3 className="text-lg font-medium mb-2 ">Failed to load forms</h3>
         <p className="text-muted-foreground mb-4">
           {error instanceof Error ? error.message : "Unknown error occurred"}
         </p>
-        <Button onClick={() => window.location.reload()} className="bg-black dark:bg-white text-white dark:text-black font-mono tracking-wide">Try Again</Button>
+        <Button onClick={() => window.location.reload()} className="bg-black dark:bg-white text-white dark:text-black  tracking-wide">Try Again</Button>
       </div>
     );
   }
@@ -128,7 +128,7 @@ export function UserForms() {
       <div className="border-b-2 border-dashed border-gray-300 dark:border-zinc-700 pb-5 mb-4">
         <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-3xl font-mono font-bold tracking-tight flex items-center gap-2 text-black dark:text-white">
+            <h1 className="text-3xl  font-bold tracking-tight flex items-center gap-2 text-black dark:text-white">
               <ClipboardList className="h-7 w-7 text-gray-700 dark:text-gray-300" />
               Form Workspace
             </h1>
@@ -139,12 +139,12 @@ export function UserForms() {
         </div>
         
         <div className="flex mt-6">
-          <div className="pb-3 border-b-2 border-black dark:border-white text-black dark:text-white font-mono font-medium flex items-center gap-1.5">
+          <div className="pb-3 border-b-2 border-black dark:border-white text-black dark:text-white font-medium flex items-center gap-1.5">
             <LayoutGrid className="h-4 w-4" /> 
             ALL FORMS
           </div>
           {!isLoading && data?.forms && (
-            <div className="ml-auto text-sm font-mono text-muted-foreground">
+            <div className="ml-auto text-sm  text-muted-foreground">
               {data.forms.length} {data.forms.length === 1 ? 'form' : 'forms'}
             </div>
           )}
@@ -169,24 +169,24 @@ export function UserForms() {
                   <div className="rounded-lg p-2.5 bg-gray-100 dark:bg-zinc-700 border-2 border-gray-200 dark:border-zinc-600">
                     <FileSpreadsheet className="h-5 w-5 text-gray-700 dark:text-gray-300" />
                   </div>
-                  <h3 className="font-mono font-bold text-lg line-clamp-1">
+                  <h3 className="font-bold text-lg line-clamp-1">
                     {form.name}
                   </h3>
                 </div>
                 
                 {/* Form metadata with better organization */}
-                <div className="flex items-center text-xs text-muted-foreground mb-4 font-mono">
+                <div className="flex items-center text-xs text-muted-foreground mb-4 ">
                   <Clock className="h-3.5 w-3.5 mr-1.5" />
                   <span>Created {format(new Date(form.createdAt), "MMM d, yyyy")}</span>
                 </div>
                 
                 {/* View button area */}
                 <div className="flex items-center justify-between">
-                  <div className="text-xs font-mono bg-gray-100 dark:bg-zinc-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full border border-gray-200 dark:border-zinc-600">
+                  <div className="text-xs  bg-gray-100 dark:bg-zinc-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full border border-gray-200 dark:border-zinc-600">
                     {form.submissionCount} {form.submissionCount === 1 ? "response" : "responses"}
                   </div>
                   
-                  <div className="inline-flex items-center gap-1 text-sm font-mono font-bold text-black dark:text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="inline-flex items-center gap-1 text-sm font-bold text-black dark:text-white opacity-0 group-hover:opacity-100 transition-opacity">
                     VIEW FORM
                     <ArrowRight className="h-4 w-4 transform translate-x-0 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -204,7 +204,7 @@ export function UserForms() {
         <Button 
           onClick={handleLoadMore} 
           variant="outline" 
-          className="mx-auto block mt-8 font-mono font-bold px-8 py-2 border-2 border-gray-300 dark:border-zinc-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
+          className="mx-auto block mt-8  font-bold px-8 py-2 border-2 border-gray-300 dark:border-zinc-700 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
         >
           LOAD MORE
         </Button>
