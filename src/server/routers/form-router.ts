@@ -3,7 +3,7 @@ import { j, privateProcedure } from "../jstack";
 import { db } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs/server";
 import { HTTPException } from "hono/http-exception";
-import { User } from "@prisma/client";
+import { User, NotificationStatus, NotificationType } from "@prisma/client";
 import { getQuotaByPlan } from "@/config/usage";
 import { startOfMonth } from "date-fns";
 import { Resend } from 'resend';
@@ -655,10 +655,40 @@ export const formRouter = j.router({
             replyTo: 'contact@mantlz.app',
             html: htmlContent,
           });
+
+          // Create notification log for successful email
+          await db.notificationLog.create({
+            data: {
+              type: 'SUBMISSION_CONFIRMATION',
+              status: 'SENT',
+              submissionId: submission.id,
+              formId: form.id,
+            },
+          });
         } catch (error) {
-          // Log error but don't fail the submission
+          // Log error and create notification log for failed email
           console.error('Failed to send confirmation email:', error);
+          await db.notificationLog.create({
+            data: {
+              type: 'SUBMISSION_CONFIRMATION',
+              status: 'FAILED',
+              error: error instanceof Error ? error.message : 'Unknown error',
+              submissionId: submission.id,
+              formId: form.id,
+            },
+          });
         }
+      } else {
+        // Create a SKIPPED notification log if email was not sent
+        await db.notificationLog.create({
+          data: {
+            type: 'SUBMISSION_CONFIRMATION',
+            status: 'SKIPPED',
+            error: 'Email not sent - plan or settings not configured',
+            submissionId: submission.id,
+            formId: form.id,
+          },
+        });
       }
 
       return c.superjson({
@@ -993,19 +1023,44 @@ export const formRouter = j.router({
       formId: z.string().optional(),
       page: z.number().default(1),
       limit: z.number().default(10),
+      status: z.string().optional(),
+      type: z.string().optional(),
+      search: z.string().optional(),
     }))
     .query(async ({ ctx, c, input }) => {
       const { user } = ctx;
-      const { formId, page, limit } = input;
+      if (!user) {
+        throw new HTTPException(401, { message: "User not authenticated" });
+      }
+
+      const { formId, page, limit, status, type, search } = input;
       const skip = (page - 1) * limit;
 
       try {
-        const where = {
+        console.log('🔍 Starting getSubmissionLogs query:', { formId, page, limit, status, type, search });
+
+        // Build the where clause for submissions
+        const where: any = {
           form: {
             userId: user.id,
           },
           ...(formId ? { formId } : {}),
+          ...(search ? {
+            OR: [
+              { id: { contains: search, mode: 'insensitive' as const } },
+              { email: { contains: search, mode: 'insensitive' as const } },
+              { data: { path: ['$.email'], string_contains: search, mode: 'insensitive' as const } },
+            ]
+          } : {}),
         };
+
+        // Build the where clause for notification logs
+        const notificationLogsWhere: any = {
+          ...(status ? { status: status as NotificationStatus } : {}),
+          ...(type ? { type: type as NotificationType } : {}),
+        };
+
+        console.log('📝 Query where clause:', where);
 
         const [submissions, total] = await Promise.all([
           db.submission.findMany({
@@ -1022,21 +1077,94 @@ export const formRouter = j.router({
                 select: {
                   id: true,
                   name: true,
+                  emailSettings: {
+                    select: {
+                      enabled: true,
+                      developerNotificationsEnabled: true,
+                    }
+                  }
                 }
               },
               notificationLogs: {
+                where: notificationLogsWhere,
                 select: {
+                  id: true,
                   type: true,
+                  status: true,
+                  error: true,
                   createdAt: true,
-                }
+                },
+                orderBy: { createdAt: 'desc' }
               }
             }
           }),
           db.submission.count({ where })
         ]);
 
+        // Enhance submissions with analytics data and format notification logs
+        const enhancedSubmissions = submissions.map(submission => {
+          const data = submission.data as any;
+          const meta = data?._meta || {};
+          
+          // Format notification logs to ensure consistent structure
+          const formattedLogs = submission.notificationLogs.map(log => ({
+            ...log,
+            createdAt: log.createdAt.toISOString(),
+            type: log.type as NotificationType,
+            status: log.status as NotificationStatus,
+            error: log.error || null
+          }));
+
+          // Add default notification logs if they don't exist
+          const hasUserEmailLog = formattedLogs.some(log => log.type === 'SUBMISSION_CONFIRMATION');
+          const hasDevEmailLog = formattedLogs.some(log => log.type === 'DEVELOPER_NOTIFICATION');
+
+          // Only add default logs if there are no logs of that type
+          if (!hasUserEmailLog && submission.email) {
+            formattedLogs.push({
+              id: `temp-${submission.id}-user-email`,
+              type: 'SUBMISSION_CONFIRMATION' as NotificationType,
+              status: 'SKIPPED' as NotificationStatus,
+              error: 'Email not sent - plan or settings not configured',
+              createdAt: submission.createdAt.toISOString()
+            });
+          }
+
+          // Add developer email log if it doesn't exist and developer notifications are enabled
+          if (!hasDevEmailLog) {
+            formattedLogs.push({
+              id: `temp-${submission.id}-dev-email`,
+              type: 'DEVELOPER_NOTIFICATION' as NotificationType,
+              status: submission.form.emailSettings?.developerNotificationsEnabled ? 'SKIPPED' as NotificationStatus : 'FAILED' as NotificationStatus,
+              error: submission.form.emailSettings?.developerNotificationsEnabled 
+                ? 'Developer notification not sent' 
+                : 'Developer notifications are disabled',
+              createdAt: submission.createdAt.toISOString()
+            });
+          }
+
+          // Sort logs by type and creation date
+          formattedLogs.sort((a, b) => {
+            if (a.type === b.type) {
+              return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+            }
+            return a.type.localeCompare(b.type);
+          });
+          
+          return {
+            ...submission,
+            analytics: {
+              browser: meta.browser || 'Unknown',
+              location: meta.country || 'Unknown',
+            },
+            notificationLogs: formattedLogs
+          };
+        });
+
+        console.log('✅ Found submissions:', { count: submissions.length, total });
+
         return c.superjson({
-          submissions,
+          submissions: enhancedSubmissions,
           pagination: {
             total,
             pages: Math.ceil(total / limit),
@@ -1044,8 +1172,17 @@ export const formRouter = j.router({
           }
         });
       } catch (error) {
-        console.error('Error fetching submission logs:', error);
-        throw new HTTPException(500, { message: 'Failed to fetch submission logs' });
+        console.error('❌ Error in getSubmissionLogs:', error);
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          console.error('Prisma error details:', {
+            code: error.code,
+            meta: error.meta,
+            message: error.message
+          });
+        }
+        throw new HTTPException(500, { 
+          message: error instanceof Error ? error.message : 'Failed to fetch submission logs'
+        });
       }
     }),
 

@@ -19,7 +19,7 @@ const page = () => {
 
 <div className='flex flex-col gap-4 w-full '>
 <FeedbackForm 
-  formId="cm8s48o27002k0jgffmebcq6b"
+  formId="cm8xm51yo00020j1zkuh8yu8q"
   theme="glass"
   description='jean daly marc'
   primaryColor='red'

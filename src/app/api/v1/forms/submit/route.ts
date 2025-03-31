@@ -210,12 +210,42 @@ export async function POST(req: Request) {
             html: htmlContent,
           });
 
+          // Create notification log for successful email
+          await db.notificationLog.create({
+            data: {
+              type: 'SUBMISSION_CONFIRMATION',
+              status: 'SENT',
+              submissionId: submission.id,
+              formId: form.id,
+            },
+          });
+
           console.log('Confirmation email sent successfully');
         } catch (error) {
           console.error('Failed to send confirmation email:', error);
+          // Create notification log for failed email
+          await db.notificationLog.create({
+            data: {
+              type: 'SUBMISSION_CONFIRMATION',
+              status: 'FAILED',
+              error: error instanceof Error ? error.message : 'Unknown error',
+              submissionId: submission.id,
+              formId: form.id,
+            },
+          });
           // Don't throw the error, just log it
         }
       } else {
+        // Create a SKIPPED notification log if email was not sent
+        await db.notificationLog.create({
+          data: {
+            type: 'SUBMISSION_CONFIRMATION',
+            status: 'SKIPPED',
+            error: 'Email not sent - plan or settings not configured',
+            submissionId: submission.id,
+            formId: form.id,
+          },
+        });
         console.log('Email not sent:', {
           plan: form.user.plan,
           hasEmail: !!data.email,

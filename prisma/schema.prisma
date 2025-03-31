@@ -106,10 +106,14 @@ model NotificationLog {
   submissionId String
   submission   Submission @relation(fields: [submissionId], references: [id])
   type         String
+  status       NotificationStatus   @default(SENT)
+  error        String?
+  metadata     Json?
   createdAt    DateTime @default(now())
 
   @@index([formId, type])
   @@index([createdAt])
+  @@index([status])
 }
 
 // New model for global settings

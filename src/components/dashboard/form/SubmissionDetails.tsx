@@ -198,7 +198,9 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
           </div>
 
           <div className="space-y-4">
-            {Object.entries(submission.data).map(([key, value], index) => (
+            {Object.entries(submission.data)
+            .filter(([key]) => key !== '_meta')
+            .map(([key, value], index) => (
               <div
                 key={key}
                 className="p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900"
