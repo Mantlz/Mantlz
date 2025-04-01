@@ -11,6 +11,8 @@ import { FormSubmissionEmail } from '@/emails/form-submission';
 import { render } from '@react-email/components';
 import { Prisma } from "@prisma/client";
 import { enhanceDataWithAnalytics, extractAnalyticsFromSubmissions } from "@/lib/analytics-utils";
+import { exportFormSubmissions } from "@/services/export-service";
+import { ratelimitConfig } from "@/lib/ratelimiter";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -1186,6 +1188,34 @@ export const formRouter = j.router({
       }
     }),
 
+  export: privateProcedure
+    .input(z.object({
+      formId: z.string(),
+      startDate: z.string().optional(),
+      endDate: z.string().optional(),
+    }))
+    .mutation(async ({ c, input, ctx }) => {
+      const { formId, startDate, endDate } = input;
+
+      // Verify form ownership
+      const form = await db.form.findFirst({
+        where: {
+          id: formId,
+          userId: ctx.user.id,
+        },
+      });
+
+      if (!form) {
+        throw new HTTPException(404, { message: "Form not found" });
+      }
+
+      const result = await exportFormSubmissions({
+        formId,
+        startDate: startDate ? new Date(startDate) : undefined,
+        endDate: endDate ? new Date(endDate) : undefined,
+      });
+
+      return c.json(result);
+    }),
+
 });
-
-

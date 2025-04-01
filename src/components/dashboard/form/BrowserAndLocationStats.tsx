@@ -7,13 +7,15 @@ import { cn } from "@/lib/utils"
 import { Globe, MapPin, Maximize2, TrendingUp } from "lucide-react"
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from "react-simple-maps"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Bar, BarChart, XAxis, YAxis } from "recharts"
-import { type ChartConfig, ChartContainer } from "@/components/ui/chart"
 
-// Add SVG namespace to JSX
-declare namespace JSX {
-  interface IntrinsicElements {
-    foreignObject: React.SVGProps<SVGForeignObjectElement>
+import { type ChartConfig } from "@/components/ui/chart"
+
+// Add type declaration for foreignObject
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      foreignObject: React.SVGProps<SVGForeignObjectElement>
+    }
   }
 }
 

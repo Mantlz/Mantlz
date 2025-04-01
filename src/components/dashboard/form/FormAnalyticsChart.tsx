@@ -14,7 +14,7 @@ import { MetricCard } from "./MetricCard"
 import {
   ChartConfig,
   ChartContainer,
-  ChartTooltip,
+
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { AdvancedAnalytics } from "./AdvancedAnalytics"

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { format } from "date-fns"
 import { Switch } from "@/components/ui/switch"
+import { ExportSubmissions } from "./ExportSubmissions"
 
 import { toast } from 'sonner';
 import { useState, useEffect } from 'react';
@@ -89,11 +90,6 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0, emailSetti
   return (
     <>
       <Card className="p-5  bg-gradient-to-br from-zinc-100 via-zinc-100/50 to-zinc-100 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 border-1 border-zinc-200 dark:border-zinc-800 rounded-lg shadow-md mb-6">
-
-
-
-          
-        
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div>
             <h1 className="text-xl font-medium text-slate-900 dark:text-slate-50">{name}</h1>
@@ -144,6 +140,10 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0, emailSetti
                 disabled={userPlan === 'FREE' && !emailEnabled}
               />
             </div>
+            
+            {responsesCount > 0 && (
+              <ExportSubmissions formId={id} formName={name} />
+            )}
             
             {id && (
               <Button 
