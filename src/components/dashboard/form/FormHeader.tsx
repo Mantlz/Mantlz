@@ -88,7 +88,7 @@ export function FormHeader({ id, name, createdAt, responsesCount = 0, emailSetti
 
   return (
     <>
-      <Card className="p-5  bg-gradient-to-br from-zinc-100 via-zinc-100/50 to-zinc-100 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-900 border-none rounded-lg shadow-md mb-6">
+      <Card className="p-5  bg-gradient-to-br from-zinc-100 via-zinc-100/50 to-zinc-100 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 border-1 border-zinc-200 dark:border-zinc-800 rounded-lg shadow-md mb-6">
 
 
 

@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useMemo } from "react"
 import { usePathname } from "next/navigation"
 import {
   Breadcrumb,
@@ -11,16 +11,18 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 
-export function BreadcrumbNav() {
+export const BreadcrumbNav = React.memo(function BreadcrumbNav() {
   const pathname = usePathname()
   
-  const segments = pathname
-    .split("/")
-    .filter(Boolean)
-    .map((segment, index, array) => ({
-      title: segment.charAt(0).toUpperCase() + segment.slice(1),
-      href: `/${array.slice(0, index + 1).join("/")}`,
-    }))
+  const segments = useMemo(() => {
+    return pathname
+      .split("/")
+      .filter(Boolean)
+      .map((segment, index, array) => ({
+        title: segment.charAt(0).toUpperCase() + segment.slice(1),
+        href: `/${array.slice(0, index + 1).join("/")}`,
+      }))
+  }, [pathname])
 
   return (
     <Breadcrumb>
@@ -42,6 +44,6 @@ export function BreadcrumbNav() {
       </BreadcrumbList>
     </Breadcrumb>
   )
-}
+})
 
 export default BreadcrumbNav

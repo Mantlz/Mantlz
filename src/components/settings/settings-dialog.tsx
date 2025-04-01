@@ -18,7 +18,7 @@ import {
   Key,
   AtSign,
 } from "lucide-react"
-
+import { usePathname } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -59,6 +59,8 @@ interface SettingsDialogProps {
 export function SettingsDialog({ children }: SettingsDialogProps) {
   const [open, setOpen] = React.useState(false)
   const [selectedTab, setSelectedTab] = React.useState('Appearance')
+  const pathname = usePathname()
+  const isDashboard = pathname?.startsWith('/dashboard')
 
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen)
@@ -66,6 +68,22 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
       setSelectedTab('Appearance')
     }
   }
+
+  React.useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Only trigger on dashboard pages
+      if (!isDashboard) return
+
+      // Check for Cmd + S (Mac) or Ctrl + S (Windows/Linux)
+      if ((event.metaKey || event.ctrlKey) && event.key === 's') {
+        event.preventDefault() // Prevent browser's save dialog
+        setOpen(prev => !prev) // Toggle the dialog state
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isDashboard])
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>

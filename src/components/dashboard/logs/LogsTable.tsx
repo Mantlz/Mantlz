@@ -10,9 +10,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
-import { Copy, CheckCheck, Mail, ChevronLeft, Calendar, File, Bell, Loader2, Globe, MapPin, BarChart, Monitor, Link, Clock, Maximize2 } from "lucide-react"
+import { Copy, CheckCheck, Mail, ChevronLeft, Calendar, File, Bell, Loader2, Globe, MapPin, BarChart, Monitor, Link, Clock, Maximize2, FileSpreadsheet, Users, ChevronRight, ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
+import { LogsTableContent } from "./LogsTableContent"
+import { LogsTableHeader } from "./LogsTableHeader"
+import { useSubscription } from "@/hooks/useSubscription"
+import { useUser } from "@clerk/nextjs"
 
 interface NotificationLog {
   id: string
@@ -74,11 +78,13 @@ interface FormsResponse {
 export function LogsTable() {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const { user } = useUser()
   const page = Number(searchParams.get("page")) || 1
   const formId = searchParams.get("formId")
   const status = searchParams.get("status")
   const type = searchParams.get("type")
   const search = searchParams.get("search")
+  const { isPremium } = useSubscription()
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null)
   const [copiedField, setCopiedField] = useState<string | null>(null)
 
@@ -133,7 +139,7 @@ export function LogsTable() {
       const response = await client.forms.getSubmissionLogs.$get({
         formId,
         page,
-        limit: 10,
+        limit: isPremium ? 50 : 10,
         ...(status ? { status } : {}),
         ...(type ? { type } : {}),
         ...(search ? { search } : {})
@@ -160,28 +166,30 @@ export function LogsTable() {
 
   if (isLoadingForms) {
     return (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between mb-6">
-          <Skeleton className="h-8 w-40" />
-          <Skeleton className="h-8 w-32" />
-        </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {Array(6)
-            .fill(0)
-            .map((_, i) => (
-              <Card key={i} className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
-                <CardHeader className="pb-3 pt-4 px-5">
-                  <Skeleton className="h-5 w-3/4" />
-                </CardHeader>
-                <CardContent className="px-5 pb-4">
-                  <Skeleton className="h-4 w-full mb-3" />
-                  <div className="flex items-center justify-between">
-                    <Skeleton className="h-4 w-1/3" />
-                    <Skeleton className="h-4 w-1/4" />
+      <div className="space-y-6 sm:space-y-8">
+        <div className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 rounded-xl sm:rounded-2xl border border-gray-100 dark:border-gray-800/50">
+          <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+          <div className="relative p-6 sm:p-8 lg:p-12">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">
+              <div className="space-y-3 sm:space-y-4 w-full sm:w-auto">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black dark:bg-white flex items-center justify-center">
+                    <span className="text-lg sm:text-xl font-medium text-white dark:text-black">
+                      {user?.firstName?.[0] || '👋'}
+                    </span>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                  <div>
+                    <h1 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white tracking-tight">
+                      Loading...
+                    </h1>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Please wait while we fetch your data
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )
@@ -189,98 +197,154 @@ export function LogsTable() {
 
   if (formsError) {
     return (
-      <div className="flex flex-col items-center justify-center p-8 text-red-500">
-        <div className="rounded-full bg-red-100 dark:bg-red-900/30 p-3 mb-4">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-            />
-          </svg>
+      <div className="min-h-[400px] w-full flex items-center justify-center bg-white dark:bg-zinc-900 rounded-lg border border-red-100 dark:border-red-900/50 shadow-sm p-6">
+        <div className="flex flex-col items-center gap-4 max-w-md text-center">
+          <div className="w-12 h-12 flex items-center justify-center bg-red-50 dark:bg-red-900/20 text-red-500 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+            </svg>
+          </div>
+          <h2 className="text-lg font-semibold text-red-600 dark:text-red-400">Error Loading Forms</h2>
+          <p className="text-sm text-gray-600 dark:text-gray-300">{(formsError as Error)?.message || "An unknown error occurred"}</p>
         </div>
-        <p className="font-medium mb-2">Error loading forms</p>
-        <p className="text-sm">{(formsError as Error).message}</p>
-        <Button variant="outline" className="mt-4 cursor-pointer" onClick={() => window.location.reload()} size="sm" >
-          Try again
-        </Button>
       </div>
     )
   }
 
   if (!formsData?.forms?.length) {
     return (
-      <div className="space-y-4">
-        <h2 className="text-2xl font-bold mb-6">Your Forms</h2>
-        <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
-          <CardContent className="flex flex-col items-center justify-center py-16">
-            <div className="rounded-full bg-zinc-100 dark:bg-zinc-800 p-4 mb-4">
-              <File className="h-8 w-8 text-zinc-400" />
+      <div className="space-y-6 sm:space-y-8">
+        <div className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 rounded-xl sm:rounded-2xl border border-gray-100 dark:border-gray-800/50">
+          <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+          <div className="relative p-6 sm:p-8 lg:p-12">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">
+              <div className="space-y-3 sm:space-y-4 w-full sm:w-auto">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black dark:bg-white flex items-center justify-center">
+                    <span className="text-lg sm:text-xl font-medium text-white dark:text-black">
+                      {user?.firstName?.[0] || '👋'}
+                    </span>
+                  </div>
+                  <div>
+                    <h1 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white tracking-tight">
+                      Welcome back, {user?.firstName || 'there'}
+                    </h1>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Let's create your first form
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <Button
+                className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-all duration-200 rounded-full px-6 shadow-sm hover:shadow-md"
+                onClick={() => router.push("/dashboard/forms/new")}
+              >
+                Create Your First Form
+              </Button>
             </div>
-            <h3 className="text-lg font-medium mb-2">No forms found</h3>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 text-center max-w-md mb-6">
-              Create your first form to start collecting submissions
-            </p>
-            <Button variant="default" onClick={() => router.push("/dashboard/forms/new")} size="sm" className=" text-xs cursor-pointer">
-              Create your first form
-            </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
+
+        <div className="text-center py-12 sm:py-16 bg-white dark:bg-zinc-900 rounded-xl border border-dashed border-gray-200 dark:border-gray-800">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 rounded-2xl bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center">
+            <FileSpreadsheet className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 dark:text-gray-500" />
+          </div>
+          <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">Ready to create your first form?</h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 sm:mb-6 max-w-sm mx-auto px-4">
+            Start collecting responses in minutes with our easy-to-use form builder
+          </p>
+          <Button
+            className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-all duration-200 rounded-full px-6 shadow-sm hover:shadow-md"
+            onClick={() => router.push("/dashboard/forms/new")}
+          >
+            Create Your First Form
+          </Button>
+        </div>
       </div>
     )
   }
 
   if (!formId) {
+    const totalSubmissions = formsData.forms.reduce((acc, form) => acc + form.submissionCount, 0)
+    const mostRecentForm = formsData.forms.reduce((latest, current) => 
+      new Date(current.createdAt) > new Date(latest.createdAt) ? current : latest
+    )
+
     return (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">Your Forms</h2>
-          <Button variant="default" onClick={() => router.push("/dashboard/forms/new")} size="sm" className=" text-xs cursor-pointer">
-            Create New Form
-          </Button>
+      <div className="space-y-6 sm:space-y-8">
+        {/* Stats Section */}
+        <div className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 rounded-xl sm:rounded-2xl border border-gray-100 dark:border-gray-800/50">
+          <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+          <div className="relative p-6 sm:p-8 lg:p-12">
+            <div className="grid grid-cols-2 gap-4 sm:gap-6">
+              <div className="bg-white dark:bg-zinc-800/50 rounded-xl p-4 sm:p-5 border border-gray-100 dark:border-gray-800/50 hover:border-gray-200 dark:hover:border-gray-700 transition-all duration-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                    <FileSpreadsheet className="h-5 w-5 text-gray-900 dark:text-white" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">{formsData.forms.length}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Total Forms</p>
+                  </div>
+                </div>
+                <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-black dark:bg-white rounded-full transition-all duration-500"
+                    style={{ width: `${Math.min((formsData.forms.length / 10) * 100, 100)}%` }}
+                  />
+                </div>
+              </div>
+              
+              <div className="bg-white dark:bg-zinc-800/50 rounded-xl p-4 sm:p-5 border border-gray-100 dark:border-gray-800/50 hover:border-gray-200 dark:hover:border-gray-700 transition-all duration-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                    <Users className="h-5 w-5 text-gray-900 dark:text-white" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">{totalSubmissions}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Total Submissions</p>
+                  </div>
+                </div>
+                <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-black dark:bg-white rounded-full transition-all duration-500"
+                    style={{ width: `${Math.min((totalSubmissions / 100) * 100, 100)}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+
+        {/* Forms Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           {formsData.forms.map((form) => (
-            <Card
+            <Card 
               key={form.id}
-              className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors group"
+              className="group bg-white dark:bg-zinc-900 border border-gray-100 dark:border-gray-800/50 hover:border-gray-200 dark:hover:border-gray-700 transition-all duration-200 cursor-pointer hover:shadow-md"
               onClick={() => handleFormClick(form.id)}
             >
-              <CardHeader className="pb-3 pt-4 px-5">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-zinc-900 dark:text-white text-sm group-hover:text-primary dark:group-hover:text-primary transition-colors">
+              <div className="p-4 sm:p-6">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
                     {form.name}
-                  </CardTitle>
-                  <Badge
-                    variant="secondary"
-                    className="text-[10px] bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
-                  >
-                    ID: {form.id.slice(0, 8)}...
-                  </Badge>
+                  </h3>
+                  <span className="text-xs sm:text-sm bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-white px-2 sm:px-3 py-1 rounded-full">
+                    {form.submissionCount} responses
+                  </span>
                 </div>
-              </CardHeader>
-              <CardContent className="px-5 pb-4">
-                <p className="text-xs text-zinc-600 dark:text-zinc-400 mb-3 line-clamp-2">
-                  {form.description || "No description provided"}
-                </p>
-                <div className="flex items-center justify-between text-xs">
-                  <div className="flex items-center text-zinc-600 dark:text-zinc-400">
-                    <Mail className="h-3.5 w-3.5 mr-1.5 text-zinc-500" />
-                    {form.submissionCount} {form.submissionCount === 1 ? "submission" : "submissions"}
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                    <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
+                    <span>{formatDistanceToNow(new Date(form.createdAt), { addSuffix: true })}</span>
                   </div>
-                  <div className="flex items-center text-zinc-500 dark:text-zinc-400">
-                    <Calendar className="h-3.5 w-3.5 mr-1.5 text-zinc-500" />
-                    {formatDistanceToNow(new Date(form.createdAt), { addSuffix: true })}
+                  <div className="flex items-center gap-1 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                    <span>View</span>
+                    <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 transform translate-x-0 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
-              </CardContent>
+              </div>
             </Card>
           ))}
         </div>
@@ -288,536 +352,23 @@ export function LogsTable() {
     )
   }
 
-  if (isLoading || !data) {
-    return (
-      <div className="space-y-4">
-        <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-          <div className="flex items-center gap-2 mb-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 text-xs cursor-pointer"
-              onClick={() => {
-                const newParams = new URLSearchParams(searchParams)
-                newParams.delete("formId")
-                router.push(`?${newParams.toString()}`)
-              }}
-            >
-              <ChevronLeft className="h-3.5 w-3.5 mr-1" />
-              Back to Forms
-            </Button>
-            <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
-              {formsData?.forms?.find((f) => f.id === formId)?.name || "Loading..."}
-            </h2>
-          </div>
-        </header>
-
-        <div className="flex flex-col items-center justify-center min-h-[40vh] w-full mt-8">
-          <Loader2 className="h-8 w-8 text-primary animate-spin mb-4" />
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">Loading submissions...</p>
-        </div>
-      </div>
-    )
-  }
-
-  const { submissions = [], pagination = { total: 0, pages: 1, currentPage: 1 } } = data as SubmissionResponse
-  const selectedForm = formsData?.forms?.find((f) => f.id === formId)
-
-  // Enhance submissions with analytics data
-  const enhancedSubmissions = submissions.map(submission => {
-    const data = submission.data as any;
-    const meta = data?._meta || {};
-    return {
-      ...submission,
-      analytics: {
-        browser: meta.browser || 'Unknown',
-        location: meta.country || 'Unknown',
-      }
-    };
-  });
-
   return (
-    <div className="space-y-4">
-      <header className="p-4 sm:p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-          <div className="flex flex-wrap items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 text-xs cursor-pointer"
-              onClick={() => {
-                const newParams = new URLSearchParams(searchParams)
-                newParams.delete("formId")
-                router.push(`?${newParams.toString()}`)
-              }}
-            >
-              <ChevronLeft className="h-3.5 w-3.5 mr-1" />
-              <span className="hidden xs:inline">Back to Forms</span>
-            </Button>
-            <h2 className="text-sm sm:text-base font-semibold text-zinc-900 dark:text-white truncate max-w-[200px] sm:max-w-none">{selectedForm?.name}</h2>
-            <Badge
-              variant="secondary"
-              className="text-[10px] bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200 hidden sm:inline-flex"
-            >
-              ID: {selectedForm?.id.slice(0, 8)}...
-            </Badge>
-          </div>
-          <Badge variant="outline" className="bg-transparent text-xs font-normal">
-            <Mail className="h-3.5 w-3.5 mr-1.5 text-zinc-500" />
-            {pagination.total} {pagination.total === 1 ? "submission" : "submissions"} total
-          </Badge>
-        </div>
-        {selectedForm?.description && (
-          <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-2 line-clamp-2">{selectedForm.description}</p>
-        )}
-      </header>
-
-      {submissions.length === 0 ? (
-        <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
-          <CardContent className="flex flex-col items-center justify-center py-8 sm:py-16">
-            <div className="rounded-full bg-zinc-100 dark:bg-zinc-800 p-3 sm:p-4 mb-4">
-              <Mail className="h-6 w-6 sm:h-8 sm:w-8 text-zinc-400" />
-            </div>
-            <h3 className="text-base sm:text-lg font-medium mb-2">No submissions yet</h3>
-            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 text-center max-w-md px-4">
-              Submissions will appear here once your form receives responses
-            </p>
-          </CardContent>
-        </Card>
-      ) : (
-        <>
-          <Card className="border-zinc-200 p-1 sm:p-2 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
-            <CardContent className="p-0">
-              <div className="overflow-x-auto -mx-4 sm:mx-0">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="hover:bg-transparent border-b border-zinc-200 dark:border-zinc-800">
-                      <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-400 py-3 sm:py-4">
-                        <span className="hidden sm:inline">Submission ID</span>
-                        <span className="sm:hidden">ID</span>
-                      </TableHead>
-                      <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-400 py-3 sm:py-4">Email</TableHead>
-                      <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-400 py-3 sm:py-4">
-                        Status
-                      </TableHead>
-                      <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-400 py-3 sm:py-4 hidden md:table-cell">
-                        Analytics
-                      </TableHead>
-                      <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-400 py-3 sm:py-4">
-                        Submitted
-                      </TableHead>
-                      <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-400 py-3 sm:py-4 text-right">
-                        Actions
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {enhancedSubmissions.map((submission: Submission) => (
-                      <TableRow
-                        key={submission.id}
-                        className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 border-b border-zinc-100 dark:border-zinc-800/50 last:border-0"
-                      >
-                        <TableCell className="font-mono text-xs text-zinc-900 dark:text-white py-3 sm:py-4">
-                          <div className="flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-600"></div>
-                            <span className="hidden sm:inline">{submission.id.slice(0, 8)}...</span>
-                            <span className="sm:hidden">{submission.id.slice(0, 4)}...</span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-xs text-zinc-900 dark:text-white py-3 sm:py-4">
-                          <div className="flex items-center gap-2">
-                            <Mail className="h-3.5 w-3.5 text-zinc-400" />
-                            <span className="max-w-[100px] sm:max-w-[150px] truncate">{submission.email || "N/A"}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="py-3 sm:py-4">
-                          <div className="flex flex-col gap-1">
-                            {/* User Email Status */}
-                            {submission.email && (
-                              <Badge
-                                variant="secondary"
-                                className={cn(
-                                  "text-[10px] px-2 py-0.5 rounded-md",
-                                  submission.notificationLogs?.some(log => 
-                                    log.type === 'SUBMISSION_CONFIRMATION' && log.status === 'SENT'
-                                  )
-                                    ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                                    : submission.notificationLogs?.some(log => 
-                                        log.type === 'SUBMISSION_CONFIRMATION' && log.status === 'FAILED'
-                                      )
-                                    ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
-                                    : submission.notificationLogs?.some(log => 
-                                        log.type === 'SUBMISSION_CONFIRMATION' && log.status === 'SKIPPED'
-                                      )
-                                    ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-                                    : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-                                )}
-                              >
-                                <div className="flex items-center gap-1">
-                                  <Mail className="h-3 w-3" />
-                                  <span className="hidden sm:inline">User Email: </span>
-                                  <span>{submission.notificationLogs?.find(log => log.type === 'SUBMISSION_CONFIRMATION')?.status || 'Pending'}</span>
-                                </div>
-                              </Badge>
-                            )}
-                            {/* Developer Email Status */}
-                            <Badge
-                              variant="secondary"
-                              className={cn(
-                                "text-[10px] px-2 py-0.5 rounded-md",
-                                submission.notificationLogs?.some(log => 
-                                  log.type === 'DEVELOPER_NOTIFICATION' && log.status === 'SENT'
-                                )
-                                  ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                                  : submission.notificationLogs?.some(log => 
-                                      log.type === 'DEVELOPER_NOTIFICATION' && log.status === 'FAILED'
-                                    )
-                                  ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
-                                  : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-                              )}
-                            >
-                              <div className="flex items-center gap-1">
-                                <Bell className="h-3 w-3" />
-                                <span className="hidden sm:inline">Dev Email: </span>
-                                <span>{submission.notificationLogs?.find(log => log.type === 'DEVELOPER_NOTIFICATION')?.status || 'Pending'}</span>
-                              </div>
-                            </Badge>
-                          </div>
-                        </TableCell>
-                        <TableCell className="py-3 sm:py-4 hidden md:table-cell">
-                          <div className="flex flex-col gap-1">
-                            <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400">
-                              <Globe className="h-3.5 w-3.5" />
-                              <span>{submission.analytics.browser}</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400">
-                              <MapPin className="h-3.5 w-3.5" />
-                              <span>{submission.analytics.location}</span>
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-xs text-zinc-600 dark:text-zinc-400 py-3 sm:py-4">
-                          <div className="flex items-center gap-2">
-                            <Calendar className="h-3.5 w-3.5 text-zinc-400" />
-                            <span className="hidden sm:inline">
-                              {formatDistanceToNow(new Date(submission.createdAt), { addSuffix: true })}
-                            </span>
-                            <span className="sm:hidden">
-                              {formatDistanceToNow(new Date(submission.createdAt), { addSuffix: true })
-                                .replace(" ago", "")
-                                .replace("about ", "")}
-                            </span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="py-3 sm:py-4 text-right">
-                          <Sheet>
-                            <SheetTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-7 text-xs bg-zinc-200 cursor-pointer dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                                onClick={() => setSelectedSubmission(submission)}
-                              >
-                                <span className="hidden sm:inline">View Details</span>
-                                <span className="sm:hidden">View</span>
-                              </Button>
-                            </SheetTrigger>
-                            <SheetContent className="w-full max-w-md sm:max-w-lg p-0 overflow-y-auto">
-                              <div className="h-full flex flex-col">
-                                {/* Header with sticky position */}
-                                <SheetHeader className="p-4 sm:p-6 border-b border-zinc-200 dark:border-zinc-800 sticky top-0 bg-white dark:bg-zinc-950 z-10">
-                                  <div className="flex items-center justify-between">
-                                    <SheetTitle className="text-sm sm:text-base font-semibold text-zinc-900 dark:text-white">
-                                      Submission Details
-                                    </SheetTitle>
-                                    <Badge variant="outline" className="bg-transparent text-xs font-normal">
-                                      ID: {submission.id.slice(0, 8)}...
-                                    </Badge>
-                                  </div>
-                                </SheetHeader>
-
-                                {/* Content section with padding and scrollable area */}
-                                <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-6">
-                                  {/* Header section with gradient background */}
-                                  <div className="bg-gradient-to-r from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-800 p-3 sm:p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg">
-                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                      <div className="space-y-2">
-                                        <h2 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100 tracking-tight flex flex-wrap items-center gap-2">
-                                          <span>Submission #{submission.id.slice(0, 8)}</span>
-                                          <Badge
-                                            variant="secondary"
-                                            className={cn(
-                                              "text-[10px] ",
-                                              submission.notificationLogs?.some(log => 
-                                                log.type === 'SUBMISSION_CONFIRMATION' && log.status === 'SENT'
-                                              )
-                                                ? "bg-green-100 text-green-800  dark:bg-green-900/30 dark:text-green-400"
-                                                : submission.notificationLogs?.some(log => 
-                                                    log.type === 'SUBMISSION_CONFIRMATION' && log.status === 'FAILED'
-                                                  )
-                                                ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
-                                                : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-                                            )}
-                                          >
-                                            {submission.notificationLogs?.some(log => 
-                                              log.type === 'SUBMISSION_CONFIRMATION' && log.status === 'SENT'
-                                            ) ? "Email Sent" : "No Email Sent"}
-                                          </Badge>
-                                        </h2>
-                                        <div className="flex items-center text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
-                                          <Calendar className="h-3.5 w-3.5 mr-1.5 text-zinc-500" />
-                                          <span>
-                                            Received{" "}
-                                            {formatDistanceToNow(new Date(submission.createdAt), { addSuffix: true })}
-                                          </span>
-                                        </div>
-                                      </div>
-                                      <div className="flex items-center gap-2 self-start sm:self-auto mt-2 sm:mt-0">
-                                        <Button
-                                          variant="outline"
-                                          size="sm"
-                                          className="h-8 text-xs bg-white hover:bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
-                                          onClick={() => copyToClipboard("id", submission.id)}
-                                        >
-                                          {copiedField === "id" ? (
-                                            <CheckCheck className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                                          ) : (
-                                            <Copy className="h-3.5 w-3.5 mr-1.5" />
-                                          )}
-                                          <span className="text-xs">
-                                            {copiedField === "id" ? "Copied!" : "Copy ID"}
-                                          </span>
-                                        </Button>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <div className="space-y-4 sm:space-y-6">
-                                    <div>
-                                      <div className="flex items-center mb-3">
-                                        <File className="h-3.5 w-3.5 mr-2 text-zinc-500" />
-                                        <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
-                                          Form Data
-                                        </p>
-                                      </div>
-                                      <div className="space-y-3">
-                                        {Object.entries(submission.data)
-                                          .filter(([key]) => key !== '_meta')
-                                          .map(([key, value]) => (
-                                          <div
-                                            key={key}
-                                            className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900"
-                                          >
-                                            <div className="flex items-center justify-between mb-2">
-                                              <div className="flex items-center">
-                                                <div className="w-2 h-2 bg-zinc-300 dark:bg-zinc-600 rounded-full mr-2"></div>
-                                                <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
-                                                  {key}
-                                                </p>
-                                              </div>
-                                              <Button
-                                                variant="ghost"
-                                                size="sm"
-                                                className="h-7 px-2 text-zinc-500 cursor-pointer dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
-                                                onClick={() => copyToClipboard(key, value)}
-                                              >
-                                                {copiedField === key ? (
-                                                  <CheckCheck className="h-3.5 w-3.5 mr-1 text-green-500" />
-                                                ) : (
-                                                  <Copy className="h-3.5 w-3.5 mr-1" />
-                                                )}
-                                                <span className="text-xs font-medium">
-                                                  {copiedField === key ? "Copied!" : "Copy"}
-                                                </span>
-                                              </Button>
-                                            </div>
-                                            <div className="h-px w-full bg-zinc-100 dark:bg-zinc-800 mb-3"></div>
-                                            <p className="text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 break-words">
-                                              {String(value)}
-                                            </p>
-                                          </div>
-                                        ))}
-                                      </div>
-                                    </div>
-
-                                    {/* Email Status Section in Details */}
-                                    <div>
-                                      <div className="flex items-center mb-3">
-                                        <Mail className="h-3.5 w-3.5 mr-2 text-zinc-500" />
-                                        <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
-                                          Email Status
-                                        </p>
-                                      </div>
-                                      <div className="space-y-3">
-                                        {/* User Email Status */}
-                                        {submission.email && (
-                                          <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900">
-                                            <div className="flex items-center justify-between mb-2">
-                                              <div className="flex items-center gap-2">
-                                                <Mail className="h-3.5 w-3.5 text-zinc-500" />
-                                                <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">User Email</p>
-                                              </div>
-                                              <Badge
-                                                variant="secondary"
-                                                className={cn(
-                                                  "text-[10px] px-2 py-0.5 rounded-md",
-                                                  submission.notificationLogs?.some(log => 
-                                                    log.type === 'SUBMISSION_CONFIRMATION' && log.status === 'SENT'
-                                                  )
-                                                    ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                                                    : submission.notificationLogs?.some(log => 
-                                                        log.type === 'SUBMISSION_CONFIRMATION' && log.status === 'FAILED'
-                                                      )
-                                                    ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
-                                                    : submission.notificationLogs?.some(log => 
-                                                        log.type === 'SUBMISSION_CONFIRMATION' && log.status === 'SKIPPED'
-                                                      )
-                                                    ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-                                                    : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-                                                )}
-                                              >
-                                                {submission.notificationLogs?.find(log => log.type === 'SUBMISSION_CONFIRMATION')?.status || 'Pending'}
-                                              </Badge>
-                                            </div>
-                                            <div className="space-y-2">
-                                              <p className="text-xs sm:text-sm text-zinc-900 dark:text-zinc-100">
-                                                {submission.email}
-                                              </p>
-                                              {submission.notificationLogs?.find(log => 
-                                                log.type === 'SUBMISSION_CONFIRMATION' && log.error
-                                              )?.error && (
-                                                <div className="text-xs text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/20 p-2 rounded-md">
-                                                  Error: {submission.notificationLogs?.find(log => 
-                                                    log.type === 'SUBMISSION_CONFIRMATION' && log.error
-                                                  )?.error}
-                                                </div>
-                                              )}
-                                            </div>
-                                          </div>
-                                        )}
-                                        {/* Developer Email Status */}
-                                        <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900">
-                                          <div className="flex items-center justify-between mb-2">
-                                            <div className="flex items-center gap-2">
-                                              <Bell className="h-3.5 w-3.5 text-zinc-500" />
-                                              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Developer Email</p>
-                                            </div>
-                                            <Badge
-                                              variant="secondary"
-                                              className={cn(
-                                                "text-[10px] px-2 py-0.5 rounded-md",
-                                                submission.notificationLogs?.some(log => 
-                                                  log.type === 'DEVELOPER_NOTIFICATION' && log.status === 'SENT'
-                                                )
-                                                  ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                                                  : submission.notificationLogs?.some(log => 
-                                                      log.type === 'DEVELOPER_NOTIFICATION' && log.status === 'FAILED'
-                                                    )
-                                                  ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
-                                                  : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-                                              )}
-                                            >
-                                              {submission.notificationLogs?.find(log => log.type === 'DEVELOPER_NOTIFICATION')?.status || 'Pending'}
-                                            </Badge>
-                                          </div>
-                                          <div className="space-y-2">
-                                            <p className="text-xs sm:text-sm text-zinc-900 dark:text-zinc-100">
-                                              Developer notifications are {submission.notificationLogs?.some(log => 
-                                                log.type === 'DEVELOPER_NOTIFICATION' && log.status === 'SENT'
-                                              ) ? 'enabled' : 'disabled'}
-                                            </p>
-                                            {submission.notificationLogs?.find(log => 
-                                              log.type === 'DEVELOPER_NOTIFICATION' && log.error
-                                            )?.error && (
-                                              <div className="text-xs text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/20 p-2 rounded-md">
-                                                Error: {submission.notificationLogs?.find(log => 
-                                                  log.type === 'DEVELOPER_NOTIFICATION' && log.error
-                                                )?.error}
-                                              </div>
-                                            )}
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    {/* Analytics Section */}
-                                    <div>
-                                      <div className="flex items-center mb-3">
-                                        <BarChart className="h-3.5 w-3.5 mr-2 text-zinc-500" />
-                                        <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
-                                          Analytics
-                                        </p>
-                                      </div>
-                                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                                        <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900">
-                                          <div className="flex items-center gap-2 mb-2">
-                                            <Globe className="h-3.5 w-3.5 text-zinc-500" />
-                                            <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Browser</p>
-                                          </div>
-                                          <p className="text-xs sm:text-sm text-zinc-900 dark:text-zinc-100">
-                                            {submission.data?._meta?.browser || 'Unknown'}
-                                          </p>
-                                        </div>
-                                        <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900">
-                                          <div className="flex items-center gap-2 mb-2">
-                                            <MapPin className="h-3.5 w-3.5 text-zinc-500" />
-                                            <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Location</p>
-                                          </div>
-                                          <p className="text-xs sm:text-sm text-zinc-900 dark:text-zinc-100">
-                                            {submission.data?._meta?.country || 'Unknown'}
-                                          </p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </SheetContent>
-                          </Sheet>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="flex justify-between items-center mt-4 px-2 sm:px-0">
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-8 text-xs cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800"
-              disabled={page <= 1}
-              onClick={() => {
-                const newParams = new URLSearchParams(searchParams)
-                newParams.set("page", String(page - 1))
-                router.push(`?${newParams.toString()}`)
-              }}
-            >
-              <span className="hidden sm:inline">Previous</span>
-              <span className="sm:hidden">Prev</span>
-            </Button>
-            <span className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
-              Page {page} of {pagination.pages} {pagination.total > 0 && `(${pagination.total} total)`}
-            </span>
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-8 text-xs cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800"
-              disabled={page >= pagination.pages}
-              onClick={() => {
-                const newParams = new URLSearchParams(searchParams)
-                newParams.set("page", String(page + 1))
-                router.push(`?${newParams.toString()}`)
-              }}
-            >
-              <span className="hidden sm:inline">Next</span>
-              <span className="sm:hidden">Next</span>
-            </Button>
-          </div>
-        </>
-      )}
+    <div className="space-y-6 sm:space-y-8">
+      <LogsTableHeader 
+        formId={formId}
+        formsData={formsData}
+        searchParams={searchParams}
+        router={router}
+      />
+      <LogsTableContent 
+        data={data}
+        isLoading={isLoading}
+        page={page}
+        pagination={data?.pagination}
+        searchParams={searchParams}
+        router={router}
+        isPremium={isPremium}
+      />
     </div>
   )
 }

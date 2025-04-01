@@ -9,7 +9,7 @@ import { Card } from "@/components/ui/card";
 import { AlertCircle, ArrowRight, Clock, FileSpreadsheet, LayoutGrid, ClipboardList } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FormCardSkeleton } from "@/components/skeletons/FormCardSkeleton";
-import { NoFormsMessage } from "@/components/dashboard/NoFormsMessage";
+import { NoFormsMessage } from "@/components/dashboard/form/NoFormsMessage";
 
 interface Form {
   id: string;

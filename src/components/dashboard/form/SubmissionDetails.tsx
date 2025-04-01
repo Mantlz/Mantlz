@@ -58,6 +58,9 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
     setIsDeleting(true)
 
     try {
+      // Add a delay of 1 second before triggering the deletion
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+      
       // Instead of calling API directly, use the callback
       // which will trigger the mutation in the parent component
       onDelete?.(submission.id)
@@ -123,9 +126,9 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
   return (
     <>
       
-        <div className="bg-gradient-to-r  from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-800 p-4 sm:p-6  ">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="space-y-2 p-2">
+        <div className="bg-zinc-100 dark:bg-zinc-900 p-4 sm:p-6  ">
+          <div className="bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800  rounded-2xl flex flex-col p-2 sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-2  p-2">
               <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 tracking-tight flex flex-wrap items-center gap-2">
                 <span>Submission Details</span>
                 <Badge
@@ -140,7 +143,7 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
                 <span>Received {formatDistanceToNow(new Date(submission.submittedAt), { addSuffix: true })}</span>
               </div>
             </div>
-            <div className="flex items-center gap-2 self-start sm:self-auto mt-2 sm:mt-0">
+            <div className="flex items-center gap-2  self-start sm:self-auto mt-2 sm:mt-0">
               <Button
                 variant="outline"
                 size="sm"
