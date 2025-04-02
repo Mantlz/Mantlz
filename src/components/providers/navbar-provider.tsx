@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useRef, useState, useEffect, ReactNode, memo } from "react"
-import { Navbar } from "@/components/sidebar/top-navbar"
+import { Navbar } from "@/components/topbar/top-navbar"
 
 // Context to store the navbar reference
 const NavbarContext = createContext<{ navbarElement: HTMLDivElement | null }>({

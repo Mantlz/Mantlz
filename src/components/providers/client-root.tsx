@@ -1,7 +1,7 @@
 "use client"
 
 import { memo, ReactNode } from "react"
-import { PersistentNavbar } from "../sidebar/persistent-navbar"
+import { PersistentNavbar } from "../topbar/persistent-navbar"
 
 interface ClientRootProps {
   children: ReactNode

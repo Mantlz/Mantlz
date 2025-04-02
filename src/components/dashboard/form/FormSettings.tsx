@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Switch } from "@/components/ui/switch"
 import {
   Dialog,
   DialogContent,
@@ -9,7 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-
+import { ExportSubmissions } from './ExportSubmissions';
 import { toast } from 'sonner';
 import { client } from '@/lib/client';
 import { useRouter } from 'next/navigation';
@@ -25,17 +26,60 @@ interface FormSettingsProps {
     subject?: string;
     template?: string;
     replyTo?: string;
-  };
-  onUpdate: (data: { name: string; description: string }) => void;
+  } | null;
+  onUpdate?: (data: { name: string; description: string }) => void;
   onDelete?: (id: string) => Promise<void>;
+  onRefresh?: () => void;
 }
 
-export function FormSettings({ formId, name, description = '', emailSettings, onUpdate, onDelete }: FormSettingsProps) {
+export function FormSettings({ formId, name, description = '', emailSettings, onUpdate, onDelete, onRefresh }: FormSettingsProps) {
   const [isPublished, setIsPublished] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const [emailEnabled, setEmailEnabled] = useState(false);
+  const [userPlan, setUserPlan] = useState<string | null>(null);
   const router = useRouter();
+
+  // Sync emailEnabled state with emailSettings prop
+  useEffect(() => {
+    if (emailSettings) {
+      setEmailEnabled(emailSettings.enabled);
+    }
+  }, [emailSettings]);
+
+  useEffect(() => {
+    const fetchUserPlan = async () => {
+      try {
+        const response = await client.usage.getUsage.$get();
+        const data = await response.json();
+        setUserPlan(data.plan);
+      } catch (error) {
+        console.error("Failed to fetch user plan:", error);
+      }
+    };
+    
+    fetchUserPlan();
+  }, []);
+
+  const handleEmailToggle = async (checked: boolean) => {
+    try {
+      await client.forms.toggleEmailSettings.$post({
+        formId: formId,
+        enabled: checked
+      });
+      
+      setEmailEnabled(checked);
+      toast.success('Email notifications ' + (checked ? 'enabled' : 'disabled'));
+      
+      if (onRefresh) {
+        onRefresh();
+      }
+    } catch (error) {
+      console.error('Failed to update email settings:', error);
+      toast.error('Failed to update email settings');
+    }
+  };
 
   const handleDelete = async () => {
     console.log('Starting delete process for formId:', formId);
@@ -103,6 +147,37 @@ export function FormSettings({ formId, name, description = '', emailSettings, on
             <div className="w-full min-h-[60px] max-h-[80px] overflow-y-auto p-2.5 bg-gray-50 dark:bg-zinc-800/50 border border-gray-200 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white text-sm">
               {description || <span className="text-gray-500 dark:text-gray-400 italic">No description provided</span>}
             </div>
+          </div>
+
+          <div className="flex items-center justify-between py-4">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Email Notifications</span>
+              <span className={cn(
+                "text-sm px-2 py-0.5 rounded-full",
+                emailEnabled 
+                  ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400" 
+                  : "bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400"
+              )}>
+                {emailEnabled ? 'Enabled' : 'Disabled'}
+              </span>
+            </div>
+            <div className={`w-px h-8 mx-1 ${userPlan === 'FREE' ? 'bg-amber-200 dark:bg-amber-800/30' : 'bg-slate-200 dark:bg-zinc-700'}`}></div>
+            <Switch
+              checked={emailEnabled}
+              onCheckedChange={handleEmailToggle}
+              className={cn(
+                "ml-1",
+                userPlan === 'FREE' && !emailEnabled && "cursor-not-allowed opacity-70"
+              )}
+              disabled={userPlan === 'FREE' && !emailEnabled}
+            />
+          </div>
+
+          <div className="pt-4 border-t border-gray-100 dark:border-zinc-800">
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Export Submissions</h4>
+            </div>
+            <ExportSubmissions formId={formId} formName={name} />
           </div>
         </div>
       </div>

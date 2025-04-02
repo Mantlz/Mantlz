@@ -33,9 +33,18 @@ interface CountryStat {
 }
 
 interface BrowserAndLocationStatsProps {
-  browsers: BrowserStat[]
-  countries: CountryStat[]
-  isLoading?: boolean
+  browsers: Array<{
+    name: string;
+    count: number;
+    percentage: number;
+    icon: React.ReactNode;
+  }>;
+  locations: Array<{
+    name: string;
+    count: number;
+    percentage: number;
+  }>;
+  isLoading?: boolean;
 }
 
 // Reusable components to reduce repetition
@@ -160,7 +169,22 @@ const COUNTRY_COORDINATES: Record<string, [number, number]> = {
 // GeoJSON for the world map
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"
 
-export function BrowserAndLocationStats({ browsers, countries, isLoading = false }: BrowserAndLocationStatsProps) {
+export function BrowserAndLocationStats({
+  browsers,
+  locations,
+  isLoading
+}: BrowserAndLocationStatsProps) {
+  // Debug log for incoming props
+  React.useEffect(() => {
+    console.log('BrowserAndLocationStats Props:', {
+      browsers,
+      locations,
+      isLoading,
+      hasBrowsers: browsers?.length > 0,
+      hasLocations: locations?.length > 0
+    });
+  }, [browsers, locations, isLoading]);
+
   // Add lazy loading for the map
   const [mapLoaded, setMapLoaded] = React.useState(false)
   const mapRef = React.useRef<HTMLDivElement>(null)
@@ -222,12 +246,12 @@ export function BrowserAndLocationStats({ browsers, countries, isLoading = false
 
   // Transform country data for the chart
   const locationChartData = React.useMemo(() => {
-    return countries.slice(0, 5).map((country) => ({
+    return locations.slice(0, 5).map((country) => ({
       country: country.name.toLowerCase(),
       visitors: country.count,
-      fill: `var(--color-${countries.indexOf(country) + 1})`,
+      fill: `var(--color-${locations.indexOf(country) + 1})`,
     }))
-  }, [countries])
+  }, [locations])
 
   // Chart configuration for countries
   const locationChartConfig = React.useMemo(() => {
@@ -238,27 +262,49 @@ export function BrowserAndLocationStats({ browsers, countries, isLoading = false
     }
 
     // Add each country to the config
-    countries.slice(0, 5).forEach((country) => {
+    locations.slice(0, 5).forEach((country) => {
       const key = country.name.toLowerCase().replace(/\s+/g, "-")
       config[key] = {
         label: country.name,
-        color: `hsl(var(--chart-${countries.indexOf(country) + 1}))`,
+        color: `hsl(var(--chart-${locations.indexOf(country) + 1}))`,
       }
     })
 
     return config
-  }, [countries])
+  }, [locations])
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[40vh] w-full">
-        <div className="w-10 h-10 border-4 border-zinc-300/50 dark:border-zinc-600/30 border-t-indigo-500 dark:border-t-indigo-400 rounded-full animate-spin"></div>
-        <p className="mt-3 text-sm  uppercase tracking-widest text-zinc-700 dark:text-zinc-300">
-          Loading Analytics...
-        </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white dark:bg-zinc-800/50 rounded-xl p-6 border border-gray-100 dark:border-gray-800/50">
+          <div className="animate-pulse space-y-4">
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+            <div className="space-y-2">
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white dark:bg-zinc-800/50 rounded-xl p-6 border border-gray-100 dark:border-gray-800/50">
+          <div className="animate-pulse space-y-4">
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+            <div className="space-y-2">
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
+
+  // Debug log for rendering state
+  console.log('BrowserAndLocationStats Rendering:', {
+    browsersLength: browsers?.length,
+    locationsLength: locations?.length,
+    browsers,
+    locations
+  });
 
   return (
     <div className="w-full space-y-1">
@@ -289,7 +335,7 @@ export function BrowserAndLocationStats({ browsers, countries, isLoading = false
           </CardHeader>
 
           <CardContent className="px-5 pb-0 pt-3 relative">
-            {countries.length > 0 ? (
+            {locations.length > 0 ? (
               <div className="relative">
                 <div className="flex flex-col lg:flex-row gap-4">
                   {/* World Map container - taking 5/6 of the space */}
@@ -350,7 +396,7 @@ export function BrowserAndLocationStats({ browsers, countries, isLoading = false
                             </Geographies>
 
                             {/* Show markers for all countries on the main map */}
-                            {countries.slice(0, 15).map((country) => {
+                            {locations.slice(0, 15).map((country) => {
                               const coords = COUNTRY_COORDINATES[country.name]
                               if (!coords) return null
                               const [lat, lng] = coords
@@ -395,11 +441,11 @@ export function BrowserAndLocationStats({ browsers, countries, isLoading = false
                         <div className="flex justify-between items-center mb-2">
                           <span className="text-xs font-medium text-zinc-900 dark:text-zinc-100">Top Countries</span>
                           <Badge className="bg-indigo-100/80 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 px-1.5 py-0.5 text-[10px] rounded-sm">
-                            {countries.length}
+                            {locations.length}
                           </Badge>
                         </div>
                         <div className="space-y-2">
-                          {countries.slice(0, 9).map((country, idx) => (
+                          {locations.slice(0, 9).map((country, idx) => (
                             <StatItem
                               key={country.name}
                               name={country.name}
@@ -424,14 +470,14 @@ export function BrowserAndLocationStats({ browsers, countries, isLoading = false
             )}
           </CardContent>
 
-          {countries.length > 0 && (
+          {locations.length > 0 && (
             <CardFooter className="flex-col items-start gap-2 text-sm px-5 py-3 border-t border-zinc-200 dark:border-zinc-800">
               <div className="flex gap-2 font-medium leading-none">
-                Top Country: {countries[0]?.name} ({countries[0] ? Math.round(countries[0].percentage * 100) : 0}%)
+                Top Country: {locations[0]?.name} ({locations[0] ? Math.round(locations[0].percentage * 100) : 0}%)
                 <TrendingUp className="h-4 w-4 text-green-500" />
               </div>
               <div className="leading-none text-muted-foreground text-xs">
-                Visitors from {countries.length} countries
+                Visitors from {locations.length} countries
               </div>
             </CardFooter>
           )}
@@ -582,7 +628,7 @@ export function BrowserAndLocationStats({ browsers, countries, isLoading = false
                     }
                   </Geographies>
 
-                  {countries.map((country) => {
+                  {locations.map((country) => {
                     const coords = COUNTRY_COORDINATES[country.name]
                     if (!coords) return null
                     const [lat, lng] = coords
@@ -635,7 +681,7 @@ export function BrowserAndLocationStats({ browsers, countries, isLoading = false
               className="mt-4 text-xs text-zinc-500 dark:text-zinc-400 
               border-t border-zinc-200 dark:border-zinc-800 pt-3 flex justify-between items-center"
             >
-              <p>Displaying {countries.length} territories</p>
+              <p>Displaying {locations.length} territories</p>
               <Badge className="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
                 Use mouse wheel to zoom
               </Badge>

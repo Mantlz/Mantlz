@@ -16,6 +16,7 @@ import { BreadcrumbSkeleton } from "@/components/skeletons/breadcrumb-skeleton"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { TemplateDialog } from "@/components/forms/template-dialog"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 // Custom hook for handling mounted state
 function useIsMounted() {
@@ -140,14 +141,15 @@ const NavigationSection = memo(function NavigationSection() {
 const ActionButtonsSection = memo(function ActionButtonsSection() {
   return (
     <div className="flex items-center gap-4">
-
       <Button variant="ghost" size="icon" className="rounded-full hover:bg-gray-800">
         <HelpCircle className="h-5 w-5" />
       </Button>
 
       <SettingsDialog>
-        <Button variant="ghost" size="icon" className="rounded-full hover:bg-gray-800">
+        <Button variant="ghost" size="icon" className="rounded-full hover:bg-gray-800 relative">
           <Settings className="h-5 w-5" />
+          <span className="absolute top-0.5 -right-1 text-[10px] font-medium text-zinc-500 dark:text-zinc-400">⌘/S</span>
+          
         </Button>
       </SettingsDialog>
     </div>

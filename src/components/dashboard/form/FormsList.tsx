@@ -198,12 +198,14 @@ export function FormsList({ itemsPerPage = 8 }: FormsListProps) {
           <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 rounded-2xl bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center">
             <FileSpreadsheet className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 dark:text-gray-500" />
           </div>
-          <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">Ready to create your first form?</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 sm:mb-6 max-w-sm mx-auto px-4">
-            Start collecting responses in minutes with our easy-to-use form builder
+          <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">
+            No forms yet
+          </h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400 max-w-sm mx-auto mb-6 sm:mb-8">
+            Create your first form to start collecting submissions and managing your data.
           </p>
           <Button
-            className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-all duration-200 rounded-full px-6 shadow-sm hover:shadow-md"
+            className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-all duration-200 rounded-full px-6 shadow-sm hover:shadow-md"
             onClick={() => window.location.href = '/dashboard/form/new'}
           >
             <Plus className="h-4 w-4 mr-2" />
@@ -211,55 +213,31 @@ export function FormsList({ itemsPerPage = 8 }: FormsListProps) {
           </Button>
         </div>
       )}
-      
+
       {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-4 sm:pt-6 border-t border-gray-100 dark:border-gray-800/50 gap-4">
-          <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-            Showing {startIndex + 1} to {Math.min(endIndex, forms.length)} of {forms.length} forms
-          </div>
-          
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-              disabled={currentPage === 1}
-              className="text-xs sm:text-sm border border-gray-100 dark:border-gray-800/50 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-full px-3 sm:px-4 flex-1 sm:flex-none"
-            >
-              <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-              Previous
-            </Button>
-            
-            <div className="flex items-center gap-1 flex-1 sm:flex-none justify-center">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <Button
-                  key={page}
-                  variant={currentPage === page ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setCurrentPage(page)}
-                  className={`w-7 h-7 sm:w-8 sm:h-8 text-xs sm:text-sm rounded-full ${
-                    currentPage === page 
-                      ? 'bg-black dark:bg-white text-white dark:text-black border-transparent' 
-                      : 'border border-gray-100 dark:border-gray-800/50 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800/50'
-                  }`}
-                >
-                  {page}
-                </Button>
-              ))}
-            </div>
-            
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-              disabled={currentPage === totalPages}
-              className="text-xs sm:text-sm border border-gray-100 dark:border-gray-800/50 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-full px-3 sm:px-4 flex-1 sm:flex-none"
-            >
-              Next
-              <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 ml-1" />
-            </Button>
-          </div>
+      {forms.length > 0 && totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 mt-6 sm:mt-8">
+          <Button
+            variant="outline"
+            size="sm"
+            className="rounded-full"
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            Page {currentPage} of {totalPages}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            className="rounded-full"
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
         </div>
       )}
     </div>
