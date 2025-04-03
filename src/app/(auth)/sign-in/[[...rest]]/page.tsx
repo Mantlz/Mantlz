@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation"
 
 export default function Page() {
   const searchParams = useSearchParams()
-  const redirectTo = searchParams.get("redirect") || "/dashboard"
+  //const redirectTo = searchParams.get("redirect") || "/dashboard"
   
   return (
     <div className="flex text-center justify-center">

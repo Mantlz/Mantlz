@@ -8,6 +8,6 @@ files.forEach(file => {
   if (fs.existsSync(filePath)) {
     const content = fs.readFileSync(filePath, 'utf8');
     fs.writeFileSync(filePath, "'use client';\n\n" + content);
-    console.log(`Added 'use client' directive to ${file}`);
+
   }
 }); 

@@ -9,24 +9,22 @@ const Layout = ({ children }: { children: ReactNode }) => {
             {/* Home Icon */}
             <a 
                 href="/" 
-                className="absolute top-6 left-6 z-10 p-2 rounded-full hover:bg-slate-800/50 transition-colors"
+                className="absolute top-6 left-6 z-10 p-1 rounded-md cursor-pointer hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 transition-colors"
             >
-                <Home className="w-6 h-6 text-black dark:text-white" />
+                <p className="text-lg font-bold text-zinc-900 tracking-tighter dark:text-zinc-100 ">Mantlz</p>
             </a>
 
-            {/* Left side - Auth Form */}
             <div className="w-full lg:w-1/2 flex flex-col min-h-screen">
-                {/* Center content */}
+
                 <div className="flex-1 flex items-center justify-center p-8">
                     <div className="w-full max-w-md">
-                        {/* Auth card */}
-                        <div className="rounded-xl border border-zinc-200 bg-black dark:bg-white p-8 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.1)]">
+                        <div>
                             {children}
                         </div>
                     </div>
                 </div>
                 
-                {/* Footer at bottom */}
+    
                 <div className="p-6">
                     <AuthFooter />
                 </div>

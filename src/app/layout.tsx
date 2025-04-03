@@ -5,8 +5,23 @@ import { ClerkProvider } from "@clerk/nextjs"
 import "./globals.css"
 import { MantlzProvider } from "@mantlz/nextjs"
 import { Toaster } from "@/components/ui/sonner"
-import { DM_Sans } from "next/font/google"
-const dmSans = DM_Sans({ subsets: ['latin'] })
+import { Space_Mono, Space_Grotesk } from "next/font/google"
+
+const sansFont = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-geist-sans",
+  display: "swap",
+  weight: "400",
+});
+
+const monoFont = Space_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+  display: "swap",
+  weight: "400",
+});
+
+
 
 export const metadata: Metadata = {
   title: "Mantlz",
@@ -22,7 +37,7 @@ export default function RootLayout({
   return (
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="en" suppressHydrationWarning>
-        <body className={dmSans.className}>
+        <body className={`${sansFont.variable} ${monoFont.variable} font-regular antialiased tracking-wide`}>
           <main className="h-screen bg-background text-foreground transition-colors duration-300">
             <Providers>
               <MantlzProvider apiKey={process.env.MANTLZ_KEY}>{children}</MantlzProvider>

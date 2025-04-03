@@ -7,7 +7,7 @@ type RateLimitConfig = {
 };
 
 // Default rate limit values
-const DEFAULT_REQUESTS = 10; 
+const DEFAULT_REQUESTS = 30; 
 // requests per window
 const DEFAULT_WINDOW = 60; 
 // 60 seconds window

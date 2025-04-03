@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
@@ -15,6 +15,8 @@ import { toast } from 'sonner';
 import { client } from '@/lib/client';
 import { useRouter } from 'next/navigation';
 import { cn } from "@/lib/utils"
+import { UpgradeModal } from "@/components/modals/UpgradeModal";
+import { Mail } from "lucide-react";
 
 interface FormSettingsProps {
   formId: string;
@@ -39,6 +41,8 @@ export function FormSettings({ formId, name, description = '', emailSettings, on
   const [isDeleting, setIsDeleting] = useState(false);
   const [emailEnabled, setEmailEnabled] = useState(false);
   const [userPlan, setUserPlan] = useState<string | null>(null);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  const [isEmailSettingsLoading, setIsEmailSettingsLoading] = useState(false);
   const router = useRouter();
 
   // Sync emailEnabled state with emailSettings prop
@@ -47,6 +51,30 @@ export function FormSettings({ formId, name, description = '', emailSettings, on
       setEmailEnabled(emailSettings.enabled);
     }
   }, [emailSettings]);
+
+  // Fetch latest form data including email settings
+  const fetchFormData = useCallback(async () => {
+    try {
+      setIsEmailSettingsLoading(true);
+      const response = await client.forms.getFormById.$get({
+        id: formId
+      });
+      
+      const data = await response.json();
+      
+      if (data && data.emailSettings) {
+        setEmailEnabled(data.emailSettings.enabled);
+      }
+    } catch (error) {
+      console.error("Failed to fetch form data:", error);
+    } finally {
+      setIsEmailSettingsLoading(false);
+    }
+  }, [formId]);
+
+  useEffect(() => {
+    fetchFormData();
+  }, [fetchFormData]);
 
   useEffect(() => {
     const fetchUserPlan = async () => {
@@ -63,21 +91,35 @@ export function FormSettings({ formId, name, description = '', emailSettings, on
   }, []);
 
   const handleEmailToggle = async (checked: boolean) => {
+    // If user is on free plan and trying to enable email notifications, show upgrade modal
+    if (userPlan === 'FREE' && checked) {
+      setIsUpgradeModalOpen(true);
+      return;
+    }
+
+    // Optimistically update UI
+    setEmailEnabled(checked);
+    setIsEmailSettingsLoading(true);
+
     try {
       await client.forms.toggleEmailSettings.$post({
         formId: formId,
         enabled: checked
       });
       
-      setEmailEnabled(checked);
       toast.success('Email notifications ' + (checked ? 'enabled' : 'disabled'));
       
+      // Refresh parent component if needed
       if (onRefresh) {
         onRefresh();
       }
     } catch (error) {
+      // Revert UI state on error
+      setEmailEnabled(!checked);
       console.error('Failed to update email settings:', error);
       toast.error('Failed to update email settings');
+    } finally {
+      setIsEmailSettingsLoading(false);
     }
   };
 
@@ -125,9 +167,7 @@ export function FormSettings({ formId, name, description = '', emailSettings, on
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-zinc-800">
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white">Form Settings</h3>
-      </div>
+      
       
       <div className="space-y-6">
         <div className="space-y-4">
@@ -140,37 +180,70 @@ export function FormSettings({ formId, name, description = '', emailSettings, on
             </div>
           </div>
           
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Description
-            </label>
-            <div className="w-full min-h-[60px] max-h-[80px] overflow-y-auto p-2.5 bg-gray-50 dark:bg-zinc-800/50 border border-gray-200 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white text-sm">
-              {description || <span className="text-gray-500 dark:text-gray-400 italic">No description provided</span>}
-            </div>
-          </div>
 
-          <div className="flex items-center justify-between py-4">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Email Notifications</span>
-              <span className={cn(
-                "text-sm px-2 py-0.5 rounded-full",
-                emailEnabled 
-                  ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400" 
-                  : "bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400"
-              )}>
-                {emailEnabled ? 'Enabled' : 'Disabled'}
-              </span>
+          <div className="mt-6 rounded-xl border border-gray-200 dark:border-zinc-700 overflow-hidden">
+            <div className="px-4 py-3 bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-200 dark:border-zinc-700">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Mail className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Email Notifications</h4>
+                </div>
+                <div className="flex items-center">
+                  {userPlan === 'FREE' && !emailEnabled && (
+                    <div className="mr-3 px-2 py-0.5 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded-full border border-amber-200 dark:border-amber-800/50">
+                      Premium Feature
+                    </div>
+                  )}
+                  <span className={cn(
+                    "text-xs px-2 py-0.5 rounded-full",
+                    emailEnabled 
+                      ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400" 
+                      : "bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400"
+                  )}>
+                    {emailEnabled ? 'Enabled' : 'Disabled'}
+                  </span>
+                </div>
+              </div>
             </div>
-            <div className={`w-px h-8 mx-1 ${userPlan === 'FREE' ? 'bg-amber-200 dark:bg-amber-800/30' : 'bg-slate-200 dark:bg-zinc-700'}`}></div>
-            <Switch
-              checked={emailEnabled}
-              onCheckedChange={handleEmailToggle}
-              className={cn(
-                "ml-1",
-                userPlan === 'FREE' && !emailEnabled && "cursor-not-allowed opacity-70"
-              )}
-              disabled={userPlan === 'FREE' && !emailEnabled}
-            />
+            
+            <div className="p-4 bg-white dark:bg-zinc-900">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-6">
+                <div className="flex-1">
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    Get notified via email when someone submits your form.
+                  </p>
+                  {userPlan === 'FREE' && !emailEnabled && (
+                    <p className="mt-1.5 text-xs text-amber-600 dark:text-amber-400">
+                      Available on Standard and Pro plans
+                    </p>
+                  )}
+                </div>
+                
+                <div className="flex items-center cursor-pointer gap-3 self-end sm:self-center">
+                  <Switch
+                    checked={emailEnabled}
+                    onCheckedChange={handleEmailToggle}
+                    className={cn(
+                      userPlan === 'FREE' && !emailEnabled ? "text-amber-500" : "",
+                      "cursor-pointer",
+                      isEmailSettingsLoading ? "opacity-50" : ""
+                    )}
+                    disabled={isEmailSettingsLoading}
+                  />
+                  {userPlan === 'FREE' && !emailEnabled && (
+                    <Button
+                      variant="default"
+                      size="sm"
+                      className="h-8 cursor-pointer px-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white border-none"
+                      onClick={() => setIsUpgradeModalOpen(true)}
+                      disabled={isEmailSettingsLoading}
+                    >
+                      Upgrade
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="pt-4 border-t border-gray-100 dark:border-zinc-800">
@@ -300,6 +373,14 @@ export function FormSettings({ formId, name, description = '', emailSettings, on
           </div>
         </DialogContent>
       </Dialog>
+
+      <UpgradeModal
+        isOpen={isUpgradeModalOpen}
+        onClose={() => setIsUpgradeModalOpen(false)}
+        featureName="Email Notifications"
+        featureIcon={<Mail className="h-5 w-5 m-2 text-slate-700 dark:text-slate-300" />}
+        description="Get email notifications whenever someone submits your form. Available on Standard and Pro plans."
+      />
     </div>
   );
 } 

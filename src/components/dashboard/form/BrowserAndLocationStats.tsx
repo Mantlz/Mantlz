@@ -8,8 +8,6 @@ import { Globe, MapPin, Maximize2, TrendingUp } from "lucide-react"
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from "react-simple-maps"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
-import { type ChartConfig } from "@/components/ui/chart"
-
 // Add type declaration for foreignObject
 declare global {
   namespace JSX {
@@ -17,19 +15,6 @@ declare global {
       foreignObject: React.SVGProps<SVGForeignObjectElement>
     }
   }
-}
-
-interface BrowserStat {
-  name: string
-  count: number
-  percentage: number
-  icon?: React.ReactNode
-}
-
-interface CountryStat {
-  name: string
-  count: number
-  percentage: number
 }
 
 interface BrowserAndLocationStatsProps {
@@ -215,64 +200,6 @@ export function BrowserAndLocationStats({
     }
   }, [mapLoaded])
 
-  // Transform browser data for the chart
-  const browserChartData = React.useMemo(() => {
-    return browsers.map((browser) => ({
-      browser: browser.name.toLowerCase(),
-      visitors: browser.count,
-      fill: `var(--color-${browser.name.toLowerCase()})`,
-    }))
-  }, [browsers])
-
-  // Chart configuration for browsers
-  const browserChartConfig = React.useMemo(() => {
-    const config: ChartConfig = {
-      visitors: {
-        label: "Visitors",
-      },
-    }
-
-    // Add each browser to the config
-    browsers.forEach((browser) => {
-      const key = browser.name.toLowerCase()
-      config[key] = {
-        label: browser.name,
-        color: `hsl(var(--chart-${browsers.indexOf(browser) + 1}))`,
-      }
-    })
-
-    return config
-  }, [browsers])
-
-  // Transform country data for the chart
-  const locationChartData = React.useMemo(() => {
-    return locations.slice(0, 5).map((country) => ({
-      country: country.name.toLowerCase(),
-      visitors: country.count,
-      fill: `var(--color-${locations.indexOf(country) + 1})`,
-    }))
-  }, [locations])
-
-  // Chart configuration for countries
-  const locationChartConfig = React.useMemo(() => {
-    const config: ChartConfig = {
-      visitors: {
-        label: "Visitors",
-      },
-    }
-
-    // Add each country to the config
-    locations.slice(0, 5).forEach((country) => {
-      const key = country.name.toLowerCase().replace(/\s+/g, "-")
-      config[key] = {
-        label: country.name,
-        color: `hsl(var(--chart-${locations.indexOf(country) + 1}))`,
-      }
-    })
-
-    return config
-  }, [locations])
-
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -400,23 +327,29 @@ export function BrowserAndLocationStats({
                               const coords = COUNTRY_COORDINATES[country.name]
                               if (!coords) return null
                               const [lat, lng] = coords
+                              const count = country.count; // Ensure count is defined
+                              const radius = 8; // Fixed radius for main map
+                              const fontSize = 10; // Fixed font size for main map
 
                               return (
                                 <Marker key={country.name} coordinates={[lng, lat]}>
-                                  <g transform="translate(-10, -10)" className="rsm-marker cursor-pointer">
-                                    <foreignObject width={20} height={20}>
-                                      <div className="relative group">
-                                        <div className="flex flex-col items-center">
-                                          <div
-                                            className="bg-indigo-500 dark:bg-indigo-400 flex items-center justify-center 
-                                            min-w-[16px] min-h-[16px] px-1 text-[8px] font-medium text-white dark:text-zinc-900
-                                            shadow-md rounded-md"
-                                          >
-                                            {country.count}
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </foreignObject>
+                                  <g className="rsm-marker cursor-pointer group">
+                                     <circle
+                                      r={radius}
+                                      className="fill-indigo-500 dark:fill-indigo-400 opacity-80 group-hover:opacity-100 transition-opacity"
+                                      stroke="#fff" // Add white stroke for better contrast
+                                      strokeWidth="1"
+                                    />
+                                    <text
+                                      textAnchor="middle"
+                                      y={radius * 0.35} // Vertically center text (approx)
+                                      className="fill-white dark:fill-zinc-900 font-medium pointer-events-none transition-all"
+                                      style={{ fontSize: `${fontSize}px` }} // Fixed font size
+                                    >
+                                      {count}
+                                    </text>
+                                    {/* Simple SVG Tooltip (renders as native browser tooltip) */}
+                                    <title>{`${country.name}: ${count} visitor${count === 1 ? '' : 's'}`}</title>
                                   </g>
                                 </Marker>
                               )
@@ -633,42 +566,31 @@ export function BrowserAndLocationStats({
                     if (!coords) return null
                     const [lat, lng] = coords
 
+                    // Define marker size based on count for expanded map
+                    const count = country.count;
+                    const baseRadius = 8; // Base radius for the circle
+                    const radius = baseRadius + Math.min(Math.log2(count + 1) * 1.5, 8); // Scale radius logarithmically, max increase of 8
+                    const fontSize = Math.max(8, Math.min(11 + Math.log2(count + 1) * 0.5, 14)); // Scale font size slightly, cap at 14px
+
                     return (
                       <Marker key={country.name} coordinates={[lng, lat]}>
-                        <g transform="translate(-12, -12)" className="rsm-marker cursor-pointer">
-                          <foreignObject width={24} height={24}>
-                            <div className="relative group">
-                              <div className="flex flex-col items-center">
-                                <div
-                                  className="bg-indigo-500 dark:bg-indigo-400 flex items-center justify-center 
-                                  min-w-[24px] min-h-[24px] px-1 text-[11px] font-medium text-white dark:text-zinc-900
-                                  shadow-md rounded-md
-                                  group-hover:-translate-y-[2px] transition-transform z-30"
-                                >
-                                  {country.count}
-                                </div>
-                              </div>
-
-                              {/* Tooltip */}
-                              <div
-                                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-6 px-3 py-2 
-                                bg-white dark:bg-zinc-800 text-xs whitespace-nowrap opacity-0 
-                                group-hover:opacity-100 pointer-events-none transition-all z-40 
-                                border border-zinc-200 dark:border-zinc-700
-                                shadow-lg rounded-lg"
-                              >
-                                <div className="font-medium text-zinc-900 dark:text-zinc-100">{country.name}</div>
-                                <div className="flex items-center gap-1">
-                                  <span className="font-medium text-indigo-600 dark:text-indigo-400">
-                                    {country.count}
-                                  </span>
-                                  <span className="text-zinc-500 dark:text-zinc-400">
-                                    {country.count === 1 ? "visitor" : "visitors"}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </foreignObject>
+                        <g className="rsm-marker cursor-pointer group">
+                           <circle
+                            r={radius}
+                            className="fill-indigo-500 dark:fill-indigo-400 opacity-80 group-hover:opacity-100 transition-opacity"
+                            stroke="#fff" // Add white stroke for better contrast
+                            strokeWidth="1"
+                          />
+                          <text
+                            textAnchor="middle"
+                            y={radius * 0.35} // Vertically center text (approx)
+                            className="fill-white dark:fill-zinc-900 font-medium pointer-events-none transition-all"
+                            style={{ fontSize: `${fontSize}px` }} // Dynamic font size
+                          >
+                            {count}
+                          </text>
+                          {/* Simple SVG Tooltip (renders as native browser tooltip) */}
+                          <title>{`${country.name}: ${count} visitor${count === 1 ? '' : 's'}`}</title>
                         </g>
                       </Marker>
                     )
@@ -692,4 +614,3 @@ export function BrowserAndLocationStats({
     </div>
   )
 }
-

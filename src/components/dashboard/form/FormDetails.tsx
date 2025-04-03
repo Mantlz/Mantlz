@@ -410,6 +410,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
         timeRange={timeRange}
         onTimeRangeChange={setTimeRange}
         isLoading={isLoadingAnalytics}
+        analytics={analytics}
       />
 
       <FormResponsesList

@@ -13,7 +13,7 @@ const Footer = () => {
               <Logo />
               <p className="text-xl font-bold text-neutral-900 dark:text-neutral-50">Mantlz</p>
             </div>
-            <p className="text-sm text-center md:text-left">The best way to manage your links</p>
+            <p className="text-sm text-center md:text-left">The best way to create and manage forms</p>
           </div>
 
           <div className="flex flex-col items-center md:items-start">

@@ -85,16 +85,24 @@ export function FormsList({ itemsPerPage = 8 }: FormsListProps) {
   return (
     <div className="space-y-6 sm:space-y-8">
       {/* Welcome Section with Stats */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 rounded-xl sm:rounded-2xl border border-gray-100 dark:border-gray-800/50">
+      <div className="relative overflow-hidden bg-gradient-to-br from-zinc-100 via-zinc-50 to-zinc-100 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-800 rounded-xl sm:rounded-2xl border border-gray-100 dark:border-gray-800/50">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative p-6 sm:p-8 lg:p-12">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">
             <div className="space-y-3 sm:space-y-4 w-full sm:w-auto">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black dark:bg-white flex items-center justify-center">
-                  <span className="text-lg sm:text-xl font-medium text-white dark:text-black">
-                    {user?.firstName?.[0] || '👋'}
-                  </span>
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black dark:bg-white flex items-center justify-center overflow-hidden">
+                  {user?.imageUrl ? (
+                    <img 
+                      src={user.imageUrl} 
+                      alt={`${user?.firstName || 'User'}'s avatar`}
+                      className="w-full h-full bg-gray-100 dark:bg-zinc-800/50 border border-gray-200 dark:border-zinc-700 rounded-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-lg sm:text-xl font-medium text-white dark:text-black">
+                      {user?.firstName?.[0] || '👋'}
+                    </span>
+                  )}
                 </div>
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white tracking-tight">
@@ -149,7 +157,7 @@ export function FormsList({ itemsPerPage = 8 }: FormsListProps) {
               )}
             </div>
             <Button
-              className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-all duration-200 rounded-full px-6 shadow-sm hover:shadow-md"
+              className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-all duration-200 rounded-xl px-6 shadow-sm hover:shadow-md"
               onClick={() => window.location.href = '/dashboard/form/new'}
             >
               <Plus className="h-4 w-4 mr-2" />
