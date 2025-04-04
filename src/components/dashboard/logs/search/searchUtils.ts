@@ -26,7 +26,8 @@ export async function fetchUserForms() {
 export async function performSearch(
   searchTerm: string, 
   formId: string | null,
-  formsData?: any
+  formsData?: any,
+  advancedFilters?: any
 ): Promise<SearchResult> {
   if (!searchTerm || searchTerm.trim() === "") {
     return { submissions: [] }
@@ -34,9 +35,9 @@ export async function performSearch(
 
   try {
     if (formId) {
-      return await searchInSpecificForm(searchTerm, formId)
+      return await searchInSpecificForm(searchTerm, formId, advancedFilters)
     } else {
-      return await searchAcrossAllForms(searchTerm, formsData)
+      return await searchAcrossAllForms(searchTerm, formsData, advancedFilters)
     }
   } catch (error) {
     console.error("All search attempts failed:", error)
@@ -47,7 +48,11 @@ export async function performSearch(
 /**
  * Search submissions within a specific form
  */
-export async function searchInSpecificForm(searchTerm: string, formId: string): Promise<SearchResult> {
+export async function searchInSpecificForm(
+  searchTerm: string, 
+  formId: string,
+  advancedFilters?: any
+): Promise<SearchResult> {
   try {
     const apiPath = `/api/forms/getSubmissionLogs`
     const searchParams = new URLSearchParams()
@@ -55,6 +60,57 @@ export async function searchInSpecificForm(searchTerm: string, formId: string): 
     searchParams.append('search', searchTerm)
     searchParams.append('page', '1')
     searchParams.append('limit', '10')
+    
+    // Add advanced filters if available
+    if (advancedFilters) {
+      // Add date range
+      if (advancedFilters.dateRange?.from) {
+        searchParams.append('startDate', advancedFilters.dateRange.from.toISOString())
+      }
+      if (advancedFilters.dateRange?.to) {
+        searchParams.append('endDate', advancedFilters.dateRange.to.toISOString())
+      }
+      
+      // Add time frame as an alternative date filter
+      if (advancedFilters.timeFrame && advancedFilters.timeFrame !== 'all') {
+        const now = new Date()
+        let startDate = new Date()
+        
+        switch(advancedFilters.timeFrame) {
+          case '24h':
+            startDate.setHours(now.getHours() - 24)
+            break
+          case '7d':
+            startDate.setDate(now.getDate() - 7)
+            break
+          case '30d':
+            startDate.setDate(now.getDate() - 30)
+            break
+        }
+        
+        if (!advancedFilters.dateRange?.from) {
+          searchParams.append('startDate', startDate.toISOString())
+        }
+      }
+      
+      // Add other filters as query parameters
+      if (advancedFilters.hasEmail === true) {
+        searchParams.append('hasEmail', 'true')
+      }
+      
+      if (advancedFilters.browser) {
+        searchParams.append('browser', advancedFilters.browser)
+      }
+      
+      if (advancedFilters.location) {
+        searchParams.append('location', advancedFilters.location)
+      }
+      
+      // Sort order
+      if (advancedFilters.sortOrder) {
+        searchParams.append('sortOrder', advancedFilters.sortOrder)
+      }
+    }
     
     const response = await fetch(`${apiPath}?${searchParams.toString()}`)
     if (!response.ok) {
@@ -109,36 +165,157 @@ export async function searchInSpecificForm(searchTerm: string, formId: string): 
 /**
  * Search submissions across all forms
  */
-export async function searchAcrossAllForms(searchTerm: string, formsData?: any): Promise<SearchResult> {
+export async function searchAcrossAllForms(
+  searchTerm: string, 
+  formsData?: any,
+  advancedFilters?: any
+): Promise<SearchResult> {
   try {
-    const response = await client.forms.searchSubmissions.$get({
-      query: searchTerm
-    })
+    // Ensure query parameter is always set
+    const params: {
+      query: string,
+      [key: string]: any
+    } = { 
+      query: searchTerm 
+    };
     
-    const data = await response.json()
-    
-    if (data.submissions) {
-      // Map submissions with proper form names - formName should come from API now
-      const mappedSubmissions = data.submissions.map((sub: any) => ({
-        id: sub.id,
-        createdAt: new Date(sub.createdAt),
-        email: sub.email || (sub.data && typeof sub.data === 'object' ? sub.data.email : null),
-        formId: sub.formId || "",
-        formName: sub.formName || "Unknown Form",
-        formDescription: sub.formDescription || "",
-        data: sub.data,
-        notificationLogs: sub.notificationLogs || []
-      }))
-      data.submissions = mappedSubmissions
+    // Add advanced filters if they exist
+    if (advancedFilters) {
+      if (advancedFilters.dateRange?.from) {
+        params.startDate = advancedFilters.dateRange.from.toISOString();
+      }
+      if (advancedFilters.dateRange?.to) {
+        params.endDate = advancedFilters.dateRange.to.toISOString();
+      }
+      
+      // Handle time frame filter
+      if (advancedFilters.timeFrame && advancedFilters.timeFrame !== 'all') {
+        const now = new Date();
+        let startDate = new Date();
+        
+        switch(advancedFilters.timeFrame) {
+          case '24h':
+            startDate.setHours(now.getHours() - 24);
+            break;
+          case '7d':
+            startDate.setDate(now.getDate() - 7);
+            break;
+          case '30d':
+            startDate.setDate(now.getDate() - 30);
+            break;
+        }
+        
+        if (!params.startDate) {
+          params.startDate = startDate.toISOString();
+        }
+      }
+      
+      // Add other filters
+      if (advancedFilters.hasEmail === true) {
+        params.hasEmail = 'true';
+      }
+      
+      if (advancedFilters.browser) {
+        params.browser = advancedFilters.browser;
+      }
+      
+      if (advancedFilters.location) {
+        params.location = advancedFilters.location;
+      }
+      
+      // Sort order
+      if (advancedFilters.sortOrder) {
+        params.sortOrder = advancedFilters.sortOrder;
+      }
     }
     
-    return data
+    // Advanced search operator parsing
+    if (searchTerm.includes(':')) {
+      // Parse advanced search operators
+      const parsedQuery = parseAdvancedSearchQuery(searchTerm);
+      Object.assign(params, parsedQuery);
+    }
+    
+    // Make the API request with proper type casting
+    const response = await client.forms.searchSubmissions.$get(params);
+    const rawData = await response.json();
+    
+    const submissions: Submission[] = [];
+    
+    if (rawData.submissions && Array.isArray(rawData.submissions)) {
+      // Transform the raw submissions to match our expected Submission type
+      rawData.submissions.forEach((sub: any) => {
+        try {
+          // Transform notification logs to match the expected type
+          const notificationLogs = (sub.notificationLogs || []).map((log: any) => ({
+            id: log.id,
+            type: log.type as 'SUBMISSION_CONFIRMATION' | 'DEVELOPER_NOTIFICATION' | 'DIGEST',
+            status: log.status as 'SENT' | 'FAILED' | 'SKIPPED' | 'PENDING',
+            error: log.error,
+            createdAt: log.createdAt
+          }));
+          
+          submissions.push({
+            id: sub.id,
+            createdAt: new Date(sub.createdAt),
+            email: sub.email || (sub.data && typeof sub.data === 'object' ? sub.data.email : null),
+            formId: sub.formId || "",
+            formName: sub.formName || "Unknown Form",
+            formDescription: sub.formDescription || "",
+            data: sub.data || {}, // Ensure data is always present, even if empty
+            notificationLogs: notificationLogs,
+            analytics: sub.analytics || {
+              browser: sub.data?._meta?.browser || "Unknown",
+              location: sub.data?._meta?.country || "Unknown"
+            },
+            status: sub.status || null
+          });
+        } catch (subError) {
+          console.error("Error mapping submission:", subError);
+        }
+      });
+      
+      // Apply client-side filtering for advanced filters if needed
+      let filteredSubmissions = [...submissions];
+      
+      if (advancedFilters) {
+        // Filter by attachment presence
+        if (advancedFilters.showOnlyWithAttachments) {
+          filteredSubmissions = filteredSubmissions.filter((sub) => 
+            sub.data && sub.data.attachments && sub.data.attachments.length > 0
+          );
+        }
+        
+        // Apply client-side sorting if it wasn't handled by the server
+        if (advancedFilters.sortOrder && !params.sortOrder) {
+          filteredSubmissions.sort((a, b) => {
+            const dateA = new Date(a.createdAt).getTime();
+            const dateB = new Date(b.createdAt).getTime();
+            return advancedFilters.sortOrder === 'newest' 
+              ? dateB - dateA  // Newest first
+              : dateA - dateB;  // Oldest first
+          });
+        }
+      }
+      
+      // Create search result with properly typed submissions
+      const searchResult: SearchResult = {
+        submissions: filteredSubmissions
+      };
+      
+      // Add forms if available, without causing type errors
+      addFormsToSearchResult(searchResult, rawData);
+      
+      return searchResult;
+    }
+    
+    return { submissions: [] };
   } catch (error) {
     console.error("Global search failed:", error)
     
     // Fall back to searching multiple forms
     if (formsData?.forms?.length) {
-      return await searchMultipleForms(searchTerm, formsData.forms.slice(0, 3))
+      return await searchMultipleForms(searchTerm, formsData.forms.slice(0, 3), advancedFilters)
     }
     
     return { submissions: [] }
@@ -146,31 +323,143 @@ export async function searchAcrossAllForms(searchTerm: string, formsData?: any):
 }
 
 /**
+ * Parse advanced search query with operators like email:, id:, date:>
+ */
+function parseAdvancedSearchQuery(query: string): Record<string, string> {
+  const result: Record<string, string> = {}
+  const parts = query.split(' ')
+  
+  parts.forEach(part => {
+    if (part.includes(':')) {
+      const [operator, ...valueParts] = part.split(':')
+      const value = valueParts.join(':') // Handle values that may contain colons
+      
+      if (!operator || value === undefined) return
+      
+      // Handle special operators
+      if (operator === 'email') {
+        result.emailQuery = value
+      } else if (operator === '@id' || operator === 'id') {
+        result.idQuery = value
+      } else if (operator === 'date') {
+        // Handle date comparisons like date:>2023-01-01
+        if (value.startsWith('>')) {
+          result.dateAfter = value.substring(1)
+        } else if (value.startsWith('<')) {
+          result.dateBefore = value.substring(1)
+        } else {
+          result.dateEquals = value
+        }
+      } else if (operator === 'form') {
+        result.formName = value
+      } else {
+        // Generic field search
+        result[`field_${operator}`] = value
+      }
+    } else if (part.trim()) {
+      // If no operator, treat as general search term
+      result.generalQuery = (result.generalQuery || '') + ' ' + part
+    }
+  })
+  
+  return result
+}
+
+/**
  * Search multiple forms when global search fails
  */
-export async function searchMultipleForms(searchTerm: string, formsToSearch: Form[]): Promise<SearchResult> {
+export async function searchMultipleForms(
+  searchTerm: string, 
+  formsToSearch: Form[],
+  advancedFilters?: any
+): Promise<SearchResult> {
   const allResults: Submission[] = []
   
   for (const form of formsToSearch) {
     try {
-      const response = await client.forms.getSubmissionLogs.$get({
+      // Build query parameters with required fields
+      const params: {
+        formId: string,
+        search: string,
+        page: number,
+        limit: number,
+        [key: string]: any
+      } = {
         formId: form.id,
         search: searchTerm,
         page: 1,
         limit: 5
-      })
+      }
+      
+      // Add advanced filters if they exist
+      if (advancedFilters) {
+        if (advancedFilters.dateRange?.from) {
+          params.startDate = advancedFilters.dateRange.from.toISOString()
+        }
+        if (advancedFilters.dateRange?.to) {
+          params.endDate = advancedFilters.dateRange.to.toISOString()
+        }
+        
+        // Add other filters
+        if (advancedFilters.hasEmail === true) {
+          params.hasEmail = 'true'
+        }
+        
+        if (advancedFilters.sortOrder) {
+          params.sortOrder = advancedFilters.sortOrder
+        }
+      }
+      
+      const response = await client.forms.getSubmissionLogs.$get(params)
       
       const data = await response.json()
       
       if (data.submissions?.length) {
-        allResults.push(...data.submissions.map(mapSubmissionData(form.id, form.name)))
+        // Map the submissions data to match the required types
+        const mappedSubmissions = data.submissions.map((submission: any) => {
+          // Transform notification logs to match the expected type
+          const mappedNotificationLogs = submission.notificationLogs?.map((log: any) => ({
+            id: log.id,
+            type: log.type as 'SUBMISSION_CONFIRMATION' | 'DEVELOPER_NOTIFICATION' | 'DIGEST',
+            status: log.status as 'SENT' | 'FAILED' | 'SKIPPED' | 'PENDING',
+            error: log.error,
+            createdAt: log.createdAt
+          })) || [];
+
+          return mapSubmissionData(form.id, form.name)(submission);
+        });
+        
+        allResults.push(...mappedSubmissions);
       }
     } catch (formError) {
       console.error(`Search for form ${form.id} failed:`, formError)
     }
   }
   
-  return { submissions: allResults }
+  // Apply client-side filtering for advanced filters if needed
+  let filteredResults = allResults
+  
+  if (advancedFilters) {
+    // Filter by attachment presence
+    if (advancedFilters.showOnlyWithAttachments) {
+      filteredResults = filteredResults.filter(sub => 
+        sub.data && sub.data.attachments && sub.data.attachments.length > 0
+      )
+    }
+    
+    // Apply client-side sorting if the server didn't handle it
+    if (advancedFilters.sortOrder) {
+      filteredResults.sort((a, b) => {
+        const dateA = new Date(a.createdAt).getTime()
+        const dateB = new Date(b.createdAt).getTime()
+        return advancedFilters.sortOrder === 'newest' 
+          ? dateB - dateA  // Newest first
+          : dateA - dateB  // Oldest first
+      })
+    }
+  }
+  
+  return { submissions: filteredResults }
 }
 
 /**
@@ -185,6 +474,15 @@ export function mapSubmissionData(formId?: string, formName?: string) {
     // Extract email with fallbacks
     const email = sub.email || (sub.data && typeof sub.data === 'object' ? sub.data.email : null);
     
+    // Transform notification logs to match the expected type
+    const notificationLogs = (sub.notificationLogs || []).map((log: any) => ({
+      id: log.id,
+      type: log.type as 'SUBMISSION_CONFIRMATION' | 'DEVELOPER_NOTIFICATION' | 'DIGEST',
+      status: log.status as 'SENT' | 'FAILED' | 'SKIPPED' | 'PENDING',
+      error: log.error,
+      createdAt: log.createdAt
+    }));
+    
     // Create the complete submission object with all available data
     return {
       id: sub.id,
@@ -194,7 +492,7 @@ export function mapSubmissionData(formId?: string, formName?: string) {
       formName: mappedFormName,
       formDescription: sub.formDescription || sub.form?.description || "",
       data: sub.data || {}, // Ensure data is always present, even if empty
-      notificationLogs: sub.notificationLogs || [],
+      notificationLogs: notificationLogs,
       analytics: sub.analytics || {
         browser: sub.data?._meta?.browser || "Unknown",
         location: sub.data?._meta?.country || "Unknown"
@@ -202,4 +500,15 @@ export function mapSubmissionData(formId?: string, formName?: string) {
       status: sub.status || null
     };
   };
+}
+
+// Helper function to add forms to the search result
+function addFormsToSearchResult(result: any, rawData: any) {
+  if (rawData.forms && Array.isArray(rawData.forms)) {
+    result.forms = rawData.forms.map((form: any) => ({
+      id: form.id || '',
+      name: form.name || 'Unknown Form',
+      submissionCount: form.submissionCount || 0
+    }));
+  }
 } 

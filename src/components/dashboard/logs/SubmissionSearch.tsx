@@ -18,6 +18,20 @@ import {
 } from "./search/searchUtils"
 import { Form, Submission, SearchResult } from "./search/types"
 
+// Define the advanced filters type
+interface AdvancedFilters {
+  dateRange?: { 
+    from: Date | undefined;
+    to?: Date | undefined;
+  }
+  showOnlyWithAttachments?: boolean
+  sortOrder?: 'newest' | 'oldest'
+  timeFrame?: 'all' | '24h' | '7d' | '30d'
+  hasEmail?: boolean
+  browser?: string
+  location?: string
+}
+
 export function SubmissionSearch() {
   // State
   const [open, setOpen] = useState(false)
@@ -26,6 +40,10 @@ export function SubmissionSearch() {
   const [selectedFormId, setSelectedFormId] = useState<string | null>(null)
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null)
   const [isSheetOpen, setIsSheetOpen] = useState(false)
+  const [advancedFilters, setAdvancedFilters] = useState<AdvancedFilters>({})
+  const [isSearching, setIsSearching] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [searchResults, setSearchResults] = useState<SearchResult>({ submissions: [] })
 
   // Hooks
   const searchParams = useSearchParams()
@@ -74,8 +92,11 @@ export function SubmissionSearch() {
       setSearch("")
       setSelectedFormId(currentFormId)
       setSelectedSubmission(null)
+      if (!isProUser) {
+        setAdvancedFilters({})
+      }
     }
-  }, [open, currentFormId])
+  }, [open, currentFormId, isProUser])
 
   // Query to get all forms for the search selector
   const { data: formsData } = useQuery({
@@ -87,8 +108,8 @@ export function SubmissionSearch() {
 
   // Query for searching submissions
   const { data, isLoading } = useQuery<SearchResult>({
-    queryKey: ["searchSubmissions", debouncedSearch, selectedFormId, isProUser],
-    queryFn: () => performSearch(debouncedSearch, selectedFormId, formsData),
+    queryKey: ["searchSubmissions", debouncedSearch, selectedFormId, isProUser, advancedFilters],
+    queryFn: () => performSearch(debouncedSearch, selectedFormId, formsData, advancedFilters),
     enabled: isPremium && open && debouncedSearch.length > 0 && (isProUser || selectedFormId !== null),
     staleTime: 5000,
     refetchOnMount: true
@@ -112,6 +133,13 @@ export function SubmissionSearch() {
     setIsSheetOpen(true)
   }
 
+  // Handle advanced filters updates
+  function handleSetAdvancedFilters(filters: AdvancedFilters) {
+    if (isProUser) {
+      setAdvancedFilters(filters)
+    }
+  }
+
   // Handle navigation to submission page
   function handleNavigateToSubmission() {
     if (!selectedSubmission) return
@@ -127,6 +155,39 @@ export function SubmissionSearch() {
       router.push(`/dashboard/logs?submissionId=${selectedSubmission.id}`)
     }
   }
+
+  // Function to handle search
+  const handleSearch = async (searchTerm: string, localFormId: string | null = selectedFormId) => {
+    setIsSearching(true);
+    setError(null);
+    
+    try {
+      // Ensure searchTerm is a string
+      const sanitizedTerm = typeof searchTerm === 'string' ? searchTerm : '';
+      
+      // Clear previous results if empty search
+      if (!sanitizedTerm.trim()) {
+        setSearchResults({ submissions: [] });
+        setIsSearching(false);
+        return;
+      }
+
+      const results = await performSearch(
+        sanitizedTerm, 
+        localFormId,
+        formsData,
+        advancedFilters
+      );
+      
+      setSearchResults(results);
+    } catch (err) {
+      console.error("Search error:", err);
+      setError("An error occurred while searching. Please try again.");
+      setSearchResults({ submissions: [] });
+    } finally {
+      setIsSearching(false);
+    }
+  };
 
   // Show premium upgrade option for non-premium users
   if (!isPremium) {
@@ -162,6 +223,8 @@ export function SubmissionSearch() {
         onSelectSubmission={handleSelect}
         isProUser={isProUser}
         showUpgradeModal={() => setShowUpgradeModal(true)}
+        advancedFilters={advancedFilters}
+        setAdvancedFilters={handleSetAdvancedFilters}
       />}
 
       <SubmissionDetailsSheet 
