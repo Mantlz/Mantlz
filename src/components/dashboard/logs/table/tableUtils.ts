@@ -36,7 +36,12 @@ export async function fetchUserForms(): Promise<FormsResponse> {
 /**
  * Fetches submissions for a specific form
  */
-export async function fetchSubmissions(formId: string | null, page: number): Promise<SubmissionResponse> {
+export async function fetchSubmissions(
+  formId: string | null, 
+  page: number, 
+  startDate?: string, 
+  endDate?: string
+): Promise<SubmissionResponse> {
   if (!formId) {
     return {
       submissions: [],
@@ -54,6 +59,8 @@ export async function fetchSubmissions(formId: string | null, page: number): Pro
     formId,
     page,
     limit: 5,
+    startDate,
+    endDate,
   });
 
   const responseData = await response.json();
@@ -75,4 +82,16 @@ export function enhanceSubmissions(submissions: Submission[]): Submission[] {
       }
     };
   });
+}
+
+// Add a utility function for safely working with searchParams
+export function safeSearchParamsToString(searchParams: any): string {
+  try {
+    if (typeof searchParams?.toString === 'function') {
+      return searchParams.toString();
+    }
+  } catch (e) {
+    console.error('Error converting searchParams to string:', e);
+  }
+  return '';
 } 

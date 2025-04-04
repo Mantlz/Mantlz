@@ -69,6 +69,8 @@ export interface LogsTableContentProps {
   searchParams: ReadonlyURLSearchParams
   router: any
   isPremium: boolean
+  userPlan?: 'FREE' | 'STANDARD' | 'PRO'
+  refetch?: () => void
 }
 
 export interface LogsTableHeaderProps {

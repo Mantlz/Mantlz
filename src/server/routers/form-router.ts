@@ -1028,6 +1028,8 @@ export const formRouter = j.router({
       status: z.string().optional(),
       type: z.string().optional(),
       search: z.string().optional(),
+      startDate: z.string().optional(),
+      endDate: z.string().optional(),
     }))
     .query(async ({ ctx, c, input }) => {
       const { user } = ctx;
@@ -1035,11 +1037,28 @@ export const formRouter = j.router({
         throw new HTTPException(401, { message: "User not authenticated" });
       }
 
-      const { formId, page, limit, status, type, search } = input;
+      const { formId, page, limit, status, type, search, startDate, endDate } = input;
       const skip = (page - 1) * limit;
 
       try {
-        console.log('🔍 Starting getSubmissionLogs query:', { formId, page, limit, status, type, search });
+        console.log('🔍 Starting getSubmissionLogs query:', { formId, page, limit, status, type, search, startDate, endDate });
+
+        // Get user's plan
+        const userWithPlan = await db.user.findUnique({
+          where: { id: user.id },
+          select: { plan: true }
+        });
+
+        if (!userWithPlan) {
+          throw new HTTPException(404, { message: "User not found" });
+        }
+
+        // Check if date filtering is requested but user isn't on PRO plan
+        if ((startDate || endDate) && userWithPlan.plan !== 'PRO') {
+          throw new HTTPException(403, { 
+            message: "Date filtering is only available with the PRO plan" 
+          });
+        }
 
         // Build the where clause for submissions
         const where: any = {
@@ -1055,6 +1074,22 @@ export const formRouter = j.router({
             ]
           } : {}),
         };
+
+        // Add date range filtering only for PRO users
+        if ((startDate || endDate) && userWithPlan.plan === 'PRO') {
+          where.createdAt = {};
+          
+          if (startDate) {
+            where.createdAt.gte = new Date(startDate);
+          }
+          
+          if (endDate) {
+            // Add one day to endDate to include the full day
+            const endDateObj = new Date(endDate);
+            endDateObj.setDate(endDateObj.getDate() + 1);
+            where.createdAt.lt = endDateObj;
+          }
+        }
 
         // Build the where clause for notification logs
         const notificationLogsWhere: any = {

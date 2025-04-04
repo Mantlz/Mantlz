@@ -12,7 +12,7 @@ export function SearchButton({ onClick }: SearchButtonProps) {
     <Button
       variant="outline"
       size="sm"
-      className="h-8 gap-2 bg-white dark:bg-zinc-900 hover:bg-gray-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300"
+      className="h-8 gap-2 cursor-pointer bg-white dark:bg-zinc-900 hover:bg-gray-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300"
       onClick={onClick}
     >
       <Search className="h-3.5 w-3.5 text-gray-500" />

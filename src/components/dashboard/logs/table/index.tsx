@@ -20,7 +20,10 @@ export function LogsTable() {
   const { user } = useUser()
   const page = Number(searchParams.get("page")) || 1
   const formId = searchParams.get("formId")
-  const { isPremium } = useSubscription()
+  const { isPremium, subscription } = useSubscription()
+
+  // Get the plan from the subscription or default to FREE
+  const userPlan = subscription?.plan || 'FREE'
 
   // Fetch forms data
   const {
@@ -35,13 +38,17 @@ export function LogsTable() {
   })
 
   // Fetch submissions for selected form
+  const startDateParam = searchParams.get('startDate');
+  const endDateParam = searchParams.get('endDate');
+
   const { 
     data, 
     isLoading, 
-    error 
+    error: submissionsError,
+    refetch 
   } = useQuery<SubmissionResponse>({
-    queryKey: ["submissionLogs", formId, page],
-    queryFn: () => fetchSubmissions(formId, page),
+    queryKey: ["submissionLogs", formId, page, startDateParam, endDateParam],
+    queryFn: () => fetchSubmissions(formId, page, startDateParam || undefined, endDateParam || undefined),
     enabled: !!formId,
   })
 
@@ -140,6 +147,8 @@ export function LogsTable() {
               searchParams={searchParams}
               router={router}
               isPremium={isPremium}
+              userPlan={userPlan}
+              refetch={refetch}
             />
           </>
         ) : (
@@ -158,6 +167,8 @@ export function LogsTable() {
               searchParams={searchParams}
               router={router}
               isPremium={isPremium}
+              userPlan={userPlan}
+              refetch={refetch}
             />
           </>
         )
