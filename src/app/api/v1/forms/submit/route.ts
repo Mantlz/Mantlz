@@ -13,6 +13,7 @@ const submitSchema = z.object({
   formId: z.string(),
   apiKey: z.string(),
   //recaptchaToken: z.string(),
+  redirectUrl: z.string().optional(),
   data: z.record(z.any()).refine((data) => {
     return typeof data.email === 'string' || data.email === undefined;
   }, {
@@ -62,7 +63,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { formId, apiKey, data } = submitSchema.parse(body);
+    const { formId, apiKey, redirectUrl, data } = submitSchema.parse(body);
 
     // Verify reCAPTCHA token
     // const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
@@ -273,9 +274,58 @@ export async function POST(req: Request) {
         }
       }
 
+      // Handle redirect URLs based on the user's plan
+      if (redirectUrl) {
+        console.log('Redirect URL requested:', redirectUrl);
+        
+        // Only users on STANDARD or PRO plans can use custom redirect URLs
+        if (form.user.plan === Plan.STANDARD || form.user.plan === Plan.PRO) {
+          console.log('User is on a paid plan, allowing custom redirect to:', redirectUrl);
+          
+          // Return response with redirect URL
+          return NextResponse.json({ 
+            success: true,
+            message: 'Form submitted successfully',
+            submissionId: submission.id,
+            redirect: {
+              url: redirectUrl,
+              allowed: true
+            }
+          });
+        } else {
+          console.log('User is on a FREE plan, custom redirects not allowed. Using default Mantlz thank-you page.');
+          
+          // For free users, ignore the custom redirect and use the default Mantlz thank-you page
+          // Use environment variable with fallback
+          const defaultRedirectUrl = process.env.MANTLZ_THANK_YOU_URL || 
+                                    `${process.env.NEXT_PUBLIC_APP_URL || 'https://mantlz.app'}/thank-you`;
+          
+          return NextResponse.json({ 
+            success: true,
+            message: 'Form submitted successfully',
+            submissionId: submission.id,
+            redirect: {
+              url: defaultRedirectUrl,
+              allowed: false,
+              reason: 'Custom redirects require STANDARD or PRO plan'
+            }
+          });
+        }
+      }
+
+      // No custom redirect requested, use the default Mantlz thank-you page
+      // Use environment variable with fallback
+      const defaultRedirectUrl = process.env.MANTLZ_THANK_YOU_URL || 
+                                `${process.env.NEXT_PUBLIC_APP_URL || 'https://mantlz.app'}/thank-you`;
+      
       return NextResponse.json({ 
+        success: true,
         message: 'Form submitted successfully',
         submissionId: submission.id,
+        redirect: {
+          url: defaultRedirectUrl,
+          allowed: true
+        }
       });
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {

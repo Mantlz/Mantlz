@@ -6,11 +6,12 @@ import type { FormSubmissionResponse, FormCreationResponse } from '../types/inde
 export async function submitForm(
   formId: string,
   data: unknown,
-  apiKey: string
+  apiKey: string,
+  redirectUrl?: string
 ): Promise<FormSubmissionResponse> {
   return makeApiRequest(API_ENDPOINTS.SUBMIT_FORM, {
     method: 'POST',
-    body: { formId, data, apiKey },
+    body: { formId, data, apiKey, redirectUrl },
   });
 }
 
@@ -19,6 +20,7 @@ export async function createForm(
     name: string;
     description?: string;
     schema: z.ZodSchema;
+
   },
   apiKey: string
 ): Promise<FormCreationResponse> {

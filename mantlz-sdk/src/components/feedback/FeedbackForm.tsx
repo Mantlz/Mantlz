@@ -37,7 +37,8 @@ export function FeedbackForm({
   feedbackPlaceholder,
   successMessage = "Thank you for your feedback!",
   darkMode,
-  variant = "default"
+  variant = "default",
+  redirectUrl
 }: FeedbackFormProps) {
   const { client } = useMantlz();
   const [hoveredRating, setHoveredRating] = React.useState<number | null>(null);
@@ -135,10 +136,14 @@ export function FeedbackForm({
         throw new Error('API key not configured properly');
       }
 
-      // Submit form
+      // Submit form with redirectUrl (if provided)
+      // The server handles the redirect based on user's plan:
+      // - Free users: Always redirected to Mantlz's hosted thank-you page
+      // - STANDARD/PRO users: Will be redirected to their custom redirectUrl
       const response = await client.submitForm('feedback', {
         formId,
         data,
+        redirectUrl
       });
       
       if (response.success) {
@@ -149,11 +154,19 @@ export function FeedbackForm({
           email: '',
         });
         
-        toast.success(successMessage || "Thank you for your feedback!");
+        // Show a brief success message before redirect
+        // We're showing this in the component to allow for customized success messages
+        toast.success(successMessage || "Thank you for your feedback!", {
+          description: "Redirecting you shortly...",
+          duration: 2000
+        });
         
         if (onSubmitSuccess) {
           onSubmitSuccess(data);
         }
+        
+        // No need to handle redirects here - client.ts handles the redirect
+        // based on the server response
       } else {
         const errorMsg = errorMessage || 'Submission failed. Please try again.';
         toast.error(errorMsg);

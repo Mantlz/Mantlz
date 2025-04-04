@@ -13,9 +13,9 @@ export function createMantlzClient(apiKey: string, config?: MantlzClientConfig):
   const notificationsEnabled = config?.notifications !== false;
 
   return {
-    submitForm: async (type: string, options: { formId: string; data: any; }): Promise<FormSubmitResponse> => {
+    submitForm: async (type: string, options: { formId: string; data: any; redirectUrl?: string; }): Promise<FormSubmitResponse> => {
       try {
-        const { formId, data } = options;
+        const { formId, data, redirectUrl } = options;
         const url = `/api/v1/forms/submit`;
         console.log('Submitting form to:', url, { type, formId });
         
@@ -30,6 +30,7 @@ export function createMantlzClient(apiKey: string, config?: MantlzClientConfig):
             formId,
             apiKey,
             data,
+            redirectUrl,
             //recaptchaToken
           }),
         });
@@ -111,11 +112,33 @@ export function createMantlzClient(apiKey: string, config?: MantlzClientConfig):
 
         const result = await response.json();
         
-        // Show success toast notification if enabled
-        if (notificationsEnabled) {
+        // We don't need a success toast since we're redirecting to a thank-you page
+        // Only show success toast if notifications are enabled but there's no redirect
+        if (notificationsEnabled && (!result.redirect || !result.redirect.url)) {
           toast.success('Form submitted successfully', {
             duration: 3000,
           });
+        }
+
+        // Handle redirects - the server will always provide a redirect URL
+        if (result.redirect && result.redirect.url && typeof window !== 'undefined') {
+          console.log('Server provided redirect:', result.redirect);
+          
+          // For free users who attempted to use a custom redirect, show explanation
+          if (redirectUrl && result.redirect.allowed === false && notificationsEnabled) {
+            toast.info('Using Mantlz thank-you page', {
+              description: 'Custom redirects require a STANDARD or PRO plan',
+              duration: 3000,
+            });
+          }
+          
+          // Set a small timeout to allow the toast messages to be seen
+          // We'll use a shorter timeout since we're not showing the success toast
+          setTimeout(() => {
+            window.location.href = result.redirect.url;
+          }, 1000);
+        } else {
+          console.warn('Server did not provide a redirect URL');
         }
 
         // Add type assertion to ensure result matches FormSubmitResponse type

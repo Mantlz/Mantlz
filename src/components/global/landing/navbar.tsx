@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
 import { Logo } from "@/components/global/logo"
-import { CTASection } from "@/components/ui/cta-section"
 
 type NavItem = {
   name: string

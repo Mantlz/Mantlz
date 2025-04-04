@@ -65,6 +65,7 @@ export interface FeedbackFormProps {
   onSubmitError?: (error: Error) => void;
   className?: string;
   variant?: "default" | "glass";
+  redirectUrl?: string;  // For STANDARD/PRO plans: URL to redirect to after submission. Free users always go to Mantlz's hosted thank-you page.
   
   // Layout options
   title?: string;

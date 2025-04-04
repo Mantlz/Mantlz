@@ -19,6 +19,7 @@ export interface FormSubmitOptions {
   data: any;
   apiKey?: string;  // Optional override for the API key
   recaptchaToken?: string;  // Optional reCAPTCHA token for spam protection
+  redirectUrl?: string;  // For STANDARD/PRO plans: URL to redirect to after form submission. Free users always go to Mantlz's hosted thank-you page.
 }
 
 export interface EmailSettings {
@@ -40,6 +41,13 @@ export interface FormSubmitResponse {
   success: boolean;
   data?: any;
   error?: MantlzError;
+  submissionId?: string;
+  message?: string;
+  redirect?: {
+    url: string;
+    allowed: boolean;
+    reason?: string;
+  };
 }
 
 export interface MantlzClient {
