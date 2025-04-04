@@ -118,7 +118,17 @@ export async function searchAcrossAllForms(searchTerm: string, formsData?: any):
     const data = await response.json()
     
     if (data.submissions) {
-      const mappedSubmissions = data.submissions.map(mapSubmissionData())
+      // Map submissions with proper form names - formName should come from API now
+      const mappedSubmissions = data.submissions.map((sub: any) => ({
+        id: sub.id,
+        createdAt: new Date(sub.createdAt),
+        email: sub.email || (sub.data && typeof sub.data === 'object' ? sub.data.email : null),
+        formId: sub.formId || "",
+        formName: sub.formName || "Unknown Form",
+        formDescription: sub.formDescription || "",
+        data: sub.data,
+        notificationLogs: sub.notificationLogs || []
+      }))
       data.submissions = mappedSubmissions
     }
     
@@ -167,13 +177,29 @@ export async function searchMultipleForms(searchTerm: string, formsToSearch: For
  * Helper to map submission data from API response to Submission interface
  */
 export function mapSubmissionData(formId?: string, formName?: string) {
-  return (sub: any) => ({
-    id: sub.id,
-    createdAt: new Date(sub.createdAt),
-    email: sub.email || (sub.data && typeof sub.data === 'object' ? sub.data.email : null),
-    formId: formId || sub.form?.id || sub.formId || "",
-    formName: formName || sub.form?.name || "Unknown Form",
-    data: sub.data,
-    notificationLogs: sub.notificationLogs || []
-  })
+  return (sub: any) => {
+    // First extract the form information with fallbacks
+    const mappedFormId = formId || sub.form?.id || sub.formId || "";
+    const mappedFormName = formName || sub.form?.name || sub.formName || "Unknown Form";
+    
+    // Extract email with fallbacks
+    const email = sub.email || (sub.data && typeof sub.data === 'object' ? sub.data.email : null);
+    
+    // Create the complete submission object with all available data
+    return {
+      id: sub.id,
+      createdAt: new Date(sub.createdAt),
+      email: email,
+      formId: mappedFormId,
+      formName: mappedFormName,
+      formDescription: sub.formDescription || sub.form?.description || "",
+      data: sub.data || {}, // Ensure data is always present, even if empty
+      notificationLogs: sub.notificationLogs || [],
+      analytics: sub.analytics || {
+        browser: sub.data?._meta?.browser || "Unknown",
+        location: sub.data?._meta?.country || "Unknown"
+      },
+      status: sub.status || null
+    };
+  };
 } 

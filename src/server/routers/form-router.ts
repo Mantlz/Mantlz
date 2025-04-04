@@ -1256,7 +1256,8 @@ export const formRouter = j.router({
   // New endpoint for searching submissions
   searchSubmissions: privateProcedure
     .input(z.object({
-      query: z.string()
+      query: z.string(),
+      formId: z.string().optional()
     }))
     .query(async ({ c, ctx, input }) => {
       const { user } = ctx;
@@ -1274,74 +1275,129 @@ export const formRouter = j.router({
         throw new HTTPException(403, { message: "Premium feature" });
       }
 
-      const { query } = input;
+      const { query, formId } = input;
       
       // Check if query follows the @id format
       const isIdSearch = query.startsWith('@');
       const searchValue = isIdSearch ? query.substring(1) : query;
 
-      // Build the search query
-      let submissions = [];
+      // Build the where clause based on search type and optional formId
+      const whereClause: any = {
+        form: {
+          userId: user.id
+        }
+      };
       
+      // Add formId to the query if specified
+      if (formId) {
+        whereClause.formId = formId;
+      }
+      
+      // Add search conditions based on search type
       if (isIdSearch) {
-        // Search by ID
-        submissions = await db.submission.findMany({
-          where: {
-            id: { contains: searchValue },
-            form: {
-              userId: user.id
-            }
-          },
-          orderBy: { createdAt: 'desc' },
-          take: 10,
-          select: {
-            id: true,
-            createdAt: true,
-            email: true,
-            formId: true,
-            form: {
-              select: {
-                name: true
-              }
-            }
-          }
-        });
+        whereClause.id = { contains: searchValue };
       } else {
-        // Search by email or other data
-        submissions = await db.submission.findMany({
-          where: {
-            OR: [
-              { email: { contains: searchValue, mode: 'insensitive' } },
-              { data: { path: ['$.email'], string_contains: searchValue, mode: 'insensitive' } }
-            ],
-            form: {
-              userId: user.id
-            }
-          },
-          orderBy: { createdAt: 'desc' },
-          take: 10,
-          select: {
-            id: true,
-            createdAt: true,
-            email: true,
-            formId: true,
-            form: {
-              select: {
-                name: true
-              }
-            }
-          }
-        });
+        whereClause.OR = [
+          { email: { contains: searchValue, mode: 'insensitive' } },
+          { data: { path: ['$.email'], string_contains: searchValue, mode: 'insensitive' } }
+        ];
       }
 
+      // Build the search query with complete submission data
+      const submissions = await db.submission.findMany({
+        where: whereClause,
+        orderBy: { createdAt: 'desc' },
+        take: 50, // Increased from 10 to provide more results
+        select: {
+          id: true,
+          createdAt: true,
+          email: true,
+          data: true, // Include the actual submission data
+          formId: true,
+          form: {
+            select: {
+              id: true,
+              name: true,
+              description: true,
+              emailSettings: {
+                select: {
+                  enabled: true,
+                  developerNotificationsEnabled: true
+                }
+              }
+            }
+          },
+          notificationLogs: {
+            select: {
+              id: true,
+              type: true,
+              status: true,
+              error: true,
+              createdAt: true,
+            },
+            orderBy: { createdAt: 'desc' }
+          }
+        }
+      });
+
+      // Enhance submissions with analytics data and format notification logs
+      const enhancedSubmissions = submissions.map(submission => {
+        const data = submission.data as any;
+        const meta = data?._meta || {};
+        
+        // Format notification logs to ensure consistent structure
+        const formattedLogs = submission.notificationLogs.map(log => ({
+          ...log,
+          createdAt: log.createdAt.toISOString(),
+          type: log.type,
+          status: log.status,
+          error: log.error || null
+        }));
+
+        // Add default logs if they don't exist
+        const hasUserEmailLog = formattedLogs.some(log => log.type === 'SUBMISSION_CONFIRMATION');
+        const hasDevEmailLog = formattedLogs.some(log => log.type === 'DEVELOPER_NOTIFICATION');
+
+        if (!hasUserEmailLog && submission.email) {
+          formattedLogs.push({
+            id: `temp-${submission.id}-user-email`,
+            type: 'SUBMISSION_CONFIRMATION',
+            status: 'SKIPPED',
+            error: 'Email not sent - plan or settings not configured',
+            createdAt: submission.createdAt.toISOString()
+          });
+        }
+
+        if (!hasDevEmailLog) {
+          formattedLogs.push({
+            id: `temp-${submission.id}-dev-email`,
+            type: 'DEVELOPER_NOTIFICATION',
+            status: submission.form.emailSettings?.developerNotificationsEnabled ? 'SKIPPED' : 'FAILED',
+            error: submission.form.emailSettings?.developerNotificationsEnabled 
+              ? 'Developer notification not sent' 
+              : 'Developer notifications are disabled',
+            createdAt: submission.createdAt.toISOString()
+          });
+        }
+
+        return {
+          id: submission.id,
+          createdAt: submission.createdAt,
+          email: submission.email,
+          formId: submission.formId,
+          formName: submission.form?.name || "Unknown Form",
+          formDescription: submission.form?.description || "",
+          data: submission.data,
+          notificationLogs: formattedLogs,
+          analytics: {
+            browser: meta.browser || 'Unknown',
+            location: meta.country || 'Unknown',
+          }
+        };
+      });
+
       return c.superjson({
-        submissions: submissions.map(sub => ({
-          id: sub.id,
-          createdAt: sub.createdAt,
-          email: sub.email,
-          formId: sub.formId,
-          formName: sub.form.name
-        }))
+        submissions: enhancedSubmissions
       });
     }),
 

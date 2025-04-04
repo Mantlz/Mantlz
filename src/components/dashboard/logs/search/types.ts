@@ -12,8 +12,15 @@ export interface Submission {
   email: string | null
   formId: string
   formName: string
+  formDescription?: string
   data?: any
   notificationLogs?: NotificationLog[]
+  status?: string
+  analytics?: {
+    browser?: string
+    location?: string
+    [key: string]: any
+  }
 }
 
 export interface Form {

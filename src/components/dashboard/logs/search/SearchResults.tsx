@@ -1,6 +1,6 @@
 "use client"
 
-import { Loader2, MessageSquare, Search, Calendar, Mail, Lock, Sparkles, Clock, BarChart } from "lucide-react"
+import { Loader2, MessageSquare, Search, Calendar, Mail, Lock, Sparkles, Clock, BarChart, Globe, MapPin } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
 import { SearchResult, Submission } from "./types"
 import { Badge } from "@/components/ui/badge"
@@ -189,6 +189,15 @@ function SubmissionSearchResult({ submission, onClick, isProUser = false }: Subm
             </span>
           )}
           
+          {/* Form name as badge */}
+          <Badge 
+            className={`ml-2 text-[10px] ${submission.formName === "Unknown Form" 
+              ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400" 
+              : "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"} h-4`}
+          >
+            {submission.formName}
+          </Badge>
+          
           {/* Pro users see additional badges */}
           {isProUser && submission.status && (
             <Badge className="ml-2 text-[10px] bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 h-4">
@@ -201,9 +210,25 @@ function SubmissionSearchResult({ submission, onClick, isProUser = false }: Subm
           <span className="font-mono text-xs text-gray-500 dark:text-gray-400">
             {submission.id.slice(0, 8)}
           </span>
-          <span className="text-xs text-gray-500 dark:text-gray-400 truncate">
-            {submission.formName}
-          </span>
+          
+          {/* Show analytics info for Pro users */}
+          {isProUser && submission.analytics && (
+            <span className="flex items-center text-xs text-gray-400 dark:text-gray-500">
+              {submission.analytics.browser && (
+                <span className="inline-flex items-center mr-2">
+                  <Globe className="h-3 w-3 mr-1" />
+                  {submission.analytics.browser}
+                </span>
+              )}
+              {submission.analytics.location && submission.analytics.location !== "Unknown" && (
+                <span className="inline-flex items-center">
+                  <MapPin className="h-3 w-3 mr-1" />
+                  {submission.analytics.location}
+                </span>
+              )}
+            </span>
+          )}
+          
           <span className="flex items-center text-xs text-gray-400 dark:text-gray-500">
             <Calendar className="h-3 w-3 mr-1" />
             {formatDistanceToNow(new Date(submission.createdAt), { addSuffix: true })}
