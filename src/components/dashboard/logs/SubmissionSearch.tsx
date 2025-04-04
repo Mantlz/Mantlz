@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Search } from "lucide-react"
+import { Search, AlertCircle } from "lucide-react"
 import { useSubscription } from "@/hooks/useSubscription"
 import { useQuery } from "@tanstack/react-query"
 import { useDebouncedValue } from "@/hooks/useDebouncedValue"
@@ -30,9 +30,13 @@ export function SubmissionSearch() {
   // Hooks
   const searchParams = useSearchParams()
   const router = useRouter()
-  const { isPremium } = useSubscription()
+  const { isPremium, subscription } = useSubscription()
   const currentFormId = searchParams.get("formId")
   const debouncedSearch = useDebouncedValue(search, 150)
+  
+  // Get the plan from the subscription or default to FREE
+  const userPlan = subscription?.plan || 'FREE'
+  const isProUser = userPlan === 'PRO'
 
   // Initialize selected form from URL params when opened
   useEffect(() => {
@@ -83,16 +87,22 @@ export function SubmissionSearch() {
 
   // Query for searching submissions
   const { data, isLoading } = useQuery<SearchResult>({
-    queryKey: ["searchSubmissions", debouncedSearch, selectedFormId],
+    queryKey: ["searchSubmissions", debouncedSearch, selectedFormId, isProUser],
     queryFn: () => performSearch(debouncedSearch, selectedFormId, formsData),
-    enabled: isPremium && open && debouncedSearch.length > 0,
+    enabled: isPremium && open && debouncedSearch.length > 0 && (isProUser || selectedFormId !== null),
     staleTime: 5000,
     refetchOnMount: true
   })
 
   // Handle form selection
   function handleFormSelect(formId: string) {
-    setSelectedFormId(formId === "" ? null : formId)
+    // Standard users cannot search across all forms
+    if (!isProUser && formId === "all") {
+      setShowUpgradeModal(true)
+      return
+    }
+    
+    setSelectedFormId(formId === "all" ? null : formId)
     setSearch("") // Reset search when form changes
   }
 
@@ -150,6 +160,8 @@ export function SubmissionSearch() {
         onClose={() => setOpen(false)}
         data={data}
         onSelectSubmission={handleSelect}
+        isProUser={isProUser}
+        showUpgradeModal={() => setShowUpgradeModal(true)}
       />}
 
       <SubmissionDetailsSheet 
@@ -157,6 +169,14 @@ export function SubmissionSearch() {
         setIsOpen={setIsSheetOpen}
         submission={selectedSubmission}
         onNavigate={handleNavigateToSubmission}
+      />
+      
+      <UpgradeModal 
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        featureName="Advanced Search"
+        featureIcon={<Search className="h-5 w-5 m-2 text-slate-700 dark:text-slate-300" />}
+        description="Pro plan users can search across all forms simultaneously, access advanced filters, and get unlimited search results."
       />
     </>
   )

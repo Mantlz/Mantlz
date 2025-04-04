@@ -1,9 +1,18 @@
 "use client"
 
-import { Filter, Loader2, MessageSquare, Search, X, ArrowUpRight, Calendar, Mail } from "lucide-react"
+import { Filter, Loader2, MessageSquare, Search, X, ArrowUpRight, Calendar, Mail, Lock, Sparkles, CheckIcon } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
 import { Form, SearchResult, Submission } from "./types"
 import { Badge } from "@/components/ui/badge"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { SearchResults } from "./SearchResults"
 
 interface SearchDialogProps {
   search: string
@@ -16,6 +25,8 @@ interface SearchDialogProps {
   onClose: () => void
   data: SearchResult | undefined
   onSelectSubmission: (submission: Submission) => void
+  isProUser?: boolean
+  showUpgradeModal?: () => void
 }
 
 export function SearchDialog({
@@ -28,7 +39,9 @@ export function SearchDialog({
   handleFormSelect,
   onClose,
   data,
-  onSelectSubmission
+  onSelectSubmission,
+  isProUser = false,
+  showUpgradeModal
 }: SearchDialogProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24">
@@ -50,19 +63,62 @@ export function SearchDialog({
           {/* Form selector */}
           {formsData?.forms && (
             <div className="relative ml-3">
-              <select 
-                className="h-8 pr-7 pl-3 text-xs bg-gray-50 dark:bg-zinc-800 text-gray-700 dark:text-gray-300 border border-gray-100 dark:border-gray-700/50 rounded-full appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700"
-                value={selectedFormId || ""}
-                onChange={(e) => handleFormSelect(e.target.value)}
+              <Select 
+                value={selectedFormId || "all"} 
+                onValueChange={(value) => handleFormSelect(value)}
               >
-                <option value="">All Forms</option>
-                {formsData.forms.map((form: Form) => (
-                  <option key={form.id} value={form.id}>
-                    {form.name}
-                  </option>
-                ))}
-              </select>
-              <Filter className="absolute right-2.5 top-2.5 h-3 w-3 pointer-events-none text-gray-400 dark:text-gray-500" />
+                <SelectTrigger 
+                  className="h-8 border border-gray-100 dark:border-gray-700/50 bg-gray-50 dark:bg-zinc-800 text-xs text-gray-700 dark:text-gray-300 rounded-full min-w-[130px] focus:ring-gray-200 dark:focus:ring-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors"
+                >
+                  <SelectValue placeholder="Select Form" />
+                </SelectTrigger>
+                <SelectContent className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 text-xs">
+                  <SelectGroup>
+                    <div className="relative cursor-pointer">
+                      <SelectItem 
+                        value="all" 
+                        disabled={!isProUser}
+                        className={!isProUser ? "opacity-50 pl-8" : "pl-8"}
+                      >
+                        {isProUser ? "All Forms" : "All Forms"}
+                        {!isProUser && (
+                          <span className="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full">
+                            PRO
+                          </span>
+                        )}
+                      </SelectItem>
+                      {formsData.forms.map((form: Form) => (
+                        <SelectItem key={form.id} value={form.id} className="pl-8">
+                          {form.name}
+                        </SelectItem>
+                      ))}
+                    </div>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          
+          {/* Advanced filters button - Pro only */}
+          {isProUser ? (
+            <button
+              className="ml-2 p-1.5 rounded-full bg-gray-50 dark:bg-zinc-800 border border-gray-100 dark:border-gray-700/50 hover:bg-gray-100 dark:hover:bg-zinc-700 text-gray-500 dark:text-gray-400 transition-colors cursor-pointer"
+              title="Advanced Filters"
+            >
+              <Filter className="h-4 w-4" />
+            </button>
+          ) : (
+            <div className="relative ml-2">
+              <button
+                className="p-1.5 rounded-full bg-gray-50/50 dark:bg-zinc-800/50 border border-gray-100/50 dark:border-gray-700/30 text-gray-400/50 dark:text-gray-500/50 cursor-not-allowed opacity-70"
+                title="Advanced Filters (PRO)"
+                onClick={showUpgradeModal}
+              >
+                <Filter className="h-4 w-4" />
+              </button>
+              <span className="absolute -top-2 -right-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full">
+                PRO
+              </span>
             </div>
           )}
           
@@ -74,6 +130,25 @@ export function SearchDialog({
           </button>
         </div>
         
+        {/* Pro plan indicator */}
+        {!isProUser && selectedFormId === null && (
+          <div className="px-4 py-2 bg-amber-50 dark:bg-amber-900/20 border-b border-amber-100 dark:border-amber-800/20 flex items-center justify-between">
+            <div className="flex items-center gap-2 text-xs text-amber-700 dark:text-amber-400">
+              <Lock className="h-3.5 w-3.5" />
+              <span>Standard users can only search within a specific form</span>
+            </div>
+            {showUpgradeModal && (
+              <button 
+                onClick={showUpgradeModal}
+                className="text-xs text-amber-700 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 font-medium flex items-center gap-1"
+              >
+                <Sparkles className="h-3.5 w-3.5" />
+                <span>Upgrade to PRO</span>
+              </button>
+            )}
+          </div>
+        )}
+        
         {/* Search results */}
         <div className="max-h-[65vh] overflow-y-auto">
           <SearchResults 
@@ -82,6 +157,8 @@ export function SearchDialog({
             data={data}
             onSelectSubmission={onSelectSubmission}
             selectedFormId={selectedFormId}
+            isProUser={isProUser}
+            showUpgradeModal={showUpgradeModal}
           />
         </div>
         
@@ -97,134 +174,10 @@ export function SearchDialog({
             </div>
             {data?.submissions && data.submissions.length > 0 && (
               <Badge variant="secondary" className="text-[10px] bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-gray-400">
-                {data.submissions.length} results
+                {!isProUser && data.submissions.length >= 10 ? "10+ results" : `${data.submissions.length} results`}
               </Badge>
             )}
           </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-interface SearchResultsProps {
-  isLoading: boolean
-  debouncedSearch: string
-  data: SearchResult | undefined
-  onSelectSubmission: (submission: Submission) => void
-  selectedFormId: string | null
-}
-
-function SearchResults({ 
-  isLoading, 
-  debouncedSearch, 
-  data, 
-  onSelectSubmission,
-  selectedFormId
-}: SearchResultsProps) {
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <div className="flex flex-col items-center">
-          <Loader2 className="h-6 w-6 animate-spin text-gray-400 dark:text-gray-500 mb-3" />
-          <span className="text-sm text-gray-500 dark:text-gray-400">Searching submissions...</span>
-        </div>
-      </div>
-    )
-  }
-  
-  if (!debouncedSearch) {
-    return (
-      <div className="py-12 text-center px-4">
-        <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-gray-50 dark:bg-zinc-800 flex items-center justify-center">
-          <Search className="h-6 w-6 text-gray-400 dark:text-gray-500" />
-        </div>
-        <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Search for submissions
-        </p>
-        <p className="text-xs text-gray-500 dark:text-gray-400 max-w-xs mx-auto">
-          {selectedFormId
-            ? "Enter email, ID, or content to find submissions in this form"
-            : "Enter email, ID, or content to find submissions across all your forms"}
-        </p>
-      </div>
-    )
-  }
-  
-  if (!data?.submissions || data.submissions.length === 0) {
-    return (
-      <div className="py-12 text-center px-4">
-        <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-gray-50 dark:bg-zinc-800 flex items-center justify-center">
-          <MessageSquare className="h-6 w-6 text-gray-400 dark:text-gray-500" />
-        </div>
-        <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          No results found
-        </p>
-        <p className="text-xs text-gray-500 dark:text-gray-400 max-w-xs mx-auto">
-          We couldn't find any submissions matching "<span className="text-gray-700 dark:text-gray-300">{debouncedSearch}</span>"
-        </p>
-      </div>
-    )
-  }
-  
-  return (
-    <div className="py-2 divide-y divide-gray-100 dark:divide-gray-800/50">
-      {data.submissions.map((submission) => (
-        <SubmissionSearchResult 
-          key={submission.id}
-          submission={submission}
-          onClick={() => onSelectSubmission(submission)}
-        />
-      ))}
-    </div>
-  )
-}
-
-interface SubmissionSearchResultProps {
-  submission: Submission
-  onClick: () => void
-}
-
-function SubmissionSearchResult({ submission, onClick }: SubmissionSearchResultProps) {
-  return (
-    <div
-      onClick={onClick}
-      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-colors group"
-    >
-      <div className="bg-gray-100 dark:bg-zinc-800 rounded-full h-9 w-9 flex items-center justify-center shrink-0">
-        <Mail className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-      </div>
-      
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center">
-          {submission.email ? (
-            <span className="text-sm font-medium text-gray-800 dark:text-gray-200 truncate">
-              {submission.email}
-            </span>
-          ) : (
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
-              Submission without email
-            </span>
-          )}
-        </div>
-        
-        <div className="flex items-center mt-1 gap-3">
-          <span className="font-mono text-xs text-gray-500 dark:text-gray-400">
-            {submission.id.slice(0, 8)}
-          </span>
-          <span className="text-xs text-gray-500 dark:text-gray-400 truncate">
-            {submission.formName}
-          </span>
-          <span className="flex items-center text-xs text-gray-400 dark:text-gray-500">
-            <Calendar className="h-3 w-3 mr-1" />
-            {formatDistanceToNow(new Date(submission.createdAt), { addSuffix: true })}
-          </span>
-        </div>
-      </div>
-      
-      <div className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-        <div className="h-7 w-7 rounded-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center">
-          <ArrowUpRight className="h-4 w-4 text-gray-500 dark:text-gray-400" />
         </div>
       </div>
     </div>
