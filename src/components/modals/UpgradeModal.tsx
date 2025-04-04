@@ -46,7 +46,7 @@ export function UpgradeModal({
   const featureDescription = description || featureInfo.description;
   
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100]">
       <div className="bg-white dark:bg-zinc-900 p-6 rounded-md max-w-md w-full border border-slate-200 dark:border-zinc-800 shadow-xl">
         {/* Subtle gradient background */}
         {/* <div className="absolute inset-0 bg-gradient-to-br from-slate-50/50 to-slate-100/50 dark:from-zinc-900/50 dark:to-zinc-800/50 pointer-events-none" /> */}

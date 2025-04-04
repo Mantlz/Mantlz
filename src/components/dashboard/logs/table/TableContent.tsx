@@ -76,13 +76,21 @@ export function TableContent({
   // Limit submissions for non-premium users
   const limitedSubmissions = isPremium 
     ? enhancedSubmissions 
-    : enhancedSubmissions
-        .filter(sub => new Date(sub.createdAt) > standardTimeLimit)
-        .slice(0, 20)
+    : userPlan === 'FREE'
+        ? enhancedSubmissions
+            .filter(sub => new Date(sub.createdAt) > standardTimeLimit)
+            .slice(0, 20)
+        : enhancedSubmissions
+            .filter(sub => new Date(sub.createdAt) > standardTimeLimit)
   
   // Count how many are filtered out by time limit
   const timeLimitedCount = !isPremium ? 
     enhancedSubmissions.filter(sub => new Date(sub.createdAt) <= standardTimeLimit).length : 0
+    
+  // Count how many are filtered out by the 20 limit (free plan only)
+  const freePlanLimitedCount = userPlan === 'FREE' && enhancedSubmissions.length > 20 
+    ? enhancedSubmissions.filter(sub => new Date(sub.createdAt) > standardTimeLimit).length - 20 
+    : 0
 
   if (submissions.length === 0) {
     return <NoSubmissionsView />
@@ -111,15 +119,15 @@ export function TableContent({
     } else {
       // For non-premium users, show limited data preview
       setSelectedSubmission(submission) 
-      toast("Limited View Mode", {
-        description: "Upgrade to premium for complete submission details and analytics.",
-        action: {
-          label: "Upgrade",
-          onClick: () => setShowUpgradeModal(true)
-        },
-        icon: <Lock className="h-4 w-4 text-amber-500" />,
-        duration: 5000,
-      })
+      // toast("Limited View Mode", {
+      //   description: "Upgrade to premium for complete submission details and analytics.",
+      //   action: {
+      //     label: "Upgrade",
+      //     onClick: () => setShowUpgradeModal(true)
+      //   },
+      //   icon: <Lock className="h-4 w-4 text-amber-500" />,
+      //   duration: 5000,
+      // })
     }
   }
 
@@ -223,9 +231,9 @@ export function TableContent({
             <Badge className="ml-2 bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
               {submissions.length} submissions
             </Badge>
-            {!isPremium && enhancedSubmissions.length > limitedSubmissions.length && (
+            {userPlan === 'FREE' && enhancedSubmissions.filter(sub => new Date(sub.createdAt) > standardTimeLimit).length > 20 && (
               <Badge variant="outline" className="ml-1 text-[10px] border-red-200 dark:border-red-800 text-red-600 dark:text-red-400">
-                Limited View
+                Showing 20 of {enhancedSubmissions.filter(sub => new Date(sub.createdAt) > standardTimeLimit).length} submissions
               </Badge>
             )}
             {isPremium && isDateFilterActive && (
@@ -432,7 +440,7 @@ export function TableContent({
                 </TableRow>
               ))}
               
-              {!isPremium && enhancedSubmissions.length > limitedSubmissions.length && (
+              {userPlan === 'FREE' && (freePlanLimitedCount > 0 || timeLimitedCount > 0) && (
                 <TableRow className="bg-gray-50/50 dark:bg-gray-800/20 border-b border-gray-100 dark:border-gray-800/50">
                   <TableCell colSpan={5} className="py-4 text-center">
                     <div className="flex flex-col items-center justify-center gap-2">
@@ -444,14 +452,14 @@ export function TableContent({
                               {timeLimitedCount} older submissions available with Premium
                             </span>
                           </>
-                        ) : (
+                        ) : freePlanLimitedCount > 0 ? (
                           <>
                             <Lock className="h-4 w-4 text-amber-500" />
                             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                              {enhancedSubmissions.length - limitedSubmissions.length} more submissions available with Premium
+                              Free plan limited to 20 submissions. Upgrade to see {freePlanLimitedCount} more submissions.
                             </span>
                           </>
-                        )}
+                        ) : null}
                       </div>
                       <div className="bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-900/30 border border-amber-200 dark:border-amber-800 rounded-lg p-2 mt-2 max-w-lg">
                         <h4 className="text-sm font-semibold text-amber-800 dark:text-amber-400 mb-1 flex items-center">
@@ -471,10 +479,10 @@ export function TableContent({
                           setShowUpgradeModal(true)
                           // No toast for the button click since we're showing the modal immediately
                         }}
-                        className="h-8 mt-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-full transition-all duration-200"
+                        className="h-8 mt-3 cursor-pointer bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-full transition-all duration-200"
                       >
                         <Sparkles className="h-3.5 w-3.5 mr-1.5" />
-                        <span>Upgrade to Premium</span>
+                        <span>Upgrade Now</span>
                       </Button>
                     </div>
                   </TableCell>
@@ -490,12 +498,12 @@ export function TableContent({
               <div className="flex items-center gap-1 mr-2">
                 <AlertCircle className="h-3.5 w-3.5 text-amber-500" />
                 <span className="text-[10px] text-amber-600 dark:text-amber-400">
-                  Standard users see last 30 days only
+                  {userPlan === 'FREE' ? 'Free users: 20 submissions from last 30 days only' : 'Standard users: last 30 days only'}
                 </span>
               </div>
             )}
             <span className="text-xs text-gray-500 dark:text-gray-400">
-              Page {pagination.currentPage} of {pagination.pages}
+              Page {pagination.currentPage} of {userPlan === 'FREE' ? Math.min(pagination.pages, 4) : pagination.pages}
               {!isPremium && " (Limited view)"}
             </span>
             <div className="flex items-center gap-2">
@@ -508,15 +516,26 @@ export function TableContent({
               >
                 Previous
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                disabled={pagination.currentPage >= pagination.pages}
-                onClick={() => handlePaginationChange(pagination.currentPage + 1)}
-                className="h-8 text-xs bg-white hover:bg-gray-100 text-gray-600 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full transition-all duration-200"
-              >
-                Next
-              </Button>
+              {(userPlan !== 'FREE' || pagination.currentPage < 4) ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={pagination.currentPage >= (userPlan === 'FREE' ? Math.min(pagination.pages, 4) : pagination.pages)}
+                  onClick={() => handlePaginationChange(pagination.currentPage + 1)}
+                  className="h-8 text-xs bg-white hover:bg-gray-100 text-gray-600 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full transition-all duration-200"
+                >
+                  Next
+                </Button>
+              ) : (
+                <Button
+                  size="sm"
+                  onClick={() => setShowUpgradeModal(true)}
+                  className="h-8 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-full transition-all duration-200"
+                >
+                  <Lock className="h-3.5 w-3.5 mr-1.5" />
+                  <span>Upgrade for More</span>
+                </Button>
+              )}
             </div>
           </div>
         )}
@@ -550,7 +569,9 @@ export function TableContent({
             ? "Access historical data, including submissions older than 30 days. Unlock comprehensive submission history with our premium plan."
             : isFiltering
             ? "Apply advanced filters to submissions by date, email status, and more with our premium plan."
-            : "Access comprehensive submission data, advanced analytics, export options, and unlimited submission history with our premium plan."
+            : userPlan === 'FREE' 
+              ? "Free plan is limited to 20 submissions in the last 30 days. Upgrade to view all your submissions, access analytics, and unlock comprehensive submission history."
+              : "Access comprehensive submission data, advanced analytics and unlimited submission history with our premium plan."
         }
       />
     </>

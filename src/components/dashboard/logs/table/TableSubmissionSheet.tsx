@@ -203,15 +203,15 @@ export function TableSubmissionSheet({
                         Limited Preview Mode
                       </h4>
                       <p className="text-xs text-amber-700 dark:text-amber-300 mb-3">
-                        You're viewing a limited version. Upgrade to premium for complete submission details, analytics, and developer email tracking.
+                        Upgrade to premium for email tracking and analytics.
                       </p>
                       <Button
                         size="sm"
                         onClick={handleUpgradeClick}
-                        className="h-8 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-full transition-all duration-200"
+                        className="h-8 bg-gradient-to-r cursor-pointer from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-full transition-all duration-200"
                       >
                         <Sparkles className="h-3.5 w-3.5 mr-1.5" />
-                        <span>Upgrade to Premium</span>
+                        <span>Upgrade Now</span>
                       </Button>
                     </div>
                   </div>
