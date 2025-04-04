@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge"
 import { ChevronLeft, Mail, FileSpreadsheet, Users, Clock } from "lucide-react"
 import { ReadonlyURLSearchParams } from "next/navigation"
 import { formatDistanceToNow } from "date-fns"
+import { SubmissionSearch } from "./SubmissionSearch"
 
 interface Form {
   id: string
@@ -58,6 +59,7 @@ export function LogsTableHeader({ formId, formsData, searchParams, router }: Log
                 {selectedForm?.name}
               </h1>
             </div>
+            <SubmissionSearch />
           </div>
 
           {/* Description */}

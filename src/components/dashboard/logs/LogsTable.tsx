@@ -82,9 +82,6 @@ export function LogsTable() {
   const { user } = useUser()
   const page = Number(searchParams.get("page")) || 1
   const formId = searchParams.get("formId")
-  const status = searchParams.get("status")
-  const type = searchParams.get("type")
-  const search = searchParams.get("search")
   const { isPremium } = useSubscription()
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null)
   const [copiedField, setCopiedField] = useState<string | null>(null)
@@ -126,7 +123,7 @@ export function LogsTable() {
   })
 
   const { data, isLoading, error } = useQuery<SubmissionResponse>({
-    queryKey: ["submissionLogs", formId, page, status, type, search],
+    queryKey: ["submissionLogs", formId, page],
     queryFn: async () => {
       if (!formId) {
         return {
@@ -147,9 +144,6 @@ export function LogsTable() {
         formId,
         page,
         limit: 5,
-        ...(status ? { status } : {}),
-        ...(type ? { type } : {}),
-        ...(search ? { search } : {})
       });
 
       const responseData = await response.json();

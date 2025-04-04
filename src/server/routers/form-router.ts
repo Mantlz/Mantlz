@@ -1218,4 +1218,96 @@ export const formRouter = j.router({
       return c.json(result);
     }),
 
+  // New endpoint for searching submissions
+  searchSubmissions: privateProcedure
+    .input(z.object({
+      query: z.string()
+    }))
+    .query(async ({ c, ctx, input }) => {
+      const { user } = ctx;
+      if (!user) {
+        throw new HTTPException(401, { message: "User not authenticated" });
+      }
+
+      // Verify user is premium
+      const userWithPlan = await db.user.findUnique({
+        where: { id: user.id },
+        select: { plan: true }
+      });
+
+      if (!userWithPlan || (userWithPlan.plan !== 'PRO' && userWithPlan.plan !== 'STANDARD')) {
+        throw new HTTPException(403, { message: "Premium feature" });
+      }
+
+      const { query } = input;
+      
+      // Check if query follows the @id format
+      const isIdSearch = query.startsWith('@');
+      const searchValue = isIdSearch ? query.substring(1) : query;
+
+      // Build the search query
+      let submissions = [];
+      
+      if (isIdSearch) {
+        // Search by ID
+        submissions = await db.submission.findMany({
+          where: {
+            id: { contains: searchValue },
+            form: {
+              userId: user.id
+            }
+          },
+          orderBy: { createdAt: 'desc' },
+          take: 10,
+          select: {
+            id: true,
+            createdAt: true,
+            email: true,
+            formId: true,
+            form: {
+              select: {
+                name: true
+              }
+            }
+          }
+        });
+      } else {
+        // Search by email or other data
+        submissions = await db.submission.findMany({
+          where: {
+            OR: [
+              { email: { contains: searchValue, mode: 'insensitive' } },
+              { data: { path: ['$.email'], string_contains: searchValue, mode: 'insensitive' } }
+            ],
+            form: {
+              userId: user.id
+            }
+          },
+          orderBy: { createdAt: 'desc' },
+          take: 10,
+          select: {
+            id: true,
+            createdAt: true,
+            email: true,
+            formId: true,
+            form: {
+              select: {
+                name: true
+              }
+            }
+          }
+        });
+      }
+
+      return c.superjson({
+        submissions: submissions.map(sub => ({
+          id: sub.id,
+          createdAt: sub.createdAt,
+          email: sub.email,
+          formId: sub.formId,
+          formName: sub.form.name
+        }))
+      });
+    }),
+
 });
