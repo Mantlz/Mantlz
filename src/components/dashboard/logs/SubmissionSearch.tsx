@@ -2,23 +2,18 @@
 
 import React, { useState, useEffect, useCallback } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
 import { useSubscription } from "@/hooks/useSubscription"
-import { client } from "@/lib/client"
 import { useQuery } from "@tanstack/react-query"
 import { useDebouncedValue } from "@/hooks/useDebouncedValue"
 import { UpgradeModal } from "@/components/modals/UpgradeModal"
-import { FileSearch } from "lucide-react"
+import { FileSearch, Sparkles } from "lucide-react"
 import { SearchButton } from "./search/SearchButton"
 import { SearchDialog } from "./search/SearchDialog"
 import { SubmissionDetailsSheet } from "./search/SubmissionDetailsSheet"
 import { 
   performSearch, 
   fetchUserForms, 
-  searchInSpecificForm,
-  searchAcrossAllForms,
-  searchMultipleForms,
   mapSubmissionData 
 } from "./search/searchUtils"
 import { Form, Submission, SearchResult } from "./search/types"
@@ -123,29 +118,18 @@ export function SubmissionSearch() {
     }
   }
 
-  // Show premium upgrade modal for non-premium users
+  // Show premium upgrade option for non-premium users
   if (!isPremium) {
     return (
       <>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-8 gap-2 bg-white dark:bg-zinc-900 hover:bg-gray-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300"
-          onClick={() => setShowUpgradeModal(true)}
-        >
-          <Search className="h-3.5 w-3.5 text-gray-500" />
-          <span className="hidden sm:inline-flex">Quick Search</span>
-          <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-zinc-800 px-1.5 font-mono text-[10px] font-medium text-gray-600 dark:text-gray-400 ml-2">
-            <span className="text-xs">⌘</span>K
-          </kbd>
-        </Button>
+        <SearchButton onClick={() => setShowUpgradeModal(true)} />
 
         <UpgradeModal 
           isOpen={showUpgradeModal}
           onClose={() => setShowUpgradeModal(false)}
-          featureName="Quick Submission Search"
-          featureIcon={<FileSearch className="h-5 w-5 m-2 text-gray-700 dark:text-gray-300" />}
-          description="Quickly search for submissions across all your forms using the command palette (⌘K). Find submissions by ID, email, or any form data in seconds."
+          featureName="Global Submission Search"
+          featureIcon={<FileSearch className="h-5 w-5 m-2 text-slate-700 dark:text-slate-300" />}
+          description="Quickly search across all your submissions with our powerful search capability. Find any submission by email, ID, or content in seconds."
         />
       </>
     )
