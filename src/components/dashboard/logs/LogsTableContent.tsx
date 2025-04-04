@@ -92,7 +92,7 @@ export function LogsTableContent({ data, isLoading, page, pagination, searchPara
               </TableRow>
             </TableHeader>
             <TableBody>
-              {Array.from({ length: isPremium ? 10 : 5 }).map((_, index) => (
+              {Array.from({ length: 5 }).map((_, index) => (
                 <TableRow
                   key={index}
                   className="hover:bg-gray-50 dark:hover:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800/50 last:border-0"

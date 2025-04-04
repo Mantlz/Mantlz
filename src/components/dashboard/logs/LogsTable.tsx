@@ -146,7 +146,7 @@ export function LogsTable() {
       const response = await client.forms.getSubmissionLogs.$get({
         formId,
         page,
-        limit: isPremium ? 50 : 10,
+        limit: 5,
         ...(status ? { status } : {}),
         ...(type ? { type } : {}),
         ...(search ? { search } : {})
