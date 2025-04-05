@@ -74,17 +74,17 @@ export const inputVariants = ({
   colorMode?: 'light' | 'dark'
 } = {}) => {
   // Base classes for all inputs
-  const baseClasses = 'block w-full px-3 py-2 rounded-md text-sm focus:outline-none';
+  const baseClasses = 'block w-full px-4 py-3 rounded-md text-sm focus:outline-none transition-all duration-200';
   
   // Variant classes based on color mode
   const variantClasses = {
     default: colorMode === 'dark'
-      ? 'bg-gray-700 border border-gray-600 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
-      : 'bg-white border border-gray-300 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+      ? 'bg-gray-800 border border-gray-700 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/70 shadow-sm'
+      : 'bg-white border border-gray-200 text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 shadow-sm',
       
     error: colorMode === 'dark'
-      ? 'bg-gray-700 border border-red-500 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-red-500 focus:border-red-500'
-      : 'bg-white border border-red-500 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-red-500 focus:border-red-500',
+      ? 'bg-gray-800 border-2 border-red-500/70 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 shadow-sm'
+      : 'bg-white border-2 border-red-500/70 text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-red-500/30 focus:border-red-500/50 shadow-sm',
   };
   
   return `${baseClasses} ${variantClasses[variant]}`;
@@ -99,17 +99,17 @@ export const textareaVariants = ({
   colorMode?: 'light' | 'dark'
 } = {}) => {
   // Base classes for all textareas
-  const baseClasses = 'block w-full px-3 py-2 rounded-md text-sm focus:outline-none min-h-[100px] resize-y';
+  const baseClasses = 'block w-full px-4 py-3 rounded-md text-sm focus:outline-none min-h-[120px] resize-y transition-all duration-200';
   
   // Variant classes based on color mode
   const variantClasses = {
     default: colorMode === 'dark'
-      ? 'bg-gray-700 border border-gray-600 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
-      : 'bg-white border border-gray-300 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+      ? 'bg-gray-800 border border-gray-700 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/70 shadow-sm'
+      : 'bg-white border border-gray-200 text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 shadow-sm',
       
     error: colorMode === 'dark'
-      ? 'bg-gray-700 border border-red-500 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-red-500 focus:border-red-500'
-      : 'bg-white border border-red-500 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-red-500 focus:border-red-500',
+      ? 'bg-gray-800 border-2 border-red-500/70 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 shadow-sm'
+      : 'bg-white border-2 border-red-500/70 text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-red-500/30 focus:border-red-500/50 shadow-sm',
   };
   
   return `${baseClasses} ${variantClasses[variant]}`;
@@ -119,74 +119,74 @@ export const textareaVariants = ({
 export const cardVariants = {
   default: {
     light: {
-      container: 'bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden',
-      header: 'p-6 border-b border-gray-100',
-      title: 'text-xl font-semibold text-gray-900',
-      description: 'text-sm text-gray-500 mt-1',
+      container: 'bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden',
+      header: 'p-6 border-b border-gray-50',
+      title: 'text-xl font-semibold text-gray-800 tracking-tight',
+      description: 'text-sm text-gray-500 mt-2',
       content: 'p-6',
-      footer: 'p-6 border-t border-gray-100'
+      footer: 'p-6 border-t border-gray-50'
     },
     dark: {
-      container: 'bg-gray-800 border border-gray-700 rounded-lg shadow-md overflow-hidden',
-      header: 'p-6 border-b border-gray-700',
-      title: 'text-xl font-semibold text-white',
-      description: 'text-sm text-gray-400 mt-1',
+      container: 'bg-gray-900 border border-gray-800 rounded-xl shadow-md overflow-hidden',
+      header: 'p-6 border-b border-gray-800',
+      title: 'text-xl font-semibold text-white tracking-tight',
+      description: 'text-sm text-gray-400 mt-2',
       content: 'p-6',
-      footer: 'p-6 border-t border-gray-700'
+      footer: 'p-6 border-t border-gray-800'
     }
   },
   glass: {
     light: {
-      container: 'bg-white/80 backdrop-blur-md border border-gray-200/50 rounded-lg shadow-sm overflow-hidden',
-      header: 'p-6 border-b border-gray-100/50',
-      title: 'text-xl font-semibold text-gray-900',
-      description: 'text-sm text-gray-500 mt-1',
+      container: 'bg-white/90 backdrop-blur-lg border border-gray-200/30 rounded-xl shadow-md overflow-hidden',
+      header: 'p-6 border-b border-gray-100/30',
+      title: 'text-xl font-semibold text-gray-800 tracking-tight',
+      description: 'text-sm text-gray-500 mt-2',
       content: 'p-6',
-      footer: 'p-6 border-t border-gray-100/50'
+      footer: 'p-6 border-t border-gray-100/30'
     },
     dark: {
-      container: 'bg-gray-800/80 backdrop-blur-md border border-gray-700/50 rounded-lg shadow-md overflow-hidden',
-      header: 'p-6 border-b border-gray-700/50',
-      title: 'text-xl font-semibold text-white',
-      description: 'text-sm text-gray-400 mt-1',
+      container: 'bg-gray-900/90 backdrop-blur-lg border border-gray-800/30 rounded-xl shadow-md overflow-hidden',
+      header: 'p-6 border-b border-gray-800/30',
+      title: 'text-xl font-semibold text-white tracking-tight',
+      description: 'text-sm text-gray-400 mt-2',
       content: 'p-6',
-      footer: 'p-6 border-t border-gray-700/50'
+      footer: 'p-6 border-t border-gray-800/30'
     }
   },
   error: {
     light: {
-      container: 'bg-red-50 border border-red-200 rounded-lg shadow-sm overflow-hidden',
-      header: 'p-6 border-b border-red-100',
-      title: 'text-xl font-semibold text-red-900',
-      description: 'text-sm text-red-500 mt-1',
+      container: 'bg-red-50 border border-red-100 rounded-xl shadow-sm overflow-hidden',
+      header: 'p-6 border-b border-red-100/50',
+      title: 'text-xl font-semibold text-red-900 tracking-tight',
+      description: 'text-sm text-red-500 mt-2',
       content: 'p-6',
-      footer: 'p-6 border-t border-red-100'
+      footer: 'p-6 border-t border-red-100/50'
     },
     dark: {
-      container: 'bg-red-900/20 border border-red-800/50 rounded-lg shadow-md overflow-hidden',
-      header: 'p-6 border-b border-red-800/30',
-      title: 'text-xl font-semibold text-red-200',
-      description: 'text-sm text-red-300 mt-1',
+      container: 'bg-red-950/30 border border-red-900/50 rounded-xl shadow-md overflow-hidden',
+      header: 'p-6 border-b border-red-900/30',
+      title: 'text-xl font-semibold text-red-200 tracking-tight',
+      description: 'text-sm text-red-300 mt-2',
       content: 'p-6',
-      footer: 'p-6 border-t border-red-800/30'
+      footer: 'p-6 border-t border-red-900/30'
     }
   },
   success: {
     light: {
-      container: 'bg-green-50 border border-green-200 rounded-lg shadow-sm overflow-hidden',
-      header: 'p-6 border-b border-green-100',
-      title: 'text-xl font-semibold text-green-900',
-      description: 'text-sm text-green-500 mt-1',
+      container: 'bg-green-50 border border-green-100 rounded-xl shadow-sm overflow-hidden',
+      header: 'p-6 border-b border-green-100/50',
+      title: 'text-xl font-semibold text-green-900 tracking-tight',
+      description: 'text-sm text-green-500 mt-2',
       content: 'p-6',
-      footer: 'p-6 border-t border-green-100'
+      footer: 'p-6 border-t border-green-100/50'
     },
     dark: {
-      container: 'bg-green-900/20 border border-green-800/50 rounded-lg shadow-md overflow-hidden',
-      header: 'p-6 border-b border-green-800/30',
-      title: 'text-xl font-semibold text-green-200',
-      description: 'text-sm text-green-300 mt-1',
+      container: 'bg-green-950/30 border border-green-900/50 rounded-xl shadow-md overflow-hidden',
+      header: 'p-6 border-b border-green-900/30',
+      title: 'text-xl font-semibold text-green-200 tracking-tight',
+      description: 'text-sm text-green-300 mt-2',
       content: 'p-6',
-      footer: 'p-6 border-t border-green-800/30'
+      footer: 'p-6 border-t border-green-900/30'
     }
   }
 };
@@ -202,37 +202,37 @@ export const buttonVariants = ({
   colorMode?: 'light' | 'dark'
 } = {}) => {
   // Base classes that apply to all buttons
-  const baseClasses = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
+  const baseClasses = 'inline-flex items-center justify-center rounded-md font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
   
   // Size classes
   const sizeClasses = {
-    default: 'h-10 py-2 px-4 text-sm',
+    default: 'h-11 py-2 px-5 text-sm',
     sm: 'h-9 px-3 text-xs',
-    lg: 'h-11 px-8 text-base',
+    lg: 'h-12 px-6 text-base',
     icon: 'h-10 w-10',
   };
   
   // Variant classes based on color mode
   const variantClasses = {
     default: colorMode === 'dark' 
-      ? 'bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500' 
-      : 'bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500',
+      ? 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 shadow-sm hover:shadow focus-visible:ring-blue-500' 
+      : 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 shadow-sm hover:shadow focus-visible:ring-blue-500',
     
     secondary: colorMode === 'dark'
-      ? 'bg-gray-700 text-white hover:bg-gray-800 focus-visible:ring-gray-600'
-      : 'bg-gray-200 text-gray-900 hover:bg-gray-300 focus-visible:ring-gray-300',
+      ? 'bg-gray-700 text-white hover:bg-gray-800 active:bg-gray-900 shadow-sm hover:shadow focus-visible:ring-gray-600'
+      : 'bg-gray-100 text-gray-800 hover:bg-gray-200 active:bg-gray-300 shadow-sm hover:shadow focus-visible:ring-gray-300',
     
     outline: colorMode === 'dark'
-      ? 'border border-gray-600 bg-transparent text-gray-200 hover:bg-gray-800 focus-visible:ring-gray-600'
-      : 'border border-gray-300 bg-transparent text-gray-900 hover:bg-gray-100 focus-visible:ring-gray-400',
+      ? 'border border-gray-700 bg-transparent text-gray-200 hover:bg-gray-800/50 focus-visible:ring-gray-600 active:bg-gray-800'
+      : 'border border-gray-200 bg-transparent text-gray-800 hover:bg-gray-50 focus-visible:ring-gray-400 active:bg-gray-100',
     
     ghost: colorMode === 'dark'
-      ? 'bg-transparent text-gray-200 hover:bg-gray-800 hover:text-gray-100 focus-visible:ring-gray-600'
-      : 'bg-transparent text-gray-900 hover:bg-gray-100 hover:text-gray-900 focus-visible:ring-gray-400',
+      ? 'bg-transparent text-gray-200 hover:bg-gray-800 hover:text-gray-100 focus-visible:ring-gray-600 active:bg-gray-900'
+      : 'bg-transparent text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus-visible:ring-gray-400 active:bg-gray-200',
     
     link: colorMode === 'dark'
-      ? 'bg-transparent text-gray-200 underline-offset-4 hover:underline focus-visible:ring-gray-600'
-      : 'bg-transparent text-blue-600 underline-offset-4 hover:underline focus-visible:ring-blue-500',
+      ? 'bg-transparent text-blue-400 underline-offset-4 hover:underline focus-visible:ring-blue-600 hover:text-blue-300'
+      : 'bg-transparent text-blue-600 underline-offset-4 hover:underline focus-visible:ring-blue-500 hover:text-blue-700',
   };
   
   return `${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]}`;

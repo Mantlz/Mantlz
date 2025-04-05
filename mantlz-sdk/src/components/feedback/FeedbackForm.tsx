@@ -150,29 +150,25 @@ export function FeedbackForm({
     
     return (
       <div className={cn(
-        "flex items-center justify-center space-x-2 py-4",
-        styles.elements?.ratingWrapper
+        styles.elements?.ratingContainer || "flex gap-1 my-1"
       )}>
         {[1, 2, 3, 4, 5].map((rating) => (
           <button
             key={rating}
             type="button"
             className={cn(
-              "p-1 rounded-md transition-all",
-              styles.elements?.starButton,
               (watchedRating >= rating || (hoveredRating !== null && hoveredRating >= rating)) 
-                ? styles.elements?.starIcon?.filled
-                : styles.elements?.starIcon?.empty
+                ? (styles.elements?.ratingStarActive || "text-amber-400 cursor-pointer transition-all duration-150 hover:text-amber-500 hover:scale-110")
+                : (styles.elements?.ratingStarInactive || "text-zinc-300 cursor-pointer transition-all duration-150 hover:text-amber-300 hover:scale-110")
             )}
             onMouseEnter={() => setHoveredRating(rating)}
             onMouseLeave={() => setHoveredRating(null)}
             onClick={() => form.setValue("rating", rating)}
           >
             <Star 
-              className={cn(
-                "h-8 w-8 fill-current",
-                styles.elements?.starIcon?.base
-              )}
+              className="h-8 w-8"
+              fill={(watchedRating >= rating || (hoveredRating !== null && hoveredRating >= rating)) ? "currentColor" : "none"}
+              strokeWidth={1.5}
             />
           </button>
         ))}
@@ -184,7 +180,7 @@ export function FeedbackForm({
     <Card 
       variant={variant} 
       className={cn(
-        "w-full", 
+        "w-full max-w-md mx-auto", 
         darkMode ? 'dark' : '',
         styles.baseStyle?.container,
         styles.baseStyle?.background,

@@ -28,8 +28,6 @@ export function WaitlistForm({
   namePlaceholder = 'Enter your name',
   emailLabel = 'Email',
   emailPlaceholder = 'you@example.com',
-  referralSourceLabel = 'How did you hear about us?',
-  referralSourcePlaceholder = 'Optional',
   redirectUrl,
   theme = 'default',
   appearance,
@@ -86,7 +84,7 @@ export function WaitlistForm({
     defaultValues: {
       email: '',
       name: '',
-      referralSource: '',
+      referralSource: ''
     },
   });
 
@@ -104,9 +102,15 @@ export function WaitlistForm({
     setIsRedirecting(true);
     
     try {
+      // Add empty referralSource since it's in the schema but not in the form UI
+      const formData = {
+        ...data,
+        referralSource: ''
+      };
+      
       const response = await client.submitForm('waitlist', {
         formId,
-        data,
+        data: formData,
         redirectUrl
       });
       
@@ -233,17 +237,6 @@ export function WaitlistForm({
                   {form.formState.errors.email.message}
                 </p>
               )}
-            </div>
-
-            <div className="space-y-2">
-              <label className={cn("text-sm font-medium", styles.elements?.inputLabel)}>
-                {referralSourceLabel}
-              </label>
-              <Input
-                {...form.register('referralSource')}
-                placeholder={referralSourcePlaceholder}
-                className={cn(styles.elements?.input)}
-              />
             </div>
 
             <Button 

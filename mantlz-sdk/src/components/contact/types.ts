@@ -43,6 +43,8 @@ export interface ContactFormAppearance {
     textarea?: string;
     formInput?: string; // Alias for input
     formTextarea?: string; // Alias for textarea
+    select?: string; // For select elements
+    formSelect?: string; // Alias for select
     background?: string; // For direct customization
     border?: string; // For direct customization
   };

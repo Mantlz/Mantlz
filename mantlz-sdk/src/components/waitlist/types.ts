@@ -55,8 +55,6 @@ export interface WaitlistFormProps {
   namePlaceholder?: string;
   emailLabel?: string;
   emailPlaceholder?: string;
-  referralSourceLabel?: string;
-  referralSourcePlaceholder?: string;
   redirectUrl?: string;
   
   // Theme selection
