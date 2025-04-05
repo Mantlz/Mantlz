@@ -60,6 +60,9 @@ export function createMantlzClient(apiKey: string, config?: MantlzClientConfig):
       }
     } else if (status === 404) {
       error.userMessage = 'The requested form could not be found.';
+      if (formId) {
+        error.userMessage = `Form ID '${formId}' could not be found.`;
+      }
     } else if (status === 400) {
       error.userMessage = 'Invalid form data. Please check your submission.';
     } else if (status >= 500) {
