@@ -6,13 +6,14 @@ import { MantlzContext } from './MantlzProvider';
 
 export function MantlzClientProvider({ children }: { children: React.ReactNode }) {
   const context = useContext(MantlzContext);
-  if (!context) {
-    throw new Error('MantlzClientProvider must be used within a MantlzProvider');
-  }
+  
+  // Context may not be provided if using environment variables
+  const apiKey = context?.apiKey;
 
   React.useEffect(() => {
-    window.mantlz = createMantlzClient(context.apiKey);
-  }, [context.apiKey]);
+    // Create client with API key from context or fallback to environment variable
+    window.mantlz = createMantlzClient(apiKey);
+  }, [apiKey]);
 
   return <>{children}</>;
 } 

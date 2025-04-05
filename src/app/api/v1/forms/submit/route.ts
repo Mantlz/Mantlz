@@ -62,8 +62,17 @@ export async function POST(req: Request) {
       console.log('Rate limiting is disabled or not configured');
     }
 
-    const body = await req.json();
-    const { formId, apiKey, redirectUrl, data } = submitSchema.parse(body);
+    const body = await req.json() as { apiKey?: string; [key: string]: any };
+    
+    // Accept API key from body or header
+    const apiKeyHeader = req.headers.get('X-API-Key');
+    const apiKeyBody = body.apiKey;
+    const apiKey = apiKeyHeader || apiKeyBody;
+    
+    // Replace body.apiKey with our apiKey variable in the parse call
+    body.apiKey = apiKey;
+    
+    const { formId, redirectUrl, data } = submitSchema.parse(body);
 
     // Verify reCAPTCHA token
     // const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {

@@ -5,7 +5,7 @@ export default function CustomerFeedbackPage() {
     <div className="mx-auto py-8 flex flex-row items-center justify-center w-full gap-4 px-4">
       
       <FeedbackForm 
-        formId=""
+        formId="cm8xm51yo00020j1zkuh8yu8q"
         title="How was your experience?"
         description="Your feedback helps us improve our service"
         ratingLabel="Rate your experience"
@@ -38,7 +38,7 @@ export default function CustomerFeedbackPage() {
       />
       
       <ContactForm
-        formId=""
+        formId="asdadadada"
         //redirectUrl="/feedback/thank-you"
         theme="neobrutalism"
        
@@ -56,7 +56,7 @@ export default function CustomerFeedbackPage() {
       />
 
       <WaitlistForm
-        formId=""
+        formId="adssadasd"
         //redirectUrl="/feedback/thank-you"
         title="join wait list"
         description="be the first to know when we launch. get early access and exclusive updates."

@@ -8,12 +8,15 @@ const globalErrorState = {
 
 /**
  * Creates a new Mantlz SDK client instance
- * @param apiKey - Your Mantlz API key
+ * @param apiKey - Your Mantlz API key (or undefined to use environment variable)
  * @param config - Optional client configuration
  */
-export function createMantlzClient(apiKey: string, config?: MantlzClientConfig): MantlzClient {
-  if (!apiKey || typeof apiKey !== 'string' || apiKey.trim() === '') {
-    throw new Error('Valid API key is required to initialize the Mantlz client');
+export function createMantlzClient(apiKey?: string, config?: MantlzClientConfig): MantlzClient {
+  // Try to use provided API key, fall back to environment variable if available
+  const key = apiKey || (typeof process !== 'undefined' && process.env ? process.env.MANTLZ_KEY : undefined);
+  
+  if (!key || typeof key !== 'string' || key.trim() === '') {
+    throw new Error('Valid API key is required to initialize the Mantlz client. Provide it directly or set MANTLZ_KEY in your environment variables.');
   }
 
   // Apply toast handler if provided in config
@@ -168,12 +171,12 @@ export function createMantlzClient(apiKey: string, config?: MantlzClientConfig):
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-API-Key': apiKey,
+            'X-API-Key': key,
           },
           body: JSON.stringify({
             type,
             formId,
-            apiKey,
+            apiKey: key,
             data,
             redirectUrl,
           }),
