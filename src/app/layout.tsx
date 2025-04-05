@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Providers } from "../components/global/providers"
 import { ClerkProvider } from "@clerk/nextjs"
+import { neobrutalism } from "@clerk/themes"
 import "./globals.css"
 import { MantlzProvider } from "@mantlz/nextjs"
 import { Toaster } from "@/components/ui/sonner"
@@ -35,7 +36,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+    // appearance={{
+    //   baseTheme: neobrutalism,  
+    // }}
+    >
       <html lang="en" suppressHydrationWarning>
         <body className={`${sansFont.variable} ${monoFont.variable} font-regular antialiased tracking-wide`}>
           <main className="h-screen bg-background text-foreground transition-colors duration-300">

@@ -1,25 +1,26 @@
 import { z } from 'zod';
 
-export type FeedbackFormTheme = 
+export type ContactFormTheme = 
   | 'default'
   | 'dark'
   | 'purple'
   | 'neobrutalism';
 
-export const FEEDBACK_THEMES = {
-  DEFAULT: 'default' as FeedbackFormTheme,
-  DARK: 'dark' as FeedbackFormTheme,
-  PURPLE: 'purple' as FeedbackFormTheme,
-  NEOBRUTALISM: 'neobrutalism' as FeedbackFormTheme,
+export const CONTACT_THEMES = {
+  DEFAULT: 'default' as ContactFormTheme,
+  DARK: 'dark' as ContactFormTheme,
+  PURPLE: 'purple' as ContactFormTheme,
+  NEOBRUTALISM: 'neobrutalism' as ContactFormTheme,
 };
 
-export const feedbackSchema = z.object({
-  rating: z.number().min(1, 'Please select a rating').max(5),
+export const contactSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
   email: z.string().email('Please enter a valid email address'),
-  message: z.string().min(10, 'Please provide more detailed feedback'),
+  subject: z.string().min(1, 'Subject is required'),
+  message: z.string().min(10, 'Please provide more detailed message'),
 });
 
-export interface FeedbackFormAppearance {
+export interface ContactFormAppearance {
   baseStyle?: {
     container?: string;
     form?: string;
@@ -36,13 +37,6 @@ export interface FeedbackFormAppearance {
     submitButton?: string; // Alias for formButtonPrimary
     formButtonIcon?: string; 
     buttonIcon?: string; // Alias for formButtonIcon
-    ratingWrapper?: string;
-    starButton?: string;
-    starIcon?: {
-      base?: string;
-      filled?: string;
-      empty?: string;
-    };
     input?: string;
     inputError?: string;
     inputLabel?: string;
@@ -52,14 +46,9 @@ export interface FeedbackFormAppearance {
     background?: string; // For direct customization
     border?: string; // For direct customization
   };
-  typography?: {
-    submitButtonText?: string;
-    feedbackPlaceholder?: string;
-    errorText?: string;
-  };
 }
 
-export interface FeedbackFormProps {
+export interface ContactFormProps {
   // Core props
   formId: string;
   className?: string;
@@ -68,25 +57,23 @@ export interface FeedbackFormProps {
   // Content customization
   title?: string;
   description?: string;
-  ratingLabel?: string;
+  nameLabel?: string;
+  namePlaceholder?: string;
   emailLabel?: string;
   emailPlaceholder?: string;
+  subjectLabel?: string;
+  subjectPlaceholder?: string;
   messageLabel?: string;
   messagePlaceholder?: string;
   redirectUrl?: string;
   
   // Theme selection
-  theme?: FeedbackFormTheme;
+  theme?: ContactFormTheme;
   baseTheme?: string; // Simplified theme prop for the new flat API
-  darkMode?: boolean;
   
   // Appearance customization
-  appearance?: FeedbackFormAppearance | ((theme: FeedbackFormTheme | string) => FeedbackFormAppearance);
+  appearance?: ContactFormAppearance | ((theme: ContactFormTheme | string) => ContactFormAppearance);
   
-  // Submit text
-  submitButtonText?: string;
-  
-  // Event handlers
-  onSubmitSuccess?: (data: z.infer<typeof feedbackSchema>) => void;
-  onSubmitError?: (error: any) => void;
+  // Legacy prop for backward compatibility
+  customSubmitText?: string;
 } 

@@ -6,35 +6,40 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Textarea } from '../ui/textarea';
 import { cn } from '../../utils/cn';
-import { ArrowRight, Loader2 } from 'lucide-react';
+import { Send, Loader2 } from 'lucide-react';
 import { useMantlz } from '../../context/mantlzContext';
 import { toast } from '../../utils/toast';
 import { ApiKeyErrorCard } from '../ui/ApiKeyErrorCard';
-import { waitlistSchema, WaitlistFormProps, WAITLIST_THEMES } from './types';
-import { processAppearance } from './themeUtils';
+import { contactSchema, ContactFormProps, CONTACT_THEMES, ContactFormTheme } from './types';
+import { processAppearance as processThemeAppearance } from './themeUtils';
+import { processAppearance as processFlatAppearance } from '../shared/appearanceHandler';
 import { z } from 'zod';
 
-export type { WaitlistFormProps } from './types';
-export { WAITLIST_THEMES };
+export type { ContactFormProps } from './types';
+export { CONTACT_THEMES };
 
-export function WaitlistForm({ 
+export function ContactForm({ 
   formId,
   className = '',
   variant = "default",
-  title = 'Join the Waitlist',
-  description = 'Be the first to know when we launch. Get early access and exclusive updates.',
+  title = 'Contact Us',
+  description = 'Fill out the form below and we\'ll get back to you as soon as possible.',
   nameLabel = 'Name',
   namePlaceholder = 'Enter your name',
   emailLabel = 'Email',
   emailPlaceholder = 'you@example.com',
-  referralSourceLabel = 'How did you hear about us?',
-  referralSourcePlaceholder = 'Optional',
+  subjectLabel = 'Subject',
+  subjectPlaceholder = 'What is your message about?',
+  messageLabel = 'Message',
+  messagePlaceholder = 'Please provide details about your inquiry',
   redirectUrl,
   theme = 'default',
   appearance,
-  customSubmitText = 'Join Waitlist'
-}: WaitlistFormProps) {
+  customSubmitText = 'Send Message',
+  baseTheme,
+}: ContactFormProps) {
   const { client } = useMantlz();
   const [apiKeyError, setApiKeyError] = React.useState<boolean>(false);
   const [isRedirecting, setIsRedirecting] = React.useState(false);
@@ -47,7 +52,22 @@ export function WaitlistForm({
   
   // Process appearance with the selected theme
   const styles = React.useMemo(() => {
-    const processedStyles = processAppearance(appearance, theme);
+    // First check if appearance is using the flatter format
+    // or has baseTheme directly in ContactFormProps
+    const themeToUse = (baseTheme || theme) as ContactFormTheme;
+    
+    const flatAppearance = typeof appearance === 'function'
+      ? appearance(themeToUse)
+      : {
+          ...(appearance || {}),
+          baseTheme: baseTheme || (appearance as any)?.baseTheme || theme
+        };
+    
+    // Process the flat appearance first
+    const normalizedAppearance = processFlatAppearance(flatAppearance, themeToUse);
+    
+    // Then process with theme styling
+    const processedStyles = processThemeAppearance(normalizedAppearance, theme);
     
     // Process aliases for more flexible styling
     if (processedStyles.elements) {
@@ -66,6 +86,11 @@ export function WaitlistForm({
         processedStyles.elements.input = processedStyles.elements.formInput;
       }
       
+      // Textarea aliases
+      if (processedStyles.elements.formTextarea && !processedStyles.elements.textarea) {
+        processedStyles.elements.textarea = processedStyles.elements.formTextarea;
+      }
+      
       // Apply direct background/border styles to container
       if (processedStyles.elements.background && !processedStyles.baseStyle?.background) {
         if (!processedStyles.baseStyle) processedStyles.baseStyle = {};
@@ -79,18 +104,19 @@ export function WaitlistForm({
     }
     
     return processedStyles;
-  }, [appearance, theme]);
+  }, [appearance, theme, baseTheme]);
   
   const form = useForm({
-    resolver: zodResolver(waitlistSchema),
+    resolver: zodResolver(contactSchema),
     defaultValues: {
-      email: '',
       name: '',
-      referralSource: '',
+      email: '',
+      subject: '',
+      message: '',
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof waitlistSchema>) => {
+  const onSubmit = async (data: z.infer<typeof contactSchema>) => {
     if (!client) {
       // We still need this one toast for the case when there's no client
       toast.error('Configuration Error', {
@@ -104,7 +130,7 @@ export function WaitlistForm({
     setIsRedirecting(true);
     
     try {
-      const response = await client.submitForm('waitlist', {
+      const response = await client.submitForm('contact', {
         formId,
         data,
         redirectUrl
@@ -121,7 +147,6 @@ export function WaitlistForm({
         } else {
           // Reset redirecting state if there's no redirect URL
           setIsRedirecting(false);
-          // Success toast removed as requested
         }
       } else {
         setIsRedirecting(false);
@@ -162,37 +187,13 @@ export function WaitlistForm({
       </CardHeader>
       <CardContent className={cn(styles.elements?.cardContent)}>
         {isRedirecting ? (
-          <div className="flex flex-col items-center justify-center py-10 space-y-5">
+          <div className="flex flex-col items-center justify-center py-10 space-y-4">
             <div className="relative">
-              {/* Main spinner */}
               <Loader2 className="h-10 w-10 animate-spin text-primary" />
-              
-              {/* Seed animation effect */}
-              <div className="absolute -inset-4">
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="absolute w-2 h-2 rounded-full bg-primary/60 animate-ping" 
-                       style={{ animationDelay: "0ms", animationDuration: "2s" }} />
-                </div>
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="absolute w-2 h-2 rounded-full bg-primary/60 animate-ping" 
-                       style={{ animationDelay: "300ms", animationDuration: "2s", transform: "translateX(10px) translateY(10px)" }} />
-                </div>
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="absolute w-2 h-2 rounded-full bg-primary/60 animate-ping" 
-                       style={{ animationDelay: "600ms", animationDuration: "2s", transform: "translateX(-12px) translateY(5px)" }} />
-                </div>
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="absolute w-2 h-2 rounded-full bg-primary/60 animate-ping" 
-                       style={{ animationDelay: "900ms", animationDuration: "2s", transform: "translateX(8px) translateY(-10px)" }} />
-                </div>
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="absolute w-2 h-2 rounded-full bg-primary/60 animate-ping" 
-                       style={{ animationDelay: "1200ms", animationDuration: "2s", transform: "translateX(-8px) translateY(-8px)" }} />
-                </div>
-              </div>
+              <div className="absolute inset-0 animate-ping opacity-30 rounded-full bg-primary/20"></div>
             </div>
             <p className="text-center font-medium text-gray-700 dark:text-gray-300">
-              Seeding your information...
+              Submitting your message...
             </p>
             <p className="text-sm text-center text-gray-500 dark:text-gray-400">
               Please wait, you will be redirected shortly
@@ -237,30 +238,53 @@ export function WaitlistForm({
 
             <div className="space-y-2">
               <label className={cn("text-sm font-medium", styles.elements?.inputLabel)}>
-                {referralSourceLabel}
+                {subjectLabel}
               </label>
               <Input
-                {...form.register('referralSource')}
-                placeholder={referralSourcePlaceholder}
+                {...form.register('subject')}
+                placeholder={subjectPlaceholder}
+                variant={form.formState.errors.subject ? "error" : "default"}
                 className={cn(styles.elements?.input)}
               />
+              {form.formState.errors.subject && (
+                <p className={cn("text-sm", styles.elements?.inputError)}>
+                  {form.formState.errors.subject.message}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <label className={cn("text-sm font-medium", styles.elements?.inputLabel)}>
+                {messageLabel}
+              </label>
+              <Textarea
+                {...form.register('message')}
+                placeholder={messagePlaceholder}
+                variant={form.formState.errors.message ? "error" : "default"}
+                className={cn(styles.elements?.textarea)}
+              />
+              {form.formState.errors.message && (
+                <p className={cn("text-sm", styles.elements?.inputError)}>
+                  {form.formState.errors.message.message}
+                </p>
+              )}
             </div>
 
             <Button 
               type="submit" 
-              className={cn("w-full", styles.elements?.formButtonPrimary)}
               disabled={form.formState.isSubmitting || isRedirecting}
+              className={cn(styles.elements?.formButtonPrimary)}
             >
               {isRedirecting ? (
-                <div className="flex items-center justify-center">
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  <span>Seeding...</span>
+                <div className="flex items-center">
+                  <div className="animate-spin mr-2 h-4 w-4 border-2 border-white border-opacity-50 border-t-transparent rounded-full" />
+                  <span>Sending...</span>
                 </div>
               ) : (
-                <>
-                  {customSubmitText}
-                  <ArrowRight className={cn("ml-2 h-4 w-4", styles.elements?.formButtonIcon)} />
-                </>
+                <div className="flex items-center">
+                  <Send className={cn("mr-2 h-4 w-4", styles.elements?.formButtonIcon)} />
+                  <span>{customSubmitText}</span>
+                </div>
               )}
             </Button>
           </form>

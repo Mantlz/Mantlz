@@ -12,6 +12,7 @@ export interface MantlzError {
   code: number;
   userMessage?: string;
   details?: any;
+  alreadyHandled?: boolean;
 }
 
 export interface FormSubmitOptions {
@@ -20,21 +21,6 @@ export interface FormSubmitOptions {
   apiKey?: string;  // Optional override for the API key
   recaptchaToken?: string;  // Optional reCAPTCHA token for spam protection
   redirectUrl?: string;  // For STANDARD/PRO plans: URL to redirect to after form submission. Free users always go to Mantlz's hosted thank-you page.
-}
-
-export interface EmailSettings {
-  enabled: boolean;
-  fromEmail?: string;
-  subject?: string;
-  template?: string;
-  replyTo?: string;
-}
-
-export interface FormConfig {
-  name: string;
-  description?: string;
-  schema: any;
-  emailSettings?: EmailSettings;
 }
 
 export interface FormSubmitResponse {
@@ -52,12 +38,5 @@ export interface FormSubmitResponse {
 
 export interface MantlzClient {
   submitForm: (type: string, options: FormSubmitOptions) => Promise<FormSubmitResponse>;
-  createForm: (config: FormConfig) => Promise<any>;
-  getTemplates: () => Promise<any>;
-  createFromTemplate: (config: any) => Promise<any>;
   configureNotifications: (enabled: boolean, handler?: ToastHandler) => { notifications: boolean };
-  updateResendApiKey: (apiKey: string) => Promise<void>;
-  getResendApiKey: () => Promise<string | null>;
-  updateFormEmailSettings: (formId: string, settings: EmailSettings) => Promise<void>;
-  getFormEmailSettings: (formId: string) => Promise<EmailSettings | null>;
 }

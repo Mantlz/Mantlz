@@ -9,7 +9,8 @@ export default function Page() {
   
   return (
     <div className="flex text-center justify-center">
-      <SignIn fallbackRedirectUrl="/welcome-back" forceRedirectUrl="/welcome-back" />
+      <SignIn fallbackRedirectUrl="/welcome-back" forceRedirectUrl="/welcome-back" 
+      />
     </div>
   )
 }

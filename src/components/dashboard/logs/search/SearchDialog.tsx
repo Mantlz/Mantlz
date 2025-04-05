@@ -80,6 +80,7 @@ export function SearchDialog({
 
   const handleApplyFilters = () => {
     if (isProUser && setAdvancedFilters) {
+      console.log("Applying advanced filters:", tempFilters)
       setAdvancedFilters(tempFilters)
       setShowAdvancedSearch(false)
     }
@@ -94,14 +95,17 @@ export function SearchDialog({
   }
 
   const renderSearchHint = () => {
-    if (!isProUser) return null;
-
     return (
       <div className="pt-1 text-[10px] text-gray-400 dark:text-gray-500 px-3">
-        <span>Pro Search: </span>
-        <span className="px-1 py-0.5 rounded bg-gray-100 dark:bg-zinc-800 font-mono mx-1">@id:abc</span>
-        <span className="px-1 py-0.5 rounded bg-gray-100 dark:bg-zinc-800 font-mono mx-1">email:test@ex.com</span>
-        <span className="px-1 py-0.5 rounded bg-gray-100 dark:bg-zinc-800 font-mono mx-1">date:{'>'} 2023-01-01</span>
+        <span>Search tips: </span>
+        <span className="px-1 py-0.5 rounded bg-gray-100 dark:bg-zinc-800 font-mono mx-1">email@example.com</span>
+        <span className="px-1 py-0.5 rounded bg-gray-100 dark:bg-zinc-800 font-mono mx-1">abc123</span>
+        {isProUser && (
+          <>
+            <span className="px-1 py-0.5 rounded bg-gray-100 dark:bg-zinc-800 font-mono mx-1">@id:abc123</span>
+            <span className="px-1 py-0.5 rounded bg-gray-100 dark:bg-zinc-800 font-mono mx-1">date:{'>'} 2023-01-01</span>
+          </>
+        )}
       </div>
     );
   };
@@ -111,10 +115,10 @@ export function SearchDialog({
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
       <div className="relative z-50 bg-white dark:bg-zinc-900 rounded-xl shadow-2xl max-w-[90vw] w-[550px] overflow-hidden border border-gray-200 dark:border-gray-800/50">
         <div className="flex items-center px-4 py-3 border-b border-gray-100 dark:border-gray-800/50">
-          <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-100 dark:border-gray-700/50 rounded-full flex items-center px-3 py-1.5 flex-1">
+          <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-100 dark:border-gray-700/50 rounded-lg flex items-center px-3 py-1.5 flex-1 transition-shadow hover:shadow-inner">
             <Search className="mr-2 h-4 w-4 shrink-0 text-gray-400 dark:text-gray-500" />
             <input 
-              placeholder={`${isProUser ? 'Pro search' : 'Search'} ${selectedFormId ? 'this form' : 'all forms'}...`}
+              placeholder={`${isProUser ? 'Search' : 'Search'} by email, ID${isProUser ? ', or content' : ''}...`}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="flex h-full w-full bg-transparent py-1 text-sm outline-none border-none placeholder:text-gray-400 dark:placeholder:text-gray-500" 
@@ -129,11 +133,11 @@ export function SearchDialog({
                 onValueChange={(value) => handleFormSelect(value)}
               >
                 <SelectTrigger 
-                  className="h-8 border border-gray-100 dark:border-gray-700/50 bg-gray-50 dark:bg-zinc-800 text-xs text-gray-700 dark:text-gray-300 rounded-full min-w-[130px] focus:ring-gray-200 dark:focus:ring-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors"
+                  className="h-8 border border-gray-100 dark:border-gray-700/50 bg-gray-50 dark:bg-zinc-800 text-xs text-gray-700 dark:text-gray-300 rounded-lg min-w-[130px] focus:ring-gray-200 dark:focus:ring-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-700 transition-all"
                 >
                   <SelectValue placeholder="Select Form" />
                 </SelectTrigger>
-                <SelectContent className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 text-xs">
+                <SelectContent className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 text-xs rounded-lg overflow-hidden">
                   <SelectGroup>
                     <div className="relative cursor-pointer">
                       <SelectItem 
@@ -143,7 +147,7 @@ export function SearchDialog({
                       >
                         {isProUser ? "All Forms" : "All Forms"}
                         {!isProUser && (
-                          <span className="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full">
+                          <span className="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-lg">
                             PRO
                           </span>
                         )}
@@ -164,13 +168,17 @@ export function SearchDialog({
             <Popover open={showAdvancedSearch} onOpenChange={setShowAdvancedSearch}>
               <PopoverTrigger asChild>
                 <button
-                  className="ml-2 p-1.5 rounded-full bg-gray-50 dark:bg-zinc-800 border border-gray-100 dark:border-gray-700/50 hover:bg-gray-100 dark:hover:bg-zinc-700 text-gray-500 dark:text-gray-400 transition-colors cursor-pointer"
+                  className={`ml-2 p-1.5 rounded-lg ${
+                    Object.keys(advancedFilters || {}).length > 0 
+                      ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700/50 text-blue-500" 
+                      : "bg-gray-50 dark:bg-zinc-800 border border-gray-100 dark:border-gray-700/50 hover:bg-gray-100 dark:hover:bg-zinc-700 text-gray-500 dark:text-gray-400"
+                  } transition-colors cursor-pointer`}
                   title="Advanced Filters"
                 >
                   <Filter className={`h-4 w-4 ${Object.keys(advancedFilters || {}).length > 0 ? "text-blue-500" : ""}`} />
                 </button>
               </PopoverTrigger>
-              <PopoverContent className="w-80 p-0" align="end">
+              <PopoverContent className="w-80 p-0 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg" align="end">
                 <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-800">
                   <h3 className="font-medium text-sm text-gray-900 dark:text-gray-100">Advanced Search</h3>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Pro users can filter with these advanced options</p>
@@ -178,8 +186,8 @@ export function SearchDialog({
                 
                 <div className="p-4 space-y-4 max-h-[60vh] overflow-y-auto">
                   <Accordion type="single" collapsible className="w-full">
-                    <AccordionItem value="date-range">
-                      <AccordionTrigger className="text-sm py-2">
+                    <AccordionItem value="date-range" className="border-b border-gray-100 dark:border-gray-800/50">
+                      <AccordionTrigger className="text-sm py-2 hover:bg-gray-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
                         <div className="flex items-center">
                           <CalendarRange className="h-4 w-4 mr-2 text-gray-500" />
                           <span>Date Range</span>
@@ -196,8 +204,8 @@ export function SearchDialog({
                       </AccordionContent>
                     </AccordionItem>
                     
-                    <AccordionItem value="quick-timeframe">
-                      <AccordionTrigger className="text-sm py-2">
+                    <AccordionItem value="quick-timeframe" className="border-b border-gray-100 dark:border-gray-800/50">
+                      <AccordionTrigger className="text-sm py-2 hover:bg-gray-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
                         <div className="flex items-center">
                           <Clock className="h-4 w-4 mr-2 text-gray-500" />
                           <span>Time Frame</span>
@@ -213,7 +221,7 @@ export function SearchDialog({
                                 tempFilters.timeFrame === period 
                                   ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400' 
                                   : 'bg-gray-50 border-gray-200 text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300'
-                              }`}
+                              } hover:shadow-sm transition-all`}
                             >
                               {period === 'all' ? 'All Time' : period}
                             </button>
@@ -222,8 +230,8 @@ export function SearchDialog({
                       </AccordionContent>
                     </AccordionItem>
                     
-                    <AccordionItem value="sort-order">
-                      <AccordionTrigger className="text-sm py-2">
+                    <AccordionItem value="sort-order" className="border-b border-gray-100 dark:border-gray-800/50">
+                      <AccordionTrigger className="text-sm py-2 hover:bg-gray-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
                         <div className="flex items-center">
                           <ArrowDownUp className="h-4 w-4 mr-2 text-gray-500" />
                           <span>Sort Order</span>
@@ -233,21 +241,21 @@ export function SearchDialog({
                         <div className="pt-2 pb-1 flex gap-2">
                           <button
                             onClick={() => setTempFilters({...tempFilters, sortOrder: 'newest'})}
-                            className={`flex-1 px-3 py-1.5 text-xs rounded-md border ${
+                            className={`flex-1 px-3 py-1.5 text-xs rounded-lg border ${
                               tempFilters.sortOrder !== 'oldest' 
                                 ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400' 
                                 : 'bg-gray-50 border-gray-200 text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300'
-                            }`}
+                            } hover:shadow-sm transition-all`}
                           >
                             Newest First
                           </button>
                           <button
                             onClick={() => setTempFilters({...tempFilters, sortOrder: 'oldest'})}
-                            className={`flex-1 px-3 py-1.5 text-xs rounded-md border ${
+                            className={`flex-1 px-3 py-1.5 text-xs rounded-lg border ${
                               tempFilters.sortOrder === 'oldest'
                                 ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400' 
                                 : 'bg-gray-50 border-gray-200 text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300'
-                            }`}
+                            } hover:shadow-sm transition-all`}
                           >
                             Oldest First
                           </button>
@@ -255,8 +263,8 @@ export function SearchDialog({
                       </AccordionContent>
                     </AccordionItem>
                     
-                    <AccordionItem value="content-filters">
-                      <AccordionTrigger className="text-sm py-2">
+                    <AccordionItem value="content-filters" className="border-b border-gray-100 dark:border-gray-800/50">
+                      <AccordionTrigger className="text-sm py-2 hover:bg-gray-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
                         <div className="flex items-center">
                           <Filter className="h-4 w-4 mr-2 text-gray-500" />
                           <span>Content Filters</span>
@@ -269,6 +277,7 @@ export function SearchDialog({
                               id="has-email" 
                               checked={tempFilters.hasEmail || false}
                               onCheckedChange={(checked) => setTempFilters({...tempFilters, hasEmail: checked})}
+                              className="data-[state=checked]:bg-blue-500"
                             />
                             <Label htmlFor="has-email" className="text-xs">Only with email</Label>
                           </div>
@@ -277,6 +286,7 @@ export function SearchDialog({
                               id="has-attachments" 
                               checked={tempFilters.showOnlyWithAttachments || false}
                               onCheckedChange={(checked) => setTempFilters({...tempFilters, showOnlyWithAttachments: checked})}
+                              className="data-[state=checked]:bg-blue-500"
                             />
                             <Label htmlFor="has-attachments" className="text-xs">Has attachments</Label>
                           </div>
@@ -292,13 +302,13 @@ export function SearchDialog({
                   <Button 
                     variant="ghost" 
                     onClick={handleResetFilters} 
-                    className="text-xs h-8"
+                    className="text-xs h-8 rounded-lg"
                   >
                     Reset Filters
                   </Button>
                   <Button 
                     onClick={handleApplyFilters} 
-                    className="text-xs h-8 bg-blue-600 hover:bg-blue-700 text-white"
+                    className="text-xs h-8 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium"
                   >
                     Apply Filters
                   </Button>
@@ -308,13 +318,13 @@ export function SearchDialog({
           ) : (
             <div className="relative ml-2">
               <button
-                className="p-1.5 rounded-full bg-gray-50/50 dark:bg-zinc-800/50 border border-gray-100/50 dark:border-gray-700/30 text-gray-400/50 dark:text-gray-500/50 cursor-not-allowed opacity-70"
+                className="p-1.5 rounded-lg bg-gray-50/50 dark:bg-zinc-800/50 border border-gray-100/50 dark:border-gray-700/30 text-gray-400/50 dark:text-gray-500/50 cursor-not-allowed opacity-70"
                 title="Advanced Filters (PRO)"
                 onClick={showUpgradeModal}
               >
                 <Filter className="h-4 w-4" />
               </button>
-              <span className="absolute -top-2 -right-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full">
+              <span className="absolute -top-2 -right-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-lg shadow-sm">
                 PRO
               </span>
             </div>
@@ -322,7 +332,7 @@ export function SearchDialog({
           
           <button 
             onClick={onClose}
-            className="ml-3 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            className="ml-3 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
           >
             <X className="h-4 w-4" />
           </button>
@@ -331,30 +341,30 @@ export function SearchDialog({
         {renderSearchHint()}
         
         {isProUser && advancedFilters && Object.keys(advancedFilters).length > 0 && (
-          <div className="px-4 py-2 bg-blue-50 dark:bg-blue-900/10 border-b border-blue-100 dark:border-blue-800/20 flex flex-wrap gap-2 items-center">
+          <div className="px-4 py-2 bg-blue-50/80 dark:bg-blue-900/10 border-b border-blue-100 dark:border-blue-800/20 flex flex-wrap gap-2 items-center">
             <span className="text-xs text-blue-700 dark:text-blue-400">Active filters:</span>
             {advancedFilters.dateRange && (
-              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px]">
+              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
                 Date Range
               </Badge>
             )}
             {advancedFilters.timeFrame && advancedFilters.timeFrame !== 'all' && (
-              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px]">
+              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
                 Last {advancedFilters.timeFrame}
               </Badge>
             )}
             {advancedFilters.sortOrder && (
-              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px]">
+              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
                 {advancedFilters.sortOrder === 'newest' ? 'Newest First' : 'Oldest First'}
               </Badge>
             )}
             {advancedFilters.hasEmail && (
-              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px]">
+              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
                 Has Email
               </Badge>
             )}
             {advancedFilters.showOnlyWithAttachments && (
-              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px]">
+              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
                 Has Attachments
               </Badge>
             )}
@@ -368,7 +378,7 @@ export function SearchDialog({
         )}
         
         {!isProUser && selectedFormId === null && (
-          <div className="px-4 py-2 bg-amber-50 dark:bg-amber-900/20 border-b border-amber-100 dark:border-amber-800/20 flex items-center justify-between">
+          <div className="px-4 py-3 bg-amber-50/80 dark:bg-amber-900/20 border-b border-amber-100 dark:border-amber-800/20 flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs text-amber-700 dark:text-amber-400">
               <Lock className="h-3.5 w-3.5" />
               <span>Standard users can only search within a specific form</span>
@@ -376,7 +386,7 @@ export function SearchDialog({
             {showUpgradeModal && (
               <button 
                 onClick={showUpgradeModal}
-                className="text-xs text-amber-700 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 font-medium flex items-center gap-1"
+                className="text-xs text-amber-700 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 font-medium flex items-center gap-1 px-3 py-1 rounded-lg bg-amber-100/50 dark:bg-amber-800/20 hover:bg-amber-100 dark:hover:bg-amber-800/30 transition-colors"
               >
                 <Sparkles className="h-3.5 w-3.5" />
                 <span>Upgrade to PRO</span>
@@ -401,13 +411,13 @@ export function SearchDialog({
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               <span className="mr-1">Press</span>
-              <div className="inline-flex h-5 select-none items-center gap-1 rounded border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-zinc-800 px-1.5 font-mono text-[10px] font-medium">
+              <div className="inline-flex h-5 select-none items-center gap-1 rounded-md border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-zinc-800 px-1.5 font-mono text-[10px] font-medium">
                 Esc
               </div>
               <span className="ml-1">to close</span>
             </div>
             {data?.submissions && data.submissions.length > 0 && (
-              <Badge variant="secondary" className="text-[10px] bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-gray-400">
+              <Badge variant="secondary" className="text-[10px] bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-gray-400 rounded-lg px-2.5">
                 {!isProUser && data.submissions.length >= 10 ? "10+ results" : `${data.submissions.length} results`}
               </Badge>
             )}

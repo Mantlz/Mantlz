@@ -7,12 +7,14 @@ import { useUser } from "@clerk/nextjs"
 import { useSubscription } from "@/hooks/useSubscription"
 import { StatsGridSkeleton } from "@/components/skeletons"
 import { Button } from "@/components/ui/button"
-import { FileSpreadsheet } from "lucide-react"
+import { FileSpreadsheet, Users } from "lucide-react"
 import { FormsResponse, SubmissionResponse } from "./types"
 import { fetchUserForms, fetchSubmissions } from "./tableUtils"
 import { TableHeader } from "./TableHeader"
 import { TableContent } from "./TableContent"
 import { LogsTableHeaderSkeleton } from "@/components/skeletons"
+import { SubmissionSearch } from "../../logs/SubmissionSearch"
+import { SubmissionTableSkeleton } from "./SubmissionTableSkeleton"
 
 export function LogsTable() {
   const searchParams = useSearchParams()
@@ -136,20 +138,11 @@ export function LogsTable() {
   return (
     <div className="space-y-6 sm:space-y-8">
       {formId ? (
+        // If we have a form ID, check if submissions data is loading
         isLoading || !data ? (
           <>
             <LogsTableHeaderSkeleton />
-            <TableContent 
-              data={undefined}
-              isLoading={true}
-              page={page}
-              pagination={undefined}
-              searchParams={searchParams}
-              router={router}
-              isPremium={isPremium}
-              userPlan={userPlan}
-              refetch={refetch}
-            />
+            <SubmissionTableSkeleton isPremium={isPremium} />
           </>
         ) : (
           <>
@@ -158,6 +151,7 @@ export function LogsTable() {
               formsData={formsData}
               searchParams={searchParams}
               router={router}
+              submissionsData={data}
             />
             <TableContent 
               data={data}
@@ -174,35 +168,85 @@ export function LogsTable() {
         )
       ) : (
         // Show forms grid
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {formsData.forms.map((form) => (
-            <div
-              key={form.id}
-              className="bg-white dark:bg-zinc-900 border border-gray-100 dark:border-gray-800/50 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer"
-              onClick={() => handleFormClick(form.id)}
-            >
-              <div className="p-4 sm:p-6">
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-2 truncate">{form.name}</h3>
-                {form.description && (
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 line-clamp-2">{form.description}</p>
-                )}
-                <div className="flex justify-between items-center mt-4">
-                  <div className="flex items-center gap-1">
-                    <FileSpreadsheet className="h-4 w-4 text-gray-400" />
-                    <span className="text-xs text-gray-500 dark:text-gray-400">{form.submissionCount} submission{form.submissionCount !== 1 ? 's' : ''}</span>
+        <>
+          <div className="relative overflow-hidden bg-white dark:bg-zinc-900 rounded-2xl border border-gray-100 dark:border-zinc-800 shadow-sm mb-6">
+            <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
+            <div className="relative p-6 lg:p-8">
+              <div className="flex flex-col gap-6">
+                {/* Header Section */}
+                <div className="flex items-start justify-between gap-4">
+                  <div className="space-y-1">
+                    <h1 className="text-2xl font-semibold text-gray-900 dark:text-white tracking-tight">
+                      Your Forms
+                    </h1>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      {formsData.forms.length} form{formsData.forms.length !== 1 ? 's' : ''} available
+                    </p>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-7 px-2 text-xs hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-full"
-                  >
-                    View Logs
-                  </Button>
+                  <SubmissionSearch />
+                </div>
+
+                {/* Stats Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="bg-gray-50 dark:bg-zinc-800/50 rounded-xl p-4 border border-gray-100 dark:border-zinc-700/50 hover:border-gray-200 dark:hover:border-zinc-600/50 transition-all duration-200">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                        <FileSpreadsheet className="h-5 w-5 text-gray-900 dark:text-white" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">{formsData.forms.length}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Total Forms</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-gray-50 dark:bg-zinc-800/50 rounded-xl p-4 border border-gray-100 dark:border-zinc-700/50 hover:border-gray-200 dark:hover:border-zinc-600/50 transition-all duration-200">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                        <Users className="h-5 w-5 text-gray-900 dark:text-white" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">
+                          {formsData.forms.reduce((total, form) => total + (form.submissionCount || 0), 0)}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">Total Submissions</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {formsData.forms.map((form) => (
+              <div
+                key={form.id}
+                className="bg-white dark:bg-zinc-900 border border-gray-100 dark:border-gray-800/50 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer"
+                onClick={() => handleFormClick(form.id)}
+              >
+                <div className="p-4 sm:p-6">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-2 truncate">{form.name}</h3>
+                  {form.description && (
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 line-clamp-2">{form.description}</p>
+                  )}
+                  <div className="flex justify-between items-center mt-4">
+                    <div className="flex items-center gap-1">
+                      <FileSpreadsheet className="h-4 w-4 text-gray-400" />
+                      <span className="text-xs text-gray-500 dark:text-gray-400">{form.submissionCount} submission{form.submissionCount !== 1 ? 's' : ''}</span>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 px-2 text-xs hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-full"
+                    >
+                      View Logs
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   )

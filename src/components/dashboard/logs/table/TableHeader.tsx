@@ -2,13 +2,15 @@
 
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ChevronLeft, Users, Clock } from "lucide-react"
+import { ChevronLeft, Users, Clock, File } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
 import { SubmissionSearch } from "../SubmissionSearch"
 import { LogsTableHeaderProps } from "./types"
 
-export function TableHeader({ formId, formsData, searchParams, router }: LogsTableHeaderProps) {
+export function TableHeader({ formId, formsData, searchParams, router, submissionsData }: LogsTableHeaderProps) {
   const selectedForm = formsData?.forms?.find((f) => f.id === formId)
+  const hasSubmissions = submissionsData?.submissions && submissionsData.submissions.length > 0
+  const lastSubmission = hasSubmissions ? submissionsData.submissions[0] : null
 
   return (
     <div className="relative overflow-hidden bg-white dark:bg-zinc-900 rounded-2xl border border-gray-100 dark:border-zinc-800 shadow-sm">
@@ -51,7 +53,7 @@ export function TableHeader({ formId, formsData, searchParams, router }: LogsTab
           )}
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div className="bg-gray-50 dark:bg-zinc-800/50 rounded-xl p-4 border border-gray-100 dark:border-zinc-700/50 hover:border-gray-200 dark:hover:border-zinc-600/50 transition-all duration-200">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
@@ -80,6 +82,21 @@ export function TableHeader({ formId, formsData, searchParams, router }: LogsTab
                     {selectedForm?.createdAt ? formatDistanceToNow(new Date(selectedForm.createdAt), { addSuffix: true }) : 'N/A'}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">Created</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Last Submission Card */}
+            <div className="bg-gray-50 dark:bg-zinc-800/50 rounded-xl p-4 border border-gray-100 dark:border-zinc-700/50 hover:border-gray-200 dark:hover:border-zinc-600/50 transition-all duration-200">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                  <File className="h-5 w-5 text-gray-900 dark:text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    {lastSubmission ? formatDistanceToNow(new Date(lastSubmission.createdAt), { addSuffix: true }) : 'No submissions yet'}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Last Submission</p>
                 </div>
               </div>
             </div>

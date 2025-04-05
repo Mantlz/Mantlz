@@ -27,11 +27,27 @@ export async function performSearch(
   searchTerm: string, 
   formId: string | null,
   formsData?: any,
-  advancedFilters?: any
+  advancedFilters?: {
+    dateRange?: { from: Date | undefined; to?: Date | undefined };
+    showOnlyWithAttachments?: boolean;
+    sortOrder?: 'newest' | 'oldest';
+    timeFrame?: 'all' | '24h' | '7d' | '30d';
+    hasEmail?: boolean;
+    browser?: string;
+    location?: string;
+  }
 ): Promise<SearchResult> {
   if (!searchTerm || searchTerm.trim() === "") {
     return { submissions: [] }
   }
+
+  // Log what's happening to debug
+  console.log("Performing search with:", { 
+    searchTerm, 
+    formId, 
+    hasAdvancedFilters: !!advancedFilters,
+    filters: advancedFilters
+  })
 
   try {
     if (formId) {
@@ -51,9 +67,20 @@ export async function performSearch(
 export async function searchInSpecificForm(
   searchTerm: string, 
   formId: string,
-  advancedFilters?: any
+  advancedFilters?: {
+    dateRange?: { from: Date | undefined; to?: Date | undefined };
+    showOnlyWithAttachments?: boolean;
+    sortOrder?: 'newest' | 'oldest';
+    timeFrame?: 'all' | '24h' | '7d' | '30d';
+    hasEmail?: boolean;
+    browser?: string;
+    location?: string;
+  }
 ): Promise<SearchResult> {
   try {
+    // Log to debug specific form search
+    console.log("Searching in specific form with filters:", { formId, advancedFilters })
+    
     const apiPath = `/api/forms/getSubmissionLogs`
     const searchParams = new URLSearchParams()
     searchParams.append('formId', formId)
@@ -168,9 +195,20 @@ export async function searchInSpecificForm(
 export async function searchAcrossAllForms(
   searchTerm: string, 
   formsData?: any,
-  advancedFilters?: any
+  advancedFilters?: {
+    dateRange?: { from: Date | undefined; to?: Date | undefined };
+    showOnlyWithAttachments?: boolean;
+    sortOrder?: 'newest' | 'oldest';
+    timeFrame?: 'all' | '24h' | '7d' | '30d';
+    hasEmail?: boolean;
+    browser?: string;
+    location?: string;
+  }
 ): Promise<SearchResult> {
   try {
+    // Log to debug advanced filters application
+    console.log("Searching across all forms with filters:", advancedFilters)
+    
     // Ensure query parameter is always set
     const params: {
       query: string,

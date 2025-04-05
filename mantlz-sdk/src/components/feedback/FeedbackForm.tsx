@@ -3,143 +3,98 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'sonner';
-
+import { Input } from '../ui/input';
 import { Button } from '../ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Textarea } from '../ui/textarea';
 import { cn } from '../../utils/cn';
+import { Star, Loader2 } from 'lucide-react';
 import { useMantlz } from '../../context/mantlzContext';
+import { toast } from '../../utils/toast';
 import { ApiKeyErrorCard } from '../ui/ApiKeyErrorCard';
+import { feedbackSchema, FeedbackFormProps, FEEDBACK_THEMES, FeedbackFormTheme } from './types';
+import { processAppearance } from './themeUtils';
+import { processAppearance as processFlatAppearance } from '../shared/appearanceHandler';
+import { z } from 'zod';
 
-import { feedbackSchema, FeedbackFormProps } from '../feedback/types';
-import { StarIcon, SendIcon } from '../feedback/icons';
-import { useColorScheme } from '../feedback/useColorScheme';
-import { processAppearance } from '../feedback/styleUtils';
+export type { FeedbackFormProps } from './types';
+export { FEEDBACK_THEMES };
 
-export { FEEDBACK_THEMES } from '../feedback/sharedTypes';
-export type { FeedbackFormProps, FeedbackFormAppearance } from '../feedback/types';
-
-// Default reCAPTCHA site key for the SDK
-
-export function FeedbackForm({ 
+export function FeedbackForm({
   formId,
-  onSubmitSuccess, 
-  onSubmitError,
-  className,
-  appearance,
-  theme,
-  primaryColor,
-  backgroundColor,
-  borderRadius,
-  fontSize,
-  shadow,
-  submitButtonText,
-  feedbackPlaceholder,
-  successMessage = "Thank you for your feedback!",
-  darkMode,
+  className = '',
   variant = "default",
-  redirectUrl
+  title = 'Your Feedback',
+  description = 'We\'d love to hear what you think about our service',
+  ratingLabel = 'How would you rate your experience?',
+  emailLabel = 'Email Address',
+  emailPlaceholder = 'you@example.com',
+  messageLabel = 'Your Message',
+  messagePlaceholder = 'Tell us what you think...',
+  redirectUrl,
+  theme = 'default',
+  darkMode = false,
+  appearance,
+  submitButtonText,
+  baseTheme,
+  onSubmitSuccess,
+  onSubmitError,
 }: FeedbackFormProps) {
   const { client } = useMantlz();
-  const [hoveredRating, setHoveredRating] = React.useState<number | null>(null);
-  const [submitStatus, setSubmitStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [apiKeyError, setApiKeyError] = React.useState<boolean>(false);
+  const [apiKeyError, setApiKeyError] = useState<boolean>(false);
+  const [hoveredRating, setHoveredRating] = useState<number | null>(null);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
   
-  // Check if API key is configured
   React.useEffect(() => {
     if (!client) {
       setApiKeyError(true);
     }
   }, [client]);
   
-  // Reset status after 3 seconds
-  React.useEffect((): (() => void) | undefined => {
-    if (submitStatus !== 'idle') {
-      const timer = setTimeout(() => {
-        setSubmitStatus('idle');
-        setErrorMessage(null);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-    return undefined;
-  }, [submitStatus]);
-  
-  // Get color scheme for appearance, with optional override
-  const colorScheme = useColorScheme(darkMode);
-
-  // Process all appearance settings
+  // Process appearance with the selected theme
   const styles = React.useMemo(() => {
-    // First process the simple appearance without text customizations
-    // to avoid type errors with the existing processAppearance function
-    const baseAppearance = processAppearance(
-      appearance,
-      colorScheme,
-      {
-        theme,
-        primaryColor,
-        backgroundColor,
-        borderRadius,
-        fontSize,
-        shadow
-      }
-    );
+    // First check if appearance is using the flatter format
+    // or has baseTheme directly in FeedbackFormProps
+    const themeToUse = (baseTheme || theme) as FeedbackFormTheme;
     
-    // Then manually add text customizations if needed
-    if (submitButtonText || feedbackPlaceholder) {
-      return {
-        ...baseAppearance,
-        typography: {
-          ...baseAppearance.typography,
-          ...(submitButtonText && { submitButtonText }),
-          ...(feedbackPlaceholder && { feedbackPlaceholder }),
-        }
-      };
-    }
+    const flatAppearance = typeof appearance === 'function'
+      ? appearance(themeToUse)
+      : {
+          ...(appearance || {}),
+          baseTheme: baseTheme || (appearance as any)?.baseTheme || theme
+        };
     
-    return baseAppearance;
-  }, [
-    appearance, 
-    colorScheme, 
-    theme, 
-    primaryColor, 
-    backgroundColor, 
-    borderRadius, 
-    fontSize, 
-    shadow,
-    submitButtonText,
-    feedbackPlaceholder
-  ]);
-
+    // Process the flat appearance first
+    const normalizedAppearance = processFlatAppearance(flatAppearance, themeToUse);
+    
+    // Then process with theme styling
+    return processAppearance(normalizedAppearance, themeToUse);
+  }, [appearance, theme, baseTheme]);
+  
   const form = useForm({
     resolver: zodResolver(feedbackSchema),
     defaultValues: {
-      rating: 5,
-      feedback: '',
+      rating: 0,
       email: '',
+      message: '',
     },
   });
 
-  const currentRating = form.watch('rating');
-
-  const handleRatingChange = (rating: number) => {
-    form.setValue('rating', rating);
-  };
-
-  const onSubmit = async (data: typeof feedbackSchema._type) => {
-    if (isSubmitting) return;
-
-    setIsSubmitting(true);
+  const onSubmit = async (data: z.infer<typeof feedbackSchema>) => {
+    if (!client) {
+      // We still need this one toast for the case when there's no client
+      toast.error('Configuration Error', {
+        description: 'API key not configured properly',
+        duration: 3000
+      });
+      return;
+    }
+    
+    // Set redirecting state immediately when form is submitted
+    setIsRedirecting(true);
+    
     try {
-      if (!client) {
-        throw new Error('API key not configured properly');
-      }
-
-      // Submit form with redirectUrl (if provided)
-      // The server handles the redirect based on user's plan:
-      // - Free users: Always redirected to Mantlz's hosted thank-you page
-      // - STANDARD/PRO users: Will be redirected to their custom redirectUrl
       const response = await client.submitForm('feedback', {
         formId,
         data,
@@ -147,46 +102,36 @@ export function FeedbackForm({
       });
       
       if (response.success) {
-        // Reset form
-        form.reset({
-          rating: 5,
-          feedback: '',
-          email: '',
-        });
-        
-        // Show a brief success message before redirect
-        // We're showing this in the component to allow for customized success messages
-        toast.success(successMessage || "Thank you for your feedback!", {
-          description: "Redirecting you shortly...",
-          duration: 2000
-        });
+        form.reset();
         
         if (onSubmitSuccess) {
           onSubmitSuccess(data);
         }
         
-        // No need to handle redirects here - client.ts handles the redirect
-        // based on the server response
+        if (redirectUrl) {
+          // Longer delay to ensure loading state is visible
+          setTimeout(() => {
+            window.location.href = redirectUrl;
+          }, 1500);
+        } else {
+          // Reset redirecting state if there's no redirect URL
+          setIsRedirecting(false);
+        }
       } else {
-        const errorMsg = errorMessage || 'Submission failed. Please try again.';
-        toast.error(errorMsg);
+        setIsRedirecting(false);
+        // Error is already handled by the client with toast
         
         if (onSubmitError) {
-          onSubmitError(new Error(errorMsg));
-        } else {
-          console.error('Form submission failed');
+          onSubmitError(new Error('Form submission failed'));
         }
       }
     } catch (error) {
+      setIsRedirecting(false);
+      // All errors are handled by the client
+      
       if (onSubmitError) {
-        onSubmitError(error as Error);
-      } else {
-        console.error('Form submission error:', error);
-        setSubmitStatus('error');
-        setErrorMessage((error as Error).message || 'An unexpected error occurred');
+        onSubmitError(error);
       }
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -195,131 +140,151 @@ export function FeedbackForm({
     return <ApiKeyErrorCard 
       variant={variant} 
       className={className} 
-      colorMode={darkMode ? 'dark' : 'light'} 
+      colorMode={darkMode ? "dark" : "light"} 
     />;
   }
+  
+  // Render the star rating component
+  const StarRating = () => {
+    const watchedRating = form.watch("rating");
+    
+    return (
+      <div className={cn(
+        "flex items-center justify-center space-x-2 py-4",
+        styles.elements?.ratingWrapper
+      )}>
+        {[1, 2, 3, 4, 5].map((rating) => (
+          <button
+            key={rating}
+            type="button"
+            className={cn(
+              "p-1 rounded-md transition-all",
+              styles.elements?.starButton,
+              (watchedRating >= rating || (hoveredRating !== null && hoveredRating >= rating)) 
+                ? styles.elements?.starIcon?.filled
+                : styles.elements?.starIcon?.empty
+            )}
+            onMouseEnter={() => setHoveredRating(rating)}
+            onMouseLeave={() => setHoveredRating(null)}
+            onClick={() => form.setValue("rating", rating)}
+          >
+            <Star 
+              className={cn(
+                "h-8 w-8 fill-current",
+                styles.elements?.starIcon?.base
+              )}
+            />
+          </button>
+        ))}
+      </div>
+    );
+  };
 
   return (
-    <div className={cn(
-      "w-full max-w-sm mx-auto rounded-xl p-5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm",
-      styles.baseStyle?.container,
-      className
-    )}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className={cn("space-y-5", styles.baseStyle?.form)}>
-        <div className={cn("flex justify-center", styles.elements?.ratingContainer)}>
-          <div className={cn("bg-zinc-50 dark:bg-zinc-800 rounded-lg py-2 px-4 inline-flex", styles.elements?.ratingWrapper)}>
-            {[1, 2, 3, 4, 5].map((star) => (
-              <button
-                key={star}
-                type="button"
-                className={cn(
-                  "focus:outline-none px-1 transition-transform hover:scale-110 active:scale-95",
-                  styles.elements?.starButton
-                )}
-                onClick={() => handleRatingChange(star)}
-                onMouseEnter={() => setHoveredRating(star)}
-                onMouseLeave={() => setHoveredRating(null)}
-              >
-                <StarIcon 
-                  filled={hoveredRating !== null ? star <= hoveredRating : star <= currentRating}
-                  className={cn(
-                    "h-7 w-7 transition-all", 
-                    styles.elements?.starIcon?.base,
-                    (hoveredRating !== null ? star <= hoveredRating : star <= currentRating)
-                      ? cn("text-yellow-400", styles.elements?.starIcon?.filled) 
-                      : cn("text-zinc-300 dark:text-zinc-600", styles.elements?.starIcon?.empty)
-                  )}
-                />
-              </button>
-            ))}
+    <Card 
+      variant={variant} 
+      className={cn(
+        "w-full", 
+        darkMode ? 'dark' : '',
+        styles.baseStyle?.container,
+        styles.baseStyle?.background,
+        styles.baseStyle?.border,
+        styles.elements?.card,
+        className
+      )}
+      colorMode={darkMode ? "dark" : "light"}
+    >
+      <CardHeader className={cn(styles.elements?.cardHeader)}>
+        <CardTitle className={cn(styles.elements?.cardTitle)}>{title}</CardTitle>
+        <CardDescription className={cn(styles.elements?.cardDescription)}>
+          {description}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className={cn(styles.elements?.cardContent)}>
+        {isRedirecting ? (
+          <div className="flex flex-col items-center justify-center py-10 space-y-4">
+            <div className="relative">
+              <Loader2 className="h-10 w-10 animate-spin text-primary" />
+              <div className="absolute inset-0 animate-ping opacity-30 rounded-full bg-primary/20"></div>
+            </div>
+            <p className="text-center font-medium text-gray-700 dark:text-gray-300">
+              Submitting your feedback...
+            </p>
+            <p className="text-sm text-center text-gray-500 dark:text-gray-400">
+              Please wait, you will be redirected shortly
+            </p>
           </div>
-        </div>
+        ) : (
+          <form onSubmit={form.handleSubmit(onSubmit)} className={cn("space-y-4", styles.baseStyle?.form)}>
+            <div className="space-y-2">
+              <label className={cn("text-sm font-medium", styles.elements?.inputLabel)}>
+                {ratingLabel}
+              </label>
+              <input
+                type="hidden"
+                {...form.register('rating', { valueAsNumber: true })}
+              />
+              <StarRating />
+              {form.formState.errors.rating && (
+                <p className={cn("text-sm", styles.elements?.inputError)}>
+                  {form.formState.errors.rating.message}
+                </p>
+              )}
+            </div>
 
-        <div className={cn("relative", styles.elements?.email?.container)}>
-          <label htmlFor="email-input" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Your Email
-          </label>
-          <input
-            id="email-input"
-            type="email"
-            {...form.register('email')}
-            placeholder="your@email.com"
-            required
-            className={cn(
-              "w-full px-3 py-2 rounded-lg bg-zinc-50 dark:bg-zinc-800 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 border border-zinc-200 dark:border-zinc-700 focus:border-zinc-400 focus:ring-2 focus:ring-zinc-400 dark:focus:border-zinc-600",
-              styles.elements?.email?.input
-            )}
-          />
-          {form.formState.errors.email && (
-            <p className={cn(
-              "mt-1 text-sm text-red-500 dark:text-red-400",
-              styles.typography?.errorText
-            )} id="email-error" role="alert">
-              {form.formState.errors.email.message}
-            </p>
-          )}
-        </div>
+            <div className="space-y-2">
+              <label className={cn("text-sm font-medium", styles.elements?.inputLabel)}>
+                {emailLabel}
+              </label>
+              <Input
+                {...form.register('email')}
+                placeholder={emailPlaceholder}
+                type="email"
+                variant={form.formState.errors.email ? "error" : "default"}
+                className={cn(styles.elements?.input)}
+                colorMode={darkMode ? "dark" : "light"}
+              />
+              {form.formState.errors.email && (
+                <p className={cn("text-sm", styles.elements?.inputError)}>
+                  {form.formState.errors.email.message}
+                </p>
+              )}
+            </div>
 
-        <div className={cn("relative", styles.elements?.textarea?.container)}>
-          <label htmlFor="feedback-textarea" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Your Feedback
-          </label>
-          <Textarea
-            id="feedback-textarea"
-            {...form.register('feedback')}
-            placeholder={
-              styles.typography?.feedbackPlaceholder || 
-              feedbackPlaceholder || 
-              "Tell us what you think..."
-            }
-            className={cn(
-              "min-h-[120px] w-full resize-none rounded-lg bg-zinc-50 dark:bg-zinc-800 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 border-zinc-200 dark:border-zinc-700 focus:border-zinc-400 dark:focus:border-zinc-600",
-              styles.elements?.textarea?.input
-            )}
-            variant={form.formState.errors.feedback ? "error" : "default"}
-          />
-          {form.formState.errors.feedback && (
-            <p className={cn(
-              "mt-1 text-sm text-red-500 dark:text-red-400",
-              styles.typography?.errorText,
-              styles.elements?.textarea?.error
-            )}>
-              {form.formState.errors.feedback.message}
-            </p>
-          )}
-        </div>
+            <div className="space-y-2">
+              <label className={cn("text-sm font-medium", styles.elements?.inputLabel)}>
+                {messageLabel}
+              </label>
+              <Textarea
+                {...form.register('message')}
+                placeholder={messagePlaceholder || styles.typography?.feedbackPlaceholder}
+                variant={form.formState.errors.message ? "error" : "default"}
+                className={cn(styles.elements?.textarea)}
+                colorMode={darkMode ? "dark" : "light"}
+              />
+              {form.formState.errors.message && (
+                <p className={cn("text-sm", styles.elements?.inputError)}>
+                  {form.formState.errors.message.message}
+                </p>
+              )}
+            </div>
 
-        <Button 
-          type="submit" 
-          className={cn(
-            "w-full rounded-lg bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 text-white font-medium transition-all", 
-            styles.elements?.submitButton
-          )}
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? (
-            <>
-              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              <span className={cn(styles.elements?.submitButtonText)}>
-                Submitting...
-              </span>
-            </>
-          ) : (
-            <>
-              <SendIcon className={cn("mr-2 h-4 w-4", styles.elements?.submitButtonIcon)} />
-              <span className={cn(styles.elements?.submitButtonText)}>
-                {styles.typography?.submitButtonText || 
-                submitButtonText || 
-                "Send Feedback"
-                }
-              </span>
-            </>
-          )}
-        </Button>
-      </form>
-    </div>
+            <Button
+              type="submit"
+              className={cn(
+                "w-full",
+                styles.elements?.submitButton || styles.elements?.formButtonPrimary
+              )}
+              disabled={form.formState.isSubmitting}
+              colorMode={darkMode ? "dark" : "light"}
+            >
+              {form.formState.isSubmitting 
+                ? "Submitting..." 
+                : submitButtonText || styles.typography?.submitButtonText || "Submit Feedback"}
+            </Button>
+          </form>
+        )}
+      </CardContent>
+    </Card>
   );
 } 

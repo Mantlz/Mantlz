@@ -1,21 +1,163 @@
-import { MantlzClient, FormSubmitResponse, MantlzError, MantlzClientConfig, EmailSettings } from './types';
-import * as formsApi from './api/forms';
-import * as templatesApi from './api/templates';
+import { MantlzClient, FormSubmitResponse, MantlzError, MantlzClientConfig, FormSubmitOptions } from './types';
 import { toast, ToastHandler } from './utils/toast';
 
+// Global error tracking to prevent duplicate toasts across different client instances
+const globalErrorState = {
+  form404Errors: new Set<string>()
+};
+
+/**
+ * Creates a new Mantlz SDK client instance
+ * @param apiKey - Your Mantlz API key
+ * @param config - Optional client configuration
+ */
 export function createMantlzClient(apiKey: string, config?: MantlzClientConfig): MantlzClient {
+  if (!apiKey || typeof apiKey !== 'string' || apiKey.trim() === '') {
+    throw new Error('Valid API key is required to initialize the Mantlz client');
+  }
+
   // Apply toast handler if provided in config
   if (config?.toastHandler) {
     toast.setHandler(config.toastHandler);
   }
 
   // Set notification mode - silent by default
-  const notificationsEnabled = config?.notifications !== false;
+  let notificationsEnabled = config?.notifications !== false;
+  
+  // Add flag to track if this client instance has already shown notifications
+  const notificationState = {
+    hasShownFormError: {} as Record<string, boolean>
+  };
 
+  /**
+   * Handles API error responses and transforms them into structured MantlzErrors
+   */
+  const handleApiError = async (response: Response, formId?: string): Promise<MantlzError> => {
+    const status = response.status;
+    let errorData: { error?: string } = {};
+    
+    try {
+      errorData = await response.json();
+    } catch (e) {
+      // JSON parsing failed, use default error
+    }
+    
+    // Create structured error
+    const error: MantlzError = {
+      message: errorData.error || 'Form submission failed',
+      code: status,
+      details: errorData,
+    };
+    
+    // Add user-friendly messages based on status code
+    if (status === 401) {
+      if (errorData.error?.includes('inactive')) {
+        error.userMessage = 'Your API key is inactive. Please activate it in your dashboard.';
+      } else if (errorData.error?.includes('not found')) {
+        error.userMessage = 'API key does not exist. Please check your API key.';
+      } else {
+        error.userMessage = 'Authentication failed. Please check your API key.';
+      }
+    } else if (status === 404) {
+      error.userMessage = 'The requested form could not be found.';
+    } else if (status === 400) {
+      error.userMessage = 'Invalid form data. Please check your submission.';
+    } else if (status >= 500) {
+      error.userMessage = 'Server error. Please try again later.';
+    } else {
+      error.userMessage = 'An error occurred. Please try again.';
+    }
+    
+    return error;
+  };
+
+  /**
+   * Handles showing error notifications with deduplication
+   */
+  const showErrorNotification = (error: MantlzError, formId?: string): void => {
+    // Skip showing error toast if it's already been handled
+    if (error.alreadyHandled) {
+      return;
+    }
+    
+    // For 401 errors, only show if specifically enabled
+    if (error.code === 401) {
+      if (config?.showApiKeyErrorToasts) {
+        const title = error.userMessage || 'API Key Error';
+        const description = 'Check your MANTLZ_KEY in the environment variables.';
+        
+        toast.error(title, {
+          description,
+          duration: 5000, // Longer duration for important errors
+        });
+      }
+      return;
+    }
+    
+    // For 404 form errors, check for duplicates using formId
+    if (error.code === 404 && formId) {
+      const errorKey = `form_${formId}_404`;
+      if (notificationState.hasShownFormError[formId] || globalErrorState.form404Errors.has(errorKey)) {
+        console.log(`Suppressing duplicate error toast for formId: ${formId}`);
+        error.alreadyHandled = true;
+        return;
+      }
+      
+      // Mark this formId as having shown an error
+      notificationState.hasShownFormError[formId] = true;
+      globalErrorState.form404Errors.add(errorKey);
+    }
+    
+    // Show the error toast
+    const title = error.userMessage || error.message || 'An error occurred';
+    let description = error.code ? `Error ${error.code}` : undefined;
+    
+    if (error.code === 404 && formId) {
+      description = `Form ID ${formId} not found. Please check your formId.`;
+    }
+    
+    toast.error(title, {
+      description,
+      duration: 5000,
+    });
+    
+    // Mark error as already handled
+    error.alreadyHandled = true;
+  };
+  
+  /**
+   * Handles redirection after successful form submission
+   */
+  const handleRedirect = (result: FormSubmitResponse, userRedirectUrl?: string): void => {
+    if (!result?.redirect || !result.redirect?.url || typeof window === 'undefined') {
+      return;
+    }
+    
+    console.log('Server provided redirect:', result.redirect);
+    
+    // For free users who attempted to use a custom redirect, show explanation
+    if (userRedirectUrl && result.redirect.allowed === false && notificationsEnabled) {
+      toast.info('Using Mantlz thank-you page', {
+        description: 'Custom redirects require a STANDARD or PRO plan',
+        duration: 3000,
+      });
+    }
+    
+    // Short timeout to allow any toast messages to be seen
+    setTimeout(() => {
+      window.location.href = result.redirect!.url!;
+    }, 1000);
+  };
+  
   return {
-    submitForm: async (type: string, options: { formId: string; data: any; redirectUrl?: string; }): Promise<FormSubmitResponse> => {
+    submitForm: async (type: string, options: FormSubmitOptions): Promise<FormSubmitResponse> => {
+      if (!type || typeof type !== 'string' || !options?.formId) {
+        throw new Error('Form type and formId are required for form submission');
+      }
+      
+      const { formId, data, redirectUrl } = options;
+      
       try {
-        const { formId, data, redirectUrl } = options;
         const url = `/api/v1/forms/submit`;
         console.log('Submitting form to:', url, { type, formId });
         
@@ -31,132 +173,40 @@ export function createMantlzClient(apiKey: string, config?: MantlzClientConfig):
             apiKey,
             data,
             redirectUrl,
-            //recaptchaToken
           }),
+          credentials: 'same-origin', // Improve security with CSRF protection
         });
 
         if (!response.ok) {
-          const errorData = await response.json() as { error?: string };
-          const status = response.status;
+          const error = await handleApiError(response, formId);
           
-          // Create structured error
-          const error: MantlzError = {
-            message: errorData.error || 'Form submission failed',
-            code: status,
-            details: errorData,
-          };
+          // Log the error
+          console.error('Form submission error:', error);
           
-          // Add user-friendly messages
-          if (status === 401) {
-            if (errorData.error?.includes('inactive')) {
-              error.userMessage = 'Your API key is inactive. Please activate it in your dashboard.';
-            } else if (errorData.error?.includes('not found')) {
-              error.userMessage = 'API key does not exist. Please check your API key.';
-            } else {
-              error.userMessage = 'Authentication failed. Please check your API key.';
-            }
-          } else if (status === 404) {
-            error.userMessage = 'The requested form could not be found.';
-          } else if (status === 400) {
-            error.userMessage = 'Invalid form data. Please check your submission.';
-          } else if (status >= 500) {
-            error.userMessage = 'Server error. Please try again later.';
-          } else {
-            error.userMessage = 'An error occurred. Please try again.';
-          }
-          
-          // Always log the error
-          console.error('Form submission error:', { status, error: errorData.error, userMessage: error.userMessage });
-          
-          // Show toast notification for API key errors regardless of notificationsEnabled setting
-          if (status === 401) {
-            // Only show API key errors if specifically requested via config
-            // This allows us to avoid duplicate messages with ApiKeyErrorCard
-            if (config?.showApiKeyErrorToasts) {
-              const title = error.userMessage || 'API Key Error';
-              const description = 'Check your MANTLZ_KEY in the environment variables.';
-              
-              // Use direct console log to ensure visibility for debugging
-              console.log('SHOWING API KEY ERROR TOAST:', title, description);
-              
-              // Call toast directly for critical errors
-              toast.error(title, {
-                description,
-                duration: 5000, // Longer duration for important errors
-              });
-              
-              // Delay before throwing to ensure toast has time to appear
-              await new Promise(resolve => setTimeout(resolve, 500));
-            } else {
-              // Just log the error without showing a toast
-              console.log('API Key error (toast suppressed):', error.userMessage);
-            }
-          }
-          // Show toast for other errors if notifications are enabled
-          else if (notificationsEnabled) {
-            const title = error.userMessage || error.message;
-            let description = error.code ? `Error ${error.code}` : undefined;
-            
-            if (status === 404 && formId) {
-              description = `Form ID ${formId} not found. Please check your formId.`;
-            }
-            
-            toast.error(title, {
-              description,
-              duration: 7000,
-            });
+          // Show toast notification if enabled
+          if (notificationsEnabled) {
+            showErrorNotification(error, formId);
           }
           
           throw error;
         }
 
-        const result = await response.json();
+        const result = await response.json() as FormSubmitResponse;
         
-        // We don't need a success toast since we're redirecting to a thank-you page
-        // Only show success toast if notifications are enabled but there's no redirect
+        // Show success toast if notifications are enabled but there's no redirect
         if (notificationsEnabled && (!result.redirect || !result.redirect.url)) {
           toast.success('Form submitted successfully', {
             duration: 3000,
           });
         }
 
-        // Handle redirects - the server will always provide a redirect URL
-        if (result.redirect && result.redirect.url && typeof window !== 'undefined') {
-          console.log('Server provided redirect:', result.redirect);
-          
-          // For free users who attempted to use a custom redirect, show explanation
-          if (redirectUrl && result.redirect.allowed === false && notificationsEnabled) {
-            toast.info('Using Mantlz thank-you page', {
-              description: 'Custom redirects require a STANDARD or PRO plan',
-              duration: 3000,
-            });
-          }
-          
-          // Set a small timeout to allow the toast messages to be seen
-          // We'll use a shorter timeout since we're not showing the success toast
-          setTimeout(() => {
-            window.location.href = result.redirect.url;
-          }, 1000);
-        } else {
-          console.warn('Server did not provide a redirect URL');
-        }
+        // Handle redirects
+        handleRedirect(result, redirectUrl);
 
-        // Add type assertion to ensure result matches FormSubmitResponse type
-        return result as FormSubmitResponse;
-      } catch (error: any) {
+        return result;
+      } catch (error: unknown) {
         // If it's already a structured MantlzError, just rethrow it
         if (error && typeof error === 'object' && 'code' in error) {
-          console.error('Form submission error:', error);
-          
-          // Show toast for the error even if it was processed before
-          // This ensures we never miss showing an error message
-          if (notificationsEnabled) {
-            toast.error(error.userMessage || error.message || 'An error occurred', {
-              description: error.code ? `Error ${error.code}` : undefined,
-              duration: 5000,
-            });
-          }
-          
           throw error;
         }
         
@@ -170,10 +220,7 @@ export function createMantlzClient(apiKey: string, config?: MantlzClientConfig):
         
         // Show toast notification for this new error if enabled
         if (notificationsEnabled) {
-          toast.error(formattedError.userMessage ?? "An error occurred", {
-            description: formattedError.message,
-            duration: 5000,
-          });
+          showErrorNotification(formattedError, formId);
         }
         
         console.error('Error submitting form:', formattedError);
@@ -181,149 +228,23 @@ export function createMantlzClient(apiKey: string, config?: MantlzClientConfig):
       }
     },
     
-    createForm: async (config) => {
-      try {
-        const result = await formsApi.createForm(config, apiKey);
-        
-        if (notificationsEnabled) {
-          toast.success('Form created successfully');
-        }
-        
-        return result;
-      } catch (error) {
-        if (notificationsEnabled) {
-          const message = error instanceof Error ? error.message : 'Failed to create form';
-          toast.error(message);
-        }
-        throw error;
-      }
-    },
-    
-    getTemplates: async () => {
-      try {
-        return await templatesApi.getTemplates(apiKey);
-      } catch (error) {
-        if (notificationsEnabled) {
-          const message = error instanceof Error ? error.message : 'Failed to fetch templates';
-          toast.error(message);
-        }
-        throw error;
-      }
-    },
-    
-    createFromTemplate: async (config) => {
-      try {
-        const result = await templatesApi.createFromTemplate(config, apiKey);
-        
-        if (notificationsEnabled) {
-          toast.success('Form created from template successfully');
-        }
-        
-        return result;
-      } catch (error) {
-        if (notificationsEnabled) {
-          const message = error instanceof Error ? error.message : 'Failed to create form from template';
-          toast.error(message);
-        }
-        throw error;
-      }
-    },
-    
-    // Add a method to configure toast notifications
+    // Method to configure toast notifications
     configureNotifications: (enabled: boolean, handler?: ToastHandler) => {
       if (handler) {
         toast.setHandler(handler);
       }
       
       // Update the notification mode
+      notificationsEnabled = enabled;
+      
+      // Reset notification state when reconfiguring
+      if (enabled) {
+        Object.keys(notificationState.hasShownFormError).forEach(key => {
+          delete notificationState.hasShownFormError[key];
+        });
+      }
+      
       return { notifications: enabled };
-    },
-
-    updateResendApiKey: async (resendApiKey: string) => {
-      try {
-        const response = await fetch('/api/v1/user/resend-key', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-API-Key': apiKey,
-          },
-          body: JSON.stringify({ resendApiKey }),
-        });
-
-        if (!response.ok) {
-          const error = await response.json();
-          throw new Error(error.message || 'Failed to update Resend API key');
-        }
-
-        if (notificationsEnabled) {
-          toast.success('Resend API key updated successfully');
-        }
-      } catch (error) {
-        if (notificationsEnabled) {
-          toast.error('Failed to update Resend API key');
-        }
-        throw error;
-      }
-    },
-
-    getResendApiKey: async () => {
-      try {
-        const response = await fetch('/api/v1/user/resend-key', {
-          headers: {
-            'X-API-Key': apiKey,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch Resend API key');
-        }
-
-        const data = await response.json();
-        return data.resendApiKey;
-      } catch (error) {
-        console.error('Error fetching Resend API key:', error);
-        return null;
-      }
-    },
-
-    updateFormEmailSettings: async (formId: string, settings: EmailSettings): Promise<void> => {
-      try {
-        const response = await fetch(`/api/v1/forms/${formId}/email-settings`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-API-Key': apiKey,
-          },
-          body: JSON.stringify(settings),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to update email settings');
-        }
-      } catch (error) {
-        console.error('Error updating email settings:', error);
-        throw error;
-      }
-    },
-
-    getFormEmailSettings: async (formId: string) => {
-      try {
-        const response = await fetch(`/api/v1/forms/${formId}/email-settings`, {
-          headers: {
-            'X-API-Key': apiKey,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch email settings');
-        }
-
-        const data = await response.json();
-        return data.emailSettings;
-      } catch (error) {
-        console.error('Error fetching email settings:', error);
-        return null;
-      }
-    },
+    }
   };
 }

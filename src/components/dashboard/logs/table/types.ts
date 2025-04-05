@@ -78,4 +78,5 @@ export interface LogsTableHeaderProps {
   formsData: FormsResponse | undefined
   searchParams: ReadonlyURLSearchParams
   router: any
+  submissionsData?: SubmissionResponse | undefined
 } 

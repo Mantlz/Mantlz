@@ -15,24 +15,25 @@ export function LogsTableHeaderSkeleton() {
               </div>
               <Skeleton className="h-8 w-48 sm:w-64" style={{ animationDelay: '0.3s' }} />
             </div>
+            <Skeleton className="h-9 w-48" style={{ animationDelay: '0.4s' }} />
           </div>
 
           {/* Description */}
-          <Skeleton className="h-4 w-full max-w-md" style={{ animationDelay: '0.4s' }} />
+          <Skeleton className="h-4 w-full max-w-md" style={{ animationDelay: '0.5s' }} />
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[1, 2].map((i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {[1, 2, 3].map((i) => (
               <div key={i} className="bg-gray-50 dark:bg-zinc-800/50 rounded-xl p-4 border border-gray-100 dark:border-zinc-700/50">
                 <div className="flex items-center gap-3">
-                  <Skeleton className="w-10 h-10 rounded-lg" style={{ animationDelay: `${0.5 + (i - 1) * 0.1}s` }} />
+                  <Skeleton className="w-10 h-10 rounded-lg" style={{ animationDelay: `${0.6 + (i - 1) * 0.1}s` }} />
                   <div>
-                    <Skeleton className="h-4 w-10 mb-1" style={{ animationDelay: `${0.6 + (i - 1) * 0.1}s` }} />
-                    <Skeleton className="h-3 w-28" style={{ animationDelay: `${0.7 + (i - 1) * 0.1}s` }} />
+                    <Skeleton className="h-4 w-10 mb-1" style={{ animationDelay: `${0.7 + (i - 1) * 0.1}s` }} />
+                    <Skeleton className="h-3 w-28" style={{ animationDelay: `${0.8 + (i - 1) * 0.1}s` }} />
                   </div>
                 </div>
                 {i === 1 && (
-                  <Skeleton className="mt-2 h-1 w-full rounded-full" style={{ animationDelay: '0.8s' }} />
+                  <Skeleton className="mt-2 h-1 w-full rounded-full" style={{ animationDelay: '0.9s' }} />
                 )}
               </div>
             ))}

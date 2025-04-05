@@ -1,9 +1,10 @@
 "use client"
 
-import { Loader2, MessageSquare, Search, Calendar, Mail, Lock, Sparkles, Clock, BarChart, Globe, MapPin } from "lucide-react"
+import { Loader2, MessageSquare, Search, Calendar, Mail, Lock, Sparkles, Clock, BarChart, Globe, MapPin, Inbox, ArrowUpRight } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
 import { SearchResult, Submission } from "./types"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 
 interface SearchResultsProps {
   isLoading: boolean
@@ -26,11 +27,9 @@ export function SearchResults({
 }: SearchResultsProps) {
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <div className="flex flex-col items-center">
-          <Loader2 className="h-6 w-6 animate-spin text-gray-400 dark:text-gray-500 mb-3" />
-          <span className="text-sm text-gray-500 dark:text-gray-400">Searching submissions...</span>
-        </div>
+      <div className="flex flex-col items-center justify-center py-12 text-center p-4">
+        <Loader2 className="h-6 w-6 animate-spin text-gray-400 mb-3" />
+        <p className="text-sm text-gray-500 dark:text-gray-400">Searching...</p>
       </div>
     )
   }
@@ -62,102 +61,94 @@ export function SearchResults({
   
   if (!debouncedSearch) {
     return (
-      <div className="py-12 text-center px-4">
-        <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-gray-50 dark:bg-zinc-800 flex items-center justify-center">
-          <Search className="h-6 w-6 text-gray-400 dark:text-gray-500" />
-        </div>
-        <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Search for submissions
-        </p>
-        <p className="text-xs text-gray-500 dark:text-gray-400 max-w-xs mx-auto">
-          {selectedFormId
-            ? "Enter email, ID, or content to find submissions in this form"
-            : "Enter email, ID, or content to find submissions across all your forms"}
+      <div className="flex flex-col items-center justify-center py-16 text-center p-4">
+        <Search className="h-12 w-12 text-gray-300 dark:text-gray-700 mb-3" />
+        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">Search for submissions</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md">
+          Search by email address or submission ID
+          {isProUser && " - Pro users can also search content and use advanced filters"}
         </p>
       </div>
     )
   }
   
-  if (!data?.submissions || data.submissions.length === 0) {
+  if (!data || data.submissions.length === 0) {
     return (
-      <div className="py-12 text-center px-4">
-        <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-gray-50 dark:bg-zinc-800 flex items-center justify-center">
-          <MessageSquare className="h-6 w-6 text-gray-400 dark:text-gray-500" />
-        </div>
-        <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          No results found
-        </p>
-        <p className="text-xs text-gray-500 dark:text-gray-400 max-w-xs mx-auto">
-          We couldn't find any submissions matching "<span className="text-gray-700 dark:text-gray-300">{debouncedSearch}</span>"
+      <div className="flex flex-col items-center justify-center py-16 text-center p-4">
+        <Inbox className="h-12 w-12 text-gray-300 dark:text-gray-700 mb-3" />
+        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">No results found</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md">
+          Try adjusting your search terms or filters
         </p>
       </div>
     )
   }
   
-  // For Standard users, limit to 10 results
-  const limitedResults = isProUser ? data.submissions : data.submissions.slice(0, 10);
+  // Limit results for standard users to 10
+  const results = isProUser ? data.submissions : data.submissions.slice(0, 10);
   const hasMoreResults = !isProUser && data.submissions.length > 10;
   
   return (
-    <>
-      {/* Pro-only search analytics */}
-      {isProUser && (
-        <div className="p-3 bg-blue-50 dark:bg-blue-900/20 border-b border-blue-100 dark:border-blue-800/20">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <BarChart className="h-3.5 w-3.5 text-blue-500" />
-              <span className="text-xs font-medium text-blue-700 dark:text-blue-400">Search Analytics</span>
-            </div>
-            <Badge className="text-[10px] bg-blue-100 dark:bg-blue-800/40 text-blue-600 dark:text-blue-400 px-1.5">
-              PRO
-            </Badge>
-          </div>
-          <div className="grid grid-cols-3 gap-2 mt-2">
-            <div className="bg-white dark:bg-zinc-800 rounded-md p-2 border border-blue-100 dark:border-blue-800/30">
-              <div className="text-[10px] text-blue-600 dark:text-blue-400">Results</div>
-              <div className="text-sm font-semibold text-gray-700 dark:text-gray-300">{data.submissions.length}</div>
-            </div>
-            <div className="bg-white dark:bg-zinc-800 rounded-md p-2 border border-blue-100 dark:border-blue-800/30">
-              <div className="text-[10px] text-blue-600 dark:text-blue-400">Forms</div>
-              <div className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                {selectedFormId ? "1" : new Set(data.submissions.map(s => s.formId)).size}
+    <div className="divide-y divide-gray-100 dark:divide-gray-800/50">
+      {results.map((submission) => (
+        <div 
+          key={submission.id} 
+          className="p-3 hover:bg-gray-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer flex items-center"
+          onClick={() => onSelectSubmission(submission)}
+        >
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center">
+                <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate mr-2">
+                  {submission.email || 'Anonymous Submission'}
+                </h4>
+                {submission.email && (
+                  <Badge variant="outline" className="rounded-full text-[9px] px-2 py-0 border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-400">
+                    <Mail className="h-2.5 w-2.5 mr-1" />
+                    Email
+                  </Badge>
+                )}
               </div>
             </div>
-            <div className="bg-white dark:bg-zinc-800 rounded-md p-2 border border-blue-100 dark:border-blue-800/30">
-              <div className="text-[10px] text-blue-600 dark:text-blue-400">Time Range</div>
-              <div className="text-sm font-semibold text-gray-700 dark:text-gray-300">All time</div>
+            
+            <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2">
+              <span className="truncate">Form: <span className="font-medium text-gray-700 dark:text-gray-300">{submission.formName}</span></span>
+              <span className="text-gray-300 dark:text-gray-600">•</span>
+              <time className="text-[10px] whitespace-nowrap">
+                {formatDistanceToNow(new Date(submission.createdAt), { addSuffix: true })}
+              </time>
             </div>
           </div>
+          
+          <ArrowUpRight className="h-4 w-4 text-gray-400 dark:text-gray-500 self-center ml-2 flex-shrink-0" />
+        </div>
+      ))}
+      
+      {hasMoreResults && showUpgradeModal && (
+        <div className="p-4 bg-gradient-to-b from-amber-50/50 to-amber-50 dark:from-amber-900/10 dark:to-amber-900/20 flex flex-col items-center">
+          <div className="text-center mb-3">
+            <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white mb-2 rounded-full px-3 py-1">
+              <Sparkles className="h-3 w-3 mr-1" />
+              PRO Feature
+            </Badge>
+            <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">
+              Upgrade to see all {data.submissions.length} results
+            </h4>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              Standard users are limited to 10 results per search
+            </p>
+          </div>
+          <Button
+            onClick={showUpgradeModal}
+            size="sm"
+            className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-none rounded-full px-4"
+          >
+            <Sparkles className="h-3.5 w-3.5 mr-1.5" />
+            Upgrade to PRO
+          </Button>
         </div>
       )}
-
-      <div className="py-2 divide-y divide-gray-100 dark:divide-gray-800/50">
-        {limitedResults.map((submission) => (
-          <SubmissionSearchResult 
-            key={submission.id}
-            submission={submission}
-            onClick={() => onSelectSubmission(submission)}
-            isProUser={isProUser}
-          />
-        ))}
-        
-        {/* For Standard users, show upgrade prompt if there are more than 10 results */}
-        {hasMoreResults && showUpgradeModal && (
-          <div className="p-4 text-center bg-gray-50 dark:bg-zinc-800/50">
-            <p className="text-xs text-gray-600 dark:text-gray-300 mb-2">
-              <span className="font-medium">{data.submissions.length - 10}</span> more results available with PRO
-            </p>
-            <button 
-              onClick={showUpgradeModal}
-              className="px-3 py-1.5 text-xs bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-full transition-all duration-200 inline-flex items-center gap-1.5"
-            >
-              <Sparkles className="h-3.5 w-3.5" />
-              <span>Upgrade to PRO</span>
-            </button>
-          </div>
-        )}
-      </div>
-    </>
+    </div>
   )
 }
 
