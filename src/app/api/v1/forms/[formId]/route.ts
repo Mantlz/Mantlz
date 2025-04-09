@@ -127,10 +127,33 @@ export async function GET(
       );
     }
     
+    // Determine form type from schema
+    let formType = '';
+    try {
+      if (form.schema.includes('referralSource')) {
+        formType = 'waitlist';
+      } else if (form.schema.includes('rating') && form.schema.includes('feedback')) {
+        formType = 'feedback';
+      } else if (form.schema.includes('message') && !form.schema.includes('rating')) {
+        formType = 'contact';
+
+      }
+    } catch (error) {
+      console.error('Error determining form type:', error);
+    }
+    
+    // Check if users joined settings exists in form settings
+    const settings = form.settings as any || {};
+    const usersJoinedSettings = settings?.usersJoined ? {
+      enabled: settings.usersJoined.enabled || false,
+      count: await db.submission.count({ where: { formId } })
+    } : null;
+    
     return NextResponse.json({
       id: form.id,
       name: form.name,
       description: form.description,
+      formType,
       createdAt: form.createdAt,
       updatedAt: form.updatedAt,
       submissionCount: form._count.submissions,
@@ -138,6 +161,7 @@ export async function GET(
         enabled: form.emailSettings?.enabled || false,
         developerNotificationsEnabled: form.emailSettings?.developerNotificationsEnabled || false,
       },
+      usersJoinedSettings,
     });
   } catch (error) {
     console.error('Error in form details endpoint:', error);

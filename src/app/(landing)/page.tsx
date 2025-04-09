@@ -8,12 +8,13 @@ import BeforeAfter from "@/components/global/landing/before-after";
 import TrustedCompanies from "@/components/global/landing/trustedcompanies";
 import LogoClouds from "@/components/global/landing/logo.clouds";
 import { WobbleCardDemo } from "@/components/global/landing/bento-grid";
-
+import CTA from "@/components/global/landing/cta";
 export default function LandingPage() {
   return (
     <Container>
       <Navbar />
-      <LogoClouds />
+      <CTA />
+
       <TrustedCompanies />
       <BeforeAfter />
       <WobbleCardDemo />

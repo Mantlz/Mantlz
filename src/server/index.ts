@@ -1,11 +1,11 @@
 import { j } from "./jstack"
-import { postRouter } from "./routers/post-router"
+
 import { formRouter } from "./routers/form-router"
 import { authRouter } from "./routers/auth-route"
 import { apiKeyRouter } from "./routers/api-key-router"
 import { usageRouter } from "./routers/usage-router"
 import { userRouter } from "./routers/user-router"
-
+import { paymentRouter } from "./routers/payment-router"
 /**
  * This is your base API.
  * Here, you can handle errors, not-found responses, cors and more.
@@ -28,6 +28,7 @@ const appRouter = j.mergeRouters(api, {
   auth: authRouter,
   usage: usageRouter,
   user: userRouter,
+  payment: paymentRouter,
 })
 
 export type AppRouter = typeof appRouter

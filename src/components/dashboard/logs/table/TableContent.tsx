@@ -19,10 +19,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { usePathname } from "next/navigation"
 
 export function TableContent({ 
@@ -222,13 +218,13 @@ export function TableContent({
 
   return (
     <>
-      <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-100 dark:border-gray-800/50 overflow-hidden">
-        <div className="p-3 border-b border-gray-100 dark:border-gray-800/50 flex justify-between items-center">
+      <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-100 dark:border-zinc-950/50 overflow-hidden">
+        <div className="p-3 border-b border-gray-100 dark:border-zinc-950/50 flex justify-between items-center">
           <div className="flex items-center gap-1">
             <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">
               Submission Logs
             </h3>
-            <Badge className="ml-2 bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+            <Badge className="ml-2 bg-gray-100  text-gray-600 dark:bg-zinc-950 dark:text-zinc-200">
               {submissions.length} submissions
             </Badge>
             {userPlan === 'FREE' && enhancedSubmissions.filter(sub => new Date(sub.createdAt) > standardTimeLimit).length > 20 && (
@@ -316,7 +312,7 @@ export function TableContent({
         
         {/* Include active filter info when filter is applied */}
         {isPremium && isProPlan && isDateFilterActive && (
-          <div className="px-4 py-2 bg-blue-50 dark:bg-blue-950/20 border-b border-blue-200 dark:border-blue-800/50 flex items-center justify-between">
+          <div className="px-4 py-2 bg-blue-50 dark:bg-blue-950/20 border-b border-blue-200 dark:border-zinc-800/50 flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm text-blue-700 dark:text-blue-400">
               <CalendarRange className="h-4 w-4" />
               <span>
@@ -349,7 +345,7 @@ export function TableContent({
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow className="hover:bg-transparent border-b border-gray-100 dark:border-gray-800/50">
+              <TableRow className="hover:bg-transparent border-b border-gray-100 dark:border-zinc-950/50">
                 <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
                   <span className="hidden sm:inline">Submission ID</span>
                   <span className="sm:hidden">ID</span>
@@ -379,7 +375,7 @@ export function TableContent({
               {limitedSubmissions.map((submission) => (
                 <TableRow
                   key={submission.id}
-                  className="hover:bg-gray-50 dark:hover:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800/50 last:border-0"
+                  className="hover:bg-gray-50 dark:hover:bg-zinc-950/50 border-b border-gray-100 dark:border-zinc-950/50 last:border-0"
                 >
                   <TableCell className="py-3 sm:py-4">
                     <div className="flex items-center gap-2">
@@ -431,7 +427,7 @@ export function TableContent({
                       variant="outline"
                       size="sm"
                       onClick={() => openSubmissionDetails(submission)}
-                      className="h-7 px-2 text-xs  cursor-pointer bg-white hover:bg-gray-100 text-gray-600 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full transition-all duration-200"
+                      className="h-7 px-2 text-xs  cursor-pointer bg-white hover:bg-gray-100 text-gray-600 dark:bg-zinc-900 dark:hover:bg-zinc-600 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
                     >
                       <Maximize2 className="h-3 w-3 mr-1" />
                       <span>Details</span>
@@ -493,7 +489,7 @@ export function TableContent({
         </div>
         
         {pagination && pagination.pages > 1 && (
-          <div className="p-4 border-t border-gray-100 dark:border-gray-800/50 flex justify-between items-center">
+          <div className="p-4 border-t border-gray-100 dark:border-zinc-950/50 flex justify-between items-center">
             {!isPremium && (
               <div className="flex items-center gap-1 mr-2">
                 <AlertCircle className="h-3.5 w-3.5 text-amber-500" />
@@ -512,7 +508,7 @@ export function TableContent({
                 size="sm"
                 disabled={pagination.currentPage <= 1}
                 onClick={() => handlePaginationChange(pagination.currentPage - 1)}
-                className="h-8 text-xs bg-white hover:bg-gray-100 text-gray-600 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full transition-all duration-200"
+                className="h-8 text-xs bg-white hover:bg-gray-100 text-gray-600 dark:bg-zinc-950 cursor-pointer dark:hover:bg-zinc-600 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
               >
                 Previous
               </Button>
@@ -522,7 +518,7 @@ export function TableContent({
                   size="sm"
                   disabled={pagination.currentPage >= (userPlan === 'FREE' ? Math.min(pagination.pages, 4) : pagination.pages)}
                   onClick={() => handlePaginationChange(pagination.currentPage + 1)}
-                  className="h-8 text-xs bg-white hover:bg-gray-100 text-gray-600 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full transition-all duration-200"
+                  className="h-8 text-xs bg-white hover:bg-gray-100 text-gray-600 dark:bg-zinc-950 cursor-pointer dark:hover:bg-zinc-600 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
                 >
                   Next
                 </Button>

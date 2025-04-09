@@ -8,7 +8,7 @@ import { BaseTheme } from './types';
 // Default theme styles (clean white design)
 const defaultTheme = {
   light: {
-    container: 'bg-white border border-gray-200 rounded-lg shadow-sm',
+    container: 'bg-white rounded-lg shadow-sm',
     form: 'space-y-4',
     input: 'bg-gray-50 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900',
     textarea: 'bg-gray-50 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 min-h-[120px]',
@@ -21,7 +21,7 @@ const defaultTheme = {
     starIconEmpty: 'text-gray-300'
   },
   dark: {
-    container: 'bg-gray-800 border border-gray-700 rounded-lg shadow-md',
+    container: 'bg-gray-800  rounded-lg shadow-md',
     form: 'space-y-4',
     input: 'bg-gray-700 border border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 text-white placeholder:text-gray-400',
     textarea: 'bg-gray-700 border border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 text-white placeholder:text-gray-400 min-h-[120px]',
@@ -38,7 +38,7 @@ const defaultTheme = {
 // Dark theme styles (dark mode focused)
 const darkTheme = {
   light: {
-    container: 'bg-gray-900 border border-gray-800 rounded-lg shadow-lg',
+    container: 'bg-gray-900  rounded-lg shadow-lg',
     form: 'space-y-4',
     input: 'bg-gray-800 border border-gray-700 rounded-md focus:ring-purple-500 focus:border-purple-500 text-white placeholder:text-gray-400',
     textarea: 'bg-gray-800 border border-gray-700 rounded-md focus:ring-purple-500 focus:border-purple-500 text-white placeholder:text-gray-400 min-h-[120px]',
@@ -51,7 +51,7 @@ const darkTheme = {
     starIconEmpty: 'text-gray-700'
   },
   dark: {
-    container: 'bg-gray-900 border border-gray-800 rounded-lg shadow-lg',
+    container: 'bg-gray-900 rounded-lg shadow-lg',
     form: 'space-y-4',
     input: 'bg-gray-800 border border-gray-700 rounded-md focus:ring-purple-500 focus:border-purple-500 text-white placeholder:text-gray-400',
     textarea: 'bg-gray-800 border border-gray-700 rounded-md focus:ring-purple-500 focus:border-purple-500 text-white placeholder:text-gray-400 min-h-[120px]',
@@ -68,7 +68,7 @@ const darkTheme = {
 // Purple theme styles
 const purpleTheme = {
   light: {
-    container: 'bg-white border border-purple-200 rounded-lg shadow-sm',
+    container: 'bg-white  rounded-lg shadow-sm',
     form: 'space-y-4',
     input: 'bg-purple-50 border border-purple-300 rounded-md focus:ring-purple-500 focus:border-purple-500 text-gray-900',
     textarea: 'bg-purple-50 border border-purple-300 rounded-md focus:ring-purple-500 focus:border-purple-500 text-gray-900 min-h-[120px]',
@@ -81,7 +81,7 @@ const purpleTheme = {
     starIconEmpty: 'text-purple-200'
   },
   dark: {
-    container: 'bg-gray-800 border border-purple-900 rounded-lg shadow-md',
+    container: 'bg-gray-800  rounded-lg shadow-md',
     form: 'space-y-4',
     input: 'bg-gray-700 border border-purple-700 rounded-md focus:ring-purple-500 focus:border-purple-500 text-white placeholder:text-gray-400',
     textarea: 'bg-gray-700 border border-purple-700 rounded-md focus:ring-purple-500 focus:border-purple-500 text-white placeholder:text-gray-400 min-h-[120px]',
@@ -98,7 +98,7 @@ const purpleTheme = {
 // Neobrutalism theme styles (fun, cartoon-like UI)
 const neobrutalism = {
   light: {
-    container: 'bg-yellow-100 border-4 border-black rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]',
+    container: 'bg-yellow-100  rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]',
     form: 'space-y-4',
     input: 'bg-white border-4 border-black rounded-none focus:ring-0 focus:border-black text-black font-mono',
     textarea: 'bg-white border-4 border-black rounded-none focus:ring-0 focus:border-black text-black font-mono min-h-[120px]',

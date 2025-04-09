@@ -1,9 +1,8 @@
 import { z } from "zod";
 import { j, privateProcedure } from "../jstack";
 import { db } from "@/lib/db";
-import { currentUser } from "@clerk/nextjs/server";
 import { HTTPException } from "hono/http-exception";
-import { User, NotificationStatus, NotificationType } from "@prisma/client";
+import { User, NotificationStatus, NotificationType, FormType } from "@prisma/client";
 import { getQuotaByPlan } from "@/config/usage";
 import { startOfMonth } from "date-fns";
 import { Resend } from 'resend';
@@ -12,7 +11,7 @@ import { render } from '@react-email/components';
 import { Prisma } from "@prisma/client";
 import { enhanceDataWithAnalytics, extractAnalyticsFromSubmissions } from "@/lib/analytics-utils";
 import { exportFormSubmissions } from "@/services/export-service";
-import { ratelimitConfig } from "@/lib/ratelimiter";
+
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -47,7 +46,6 @@ const formTemplates = {
     schema: z.object({
       email: z.string().email(),
       name: z.string().min(2),
-      referralSource: z.string().optional(),
     }),
   },
   contact: {
@@ -62,7 +60,34 @@ const formTemplates = {
   // Add more templates as needed
 } as const;
 
-type FormTemplateType = 'feedback' | 'waitlist' | 'contact';
+// Add this helper function near the top of the file with other utility functions
+const detectFormType = (schema: string): FormType => {
+  try {
+    const schemaLower = schema.toLowerCase();
+    
+    // 1. First check explicit form type indicators in schema
+    if (schemaLower.includes('waitlist')) return FormType.WAITLIST;
+    if (schemaLower.includes('feedback')) return FormType.FEEDBACK;
+    if (schemaLower.includes('contact')) return FormType.CONTACT;
+    
+    // 2. Check for field combinations
+    const hasEmail = schema.includes('"email"') || schema.includes('email:');
+    const hasName = schema.includes('"name"') || schema.includes('name:');
+    const hasRating = schema.includes('"rating"') || schema.includes('rating:');
+    const hasFeedback = schema.includes('"feedback"') || schema.includes('feedback:');
+    const hasMessage = schema.includes('"message"') || schema.includes('message:');
+    
+    if (hasRating && hasFeedback) return FormType.FEEDBACK;
+    if (hasEmail && hasName && !hasMessage && !hasRating) return FormType.WAITLIST;
+    if (hasEmail && hasName && hasMessage) return FormType.CONTACT;
+    
+    // 3. Default to custom if no patterns match
+    return FormType.CUSTOM;
+  } catch (error) {
+    console.error('Error detecting form type:', error);
+    return FormType.CUSTOM;
+  }
+};
 
 export const formRouter = j.router({
   // Get all forms created by the authenticated user
@@ -110,15 +135,15 @@ export const formRouter = j.router({
     }),
 
   // Get available templates
-  getTemplates: j.procedure.query(({ c }) => {
-    return c.superjson(
-      Object.entries(formTemplates).map(([id, template]) => ({
-        id,
-        name: template.name,
-        description: template.description,
-      }))
-    );
-  }),
+  // getTemplates: j.procedure.query(({ c }) => {
+  //   return c.superjson(
+  //     Object.entries(formTemplates).map(([id, template]) => ({
+  //       id,
+  //       name: template.name,
+  //       description: template.description,
+  //     }))
+  //   );
+  // }),
 
   // Create form from template
   createFromTemplate: privateProcedure
@@ -158,12 +183,28 @@ export const formRouter = j.router({
 
       const template = formTemplates[input.templateId];
       
+      // Map the template ID to a FormType enum value
+      const formTypeMap: Record<string, FormType> = {
+        'waitlist': FormType.WAITLIST,
+        'feedback': FormType.FEEDBACK,
+        'contact': FormType.CONTACT,
+      };
+      
+      const formType = formTypeMap[input.templateId] || FormType.CUSTOM;
+      
+      // Store form type in settings for backward compatibility
+      const settings = {
+        formType: input.templateId
+      };
+      
       const form = await db.form.create({
         data: {
           name: input.name || template.name,
           description: input.description || template.description,
           schema: template.schema.toString(), // Serialize the schema
           userId: userWithPlan.id,
+          formType, // Use the enum value
+          settings, // Keep settings for backward compatibility
           emailSettings: {
             create: {
               enabled: false
@@ -215,12 +256,29 @@ export const formRouter = j.router({
         });
       }
       
+      // Determine form type based on schema patterns
+      const formType = detectFormType(input.schema);
+      
+      // Create settings object with form type for backward compatibility
+      const formTypeStrings = {
+        [FormType.WAITLIST]: 'waitlist',
+        [FormType.FEEDBACK]: 'feedback', 
+        [FormType.CONTACT]: 'contact',
+        [FormType.CUSTOM]: 'custom'
+      };
+      
+      const settings = {
+        formType: formTypeStrings[formType] || 'custom'
+      };
+      
       const form = await db.form.create({
         data: {
           name: input.name,
           description: input.description,
           schema: input.schema,
           userId: userWithPlan.id,
+          formType, // Use the enum value
+          settings, // Include settings with formType
           emailSettings: {
             create: {
               enabled: false,
@@ -265,6 +323,11 @@ export const formRouter = j.router({
             },
           },
           emailSettings: true,
+          user: {
+            select: {
+              plan: true
+            }
+          }
         },
       });
       
@@ -272,14 +335,81 @@ export const formRouter = j.router({
         throw new Error('Form not found');
       }
       
+      // Use the formType field if available, otherwise detect it from schema
+      let formType = form.formType?.toString() || '';
+      
+      // Fall back to detection if needed
+      if (!formType) {
+        const detectedType = detectFormType(form.schema);
+        const formTypeStrings = {
+          [FormType.WAITLIST]: 'waitlist',
+          [FormType.FEEDBACK]: 'feedback', 
+          [FormType.CONTACT]: 'contact',
+          [FormType.CUSTOM]: 'custom'
+        };
+        formType = formTypeStrings[detectedType];
+      }
+      
+      // Get the users joined settings
+      const usersJoinedSettings = (form.settings as any)?.usersJoined || { enabled: false, count: 0 };
+      // Track if any settings were updated to determine if we need to save changes
+      let settingsUpdated = false;
+      
+      // Check user's plan status
+      const isFreeUser = form.user.plan === 'FREE';
+      
+      // If user is on FREE plan, automatically disable both premium features
+      if (isFreeUser) {
+        // 1. Disable users joined counter if it was enabled
+        if (usersJoinedSettings.enabled) {
+          usersJoinedSettings.enabled = false;
+          settingsUpdated = true;
+        }
+        
+        // 2. Disable email notifications if they were enabled
+        if (form.emailSettings?.enabled) {
+          // Update email settings in the database
+          await db.emailSettings.update({
+            where: { formId: id },
+            data: { enabled: false }
+          });
+        }
+      }
+      
+      // Save form settings if they were updated
+      if (settingsUpdated) {
+        await db.form.update({
+          where: { id },
+          data: {
+            settings: {
+              ...(form.settings as any || {}),
+              usersJoined: {
+                enabled: false, // Force disable for FREE users
+              }
+            }
+          },
+        });
+      }
+      
+      // Get the submissions count if needed
+      const submissionsCount = form._count.submissions;
+      usersJoinedSettings.count = submissionsCount;
+      
       return c.superjson({
         id: form.id,
         name: form.name,
         description: form.description,
+        formType, // Include the form type
         createdAt: form.createdAt,
         updatedAt: form.updatedAt,
         submissionCount: form._count.submissions,
-        emailSettings: form.emailSettings || { enabled: false, fromEmail: process.env.RESEND_FROM_EMAIL || 'contact@mantlz.app' },
+        emailSettings: {
+          ...(form.emailSettings || { fromEmail: process.env.RESEND_FROM_EMAIL || 'contact@mantlz.app' }),
+          // If user is on FREE plan, force disable email notifications
+          enabled: isFreeUser ? false : (form.emailSettings?.enabled || false)
+        },
+        usersJoinedSettings,
+        userPlan: form.user.plan, // Include the user's plan in the response
       });
     }),
     
@@ -1401,4 +1531,106 @@ export const formRouter = j.router({
       });
     }),
 
+  // Toggle users joined settings for a form
+  toggleUsersJoinedSettings: privateProcedure
+    .input(z.object({
+      formId: z.string(),
+      enabled: z.boolean(),
+    }))
+    .mutation(async ({ c, input, ctx }) => {
+      const { formId, enabled } = input;
+      const userId = ctx.user.id;
+      
+      try {
+        // First, check that the user owns this form
+        const form = await db.form.findFirst({
+          where: {
+            id: formId,
+            userId,
+          },
+        });
+
+        if (!form) {
+          throw new Error('Form not found or you do not have permission to update it');
+        }
+
+        // Check if the user's plan allows this feature
+        const user = await db.user.findUnique({
+          where: { id: userId },
+          select: { plan: true }
+        });
+
+        if (enabled && user?.plan === 'FREE') {
+          throw new Error('This feature is only available on STANDARD and PRO plans');
+        }
+
+        // Update the form settings to enable/disable users joined counter
+        const updatedForm = await db.form.update({
+          where: { id: formId },
+          data: {
+            settings: {
+              ...(form.settings as any || {}),
+              usersJoined: {
+                enabled,
+              }
+            }
+          },
+        });
+
+        return c.superjson({ 
+          success: true, 
+          data: {
+            enabled,
+          }
+        });
+      } catch (error) {
+        console.error('Error updating users joined settings:', error);
+        
+        if (error instanceof Error) {
+          throw new Error(error.message);
+        }
+        
+        throw new Error('Failed to update users joined settings');
+      }
+    }),
+
+  // Get users joined count for a form
+  getFormUsersJoinedCount: j.procedure
+    .input(z.object({
+      formId: z.string(),
+    }))
+    .query(async ({ c, input }) => {
+      const { formId } = input;
+      
+      // Find the form by ID
+      const form = await db.form.findUnique({
+        where: { id: formId },
+        select: {
+          id: true,
+          formType: true,
+          settings: true,
+          _count: {
+            select: {
+              submissions: true
+            }
+          }
+        },
+      });
+
+      if (!form) {
+        throw new HTTPException(404, { message: 'Form not found' });
+      }
+
+      // Get users joined settings
+      const usersJoined = (form.settings as any)?.usersJoined || { enabled: false };
+      const submissionCount = form._count.submissions;
+      
+      // Only return the count if the feature is enabled
+      return c.json({
+        formId: form.id,
+        count: usersJoined.enabled ? submissionCount : 0
+      });
+    }),
+
 });
+

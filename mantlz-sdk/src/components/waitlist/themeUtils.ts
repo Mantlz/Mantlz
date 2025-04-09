@@ -18,6 +18,7 @@ const defaultAppearance: WaitlistFormAppearance = {
     inputLabel: 'text-sm font-medium text-zinc-800',
     input: 'bg-white border-zinc-200 focus:border-blue-500/50 focus:ring-blue-500/30 shadow-sm',
     inputError: 'text-sm text-red-500 mt-1 font-medium',
+    usersJoinedCounter: 'bg-blue-50 text-blue-700 border border-blue-100',
   },
 };
 
@@ -38,6 +39,7 @@ const darkAppearance: WaitlistFormAppearance = {
     inputLabel: 'text-sm font-medium text-zinc-300',
     input: 'bg-zinc-800 border-zinc-700 focus:border-blue-500/50 focus:ring-blue-500/30 text-white placeholder:text-zinc-500 shadow-sm',
     inputError: 'text-sm text-red-400 mt-1 font-medium',
+    usersJoinedCounter: 'bg-zinc-800 text-zinc-100 border border-zinc-700',
   },
 };
 
@@ -58,6 +60,7 @@ const purpleAppearance: WaitlistFormAppearance = {
     inputLabel: 'text-sm font-medium text-purple-200',
     input: 'bg-purple-800/80 border-purple-600/50 focus:border-orange-500/50 focus:ring-orange-500/30 text-white placeholder:text-purple-400 shadow-sm',
     inputError: 'text-sm text-orange-300 mt-1 font-medium',
+    usersJoinedCounter: 'bg-purple-800/40 text-purple-100 border border-purple-600/30',
   },
 };
 
@@ -78,6 +81,7 @@ const neobrutalistAppearance: WaitlistFormAppearance = {
     inputLabel: 'text-sm font-black uppercase',
     input: 'bg-white border-2 border-black placeholder:text-gray-500 focus:ring-black focus:border-black',
     inputError: 'text-sm font-bold text-red-500 mt-1',
+    usersJoinedCounter: 'bg-black text-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]',
   },
 };
 
@@ -137,6 +141,7 @@ export function processAppearance(
       submitButton: customAppearance.elements?.submitButton,
       buttonIcon: customAppearance.elements?.buttonIcon,
       formInput: customAppearance.elements?.formInput,
+      usersJoinedCounter: cn(defaultThemeAppearance.elements?.usersJoinedCounter, customAppearance.elements?.usersJoinedCounter),
     },
   };
 } 

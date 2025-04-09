@@ -234,6 +234,37 @@ export function createMantlzClient(apiKey?: string, config?: MantlzClientConfig)
       }
     },
     
+    // Get the count of users who have joined a form
+    getUsersJoinedCount: async (formId: string): Promise<number> => {
+      try {
+        const url = `/api/v1/forms/${formId}/users-joined`;
+        console.log('Fetching users joined count:', url);
+        
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'X-API-Key': key,
+          },
+          credentials: 'same-origin',
+        });
+
+        if (!response.ok) {
+          const error = await handleApiError(response, formId);
+          console.error('Failed to get users joined count:', error);
+          
+          // Don't show notifications for this operation by default
+          throw error;
+        }
+
+        const result = await response.json();
+        return result.count || 0;
+      } catch (error) {
+        console.error('Error getting users joined count:', error);
+        // Return 0 as a fallback to prevent UI issues
+        return 0;
+      }
+    },
+    
     // Method to configure toast notifications
     configureNotifications: (enabled: boolean, handler?: ToastHandler) => {
       if (handler) {

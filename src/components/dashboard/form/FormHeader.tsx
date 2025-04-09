@@ -16,12 +16,17 @@ interface FormHeaderProps {
   createdAt?: Date | string
   responsesCount?: number
   form?: {
-    emailSettings: {
+    emailSettings?: {
       enabled: boolean
       fromEmail?: string
       subject?: string
       template?: string
       replyTo?: string
+    } | null
+    formType?: string
+    usersJoinedSettings?: {
+      enabled: boolean
+      count?: number
     } | null
   }
   analytics?: {
@@ -134,7 +139,14 @@ export function FormHeader({
                       </SheetDescription>
                     </SheetHeader>
                     <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-3 sm:py-4">
-                      <FormSettings formId={id} name={name} emailSettings={form?.emailSettings} onDelete={onDelete} />
+                      <FormSettings 
+                        formId={id} 
+                        name={name} 
+                        emailSettings={form?.emailSettings}
+                        formType={form?.formType} 
+                        usersJoinedSettings={form?.usersJoinedSettings}
+                        onDelete={onDelete} 
+                      />
                     </div>
                   </div>
                 </SheetContent>

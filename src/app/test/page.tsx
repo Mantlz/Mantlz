@@ -13,7 +13,7 @@ export default function CustomerFeedbackPage() {
         messageLabel="Tell us more"
         messagePlaceholder="What did you like or dislike about our product?"
         submitButtonText="Send Your Feedback"
-        theme="dark"
+        theme="purple"
 
         
         // appearance={{
@@ -56,30 +56,50 @@ export default function CustomerFeedbackPage() {
       /> */}
 
       <WaitlistForm
-        formId="adssadasd"
+        formId="cm8yl5ezq0004o7afghokqjze"
+        showUsersJoined={true}
+        usersJoinedLabel='joined'
         //redirectUrl="/feedback/thank-you"
-        title="join wait list"
-        description="be the first to know when we launch. get early access and exclusive updates."
-        nameLabel="Name"
-        namePlaceholder="Enter your name"
-        emailLabel="Email"
-        emailPlaceholder="you@example.com"
-        theme="neobrutalism"
+        // title="join waitlist"
+        // description="be the first to know when we launch. get early access and exclusive updates."
+        // nameLabel="Name"
+        // namePlaceholder="Enter your name"
+        // emailLabel="Email"
+        // emailPlaceholder="you@example.com"
+        theme="default"
         appearance={{
           baseStyle: {
-            container: 'bg-gradient-to-r justify-center from-zinc-100 to-zinc-200',
-            form: 'space-y-6 items-center justify-center'
+            container: 'bg-gradient-to-r justify-center from-red-100 to-red-200',
+           form: 'space-y-6 items-center justify-center',
+           background: 'bg-gradient-to-r from-red-100 to-red-200',
+            border: 'border-4 border-red-600',
           },
           elements: {
-            card: 'border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]',
-            cardTitle: 'text-xl font-black text-black uppercase',
-            cardDescription: 'text-black font-medium',
-            inputLabel: 'text-black font-bold uppercase',
-            input: 'bg-white border-2 border-black',
-            submitButton: 'bg-black hover:bg-gray-800 text-white font-bold uppercase px-6 py-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]',
-          }
+            card: 'border-4 border-red-600 text-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]',
+            cardTitle: 'text-xl font-black text-white uppercase text-center',
+            cardDescription: 'text-white font-medium text-center',
+            inputLabel: 'text-white font-bold uppercase ',
+            formButtonPrimary: 'bg-black hover:bg-gray-800 text-white font-bold uppercase px-6 py-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]',
+            input: 'bg-white border-2 border-black ',
+            inputError: 'text-destructive ',
+            buttonIcon: 'text-black bg-white',
+            formInput: 'text-black',
+            usersJoinedCounter: 'text-white',
+            cardHeader: 'text-white',
+
+            background: 'bg-gradient-to-r from-zinc-900 to-zinc-800',
+            border: 'border-4 border-red-600',
+
+            cardContent: 'text-white',
+            submitButton: 'bg-white hover:bg-gray-800 text-white cursor-pointer font-bold uppercase px-6 py-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]',
+          },
+           
+
+         
+
           
-        }}
+          
+       }}
       />
     </div>
   );

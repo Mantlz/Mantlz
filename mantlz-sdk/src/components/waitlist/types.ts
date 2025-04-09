@@ -39,6 +39,8 @@ export interface WaitlistFormAppearance {
     submitButton?: string; // Alias for formButtonPrimary
     buttonIcon?: string; // Alias for formButtonIcon
     formInput?: string; // Alias for input
+    // Users joined counter (premium feature)
+    usersJoinedCounter?: string;
   };
 }
 
@@ -59,10 +61,17 @@ export interface WaitlistFormProps {
   
   // Theme selection
   theme?: WaitlistFormTheme;
+  darkMode?: boolean;
+  baseTheme?: WaitlistFormTheme | string;
   
   // Appearance customization
-  appearance?: WaitlistFormAppearance;
+  appearance?: WaitlistFormAppearance | ((theme: string) => WaitlistFormAppearance) | any;
   
   // Button text
   customSubmitText?: string;
+  
+  // Users joined counter (premium feature)
+  showUsersJoined?: boolean;
+  usersJoinedCount?: number;
+  usersJoinedLabel?: string;
 } 

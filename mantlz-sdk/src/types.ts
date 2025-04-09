@@ -38,5 +38,6 @@ export interface FormSubmitResponse {
 
 export interface MantlzClient {
   submitForm: (type: string, options: FormSubmitOptions) => Promise<FormSubmitResponse>;
+  getUsersJoinedCount: (formId: string) => Promise<number>;
   configureNotifications: (enabled: boolean, handler?: ToastHandler) => { notifications: boolean };
 }

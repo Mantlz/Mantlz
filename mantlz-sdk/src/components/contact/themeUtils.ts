@@ -8,7 +8,7 @@ const defaultAppearance: ContactFormAppearance = {
     form: 'space-y-5',
   },
   elements: {
-    card: 'border border-zinc-100 shadow-sm rounded-xl',
+    card: ' shadow-sm rounded-xl',
     cardHeader: 'space-y-2 p-6 pb-1',
     cardTitle: 'text-2xl font-semibold tracking-tight',
     cardDescription: 'text-sm text-zinc-500',
@@ -30,7 +30,7 @@ const darkAppearance: ContactFormAppearance = {
     form: 'space-y-5',
   },
   elements: {
-    card: 'border border-zinc-800 rounded-xl shadow-md bg-zinc-900',
+    card: ' rounded-xl shadow-md bg-zinc-900',
     cardHeader: 'space-y-2 p-6 pb-1',
     cardTitle: 'text-2xl font-semibold tracking-tight text-white',
     cardDescription: 'text-sm text-zinc-400',
@@ -52,7 +52,7 @@ const purpleAppearance: ContactFormAppearance = {
     form: 'space-y-5',
   },
   elements: {
-    card: 'border border-purple-700/30 shadow-lg rounded-xl backdrop-blur-sm bg-purple-900/80',
+    card: ' shadow-lg rounded-xl backdrop-blur-sm bg-purple-900/80',
     cardHeader: 'space-y-2 p-6 pb-1',
     cardTitle: 'text-2xl font-semibold tracking-tight text-purple-100',
     cardDescription: 'text-sm text-purple-300',

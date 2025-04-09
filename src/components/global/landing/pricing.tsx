@@ -1,13 +1,14 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { type Stripe, loadStripe } from "@stripe/stripe-js"
 import { useUser } from "@clerk/nextjs"
-import axios from "axios"
 import { toast } from "sonner"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { FREE_QUOTA, STANDARD_QUOTA, PRO_QUOTA } from "@/config/usage"
+import { client } from "@/lib/client"
+import { useMutation } from "@tanstack/react-query"
+import Canceled from "./canceled"
 
 type Plan = {
   title: string
@@ -24,53 +25,59 @@ type Plan = {
 
 const plans: Plan[] = [
   {
-    title: "Hobby",
-    monthlyPrice: 99,
-    yearlyPrice: 990,
+    title: "Free",
+    monthlyPrice: 0,
+    yearlyPrice: 0,
     features: [
-      "Access to basic analytics reports",
-      "Up to 10,000 data points per month",
-      "Email support",
-      "Community forum access",
+      "Basic form builder",
+      "Up to 100 submissions per month",
+      "Basic analytics",
+      "Community support",
       "Cancel anytime"
     ],
-    buttonText: "Get Hobby",
-    stripePriceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_HOBBY_PRICE_ID || "",
-    stripePriceIdYearly: process.env.NEXT_PUBLIC_STRIPE_HOBBY_YEARLY_PRICE_ID || "",
+    buttonText: "Get Started",
+    stripePriceIdMonthly: "",
+    stripePriceIdYearly: "",
     quota: FREE_QUOTA
   },
   {
-    title: "Starter",
-    monthlyPrice: 299,
-    yearlyPrice: 2990,
+    title: "Standard",
+    monthlyPrice: 29,
+    yearlyPrice: 290,
     features: [
-      "Advanced analytics dashboard",
-      "Customizable reports and charts",
-      "Real-time data tracking",
-      "Integration with third-party tools"
+      "Advanced form builder",
+      "Custom form themes",
+      "Advanced analytics",
+      "Email notifications",
+      "Priority support",
+      "API access",
+      "Webhook integrations"
     ],
-    buttonText: "Get Starter",
+    buttonText: "Get Standard",
     isFeatured: true,
-    stripePriceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_STARTER_PRICE_ID || "",
-    stripePriceIdYearly: process.env.NEXT_PUBLIC_STRIPE_STARTER_YEARLY_PRICE_ID || "",
-    includedPlans: ["Everything in Hobby Plan"],
+    stripePriceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_STANDARD_PRICE_ID ?? "",
+    stripePriceIdYearly: process.env.NEXT_PUBLIC_STRIPE_STANDARD_YEARLY_PRICE_ID ?? "",
+    includedPlans: ["Everything in Free Plan"],
     quota: STANDARD_QUOTA
   },
   {
     title: "Pro",
-    monthlyPrice: 1490,
-    yearlyPrice: 14900,
+    monthlyPrice: 99,
+    yearlyPrice: 990,
     features: [
-      "Unlimited data storage",
-      "Customizable dashboards",
-      "Advanced data segmentation",
-      "Real-time data processing",
-      "AI-powered insights and recommendations"
+      "Unlimited forms",
+      "Unlimited submissions",
+      "Advanced analytics & reporting",
+      "Custom branding",
+      "Team collaboration",
+      "Advanced API features",
+      "Priority support",
+      "Dedicated account manager"
     ],
     buttonText: "Get Pro",
-    stripePriceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID || "",
-    stripePriceIdYearly: process.env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID || "",
-    includedPlans: ["Everything in Hobby Plan", "Everything in Starter Plan"],
+    stripePriceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID ?? "",
+    stripePriceIdYearly: process.env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID ?? "",
+    includedPlans: ["Everything in Free Plan", "Everything in Standard Plan"],
     quota: PRO_QUOTA
   },
 ]
@@ -79,12 +86,32 @@ export default function Pricing() {
   const [isYearly, setIsYearly] = useState(false)
   const { isSignedIn, user } = useUser()
   const router = useRouter()
+  const searchParams = useSearchParams()
 
-  const [stripePromise, setStripePromise] = useState<Promise<Stripe | null> | null>(null)
+  // Show canceled component if canceled=true in URL
+  if (searchParams.get("canceled") === "true") {
+    return <Canceled />
+  }
 
-  useEffect(() => {
-    setStripePromise(loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!))
-  }, [])
+  const { mutate: handleStripeCheckout, isPending } = useMutation({
+    mutationFn: async ({ priceId }: { priceId: string }) => {
+      if (!user?.id || !user?.primaryEmailAddress?.emailAddress) {
+        throw new Error("User not found")
+      }
+
+      const res = await client.payment.createCheckoutSession.$post({
+        priceId
+      })
+      return await res.json()
+    },
+    onSuccess: ({ url }) => {
+      if (url) router.push(url)
+    },
+    onError: (error) => {
+      console.error("Error during checkout:", error)
+      toast.error("Error during checkout")
+    }
+  })
 
   const handleCheckout = async (plan: Plan) => {
     if (!isSignedIn) {
@@ -97,46 +124,27 @@ export default function Pricing() {
       return
     }
 
-    const priceId = isYearly ? plan.stripePriceIdYearly : plan.stripePriceIdMonthly
-
-    try {
-      const response = await axios.post("/api/payment/checkout-session", {
-        priceId: priceId,
-        userId: user?.id,
-        email: user?.primaryEmailAddress?.emailAddress,
-      })
-
-      if (response.data.sessionId) {
-        const stripe = await stripePromise
-        const { error } = await stripe!.redirectToCheckout({
-          sessionId: response.data.sessionId,
-        })
-
-        if (error) {
-          console.error("Stripe checkout error:", error)
-          toast.error("An error occurred. Please try again.")
-        }
-      } else {
-        console.error("Failed to create checkout session", response.data)
-        toast.error("Failed to create checkout session")
-      }
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error) && error.response) {
-        console.error("Error during checkout:", error.response.data)
-        toast.error(`Error during checkout: ${error.response.data.error || "Unknown error"}`)
-      } else {
-        console.error("Error during checkout:", error)
-        toast.error("Error during checkout")
-      }
+    if (plan.title === "Free") {
+      router.push("/dashboard")
+      return
     }
+
+    const priceId = isYearly ? plan.stripePriceIdYearly : plan.stripePriceIdMonthly
+    handleStripeCheckout({ priceId })
   }
 
   return (
-    <section className="overflow-hidden  bg-accent-foreground dark:bg-black bg-opacity-95 dark:bg-opacity-100" id="pricing">
+    <section className="overflow-hidden bg-accent-foreground dark:bg-black bg-opacity-95 dark:bg-opacity-100" id="pricing">
       <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-3">
           {plans.map((plan) => (
-            <PricingCard key={plan.title} plan={plan} isYearly={isYearly} onCheckout={() => handleCheckout(plan)} />
+            <PricingCard 
+              key={plan.title} 
+              plan={plan} 
+              isYearly={isYearly} 
+              onCheckout={() => handleCheckout(plan)}
+              isLoading={isPending}
+            />
           ))}
         </div>
       </div>
@@ -148,16 +156,18 @@ function PricingCard({
   plan,
   isYearly,
   onCheckout,
+  isLoading,
 }: {
   plan: Plan
   isYearly: boolean
   onCheckout: () => void
+  isLoading: boolean
 }) {
   const price = isYearly ? plan.yearlyPrice : plan.monthlyPrice
   const period = "/month"
 
   return (
-    <div className="relative w-full rounded-2xl bg-neutral-900 dark:bg-neutral-900 shadow-xl">
+    <div className="relative w-full rounded-2xl bg-white dark:bg-neutral-900 shadow-xl">
       {plan.isFeatured && (
         <div className="absolute right-6 top-6">
           <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-black">
@@ -176,9 +186,10 @@ function PricingCard({
         
         <Button
           onClick={onCheckout}
+          disabled={isLoading}
           className="mb-8 w-full rounded-md bg-blue-600 py-5 text-center font-medium text-white hover:bg-blue-700 transition-colors duration-200"
         >
-          {plan.buttonText}
+          {isLoading ? "Processing..." : plan.buttonText}
         </Button>
         
         <ul className="space-y-4 text-sm">

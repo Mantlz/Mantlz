@@ -9,23 +9,96 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(cuid())
-  clerkId    String   @unique
-  email      String   @unique
-  firstName  String?
-  lastName   String?
-  imageUrl   String?
-  quotaLimit Int
-  plan       Plan     @default(FREE)
-  resendApiKey String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  forms      Form[]
-  quota      Quota[]
-  apiKeys    ApiKey[]
-  globalSettings GlobalSettings?
+  id               String   @id @default(cuid())
+  clerkId          String   @unique
+  email            String   @unique
+  firstName        String?
+  lastName         String?
+  imageUrl         String?
+  quotaLimit       Int      @default(200) // Default to FREE_QUOTA.maxSubmissionsPerMonth
+  resendApiKey     String?
+  stripeCustomerId String?  @unique
+  plan             Plan     @default(FREE)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  forms            Form[]
+  quota            Quota[]
+  apiKeys          ApiKey[]
+  globalSettings   GlobalSettings?
+  subscription     Subscription?
+  payments         Payment[]
+  invoices         Invoice[]
 
   @@index([clerkId])
+  @@index([stripeCustomerId])
+}
+
+model Subscription {
+  id                     String           @id @default(uuid())
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+  subscriptionId         String           @unique
+  stripeUserId           String
+  status                 SubscriptionStatus
+  startDate              DateTime
+  endDate                DateTime?
+  planId                 String
+  defaultPaymentMethodId String?
+  email                  String
+  clerkId                String
+  user                   User             @relation(fields: [userId], references: [id])
+  userId                 String           @unique
+  plan                   SubscriptionPlan @relation(fields: [planId], references: [id])
+
+  @@index([clerkId, subscriptionId])
+}
+
+model SubscriptionPlan {
+  id             String         @id @default(uuid())
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  planId         String         @unique
+  name           String         @unique
+  description    String
+  amount         Decimal
+  currency       String
+  maxForms       Int           // Maximum number of forms allowed
+  maxSubmissionsPerMonth Int   // Maximum submissions per month
+  subscriptions  Subscription[]
+}
+
+model Payment {
+  id              String   @id @default(uuid())
+  createdAt       DateTime @default(now())
+  stripeId        String   @unique
+  email           String
+  amount          Decimal
+  paymentTime     DateTime
+  currency        String
+  clerkId         String
+  customerDetails Json
+  paymentIntent   String
+  user            User     @relation(fields: [userId], references: [id])
+  userId          String
+
+  @@index([clerkId, stripeId])
+}
+
+model Invoice {
+  id             String   @id @default(uuid())
+  createdAt      DateTime @default(now())
+  invoiceId      String   @unique
+  subscriptionId String
+  amountPaid     Decimal
+  amountDue      Decimal?
+  currency       String
+  status         InvoiceStatus
+  email          String
+  clerkId        String?
+  user           User     @relation(fields: [userId], references: [id])
+  userId         String
+
+  @@index([clerkId, invoiceId])
 }
 
 model Quota {
@@ -45,6 +118,7 @@ model Form {
   schema      String
   userId      String
   settings    Json?
+  formType    FormType     @default(CUSTOM)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   user        User         @relation(fields: [userId], references: [id])
@@ -127,13 +201,6 @@ model GlobalSettings {
   updatedAt   DateTime @updatedAt
 }
 
-enum Plan {
-  FREE
-  STANDARD
-  PRO
-}
-
-// New enums for notification system
 enum DigestFrequency {
   REALTIME
   HOURLY
@@ -151,4 +218,33 @@ enum NotificationStatus {
   SENT
   FAILED
   SKIPPED
+}
+
+enum FormType {
+  WAITLIST
+  FEEDBACK
+  CONTACT
+  CUSTOM
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  PAST_DUE
+  TRIALING
+  UNPAID
+}
+
+enum InvoiceStatus {
+  PAID
+  OPEN
+  VOID
+  UNCOLLECTIBLE
+  ATTEMPTED
+}
+
+enum Plan {
+  FREE
+  STANDARD
+  PRO
 }

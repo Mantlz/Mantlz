@@ -2,17 +2,26 @@
 export const FREE_QUOTA = {
   maxForms: 1,
   maxSubmissionsPerMonth: 200,
-} as const
+} as {
+  maxForms: number;
+  maxSubmissionsPerMonth: number;
+}
 
 export const STANDARD_QUOTA = {
   maxForms: 5,
   maxSubmissionsPerMonth: 5000,
-} as const
+} as {
+  maxForms: number;
+  maxSubmissionsPerMonth: number;
+}
 
 export const PRO_QUOTA = {
   maxForms: 10,
   maxSubmissionsPerMonth: 10000,
-} as const
+} as {
+  maxForms: number;
+  maxSubmissionsPerMonth: number;
+}
 
 // Helper function to get quota based on plan
 export function getQuotaByPlan(plan: string) {

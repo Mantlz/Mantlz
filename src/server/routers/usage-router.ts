@@ -2,7 +2,6 @@ import { z } from "zod";
 import { j, privateProcedure } from "../jstack";
 import { db } from "@/lib/db";
 import { HTTPException } from "hono/http-exception";
-import { Plan } from "@/types/users/user";
 import { addMonths, startOfMonth } from "date-fns";
 import { getQuotaByPlan } from "@/config/usage";
 
