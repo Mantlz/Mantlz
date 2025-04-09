@@ -25,7 +25,7 @@
     "@editorjs/list": "^2.0.6",
     "@editorjs/table": "^2.4.4",
     "@hookform/resolvers": "^4.1.3",
-    "@mantlz/nextjs": "file:mantlz-sdk",
+    "@mantlz/nextjs": "^0.1.0",
     "@neondatabase/serverless": "^0.10.4",
     "@prisma/adapter-neon": "^6.5.0",
     "@prisma/client": "^6.5.0",
@@ -125,7 +125,7 @@
     "tailwindcss": "^4.0.0",
     "typescript": "^5"
   },
-  "description": "Ship high-performance Next.js apps for extremely cheap # formQuay",
+  "description": "Headless Backend Form builder  Mantlz",
   "main": "index.js",
   "keywords": [],
   "author": "Jean daly",
