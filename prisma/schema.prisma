@@ -88,13 +88,13 @@ model Invoice {
   id             String   @id @default(uuid())
   createdAt      DateTime @default(now())
   invoiceId      String   @unique
-  subscriptionId String
+  subscriptionId String?
   amountPaid     Decimal
   amountDue      Decimal?
   currency       String
   status         InvoiceStatus
   email          String
-  clerkId        String?
+  clerkId        String   // Make this required since we're using userId
   user           User     @relation(fields: [userId], references: [id])
   userId         String
 

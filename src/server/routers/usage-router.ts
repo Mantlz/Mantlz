@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { j, privateProcedure } from "../jstack";
 import { db } from "@/lib/db";
 import { HTTPException } from "hono/http-exception";
@@ -14,7 +13,7 @@ export const usageRouter = j.router({
    * Get current user usage information
    * Returns form creation limits, current usage, and history
    */
-  getUserUsage: privateProcedure.query(async ({ ctx, c, input }) => {
+  getUserUsage: privateProcedure.query(async ({ ctx, c }) => {
     const { user } = ctx;
 
     try {
@@ -171,7 +170,7 @@ export const usageRouter = j.router({
    * Get total submissions across all user forms
    * Returns count of all submissions received from all forms created by the user
    */
-  getTotalSubmissions: privateProcedure.query(async ({ ctx, c, input }) => {
+  getTotalSubmissions: privateProcedure.query(async ({ ctx, c }) => {
     const { user } = ctx;
 
     try {

@@ -96,19 +96,16 @@ export const userRouter = j.router({
     }),
 
     // Get user's current plan
-  getUserPlan: privateProcedure
-  .query(async ({ c, ctx }) => {
-    const userId = ctx.user.id;
-    
-    const user = await db.user.findUnique({
-      where: { id: userId },
+  getUserPlan: privateProcedure.query(async ({ ctx, c }) => {
+    const { user } = ctx
+
+    const userData = await db.user.findUnique({
+      where: { id: user.id },
       select: { plan: true }
-    });
+    })
 
-    if (!user) {
-      throw new HTTPException(404, { message: 'User not found' });
-    }
-
-    return c.superjson({ plan: user.plan });
+    return c.json({
+      plan: userData?.plan || "FREE"
+    })
   }),
 }); 

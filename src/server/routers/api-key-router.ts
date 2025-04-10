@@ -4,7 +4,6 @@ import { db } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs/server";
 import { HTTPException } from "hono/http-exception";
 import { nanoid } from 'nanoid';
-import { eq } from 'drizzle-orm';
 
 // All inputs are validated using Zod
 const createApiKeySchema = z.object({

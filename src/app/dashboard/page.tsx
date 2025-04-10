@@ -1,6 +1,7 @@
 'use client'
 import { FormsList } from '@/components/dashboard/form/FormsList'
 import { FormDetails } from '@/components/dashboard/form/FormDetails'
+import { PaymentSuccessModal } from '@/components/payment/payment-success-modal'
 import { useParams } from 'next/navigation'
 import React from 'react'
 
@@ -10,6 +11,8 @@ const DashboardPage = () => {
 
   return (
     <div className="container py-6">
+      <PaymentSuccessModal />
+      
       {formId ? (
         <FormDetails formId={formId} />
       ) : (

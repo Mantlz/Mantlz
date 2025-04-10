@@ -12,14 +12,12 @@ interface DeveloperNotificationEmailProps {
   formName: string;
   submissionData: Record<string, any>;
   formId: string;
-  _submissionId: string;
 }
 
 export function DeveloperNotificationEmail({ 
   formName, 
   submissionData,
   formId,
-  _submissionId,
 }: DeveloperNotificationEmailProps) {
   const submissionTime = new Date().toLocaleString();
   // Get a preview of important fields without showing all details

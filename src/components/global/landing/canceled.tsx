@@ -9,18 +9,18 @@ export default function Canceled() {
   const router = useRouter()
 
   return (
-    <div className="flex min-h-[80vh] w-full flex-col bg-white dark:bg-zinc-800  items-center justify-center px-4 py-12 text-center">
-      <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-        <AlertCircle className="h-6 w-6 text-muted-foreground" />
+    <section className="flex min-h-[calc(80vh-8rem)] w-full flex-col bg-white dark:bg-zinc-950 items-center justify-center px-4 py-12 text-center">
+      <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+        <AlertCircle className="h-8 w-8 text-muted-foreground" />
       </div>
 
-      <h1 className="mb-3 text-2xl font-bold">Subscription Canceled</h1>
+      <h1 className="mb-3 text-3xl font-bold text-gray-900 dark:text-white">Subscription Canceled</h1>
 
-      <p className="mb-6 max-w-md text-muted-foreground">
+      <p className="mb-6 max-w-md text-gray-600 dark:text-gray-300">
         Your subscription has been canceled. You can still use your current plan until the end of your billing period.
       </p>
 
-      <p className="mb-8 max-w-md text-sm text-muted-foreground">
+      <p className="mb-8 max-w-md text-sm text-gray-500 dark:text-gray-400">
         If you have any questions about your subscription or need help, please contact our support team.
       </p>
 
@@ -32,6 +32,6 @@ export default function Canceled() {
           View Plans
         </Button>
       </div>
-    </div>
+    </section>
   )
 }

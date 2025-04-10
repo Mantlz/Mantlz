@@ -1,7 +1,7 @@
 import Stripe from "stripe"
 import { db } from "@/lib/db"
 import { Plan, SubscriptionStatus } from "@prisma/client"
-import { FREE_QUOTA, STANDARD_QUOTA, PRO_QUOTA } from "@/config/usage"
+
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", {
   apiVersion: "2025-03-31.basil",
@@ -11,12 +11,10 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", {
 // Get price IDs from environment variables
 const STRIPE_PRICE_IDS = {
   STANDARD: {
-    MONTHLY: process.env.STRIPE_STANDARD_PRICE_ID || "",
-    YEARLY: process.env.STRIPE_STANDARD_YEARLY_PRICE_ID || "",
+    MONTHLY: process.env.NEXT_PUBLIC_STRIPE_STANDARD_PRICE_ID || "",
   },
   PRO: {
-    MONTHLY: process.env.STRIPE_PRO_PRICE_ID || "",
-    YEARLY: process.env.STRIPE_PRO_YEARLY_PRICE_ID || "",
+    MONTHLY: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID || "",
   }
 } as const
 
@@ -33,13 +31,17 @@ export async function createCheckoutSession({
   priceId,
   metadata
 }: CreateCheckoutSessionParams) {
-  // Determine plan based on price ID
-  let plan = "FREE"
-  if (priceId === STRIPE_PRICE_IDS.STANDARD.MONTHLY || priceId === STRIPE_PRICE_IDS.STANDARD.YEARLY) {
-    plan = "STANDARD"
-  } else if (priceId === STRIPE_PRICE_IDS.PRO.MONTHLY || priceId === STRIPE_PRICE_IDS.PRO.YEARLY) {
-    plan = "PRO"
+  // Use the plan from metadata if provided, otherwise determine from price ID
+  let plan = metadata?.plan || "FREE"
+  if (!metadata?.plan) {
+    if (priceId === STRIPE_PRICE_IDS.STANDARD.MONTHLY) {
+      plan = "STANDARD"
+    } else if (priceId === STRIPE_PRICE_IDS.PRO.MONTHLY) {
+      plan = "PRO"
+    }
   }
+
+  console.log(`Creating checkout session for plan: ${plan} with priceId: ${priceId}`)
 
   const session = await stripe.checkout.sessions.create({
     customer_email: userEmail,
@@ -50,7 +52,7 @@ export async function createCheckoutSession({
       },
     ],
     mode: "subscription",
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?success=true`,
+    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?payment=success`,
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing?canceled=true`,
     metadata: {
       userId,
@@ -77,7 +79,7 @@ type StripeSubscription = Stripe.Subscription & {
 }
 
 export async function handleSubscriptionUpdate(subscription: StripeSubscription) {
-  const { metadata, items } = subscription
+  const { metadata } = subscription
   const userId = metadata?.userId
   const userEmail = metadata?.userEmail
   const plan = metadata?.plan
@@ -88,6 +90,46 @@ export async function handleSubscriptionUpdate(subscription: StripeSubscription)
   }
 
   try {
+    // Log subscription data for debugging
+    console.log("Subscription data:", {
+      id: subscription.id,
+      current_period_start: subscription.current_period_start,
+      current_period_end: subscription.current_period_end,
+      status: subscription.status,
+      plan
+    })
+
+    // Safely convert timestamps to Date objects
+    let startDate = subscription.current_period_start 
+      ? new Date(Number(subscription.current_period_start) * 1000) 
+      : new Date()
+    
+    let endDate = subscription.current_period_end 
+      ? new Date(Number(subscription.current_period_end) * 1000) 
+      : null
+
+    // Validate dates
+    if (isNaN(startDate.getTime())) {
+      console.error("Invalid start date:", subscription.current_period_start)
+      startDate = new Date()
+    }
+
+    if (endDate && isNaN(endDate.getTime())) {
+      console.error("Invalid end date:", subscription.current_period_end)
+      endDate = null
+    }
+
+    // Get the customer ID as a string
+    let stripeUserId: string
+    if (typeof subscription.customer === 'string') {
+      stripeUserId = subscription.customer
+    } else if (subscription.customer && typeof subscription.customer === 'object' && 'id' in subscription.customer) {
+      stripeUserId = subscription.customer.id
+    } else {
+      console.error("Invalid customer data:", subscription.customer)
+      stripeUserId = "unknown"
+    }
+
     // First, get or create the subscription plan
     const subscriptionPlan = await db.subscriptionPlan.upsert({
       where: { planId: plan },
@@ -106,6 +148,24 @@ export async function handleSubscriptionUpdate(subscription: StripeSubscription)
       }
     })
 
+    // Get the current user to check if plan has changed
+    const currentUser = await db.user.findUnique({
+      where: { id: userId },
+      select: { plan: true, quotaLimit: true }
+    })
+
+    // Determine the new quota limit based on the plan
+    const newQuotaLimit = plan === "PRO" ? 10000 : plan === "STANDARD" ? 1000 : 100
+
+    // Update user's plan and quota
+    await db.user.update({
+      where: { id: userId },
+      data: {
+        plan: plan.toUpperCase() as Plan,
+        quotaLimit: newQuotaLimit,
+      }
+    })
+
     // Then update or create the subscription
     await db.subscription.upsert({
       where: { userId },
@@ -113,29 +173,61 @@ export async function handleSubscriptionUpdate(subscription: StripeSubscription)
         userId,
         subscriptionId: subscription.id,
         status: subscription.status.toUpperCase() as SubscriptionStatus,
-        startDate: new Date(Number(subscription.current_period_start) * 1000),
-        endDate: subscription.current_period_end ? new Date(Number(subscription.current_period_end) * 1000) : null,
+        startDate,
+        endDate,
         planId: subscriptionPlan.id,
         email: userEmail,
         clerkId: userId,
-        stripeUserId: subscription.customer as string,
+        stripeUserId,
       },
       update: {
         status: subscription.status.toUpperCase() as SubscriptionStatus,
-        startDate: new Date(Number(subscription.current_period_start) * 1000),
-        endDate: subscription.current_period_end ? new Date(Number(subscription.current_period_end) * 1000) : null,
+        startDate,
+        endDate,
         planId: subscriptionPlan.id,
       }
     })
 
-    // Update user's plan and quota
-    await db.user.update({
-      where: { id: userId },
-      data: {
-        plan: plan.toUpperCase() as Plan,
-        quotaLimit: plan === "PRO" ? 10000 : plan === "STANDARD" ? 1000 : 100,
+    // If the plan has changed, update the quota records
+    if (currentUser && currentUser.plan !== plan.toUpperCase()) {
+      console.log(`Plan changed from ${currentUser.plan} to ${plan.toUpperCase()}, updating quota records`)
+      
+      // Get the current date
+      const now = new Date()
+      const currentYear = now.getFullYear()
+      const currentMonth = now.getMonth() + 1 // JavaScript months are 0-indexed
+      
+      // Check if a quota record exists for the current month
+      const existingQuota = await db.quota.findFirst({
+        where: {
+          userId,
+          year: currentYear,
+          month: currentMonth
+        }
+      })
+
+      if (existingQuota) {
+        // Update existing quota record - only update the count if it's a new month
+        await db.quota.update({
+          where: { id: existingQuota.id },
+          data: {
+            // Don't reset the count when updating an existing quota
+          }
+        })
+      } else {
+        // Create new quota record
+        await db.quota.create({
+          data: {
+            userId,
+            year: currentYear,
+            month: currentMonth,
+            count: 0 // Reset count for new quota records
+          }
+        })
       }
-    })
+    }
+
+    console.log(`Successfully updated subscription for user ${userId} to plan ${plan}`)
   } catch (error) {
     console.error("Error updating subscription:", error)
     throw error
@@ -159,10 +251,19 @@ export const handleCheckoutSession = async (session: Stripe.Checkout.Session) =>
     throw new Error("No price ID found in session")
   }
 
+  // Get the customer ID from the session
+  const customerId = session.customer as string
+  if (!customerId) {
+    console.error("No customer ID found in session")
+    throw new Error("No customer ID found in session")
+  }
+
+  console.log(`[DEBUG] Updating user ${userId} with Stripe customer ID: ${customerId}`)
+
   // Update user's stripe customer ID
   await db.user.update({
     where: { id: userId },
-    data: { stripeCustomerId: session.customer as string }
+    data: { stripeCustomerId: customerId }
   })
 
   // Handle subscription update

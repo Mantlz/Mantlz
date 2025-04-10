@@ -7,7 +7,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
@@ -37,6 +36,7 @@ function TemplateCard({ template, onClick, isSelected }: TemplateCardProps) {
         "border border-gray-200 dark:border-zinc-800",
         "shadow-sm hover:shadow-md",
         "p-4 sm:p-5 lg:p-6",
+        "cursor-pointer",
         // Selected state
         isSelected && [
           "border-primary/50 dark:border-primary/50",
@@ -51,6 +51,7 @@ function TemplateCard({ template, onClick, isSelected }: TemplateCardProps) {
           "p-2 sm:p-2.5 lg:p-3",
           "bg-gradient-to-r from-zinc-100 to-white dark:from-zinc-900 dark:to-zinc-800",
           "border border-gray-200 dark:border-zinc-800",
+          "cursor-pointer",
           // Selected state
           isSelected && [
             "bg-primary/10 border-primary/50",
@@ -209,7 +210,8 @@ export function TemplateDialog({ trigger }: TemplateDialogProps) {
                 "bg-white dark:bg-zinc-900",
                 "border border-gray-200 dark:border-zinc-800",
                 "text-gray-700 dark:text-gray-300",
-                "hover:bg-gray-50 dark:hover:bg-zinc-800"
+                "hover:bg-gray-50 dark:hover:bg-zinc-800",
+                "cursor-pointer"
               )}
             >
               Cancel
@@ -223,6 +225,7 @@ export function TemplateDialog({ trigger }: TemplateDialogProps) {
                 "bg-gray-900 dark:bg-white",
                 "text-white dark:text-gray-900",
                 "hover:bg-gray-800 dark:hover:bg-gray-100",
+                "cursor-pointer",
                 "shadow-sm"
               )}
             >
