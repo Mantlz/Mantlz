@@ -147,7 +147,7 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
               <Button
                 variant="outline"
                 size="sm"
-                className="h-8 text-xs bg-white hover:bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                className="h-8 text-xs bg-white cursor-pointer hover:bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
                 onClick={() => copyToClipboard("id", submission.id)}
               >
                 {copiedField === "id" ? (
@@ -219,7 +219,7 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-7 px-2 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
+                      className="h-7 px-2 text-zinc-500 cursor-pointer dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
                       onClick={() => copyToClipboard(key, value)}
                     >
                       {copiedField === key ? (

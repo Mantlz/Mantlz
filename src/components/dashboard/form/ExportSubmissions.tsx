@@ -77,6 +77,7 @@ export function ExportSubmissions({ formId, formName }: ExportSubmissionsProps) 
             "border border-slate-200 dark:border-zinc-700",
             "shadow-sm hover:shadow-md",
             "transition-shadow duration-200",
+            "cursor-pointer",
             "h-[52px]",
             "w-full sm:w-auto"
           )}
@@ -118,6 +119,7 @@ export function ExportSubmissions({ formId, formName }: ExportSubmissionsProps) 
                     value={startDate}
                     onChange={setStartDate}
                     placeholder="Start date"
+
                   />
                   <DatePicker
                     value={endDate}
@@ -143,6 +145,7 @@ export function ExportSubmissions({ formId, formName }: ExportSubmissionsProps) 
                 "text-sm sm:text-base",
                 "px-4 py-2 sm:px-5 sm:py-2.5",
                 "bg-white dark:bg-zinc-900",
+                "cursor-pointer",
                 "border border-gray-200 dark:border-zinc-800",
                 "text-gray-700 dark:text-gray-300",
                 "hover:bg-gray-50 dark:hover:bg-zinc-800"
@@ -157,6 +160,7 @@ export function ExportSubmissions({ formId, formName }: ExportSubmissionsProps) 
                 "text-sm sm:text-base lg:text-lg",
                 "px-4 py-2 sm:px-6 sm:py-2.5 lg:px-8 lg:py-3",
                 "bg-gray-900 dark:bg-white",
+                "cursor-pointer",
                 "text-white dark:text-gray-900",
                 "hover:bg-gray-800 dark:hover:bg-gray-100",
                 "shadow-sm"

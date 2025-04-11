@@ -205,7 +205,7 @@ export function FormResponsesList({
                       <Button
                         variant="outline"
                         size="sm"
-                        className="h-8 text-xs bg-white hover:bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                        className="h-8 text-xs cursor-pointer bg-white hover:bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
                         onClick={() => {
                           setSelectedSubmission(submission)
                           setSheetOpen(true)

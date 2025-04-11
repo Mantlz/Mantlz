@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
@@ -16,7 +14,7 @@ import { client } from '@/lib/client';
 import { useRouter } from 'next/navigation';
 import { cn } from "@/lib/utils"
 import { UpgradeModal } from "@/components/modals/UpgradeModal";
-import { Mail, Users } from "lucide-react";
+import { Mail, Users, Download } from "lucide-react";
 
 interface FormSettingsProps {
   formId: string;
@@ -34,6 +32,9 @@ interface FormSettingsProps {
     enabled: boolean;
     count?: number;
   } | null;
+  exportSettings?: {
+    enabled: boolean;
+  } | null;
   onUpdate?: (data: { name: string; description: string }) => void;
   onDelete?: (id: string) => Promise<void>;
   onRefresh?: () => void;
@@ -42,18 +43,15 @@ interface FormSettingsProps {
 export function FormSettings({ 
   formId, 
   name, 
-  description = '', 
   formType = '', 
   emailSettings, 
   usersJoinedSettings,
-  onUpdate, 
-  onDelete, 
+  exportSettings,
   onRefresh 
 }: FormSettingsProps) {
   // Log received props for debugging
   console.log('FormSettings props:', { formId, formType, usersJoinedSettings });
   
-  const [isPublished, setIsPublished] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
@@ -454,11 +452,59 @@ export function FormSettings({
             </div>
           )}
 
-          <div className="pt-4 border-t border-gray-100 dark:border-zinc-800">
-            <div className="flex items-center justify-between mb-4">
-              <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Export Submissions</h4>
+          <div className="mt-6 rounded-xl border border-gray-200 dark:border-zinc-700 overflow-hidden">
+            <div className="px-4 py-3 bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-200 dark:border-zinc-700">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Download className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Export Submissions</h4>
+                </div>
+                <div className="flex items-center">
+                  {userPlan === 'FREE' && (
+                    <div className="mr-3 px-2 py-0.5 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded-full border border-amber-200 dark:border-amber-800/50">
+                      Premium Feature
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
-            <ExportSubmissions formId={formId} formName={name} />
+            
+            <div className="p-4 bg-white dark:bg-zinc-900">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-6">
+                <div className="flex-1">
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    Export your form submissions to CSV format for advanced analysis and record keeping.
+                  </p>
+                  {userPlan === 'FREE' && (
+                    <p className="mt-1.5 text-xs text-amber-600 dark:text-amber-400">
+                      Available on Standard and Pro plans
+                    </p>
+                  )}
+                </div>
+                
+                <div className="flex items-center cursor-pointer gap-3 self-end sm:self-center">
+                  {userPlan === 'FREE' ? (
+                    <Button
+                      variant="default"
+                      size="sm"
+                      className="h-8 cursor-pointer px-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white border-none"
+                      onClick={() => {
+                        setUpgradeFeatureName("Export Submissions");
+                        setUpgradeFeatureIcon(<Download className="h-5 w-5 m-2 text-slate-700 dark:text-slate-300" />);
+                        setUpgradeFeatureDescription("Export your form submissions to CSV format for advanced analysis and record keeping. Available on Standard and Pro plans.");
+                        setIsUpgradeModalOpen(true);
+                      }}
+                    >
+                      Upgrade to Export
+                    </Button>
+                  ) : (
+                    <div className="mt-4">
+                      <ExportSubmissions formId={formId} formName={name} />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

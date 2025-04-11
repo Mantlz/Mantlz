@@ -73,6 +73,32 @@ export async function createCheckoutSession({
   return session
 }
 
+interface CreatePortalSessionParams {
+  userId: string
+}
+
+export async function createPortalSession({
+  userId
+}: CreatePortalSessionParams) {
+  // Get the customer ID from the database
+  const user = await db.user.findUnique({
+    where: { id: userId },
+    select: { stripeCustomerId: true }
+  })
+
+  if (!user?.stripeCustomerId) {
+    throw new Error("No Stripe customer ID found for user")
+  }
+
+  // Create a portal session
+  const session = await stripe.billingPortal.sessions.create({
+    customer: user.stripeCustomerId,
+    return_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
+  })
+
+  return session
+}
+
 type StripeSubscription = Stripe.Subscription & {
   current_period_start: number;
   current_period_end: number;

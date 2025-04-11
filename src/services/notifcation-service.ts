@@ -107,7 +107,6 @@ export async function sendDeveloperNotification(
         formName: form.name,
         submissionData,
         formId: form.id,
-        _submissionId: submissionId,
       })
     );
 

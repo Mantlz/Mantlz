@@ -246,7 +246,7 @@ export function TableSubmissionSheet({
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-8 text-xs bg-white hover:bg-gray-100 text-gray-600 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full transition-all duration-200"
+                      className="h-8 text-xs bg-white cursor-pointer hover:bg-gray-100 text-gray-600 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full transition-all duration-200"
                       onClick={() => copyToClipboard("id", submission.id)}
                     >
                       {copiedField === "id" ? (

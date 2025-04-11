@@ -5,7 +5,7 @@ import { Logo } from "@/components/global/logo"
 
 const Footer = () => {
   return (
-    <footer className="w-full border-t border-neutral-200 dark:border-neutral-800 bg-[#fffdf7] dark:bg-neutral-950 text-neutral-700 dark:text-neutral-300 py-12 ">
+    <footer className="w-full border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-neutral-700 dark:text-neutral-300 py-12 ">
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="flex flex-col items-center md:items-start">

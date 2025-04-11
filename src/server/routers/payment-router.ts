@@ -1,6 +1,8 @@
-import { createCheckoutSession } from "@/lib/stripe"
+import { createCheckoutSession, createPortalSession } from "@/lib/stripe"
 import { j, privateProcedure } from "../jstack"
 import { z } from "zod"
+import { db } from "@/lib/db"
+import { Plan, SubscriptionStatus } from "@prisma/client"
 
 // Price ID to Plan mapping
 const PRICE_TO_PLAN = {
@@ -32,5 +34,39 @@ export const paymentRouter = j.router({
       })
 
       return c.json({ url: session.url })
+    }),
+  createPortalSession: privateProcedure
+    .mutation(async ({ c, ctx }) => {
+      const { user } = ctx
+      
+      console.log('Received portal request for user:', user.id)
+
+      // Find user's subscription and Stripe customer ID
+      const subscription = await db.subscription.findFirst({
+        where: {
+          userId: user.id,
+          status: SubscriptionStatus.ACTIVE,
+        },
+        include: {
+          user: true,
+        },
+      })
+
+      if (!subscription?.stripeUserId) {
+        console.log('No active subscription found for user')
+        return c.json(
+          { error: "No active subscription found" },
+          { status: 404 }
+        )
+      }
+
+      // Create Stripe portal session
+      console.log('Creating portal session for customer:', subscription.stripeUserId)
+      const portalSession = await createPortalSession({
+        userId: user.id,
+      })
+
+      console.log('Portal session created:', portalSession.id)
+      return c.json({ url: portalSession.url })
     }),
 })

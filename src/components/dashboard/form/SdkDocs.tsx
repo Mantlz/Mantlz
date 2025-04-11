@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { CodeBlock } from "@/components/ui/code-block"
-import { Copy, CheckCheck } from "lucide-react"
+// import { Copy, CheckCheck } from "lucide-react"
 
 interface SdkDocsProps {
   formId: string

@@ -29,6 +29,8 @@ export function DatePicker({ value, onChange, placeholder = "Pick a date" }: Dat
             "bg-white dark:bg-zinc-900",
             "border border-gray-200 dark:border-zinc-800",
             "text-gray-900 dark:text-white",
+            "cursor-pointer",
+
             "hover:bg-gray-50 dark:hover:bg-zinc-800",
             "shadow-sm",
             "h-9 px-3 py-2",
@@ -48,6 +50,7 @@ export function DatePicker({ value, onChange, placeholder = "Pick a date" }: Dat
             initialFocus
             className={cn(
               "p-3",
+              "cursor-pointer",
               "[&_.rdp-months]:flex [&_.rdp-months]:flex-col [&_.rdp-months]:sm:flex-row [&_.rdp-months]:gap-2",
               "[&_.rdp-month]:flex [&_.rdp-month]:flex-col [&_.rdp-month]:gap-4",
               "[&_.rdp-caption]:flex [&_.rdp-caption]:justify-center [&_.rdp-caption]:pt-1 [&_.rdp-caption]:relative [&_.rdp-caption]:items-center [&_.rdp-caption]:w-full",

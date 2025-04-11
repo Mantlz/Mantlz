@@ -1,38 +1,21 @@
-import { ReactNode } from "react";
-import { Home } from "lucide-react";
-import AuthPreview from "@/components/auth/auth-preview";
-import AuthFooter from "@/components/auth/auth-footer";
+import Footer from "@/components/global/landing/footer";
+import Navbar from "@/components/global/landing/navbar";
+import React from "react";
 
-const Layout = ({ children }: { children: ReactNode }) => {
-    return (
-        <div className="flex min-h-screen">
-            {/* Home Icon */}
-            <a 
-                href="/" 
-                className="absolute top-6 left-6 z-10 p-1 rounded-md cursor-pointer hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 transition-colors"
-            >
-                <p className="text-lg font-bold text-zinc-900 tracking-tighter dark:text-zinc-100 ">Mantlz</p>
-            </a>
+type Props = {children: React.ReactNode}
 
-            <div className="w-full lg:w-1/2 flex flex-col min-h-screen">
-
-                <div className="flex-1 flex items-center justify-center p-8">
-                    <div className="w-full max-w-md">
-                        <div>
-                            {children}
-                        </div>
-                    </div>
-                </div>
-                
-    
-                <div className="p-6">
-                    <AuthFooter />
-                </div>
-            </div>
-
-            <AuthPreview />
+const Layout = ({children}: Props) => {
+  return (
+    <div className="dark:text-white bg-white min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-grow mt-32 mb-4 flex items-center justify-center p-6">
+        <div className="w-full max-w-md">
+          {children}
         </div>
-    );
-};
+      </main>
+      <Footer />
+    </div>
+  )
+}
 
-export default Layout;
+export default Layout
