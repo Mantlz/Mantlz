@@ -24,9 +24,11 @@ export const ROUTES: EachRoute[] = [
       {
         title: "Components",
         href: "/components",
-        noLink: true,
         items: [
+          { title: "Overview", href: "" },
           { title: "Waitlist Form", href: "/waitlist-form" },
+          { title: "Feedback Form", href: "/feedback-form" },
+          { title: "Contact Form", href: "/contact-form" },
         ],
       },
     ],

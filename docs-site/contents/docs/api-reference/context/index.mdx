@@ -15,7 +15,7 @@ The `MantlzProvider` is the main context provider that should wrap your applicat
 
 ```tsx
 // In your _app.tsx or layout.tsx
-import { MantlzProvider } from 'mantlz-sdk';
+import { MantlzProvider } from '@mantlz/nextjs';
 
 export default function App({ Component, pageProps }) {
   return (
@@ -56,7 +56,7 @@ The `useMantlz` hook provides access to the Mantlz context within your component
 ### Basic Usage
 
 ```tsx
-import { useMantlz } from 'mantlz-sdk';
+import { useMantlz } from '@mantlz/nextjs';
 
 function MyComponent() {
   const { client, mode, setMode } = useMantlz();
@@ -110,7 +110,7 @@ The `useMantlz` hook provides the following values:
 For more advanced use cases where you need to initialize the client with custom configuration:
 
 ```tsx
-import { MantlzClientProvider, createMantlzClient } from 'mantlz-sdk';
+import { MantlzClientProvider, createMantlzClient } from '@mantlz/nextjs';
 
 export default function App({ Component, pageProps }) {
   // Create a client with custom configuration
@@ -133,7 +133,7 @@ export default function App({ Component, pageProps }) {
 The `createMantlzClient` function allows you to create a custom Mantlz client:
 
 ```tsx
-import { createMantlzClient } from 'mantlz-sdk';
+import { createMantlzClient } from '@mantlz/nextjs';
 
 const client = createMantlzClient({
   apiKey: 'your_api_key_here',
@@ -148,7 +148,7 @@ const client = createMantlzClient({
 Mantlz provides a flexible toast system that you can integrate with your preferred toast library:
 
 ```tsx
-import { MantlzProvider, createSonnerToastAdapter } from 'mantlz-sdk';
+import { MantlzProvider, createSonnerToastAdapter } from '@mantlz/nextjs';
 import { Toaster } from 'sonner';
 
 // Create an adapter for Sonner toast library

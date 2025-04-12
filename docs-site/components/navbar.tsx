@@ -51,6 +51,7 @@ function Logo() {
     <Link href="/" className="flex items-center gap-3">
       <HexagonIcon className="w-6 h-6 text-muted-foreground " />
       <h2 className="text-md font-bold font-code">Mantlz</h2>
+      <span className="px-1.5 py-0.5 text-xs font-medium bg-primary/10 text-primary rounded-md">Beta</span>
     </Link>
   );
 }
