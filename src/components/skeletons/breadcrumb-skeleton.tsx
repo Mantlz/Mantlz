@@ -1,7 +1,7 @@
 "use client"
 
 import { ChevronRight } from "lucide-react"
-import { Skeleton } from "../ui/skeleton"
+import { Skeleton } from "@/components/ui/skeleton"
 import { usePathname } from "next/navigation"
 
 export function BreadcrumbSkeleton() {
@@ -17,14 +17,18 @@ export function BreadcrumbSkeleton() {
     return (
       <div key={index} className="flex items-center">
         {index > 0 && <ChevronRight className="mx-1.5 h-3 w-3 text-gray-500" />}
-        <Skeleton className={`h-4 ${width} bg-gray-700/50 dark:bg-zinc-800/50 rounded-md`} />
+        <Skeleton className={`h-4 ${width} bg-zinc-200 dark:bg-zinc-700 rounded-md`} />
       </div>
     )
   })
 
   return (
-    <div className="flex items-center">
-      {segments}
+    <div className="mb-6 sm:mb-8 flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
+      <Skeleton className="h-5 w-20 bg-zinc-200 dark:bg-zinc-700 rounded-md" />
+      <ChevronRight className="h-4 w-4 text-gray-400 dark:text-gray-500" />
+      <Skeleton className="h-5 w-24 bg-zinc-200 dark:bg-zinc-700 rounded-md" />
+      <ChevronRight className="h-4 w-4 text-gray-400 dark:text-gray-500" />
+      <Skeleton className="h-5 w-16 bg-zinc-200 dark:bg-zinc-700 rounded-md" />
     </div>
   )
 } 

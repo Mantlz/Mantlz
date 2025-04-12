@@ -1,8 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { Filter, Loader2, MessageSquare, Search, X, ArrowUpRight, Calendar, Mail, Lock, Sparkles, CheckIcon, Clock, CalendarRange, ArrowDownUp } from "lucide-react"
-import { formatDistanceToNow } from "date-fns"
+import { useState, useEffect } from "react"
+import { Filter, Search, X, Lock, Sparkles, Clock, CalendarRange, ArrowDownUp, Mail, Globe } from "lucide-react"
 import { Form, SearchResult, Submission } from "./types"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -19,7 +18,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { Slider } from "@/components/ui/slider"
 import { DateRangePicker } from "@/components/ui/date-range-picker"
 import {
   Accordion,
@@ -31,6 +29,14 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
+import { 
+  CommandDialog, 
+  CommandInput,
+  CommandList,
+  CommandSeparator,
+  CommandGroup,
+  CommandItem,
+} from "@/components/ui/command"
 
 interface SearchDialogProps {
   search: string
@@ -78,6 +84,18 @@ export function SearchDialog({
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false)
   const [tempFilters, setTempFilters] = useState<AdvancedFilters>(advancedFilters || {})
 
+  useEffect(() => {
+    // Store the original body overflow style
+    const originalOverflow = document.body.style.overflow;
+    // Prevent scrolling on mount
+    document.body.style.overflow = 'hidden';
+
+    // Re-enable scrolling on unmount
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []); // Empty dependency array ensures this runs only on mount and unmount
+
   const handleApplyFilters = () => {
     if (isProUser && setAdvancedFilters) {
       console.log("Applying advanced filters:", tempFilters)
@@ -98,12 +116,12 @@ export function SearchDialog({
     return (
       <div className="pt-1 text-[10px] text-gray-400 dark:text-gray-500 px-3">
         <span>Search tips: </span>
-        <span className="px-1 py-0.5 rounded bg-gray-100 dark:bg-zinc-800 font-mono mx-1">email@example.com</span>
-        <span className="px-1 py-0.5 rounded bg-gray-100 dark:bg-zinc-800 font-mono mx-1">abc123</span>
+        <span className="px-1 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono mx-1">email@example.com</span>
+        <span className="px-1 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono mx-1">abc123</span>
         {isProUser && (
           <>
-            <span className="px-1 py-0.5 rounded bg-gray-100 dark:bg-zinc-800 font-mono mx-1">@id:abc123</span>
-            <span className="px-1 py-0.5 rounded bg-gray-100 dark:bg-zinc-800 font-mono mx-1">date:{'>'} 2023-01-01</span>
+            <span className="px-1 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono mx-1">@id:abc123</span>
+            <span className="px-1 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono mx-1">date:{'>'} 2023-01-01</span>
           </>
         )}
       </div>
@@ -113,9 +131,9 @@ export function SearchDialog({
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24">
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative z-50 bg-white dark:bg-zinc-900 rounded-xl shadow-2xl max-w-[90vw] w-[550px] overflow-hidden border border-gray-200 dark:border-gray-800/50">
-        <div className="flex items-center px-4 py-3 border-b border-gray-100 dark:border-gray-800/50">
-          <div className="bg-gray-50 dark:bg-zinc-800 border border-gray-100 dark:border-gray-700/50 rounded-lg flex items-center px-3 py-1.5 flex-1 transition-shadow hover:shadow-inner">
+      <div className="relative z-50 bg-white dark:bg-zinc-900 rounded-xl shadow-2xl max-w-[90vw] w-[550px] overflow-hidden border border-zinc-200 dark:border-zinc-800">
+        <div className="flex items-center px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">
+          <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/50 rounded-lg flex items-center px-3 py-1.5 flex-1 transition-shadow hover:shadow-inner">
             <Search className="mr-2 h-4 w-4 shrink-0 text-gray-400 dark:text-gray-500" />
             <input 
               placeholder={`${isProUser ? 'Search' : 'Search'} by email, ID${isProUser ? ', or content' : ''}...`}
@@ -133,11 +151,11 @@ export function SearchDialog({
                 onValueChange={(value) => handleFormSelect(value)}
               >
                 <SelectTrigger 
-                  className="h-8 border border-gray-100 dark:border-gray-700/50 bg-gray-50 dark:bg-zinc-800 text-xs text-gray-700 dark:text-gray-300 rounded-lg min-w-[130px] focus:ring-gray-200 dark:focus:ring-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-700 transition-all"
+                  className="h-8 border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-gray-700 dark:text-gray-300 rounded-lg min-w-[130px] focus:ring-zinc-300 dark:focus:ring-zinc-700 cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-all"
                 >
                   <SelectValue placeholder="Select Form" />
                 </SelectTrigger>
-                <SelectContent className="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 text-xs rounded-lg overflow-hidden">
+                <SelectContent className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-lg overflow-hidden">
                   <SelectGroup>
                     <div className="relative cursor-pointer">
                       <SelectItem 
@@ -171,23 +189,23 @@ export function SearchDialog({
                   className={`ml-2 p-1.5 rounded-lg ${
                     Object.keys(advancedFilters || {}).length > 0 
                       ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700/50 text-blue-500" 
-                      : "bg-gray-50 dark:bg-zinc-800 border border-gray-100 dark:border-gray-700/50 hover:bg-gray-100 dark:hover:bg-zinc-700 text-gray-500 dark:text-gray-400"
+                      : "bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-gray-500 dark:text-gray-400"
                   } transition-colors cursor-pointer`}
                   title="Advanced Filters"
                 >
                   <Filter className={`h-4 w-4 ${Object.keys(advancedFilters || {}).length > 0 ? "text-blue-500" : ""}`} />
                 </button>
               </PopoverTrigger>
-              <PopoverContent className="w-80 p-0 rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg" align="end">
-                <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-800">
+              <PopoverContent className="w-80 p-0 rounded-lg border border-zinc-200 dark:border-zinc-700 shadow-lg bg-white dark:bg-zinc-900" align="end">
+                <div className="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">
                   <h3 className="font-medium text-sm text-gray-900 dark:text-gray-100">Advanced Search</h3>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Pro users can filter with these advanced options</p>
                 </div>
                 
                 <div className="p-4 space-y-4 max-h-[60vh] overflow-y-auto">
                   <Accordion type="single" collapsible className="w-full">
-                    <AccordionItem value="date-range" className="border-b border-gray-100 dark:border-gray-800/50">
-                      <AccordionTrigger className="text-sm py-2 hover:bg-gray-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
+                    <AccordionItem value="date-range" className="border-b border-zinc-200 dark:border-zinc-800">
+                      <AccordionTrigger className="text-sm py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
                         <div className="flex items-center">
                           <CalendarRange className="h-4 w-4 mr-2 text-gray-500" />
                           <span>Date Range</span>
@@ -204,8 +222,8 @@ export function SearchDialog({
                       </AccordionContent>
                     </AccordionItem>
                     
-                    <AccordionItem value="quick-timeframe" className="border-b border-gray-100 dark:border-gray-800/50">
-                      <AccordionTrigger className="text-sm py-2 hover:bg-gray-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
+                    <AccordionItem value="quick-timeframe" className="border-b border-zinc-200 dark:border-zinc-800">
+                      <AccordionTrigger className="text-sm py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
                         <div className="flex items-center">
                           <Clock className="h-4 w-4 mr-2 text-gray-500" />
                           <span>Time Frame</span>
@@ -220,7 +238,7 @@ export function SearchDialog({
                               className={`px-2 py-1 text-xs rounded-md border ${
                                 tempFilters.timeFrame === period 
                                   ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400' 
-                                  : 'bg-gray-50 border-gray-200 text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300'
+                                  : 'bg-zinc-50 border-zinc-200 text-gray-700 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-300'
                               } hover:shadow-sm transition-all`}
                             >
                               {period === 'all' ? 'All Time' : period}
@@ -230,8 +248,8 @@ export function SearchDialog({
                       </AccordionContent>
                     </AccordionItem>
                     
-                    <AccordionItem value="sort-order" className="border-b border-gray-100 dark:border-gray-800/50">
-                      <AccordionTrigger className="text-sm py-2 hover:bg-gray-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
+                    <AccordionItem value="sort-order" className="border-b border-zinc-200 dark:border-zinc-800">
+                      <AccordionTrigger className="text-sm py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
                         <div className="flex items-center">
                           <ArrowDownUp className="h-4 w-4 mr-2 text-gray-500" />
                           <span>Sort Order</span>
@@ -244,7 +262,7 @@ export function SearchDialog({
                             className={`flex-1 px-3 py-1.5 text-xs rounded-lg border ${
                               tempFilters.sortOrder !== 'oldest' 
                                 ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400' 
-                                : 'bg-gray-50 border-gray-200 text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300'
+                                : 'bg-zinc-50 border-zinc-200 text-gray-700 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-300'
                             } hover:shadow-sm transition-all`}
                           >
                             Newest First
@@ -254,7 +272,7 @@ export function SearchDialog({
                             className={`flex-1 px-3 py-1.5 text-xs rounded-lg border ${
                               tempFilters.sortOrder === 'oldest'
                                 ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400' 
-                                : 'bg-gray-50 border-gray-200 text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300'
+                                : 'bg-zinc-50 border-zinc-200 text-gray-700 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-300'
                             } hover:shadow-sm transition-all`}
                           >
                             Oldest First
@@ -263,8 +281,8 @@ export function SearchDialog({
                       </AccordionContent>
                     </AccordionItem>
                     
-                    <AccordionItem value="content-filters" className="border-b border-gray-100 dark:border-gray-800/50">
-                      <AccordionTrigger className="text-sm py-2 hover:bg-gray-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
+                    <AccordionItem value="content-filters" className="border-b border-zinc-200 dark:border-zinc-800">
+                      <AccordionTrigger className="text-sm py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
                         <div className="flex items-center">
                           <Filter className="h-4 w-4 mr-2 text-gray-500" />
                           <span>Content Filters</span>
@@ -318,7 +336,7 @@ export function SearchDialog({
           ) : (
             <div className="relative ml-2">
               <button
-                className="p-1.5 rounded-lg bg-gray-50/50 dark:bg-zinc-800/50 border border-gray-100/50 dark:border-gray-700/30 text-gray-400/50 dark:text-gray-500/50 cursor-not-allowed opacity-70"
+                className="p-1.5 rounded-lg bg-zinc-50/50 dark:bg-zinc-800/50 border border-zinc-200/50 dark:border-zinc-700/50 text-gray-400/50 dark:text-gray-500/50 cursor-not-allowed opacity-70"
                 title="Advanced Filters (PRO)"
                 onClick={showUpgradeModal}
               >
@@ -332,7 +350,7 @@ export function SearchDialog({
           
           <button 
             onClick={onClose}
-            className="ml-3 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            className="ml-3 p-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
           >
             <X className="h-4 w-4" />
           </button>
@@ -407,17 +425,17 @@ export function SearchDialog({
           />
         </div>
         
-        <div className="border-t border-gray-100 dark:border-gray-800/50 px-4 py-2.5 text-xs text-gray-400 dark:text-gray-500">
+        <div className="border-t border-zinc-200 dark:border-zinc-800 px-4 py-2.5 text-xs text-gray-400 dark:text-gray-500">
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               <span className="mr-1">Press</span>
-              <div className="inline-flex h-5 select-none items-center gap-1 rounded-md border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-zinc-800 px-1.5 font-mono text-[10px] font-medium">
+              <div className="inline-flex h-5 select-none items-center gap-1 rounded-md border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 px-1.5 font-mono text-[10px] font-medium">
                 Esc
               </div>
               <span className="ml-1">to close</span>
             </div>
             {data?.submissions && data.submissions.length > 0 && (
-              <Badge variant="secondary" className="text-[10px] bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-gray-400 rounded-lg px-2.5">
+              <Badge variant="secondary" className="text-[10px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded-lg px-2.5">
                 {!isProUser && data.submissions.length >= 10 ? "10+ results" : `${data.submissions.length} results`}
               </Badge>
             )}

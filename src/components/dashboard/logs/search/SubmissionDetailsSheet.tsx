@@ -19,10 +19,15 @@ import {
   Globe, 
   MapPin, 
   Bell,
-  File
+  File,
+  Eye,
+  ChevronLeft,
+  ChevronRight,
+  Check
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Submission } from "./types"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface SubmissionDetailsSheetProps {
   isOpen: boolean
@@ -174,52 +179,39 @@ export function SubmissionDetailsSheet({
             </div>
           </SheetHeader>
 
-          <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-6">
-            {/* Header section with gradient background */}
-            <div className="bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 p-3 sm:p-6 border border-gray-100 dark:border-gray-800/50 rounded-xl">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="space-y-2">
-                  <h2 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white tracking-tight flex flex-wrap items-center gap-2">
-                    <span>Submission #{submission.id.slice(0, 8)}</span>
-                    <Badge
-                      variant="secondary"
-                      className={cn(
-                        "text-[10px] ",
-                        userEmailStatus.color
-                      )}
-                    >
-                      {userEmailStatus.type === 'SENT' ? "Email Sent" : "No Email Sent"}
-                    </Badge>
-                  </h2>
-                  <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                    <Calendar className="h-3.5 w-3.5 mr-1.5 text-gray-500" />
-                    <span>
-                      Received{" "}
-                      {formatDistanceToNow(new Date(submission.createdAt), { addSuffix: true })}
-                    </span>
-                  </div>
+          <ScrollArea className="h-[calc(100vh-120px)]"> 
+            <div className="p-4 sm:p-6 space-y-6">
+              {/* Top Section: Status and Actions */}
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-zinc-200 dark:border-zinc-800">
+                <div className="flex items-center gap-2">
+                  <div className={`w-2.5 h-2.5 rounded-full ${
+                    submission.status === 'read' ? 'bg-green-500' : 'bg-blue-500'
+                  }`}></div>
+                  <span className={`text-sm font-medium ${
+                    submission.status === 'read' ? 'text-green-600 dark:text-green-400' : 'text-blue-600 dark:text-blue-400'
+                  }`}>
+                    {submission.status === 'read' ? 'Read' : 'Unread'}
+                  </span>
                 </div>
-                <div className="flex items-center gap-2 self-start sm:self-auto mt-2 sm:mt-0">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-8 text-xs bg-white hover:bg-gray-100 text-gray-600 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full transition-all duration-200"
-                    onClick={() => copyToClipboard("id", submission.id)}
+                <div className="flex items-center gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    // onClick={() => markAsRead(submission.id)} // TODO: Implement mark as read
+                    disabled={submission.status === 'read'}
+                    className="h-8 text-xs bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-full transition-all duration-200"
                   >
-                    {copiedField === "id" ? (
-                      <CheckCheck className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                    ) : (
-                      <Copy className="h-3.5 w-3.5 mr-1.5" />
-                    )}
-                    <span className="text-xs">
-                      {copiedField === "id" ? "Copied!" : "Copy ID"}
-                    </span>
+                    {submission.status === 'read' ? <Check className="mr-1.5 h-3 w-3" /> : <Eye className="mr-1.5 h-3 w-3" />}
+                    {submission.status === 'read' ? 'Marked as Read' : 'Mark Read'}
                   </Button>
                 </div>
               </div>
-            </div>
+              <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800 mb-3"></div>
+              <div className="space-y-1">
+                <p className="text-sm font-medium text-gray-900 dark:text-gray-100">Metadata</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Additional submission details</p>
+              </div>
 
-            <div className="space-y-4 sm:space-y-6">
               {/* Email Status Section */}
               {submission.email && (
                 <div>
@@ -373,7 +365,7 @@ export function SubmissionDetailsSheet({
                 </div>
               )}
             </div>
-          </div>
+          </ScrollArea>
         </div>
       </SheetContent>
     </Sheet>

@@ -116,7 +116,7 @@ export function LogsTable() {
         </div>
 
         <div className="text-center py-12 sm:py-16 bg-white dark:bg-zinc-900 rounded-xl border border-dashed border-gray-200 dark:border-gray-800">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 rounded-2xl bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 rounded-2xl bg-white dark:bg-zinc-800/50 flex items-center justify-center">
             <FileSpreadsheet className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 dark:text-gray-500" />
           </div>
           <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">Ready to create your first form?</h3>
@@ -188,7 +188,7 @@ export function LogsTable() {
 
                 {/* Stats Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-gray-50 dark:bg-zinc-800/50 rounded-xl p-4 border border-gray-100 dark:border-zinc-700/50 hover:border-gray-200 dark:hover:border-zinc-600/50 transition-all duration-200">
+                  <div className="bg-white dark:bg-zinc-900 rounded-xl hover:bg-zinc-100 p-4 border border-gray-100 dark:border-zinc-700/50 hover:border-zinc-300 dark:hover:border-zinc-300/50 transition-all duration-200">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                         <FileSpreadsheet className="h-5 w-5 text-gray-900 dark:text-white" />
@@ -200,7 +200,7 @@ export function LogsTable() {
                     </div>
                   </div>
                   
-                  <div className="bg-gray-50 dark:bg-zinc-800/50 rounded-xl p-4 border border-gray-100 dark:border-zinc-700/50 hover:border-gray-200 dark:hover:border-zinc-600/50 transition-all duration-200">
+                  <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-gray-100 dark:border-zinc-700/50 hover:border-gray-200 dark:hover:border-zinc-600/50 transition-all duration-200">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                         <Users className="h-5 w-5 text-gray-900 dark:text-white" />
@@ -237,7 +237,7 @@ export function LogsTable() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-7 px-2 text-xs hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-full"
+                      className="h-7 px-2 text-xs hover:bg-zinc-200 cursor-pointer dark:hover:bg-zinc-950 text-gray-600 dark:text-gray-300 rounded-lg"
                     >
                       View Logs
                     </Button>

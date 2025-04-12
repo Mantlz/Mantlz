@@ -1,10 +1,11 @@
 "use client"
 
-import { Loader2, MessageSquare, Search, Calendar, Mail, Lock, Sparkles, Clock, BarChart, Globe, MapPin, Inbox, ArrowUpRight } from "lucide-react"
+import { Loader2, MessageSquare, Search, Calendar, Mail, Lock, Sparkles, Clock, BarChart, Globe, MapPin, Inbox, ArrowUpRight, FileSearch, FileSpreadsheet, AlertCircle, Copy, CheckCheck, Maximize2 } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
 import { SearchResult, Submission } from "./types"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { useState } from "react"
 
 interface SearchResultsProps {
   isLoading: boolean
@@ -14,6 +15,21 @@ interface SearchResultsProps {
   selectedFormId: string | null
   isProUser?: boolean
   showUpgradeModal?: () => void
+}
+
+// Helper function to copy text to clipboard
+async function copyToClipboard(text: string): Promise<boolean> {
+  if (!navigator.clipboard) {
+    console.error("Clipboard API not available");
+    return false;
+  }
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (err) {
+    console.error("Failed to copy text: ", err);
+    return false;
+  }
 }
 
 export function SearchResults({ 
@@ -27,9 +43,11 @@ export function SearchResults({
 }: SearchResultsProps) {
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-center p-4">
-        <Loader2 className="h-6 w-6 animate-spin text-gray-400 mb-3" />
-        <p className="text-sm text-gray-500 dark:text-gray-400">Searching...</p>
+      <div className="p-6 text-center">
+        <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-white dark:bg-zinc-800 flex items-center justify-center">
+          <Loader2 className="h-6 w-6 text-gray-500 animate-spin" />
+        </div>
+        <p className="text-sm text-gray-600 dark:text-gray-400">Loading results...</p>
       </div>
     )
   }
@@ -74,9 +92,11 @@ export function SearchResults({
   
   if (!data || data.submissions.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center p-4">
-        <Inbox className="h-12 w-12 text-gray-300 dark:text-gray-700 mb-3" />
-        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">No results found</h3>
+      <div className="p-6 text-center">
+        <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-white dark:bg-zinc-800 flex items-center justify-center">
+          <FileSearch className="h-6 w-6 text-gray-400 dark:text-gray-500" />
+        </div>
+        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No Results Found</h3>
         <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md">
           Try adjusting your search terms or filters
         </p>
@@ -90,39 +110,76 @@ export function SearchResults({
   
   return (
     <div className="divide-y divide-gray-100 dark:divide-gray-800/50">
-      {results.map((submission) => (
-        <div 
-          key={submission.id} 
-          className="p-3 hover:bg-gray-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer flex items-center"
-          onClick={() => onSelectSubmission(submission)}
-        >
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center">
-                <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate mr-2">
-                  {submission.email || 'Anonymous Submission'}
-                </h4>
-                {submission.email && (
-                  <Badge variant="outline" className="rounded-full text-[9px] px-2 py-0 border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-400">
-                    <Mail className="h-2.5 w-2.5 mr-1" />
-                    Email
-                  </Badge>
-                )}
+      {results.map((submission) => {
+        // Add state for copy status for each submission item
+        const [isCopied, setIsCopied] = useState(false);
+
+        const handleCopy = async (e: React.MouseEvent) => {
+          e.stopPropagation();
+          const success = await copyToClipboard(submission.id);
+          if (success) {
+            setIsCopied(true);
+            setTimeout(() => setIsCopied(false), 1500); // Reset after 1.5 seconds
+          }
+        };
+        
+        return (
+          <div 
+            key={submission.id} 
+            className="p-3 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer flex items-center border-b border-zinc-200 dark:border-zinc-800 last:border-b-0"
+            onClick={() => onSelectSubmission(submission)}
+          >
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center">
+                  <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate mr-2">
+                    {submission.email || 'Anonymous Submission'}
+                  </h4>
+                  {submission.email && (
+                    <Badge variant="outline" className="rounded-full text-[9px] px-2 py-0 border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-400">
+                      <Mail className="h-2.5 w-2.5 mr-1" />
+                      Email
+                    </Badge>
+                  )}
+                </div>
+              </div>
+              
+              <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2">
+                <span className="truncate">Form: <span className="font-medium text-gray-700 dark:text-gray-300">{submission.formName}</span></span>
+                <span className="text-gray-300 dark:text-gray-600">•</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">
+                  {formatDistanceToNow(new Date(submission.createdAt), { addSuffix: true })}
+                </span>
               </div>
             </div>
             
-            <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2">
-              <span className="truncate">Form: <span className="font-medium text-gray-700 dark:text-gray-300">{submission.formName}</span></span>
-              <span className="text-gray-300 dark:text-gray-600">•</span>
-              <time className="text-[10px] whitespace-nowrap">
-                {formatDistanceToNow(new Date(submission.createdAt), { addSuffix: true })}
-              </time>
+            <div className="flex items-center space-x-2 ml-auto">
+              <Button
+                variant="outline"
+                size="sm"
+                className={`h-7 w-7 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border-zinc-200 dark:border-zinc-700 transition-all duration-150 ${
+                  isCopied ? 'border-green-500 dark:border-green-700 bg-green-50 dark:bg-green-900/30' : ''
+                }`}
+                onClick={handleCopy}
+                disabled={isCopied}
+              >
+                {isCopied ? <CheckCheck className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-7 w-7 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border-zinc-200 dark:border-zinc-700"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onSelectSubmission(submission)
+                }}
+              >
+                <Maximize2 className="h-4 w-4" />
+              </Button>
             </div>
           </div>
-          
-          <ArrowUpRight className="h-4 w-4 text-gray-400 dark:text-gray-500 self-center ml-2 flex-shrink-0" />
-        </div>
-      ))}
+        )
+      })}
       
       {hasMoreResults && showUpgradeModal && (
         <div className="p-4 bg-gradient-to-b from-amber-50/50 to-amber-50 dark:from-amber-900/10 dark:to-amber-900/20 flex flex-col items-center">

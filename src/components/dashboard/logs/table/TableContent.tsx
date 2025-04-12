@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
 import { usePathname } from "next/navigation"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 export function TableContent({ 
   data, 
@@ -218,13 +219,13 @@ export function TableContent({
 
   return (
     <>
-      <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-100 dark:border-zinc-950/50 overflow-hidden">
-        <div className="p-3 border-b border-gray-100 dark:border-zinc-950/50 flex justify-between items-center">
+      <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+        <div className="p-3 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
           <div className="flex items-center gap-1">
             <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">
               Submission Logs
             </h3>
-            <Badge className="ml-2 bg-gray-100  text-gray-600 dark:bg-zinc-950 dark:text-zinc-200">
+            <Badge className="ml-2 bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-200">
               {submissions.length} submissions
             </Badge>
             {userPlan === 'FREE' && enhancedSubmissions.filter(sub => new Date(sub.createdAt) > standardTimeLimit).length > 20 && (
@@ -274,7 +275,7 @@ export function TableContent({
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 shadow-lg" align="end">
+              <PopoverContent className="w-auto p-0 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-lg" align="end">
                 <div className="p-3">
                   <Calendar
                     mode="range"
@@ -345,7 +346,7 @@ export function TableContent({
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow className="hover:bg-transparent border-b border-gray-100 dark:border-zinc-950/50">
+              <TableRow className="hover:bg-transparent border-b border-zinc-200 dark:border-zinc-800">
                 <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
                   <span className="hidden sm:inline">Submission ID</span>
                   <span className="sm:hidden">ID</span>
@@ -375,11 +376,11 @@ export function TableContent({
               {limitedSubmissions.map((submission) => (
                 <TableRow
                   key={submission.id}
-                  className="hover:bg-gray-50 dark:hover:bg-zinc-950/50 border-b border-gray-100 dark:border-zinc-950/50 last:border-0"
+                  className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 last:border-0"
                 >
                   <TableCell className="py-3 sm:py-4">
                     <div className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+                      <div className="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-600"></div>
                       <span className="font-mono text-xs text-gray-600 dark:text-gray-400">{submission.id.slice(0, 8)}...</span>
                     </div>
                   </TableCell>
@@ -427,7 +428,7 @@ export function TableContent({
                       variant="outline"
                       size="sm"
                       onClick={() => openSubmissionDetails(submission)}
-                      className="h-7 px-2 text-xs  cursor-pointer bg-white hover:bg-gray-100 text-gray-600 dark:bg-zinc-900 dark:hover:bg-zinc-600 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                      className="h-7 px-2 text-xs  cursor-pointer bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
                     >
                       <Maximize2 className="h-3 w-3 mr-1" />
                       <span>Details</span>
@@ -437,7 +438,7 @@ export function TableContent({
               ))}
               
               {userPlan === 'FREE' && (freePlanLimitedCount > 0 || timeLimitedCount > 0) && (
-                <TableRow className="bg-gray-50/50 dark:bg-gray-800/20 border-b border-gray-100 dark:border-gray-800/50">
+                <TableRow className="bg-zinc-50/50 dark:bg-zinc-800/20 border-b border-zinc-200 dark:border-zinc-800">
                   <TableCell colSpan={5} className="py-4 text-center">
                     <div className="flex flex-col items-center justify-center gap-2">
                       <div className="flex items-center gap-2">
@@ -489,7 +490,7 @@ export function TableContent({
         </div>
         
         {pagination && pagination.pages > 1 && (
-          <div className="p-4 border-t border-gray-100 dark:border-zinc-950/50 flex justify-between items-center">
+          <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
             {!isPremium && (
               <div className="flex items-center gap-1 mr-2">
                 <AlertCircle className="h-3.5 w-3.5 text-amber-500" />
@@ -508,7 +509,7 @@ export function TableContent({
                 size="sm"
                 disabled={pagination.currentPage <= 1}
                 onClick={() => handlePaginationChange(pagination.currentPage - 1)}
-                className="h-8 text-xs bg-white hover:bg-gray-100 text-gray-600 dark:bg-zinc-950 cursor-pointer dark:hover:bg-zinc-600 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                className="h-8 text-xs bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 cursor-pointer dark:hover:bg-zinc-800 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Previous
               </Button>
@@ -518,7 +519,7 @@ export function TableContent({
                   size="sm"
                   disabled={pagination.currentPage >= (userPlan === 'FREE' ? Math.min(pagination.pages, 4) : pagination.pages)}
                   onClick={() => handlePaginationChange(pagination.currentPage + 1)}
-                  className="h-8 text-xs bg-white hover:bg-gray-100 text-gray-600 dark:bg-zinc-950 cursor-pointer dark:hover:bg-zinc-600 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                  className="h-8 text-xs bg-white hover:bg-zinc-100 text-gray-600  dark:bg-zinc-900 cursor-pointer dark:hover:bg-zinc-800 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Next
                 </Button>
@@ -526,7 +527,7 @@ export function TableContent({
                 <Button
                   size="sm"
                   onClick={() => setShowUpgradeModal(true)}
-                  className="h-8 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-full transition-all duration-200"
+                  className="h-8 bg-gradient-to-r from-amber-500 cursor-pointer to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-lg transition-all duration-200"
                 >
                   <Lock className="h-3.5 w-3.5 mr-1.5" />
                   <span>Upgrade for More</span>
@@ -616,7 +617,7 @@ function getUserEmailStatus(submission: Submission) {
   if (!submission.email) {
     return {
       text: "No Email",
-      className: "bg-gray-100 dark:bg-gray-800/50 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700",
+      className: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700",
       variant: "outline" as const
     };
   }
@@ -657,7 +658,7 @@ function getUserEmailStatus(submission: Submission) {
   // Default case - pending
   return {
     text: "Pending",
-    className: "bg-gray-100 dark:bg-gray-800/50 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700",
+    className: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700",
     variant: "outline" as const
   };
 }
@@ -700,7 +701,7 @@ function getDeveloperEmailStatus(submission: Submission) {
   // Default case - pending
   return {
     text: "Pending",
-    className: "bg-gray-100 dark:bg-gray-800/50 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700",
+    className: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700",
     variant: "outline" as const
   };
 } 
