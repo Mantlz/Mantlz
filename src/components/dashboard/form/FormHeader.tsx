@@ -41,11 +41,10 @@ interface FormHeaderProps {
 export function FormHeader({
   id,
   name,
-  createdAt,
   responsesCount = 0,
   form,
   analytics,
-  onRefresh,
+
   onDelete,
 }: FormHeaderProps) {
   const copyId = () => {
@@ -57,9 +56,6 @@ export function FormHeader({
       })
     }
   }
-
-  // Convert string to Date if needed
-  const createdAtDate = createdAt ? (createdAt instanceof Date ? createdAt : new Date(createdAt)) : new Date()
 
   return (
     <div className="relative overflow-hidden bg-white dark:bg-zinc-900 rounded-xl sm:rounded-2xl border border-gray-100 dark:border-zinc-800 shadow-sm">
@@ -104,7 +100,7 @@ export function FormHeader({
                     </span>
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-[90vw] xs:w-[85vw] sm:w-[500px] lg:w-[540px] p-0">
+                <SheetContent side="right" className="w-[95vw] sm:w-[90vw] lg:w-[1200px] p-0">
                   <div className="h-full flex flex-col">
                     <SheetHeader className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-zinc-700">
                       <SheetTitle className="text-lg sm:text-xl">Integration Guide</SheetTitle>

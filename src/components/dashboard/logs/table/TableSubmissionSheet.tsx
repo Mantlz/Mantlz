@@ -33,6 +33,7 @@ import { Submission } from "./types"
 import { UpgradeModal } from "@/components/modals/UpgradeModal"
 import { ScrollArea } from "@/components/ui/scroll-area"
 // import { LabelChip } from "@/components/dashboard/settings/billing/LabelChip" // Temporarily comment out until path is confirmed
+import { getUserEmailStatus } from '@/lib/submissionUtils'; // Import the shared function
 
 interface TableSubmissionSheetProps {
   isOpen: boolean
@@ -62,51 +63,6 @@ export function TableSubmissionSheet({
   
   const handleUpgradeClick = () => {
     setShowUpgradeModal(true)
-  }
-  
-  // Get the email status based on notification logs
-  const getUserEmailStatus = () => {
-    if (!submission.email) return null;
-    
-    // Check for sent email confirmation
-    if (submission.notificationLogs?.some(log => 
-      log.type === 'SUBMISSION_CONFIRMATION' && log.status === 'SENT'
-    )) {
-      return {
-        type: 'SENT',
-        color: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-        text: 'Email Sent'
-      };
-    }
-    
-    // Check for failed email
-    if (submission.notificationLogs?.some(log => 
-      log.type === 'SUBMISSION_CONFIRMATION' && log.status === 'FAILED'
-    )) {
-      return {
-        type: 'FAILED',
-        color: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-        text: 'Failed'
-      };
-    }
-    
-    // Check for skipped email
-    if (submission.notificationLogs?.some(log => 
-      log.type === 'SUBMISSION_CONFIRMATION' && log.status === 'SKIPPED'
-    )) {
-      return {
-        type: 'SKIPPED',
-        color: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-        text: 'Skipped'
-      };
-    }
-    
-    // Default to pending
-    return {
-      type: 'PENDING',
-      color: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-      text: 'Pending'
-    };
   }
   
   // Get developer notification status
@@ -165,11 +121,7 @@ export function TableSubmissionSheet({
   }
   
   // Create safe values with fallbacks
-  const userEmailStatus = getUserEmailStatus() || {
-    type: 'PENDING',
-    color: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-    text: 'Pending'
-  };
+  const userEmailStatus = getUserEmailStatus(submission.notificationLogs);
   
   const developerEmailStatus = getDeveloperEmailStatus();
   const userEmailError = getUserEmailError();

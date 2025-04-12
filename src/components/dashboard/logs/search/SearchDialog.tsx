@@ -29,14 +29,7 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
-import { 
-  CommandDialog, 
-  CommandInput,
-  CommandList,
-  CommandSeparator,
-  CommandGroup,
-  CommandItem,
-} from "@/components/ui/command"
+
 
 interface SearchDialogProps {
   search: string
@@ -131,7 +124,7 @@ export function SearchDialog({
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24">
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative z-50 bg-white dark:bg-zinc-900 rounded-xl shadow-2xl max-w-[90vw] w-[550px] overflow-hidden border border-zinc-200 dark:border-zinc-800">
+      <div className="relative z-50 bg-white dark:bg-zinc-900 rounded-lg shadow-2xl max-w-[90vw] w-[550px] overflow-hidden border border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">
           <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/50 rounded-lg flex items-center px-3 py-1.5 flex-1 transition-shadow hover:shadow-inner">
             <Search className="mr-2 h-4 w-4 shrink-0 text-gray-400 dark:text-gray-500" />
@@ -235,7 +228,7 @@ export function SearchDialog({
                             <button
                               key={period}
                               onClick={() => setTempFilters({...tempFilters, timeFrame: period as any})}
-                              className={`px-2 py-1 text-xs rounded-md border ${
+                              className={`px-2 py-1 text-xs rounded-lg border ${
                                 tempFilters.timeFrame === period 
                                   ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400' 
                                   : 'bg-zinc-50 border-zinc-200 text-gray-700 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-300'
@@ -396,7 +389,7 @@ export function SearchDialog({
         )}
         
         {!isProUser && selectedFormId === null && (
-          <div className="px-4 py-3 bg-amber-50/80 dark:bg-amber-900/20 border-b border-amber-100 dark:border-amber-800/20 flex items-center justify-between">
+          <div className="px-4 py-3 mt-1 bg-amber-50/80 dark:bg-amber-900/20 border-b border-amber-100 dark:border-amber-800/20 flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs text-amber-700 dark:text-amber-400">
               <Lock className="h-3.5 w-3.5" />
               <span>Standard users can only search within a specific form</span>
@@ -404,9 +397,9 @@ export function SearchDialog({
             {showUpgradeModal && (
               <button 
                 onClick={showUpgradeModal}
-                className="text-xs text-amber-700 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 font-medium flex items-center gap-1 px-3 py-1 rounded-lg bg-amber-100/50 dark:bg-amber-800/20 hover:bg-amber-100 dark:hover:bg-amber-800/30 transition-colors"
+                className="text-xs text-amber-700 dark:text-amber-400 cursor-pointer hover:text-amber-800 dark:hover:text-amber-300 font-medium flex items-center gap-1 px-3 py-1 rounded-lg bg-amber-100/50 dark:bg-amber-800/20 hover:bg-amber-100 dark:hover:bg-amber-800/30 transition-colors"
               >
-                <Sparkles className="h-3.5 w-3.5" />
+                <Sparkles className="h-3.5 w-3.5 m-1 " />
                 <span>Upgrade to PRO</span>
               </button>
             )}
@@ -429,7 +422,7 @@ export function SearchDialog({
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               <span className="mr-1">Press</span>
-              <div className="inline-flex h-5 select-none items-center gap-1 rounded-md border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 px-1.5 font-mono text-[10px] font-medium">
+              <div className="inline-flex h-5 select-none items-center gap-1 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 px-1.5 font-mono text-[10px] font-medium">
                 Esc
               </div>
               <span className="ml-1">to close</span>

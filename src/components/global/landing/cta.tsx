@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { motion } from "framer-motion"
+import { WaitlistForm } from "@mantlz/nextjs"
 
 export default function CTA() {
   return (
@@ -61,9 +62,14 @@ export default function CTA() {
           }}
           className="relative z-10 mt-8 flex flex-wrap items-center justify-center gap-4"
         >
-          <button className="w-40 transform rounded-lg bg-black px-6 py-2 font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
+          {/* <button className="w-40 transform rounded-lg bg-black px-6 py-2 font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
             Build Forms
-          </button>
+          </button> */}
+
+          <WaitlistForm
+      formId="cm8yl5ezq0004o7afghokqjze"
+      
+      />
         </motion.div>
         <motion.div
           initial={{

@@ -1,11 +1,13 @@
 "use client"
 
-import { Loader2, MessageSquare, Search, Calendar, Mail, Lock, Sparkles, Clock, BarChart, Globe, MapPin, Inbox, ArrowUpRight, FileSearch, FileSpreadsheet, AlertCircle, Copy, CheckCheck, Maximize2 } from "lucide-react"
+import { Loader2, MessageSquare, Search, Calendar, Mail, Lock, Sparkles, Clock, BarChart, Globe, MapPin, Inbox, ArrowUpRight, FileSearch, FileSpreadsheet, AlertCircle, Copy, CheckCheck, Maximize2, Check } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
+import { toast } from "sonner"
 import { SearchResult, Submission } from "./types"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { cn } from "@/lib/utils"
+import { getUserEmailStatus } from '@/lib/submissionUtils'
 
 interface SearchResultsProps {
   isLoading: boolean
@@ -15,21 +17,6 @@ interface SearchResultsProps {
   selectedFormId: string | null
   isProUser?: boolean
   showUpgradeModal?: () => void
-}
-
-// Helper function to copy text to clipboard
-async function copyToClipboard(text: string): Promise<boolean> {
-  if (!navigator.clipboard) {
-    console.error("Clipboard API not available");
-    return false;
-  }
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch (err) {
-    console.error("Failed to copy text: ", err);
-    return false;
-  }
 }
 
 export function SearchResults({ 
@@ -64,15 +51,6 @@ export function SearchResults({
         <p className="text-xs text-gray-500 dark:text-gray-400 max-w-xs mx-auto mb-4">
           Standard users can search within a specific form. Please select a form to search or upgrade to PRO to search across all forms.
         </p>
-        {showUpgradeModal && (
-          <button 
-            onClick={showUpgradeModal}
-            className="px-3 py-1.5 text-xs bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-full transition-all duration-200 inline-flex items-center gap-1.5"
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            <span>Upgrade to PRO</span>
-          </button>
-        )}
       </div>
     )
   }
@@ -110,76 +88,22 @@ export function SearchResults({
   
   return (
     <div className="divide-y divide-gray-100 dark:divide-gray-800/50">
-      {results.map((submission) => {
-        // Add state for copy status for each submission item
-        const [isCopied, setIsCopied] = useState(false);
-
-        const handleCopy = async (e: React.MouseEvent) => {
-          e.stopPropagation();
-          const success = await copyToClipboard(submission.id);
-          if (success) {
-            setIsCopied(true);
-            setTimeout(() => setIsCopied(false), 1500); // Reset after 1.5 seconds
-          }
-        };
-        
-        return (
-          <div 
-            key={submission.id} 
-            className="p-3 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer flex items-center border-b border-zinc-200 dark:border-zinc-800 last:border-b-0"
-            onClick={() => onSelectSubmission(submission)}
-          >
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between mb-1">
-                <div className="flex items-center">
-                  <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate mr-2">
-                    {submission.email || 'Anonymous Submission'}
-                  </h4>
-                  {submission.email && (
-                    <Badge variant="outline" className="rounded-full text-[9px] px-2 py-0 border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-400">
-                      <Mail className="h-2.5 w-2.5 mr-1" />
-                      Email
-                    </Badge>
-                  )}
-                </div>
-              </div>
-              
-              <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2">
-                <span className="truncate">Form: <span className="font-medium text-gray-700 dark:text-gray-300">{submission.formName}</span></span>
-                <span className="text-gray-300 dark:text-gray-600">•</span>
-                <span className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">
-                  {formatDistanceToNow(new Date(submission.createdAt), { addSuffix: true })}
-                </span>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-2 ml-auto">
-              <Button
-                variant="outline"
-                size="sm"
-                className={`h-7 w-7 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border-zinc-200 dark:border-zinc-700 transition-all duration-150 ${
-                  isCopied ? 'border-green-500 dark:border-green-700 bg-green-50 dark:bg-green-900/30' : ''
-                }`}
-                onClick={handleCopy}
-                disabled={isCopied}
-              >
-                {isCopied ? <CheckCheck className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-7 w-7 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border-zinc-200 dark:border-zinc-700"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onSelectSubmission(submission)
-                }}
-              >
-                <Maximize2 className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        )
-      })}
+      {results.map((submission) => (
+        <SubmissionSearchResult
+          key={submission.id}
+          submission={submission}
+          onClick={() => onSelectSubmission(submission)}
+          isProUser={isProUser}
+          onCopyClick={(e) => {
+            e.stopPropagation()
+            copyToClipboard(submission.id)
+          }}
+          onViewClick={(e) => {
+            e.stopPropagation()
+            onSelectSubmission(submission)
+          }}
+        />
+      ))}
       
       {hasMoreResults && showUpgradeModal && (
         <div className="p-4 bg-gradient-to-b from-amber-50/50 to-amber-50 dark:from-amber-900/10 dark:to-amber-900/20 flex flex-col items-center">
@@ -213,86 +137,113 @@ interface SubmissionSearchResultProps {
   submission: Submission
   onClick: () => void
   isProUser?: boolean
+  onCopyClick: (e: React.MouseEvent) => void
+  onViewClick: (e: React.MouseEvent) => void
 }
 
-function SubmissionSearchResult({ submission, onClick, isProUser = false }: SubmissionSearchResultProps) {
+function SubmissionSearchResult({ 
+  submission, 
+  onClick, 
+  isProUser = false,
+  onCopyClick,
+  onViewClick 
+}: SubmissionSearchResultProps) {
+  const userEmailStatus = getUserEmailStatus(submission.notificationLogs);
+
   return (
     <div
       onClick={onClick}
-      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-colors group"
+      className="flex items-center gap-3 px-3 py-3 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer transition-colors group border-b border-zinc-200 dark:border-zinc-800 last:border-b-0"
     >
-      <div className="bg-gray-100 dark:bg-zinc-800 rounded-full h-9 w-9 flex items-center justify-center shrink-0">
-        <Mail className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-      </div>
-      
       <div className="flex-1 min-w-0">
-        <div className="flex items-center">
-          {submission.email ? (
-            <span className="text-sm font-medium text-gray-800 dark:text-gray-200 truncate">
-              {submission.email}
-            </span>
-          ) : (
-            <span className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
-              Submission without email
-            </span>
-          )}
-          
-          {/* Form name as badge */}
-          <Badge 
-            className={`ml-2 text-[10px] ${submission.formName === "Unknown Form" 
-              ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400" 
-              : "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"} h-4`}
-          >
-            {submission.formName}
-          </Badge>
-          
-          {/* Pro users see additional badges */}
-          {isProUser && submission.status && (
-            <Badge className="ml-2 text-[10px] bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 h-4">
-              {submission.status}
-            </Badge>
-          )}
+        <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center">
+            <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate mr-2">
+              {submission.email || 'Anonymous Submission'}
+            </h4>
+            {submission.email && (
+              <Badge 
+                variant="secondary" 
+                className={cn(
+                  "ml-2 rounded-md text-[9px] px-1.5 py-0 h-4 font-medium leading-none", 
+                  userEmailStatus.color
+                )}
+              >
+                <Mail className="h-2.5 w-2.5 mr-1" />
+                {userEmailStatus.text}
+              </Badge>
+            )}
+            {isProUser && submission.status && (
+              <Badge className="ml-2 text-[10px] bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 h-4">
+                {submission.status}
+              </Badge>
+            )}
+          </div>
         </div>
         
-        <div className="flex items-center mt-1 gap-3">
-          <span className="font-mono text-xs text-gray-500 dark:text-gray-400">
-            {submission.id.slice(0, 8)}
-          </span>
-          
-          {/* Show analytics info for Pro users */}
+        <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2 flex-wrap">
+          <span className="truncate">Form: <span className="font-medium text-gray-700 dark:text-gray-300">{submission.formName}</span></span>
+          <span className="text-gray-300 dark:text-gray-600 hidden sm:inline">•</span>
           {isProUser && submission.analytics && (
-            <span className="flex items-center text-xs text-gray-400 dark:text-gray-500">
-              {submission.analytics.browser && (
-                <span className="inline-flex items-center mr-2">
-                  <Globe className="h-3 w-3 mr-1" />
-                  {submission.analytics.browser}
-                </span>
-              )}
-              {submission.analytics.location && submission.analytics.location !== "Unknown" && (
-                <span className="inline-flex items-center">
-                  <MapPin className="h-3 w-3 mr-1" />
-                  {submission.analytics.location}
-                </span>
-              )}
-            </span>
+            <>
+              <span className="flex items-center text-xs text-gray-400 dark:text-gray-500">
+                {submission.analytics.browser && (
+                  <span className="inline-flex items-center mr-2">
+                    <Globe className="h-3 w-3 mr-1" />
+                    {submission.analytics.browser}
+                  </span>
+                )}
+                {submission.analytics.location && submission.analytics.location !== "Unknown" && (
+                  <span className="inline-flex items-center">
+                    <MapPin className="h-3 w-3 mr-1" />
+                    {submission.analytics.location}
+                  </span>
+                )}
+              </span>
+              <span className="text-gray-300 dark:text-gray-600 hidden sm:inline">•</span>
+            </>
           )}
-          
           <span className="flex items-center text-xs text-gray-400 dark:text-gray-500">
             <Calendar className="h-3 w-3 mr-1" />
             {formatDistanceToNow(new Date(submission.createdAt), { addSuffix: true })}
           </span>
+          <span className="text-gray-300 dark:text-gray-600 hidden sm:inline">•</span>
+          <span className="font-mono text-xs text-gray-500 dark:text-gray-400">
+            ID: {submission.id.slice(0, 8)}...
+          </span>
         </div>
       </div>
       
-      <div className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-        <div className="h-7 w-7 rounded-full bg-gray-100 dark:bg-zinc-800 flex items-center justify-center">
-          {isProUser ? (
-            <span className="text-[10px] font-medium text-gray-600 dark:text-gray-400">View</span>
-          ) : (
-            <span className="text-[10px] font-medium text-gray-500 dark:text-gray-500">View</span>
-          )}
-        </div>
+      <div className="flex items-center space-x-2 ml-auto shrink-0">
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-7 w-7 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 cursor-pointer dark:hover:text-gray-300 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border-zinc-200 dark:border-zinc-700"
+          onClick={onCopyClick}
+          aria-label="Copy submission ID"
+        >
+          <Copy className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-7 w-7 p-0 text-gray-500 hover:text-gray-700 cursor-pointer dark:text-gray-400 dark:hover:text-gray-300 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border-zinc-200 dark:border-zinc-700"
+          onClick={onViewClick}
+          aria-label="View submission details"
+        >
+          <Maximize2 className="h-4 w-4" />
+        </Button>
       </div>
     </div>
   )
-} 
+}
+
+const copyToClipboard = async (text: string) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    toast.success("Submission ID copied to clipboard!");
+  } catch (err) {
+    console.error("Failed to copy text: ", err);
+    toast.error("Failed to copy submission ID.");
+  }
+}; 

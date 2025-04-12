@@ -46,7 +46,7 @@ export function FormSettings({
   formType = '', 
   emailSettings, 
   usersJoinedSettings,
-  exportSettings,
+  // exportSettings,
   onRefresh 
 }: FormSettingsProps) {
   // Log received props for debugging
@@ -521,7 +521,7 @@ export function FormSettings({
           </p>
           <button 
             onClick={() => setIsDeleteModalOpen(true)}
-            className="px-4 py-2 bg-white dark:bg-zinc-900 border border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 text-sm font-medium rounded-lg transition-colors"
+            className="px-4 py-2 bg-white cursor-pointer dark:bg-zinc-900 border border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 text-sm font-medium rounded-lg transition-colors"
           >
             Delete Form
           </button>
@@ -530,7 +530,7 @@ export function FormSettings({
 
       <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
         <DialogContent className="w-[95vw] max-w-[400px] sm:max-w-[600px] p-0 bg-transparent border-none">
-          <div className="flex flex-col bg-white dark:bg-zinc-900/90 rounded-3xl border border-gray-200 dark:border-white/5 shadow-2xl overflow-hidden dark:backdrop-blur-xl">
+          <div className="flex flex-col bg-white dark:bg-zinc-900/90 rounded-xl border border-gray-200 dark:border-white/5 shadow-2xl overflow-hidden dark:backdrop-blur-xl">
             {/* Header */}
             <div className="p-6 sm:p-8 bg-white dark:bg-transparent border-b border-gray-200 dark:border-white/5">
               <DialogTitle className={cn(
@@ -550,7 +550,7 @@ export function FormSettings({
               )}>
                 This action cannot be undone. All form submissions will be permanently deleted.
                 <br className="hidden sm:block" />
-                Type <span className="font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 px-2.5 py-1 rounded-full text-sm">delete</span> to confirm.
+                Type <span className="font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 px-2.5 py-1 rounded-lg text-sm">delete</span> to confirm.
               </DialogDescription>
             </div>
 
@@ -565,7 +565,7 @@ export function FormSettings({
                   "px-4 py-3",
                   "bg-gray-50 dark:bg-zinc-800/50",
                   "border border-gray-200 dark:border-zinc-700/50",
-                  "rounded-xl",
+                  "rounded-lg",
                   "text-gray-900 dark:text-gray-100",
                   "placeholder:text-gray-400 dark:placeholder:text-gray-500",
                   "focus:ring-4 focus:ring-red-500/10 dark:focus:ring-red-500/10",
@@ -586,13 +586,13 @@ export function FormSettings({
                 variant="outline"
                 onClick={() => setIsDeleteModalOpen(false)}
                 className={cn(
-                  "font-sans font-medium",
+                  "font-sans font-medium cursor-pointer",
                   "px-6 py-2.5",
                   "bg-white dark:bg-transparent",
                   "border border-gray-200 dark:border-zinc-700",
                   "text-gray-700 dark:text-gray-200",
                   "hover:bg-gray-50 dark:hover:bg-zinc-800/50",
-                  "rounded-xl",
+                  "rounded-lg",
                   "transition-all duration-200"
                 )}
               >
@@ -603,13 +603,13 @@ export function FormSettings({
                 onClick={handleDelete}
                 disabled={deleteConfirmation !== 'delete' || isDeleting}
                 className={cn(
-                  "font-sans font-medium",
+                  "font-sans font-medium cursor-pointer" ,
                   "px-6 py-2.5",
                   "bg-red-500 dark:bg-red-500",
                   "text-white",
                   "hover:bg-red-600 dark:hover:bg-red-600",
                   "disabled:opacity-50 disabled:cursor-not-allowed",
-                  "rounded-xl",
+                  "rounded-lg",
                   "transition-all duration-200",
                   "disabled:hover:bg-red-500"
                 )}

@@ -155,7 +155,7 @@ export default function Pricing() {
   // Render the pricing section
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <main className="pt-16">
         <section className="overflow-hidden bg-white dark:bg-zinc-950" id="pricing">
           <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
@@ -181,7 +181,7 @@ export default function Pricing() {
           </div>
         </section>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }
