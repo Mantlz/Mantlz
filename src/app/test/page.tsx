@@ -1,4 +1,4 @@
-import { ContactForm, FeedbackForm, WaitlistForm } from '@mantlz/nextjs';
+import { ContactForm, FeedbackForm, WaitlistForm , BASE_THEMES} from '@mantlz/nextjs';
 
 export default function CustomerFeedbackPage() {
   return (
@@ -13,7 +13,9 @@ export default function CustomerFeedbackPage() {
         messageLabel="Tell us more"
         messagePlaceholder="What did you like or dislike about our product?"
         submitButtonText="Send Your Feedback"
-        theme="purple"
+        // theme="purple"
+        theme={BASE_THEMES.DEFAULT}
+        
 
         
         // appearance={{
@@ -36,6 +38,7 @@ export default function CustomerFeedbackPage() {
         //   }
         // }}
       />
+
       
       {/* <ContactForm
         formId="asdadadada"

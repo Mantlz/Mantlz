@@ -1,0 +1,181 @@
+---
+title: List Submissions
+description: API endpoint to retrieve form submissions
+---
+
+# List Submissions
+
+This endpoint retrieves a paginated list of submissions for a specific form.
+
+## Endpoint
+
+```
+GET /forms/{formId}/submissions
+```
+
+## Authentication
+
+Requires an [API key](/docs/api-reference/authentication).
+
+## Path Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `formId` | string | The ID of the form to retrieve submissions for |
+
+## Query Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `limit` | integer | Maximum number of submissions to return (1-100, default: 50) |
+| `cursor` | string | Pagination cursor for fetching the next page |
+
+## Response
+
+### 200: OK
+
+Returns an object containing an array of submissions and a pagination cursor.
+
+**Response Fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `submissions` | array | List of submission objects |
+| `submissions[].id` | string | Unique identifier for the submission |
+| `submissions[].formId` | string | ID of the form the submission belongs to |
+| `submissions[].data` | object | The submitted form data |
+| `submissions[].data._meta` | object | Metadata about the submission (browser, OS, country, etc.) |
+| `submissions[].createdAt` | string | ISO 8601 timestamp when the submission was created |
+| `nextCursor` | string | Cursor to use for fetching the next page (null if no more submissions) |
+
+**Example Response:**
+
+```json
+{
+  "submissions": [
+    {
+      "id": "sub_789ghi",
+      "formId": "form_123abc",
+      "data": {
+        "email": "user@example.com",
+        "name": "John Doe",
+        "message": "This is my feedback",
+        "rating": 5,
+        "_meta": {
+          "browser": "Chrome",
+          "os": "macOS",
+          "country": "US"
+        }
+      },
+      "createdAt": "2023-01-20T15:30:00Z"
+    },
+    {
+      "id": "sub_012jkl",
+      "formId": "form_123abc",
+      "data": {
+        "email": "another@example.com",
+        "name": "Jane Smith",
+        "message": "Great product!",
+        "rating": 4,
+        "_meta": {
+          "browser": "Safari",
+          "os": "iOS",
+          "country": "CA"
+        }
+      },
+      "createdAt": "2023-01-19T10:15:00Z"
+    }
+  ],
+  "nextCursor": "sub_345mno"
+}
+```
+
+### 400: Bad Request
+
+Returned when the request parameters are invalid.
+
+### 401: Unauthorized
+
+Returned when the API key is missing or invalid.
+
+### 403: Forbidden
+
+Returned when the API key does not have access to the specified form.
+
+### 404: Not Found
+
+Returned when the form with the specified ID does not exist.
+
+### 429: Too Many Requests
+
+Returned when the rate limit is exceeded.
+
+## Pagination
+
+To fetch the next page of results, include the `nextCursor` value from the previous response as the `cursor` parameter in your next request.
+
+For example:
+
+```bash
+# Initial request
+curl -X GET "https://app.mantlz.com/api/v1/forms/form_123abc/submissions?limit=10" \
+  -H "X-API-Key: mk_your_api_key_here"
+
+# Subsequent request using the nextCursor
+curl -X GET "https://app.mantlz.com/api/v1/forms/form_123abc/submissions?limit=10&cursor=sub_345mno" \
+  -H "X-API-Key: mk_your_api_key_here"
+```
+
+When there are no more results to fetch, the `nextCursor` field will be `null`.
+
+## Example Request
+
+```bash
+curl -X GET "https://app.mantlz.com/api/v1/forms/form_123abc/submissions?limit=10" \
+  -H "X-API-Key: mk_your_api_key_here"
+```
+
+## Example in JavaScript
+
+```javascript
+async function listSubmissions(formId, limit = 50, cursor = null) {
+  try {
+    let url = `https://app.mantlz.com/api/v1/forms/${formId}/submissions?limit=${limit}`;
+    
+    if (cursor) {
+      url += `&cursor=${cursor}`;
+    }
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'X-API-Key': 'mk_your_api_key_here'
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error listing submissions:', error);
+    throw error;
+  }
+}
+
+// Example: fetch all submissions by handling pagination
+async function fetchAllSubmissions(formId) {
+  const allSubmissions = [];
+  let cursor = null;
+  
+  do {
+    const result = await listSubmissions(formId, 100, cursor);
+    allSubmissions.push(...result.submissions);
+    cursor = result.nextCursor;
+  } while (cursor);
+  
+  return allSubmissions;
+}
+``` 

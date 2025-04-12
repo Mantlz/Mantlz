@@ -1,0 +1,188 @@
+---
+title: Analytics API
+description: API endpoint to retrieve analytics data for forms
+---
+
+# Form Analytics
+
+This endpoint retrieves analytics data for a specific form, including submission trends, user demographics, and more.
+
+## Endpoint
+
+```
+GET /forms/{formId}/analytics
+```
+
+## Authentication
+
+Requires an [API key](/docs/api-reference/authentication).
+
+## Path Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `formId` | string | The ID of the form to retrieve analytics for |
+
+## Query Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `period` | string | Time period for analytics (options: "day", "week", "month", "year", default: "month") |
+| `startDate` | string | Optional. Start date for custom period (format: YYYY-MM-DD) |
+| `endDate` | string | Optional. End date for custom period (format: YYYY-MM-DD) |
+
+## Response
+
+### 200: OK
+
+Returns an object containing analytics data for the specified form.
+
+**Response Fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `period` | string | The time period used for the analytics |
+| `totalSubmissions` | integer | Total number of submissions in the period |
+| `submissionsOverTime` | array | Daily submission counts over the period |
+| `submissionsOverTime[].date` | string | Date in YYYY-MM-DD format |
+| `submissionsOverTime[].count` | integer | Number of submissions on that date |
+| `topCountries` | array | Submissions grouped by country |
+| `topCountries[].country` | string | Country code (ISO 3166-1 alpha-2) |
+| `topCountries[].count` | integer | Number of submissions from that country |
+| `topBrowsers` | array | Submissions grouped by browser |
+| `topBrowsers[].browser` | string | Browser name |
+| `topBrowsers[].count` | integer | Number of submissions from that browser |
+| `topDevices` | array | Submissions grouped by device type |
+| `topDevices[].device` | string | Device type (e.g., "desktop", "mobile", "tablet") |
+| `topDevices[].count` | integer | Number of submissions from that device type |
+
+**Example Response:**
+
+```json
+{
+  "period": "month",
+  "totalSubmissions": 247,
+  "submissionsOverTime": [
+    { "date": "2023-01-01", "count": 8 },
+    { "date": "2023-01-02", "count": 12 },
+    { "date": "2023-01-03", "count": 15 },
+    // ... more dates
+  ],
+  "topCountries": [
+    { "country": "US", "count": 120 },
+    { "country": "GB", "count": 45 },
+    { "country": "CA", "count": 30 },
+    { "country": "DE", "count": 20 },
+    { "country": "FR", "count": 18 }
+  ],
+  "topBrowsers": [
+    { "browser": "Chrome", "count": 140 },
+    { "browser": "Safari", "count": 60 },
+    { "browser": "Firefox", "count": 30 },
+    { "browser": "Edge", "count": 17 }
+  ],
+  "topDevices": [
+    { "device": "desktop", "count": 180 },
+    { "device": "mobile", "count": 55 },
+    { "device": "tablet", "count": 12 }
+  ]
+}
+```
+
+### 400: Bad Request
+
+Returned when the request parameters are invalid.
+
+### 401: Unauthorized
+
+Returned when the API key is missing or invalid.
+
+### 403: Forbidden
+
+Returned when the API key does not have access to the specified form.
+
+### 404: Not Found
+
+Returned when the form with the specified ID does not exist.
+
+### 429: Too Many Requests
+
+Returned when the rate limit is exceeded.
+
+## Example Request
+
+```bash
+curl -X GET "https://app.mantlz.com/api/v1/forms/form_123abc/analytics?period=week" \
+  -H "X-API-Key: mk_your_api_key_here"
+```
+
+## Example in JavaScript
+
+```javascript
+async function getFormAnalytics(formId, period = 'month') {
+  try {
+    const response = await fetch(`https://app.mantlz.com/api/v1/forms/${formId}/analytics?period=${period}`, {
+      method: 'GET',
+      headers: {
+        'X-API-Key': 'mk_your_api_key_here'
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error getting form analytics:', error);
+    throw error;
+  }
+}
+```
+
+## Visualizing Analytics Data
+
+Here's an example of how you might use the analytics data to create a simple submissions chart with Chart.js:
+
+```javascript
+import Chart from 'chart.js/auto';
+
+async function displaySubmissionsChart(formId, period = 'month') {
+  try {
+    const analytics = await getFormAnalytics(formId, period);
+    
+    // Extract dates and counts
+    const labels = analytics.submissionsOverTime.map(item => item.date);
+    const data = analytics.submissionsOverTime.map(item => item.count);
+    
+    // Create chart
+    const ctx = document.getElementById('submissions-chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Submissions',
+          data: data,
+          borderColor: '#3b82f6',
+          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+          tension: 0.3,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: `Form Submissions (${period})`
+          }
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Failed to load analytics chart:', error);
+  }
+}
+``` 

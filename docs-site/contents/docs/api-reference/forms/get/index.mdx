@@ -1,0 +1,119 @@
+---
+title: Get Form
+description: API endpoint to retrieve details about a specific form
+---
+
+# Get Form
+
+This endpoint retrieves detailed information about a specific form.
+
+## Endpoint
+
+```
+GET /forms/{formId}
+```
+
+## Authentication
+
+Requires an [API key](/docs/api-reference/authentication).
+
+## Path Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `formId` | string | The ID of the form to retrieve |
+
+## Response
+
+### 200: OK
+
+Returns an object containing detailed information about the form.
+
+**Response Fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | string | Unique identifier for the form |
+| `name` | string | Name of the form |
+| `description` | string | Description of the form |
+| `formType` | string | Type of form (e.g., "feedback", "contact", "waitlist") |
+| `createdAt` | string | ISO 8601 timestamp when the form was created |
+| `updatedAt` | string | ISO 8601 timestamp when the form was last updated |
+| `submissionCount` | integer | Number of submissions received |
+| `emailSettings` | object | Email notification settings for the form |
+| `emailSettings.enabled` | boolean | Whether email notifications are enabled |
+| `emailSettings.developerNotificationsEnabled` | boolean | Whether developer notifications are enabled |
+| `usersJoinedSettings` | object | Users joined counter settings (for waitlist forms) |
+| `usersJoinedSettings.enabled` | boolean | Whether the users joined counter is enabled |
+| `usersJoinedSettings.count` | integer | Number of users who have joined the waitlist |
+
+**Example Response:**
+
+```json
+{
+  "id": "form_123abc",
+  "name": "Customer Feedback",
+  "description": "Collect feedback from customers",
+  "formType": "feedback",
+  "createdAt": "2023-01-15T12:00:00Z",
+  "updatedAt": "2023-01-16T09:30:00Z",
+  "submissionCount": 42,
+  "emailSettings": {
+    "enabled": true,
+    "developerNotificationsEnabled": true
+  },
+  "usersJoinedSettings": null
+}
+```
+
+### 400: Bad Request
+
+Returned when the request parameters are invalid.
+
+### 401: Unauthorized
+
+Returned when the API key is missing or invalid.
+
+### 403: Forbidden
+
+Returned when the API key does not have access to the specified form.
+
+### 404: Not Found
+
+Returned when the form with the specified ID does not exist.
+
+### 429: Too Many Requests
+
+Returned when the rate limit is exceeded.
+
+## Example Request
+
+```bash
+curl -X GET "https://app.mantlz.com/api/v1/forms/form_123abc" \
+  -H "X-API-Key: mk_your_api_key_here"
+```
+
+## Example in JavaScript
+
+```javascript
+async function getForm(formId) {
+  try {
+    const response = await fetch(`https://app.mantlz.com/api/v1/forms/${formId}`, {
+      method: 'GET',
+      headers: {
+        'X-API-Key': 'mk_your_api_key_here'
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error getting form details:', error);
+    throw error;
+  }
+}
+``` 

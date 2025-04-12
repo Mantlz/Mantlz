@@ -1,0 +1,279 @@
+---
+title: FeedbackForm Appearance
+description: Customize the appearance of your Mantlz feedback forms
+---
+
+# FeedbackForm Appearance
+
+The `FeedbackForm` component provides extensive customization options to create beautiful feedback collection interfaces. This guide covers all styling options available for your feedback forms.
+
+## Preset Themes
+
+Mantlz includes a variety of built-in themes for your feedback forms:
+
+```tsx
+import { FeedbackForm } from '@mantlz/nextjs';
+
+// Default light theme
+<FeedbackForm formId="your-form-id" theme="default" />
+
+// Dark theme
+<FeedbackForm formId="your-form-id" theme="dark" />
+
+// Purple theme
+<FeedbackForm formId="your-form-id" theme="purple" />
+
+// Neobrutalism theme
+<FeedbackForm formId="your-form-id" theme="neobrutalism" />
+
+// Colorful theme
+<FeedbackForm formId="your-form-id" theme="colorful" />
+
+// Minimal theme
+<FeedbackForm formId="your-form-id" theme="minimal" />
+
+// Rounded theme
+<FeedbackForm formId="your-form-id" theme="rounded" />
+
+// Glass theme
+<FeedbackForm formId="your-form-id" theme="glass" />
+
+// Retro theme
+<FeedbackForm formId="your-form-id" theme="retro" />
+
+// Flat theme
+<FeedbackForm formId="your-form-id" theme="flat" />
+```
+
+You can also import theme constants:
+
+```tsx
+import { FeedbackForm, FEEDBACK_THEMES } from '@mantlz/nextjs';
+
+<FeedbackForm formId="your-form-id" theme={FEEDBACK_THEMES.GLASS} />
+```
+
+## Content Customization
+
+Easily customize the form content with these props:
+
+```tsx
+<FeedbackForm
+  formId="your-form-id"
+  // Form content
+  title="Your Feedback"
+  description="We'd love to hear what you think about our service"
+  ratingLabel="How would you rate your experience?"
+  emailLabel="Email Address"
+  emailPlaceholder="you@example.com"
+  messageLabel="Your Message"
+  messagePlaceholder="Tell us what you think..."
+  submitButtonText="Submit Feedback"
+  
+  // Forcing dark mode
+  darkMode={true}
+  
+  // Redirection after submission
+  redirectUrl="/thank-you"
+  
+  // Event handlers
+  onSubmitSuccess={(data) => console.log('Feedback submitted:', data)}
+  onSubmitError={(error) => console.error('Submission failed:', error)}
+/>
+```
+
+## Advanced Styling with Appearance API
+
+### Simple Flat Appearance API
+
+The flat appearance API provides an intuitive way to style your form:
+
+```tsx
+<FeedbackForm
+  formId="your-form-id"
+  appearance={{
+    // Container styling
+    container: 'bg-white p-6 rounded-xl shadow-md',
+    form: 'space-y-6',
+    background: 'bg-gradient-to-r from-blue-50 to-indigo-50',
+    border: 'border border-blue-100',
+    
+    // Card styling
+    card: 'shadow-sm rounded-xl overflow-hidden',
+    cardTitle: 'text-2xl font-bold text-blue-900',
+    cardDescription: 'text-blue-700',
+    cardHeader: 'mb-6',
+    cardContent: 'pt-2',
+    
+    // Rating styling
+    ratingContainer: 'flex gap-1 my-2',
+    ratingStarActive: 'text-amber-500 cursor-pointer transition-all hover:scale-110',
+    ratingStarInactive: 'text-gray-300 cursor-pointer transition-all hover:text-amber-400',
+    ratingLabel: 'text-blue-800 font-medium',
+    
+    // Form elements styling
+    input: 'border-gray-300 focus:ring-blue-500 focus:border-blue-500',
+    textarea: 'border-gray-300 focus:ring-blue-500 focus:border-blue-500 min-h-[120px]',
+    inputLabel: 'text-blue-800 font-medium',
+    inputError: 'text-red-500 text-sm',
+    
+    // Button styling
+    submitButton: 'bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md px-4 py-2',
+    
+    // Text customizations
+    submitText: 'Send Feedback',
+    placeholderText: 'We value your honest opinion...'
+  }}
+/>
+```
+
+### Dynamic Styling Based on Theme
+
+You can apply different styles based on the selected theme:
+
+```tsx
+<FeedbackForm
+  formId="your-form-id"
+  theme="dark"
+  appearance={(theme) => ({
+    // Styles change based on theme
+    container: theme === 'dark' 
+      ? 'bg-gray-900 text-white' 
+      : 'bg-white text-gray-900',
+    
+    ratingStarActive: theme === 'dark'
+      ? 'text-yellow-400'
+      : 'text-amber-500',
+    
+    ratingStarInactive: theme === 'dark'
+      ? 'text-gray-600 hover:text-yellow-400'
+      : 'text-gray-300 hover:text-amber-400',
+    
+    submitButton: theme === 'dark'
+      ? 'bg-gray-800 hover:bg-gray-700 text-white'
+      : 'bg-blue-600 hover:bg-blue-700 text-white',
+  })}
+/>
+```
+
+### Glassmorphism Example
+
+Create a feedback form with a modern glassmorphism effect:
+
+```tsx
+<FeedbackForm
+  formId="your-form-id"
+  appearance={{
+    container: 'bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-md p-8 rounded-2xl',
+    card: 'bg-white/10 border border-white/20 rounded-xl shadow-xl backdrop-blur-sm',
+    cardTitle: 'text-white text-2xl font-bold',
+    cardDescription: 'text-white/80',
+    inputLabel: 'text-white font-medium',
+    input: 'bg-white/10 border-white/20 text-white placeholder:text-white/50 backdrop-blur-sm',
+    textarea: 'bg-white/10 border-white/20 text-white placeholder:text-white/50 backdrop-blur-sm',
+    ratingStarActive: 'text-yellow-400',
+    ratingStarInactive: 'text-white/30 hover:text-yellow-400',
+    submitButton: 'bg-white/20 hover:bg-white/30 text-white border border-white/40 backdrop-blur-sm'
+  }}
+/>
+```
+
+### Neobrutalism Example
+
+Create a bold, eye-catching feedback form with neobrutalism styling:
+
+```tsx
+<FeedbackForm
+  formId="your-form-id"
+  appearance={{
+    baseStyle: {
+      container: 'bg-yellow-200 text-black',
+      form: 'space-y-6',
+    },
+    elements: {
+      card: 'border-3 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] bg-yellow-100',
+      cardHeader: 'space-y-2 p-6 pb-1',
+      cardTitle: 'text-2xl font-black uppercase tracking-wider',
+      cardDescription: 'text-base font-medium text-black',
+      cardContent: 'p-6',
+      submitButton: 'bg-pink-500 hover:bg-pink-400 active:bg-pink-600 text-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all font-bold uppercase',
+      inputLabel: 'text-sm font-black uppercase',
+      ratingLabel: 'text-sm font-black uppercase block mb-2',
+      input: 'bg-white border-2 border-black placeholder:text-gray-500 focus:ring-black focus:border-black',
+      textarea: 'bg-white border-2 border-black placeholder:text-gray-500 focus:ring-black focus:border-black',
+      inputError: 'text-sm font-bold text-red-500 mt-1',
+      ratingContainer: 'flex gap-1 my-1',
+      ratingStarActive: 'text-amber-500 cursor-pointer transition-transform duration-150 hover:text-amber-600 hover:scale-110',
+      ratingStarInactive: 'text-gray-400 cursor-pointer transition-transform duration-150 hover:text-amber-400 hover:scale-110',
+    }
+  }}
+/>
+```
+
+## Complete Styling Reference
+
+Below is a complete reference of all styling properties available for the `FeedbackForm` component:
+
+### Base Style Properties
+
+| Property | Description |
+|----------|-------------|
+| `container` | The outer container of the form |
+| `form` | The form element itself |
+| `background` | Background styling for the form |
+| `border` | Border styling for the form |
+
+### Element Properties
+
+| Property | Description |
+|----------|-------------|
+| `card` | The card component containing the form |
+| `cardHeader` | The header section of the card |
+| `cardTitle` | The title text of the form |
+| `cardDescription` | The description text of the form |
+| `cardContent` | The content section of the card |
+| `input` | Input field styling |
+| `textarea` | Textarea styling for feedback message |
+| `inputLabel` | Label styling for form fields |
+| `inputError` | Error message styling |
+| `submitButton` | The submit button styling |
+| `ratingLabel` | Label for rating section |
+| `ratingContainer` | Container for rating stars |
+| `ratingStarActive` | Styling for active/filled stars |
+| `ratingStarInactive` | Styling for inactive/empty stars |
+
+### Typography Properties
+
+| Property | Description |
+|----------|-------------|
+| `submitText` | Text for the submit button |
+| `feedbackPlaceholder` | Placeholder text for the feedback field |
+| `errorText` | Text for error messages |
+
+## Compatibility with Tailwind CSS
+
+All styling properties accept Tailwind CSS classes for comprehensive customization:
+
+```tsx
+<FeedbackForm
+  formId="your-form-id"
+  appearance={{
+    // Complex gradient backgrounds
+    container: 'bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500 p-6',
+    
+    // Advanced animations
+    submitButton: 'bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg px-5 py-2.5 transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg',
+    
+    // Custom spacing and positioning
+    ratingContainer: 'flex justify-center gap-2 my-4',
+    
+    // Responsive design
+    cardTitle: 'text-xl sm:text-2xl md:text-3xl font-bold text-white',
+    
+    // Hover and focus states
+    textarea: 'border-gray-300 focus:ring-amber-500 focus:border-amber-500 hover:border-amber-400 transition-colors duration-200',
+  }}
+/>
+```
+
+By leveraging these customization options, you can create feedback forms that perfectly align with your brand identity while providing an excellent user experience.

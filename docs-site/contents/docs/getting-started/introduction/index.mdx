@@ -1,42 +1,103 @@
 ---
 title: Introduction
-description: This section provides an overview of Introduction.
+description: A comprehensive guide to the Mantlz form solution platform
 ---
 
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam iste dolorum tempore consectetur explicabo tempora provident quia maxime, molestiae, facilis aperiam et, error illum vel ullam? Quis architecto dolore ullam
+# Welcome
+
+Mantlz is a powerful form solution platform that helps you create beautiful, customizable forms for your website or application. Whether you need feedback forms, contact forms, or waitlist forms, Mantlz provides the tools to collect and manage user submissions efficiently.
+
+## What is Mantlz?
+
+Mantlz is a complete form solution platform that enables developers and businesses to:
+
+- **Create customizable forms** with minimal code
+- **Collect user feedback** through star ratings and comments
+- **Build contact forms** to gather inquiries and questions
+- **Generate waitlists** for upcoming products or services
+- **Analyze form data** with built-in analytics
+
+Our SDK offers extensive customization options, dark mode support, and seamless integration with Next.js and other frameworks.
+
+## Key Features
+
+### Multiple Form Types
+
+Mantlz provides three main form components:
+
+- **FeedbackForm** - Collect user ratings and comments
+- **ContactForm** - Gather contact information and messages
+- **WaitlistForm** - Build an early access waitlist with counters
+
+### Extensive Customization
+
+All forms come with extensive styling options:
+
+- **Preset themes** including default, dark, purple, neobrutalism, and more
+- **Appearance API** for complete control over styling
+- **Tailwind CSS compatibility** for seamless integration
+- **Dark mode support** across all components
+
+### Developer Experience
+
+Mantlz is built with developers in mind:
+
+- **Simple API** that's easy to implement
+- **Comprehensive documentation** for all features
+- **Powerful SDK** for Next.js and React
+- **REST API** for custom integrations
+
+### Data Management
+
+Take control of your form submissions:
+
+- **Submission tracking** in the Mantlz dashboard
+- **Analytics** to understand user behavior
+- **Email notifications** for new submissions
+- **Export options** for your data
+
+## Who Should Use Mantlz?
+
+Mantlz is perfect for:
+
+- **Developers** building websites and applications
+- **Startups** collecting early user feedback
+- **SaaS companies** creating waitlists for new features
+- **Businesses** looking for customizable contact forms
+- **Product teams** gathering customer insights
 
 ## Getting Started
 
-To begin using the Documentation Template, follow these simple steps:
+Ready to start using Mantlz? Our documentation will guide you through:
 
-- Start by cloning the repository to your local machine.
+1. [Installing the SDK](/docs/getting-started/installation)
+2. [Setting up with Next.js](/docs/getting-started/installation/nextjs)
+3. [Customizing form appearance](/docs/appearance)
+4. [Using the API](/docs/api-reference)
 
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit quae iure nulla deserunt dolore quam pariatur minus sapiente accusantium. Optio, necessitatibus sequi. Veritatis, aspernatur? Possimus quis repellat eum vitae eveniet.
+## Example Form
 
-## Blockquotes
+Here's a simple example of how to add a feedback form to your Next.js application:
 
-Blockquotes are useful for emphasizing key points or quoting external sources:
+```tsx
+import { FeedbackForm } from '@mantlz/nextjs';
 
-> "Documentation is a love letter that you write to your future self." - Damian Conway
-
-Feel free to use blockquotes to highlight important information or quotes relevant to your documentation.
-
-## Code block
-
-```jsx {7} showLineNumbers
-import ThemeProvider from "./theme-provider";
-
-export default function RootLayout({ children }) {
+export default function FeedbackPage() {
   return (
-    <html>
-      <body className="container">
-        <ThemeProvider>{children}</ThemeProvider>
-      </body>
-    </html>
+    <div className="container mx-auto py-8">
+      <h1 className="text-2xl font-bold mb-4">We'd Love Your Feedback</h1>
+      
+      <FeedbackForm 
+        formId="your-form-id"
+        title="How was your experience?"
+        description="Your feedback helps us improve"
+        theme="purple"
+      />
+    </div>
   );
 }
 ```
 
-## Conclusion
+## Next Steps
 
-Thank you for choosing the Documentation Template for your project. Whether you're documenting software, APIs, or processes, we're here to support you in creating clear and effective documentation. Happy documenting!
+Start building forms with Mantlz today by [installing the SDK](/docs/getting-started/installation) and exploring our documentation.

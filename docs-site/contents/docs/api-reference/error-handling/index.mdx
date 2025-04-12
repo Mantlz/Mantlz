@@ -1,0 +1,131 @@
+---
+title: Error Handling
+description: How to handle errors from the Mantlz API
+---
+
+# Error Handling
+
+The Mantlz API uses standard HTTP status codes to indicate the success or failure of API requests. This guide explains how to handle errors from the API.
+
+## HTTP Status Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| `200 OK` | The request was successful |
+| `400 Bad Request` | The request was invalid or cannot be served |
+| `401 Unauthorized` | Authentication credentials are missing or invalid |
+| `403 Forbidden` | The authenticated user doesn't have permission to access the requested resource |
+| `404 Not Found` | The requested resource doesn't exist |
+| `429 Too Many Requests` | The rate limit has been exceeded |
+| `500 Internal Server Error` | An error occurred on the server |
+
+## Error Response Format
+
+Error responses include a JSON object with an error message:
+
+```json
+{
+  "error": "Invalid or inactive API key"
+}
+```
+
+## Common Errors and Solutions
+
+### Authentication Errors (401)
+
+```json
+{
+  "error": "Invalid or inactive API key"
+}
+```
+
+**Solution:** Verify that you're using a valid API key and that it hasn't been revoked.
+
+### Rate Limiting Errors (429)
+
+```json
+{
+  "error": "Too many requests, please try again later."
+}
+```
+
+**Solution:** Wait until the rate limit resets before making additional requests. The reset time is provided in the `X-RateLimit-Reset` header.
+
+### Invalid Request Errors (400)
+
+```json
+{
+  "error": "Invalid parameter: limit must be between 1 and 100"
+}
+```
+
+**Solution:** Check the request parameters and ensure they match the expected format and constraints.
+
+### Resource Not Found Errors (404)
+
+```json
+{
+  "error": "Form not found"
+}
+```
+
+**Solution:** Verify that the resource ID (e.g., form ID) is correct and exists.
+
+## Handling Errors in Your Code
+
+Here's an example of how to handle API errors in JavaScript:
+
+```javascript
+async function makeApiRequest(endpoint, options = {}) {
+  try {
+    const response = await fetch(`https://app.mantlz.com/api/v1${endpoint}`, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': 'mk_your_api_key_here',
+        ...options.headers,
+      },
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+      // Handle different error types
+      switch (response.status) {
+        case 401:
+          throw new Error(`Authentication error: ${data.error}`);
+        
+        case 403:
+          throw new Error(`Permission error: ${data.error}`);
+          
+        case 404:
+          throw new Error(`Resource not found: ${data.error}`);
+          
+        case 429:
+          const resetTime = response.headers.get('X-RateLimit-Reset');
+          throw new Error(`Rate limit exceeded. Try again after ${new Date(resetTime * 1000).toLocaleString()}`);
+          
+        default:
+          throw new Error(`API error (${response.status}): ${data.error}`);
+      }
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Request failed:', error);
+    throw error;
+  }
+}
+```
+
+## Rate Limit Headers
+
+When the API returns a response, it includes headers with information about your rate limit status:
+
+```
+X-RateLimit-Limit: 100      # Maximum requests allowed in the period
+X-RateLimit-Remaining: 99   # Requests remaining in the current period
+X-RateLimit-Reset: 1620000000   # Unix timestamp when the rate limit resets
+```
+
+It's good practice to monitor these headers and implement backoff strategies when you're approaching the limit. 

@@ -1,0 +1,62 @@
+---
+title: Forms API
+description: API endpoints for managing forms in Mantlz
+---
+
+# Forms API
+
+The Mantlz Forms API provides endpoints for accessing and managing your forms. These endpoints allow you to retrieve form information, get the number of users who have joined a waitlist, and more.
+
+## Available Endpoints
+
+### [List Forms](/docs/api-reference/forms/list)
+
+```
+GET /forms/list
+```
+
+Retrieve a paginated list of all your forms, including their names, descriptions, and submission counts.
+
+[View documentation →](/docs/api-reference/forms/list)
+
+### [Get Form](/docs/api-reference/forms/get)
+
+```
+GET /forms/{formId}
+```
+
+Get detailed information about a specific form, including its type, submission count, and settings.
+
+[View documentation →](/docs/api-reference/forms/get)
+
+### [Users Joined](/docs/api-reference/forms/users-joined)
+
+```
+GET /forms/{formId}/users-joined
+```
+
+For waitlist forms, retrieve the number of users who have joined the waitlist.
+
+[View documentation →](/docs/api-reference/forms/users-joined)
+
+## Common Use Cases
+
+- **Form Dashboard**: Retrieve a list of all forms to display in a dashboard
+- **Form Analytics**: Get detailed information about a specific form to show analytics
+- **Waitlist Counter**: Show the number of users who have joined a waitlist on your marketing page
+
+## Example: Listing Forms
+
+```javascript
+async function listAllForms() {
+  const response = await fetch('https://app.mantlz.com/api/v1/forms/list', {
+    method: 'GET',
+    headers: {
+      'X-API-Key': 'mk_your_api_key_here'
+    }
+  });
+  
+  const data = await response.json();
+  return data.forms;
+}
+``` 

@@ -6,15 +6,15 @@ export default function Home() {
   return (
     <div className="flex sm:min-h-[91vh] min-h-[88vh] flex-col items-center justify-center text-center px-2 py-8">
       <h1 className="text-5xl font-bold mb-4 sm:text-7xl">
-        Mantlz Doc
+        Mantlz
       </h1>
       <h1 className="text-3xl font-bold mb-4 sm:text-5xl">
-        A minimal version of AriaDocs
+        Complete Form Solution Platform
       </h1>
       <p className="mb-8 sm:text-md max-w-[800px] text-muted-foreground">
-        This feature-packed documentation template, built with Next.js, offers a
-        sleek and responsive design, perfect for all your project documentation
-        needs.
+        Create beautiful, customizable forms for your website including feedback, contact, and waitlist forms.
+        Mantlz provides a powerful SDK with multiple themes, dark mode support, and extensive styling options 
+        to gather information from your users and enhance engagement.
       </p>
       <div>
         <Link
@@ -24,7 +24,7 @@ export default function Home() {
             size: "lg",
           })}
         >
-          Get Stared
+          Get Started
         </Link>
       </div>
     </div>

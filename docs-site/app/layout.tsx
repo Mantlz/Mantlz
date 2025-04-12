@@ -19,9 +19,9 @@ const codeFont = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AriaDocsLite - Template",
+  title: "Mantlz - Documentation",
   description:
-    "This comprehensive documentation template, crafted with Next.js and available as open-source, delivers a sleek and responsive design, tailored to meet all your project documentation requirements.",
+    "Documentation for Mantlz - The Complete Form Solution Platform for building customizable feedback, contact, and waitlist forms with powerful styling options.",
 };
 
 export default function RootLayout({

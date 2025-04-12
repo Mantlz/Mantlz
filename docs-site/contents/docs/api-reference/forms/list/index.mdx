@@ -1,0 +1,132 @@
+---
+title: List Forms
+description: API endpoint to retrieve a list of your forms
+---
+
+# List Forms
+
+This endpoint retrieves a paginated list of all your forms.
+
+## Endpoint
+
+```
+GET /forms/list
+```
+
+## Authentication
+
+Requires an [API key](/docs/api-reference/authentication).
+
+## Query Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `limit` | integer | Maximum number of forms to return (1-100, default: 50) |
+| `cursor` | string | Pagination cursor for fetching the next page |
+
+## Response
+
+### 200: OK
+
+Returns an object containing an array of forms and a pagination cursor.
+
+**Response Fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `forms` | array | List of form objects |
+| `forms[].id` | string | Unique identifier for the form |
+| `forms[].name` | string | Name of the form |
+| `forms[].description` | string | Description of the form |
+| `forms[].submissionCount` | integer | Number of submissions received |
+| `forms[].createdAt` | string | ISO 8601 timestamp when the form was created |
+| `forms[].updatedAt` | string | ISO 8601 timestamp when the form was last updated |
+| `nextCursor` | string | Cursor to use for fetching the next page (null if no more forms) |
+
+**Example Response:**
+
+```json
+{
+  "forms": [
+    {
+      "id": "form_123abc",
+      "name": "Customer Feedback",
+      "description": "Collect feedback from customers",
+      "submissionCount": 42,
+      "createdAt": "2023-01-15T12:00:00Z",
+      "updatedAt": "2023-01-16T09:30:00Z"
+    },
+    {
+      "id": "form_456def",
+      "name": "Product Waitlist",
+      "description": "Join our product waitlist",
+      "submissionCount": 128,
+      "createdAt": "2023-01-10T08:15:00Z",
+      "updatedAt": "2023-01-16T10:45:00Z"
+    }
+  ],
+  "nextCursor": "form_789ghi"
+}
+```
+
+### 400: Bad Request
+
+Returned when the request parameters are invalid.
+
+### 401: Unauthorized
+
+Returned when the API key is missing or invalid.
+
+### 429: Too Many Requests
+
+Returned when the rate limit is exceeded.
+
+## Pagination
+
+To fetch the next page of results, include the `nextCursor` value from the previous response as the `cursor` parameter in your next request.
+
+For example:
+
+```bash
+# Initial request
+curl -X GET "https://app.mantlz.com/api/v1/forms/list?limit=10" \
+  -H "X-API-Key: mk_your_api_key_here"
+
+# Subsequent request using the nextCursor
+curl -X GET "https://app.mantlz.com/api/v1/forms/list?limit=10&cursor=form_789ghi" \
+  -H "X-API-Key: mk_your_api_key_here"
+```
+
+When there are no more results to fetch, the `nextCursor` field will be `null`.
+
+## Example Request
+
+```bash
+curl -X GET "https://app.mantlz.com/api/v1/forms/list?limit=10" \
+  -H "X-API-Key: mk_your_api_key_here"
+```
+
+## Example in JavaScript
+
+```javascript
+async function listForms() {
+  try {
+    const response = await fetch('https://app.mantlz.com/api/v1/forms/list?limit=10', {
+      method: 'GET',
+      headers: {
+        'X-API-Key': 'mk_your_api_key_here'
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error listing forms:', error);
+    throw error;
+  }
+}
+``` 

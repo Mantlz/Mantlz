@@ -1,0 +1,174 @@
+---
+title: Submit Form
+description: API endpoint to submit data to a form
+---
+
+# Submit Form
+
+This endpoint allows you to programmatically submit data to a form.
+
+## Endpoint
+
+```
+POST /forms/submit
+```
+
+## Authentication
+
+Requires an [API key](/docs/api-reference/authentication).
+
+## Request Body
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `formId` | string | **Required.** The ID of the form to submit data to |
+| `redirectUrl` | string | Optional. URL to redirect to after successful submission (for server-rendered forms) |
+| `data` | object | **Required.** Form data to submit |
+
+The `data` object should contain key-value pairs corresponding to the form fields. The structure depends on the form type:
+
+### Feedback Form Data
+
+```json
+{
+  "email": "user@example.com",
+  "rating": 5,
+  "message": "This is my feedback"
+}
+```
+
+### Contact Form Data
+
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "subject": "Product inquiry",
+  "message": "I'd like to learn more about your product"
+}
+```
+
+### Waitlist Form Data
+
+```json
+{
+  "name": "Jane Smith",
+  "email": "jane@example.com",
+  "referralSource": "Twitter"
+}
+```
+
+## Example Request
+
+```bash
+curl -X POST "https://app.mantlz.com/api/v1/forms/submit" \
+  -H "X-API-Key: mk_your_api_key_here" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "formId": "form_123abc",
+    "redirectUrl": "https://example.com/thank-you",
+    "data": {
+      "email": "user@example.com",
+      "name": "John Doe",
+      "message": "This is my feedback",
+      "rating": 5
+    }
+  }'
+```
+
+## Response
+
+### 200: OK
+
+Returns an object indicating the submission was successful.
+
+**Response Fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | boolean | Always `true` for successful submissions |
+| `submissionId` | string | Unique identifier for the submission |
+| `redirect` | string | The redirect URL if one was provided |
+
+**Example Response:**
+
+```json
+{
+  "success": true,
+  "submissionId": "sub_789ghi",
+  "redirect": "https://example.com/thank-you"
+}
+```
+
+### 400: Bad Request
+
+Returned when the request parameters are invalid.
+
+### 401: Unauthorized
+
+Returned when the API key is missing or invalid.
+
+### 403: Forbidden
+
+Returned when the API key does not have access to the specified form.
+
+### 404: Not Found
+
+Returned when the form with the specified ID does not exist.
+
+### 429: Too Many Requests
+
+Returned when the rate limit is exceeded.
+
+## Example in JavaScript
+
+```javascript
+async function submitForm(formId, formData, redirectUrl = null) {
+  try {
+    const response = await fetch('https://app.mantlz.com/api/v1/forms/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': 'mk_your_api_key_here'
+      },
+      body: JSON.stringify({
+        formId: formId,
+        redirectUrl: redirectUrl,
+        data: formData
+      })
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `API error: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    
+    // Handle redirect if needed
+    if (result.redirect && typeof window !== 'undefined') {
+      window.location.href = result.redirect;
+    }
+    
+    return result;
+  } catch (error) {
+    console.error('Error submitting form:', error);
+    throw error;
+  }
+}
+
+// Example usage
+submitForm('form_123abc', {
+  email: 'user@example.com',
+  name: 'John Doe',
+  message: 'This is my feedback',
+  rating: 5
+}, 'https://example.com/thank-you');
+```
+
+## Notes
+
+- The email address is automatically extracted from the `data` object if it's present
+- Form submissions include metadata about the user's browser, country, and other analytics information
+- Email notifications to form owners are sent based on the form's configured email settings
+- If you're using the Mantlz SDK, you don't need to call this endpoint directly 

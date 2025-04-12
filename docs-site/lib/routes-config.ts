@@ -18,20 +18,58 @@ export const ROUTES: EachRoute[] = [
         title: "Installation",
         href: "/installation",
         items: [
-          { title: "Laravel", href: "/laravel" },
-          { title: "React", href: "/react" },
-          { title: "Gatsby", href: "/gatsby" },
+          { title: "Nextjs", href: "/nextjs" },
+        ],
+      },
+      {
+        title: "Components",
+        href: "/components",
+        noLink: true,
+        items: [
+          { title: "Waitlist Form", href: "/waitlist-form" },
         ],
       },
     ],
   },
   {
-    title: "Server Actions",
-    href: "/server-actions",
+    title: "Appearance",
+    href: "/appearance",
     noLink: true,
     items: [
-      { title: "getSession", href: "/getSession" },
-      { title: "getToken", href: "/getToken" },
+      { title: "Contact", href: "/contact" },
+      { title: "Feedback", href: "/feedback" },
+      { title: "Waitlist", href: "/waitlist" },
+      { title: "Simplified API", href: "/simplified-api" },
+    ],
+  },
+  {
+    title: "API Reference",
+    href: "/api-reference",
+    noLink: true,
+    items: [
+      { title: "Overview", href: "/overview" },
+      { title: "Authentication", href: "/authentication" },
+      { title: "Providers and Hooks", href: "/context" },
+      { title: "Redirects", href: "/redirects" },
+      { 
+        title: "Forms",
+        href: "/forms",
+        items: [
+          { title: "List Forms", href: "/list" },
+          { title: "Get Form", href: "/get" },
+          { title: "Users Joined", href: "/users-joined" },
+        ]
+      },
+      { 
+        title: "Submissions",
+        href: "/submissions",
+        items: [
+          { title: "Submit Form", href: "/submit" },
+          { title: "List Submissions", href: "/list" },
+        ]
+      },
+      { title: "Analytics", href: "/analytics" },
+      { title: "Error Handling", href: "/error-handling" },
     ],
   },
 ];

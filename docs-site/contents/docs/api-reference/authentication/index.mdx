@@ -1,0 +1,71 @@
+---
+title: API Authentication
+description: Learn how to authenticate with the Mantlz API
+---
+
+# API Authentication
+
+All requests to the Mantlz API require authentication using your API key. This guide explains how to obtain and use your API key.
+
+## Obtaining an API Key
+
+To get an API key:
+
+1. Log in to your [Mantlz Dashboard](https://app.mantlz.com/dashboard)
+2. Navigate to **Settings** > **API Keys**
+3. Click **Create API Key**
+4. Name your API key and click **Generate**
+5. Copy and securely store your API key
+
+<Note type="warning">
+  API keys are only displayed once at creation time. If you lose your key, you'll need to generate a new one.
+</Note>
+
+## Using Your API Key
+
+There are two ways to authenticate your API requests:
+
+### 1. API Key Header (Recommended)
+
+Include your API key in the `X-API-Key` header:
+
+```bash
+curl -X GET "https://app.mantlz.com/api/v1/forms/list" \
+  -H "X-API-Key: mk_your_api_key_here"
+```
+
+### 2. Query Parameter
+
+Alternatively, you can pass your API key as a query parameter:
+
+```bash
+curl -X GET "https://app.mantlz.com/api/v1/forms/list?apiKey=mk_your_api_key_here"
+```
+
+<Note type="info">
+  The header method is recommended as it's more secure than including your API key in URLs.
+</Note>
+
+## API Key Security
+
+To keep your API key secure:
+
+- Never share your API key publicly
+- Do not include your API key in client-side code
+- Use environment variables to store your API key in server-side code
+- Revoke and replace API keys if they are compromised
+- Consider using different API keys for different environments (development, staging, production)
+
+## Rate Limiting
+
+API requests are subject to rate limiting. When a rate limit is exceeded, the API will return a `429 Too Many Requests` status code.
+
+Rate limit information is included in the response headers:
+
+```
+X-RateLimit-Limit: 100      # Maximum requests allowed in the period
+X-RateLimit-Remaining: 99   # Requests remaining in the current period
+X-RateLimit-Reset: 1620000000   # Unix timestamp when the rate limit resets
+```
+
+When you receive a rate limit error, wait until the reset time before making additional requests. 

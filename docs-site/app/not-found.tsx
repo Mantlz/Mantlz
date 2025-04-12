@@ -3,13 +3,16 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="min-h-[99vh] px-2 py-8 flex flex-col gap-3 items-start">
-      <div>
-        <h2 className="text-5xl font-bold">404</h2>
-        <p className="text-muted-foreground">Page not found</p>
+    <div className="min-h-[99vh] flex flex-col items-center justify-center text-center">
+      <div className="mb-6">
+        <h2 className="text-6xl font-bold mb-2">404</h2>
+        <p className="text-muted-foreground text-lg">Page not found</p>
       </div>
 
-      <Link href="/" className={buttonVariants({})}>
+      <Link href="/" className={buttonVariants({
+        className: "px-6",
+        size: "lg"
+      })}>
         Back to homepage
       </Link>
     </div>
