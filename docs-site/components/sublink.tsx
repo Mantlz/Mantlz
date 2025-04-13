@@ -24,7 +24,7 @@ export default function SubLink({
   const [isOpen, setIsOpen] = useState(level == 0);
 
   const Comp = (
-    <Anchor activeClassName="text-primary font-medium" href={href}>
+    <Anchor activeClassName="text-primary font-medium" href={href} className="hover:translate-x-0.5 transition-transform duration-200">
       {title}
     </Anchor>
   );
@@ -46,28 +46,28 @@ export default function SubLink({
   return (
     <div className="flex flex-col gap-1 w-full">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 group">
           {titleOrLink}
           <CollapsibleTrigger asChild>
             <Button
-              className="ml-auto mr-3.5 h-6 w-6 text-foreground"
+              className="ml-auto mr-3.5 h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors duration-200"
               variant="link"
               size="icon"
             >
               {!isOpen ? (
-                <ChevronRight className="h-[0.9rem] w-[0.9rem]" />
+                <ChevronRight className="h-[0.9rem] w-[0.9rem] transition-transform duration-200" />
               ) : (
-                <ChevronDown className="h-[0.9rem] w-[0.9rem]" />
+                <ChevronDown className="h-[0.9rem] w-[0.9rem] transition-transform duration-200" />
               )}
               <span className="sr-only">Toggle</span>
             </Button>
           </CollapsibleTrigger>
         </div>
-        <CollapsibleContent>
+        <CollapsibleContent className="transition-all duration-200">
           <div
             className={cn(
               "flex flex-col items-start sm:text-sm dark:text-neutral-300/85 text-neutral-800 ml-0.5 mt-2.5 gap-3",
-              level > 0 && "pl-4 border-l ml-1"
+              level > 0 && "pl-4 border-l ml-1 border-border/60"
             )}
           >
             {items?.map((innerLink) => {
