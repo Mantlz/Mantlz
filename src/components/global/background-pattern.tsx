@@ -6,12 +6,21 @@ import { LucideProps } from "lucide-react"
 export const BackgroundPattern = (props: LucideProps) => {
   return (
     <div className={`absolute inset-0 overflow-hidden ${props.className}`}>
-      {/* Clean gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-white" />
+      {/* Brighter gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 via-zinc-200 to-zinc-800" />
       
-      {/* Subtle modern grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#4444440A_1px,transparent_1px),linear-gradient(to_bottom,#4444440A_1px,transparent_1px)] 
-        bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_90%_90%_at_50%_50%,#000_70%,transparent_100%)]" />
+      {/* Cartoonish wave/blob pattern */}
+      <div 
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] 
+        from-zinc-500/50 to-transparent 
+        bg-[size:800px_800px] bg-no-repeat bg-center opacity-60 blur-sm"
+      />
+      <div 
+        className="absolute bottom-0 left-[-20%] right-[-20%] top-[-10%] h-[500px] 
+        bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] 
+        from-zinc-600/40 to-transparent 
+        rounded-[50%] bg-no-repeat opacity-70 blur-lg"
+      />
     </div>
   )
 }

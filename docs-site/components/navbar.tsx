@@ -1,10 +1,10 @@
 import { ModeToggle } from "@/components/theme-toggle";
-import { HexagonIcon } from "lucide-react";
 import Link from "next/link";
 import Anchor from "./anchor";
 import { SheetLeftbar } from "./leftbar";
 import { page_routes } from "@/lib/routes-config";
 import { Logo as LogoIcon } from "../components/logo";
+
 
 export const NAVLINKS = [
   {
