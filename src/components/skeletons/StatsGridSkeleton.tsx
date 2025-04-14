@@ -1,37 +1,55 @@
 import { Skeleton } from "@/components/ui/skeleton"
+import { FileSpreadsheet, Users } from "lucide-react"
 
 export function StatsGridSkeleton() {
   return (
-    <div className="relative overflow-hidden bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
-      <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
-      <div className="relative p-6 lg:p-8">
-        <div className="flex flex-col gap-6">
-          {/* Header Section */}
-          <div className="flex items-start justify-between gap-4">
-            <div className="space-y-1">
-              <Skeleton className="h-8 w-48 sm:w-64" style={{ animationDelay: '0.1s' }} />
-              <Skeleton className="h-4 w-32" style={{ animationDelay: '0.2s' }} />
-            </div>
-            <Skeleton className="h-9 w-48" style={{ animationDelay: '0.3s' }} />
-          </div>
-
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
-              <div className="flex items-center gap-3">
-                <Skeleton className="h-10 w-10 rounded-lg bg-zinc-200 dark:bg-zinc-700" />
-                <div className="space-y-1.5">
-                  <Skeleton className="h-4 w-10 mb-1" style={{ animationDelay: '0.5s' }} />
-                  <Skeleton className="h-3 w-28" style={{ animationDelay: '0.6s' }} />
+    <div className="space-y-6 sm:space-y-8">
+      {/* Header Section in its own card */}
+      <div className="relative overflow-hidden bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+        <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
+        <div className="relative p-6 lg:p-8">
+          <div className="flex flex-col gap-6">
+            {/* Header Section */}
+            <div className="flex items-start justify-between gap-4">
+              <div className="space-y-1">
+                <h1 className="text-2xl font-semibold text-gray-900 dark:text-white tracking-tight">
+                  <Skeleton className="h-8 w-48 sm:w-64 rounded-md" />
+                </h1>
+                <div className="text-sm text-gray-500 dark:text-gray-400">
+                  <Skeleton className="h-4 w-32 rounded-md" />
                 </div>
               </div>
+              <div className="h-9 w-48 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm">
+                Search submissions
+              </div>
             </div>
-            <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
-              <div className="flex items-center gap-3">
-                <Skeleton className="h-10 w-10 rounded-lg bg-zinc-200 dark:bg-zinc-700" />
-                <div className="space-y-1.5">
-                  <Skeleton className="h-4 w-12 bg-zinc-200 dark:bg-zinc-700" style={{ animationDelay: '0.4s' }} />
-                  <Skeleton className="h-3 w-28" style={{ animationDelay: '0.6s' }} />
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                    <FileSpreadsheet className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      <Skeleton className="h-4 w-10 rounded-md" />
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Total Forms</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                    <Users className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      <Skeleton className="h-4 w-12 rounded-md" />
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Total Submissions</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -39,19 +57,23 @@ export function StatsGridSkeleton() {
         </div>
       </div>
 
-      {/* Forms Grid Skeleton */}
+      {/* Forms Grid Skeleton in its own container */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {[1, 2, 3, 4, 5, 6].map((i) => (
           <div key={i} className="bg-white dark:bg-zinc-900 border border-gray-100 dark:border-gray-800/50 rounded-xl shadow-sm overflow-hidden">
             <div className="p-4 sm:p-6">
-              <Skeleton className="h-6 w-3/4 mb-2" style={{ animationDelay: `${0.7 + (i - 1) * 0.05}s` }} />
-              <Skeleton className="h-4 w-full mb-4" style={{ animationDelay: `${0.8 + (i - 1) * 0.05}s` }} />
+              <Skeleton className="h-6 w-3/4 mb-2 rounded-md" />
+              <Skeleton className="h-4 w-full max-w-md mb-4 rounded-md" />
               <div className="flex justify-between items-center mt-4">
                 <div className="flex items-center gap-1">
-                  <Skeleton className="h-4 w-4 rounded-full" style={{ animationDelay: `${0.9 + (i - 1) * 0.05}s` }} />
-                  <Skeleton className="h-3 w-24" style={{ animationDelay: `${1.0 + (i - 1) * 0.05}s` }} />
+                  <FileSpreadsheet className="h-4 w-4 text-gray-300 dark:text-gray-600" />
+                  <div className="text-xs text-gray-400 dark:text-gray-500">
+                    <Skeleton className="h-3 w-16 inline-block rounded-md" /> submissions
+                  </div>
                 </div>
-                <Skeleton className="h-7 w-20 rounded-full" style={{ animationDelay: `${1.1 + (i - 1) * 0.05}s` }} />
+                <div className="h-7 w-20 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-xs text-zinc-400 dark:text-zinc-500">
+                  View Logs
+                </div>
               </div>
             </div>
           </div>

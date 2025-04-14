@@ -31,8 +31,8 @@ import {
 import { cn } from "@/lib/utils"
 import { Submission } from "./types"
 import { UpgradeModal } from "@/components/modals/UpgradeModal"
-import { ScrollArea } from "@/components/ui/scroll-area"
-// import { LabelChip } from "@/components/dashboard/settings/billing/LabelChip" // Temporarily comment out until path is confirmed
+
+
 import { getUserEmailStatus } from '@/lib/submissionUtils'; // Import the shared function
 
 interface TableSubmissionSheetProps {

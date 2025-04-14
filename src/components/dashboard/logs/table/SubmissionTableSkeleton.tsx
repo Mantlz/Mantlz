@@ -1,7 +1,8 @@
 "use client"
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Mail, Calendar, Globe, MapPin } from "lucide-react"
+import { Mail, Calendar, Globe, MapPin, Eye } from "lucide-react"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export function SubmissionTableSkeleton({ isPremium }: { isPremium: boolean }) {
   return (
@@ -38,32 +39,56 @@ export function SubmissionTableSkeleton({ isPremium }: { isPremium: boolean }) {
                 className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 last:border-0"
               >
                 <TableCell className="pl-4 sm:pl-6 py-3">
-                  <div className="flex items-center">
+                  <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-600"></div>
+                    <span className="text-sm text-zinc-400 dark:text-zinc-500">ID-<Skeleton className="h-4 w-16 inline-block" /></span>
                   </div>
                 </TableCell>
                 <TableCell className="py-3">
-                  <div className="h-4 bg-zinc-200 dark:bg-zinc-700 rounded-md animate-pulse" style={{ animationDelay: `${index * 0.1}s` }}></div>
+                  <div className="flex items-center gap-2">
+                    <Mail className="h-3.5 w-3.5 text-zinc-300 dark:text-zinc-600" />
+                    <Skeleton className="h-4 w-28 rounded-md" />
+                  </div>
                 </TableCell>
                 <TableCell className="py-3">
                   <div className="flex flex-col gap-1">
-                    <div className="h-4 w-16 bg-zinc-200 dark:bg-zinc-700 rounded-md animate-pulse" style={{ animationDelay: `${index * 0.1 + 0.05}s` }}></div>
-                    <div className="h-4 w-12 bg-zinc-200 dark:bg-zinc-700 rounded-md animate-pulse" style={{ animationDelay: `${index * 0.1 + 0.1}s` }}></div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-2 h-2 rounded-full bg-zinc-300 dark:bg-zinc-600"></div>
+                      <Skeleton className="h-4 w-16 rounded-md" />
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <MapPin className="h-3 w-3 text-zinc-300 dark:text-zinc-600" />
+                      <Skeleton className="h-3.5 w-12 rounded-md" />
+                    </div>
                   </div>
                 </TableCell>
                 {isPremium && (
                   <TableCell className="py-3 hidden md:table-cell">
                     <div className="flex flex-col gap-1">
-                      <div className="h-4 w-20 sm:w-28 bg-zinc-200 dark:bg-zinc-700 rounded-md animate-pulse" style={{ animationDelay: `${index * 0.1 + 0.1}s` }}></div>
-                      <div className="h-4 w-24 sm:w-32 bg-zinc-200 dark:bg-zinc-700 rounded-md animate-pulse" style={{ animationDelay: `${index * 0.1 + 0.15}s` }}></div>
+                      <div className="flex items-center gap-1">
+                        <Globe className="h-3 w-3 text-zinc-300 dark:text-zinc-600" />
+                        <Skeleton className="h-4 w-20 sm:w-28 rounded-md" />
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3 text-zinc-300 dark:text-zinc-600" />
+                        <Skeleton className="h-3.5 w-24 sm:w-32 rounded-md" />
+                      </div>
                     </div>
                   </TableCell>
                 )}
                 <TableCell className="py-3">
-                  <div className="h-4 w-20 bg-zinc-200 dark:bg-zinc-700 rounded-md animate-pulse" style={{ animationDelay: `${index * 0.1 + 0.2}s` }}></div>
+                  <div className="flex items-center gap-1">
+                    <Calendar className="h-3.5 w-3.5 text-zinc-300 dark:text-zinc-600" />
+                    <Skeleton className="h-4 w-20 rounded-md" />
+                  </div>
                 </TableCell>
                 <TableCell className="text-right py-3">
-                  <div className="w-16 h-7 bg-zinc-200 dark:bg-zinc-700 rounded-full animate-pulse ml-auto" style={{ animationDelay: `${index * 0.1 + 0.35}s` }}></div>
+                  <div className="flex items-center justify-end">
+                    <div className="w-16 h-7 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
+                      <Eye className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+                      <span className="text-xs text-zinc-400 dark:text-zinc-500 ml-1">View</span>
+                    </div>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
@@ -72,10 +97,15 @@ export function SubmissionTableSkeleton({ isPremium }: { isPremium: boolean }) {
       </div>
       
       <div className="flex justify-between items-center p-4 border-t border-zinc-200 dark:border-zinc-800">
-        <div className="w-24 h-8 bg-zinc-200 dark:bg-zinc-700 rounded-md animate-pulse" style={{ animationDelay: '0.1s' }}></div>
+        <div className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
+          <span>Page</span>
+          <Skeleton className="h-8 w-8 rounded-md inline-block" />
+          <span>of</span>
+          <Skeleton className="h-8 w-8 rounded-md inline-block" />
+        </div>
         <div className="flex gap-2">
-          <div className="w-20 h-8 bg-zinc-200 dark:bg-zinc-700 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-          <div className="w-20 h-8 bg-zinc-200 dark:bg-zinc-700 rounded-full animate-pulse" style={{ animationDelay: '0.3s' }}></div>
+          <div className="w-20 h-8 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-zinc-400 dark:text-zinc-500 text-sm">Previous</div>
+          <div className="w-20 h-8 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-zinc-400 dark:text-zinc-500 text-sm">Next</div>
         </div>
       </div>
     </div>

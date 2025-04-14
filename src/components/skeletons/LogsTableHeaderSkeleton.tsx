@@ -1,4 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton"
+import { Badge } from "@/components/ui/badge"
+import { ChevronLeft, Users, Clock, File } from "lucide-react"
 
 export function LogsTableHeaderSkeleton() {
   return (
@@ -8,35 +10,77 @@ export function LogsTableHeaderSkeleton() {
         <div className="flex flex-col gap-6">
           {/* Header Section */}
           <div className="flex items-start justify-between gap-4">
-            <div className="space-y-3">
+            <div className="space-y-1">
               <div className="flex items-center gap-3">
-                <Skeleton className="h-8 w-24 rounded-full" style={{ animationDelay: '0.1s' }} />
-                <Skeleton className="h-6 w-32 rounded-md" style={{ animationDelay: '0.2s' }} />
+                <div className="h-8 text-xs cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full px-3 bg-zinc-50 dark:bg-zinc-800/50 flex items-center">
+                  <ChevronLeft className="h-3.5 w-3.5 mr-1 text-zinc-500 dark:text-zinc-400" />
+                  <span className="hidden xs:inline text-zinc-500 dark:text-zinc-400">Back to Forms</span>
+                </div>
+                <Badge variant="secondary" className="bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400">
+                  Form ID: <Skeleton className="h-3 w-16 rounded-md inline-block" />
+                </Badge>
               </div>
-              <Skeleton className="h-8 w-48 sm:w-64" style={{ animationDelay: '0.3s' }} />
+              <h1 className="text-2xl font-semibold text-gray-900 dark:text-white tracking-tight">
+                <Skeleton className="h-8 w-48 sm:w-64 rounded-md" />
+              </h1>
             </div>
-            <Skeleton className="h-9 w-48" style={{ animationDelay: '0.4s' }} />
+            <div className="h-9 w-48 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm">
+              Search submissions
+            </div>
           </div>
 
           {/* Description */}
-          <Skeleton className="h-4 w-full max-w-md" style={{ animationDelay: '0.5s' }} />
+          <div className="text-sm text-gray-500 dark:text-gray-400 max-w-2xl">
+            <Skeleton className="h-4 w-full max-w-md rounded-md" />
+          </div>
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
-                <div className="flex items-center gap-3">
-                  <Skeleton className="h-10 w-10 rounded-lg bg-zinc-200 dark:bg-zinc-700" />
-                  <div>
-                    <Skeleton className="h-4 w-10 mb-1" style={{ animationDelay: `${0.7 + (i - 1) * 0.1}s` }} />
-                    <Skeleton className="h-3 w-28" style={{ animationDelay: `${0.8 + (i - 1) * 0.1}s` }} />
-                  </div>
+            <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                  <Users className="h-5 w-5 text-gray-400 dark:text-gray-500" />
                 </div>
-                {i === 1 && (
-                  <Skeleton className="mt-2 h-1 w-full rounded-full" style={{ animationDelay: '0.9s' }} />
-                )}
+                <div>
+                  <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    <Skeleton className="h-4 w-10 mb-1 rounded-md" />
+                  </div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Total Submissions</p>
+                </div>
               </div>
-            ))}
+              <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+                <div className="h-full bg-zinc-300 dark:bg-zinc-600 rounded-full w-1/3" />
+              </div>
+            </div>
+            
+            <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                  <Clock className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+                </div>
+                <div>
+                  <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    <Skeleton className="h-4 w-28 mb-1 rounded-md" />
+                  </div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Created</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Last Submission Card */}
+            <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                  <File className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+                </div>
+                <div>
+                  <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    <Skeleton className="h-4 w-28 mb-1 rounded-md" />
+                  </div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Last Submission</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

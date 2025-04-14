@@ -37,14 +37,16 @@ const UserDropdown = memo(function UserDropdown() {
           variant="ghost"
           className="flex items-center gap-2 p-1.5 rounded-full hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
         >
-          <Avatar className="h-7 w-7 xs:h-8 xs:w-8 ring-2 ring-zinc-100 dark:ring-zinc-800">
-            <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
-            <AvatarFallback className="bg-zinc-700 text-zinc-100">
-              {user?.firstName?.[0] || user?.lastName?.[0] || "U"}
-            </AvatarFallback>
-          </Avatar>
-          <span className="hidden sm:inline text-sm font-medium">{user?.fullName || "User"}</span>
-          <ChevronDown className="hidden sm:inline h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
+          <div className="flex items-center gap-2">
+            <Avatar className="h-7 w-7 xs:h-8 xs:w-8 ring-2 ring-zinc-100 dark:ring-zinc-800">
+              <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
+              <AvatarFallback className="bg-zinc-700 text-zinc-100">
+                {user?.firstName?.[0] || user?.lastName?.[0] || "U"}
+              </AvatarFallback>
+            </Avatar>
+            <span className="hidden sm:inline text-sm font-medium">{user?.fullName || "User"}</span>
+            <ChevronDown className="hidden sm:inline h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
+          </div>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent

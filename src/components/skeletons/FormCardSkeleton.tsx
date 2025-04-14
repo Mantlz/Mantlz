@@ -19,7 +19,7 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
         <div className="flex items-center justify-between mb-3 sm:mb-4">
           <Skeleton className="h-5 w-3/5 rounded-md" />
           <div className="text-xs sm:text-sm bg-gray-50 dark:bg-gray-800/50 text-gray-400 dark:text-gray-500 px-2 sm:px-3 py-1 rounded-full flex items-center justify-center">
-            <Skeleton className="h-4 w-5 rounded-md inline-block mr-1" /> responses
+            <span><Skeleton className="h-4 w-5 rounded-md inline-block mr-1" /></span> responses
           </div>
         </div>
         
@@ -76,9 +76,9 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
                         <Skeleton className="h-5 w-5 rounded-md" />
-                      </p>
+                      </div>
                       <p className="text-xs text-gray-500 dark:text-gray-400">Total Forms</p>
                     </div>
                   </div>
@@ -98,9 +98,9 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
                         <Skeleton className="h-5 w-5 rounded-md" />
-                      </p>
+                      </div>
                       <p className="text-xs text-gray-500 dark:text-gray-400">Total Submissions</p>
                     </div>
                   </div>
