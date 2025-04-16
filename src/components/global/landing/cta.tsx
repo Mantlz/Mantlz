@@ -68,7 +68,15 @@ export default function CTA() {
 
           <WaitlistForm
       formId="cm8yl5ezq0004o7afghokqjze"
-      
+      title="Get early access"
+      description="Join the waitlist to get early access to the platform."
+      showUsersJoined={true}
+      usersJoinedLabel="joined"
+      theme="neobrutalism"
+
+
+
+    
       />
         </motion.div>
         <motion.div

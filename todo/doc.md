@@ -167,3 +167,12 @@ With 1 hour per day available for development:
 | Free Tier | ✅ | ✅ | ✅ | ❌ |
 | Custom Domains | ✅ (Team) | ✅ (Paid) | ❌ | ✅ (Paid) |
 | Webhooks | ✅ | ✅ | ✅ | ✅ |
+
+# Project Task Checklist & Status
+
+- [x] Mantlz SDK: Form Redirect Feature (Complete)
+- [ ] Core API and basic functionality (Months 1-2)
+- [ ] Dashboard and basic SDK (Months 3-4)
+- [ ] Full SDK and templates (Months 5-6)
+- [ ] Billing integration and documentation (Month 7)
+- [ ] Launch and initial marketing (Month 8)
