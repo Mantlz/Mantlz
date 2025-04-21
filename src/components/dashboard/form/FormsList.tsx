@@ -158,7 +158,7 @@ export function FormsList({ itemsPerPage = 8 }: FormsListProps) {
             </div>
             <Button
               className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-all duration-200 rounded-xl px-6 shadow-sm hover:shadow-md"
-              onClick={() => window.location.href = '/dashboard/form/new'}
+              onClick={() => window.location.href = '/dashboard/form-builder'}
             >
               <Plus className="h-4 w-4 mr-2" />
               {forms.length === 0 ? 'Create Your First Form' : 'New Form'}
@@ -214,7 +214,7 @@ export function FormsList({ itemsPerPage = 8 }: FormsListProps) {
           </p>
           <Button
             className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-all duration-200 rounded-full px-6 shadow-sm hover:shadow-md"
-            onClick={() => window.location.href = '/dashboard/form/new'}
+            onClick={() => window.location.href = '/dashboard/form-builder'}
           >
             <Plus className="h-4 w-4 mr-2" />
             Create Your First Form

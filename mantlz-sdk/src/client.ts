@@ -1,5 +1,6 @@
 import { MantlzClient, FormSubmitResponse, MantlzError, MantlzClientConfig, FormSubmitOptions } from './types';
 import { toast, ToastHandler } from './utils/toast';
+import { FormSchema } from './components/shared/DynamicForm';
 
 // Global error tracking to prevent duplicate toasts across different client instances
 const globalErrorState = {
@@ -18,6 +19,19 @@ export function createMantlzClient(apiKey?: string, config?: MantlzClientConfig)
   if (!key || typeof key !== 'string' || key.trim() === '') {
     throw new Error('Valid API key is required to initialize the Mantlz client. Provide it directly or set MANTLZ_KEY in your environment variables.');
   }
+
+  // Determine the base API URL
+  // 1. Use explicit config.apiUrl if provided
+  // 2. Use NEXT_PUBLIC_MANTLZ_API_URL env var if provided
+  // 3. Default to a relative path (empty string) for same-origin requests if running in browser
+  // 4. Fallback to production URL if none of the above apply (e.g., in Node.js env without config)
+  const baseUrl = config?.apiUrl !== undefined 
+    ? config.apiUrl
+    : (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_MANTLZ_API_URL !== undefined)
+      ? process.env.NEXT_PUBLIC_MANTLZ_API_URL
+      : (typeof window !== 'undefined') // Check if running in browser
+        ? '' // Use relative path for same-origin requests
+        : 'https://api.mantlz.io'; // Fallback for non-browser env
 
   // Apply toast handler if provided in config
   if (config?.toastHandler) {
@@ -156,6 +170,75 @@ export function createMantlzClient(apiKey?: string, config?: MantlzClientConfig)
   };
   
   return {
+    apiUrl: baseUrl, // Expose the resolved API URL
+    
+    // Get form schema for dynamic rendering
+    getFormSchema: async (formId: string): Promise<FormSchema> => {
+      if (!formId) {
+        throw new Error('Form ID is required to fetch form schema');
+      }
+      
+      try {
+        // Use the resolved baseUrl
+        const url = `${baseUrl}/api/v1/forms/${formId}`;
+        console.log('Fetching form schema from:', url);
+        
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-Key': key,
+          },
+          credentials: 'same-origin',
+        });
+
+        if (!response.ok) {
+          const error = await handleApiError(response, formId);
+          
+          console.error('Error fetching form schema:', error);
+          
+          if (notificationsEnabled) {
+            showErrorNotification(error, formId);
+          }
+          
+          throw error;
+        }
+
+        const formData = await response.json();
+        
+        // Process the form data to ensure it has the right structure for FormSchema
+        const formSchema: FormSchema = {
+          id: formData.id,
+          name: formData.name || formData.title || 'Form',
+          description: formData.description || '',
+          formType: formData.formType || 'custom',
+          schema: {},
+        };
+        
+        // If fields are provided, convert them to schema format
+        if (Array.isArray(formData.fields)) {
+          formData.fields.forEach((field: any) => {
+            formSchema.schema[field.id || field.name] = {
+              type: field.type || 'text',
+              required: field.required || false,
+              placeholder: field.placeholder || '',
+              label: field.label || field.name,
+            };
+          });
+        } else if (formData.schema) {
+          // If raw schema is provided, use it directly
+          formSchema.schema = typeof formData.schema === 'string' 
+            ? JSON.parse(formData.schema) 
+            : formData.schema;
+        }
+        
+        return formSchema;
+      } catch (error) {
+        console.error('Failed to fetch form schema:', error);
+        throw error;
+      }
+    },
+
     submitForm: async (type: string, options: FormSubmitOptions): Promise<FormSubmitResponse> => {
       if (!type || typeof type !== 'string' || !options?.formId) {
         throw new Error('Form type and formId are required for form submission');
@@ -164,7 +247,8 @@ export function createMantlzClient(apiKey?: string, config?: MantlzClientConfig)
       const { formId, data, redirectUrl } = options;
       
       try {
-        const url = `/api/v1/forms/submit`;
+        // Use the resolved baseUrl
+        const url = `${baseUrl}/api/v1/forms/submit`;
         console.log('Submitting form to:', url, { type, formId });
         
         const response = await fetch(url, {
@@ -237,7 +321,8 @@ export function createMantlzClient(apiKey?: string, config?: MantlzClientConfig)
     // Get the count of users who have joined a form
     getUsersJoinedCount: async (formId: string): Promise<number> => {
       try {
-        const url = `/api/v1/forms/${formId}/users-joined`;
+        // Use the resolved baseUrl
+        const url = `${baseUrl}/api/v1/forms/${formId}/users-joined`;
         console.log('Fetching users joined count:', url);
         
         const response = await fetch(url, {

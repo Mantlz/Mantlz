@@ -71,6 +71,7 @@ export interface ContactFormProps {
   
   // Theme selection
   theme?: ContactFormTheme;
+  darkMode?: boolean;
   baseTheme?: string; // Simplified theme prop for the new flat API
   
   // Appearance customization
@@ -78,4 +79,8 @@ export interface ContactFormProps {
   
   // Legacy prop for backward compatibility
   customSubmitText?: string;
+  
+  // Callbacks
+  onSuccess?: () => void;
+  onError?: (error: Error) => void;
 } 

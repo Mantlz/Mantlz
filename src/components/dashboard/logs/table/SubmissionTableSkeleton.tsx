@@ -41,7 +41,7 @@ export function SubmissionTableSkeleton({ isPremium }: { isPremium: boolean }) {
                 <TableCell className="pl-4 sm:pl-6 py-3">
                   <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-600"></div>
-                    <span className="text-sm text-zinc-400 dark:text-zinc-500">ID-<Skeleton className="h-4 w-16 inline-block" /></span>
+                    <span className="text-sm text-zinc-400 dark:text-zinc-500"><Skeleton className="h-4 w-16 inline-block" /></span>
                   </div>
                 </TableCell>
                 <TableCell className="py-3">

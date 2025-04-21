@@ -1,10 +1,12 @@
 import { ToastHandler } from './utils/toast';
+import { FormSchema } from './components/shared/DynamicForm';
 
 // Client configuration
 export interface MantlzClientConfig {
   toastHandler?: ToastHandler;
   notifications?: boolean;  // Enable/disable toast notifications
   showApiKeyErrorToasts?: boolean;  // Control API key error toasts separately
+  apiUrl?: string;  // Custom API URL
 }
 
 export interface MantlzError {
@@ -37,7 +39,9 @@ export interface FormSubmitResponse {
 }
 
 export interface MantlzClient {
+  apiUrl?: string;  // API URL for making requests
   submitForm: (type: string, options: FormSubmitOptions) => Promise<FormSubmitResponse>;
   getUsersJoinedCount: (formId: string) => Promise<number>;
+  getFormSchema: (formId: string) => Promise<FormSchema>;
   configureNotifications: (enabled: boolean, handler?: ToastHandler) => { notifications: boolean };
 }

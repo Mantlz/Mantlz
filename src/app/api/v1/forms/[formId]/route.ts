@@ -127,19 +127,50 @@ export async function GET(
       );
     }
     
-    // Determine form type from schema
+    // Determine form type from schema (restore this logic)
     let formType = '';
     try {
-      if (form.schema.includes('referralSource')) {
+      const schemaObject = JSON.parse(form.schema);
+      // Basic logic based on common field names
+      if (schemaObject.referralSource) {
         formType = 'waitlist';
-      } else if (form.schema.includes('rating') && form.schema.includes('feedback')) {
+      } else if (schemaObject.rating && schemaObject.feedback) {
         formType = 'feedback';
-      } else if (form.schema.includes('message') && !form.schema.includes('rating')) {
+      } else if (schemaObject.message && !schemaObject.rating) {
         formType = 'contact';
-
+      } else {
+        // Add a default or more sophisticated type detection if needed
+        formType = 'other'; 
       }
     } catch (error) {
       console.error('Error determining form type:', error);
+      formType = 'error'; // Assign a default/error type
+    }
+    
+    // Parse the schema to extract fields (restore this logic)
+    const fields = [];
+    try {
+      const schema = JSON.parse(form.schema);
+      for (const [key, value] of Object.entries(schema)) {
+        // Ensure value is an object and has expected properties before pushing
+        if (typeof value === 'object' && value !== null && 'type' in value) {
+          fields.push({
+            id: key,
+            name: key,
+            label: (value as any).label || key.charAt(0).toUpperCase() + key.slice(1),
+            type: (value as any).type || 'text',
+            required: (value as any).required || false,
+            placeholder: (value as any).placeholder || '',
+            options: (value as any).options || undefined,
+          });
+        } else {
+          // Handle cases where the schema item isn't structured as expected
+          console.warn(`Skipping unexpected schema item: ${key}`);
+        }
+      }
+    } catch (error) {
+      console.error('Error parsing form schema:', error);
+       // Handle the error, e.g., return empty fields or an error state
     }
     
     // Check if users joined settings exists in form settings
@@ -152,11 +183,13 @@ export async function GET(
     return NextResponse.json({
       id: form.id,
       name: form.name,
+      title: form.name,
       description: form.description,
       formType,
       createdAt: form.createdAt,
       updatedAt: form.updatedAt,
       submissionCount: form._count.submissions,
+      fields,
       emailSettings: {
         enabled: form.emailSettings?.enabled || false,
         developerNotificationsEnabled: form.emailSettings?.developerNotificationsEnabled || false,

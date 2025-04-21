@@ -2,7 +2,7 @@ import { z } from "zod";
 import { j, privateProcedure } from "../jstack";
 import { db } from "@/lib/db";
 import { HTTPException } from "hono/http-exception";
-import { User, NotificationStatus, NotificationType, FormType } from "@prisma/client";
+import { NotificationStatus, NotificationType, FormType } from "@prisma/client";
 import { getQuotaByPlan } from "@/config/usage";
 import { startOfMonth } from "date-fns";
 import { Resend } from 'resend';
@@ -134,17 +134,6 @@ export const formRouter = j.router({
       });
     }),
 
-  // Get available templates
-  // getTemplates: j.procedure.query(({ c }) => {
-  //   return c.superjson(
-  //     Object.entries(formTemplates).map(([id, template]) => ({
-  //       id,
-  //       name: template.name,
-  //       description: template.description,
-  //     }))
-  //   );
-  // }),
-
   // Create form from template
   createFromTemplate: privateProcedure
     .input(z.object({
@@ -226,6 +215,7 @@ export const formRouter = j.router({
       name: z.string(),
       description: z.string().optional(),
       schema: z.string(),
+      formType: z.nativeEnum(FormType).optional(),
     }))
     .mutation(async ({ c, input, ctx }) => {
       const { user } = ctx;
@@ -256,19 +246,18 @@ export const formRouter = j.router({
         });
       }
       
-      // Determine form type based on schema patterns
-      const formType = detectFormType(input.schema);
+      // Determine form type: Prioritize provided type, fallback to detection
+      const finalFormType = input.formType || detectFormType(input.schema);
       
-      // Create settings object with form type for backward compatibility
+      // Create settings object with form type string for backward compatibility
       const formTypeStrings = {
         [FormType.WAITLIST]: 'waitlist',
-        [FormType.FEEDBACK]: 'feedback', 
+        [FormType.FEEDBACK]: 'feedback',
         [FormType.CONTACT]: 'contact',
         [FormType.CUSTOM]: 'custom'
       };
-      
       const settings = {
-        formType: formTypeStrings[formType] || 'custom'
+        formType: formTypeStrings[finalFormType] || 'custom'
       };
       
       const form = await db.form.create({
@@ -277,8 +266,8 @@ export const formRouter = j.router({
           description: input.description,
           schema: input.schema,
           userId: userWithPlan.id,
-          formType, // Use the enum value
-          settings, // Include settings with formType
+          formType: finalFormType,
+          settings,
           emailSettings: {
             create: {
               enabled: false,
@@ -299,6 +288,7 @@ export const formRouter = j.router({
         name: form.name,
         description: form.description,
         schema: form.schema,
+        formType: finalFormType,
       });
     }),
 
@@ -335,20 +325,8 @@ export const formRouter = j.router({
         throw new Error('Form not found');
       }
       
-      // Use the formType field if available, otherwise detect it from schema
-      let formType = form.formType?.toString() || '';
-      
-      // Fall back to detection if needed
-      if (!formType) {
-        const detectedType = detectFormType(form.schema);
-        const formTypeStrings = {
-          [FormType.WAITLIST]: 'waitlist',
-          [FormType.FEEDBACK]: 'feedback', 
-          [FormType.CONTACT]: 'contact',
-          [FormType.CUSTOM]: 'custom'
-        };
-        formType = formTypeStrings[detectedType];
-      }
+      // Use the formType field directly from the database
+      const formType = form.formType; 
       
       // Get the users joined settings
       const usersJoinedSettings = (form.settings as any)?.usersJoined || { enabled: false, count: 0 };

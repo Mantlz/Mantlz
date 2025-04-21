@@ -13,7 +13,7 @@ export function NoFormsMessage() {
         <p className="text-muted-foreground mb-6">
           You haven't created any forms yet. Create a form to get started.
         </p>
-        <Link href="/dashboard/forms/new" passHref>
+        <Link href="/dashboard/form-builder" passHref>
           <Button className=" bg-black hover:bg-gray-800 text-white dark:bg-white dark:hover:bg-gray-200 dark:text-black">
             CREATE FORM
           </Button>

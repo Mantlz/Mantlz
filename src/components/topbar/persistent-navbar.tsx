@@ -16,7 +16,6 @@ import { BreadcrumbNav } from "@/components/dashboard/breadcum-nav"
 import { BreadcrumbSkeleton } from "@/components/skeletons/breadcrumb-skeleton"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
-import { TemplateDialog } from "@/components/forms/template-dialog"
 
 import { QuestionModal } from "@/components/modals/QuestionModal"
 
@@ -154,16 +153,17 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                       </Link>
                     </SheetClose>
 
-                    <div className="px-3 py-2">
-                      <TemplateDialog
-                        trigger={
-                          <Button variant="outline" className="w-full cursor-pointer bg-zinc-100/90 dark:bg-zinc-900/90 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/90 backdrop-blur-sm border justify-start gap-2 rounded-lg border-zinc-300 dark:border-zinc-700">
-                            <Plus className="h-4 w-4" />
-                            <span>Create Form</span>
-                          </Button>
-                        }
-                      />
-                    </div>
+                    <SheetClose asChild>
+                      <Link
+                        href="/dashboard/form-builder"
+                        className="w-full cursor-pointer"
+                      >
+                        <Button variant="outline" className="w-full cursor-pointer bg-zinc-100/90 dark:bg-zinc-900/90 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/90 backdrop-blur-sm border justify-start gap-2 rounded-lg border-zinc-300 dark:border-zinc-700">
+                          <Plus className="h-4 w-4" />
+                          <span>Create Form</span>
+                        </Button>
+                      </Link>
+                    </SheetClose>
                   </div>
                 </div>
 
@@ -335,15 +335,14 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
                   <span>Test</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 p-0 rounded-lg my-0.5" onSelect={(e) => e.preventDefault()}>
-                <TemplateDialog
-                  trigger={
-                    <div className="flex items-center gap-2.5 w-full px-2 py-1.5 cursor-pointer bg-zinc-100/90 dark:bg-zinc-900/90 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/90 backdrop-blur-sm border justify-start gap-2 rounded-lg border-zinc-300 dark:border-zinc-700">
-                      <Plus className="h-4 w-4" />
-                      <span>Create Form</span>
-                    </div>
-                  }
-                />
+              <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 p-0 rounded-lg my-0.5">
+                <Link 
+                  href="/dashboard/form-builder"
+                  className="flex items-center gap-2.5 w-full px-2 py-1.5 cursor-pointer bg-zinc-100/90 dark:bg-zinc-900/90 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/90 backdrop-blur-sm border justify-start gap-2 rounded-lg border-zinc-300 dark:border-zinc-700"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>Create Form</span>
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

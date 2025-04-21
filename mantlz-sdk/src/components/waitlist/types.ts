@@ -74,4 +74,8 @@ export interface WaitlistFormProps {
   showUsersJoined?: boolean;
   usersJoinedCount?: number;
   usersJoinedLabel?: string;
+  
+  // Callbacks
+  onSuccess?: () => void;
+  onError?: (error: Error) => void;
 } 
