@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { db } from "@/lib/db";
 import { ratelimitConfig } from '@/lib/ratelimiter';
-import { extractAnalyticsFromSubmissions } from "@/lib/analytics-utils";
+import { extractAnalyticsFromSubmissions, Submission } from "@/lib/analytics-utils";
 
 const requestSchema = z.object({
   apiKey: z.string(),
@@ -11,11 +11,11 @@ const requestSchema = z.object({
 
 export async function GET(
   req: NextRequest,
-  context: { params: { formId: string } }
+  { params }: { params: { formId: string } }
 ) {
   try {
     // Get the formId from the URL parameters
-    const { formId } = await Promise.resolve(context.params);
+    const { formId } = params;
 
     // Get query parameters
     const { searchParams } = new URL(req.url);
@@ -252,7 +252,9 @@ export async function GET(
     }
     
     // Extract advanced analytics for PRO users
-    const { browserStats, locationStats } = extractAnalyticsFromSubmissions(submissions);
+    const { browserStats, locationStats } = extractAnalyticsFromSubmissions(
+      submissions as unknown as Submission[]
+    );
     
     // Calculate week-over-week growth for PRO users
     const oneWeekAgo = new Date(now);
