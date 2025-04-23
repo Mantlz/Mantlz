@@ -50,7 +50,7 @@ export function TableSubmissionSheet({
   
   if (!submission) return null
   
-  const copyToClipboard = (key: string, value: any) => {
+  const copyToClipboard = (key: string, value: unknown) => {
     navigator.clipboard.writeText(String(value))
     setCopiedField(key)
     setTimeout(() => setCopiedField(null), 2000)

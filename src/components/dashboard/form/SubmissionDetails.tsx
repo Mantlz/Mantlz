@@ -21,7 +21,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 export interface FormSubmission {
   id: string
   submittedAt: Date
-  data: Record<string, any>
+  data: Record<string, string | number | boolean | string[] | null>
   location?: {
     lat: number
     lng: number
@@ -42,7 +42,7 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const copyToClipboard = (key: string, value: any) => {
+  const copyToClipboard = (key: string, value: string | number | boolean | string[] | null) => {
     navigator.clipboard.writeText(String(value))
     setCopiedField(key)
     setTimeout(() => setCopiedField(null), 2000)
@@ -203,7 +203,7 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
           <div className="space-y-4">
             {Object.entries(submission.data)
             .filter(([key]) => key !== '_meta')
-            .map(([key, value], index) => (
+            .map(([key, value]) => (
               <div
                 key={key}
                 className="p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900"

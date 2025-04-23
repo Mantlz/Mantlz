@@ -19,8 +19,8 @@ import { Card, CardContent } from "@/components/ui/card"
 
 // Define a FormData interface for submission data
 export interface FormData {
-  email?: string
-  [key: string]: any // Allow other form fields while still specifying the structure
+  email: string | null
+  [key: string]: string | number | boolean | string[] | null // Allow other form fields with specific types
 }
 
 interface Submission {
