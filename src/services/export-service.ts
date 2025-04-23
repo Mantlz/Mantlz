@@ -3,6 +3,7 @@ import { z } from "zod";
 import { format } from "date-fns";
 import { Parser } from "json2csv";
 
+// Define the schema for export options validation
 const exportSchema = z.object({
   formId: z.string(),
   startDate: z.date().optional(),
@@ -10,9 +11,12 @@ const exportSchema = z.object({
 });
 
 type ExportOptions = z.infer<typeof exportSchema>;
+type SubmissionData = Record<string, string | number | boolean | object>;
 
 export async function exportFormSubmissions(options: ExportOptions) {
-  const { formId, startDate, endDate } = options;
+  // Validate options against schema
+  const validatedOptions = exportSchema.parse(options);
+  const { formId, startDate, endDate } = validatedOptions;
 
   // Get form details to include in export
   const form = await db.form.findUnique({
@@ -56,7 +60,7 @@ export async function exportFormSubmissions(options: ExportOptions) {
     };
 
     // Flatten the nested data object and filter out metadata
-    const flattenedData = Object.entries(submission.data as Record<string, any>).reduce(
+    const flattenedData = Object.entries(submission.data as SubmissionData).reduce(
       (acc, [key, value]) => {
         // Skip metadata fields and email (since it's handled separately)
         if (key.startsWith('_') || key === 'email') return acc;
@@ -69,7 +73,7 @@ export async function exportFormSubmissions(options: ExportOptions) {
         }
         return acc;
       },
-      {} as Record<string, any>
+      {} as Record<string, string | number | boolean>
     );
 
     // Add email only if it exists and isn't already in the data

@@ -4,6 +4,13 @@ import { headers } from "next/headers"
 import Stripe from "stripe"
 import { NextResponse } from "next/server"
 
+// Define a proper interface for our Stripe Subscription with necessary properties
+interface StripeSubscription extends Stripe.Subscription {
+  current_period_start: number;
+  current_period_end: number;
+  customer: string | Stripe.Customer;
+}
+
 export async function POST(req: Request) {
   const body = await req.text()
   const headersList = await headers()
@@ -35,47 +42,49 @@ export async function POST(req: Request) {
       
       case "customer.subscription.created": 
       case "customer.subscription.updated": {
-        const subscription = event.data.object as Stripe.Subscription
+        const subscription = event.data.object as StripeSubscription
         try {
           // Log the raw subscription data for debugging
           console.log(`Processing ${event.type} webhook:`, {
             id: subscription.id,
             status: subscription.status,
             // Access these properties safely
-            current_period_start: (subscription as any).current_period_start,
-            current_period_end: (subscription as any).current_period_end,
+            current_period_start: subscription.current_period_start,
+            current_period_end: subscription.current_period_end,
             customer: typeof subscription.customer === 'string' 
               ? subscription.customer 
-              : (subscription.customer as any)?.id
+              : (subscription.customer as Stripe.Customer)?.id
           })
           
           // Retrieve the subscription with expanded customer and items to get metadata
           const expandedSubscription = await stripe.subscriptions.retrieve(subscription.id, {
             expand: ['customer', 'items.data.price']
           })
+          // Safe conversion using two-step assertion
+          const typedSubscription = expandedSubscription as unknown as StripeSubscription
           
           // Log the expanded subscription data
           console.log("Expanded subscription data:", {
-            id: expandedSubscription.id,
-            status: expandedSubscription.status,
+            id: typedSubscription.id,
+            status: typedSubscription.status,
             // Access these properties safely
-            current_period_start: (expandedSubscription as any).current_period_start,
-            current_period_end: (expandedSubscription as any).current_period_end,
-            customer: typeof expandedSubscription.customer === 'string' 
-              ? expandedSubscription.customer 
-              : (expandedSubscription.customer as any)?.id,
-            metadata: expandedSubscription.metadata
+            current_period_start: typedSubscription.current_period_start,
+            current_period_end: typedSubscription.current_period_end,
+            customer: typeof typedSubscription.customer === 'string' 
+              ? typedSubscription.customer 
+              : (typedSubscription.customer as Stripe.Customer)?.id,
+            metadata: typedSubscription.metadata
           })
           
           // Check if we have a userId in metadata
-          const userId = expandedSubscription.metadata?.userId
+          const userId = typedSubscription.metadata?.userId
           if (!userId) {
             console.log(`[DEBUG] No userId in subscription metadata, trying to find user by customer ID`)
             
             // Get the customer ID
-            const customerId = typeof expandedSubscription.customer === 'string' 
-              ? expandedSubscription.customer 
-              : (expandedSubscription.customer as any)?.id
+            const customerId = typeof typedSubscription.customer === 'string' 
+              ? typedSubscription.customer 
+              : (typedSubscription.customer as Stripe.Customer)?.id
             
             if (customerId) {
               // Try to find a user with this Stripe customer ID
@@ -87,17 +96,17 @@ export async function POST(req: Request) {
               if (user) {
                 console.log(`[DEBUG] Found user with Stripe customer ID:`, user)
                 // Add the userId to the metadata for handleSubscriptionUpdate
-                expandedSubscription.metadata = {
-                  ...expandedSubscription.metadata,
+                typedSubscription.metadata = {
+                  ...typedSubscription.metadata,
                   userId: user.id
                 }
               } else {
                 console.log(`[DEBUG] No user found with Stripe customer ID: ${customerId}`)
                 
                 // If we have a customer email, try to find the user by email
-                const customerEmail = typeof expandedSubscription.customer === 'string'
+                const customerEmail = typeof typedSubscription.customer === 'string'
                   ? null
-                  : (expandedSubscription.customer as any)?.email
+                  : (typedSubscription.customer as Stripe.Customer)?.email
                 
                 if (customerEmail) {
                   console.log(`[DEBUG] Trying to find user by email: ${customerEmail}`)
@@ -117,8 +126,8 @@ export async function POST(req: Request) {
                     console.log(`[DEBUG] Updated user's stripeCustomerId to: ${customerId}`)
                     
                     // Add the userId to the metadata for handleSubscriptionUpdate
-                    expandedSubscription.metadata = {
-                      ...expandedSubscription.metadata,
+                    typedSubscription.metadata = {
+                      ...typedSubscription.metadata,
                       userId: userByEmail.id
                     }
                   } else {
@@ -129,7 +138,7 @@ export async function POST(req: Request) {
             }
           }
           
-          await handleSubscriptionUpdate(expandedSubscription as any)
+          await handleSubscriptionUpdate(typedSubscription)
         } catch (error) {
           console.error(`Error processing ${event.type} webhook:`, error)
           // Continue processing other webhooks even if this one fails
@@ -138,47 +147,49 @@ export async function POST(req: Request) {
       }
       
       case "customer.subscription.deleted": {
-        const subscription = event.data.object as Stripe.Subscription
+        const subscription = event.data.object as StripeSubscription
         try {
           // Log the raw subscription data for debugging
           console.log(`Processing ${event.type} webhook:`, {
             id: subscription.id,
             status: subscription.status,
             // Access these properties safely
-            current_period_start: (subscription as any).current_period_start,
-            current_period_end: (subscription as any).current_period_end,
+            current_period_start: subscription.current_period_start,
+            current_period_end: subscription.current_period_end,
             customer: typeof subscription.customer === 'string' 
               ? subscription.customer 
-              : (subscription.customer as any)?.id
+              : (subscription.customer as Stripe.Customer)?.id
           })
           
           // Retrieve the subscription with expanded customer and items to get metadata
           const expandedSubscription = await stripe.subscriptions.retrieve(subscription.id, {
             expand: ['customer', 'items.data.price']
           })
+          // Safe conversion using two-step assertion
+          const typedSubscription = expandedSubscription as unknown as StripeSubscription
           
           // Log the expanded subscription data
           console.log("Expanded subscription data:", {
-            id: expandedSubscription.id,
-            status: expandedSubscription.status,
+            id: typedSubscription.id,
+            status: typedSubscription.status,
             // Access these properties safely
-            current_period_start: (expandedSubscription as any).current_period_start,
-            current_period_end: (expandedSubscription as any).current_period_end,
-            customer: typeof expandedSubscription.customer === 'string' 
-              ? expandedSubscription.customer 
-              : (expandedSubscription.customer as any)?.id,
-            metadata: expandedSubscription.metadata
+            current_period_start: typedSubscription.current_period_start,
+            current_period_end: typedSubscription.current_period_end,
+            customer: typeof typedSubscription.customer === 'string' 
+              ? typedSubscription.customer 
+              : (typedSubscription.customer as Stripe.Customer)?.id,
+            metadata: typedSubscription.metadata
           })
           
           // Check if we have a userId in metadata
-          const userId = expandedSubscription.metadata?.userId
+          const userId = typedSubscription.metadata?.userId
           if (!userId) {
             console.log(`[DEBUG] No userId in subscription metadata, trying to find user by customer ID`)
             
             // Get the customer ID
-            const customerId = typeof expandedSubscription.customer === 'string' 
-              ? expandedSubscription.customer 
-              : (expandedSubscription.customer as any)?.id
+            const customerId = typeof typedSubscription.customer === 'string' 
+              ? typedSubscription.customer 
+              : (typedSubscription.customer as Stripe.Customer)?.id
             
             if (customerId) {
               // Try to find a user with this Stripe customer ID
@@ -190,17 +201,17 @@ export async function POST(req: Request) {
               if (user) {
                 console.log(`[DEBUG] Found user with Stripe customer ID:`, user)
                 // Add the userId to the metadata for handleSubscriptionUpdate
-                expandedSubscription.metadata = {
-                  ...expandedSubscription.metadata,
+                typedSubscription.metadata = {
+                  ...typedSubscription.metadata,
                   userId: user.id
                 }
               } else {
                 console.log(`[DEBUG] No user found with Stripe customer ID: ${customerId}`)
                 
                 // If we have a customer email, try to find the user by email
-                const customerEmail = typeof expandedSubscription.customer === 'string'
+                const customerEmail = typeof typedSubscription.customer === 'string'
                   ? null
-                  : (expandedSubscription.customer as any)?.email
+                  : (typedSubscription.customer as Stripe.Customer)?.email
                 
                 if (customerEmail) {
                   console.log(`[DEBUG] Trying to find user by email: ${customerEmail}`)
@@ -220,8 +231,8 @@ export async function POST(req: Request) {
                     console.log(`[DEBUG] Updated user's stripeCustomerId to: ${customerId}`)
                     
                     // Add the userId to the metadata for handleSubscriptionUpdate
-                    expandedSubscription.metadata = {
-                      ...expandedSubscription.metadata,
+                    typedSubscription.metadata = {
+                      ...typedSubscription.metadata,
                       userId: userByEmail.id
                     }
                   } else {
@@ -232,7 +243,7 @@ export async function POST(req: Request) {
             }
           }
           
-          await handleSubscriptionUpdate(expandedSubscription as any)
+          await handleSubscriptionUpdate(typedSubscription)
         } catch (error) {
           console.error(`Error processing ${event.type} webhook:`, error)
           // Continue processing other webhooks even if this one fails

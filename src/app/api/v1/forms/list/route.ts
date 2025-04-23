@@ -104,7 +104,7 @@ export async function GET(req: NextRequest) {
     }
 
     const userId = user.id;
-    const userPlan = user.plan;
+    //const userPlan = user.plan;
 
     // Get forms with pagination
     const take = limit + 1;

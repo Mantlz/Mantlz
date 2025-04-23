@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react";
-import { Bell, Save, Crown, Loader2, RefreshCw, AlertCircle, Code } from "lucide-react";
+import { Bell, Loader2, RefreshCw, AlertCircle, Code } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,12 +11,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { client } from "@/lib/client";
-import { useUser } from "@clerk/nextjs";
 import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -26,7 +23,6 @@ interface AdvancedSettings {
 }
 
 export function AdvancedSettings() {
-  const { user } = useUser();
   const queryClient = useQueryClient();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [settings, setSettings] = useState<AdvancedSettings>({
@@ -266,7 +262,7 @@ export function AdvancedSettings() {
                       Coming Soon
                     </p>
                     <p className="text-[10px] text-blue-700 dark:text-blue-400">
-                      We're working on bringing you powerful debugging tools. Stay tuned!
+                      We&apos;re working on bringing you powerful debugging tools. Stay tuned!
                     </p>
                   </div>
                 </div>

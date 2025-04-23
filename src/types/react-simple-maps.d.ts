@@ -5,7 +5,7 @@ declare module 'react-simple-maps' {
     projectionConfig?: {
       scale?: number;
       center?: [number, number];
-      [key: string]: any;
+      [key: string]: unknown;
     };
     width?: number;
     height?: number;
@@ -30,7 +30,7 @@ declare module 'react-simple-maps' {
   export interface Geography {
     rsmKey: string;
     svgPath: string;
-    [key: string]: any;
+    [key: string]: unknown;
   }
   
   export interface GeographyProps {

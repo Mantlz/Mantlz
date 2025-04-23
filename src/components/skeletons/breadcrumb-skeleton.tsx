@@ -24,11 +24,7 @@ export function BreadcrumbSkeleton() {
 
   return (
     <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-      <Skeleton className="h-5 w-20 bg-zinc-200 dark:bg-zinc-700 rounded-md" />
-      <ChevronRight className="h-4 w-4 text-gray-400 dark:text-gray-500" />
-      <Skeleton className="h-5 w-24 bg-zinc-200 dark:bg-zinc-700 rounded-md" />
-
-
+      {segments}
     </div>
   )
 } 

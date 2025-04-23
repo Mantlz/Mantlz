@@ -2,14 +2,13 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { AtSign, Check, Info, Key, Lock, RefreshCw, Loader2, AlertCircle, Mail } from "lucide-react";
+import { AtSign, Check, Info, RefreshCw, Loader2, AlertCircle, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -27,8 +26,6 @@ import { Switch } from "@/components/ui/switch";
 import { useUser } from "@clerk/nextjs";
 import { Badge } from "@/components/ui/badge";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
 import { client } from "@/lib/client";
 
 // Form schema for Resend API key
@@ -43,7 +40,6 @@ const resendKeySchema = z.object({
 type ResendKeyFormValues = z.infer<typeof resendKeySchema>;
 
 export default function EmailSettings() {
-  const { user } = useUser();
   const [isSuccess, setIsSuccess] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isDeveloperNotificationsEnabled, setIsDeveloperNotificationsEnabled] = useState(false);

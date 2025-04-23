@@ -8,7 +8,7 @@ export default function WelcomeBackPage() {
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get("redirect") || "/dashboard"
   
-  const { isSynced, syncTime, elapsedTime } = useUserSync({ redirectTo })
+  const { isSynced, syncTime } = useUserSync({ redirectTo })
 
   return (
     <SyncMessage 

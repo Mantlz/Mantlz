@@ -7,6 +7,25 @@ const requestSchema = z.object({
   apiKey: z.string(),
 });
 
+// Define types for form schema and fields
+interface FormFieldSchema {
+  type: string;
+  label?: string;
+  required?: boolean;
+  placeholder?: string;
+  options?: string[];
+}
+
+interface FormSchema {
+  [key: string]: FormFieldSchema;
+}
+
+interface FormSettings {
+  usersJoined?: {
+    enabled: boolean;
+  };
+}
+
 export async function GET(
   req: NextRequest,
   context: { params: { formId: string } }
@@ -150,18 +169,18 @@ export async function GET(
     // Parse the schema to extract fields (restore this logic)
     const fields = [];
     try {
-      const schema = JSON.parse(form.schema);
+      const schema = JSON.parse(form.schema) as FormSchema;
       for (const [key, value] of Object.entries(schema)) {
         // Ensure value is an object and has expected properties before pushing
         if (typeof value === 'object' && value !== null && 'type' in value) {
           fields.push({
             id: key,
             name: key,
-            label: (value as any).label || key.charAt(0).toUpperCase() + key.slice(1),
-            type: (value as any).type || 'text',
-            required: (value as any).required || false,
-            placeholder: (value as any).placeholder || '',
-            options: (value as any).options || undefined,
+            label: value.label || key.charAt(0).toUpperCase() + key.slice(1),
+            type: value.type || 'text',
+            required: value.required || false,
+            placeholder: value.placeholder || '',
+            options: value.options || undefined,
           });
         } else {
           // Handle cases where the schema item isn't structured as expected
@@ -174,7 +193,7 @@ export async function GET(
     }
     
     // Check if users joined settings exists in form settings
-    const settings = form.settings as any || {};
+    const settings = form.settings as FormSettings || {};
     const usersJoinedSettings = settings?.usersJoined ? {
       enabled: settings.usersJoined.enabled || false,
       count: await db.submission.count({ where: { formId } })

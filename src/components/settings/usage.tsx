@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Loader2, RefreshCw, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -9,7 +9,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -132,7 +131,7 @@ export default function UsageSettings() {
   } = usePlanUsage();
   
   // Fetch total submissions data
-  const { data: submissionsData, isLoading: isLoadingSubmissions } = useTotalSubmissions();
+  const { data: submissionsData } = useTotalSubmissions();
 
   // Add refresh loading state
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -231,7 +230,7 @@ export default function UsageSettings() {
             {((planData?.formsUsed ?? 0) >= (planData?.formsLimit ?? Infinity) * 0.8) && (
               <div className="mt-2 p-2 bg-amber-50 border border-amber-200 rounded-md text-amber-800 dark:bg-amber-900/30 dark:border-amber-800/30 dark:text-amber-400 text-xs flex items-center">
                 <AlertCircle className="h-3.5 w-3.5 mr-1.5 flex-shrink-0" />
-                <span>You're approaching your form limit. Consider upgrading your plan for more forms.</span>
+                <span>You&apos;re approaching your form limit. Consider upgrading your plan for more forms.</span>
               </div>
             )}
           </header>

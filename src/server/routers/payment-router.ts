@@ -2,7 +2,7 @@ import { createCheckoutSession, createPortalSession } from "@/lib/stripe"
 import { j, privateProcedure } from "../jstack"
 import { z } from "zod"
 import { db } from "@/lib/db"
-import { Plan, SubscriptionStatus } from "@prisma/client"
+import { SubscriptionStatus } from "@prisma/client"
 
 // Price ID to Plan mapping
 const PRICE_TO_PLAN = {

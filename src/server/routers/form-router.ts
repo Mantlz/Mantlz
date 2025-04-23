@@ -25,7 +25,11 @@ interface EmailSettings {
   developerNotificationsEnabled?: boolean;
   developerEmail?: string;
   maxNotificationsPerHour?: number;
-  notificationConditions?: any;
+  notificationConditions?: {
+    field: string;
+    operator: string;
+    value: string;
+  }[];
   lastNotificationSentAt?: Date;
 }
 
@@ -329,7 +333,12 @@ export const formRouter = j.router({
       const formType = form.formType; 
       
       // Get the users joined settings
-      const usersJoinedSettings = (form.settings as any)?.usersJoined || { enabled: false, count: 0 };
+      interface UsersJoinedSettings {
+        enabled: boolean;
+        count: number;
+      }
+      
+      const usersJoinedSettings = ((form.settings as Record<string, unknown>)?.usersJoined || { enabled: false, count: 0 }) as UsersJoinedSettings;
       // Track if any settings were updated to determine if we need to save changes
       let settingsUpdated = false;
       
@@ -360,7 +369,7 @@ export const formRouter = j.router({
           where: { id },
           data: {
             settings: {
-              ...(form.settings as any || {}),
+              ...(form.settings as Record<string, unknown> || {}),
               usersJoined: {
                 enabled: false, // Force disable for FREE users
               }
@@ -533,7 +542,7 @@ export const formRouter = j.router({
       
       // Calculate completion rate based on actual form abandonment data
       const abandonedSubmissions = submissions.filter(sub => {
-        const data = sub.data as any;
+        const data = sub.data as Record<string, unknown>;
         return data?.isAbandoned === true;
       });
       
@@ -572,7 +581,7 @@ export const formRouter = j.router({
         submissions: number;
       }
       
-      let timeSeriesData: TimeSeriesPoint[] = [];
+      const timeSeriesData: TimeSeriesPoint[] = [];
       const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
       
       if (timeRange === 'day') {
@@ -828,7 +837,7 @@ export const formRouter = j.router({
     .mutation(async ({ c, input, ctx }) => {
       const { formId, enabled } = input;
       
-      const form = await db.form.update({
+      await db.form.update({
         where: {
           id: formId,
           userId: ctx.user.id, // Ensure user owns the form
@@ -1169,7 +1178,7 @@ export const formRouter = j.router({
         }
 
         // Build the where clause for submissions
-        const where: any = {
+        const where: Prisma.SubmissionWhereInput = {
           form: {
             userId: user.id,
           },
@@ -1200,7 +1209,7 @@ export const formRouter = j.router({
         }
 
         // Build the where clause for notification logs
-        const notificationLogsWhere: any = {
+        const notificationLogsWhere: Prisma.NotificationLogWhereInput = {
           ...(status ? { status: status as NotificationStatus } : {}),
           ...(type ? { type: type as NotificationType } : {}),
         };
@@ -1248,8 +1257,13 @@ export const formRouter = j.router({
 
         // Enhance submissions with analytics data and format notification logs
         const enhancedSubmissions = submissions.map(submission => {
-          const data = submission.data as any;
-          const meta = data?._meta || {};
+          const data = submission.data as Record<string, unknown>;
+          interface MetaData {
+            browser?: string;
+            country?: string;
+            [key: string]: unknown;
+          }
+          const meta = (data?._meta || {}) as MetaData;
           
           // Format notification logs to ensure consistent structure
           const formattedLogs = submission.notificationLogs.map(log => ({
@@ -1390,7 +1404,7 @@ export const formRouter = j.router({
       const searchValue = isIdSearch ? query.substring(1) : query;
 
       // Build the where clause based on search type and optional formId
-      const whereClause: any = {
+      const whereClause: Prisma.SubmissionWhereInput = {
         form: {
           userId: user.id
         }
@@ -1450,8 +1464,13 @@ export const formRouter = j.router({
 
       // Enhance submissions with analytics data and format notification logs
       const enhancedSubmissions = submissions.map(submission => {
-        const data = submission.data as any;
-        const meta = data?._meta || {};
+        const data = submission.data as Record<string, unknown>;
+        interface MetaData {
+          browser?: string;
+          country?: string;
+          [key: string]: unknown;
+        }
+        const meta = (data?._meta || {}) as MetaData;
         
         // Format notification logs to ensure consistent structure
         const formattedLogs = submission.notificationLogs.map(log => ({
@@ -1543,11 +1562,11 @@ export const formRouter = j.router({
         }
 
         // Update the form settings to enable/disable users joined counter
-        const updatedForm = await db.form.update({
+        await db.form.update({
           where: { id: formId },
           data: {
             settings: {
-              ...(form.settings as any || {}),
+              ...(form.settings as Record<string, unknown> || {}),
               usersJoined: {
                 enabled,
               }
@@ -1600,7 +1619,10 @@ export const formRouter = j.router({
       }
 
       // Get users joined settings
-      const usersJoined = (form.settings as any)?.usersJoined || { enabled: false };
+      interface UsersJoinedSettings {
+        enabled: boolean;
+      }
+      const usersJoined = ((form.settings as Record<string, unknown>)?.usersJoined || { enabled: false }) as UsersJoinedSettings;
       const submissionCount = form._count.submissions;
       
       // Only return the count if the feature is enabled

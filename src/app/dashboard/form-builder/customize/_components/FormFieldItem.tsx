@@ -15,7 +15,7 @@ interface FormFieldItemProps {
   field: FormField;
   index: number;
   arrLength: number;
-  onUpdate: (id: string, property: string, value: any) => void;
+  onUpdate: (id: string, property: string, value: string | number | boolean) => void;
   onMove: (id: string, direction: 'up' | 'down') => void;
   onToggleRequired: (id: string, required: boolean) => void;
   onRemove: (field: FormField) => void;

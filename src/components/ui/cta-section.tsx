@@ -1,14 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-
-interface CTASectionProps {
-  title?: string
-  description?: string
-  buttonText?: string
-  onButtonClick?: () => void
-}
-
 export function CTASection() {
   return (
     <div className="fixed top-0 left-0 right-0 z-[60] bg-zinc-800 dark:bg-zinc-600">

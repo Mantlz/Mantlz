@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { db } from "@/lib/db";
 import { ratelimitConfig } from '@/lib/ratelimiter';
+import { Prisma } from '@prisma/client';
 
 // Simplified schema - only apiKey is required, all others optional with defaults
 const requestSchema = z.object({
@@ -9,6 +10,16 @@ const requestSchema = z.object({
   limit: z.coerce.number().min(1).max(100).default(50),
   cursor: z.string().optional().default(''),
 });
+
+// Define submission data type
+type SubmissionData = Record<string, unknown> & { 
+  _meta?: {
+    browser?: string;
+    country?: string;
+    timestamp?: string;
+    [key: string]: unknown;
+  }
+};
 
 export async function GET(
   req: NextRequest,
@@ -135,7 +146,7 @@ export async function GET(
     }
 
     // Build the where clause for submissions
-    const where: any = { formId };
+    const where: Prisma.SubmissionWhereInput = { formId };
 
     // Add date range filtering only for STANDARD and PRO users
     if ((startDate || endDate) && (userPlan === 'STANDARD' || userPlan === 'PRO')) {
@@ -180,7 +191,7 @@ export async function GET(
     
     // Process submissions based on user plan
     const processedSubmissions = data.map(submission => {
-      const submissionData = submission.data as any;
+      const submissionData = submission.data as SubmissionData;
       
       if (submissionData && submissionData._meta) {
         const { _meta, ...restData } = submissionData;

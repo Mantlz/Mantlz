@@ -171,7 +171,7 @@ export async function GET(
       submissions: number;
     }
     
-    let timeSeriesData: TimeSeriesPoint[] = [];
+    const timeSeriesData: TimeSeriesPoint[] = [];
     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     
     if (validatedTimeRange === 'day') {

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
 import { FormFieldItem } from './FormFieldItem';
 import { FormField } from '../types';
 import { PlusCircleIcon, CheckCircleIcon, LayersIcon, ArrowDownIcon, GripHorizontal, InfoIcon } from 'lucide-react';
@@ -16,7 +15,6 @@ import {
   DragEndEvent,
 } from '@dnd-kit/core';
 import { 
-  arrayMove,
   SortableContext, 
   sortableKeyboardCoordinates, 
   verticalListSortingStrategy,
@@ -27,7 +25,7 @@ interface FieldConfigurationTabProps {
   formFields: FormField[];
   availableFields: FormField[];
   formType: string;
-  onUpdateField: (id: string, property: string, value: any) => void;
+  onUpdateField: (id: string, property: string, value: string | boolean | number | string[]) => void;
   onToggleField: (field: FormField) => void;
   onMoveField: (id: string, direction: 'up' | 'down') => void;
   onToggleRequired: (id: string, required: boolean) => void;
@@ -112,7 +110,7 @@ export function FieldConfigurationTab({
       // Simple fallback during SSR
       return (
         <div className="space-y-3">
-          {formFields.map((field, index) => (
+          {formFields.map((field) => (
             <div key={field.id} className="bg-white dark:bg-zinc-950 rounded-md border border-neutral-200 dark:border-zinc-800 p-3">
               <div className="flex items-center justify-between">
                 <span>{field.label}</span>

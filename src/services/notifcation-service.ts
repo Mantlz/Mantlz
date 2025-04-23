@@ -3,12 +3,23 @@ import { Resend } from 'resend';
 import { render } from '@react-email/components';
 import { DeveloperNotificationEmail } from '@/emails/developer-notification';
 
+// Define interfaces for type safety
+interface SubmissionData {
+  [key: string]: unknown;
+}
+
+interface NotificationCondition {
+  field: string;
+  operator: 'equals' | 'contains' | 'greaterThan' | 'lessThan';
+  value: string;
+}
+
 // Don't initialize Resend yet - we'll do it with the user's key
 
 export async function sendDeveloperNotification(
   formId: string,
   submissionId: string,
-  submissionData: Record<string, any>
+  submissionData: SubmissionData
 ) {
   console.log('🔍 Starting developer notification process:', { formId, submissionId });
   
@@ -70,7 +81,7 @@ export async function sendDeveloperNotification(
   }
 
   // Check conditions if any are set
-  const conditions = form.emailSettings.notificationConditions as any[] || [];
+  const conditions = (form.emailSettings.notificationConditions as unknown as NotificationCondition[] || []);
   if (conditions.length > 0) {
     console.log('🔍 Checking notification conditions:', conditions);
     

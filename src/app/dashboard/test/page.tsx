@@ -1,7 +1,7 @@
 'use client';
 import { FeedbackForm, WaitlistForm } from '@mantlz/nextjs';
 import React, { useState, useEffect } from 'react';
-import { FileText, AlertCircle, MessageSquare, Code, ArrowRight, Sliders, Plus, PlayCircle, RefreshCw, Info, Settings, Check, ExternalLink, ChevronDown } from 'lucide-react';
+import { FileText, AlertCircle, MessageSquare, Plus, PlayCircle, RefreshCw, Info, Settings, Check, ExternalLink, ChevronDown } from 'lucide-react';
 
 type FormType = 'feedbackForm' | 'waitlistForm' | 'contactForm';
 
@@ -319,7 +319,7 @@ const TestPage = () => {
                   <div className="w-full overflow-hidden">
                     <WaitlistForm 
                       formId={formSettings.waitlistForm.formId} 
-                      theme={formSettings.waitlistForm.darkMode ? 'dark' : 'light'}
+                      //theme={formSettings.waitlistForm.darkMode ? 'dark' : 'light'}
                     />
                   </div>
                 </div>
@@ -362,7 +362,7 @@ const TestPage = () => {
           </div>
           <h3 className="text-base font-medium text-gray-900 dark:text-white mb-2">Contact Form Support</h3>
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-5 sm:mb-6 max-w-md mx-auto">
-            We're working on adding contact form support to make it easier to gather leads and inquiries.
+            We&apos;re working on adding contact form support to make it easier to gather leads and inquiries.
           </p>
           <button className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-900/20 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
             <ExternalLink className="h-3.5 w-3.5" />

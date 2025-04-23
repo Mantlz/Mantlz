@@ -10,7 +10,7 @@ import { BrandedEmailTemplate } from './templates/branded-email-template';
 
 interface FormSubmissionEmailProps {
   formName: string;
-  submissionData: Record<string, any>;
+  submissionData: Record<string, unknown>;
 }
 
 export function FormSubmissionEmail({ formName, submissionData }: FormSubmissionEmailProps) {
@@ -19,7 +19,7 @@ export function FormSubmissionEmail({ formName, submissionData }: FormSubmission
       <Heading style={styles.heading}>Form Submission</Heading>
       
       <Text style={styles.paragraph}>
-        Thank you for submitting <span style={styles.highlight}>{formName}</span>. We've received your information.
+        Thank you for submitting <span style={styles.highlight}>{formName}</span>. We&apos;ve received your information.
       </Text>
       
       <Hr style={styles.divider} />

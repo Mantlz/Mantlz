@@ -98,6 +98,20 @@ export function detectCountry(
   return undefined;
 }
 
+// Define a type for form data
+export interface FormData extends Record<string, unknown> {
+  [key: string]: unknown;
+}
+
+// Define a type for analytics metadata
+export interface AnalyticsMetadata {
+  userAgent?: string | null;
+  browser?: string;
+  country?: string;
+  timestamp: string;
+  ip: string;
+}
+
 /**
  * Enhances form submission data with analytics metadata
  * @param data Original form data
@@ -105,14 +119,14 @@ export function detectCountry(
  * @returns Enhanced data with analytics metadata
  */
 export function enhanceDataWithAnalytics(
-  data: Record<string, any>, 
+  data: FormData, 
   headers: {
     userAgent?: string | null;
     cfCountry?: string | null;
     acceptLanguage?: string | null;
     ip?: string | null;
   }
-): Record<string, any> {
+): FormData & { _meta: AnalyticsMetadata } {
   const { userAgent, cfCountry, acceptLanguage, ip } = headers;
   
   const browser = detectBrowser(userAgent);
@@ -130,17 +144,47 @@ export function enhanceDataWithAnalytics(
   };
 }
 
+// Define a type for submission data
+export interface Submission {
+  data: {
+    _meta?: {
+      userAgent?: string | null;
+      browser?: string;
+      country?: string;
+    };
+    userAgent?: string;
+    country?: string;
+    location?: {
+      country?: string;
+    };
+    ipInfo?: {
+      country?: string;
+    };
+    geo?: {
+      country?: string;
+    };
+    [key: string]: unknown;
+  };
+}
+
+// Define types for stats
+export interface StatItem {
+  name: string;
+  count: number;
+  percentage: number;
+}
+
 /**
  * Extract browser and location stats from submissions
  * @param submissions Array of form submissions
  * @returns Object containing browser and location stats
  */
-export function extractAnalyticsFromSubmissions(submissions: any[]): { 
-  browserStats: Array<{ name: string; count: number; percentage: number }>;
-  locationStats: Array<{ name: string; count: number; percentage: number }>;
+export function extractAnalyticsFromSubmissions(submissions: Submission[]): { 
+  browserStats: Array<StatItem>;
+  locationStats: Array<StatItem>;
 } {
-  const browserStats: Array<{ name: string; count: number; percentage: number }> = [];
-  const locationStats: Array<{ name: string; count: number; percentage: number }> = [];
+  const browserStats: Array<StatItem> = [];
+  const locationStats: Array<StatItem> = [];
   
   // Only process if we have submissions
   if (submissions.length === 0) {
@@ -152,7 +196,7 @@ export function extractAnalyticsFromSubmissions(submissions: any[]): {
   
   // Process each submission
   submissions.forEach(sub => {
-    const data = sub.data as any;
+    const data = sub.data;
     
     // Extract browser info from legacy or new format
     let browser = "Unknown";

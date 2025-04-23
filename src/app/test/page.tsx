@@ -1,4 +1,4 @@
-import { ContactForm, FeedbackForm, WaitlistForm , BASE_THEMES} from '@mantlz/nextjs';
+import { WaitlistForm } from '@mantlz/nextjs';
 
 export default function CustomerFeedbackPage() {
   return (

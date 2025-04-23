@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { db } from "@/lib/db";
 import { ratelimitConfig } from '@/lib/ratelimiter';
-import { NotificationType, NotificationStatus } from '@prisma/client';
+import { NotificationType, NotificationStatus, Prisma } from '@prisma/client';
 
 // Simplified schema - only apiKey is required
 const requestSchema = z.object({
@@ -146,7 +146,7 @@ export async function GET(
     }
 
     // Build the where clause for notification logs
-    const where: any = { 
+    const where: Prisma.NotificationLogWhereInput = { 
       formId,
     };
 

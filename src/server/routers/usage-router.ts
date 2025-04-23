@@ -158,7 +158,7 @@ export const usageRouter = j.router({
         resetDate,
         plan
       });
-    } catch (error) {
+    } catch (_error) {
       throw new HTTPException(500, { 
         message: "Failed to retrieve usage information" 
       });

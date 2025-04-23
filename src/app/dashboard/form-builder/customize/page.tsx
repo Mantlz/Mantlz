@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { client } from '@/lib/client'
 import { FormType } from '@prisma/client'
-import { FormField } from './types'
+import { FormField, FieldType } from './types'
 import { FieldConfigurationTab } from './_components/FieldConfigurationTab'
 import { FormSettingsTab } from './_components/FormSettingsTab'
 import { FormPreview } from './_components/FormPreview'
@@ -51,7 +51,7 @@ export default function CustomizeFormPage() {
     }
   }
   
-  const updateField = (id: string, property: string, value: any) => {
+  const updateField = (id: string, property: string, value: string | number | boolean | string[]) => {
     setFormFields(formFields.map(field => 
       field.id === id ? { ...field, [property]: value } : field
     ))
@@ -70,7 +70,13 @@ export default function CustomizeFormPage() {
     }
     setIsCreating(true)
     try {
-      const formSchema: Record<string, any> = {}
+      const formSchema: Record<string, {
+        type: FieldType;
+        required: boolean;
+        label: string;
+        placeholder?: string;
+        options?: string[];
+      }> = {}
       formFields.forEach(field => {
         formSchema[field.name] = {
           type: field.type,
@@ -94,8 +100,8 @@ export default function CustomizeFormPage() {
       const result = await response.json()
       toast.success('Form created successfully')
       router.push(`/dashboard/form/${result.id}`)
-    } catch (error: any) {
-      toast.error(error?.message || 'Failed to create form')
+    } catch (error: Error | unknown) {
+      toast.error(error instanceof Error ? error.message : 'Failed to create form')
       console.error(error)
     } finally {
       setIsCreating(false)

@@ -3,7 +3,7 @@
 import { useState, useEffect, memo } from "react"
 import Link from "next/link"
 import { ChevronDown, HelpCircle, Settings, Activity, TestTube2, Plus } from "lucide-react"
-import { useUser, useClerk, useAuth } from "@clerk/nextjs"
+import { useUser, useClerk } from "@clerk/nextjs"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -15,7 +15,6 @@ import { NavUserSkeleton } from "@/components/skeletons/navUser-skeleton"
 import { BreadcrumbSkeleton } from "@/components/skeletons/breadcrumb-skeleton"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
-import { TemplateDialog } from "@/components/forms/template-dialog"
 import { QuestionModal } from "@/components/modals/QuestionModal"
 
 // Custom hook for handling mounted state
@@ -123,14 +122,7 @@ const NavigationSection = memo(function NavigationSection() {
           className="hover:bg-zinc-800 p-0"
           onSelect={(e) => e.preventDefault()}
         >
-          <TemplateDialog 
-            trigger={
-              <div className="flex items-center gap-2 w-full px-2 py-1.5">
-                <Plus className="h-4 w-4" />
-                <span>Create Form</span>
-              </div>
-            }
-          />
+
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

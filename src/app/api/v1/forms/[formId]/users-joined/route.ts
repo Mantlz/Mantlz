@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { validateApiKey } from '@/lib/auth-utils';
 
+interface FormSettings {
+  usersJoined?: {
+    enabled: boolean;
+  };
+}
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { formId: string } }
@@ -51,7 +57,7 @@ export async function GET(
     }
 
     // Get users joined settings
-    const usersJoined = (form.settings as any)?.usersJoined || { enabled: false };
+    const usersJoined = (form.settings as FormSettings)?.usersJoined || { enabled: false };
     const submissionCount = form._count.submissions;
     
     // Only return the count if the feature is enabled

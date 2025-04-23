@@ -1,7 +1,6 @@
 "use client"
 
 import { SignIn } from "@clerk/nextjs"
-import { useSearchParams } from "next/navigation"
 import { dark } from "@clerk/themes";
 
 export default function Page() {

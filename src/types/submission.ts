@@ -16,7 +16,7 @@ export interface Submission {
   createdAt: string; // Or Date
   notificationLogs?: NotificationLog[];
   // Include other fields used by potential future utils (e.g., data, analytics)
-  data?: Record<string, any> & { 
+  data?: Record<string, unknown> & { 
     _meta?: {
       browser?: string;
       country?: string;

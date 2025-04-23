@@ -4,12 +4,9 @@ import React, { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { 
-  CreditCard, 
   Loader2, 
-  RefreshCw, 
   AlertCircle, 
   CheckCircle2, 
-  XCircle,
   ExternalLink
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -22,7 +19,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { client } from "@/lib/client";
@@ -227,16 +223,6 @@ export default function BillingSettings() {
       }
     } finally {
       setIsRedirecting(false);
-    }
-  };
-
-  const formatDate = (dateString: string | undefined) => {
-    if (!dateString) return "N/A";
-    
-    try {
-      return format(new Date(dateString), "MMMM d, yyyy");
-    } catch (error) {
-      return dateString;
     }
   };
 

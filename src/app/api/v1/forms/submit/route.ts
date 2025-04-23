@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { db } from "@/lib/db";
 import { Resend } from 'resend';
@@ -14,7 +14,7 @@ const submitSchema = z.object({
   apiKey: z.string(),
   //recaptchaToken: z.string(),
   redirectUrl: z.string().optional(),
-  data: z.record(z.any()).refine((data) => {
+  data: z.record(z.unknown()).refine((data) => {
     return typeof data.email === 'string' || data.email === undefined;
   }, {
     message: 'Email must be a string or undefined'

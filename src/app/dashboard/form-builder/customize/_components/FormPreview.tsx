@@ -21,7 +21,6 @@ export function FormPreview({
   formTitle, 
   formDescription, 
   formFields,
-  formType
 }: FormPreviewProps) {
   return (
     <div className="py-6 px-4 rounded-lg bg-white dark:bg-zinc-950">
