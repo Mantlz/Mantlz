@@ -15,7 +15,7 @@ export async function GET(
 ) {
   try {
     // Get the formId from the URL parameters
-    const { formId } = context.params;
+    const { formId } = await Promise.resolve(context.params);
 
     // Get query parameters
     const { searchParams } = new URL(req.url);
