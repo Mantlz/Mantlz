@@ -9,9 +9,15 @@ const requestSchema = z.object({
   timeRange: z.enum(['day', 'week', 'month']).default('week'),
 });
 
+type RouteContext = {
+  params: {
+    formId: string;
+  };
+};
+
 export async function GET(
   req: NextRequest,
-  { params }: { params: { formId: string } }
+  { params }: RouteContext
 ) {
   try {
     // Get the formId from the URL parameters
