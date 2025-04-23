@@ -14,16 +14,10 @@ export default function CustomerFeedbackPage() {
          
 
       
-     <WaitlistForm
-        formId="cm9msn9b30009o7ks7b90ycik"
-        showUsersJoined={true}
-        usersJoinedLabel='joined'
-        theme="neobrutalism"
-        
-      /> 
+
 
       <WaitlistForm
-        formId="cm9q8pimz00040ju2szwoq8mh"
+        formId="cm9snvmho000j0jtur0noz6cp"
        
         theme="neobrutalism"
         
