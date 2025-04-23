@@ -23,10 +23,10 @@ interface FormFieldItemProps {
 
 export function FormFieldItem({ 
   field, 
-  index, 
-  arrLength, 
+
+
   onUpdate, 
-  onMove, 
+
   onToggleRequired, 
   onRemove 
 }: FormFieldItemProps) {
@@ -51,25 +51,25 @@ export function FormFieldItem({
       ref={setNodeRef} 
       style={style}
       className={cn(
-        "bg-white dark:bg-zinc-950 rounded-xl transition-all duration-200",
-        "border border-gray-200 dark:border-zinc-800",
+        "bg-white dark:bg-zinc-950 rounded-md transition-all duration-200",
+        "border border-neutral-200 dark:border-zinc-800",
         "hover:border-primary/25 dark:hover:border-primary/25",
         "group",
-        isDragging ? "shadow-lg ring-1 ring-primary/30 scale-[1.01]" : "hover:shadow-sm"
+        isDragging ? "shadow-md ring-1 ring-primary/30 scale-[1.01]" : "hover:shadow-sm"
       )}
     >
-      <div className="p-3.5 flex flex-col gap-3">
+      <div className="p-3 flex flex-col gap-3">
         {/* Header row with drag handle */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="relative">
               <div 
                 className={cn(
-                  "text-gray-400 dark:text-gray-500 cursor-move touch-none",
+                  "text-neutral-400 dark:text-neutral-500 cursor-move touch-none",
                   "hover:text-primary/80 dark:hover:text-primary/80",
                   "transition-colors duration-200",
-                  "p-1 rounded-md",
-                  "group-hover:bg-gray-50 dark:group-hover:bg-zinc-900",
+                  "p-1 rounded-lg",
+                  "group-hover:bg-neutral-50 dark:group-hover:bg-zinc-900",
                   !isDragging && "group-hover:animate-pulse"
                 )}
                 {...attributes}
@@ -82,7 +82,7 @@ export function FormFieldItem({
             <div className="flex items-center gap-1.5">
               <span className={cn(
                 "text-sm font-medium",
-                "text-gray-900 dark:text-gray-100",
+                "text-neutral-800 dark:text-neutral-200",
                 "transition-colors duration-200"
               )}>
                 {field.type.charAt(0).toUpperCase() + field.type.slice(1)}
@@ -94,8 +94,8 @@ export function FormFieldItem({
             size="sm" 
             variant="ghost"
             className={cn(
-              "h-7 w-7 p-0 rounded-full",
-              "text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-500",
+              "h-7 w-7 p-0 rounded-lg cursor-pointer",
+              "text-neutral-400 hover:text-red-500 dark:text-neutral-500 dark:hover:text-red-500",
               "opacity-60 hover:opacity-100",
               "transition-all duration-200",
               "hover:bg-red-50 dark:hover:bg-red-900/20"
@@ -115,12 +115,12 @@ export function FormFieldItem({
               value={field.label}
               onChange={(e) => onUpdate(field.id, 'label', e.target.value)}
               className={cn(
-                "h-9 py-1.5 px-3 text-sm",
-                "bg-transparent text-gray-800 dark:text-gray-200",
-                "rounded-lg",
-                "border border-gray-200 dark:border-zinc-800",
+                "h-9 py-1.5 px-3 text-sm cursor-text",
+                "bg-transparent text-neutral-800 dark:text-neutral-200",
+                "rounded-md",
+                "border border-neutral-200 dark:border-zinc-800",
                 "focus:border-primary/30 focus:ring-1 focus:ring-primary/20",
-                "placeholder:text-gray-400 dark:placeholder:text-gray-600",
+                "placeholder:text-neutral-400 dark:placeholder:text-neutral-600",
                 "transition-all duration-200"
               )}
               placeholder="Field label"
@@ -133,13 +133,13 @@ export function FormFieldItem({
               checked={field.required}
               onCheckedChange={(checked) => onToggleRequired(field.id, checked)}
               className={cn(
-                "data-[state=checked]:bg-primary data-[state=unchecked]:bg-gray-200 dark:data-[state=unchecked]:bg-zinc-700",
+                "data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-neutral-200 border border-zinc-400 dark:border-zinc-800",
                 "cursor-pointer h-4 w-7"
               )}
             />
             <Label 
               htmlFor={`required-switch-${field.id}`} 
-              className="text-xs text-gray-500 dark:text-gray-400 cursor-pointer whitespace-nowrap"
+              className="text-xs text-neutral-500 dark:text-neutral-400 cursor-pointer whitespace-nowrap"
             >
               Required
             </Label>
@@ -152,12 +152,12 @@ export function FormFieldItem({
           value={field.placeholder || ''}
           onChange={(e) => onUpdate(field.id, 'placeholder', e.target.value)}
           className={cn(
-            "h-9 py-1.5 px-3 text-sm",
-            "bg-transparent text-gray-800 dark:text-gray-200",
-            "rounded-lg",
-            "border border-gray-200 dark:border-zinc-800",
+            "h-9 py-1.5 px-3 text-sm cursor-text",
+            "bg-transparent text-neutral-800 dark:text-neutral-200",
+            "rounded-md",
+            "border border-neutral-200 dark:border-zinc-800",
             "focus:border-primary/30 focus:ring-1 focus:ring-primary/20",
-            "placeholder:text-gray-400 dark:placeholder:text-gray-600",
+            "placeholder:text-neutral-400 dark:placeholder:text-neutral-600",
             "transition-all duration-200"
           )}
           placeholder="Placeholder text"

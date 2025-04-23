@@ -2,13 +2,19 @@
 
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ChevronLeft, Users, Clock, File, FileSpreadsheet, RefreshCcw } from "lucide-react"
+import { ChevronLeft, Users, Clock, File, FileSpreadsheet, RefreshCcw, LayoutGrid, List } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
 import { SubmissionSearch } from "../SubmissionSearch"
 import { LogsTableHeaderProps } from "./types"
 
 
-export function TableHeader({ formId, formsData, searchParams, router, submissionsData }: LogsTableHeaderProps) {
+export function TableHeader({ 
+  formId, 
+  formsData, 
+  searchParams, 
+  router, 
+  submissionsData
+}: LogsTableHeaderProps) {
   const selectedForm = formsData?.forms?.find((f) => f.id === formId)
   const hasSubmissions = submissionsData?.submissions && submissionsData.submissions.length > 0
   const lastSubmission = hasSubmissions ? submissionsData.submissions[0] : null

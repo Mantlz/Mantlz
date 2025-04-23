@@ -12,20 +12,20 @@ const Page = () => {
         appearance={{
           baseTheme: dark,
           variables: {
-            colorPrimary: "#2a2a2a",
-            colorBackground: "#000000",
-            colorInputBackground: "#1a1a1a",
+            colorPrimary: "#3f3f46",
+            colorBackground: "#27272a",
+            colorInputBackground: "#3f3f46",
             colorText: "#ffffff",
             colorInputText: "#ffffff",
-            borderRadius: "0.2rem",
+            borderRadius: "0.375rem",
           },
           elements: {
-            card: "shadow-md border border-zinc-950 rounded-lg text-white",
-            formButtonPrimary: "bg-white hover:bg-gray-200 text-black text-sm normal-case font-semibold rounded-none shadow-sm",
+            card: "shadow-lg border border-zinc-700 rounded-xl text-white",
+            formButtonPrimary: "bg-zinc-200 hover:bg-zinc-300 text-zinc-900 text-sm normal-case font-medium rounded-md shadow-sm transition-colors",
             headerTitle: "text-2xl font-semibold font-sans text-white",
-            headerSubtitle: "text-gray-200 font-sans",
-            socialButtonsBlockButton: "border border-zinc-200 hover:bg-gray-600 font-sans rounded-lg text-white",
-            footerActionLink: "text-white hover:text-white font-semibold"
+            headerSubtitle: "text-zinc-400 font-sans",
+            socialButtonsBlockButton: "border border-zinc-700 hover:bg-zinc-700 font-sans rounded-md text-white transition-colors",
+            footerActionLink: "text-zinc-400 hover:text-white font-medium transition-colors"
           }
         }}
       />

@@ -12,7 +12,8 @@ import { FieldConfigurationTab } from './_components/FieldConfigurationTab'
 import { FormSettingsTab } from './_components/FormSettingsTab'
 import { FormPreview } from './_components/FormPreview'
 import { defaultFieldsByType, availableFieldsByType, formMetaByType } from './_components/form-config'
-import { ArrowLeft, Save, Grid3X3, SettingsIcon } from 'lucide-react'
+import { IconArrowLeft } from "@tabler/icons-react"
+import { Save, Grid3X3, SettingsIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export default function CustomizeFormPage() {
@@ -135,92 +136,94 @@ export default function CustomizeFormPage() {
   };
   
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
+    <div className="flex flex-col min-h-screen">
       {/* Top Navigation Bar */}
-      <header className="h-16 border-b border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 flex items-center px-4 lg:px-6 sticky top-0 z-40">
-        <div className="flex w-full justify-between items-center">
-          <div className="flex items-center gap-4">
-            <Button 
-              variant="ghost" 
-              size="icon"
-              onClick={() => router.push('/dashboard/form-builder')}
-              className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
-                {formTitle || 'Untitled Form'}
-              </h2>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                {formType.charAt(0).toUpperCase() + formType.slice(1)} Form
-              </p>
+      <div className="sticky top-0 z-10 backdrop-blur-lg">
+        <div className="max-w-5xl mx-auto px-4 py-3">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <Button 
+                variant="ghost" 
+                size="icon"
+                onClick={() => router.push('/dashboard/form-builder')}
+                className="rounded-full h-8 w-8 text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 cursor-pointer"
+              >
+                <IconArrowLeft className="h-4 w-4" />
+              </Button>
+              <div>
+                <h2 className="text-base font-medium text-neutral-900 dark:text-white">
+                  {formTitle || 'Untitled Form'}
+                </h2>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                  {formType.charAt(0).toUpperCase() + formType.slice(1)} Form
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => router.push('/dashboard/form-builder')}
+                disabled={isCreating}
+                className="text-sm h-9 px-4 rounded-md cursor-pointer border-neutral-200 dark:border-zinc-800 text-neutral-600 dark:text-neutral-400"
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={createForm}
+                disabled={isCreating || formFields.length === 0}
+                className={cn(
+                  "flex items-center gap-2 font-medium rounded-md cursor-pointer",
+                  "bg-primary hover:bg-primary/90 text-white dark:text-black dark:bg-primary",
+                  "disabled:opacity-60 disabled:pointer-events-none transition-all duration-200",
+                  "text-sm px-4 h-9"
+                )}
+              >
+                <Save className="h-4 w-4" />
+                {isCreating ? 'Creating...' : 'Create Form'}
+              </Button>
             </div>
           </div>
-          
-          <div className="flex items-center gap-3">
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => router.push('/dashboard/form-builder')}
-              disabled={isCreating}
-              className="text-sm h-9 px-4 rounded-lg"
-            >
-              Cancel
-            </Button>
-            <Button 
-              onClick={createForm}
-              disabled={isCreating || formFields.length === 0}
-              className={cn(
-                "text-sm h-9 px-4 rounded-lg flex items-center gap-2",
-                "bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary"
-              )}
-            >
-              <Save className="h-4 w-4" />
-              {isCreating ? 'Creating...' : 'Create Form'}
-            </Button>
-          </div>
         </div>
-      </header>
+      </div>
       
-      {/* Main Content Area with Equal Width Sections */}
-      <div className="flex flex-1 h-[calc(100vh-4rem)] overflow-hidden">
-        <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row">
+      {/* Main Content Area */}
+      <div className="flex flex-1 overflow-hidden">
+        <div className="w-full max-w-5xl mx-auto flex flex-col lg:flex-row">
           {/* Editor Panel */}
-          <div className="w-full lg:w-1/2 border-r border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 overflow-y-auto">
-            <div className="p-5 lg:p-6">
+          <div className="w-full lg:w-1/2 border-r border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 overflow-y-auto">
+            <div className="p-4">
               {isClient ? (
                 <Tabs defaultValue="fields" className="w-full">
-                  <TabsList className="flex w-full mb-6 rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-800 p-0.5 bg-gray-50 dark:bg-zinc-900">
+                  <TabsList className="bg-white dark:bg-zinc-900 p-1 h-auto flex space-x-1 overflow-x-auto border border-neutral-200 dark:border-zinc-800 rounded-md mb-4">
                     <TabsTrigger 
                       value="fields" 
                       className={cn(
-                        "flex-1 rounded-lg py-2.5 text-sm font-medium",
-                        "text-gray-700 dark:text-gray-300",
-                        "data-[state=active]:text-primary data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800",
-                        "data-[state=active]:shadow-sm data-[state=active]:border-none",
-                        "transition-all duration-200"
+                        "flex items-center gap-2 px-3 py-1.5 text-sm transition-all duration-150 cursor-pointer whitespace-nowrap",
+                        "data-[state=active]:bg-neutral-100 dark:data-[state=active]:bg-zinc-800",
+                        "data-[state=active]:text-neutral-900 dark:data-[state=active]:text-white",
+                        "data-[state=inactive]:text-neutral-500 dark:data-[state=inactive]:text-neutral-400",
+                        "data-[state=inactive]:hover:text-neutral-700 dark:data-[state=inactive]:hover:text-neutral-300",
+                        "font-medium rounded-md"
                       )}
                     >
-                      <div className="flex items-center justify-center gap-2">
-                        <Grid3X3 className="h-4 w-4" />
-                        <span>Fields</span>
-                      </div>
+                      <Grid3X3 className="h-4 w-4" />
+                      <span>Fields</span>
                     </TabsTrigger>
                     <TabsTrigger 
                       value="settings" 
                       className={cn(
-                        "flex-1 rounded-lg py-2.5 text-sm font-medium",
-                        "text-gray-700 dark:text-gray-300",
-                        "data-[state=active]:text-primary data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800",
-                        "data-[state=active]:shadow-sm data-[state=active]:border-none",
-                        "transition-all duration-200"
+                        "flex items-center gap-2 px-3 py-1.5 text-sm transition-all duration-150 cursor-pointer whitespace-nowrap",
+                        "data-[state=active]:bg-neutral-100 dark:data-[state=active]:bg-zinc-800",
+                        "data-[state=active]:text-neutral-900 dark:data-[state=active]:text-white",
+                        "data-[state=inactive]:text-neutral-500 dark:data-[state=inactive]:text-neutral-400",
+                        "data-[state=inactive]:hover:text-neutral-700 dark:data-[state=inactive]:hover:text-neutral-300",
+                        "font-medium rounded-md"
                       )}
                     >
-                      <div className="flex items-center justify-center gap-2">
-                        <SettingsIcon className="h-4 w-4" />
-                        <span>Settings</span>
-                      </div>
+                      <SettingsIcon className="h-4 w-4" />
+                      <span>Settings</span>
                     </TabsTrigger>
                   </TabsList>
                   
@@ -248,10 +251,11 @@ export default function CustomizeFormPage() {
                 </Tabs>
               ) : (
                 <div className="animate-pulse">
-                  <div className="h-10 bg-gray-200 dark:bg-zinc-800 rounded-xl mb-6"></div>
+                  <div className="h-10 bg-neutral-100 dark:bg-zinc-800 rounded-md mb-6"></div>
                   <div className="space-y-4">
-                    <div className="h-20 bg-gray-100 dark:bg-zinc-900 rounded-xl"></div>
-                    <div className="h-20 bg-gray-100 dark:bg-zinc-900 rounded-xl"></div>
+                    <div className="h-12 bg-neutral-100 dark:bg-zinc-800 rounded-md"></div>
+                    <div className="h-12 bg-neutral-100 dark:bg-zinc-800 rounded-md"></div>
+                    <div className="h-12 bg-neutral-100 dark:bg-zinc-800 rounded-md"></div>
                   </div>
                 </div>
               )}
@@ -259,17 +263,15 @@ export default function CustomizeFormPage() {
           </div>
           
           {/* Preview Panel */}
-          <div className="w-full lg:w-1/2 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-zinc-900 dark:to-zinc-950 overflow-y-auto">
-            <div className="h-full flex items-start justify-center pt-10 px-6">
-              <div className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-xl shadow-xl border border-gray-200 dark:border-zinc-800 overflow-hidden">
-                {/* Form Preview with Scrolling */}
-                <div className="max-h-[calc(100vh-10rem)] overflow-y-auto">
-                  <FormPreview 
-                    formTitle={formTitle}
-                    formDescription={formDescription}
-                    formFields={formFields}
-                  />
-                </div>
+          <div className="w-full lg:w-1/2 overflow-y-auto ">
+            <div className="p-4">
+              <div className="shadow-sm">
+                <FormPreview 
+                  formTitle={formTitle}
+                  formDescription={formDescription}
+                  formFields={formFields}
+                  formType={formType}
+                />
               </div>
             </div>
           </div>

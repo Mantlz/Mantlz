@@ -7,7 +7,7 @@ export default function LogsPage() {
     <div className="container py-8">
       <h1 className="text-2xl font-bold mb-6">Submission Logs</h1>
       <Suspense fallback={<div>Loading...</div>}>
-        <LogsTable />
+        <LogsTable itemsPerPage={6} />
       </Suspense>
     </div>
   );

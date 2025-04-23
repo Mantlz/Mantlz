@@ -40,7 +40,9 @@ export interface SubmissionResponse {
     total: number
     pages: number
     currentPage: number
+    totalPages: number
   }
+  formId: string | null
 }
 
 export interface Form {
@@ -55,6 +57,11 @@ export interface Form {
 export interface FormsResponse {
   forms: Form[]
   nextCursor?: string
+  pagination?: {
+    total: number
+    totalPages: number
+    currentPage: number
+  }
 }
 
 export interface LogsTableContentProps {
@@ -65,12 +72,14 @@ export interface LogsTableContentProps {
     total: number
     pages: number
     currentPage: number
+    totalPages: number
   } | undefined
   searchParams: ReadonlyURLSearchParams
   router: any
   isPremium: boolean
   userPlan?: 'FREE' | 'STANDARD' | 'PRO'
   refetch?: () => void
+  itemsPerPage?: number
 }
 
 export interface LogsTableHeaderProps {

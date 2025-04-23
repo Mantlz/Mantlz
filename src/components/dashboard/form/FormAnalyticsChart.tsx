@@ -80,7 +80,7 @@ export function FormAnalyticsChart({
   timeRange,
   onTimeRangeChange
 }: FormAnalyticsChartProps) {
-  const [activeMetric, setActiveMetric] = 
+
     React.useState<keyof typeof chartConfig>("submissions")
   const [isCollapsed, setIsCollapsed] = React.useState(false)
   const [activeTab, setActiveTab] = React.useState<'overview' | 'insights'>('overview')
@@ -188,13 +188,6 @@ export function FormAnalyticsChart({
       case 'month': return 'Last 30 days';
       default: return 'Submission data';
     }
-  }
-
-  // Format peak hour for display
-  const getPeakHourLabel = (hour: number) => {
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const hour12 = hour % 12 || 12;
-    return `${hour12}${ampm}`;
   }
 
   // Format time labels based on time range

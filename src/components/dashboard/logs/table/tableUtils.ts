@@ -6,26 +6,32 @@ import { FormsResponse, SubmissionResponse, Submission } from "./types"
 /**
  * Fetches user forms
  */
-export async function fetchUserForms(): Promise<FormsResponse> {
+export async function fetchUserForms(page: number = 1, itemsPerPage: number = 8): Promise<FormsResponse> {
   try {
     await new Promise(resolve => setTimeout(resolve, 2000));
     
     const response = await client.forms.getUserForms.$get({
-      limit: 50,
+      limit: 50, // Still fetch all forms to support client-side pagination
     })
 
     const responseData = await response.json()
+    const forms = responseData.forms.map((form: any) => ({
+      id: form.id,
+      name: form.name,
+      description: form.description,
+      submissionCount: form.submissionCount,
+      createdAt: new Date(form.createdAt),
+      updatedAt: new Date(form.updatedAt),
+    }));
 
     return {
-      forms: responseData.forms.map((form: any) => ({
-        id: form.id,
-        name: form.name,
-        description: form.description,
-        submissionCount: form.submissionCount,
-        createdAt: new Date(form.createdAt),
-        updatedAt: new Date(form.updatedAt),
-      })),
+      forms,
       nextCursor: responseData.nextCursor,
+      pagination: {
+        total: forms.length,
+        totalPages: Math.ceil(forms.length / itemsPerPage),
+        currentPage: page
+      }
     }
   } catch (error) {
     console.error("Error fetching forms:", error)
@@ -38,9 +44,10 @@ export async function fetchUserForms(): Promise<FormsResponse> {
  */
 export async function fetchSubmissions(
   formId: string | null, 
-  page: number, 
+  page: number = 1, 
   startDate?: string, 
-  endDate?: string
+  endDate?: string,
+  itemsPerPage: number = 8
 ): Promise<SubmissionResponse> {
   if (!formId) {
     return {
@@ -48,23 +55,55 @@ export async function fetchSubmissions(
       pagination: {
         total: 0,
         pages: 1,
-        currentPage: 1
+        currentPage: 1,
+        totalPages: 1
       },
+      formId: null
     };
   }
 
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  try {
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
-  const response = await client.forms.getSubmissionLogs.$get({
-    formId,
-    page,
-    limit: 5,
-    startDate,
-    endDate,
-  });
+    const response = await client.forms.getSubmissionLogs.$get({
+      formId,
+      page,
+      limit: itemsPerPage, // Use itemsPerPage parameter
+      startDate,
+      endDate,
+    });
 
-  const responseData = await response.json();
-  return responseData as unknown as SubmissionResponse;
+    // Cast to any first to avoid TypeScript errors during transformation
+    const responseData = await response.json() as any;
+    
+    // Ensure we have a consistent pagination structure
+    let pagination = responseData.pagination || {};
+    
+    // Convert pages to totalPages if needed
+    if (pagination.pages && !pagination.totalPages) {
+      pagination.totalPages = pagination.pages;
+    } else if (!pagination.totalPages) {
+      // Fallback calculation if totalPages is missing
+      pagination.totalPages = Math.ceil((pagination.total || 0) / itemsPerPage) || 1;
+    }
+    
+    // Make sure the response has the format we expect
+    const result: SubmissionResponse = {
+      submissions: (responseData.submissions || []) as Submission[],
+      pagination: {
+        total: pagination.total || 0,
+        pages: pagination.pages || 1,
+        currentPage: pagination.currentPage || page,
+        totalPages: pagination.totalPages || 1
+      },
+      formId
+    };
+    
+    return result;
+  } catch (error) {
+    console.error("Error fetching submissions:", error)
+    throw error
+  }
 }
 
 /**

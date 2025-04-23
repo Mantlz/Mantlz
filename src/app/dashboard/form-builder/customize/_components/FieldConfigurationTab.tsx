@@ -113,7 +113,7 @@ export function FieldConfigurationTab({
       return (
         <div className="space-y-3">
           {formFields.map((field, index) => (
-            <div key={field.id} className="bg-white dark:bg-zinc-950 rounded-xl border border-gray-200 dark:border-zinc-800 p-3.5">
+            <div key={field.id} className="bg-white dark:bg-zinc-950 rounded-md border border-neutral-200 dark:border-zinc-800 p-3">
               <div className="flex items-center justify-between">
                 <span>{field.label}</span>
               </div>
@@ -154,13 +154,13 @@ export function FieldConfigurationTab({
   };
 
   return (
-    <div className="space-y-6">
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 p-3 rounded-xl border border-blue-100 dark:border-blue-900/50 mb-5">
-        <div className="flex gap-2 text-sm text-blue-700 dark:text-blue-300">
+    <div className="space-y-5">
+      <div className="bg-blue-50/50 dark:bg-blue-950/20 p-3 rounded-md border border-blue-100 dark:border-blue-900/30">
+        <div className="flex gap-2 text-sm text-blue-600 dark:text-blue-400">
           <InfoIcon className="h-4 w-4 mt-0.5 shrink-0 text-blue-500 dark:text-blue-400" />
           <div>
             <p>{getGuideText()}</p>
-            <p className="text-xs text-blue-600/70 dark:text-blue-400/70 mt-1">
+            <p className="text-xs text-blue-500/70 dark:text-blue-400/70 mt-1">
               Drag and drop fields to reorder them
             </p>
           </div>
@@ -169,16 +169,16 @@ export function FieldConfigurationTab({
       
       {/* Current Fields Section */}
       <div>
-        <h3 className="text-base font-medium mb-3 text-gray-800 dark:text-gray-200">
+        <h3 className="text-sm font-medium mb-3 text-neutral-800 dark:text-neutral-200">
           <span className="flex items-center gap-2">
             <LayersIcon className="h-4 w-4 text-primary/70" />
             Form Elements
           </span>
         </h3>
         {formFields.length === 0 ? (
-          <div className="text-center py-7 px-5 bg-gray-50/80 dark:bg-zinc-800/30 rounded-xl border border-dashed border-gray-200 dark:border-zinc-800 transition-all duration-300">
-            <GripHorizontal className="h-8 w-8 mx-auto text-gray-300 dark:text-gray-600 mb-2" />
-            <p className="text-sm font-medium text-gray-600 dark:text-gray-300">No fields added yet</p>
+          <div className="text-center py-6 px-4 bg-neutral-50/80 dark:bg-zinc-800/30 rounded-md border border-dashed border-neutral-200 dark:border-zinc-800 transition-all duration-300">
+            <GripHorizontal className="h-8 w-8 mx-auto text-neutral-300 dark:text-neutral-600 mb-2" />
+            <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400">No fields added yet</p>
             <div className="mt-2 flex items-center justify-center text-primary">
               <ArrowDownIcon className="h-4 w-4 animate-bounce" />
             </div>
@@ -190,14 +190,14 @@ export function FieldConfigurationTab({
       
       {/* Available Fields Section */}
       <div>
-        <h3 className="text-base font-medium mb-3 text-gray-800 dark:text-gray-200">
+        <h3 className="text-sm font-medium mb-3 text-neutral-800 dark:text-neutral-200">
           <span className="flex items-center gap-2">
             <PlusCircleIcon className="h-4 w-4 text-primary/70" />
             Add Components
           </span>
         </h3>
         {availableFields.length === 0 ? (
-           <p className="text-sm text-gray-500 dark:text-gray-400 p-4 bg-gray-50/80 dark:bg-zinc-800/30 rounded-lg border border-gray-200 dark:border-zinc-800">
+           <p className="text-sm text-neutral-500 dark:text-neutral-400 p-3 bg-neutral-50/80 dark:bg-zinc-800/30 rounded-md border border-neutral-200 dark:border-zinc-800">
              No additional fields available for this form type.
            </p>
         ) : (
@@ -208,10 +208,10 @@ export function FieldConfigurationTab({
                 <div 
                   key={field.id} 
                   className={cn(
-                    "flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200",
+                    "flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-200 cursor-pointer",
                     isAdded 
-                      ? 'bg-gray-100/80 text-gray-400 dark:bg-zinc-800/60 dark:text-gray-500 border border-gray-200 dark:border-zinc-800 opacity-60 cursor-not-allowed' 
-                      : 'bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 cursor-pointer hover:border-primary/20 dark:hover:border-primary/20 hover:shadow-sm'
+                      ? 'bg-neutral-100/80 text-neutral-400 dark:bg-zinc-800/60 dark:text-neutral-500 border border-neutral-200 dark:border-zinc-800 opacity-60 cursor-not-allowed' 
+                      : 'bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 hover:border-primary/20 dark:hover:border-primary/20 hover:shadow-sm'
                   )}
                   onClick={() => !isAdded && onToggleField(field)}
                   role="button"
@@ -226,7 +226,7 @@ export function FieldConfigurationTab({
                   <span className="text-sm whitespace-nowrap overflow-hidden text-ellipsis">
                     {field.label}
                     {!isAdded && (
-                      <span className="text-xs text-gray-400 dark:text-gray-500 ml-1">
+                      <span className="text-xs text-neutral-400 dark:text-neutral-500 ml-1">
                         ({getFieldTypeLabel(field.type)})
                       </span>
                     )}
@@ -249,7 +249,7 @@ function getFieldTypeLabel(type: string): string {
     case 'email':
       return 'Email';
     case 'textarea':
-      return 'Long Text';
+      return 'Paragraph';
     case 'number':
       return 'Number';
     case 'checkbox':

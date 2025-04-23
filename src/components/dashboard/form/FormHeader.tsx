@@ -204,7 +204,7 @@ export function FormHeader({
                 </div>
                 <div>
                   <p className="text-sm xs:text-base font-medium text-gray-900 dark:text-white">
-                    {analytics?.completionRate || 0}%
+                    {responsesCount > 0 ? `${analytics?.completionRate || 0}%` : 'N/A'}
                   </p>
                   <p className="text-xs xs:text-sm text-gray-500 dark:text-gray-400">Completion Rate</p>
                 </div>
@@ -218,9 +218,9 @@ export function FormHeader({
                 </div>
                 <div>
                   <p className="text-sm xs:text-base font-medium text-gray-900 dark:text-white">
-                    {analytics?.averageResponseTime || 0}s
+                    {responsesCount > 0 ? `${analytics?.averageResponseTime || 0}s` : 'N/A'}
                   </p>
-                  <p className="text-xs xs:text-sm text-gray-500 dark:text-gray-400">Avg. Response Time</p>
+                  <p className="text-xs xs:text-sm text-gray-500 dark:text-gray-400">Avg. Time to Complete</p>
                 </div>
               </div>
             </div>

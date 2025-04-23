@@ -1,83 +1,99 @@
 import { Heading } from "@/components/global/heading"
 import { LoadingSpinner } from "@/components/global/loading-spinner"
-import { BackgroundPattern } from "@/components/global/background-pattern"
+import { useEffect, useState } from "react"
 
 interface SyncMessageProps {
   title: string
   message: string
   syncStatus?: boolean
+  syncTime?: number
 }
 
-export function SyncMessage({ title, message, syncStatus }: SyncMessageProps) {
-  return (
-    <div className="flex w-full flex-1 items-center justify-center p-4 xs:p-6 sm:p-8 min-h-screen bg-gray-50/50">
-      <BackgroundPattern className="absolute inset-0" />
-      
-      <div className="relative z-10 flex -translate-y-1/2 flex-col items-center 
-        gap-8 xs:gap-10 sm:gap-12 
-        w-full max-w-[95%] sm:max-w-[90%] md:max-w-[85%] lg:max-w-[80%]">
+export function SyncMessage({ title, message, syncStatus, syncTime = 0 }: SyncMessageProps) {
+  const [progress, setProgress] = useState(0)
+  const [estimatedTime, setEstimatedTime] = useState("calculating...")
+  
+  useEffect(() => {
+    if (syncStatus) {
+      setProgress(100)
+      setEstimatedTime("completed")
+      return
+    }
+    
+    // Update progress based on syncTime
+    const interval = setInterval(() => {
+      setProgress(prev => {
+        const newProgress = prev + (100 / (syncTime * 10))
+        return Math.min(newProgress, 99) // Cap at 99% until sync is complete
+      })
+    }, 100)
+    
+    // Update estimated time
+    const timeInterval = setInterval(() => {
+      setEstimatedTime(prev => {
+        if (prev === "calculating...") return "~15s"
         
-        {/* Clean modern title */}
-        <Heading className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold 
-          bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent
-          text-center tracking-tight">
+        const seconds = parseInt(prev.replace(/[^0-9]/g, ""))
+        if (isNaN(seconds) || seconds <= 1) return "almost done..."
+        return `~${seconds - 1}s`
+      })
+    }, 1000)
+    
+    return () => {
+      clearInterval(interval)
+      clearInterval(timeInterval)
+    }
+  }, [syncStatus, syncTime])
+  
+  return (
+    <div className="flex justify-center items-center h-full">
+      <div className="flex flex-col items-center gap-7 max-w-md w-full p-8 rounded-lg bg-zinc-800 shadow-xl backdrop-blur-sm">
+        {/* Simple title */}
+        <Heading className="text-2xl sm:text-3xl font-semibold text-white text-center">
           {title}
         </Heading>
 
         {/* Message text */}
-        <p className="text-sm xs:text-base sm:text-lg text-gray-600 text-center font-medium">
+        <p className="text-sm sm:text-base text-white/80 text-center">
           {message}
         </p>
 
-        {/* Enhanced loading spinner section */}
-        <div className="flex flex-col items-center gap-6 xs:gap-7 sm:gap-8">
-          <div className="relative p-1">
-            {/* Subtle glow effect */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-gray-500 to-gray-600 
-              opacity-10 blur-md animate-pulse" />
-            
-            {/* Clean background */}
-            <div className="absolute inset-[2px] rounded-full bg-white shadow-inner" />
-            
-            {/* Modern spinner */}
-            <div className="relative bg-gradient-to-b from-gray-800 to-gray-900 
-              rounded-full p-4 xs:p-5 sm:p-6 shadow-lg shadow-gray-500/20">
-              <LoadingSpinner 
-                size="md" 
-                className="w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 text-gray-100" 
-              />
-            </div>
+        {/* Modern progress bar */}
+        <div className="w-full">
+          <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden backdrop-blur-sm">
+            <div 
+              className="h-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full transition-all duration-300 ease-out"
+              style={{ width: `${progress}%` }}
+            />
           </div>
+          
+          <div className="flex justify-between items-center mt-3 text-xs text-white/70">
+            <span>{progress.toFixed(0)}%</span>
+            <span>{syncStatus ? "Completed" : estimatedTime}</span>
+          </div>
+        </div>
 
-          {/* Clean status indicators */}
-          {process.env.NODE_ENV === 'development' && (
-            <div className="flex flex-col xs:flex-row items-center gap-3 xs:gap-4 text-xs sm:text-sm">
-              <div className="flex items-center gap-2.5 px-3 py-1.5 xs:px-4 xs:py-2 rounded-full 
-                bg-white/80 backdrop-blur-sm
-                shadow-[0_4px_20px_-4px_rgba(0,0,0,0.08)]
-                border border-gray-200">
-                <div className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full shadow-sm ${
-                  syncStatus 
-                    ? 'bg-gradient-to-r from-green-400 to-green-500 animate-none' 
-                    : 'bg-gradient-to-r from-gray-600 to-gray-700 animate-pulse'
-                }`} />
-                <span className={`font-medium ${
-                  syncStatus 
-                    ? 'text-green-700' 
-                    : 'text-gray-700'
-                }`}>
-                  {syncStatus ? 'Synced' : 'Syncing'}
-                </span>
-              </div>
-              {!syncStatus && (
-                <div className="px-2 py-1 xs:px-3 xs:py-1.5 rounded-full 
-                  bg-gray-100 border border-gray-200
-                  text-gray-600 font-medium">
-                  ~15s remaining
-                </div>
-              )}
-            </div>
-          )}
+        {/* Status and spinner in one row */}
+        <div className="flex items-center gap-3 mt-2 py-2.5 px-4 rounded-full bg-white/5 backdrop-blur-sm">
+          <div className={`w-2.5 h-2.5 rounded-full ${
+            syncStatus ? 'bg-green-400' : 'bg-indigo-400 animate-pulse'
+          }`} />
+          <span className="text-sm text-white">
+            {syncStatus ? 'Sync complete' : 'Syncing your workspace'}
+          </span>
+          
+          <div className="ml-2">
+            {syncStatus ? (
+              <svg className="w-5 h-5 text-green-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 13L9 17L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            ) : (
+              <LoadingSpinner 
+                size="sm" 
+                className="w-5 h-5 text-indigo-400" 
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>

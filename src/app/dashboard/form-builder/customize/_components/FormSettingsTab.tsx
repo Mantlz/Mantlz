@@ -21,17 +21,17 @@ export function FormSettingsTab({
   onDescriptionChange 
 }: FormSettingsTabProps) {
   return (
-    <div className="space-y-8">
-      <h3 className="text-base font-semibold mb-5 text-neutral-800 dark:text-neutral-200 flex items-center gap-2">
+    <div className="space-y-5">
+      <h3 className="text-sm font-medium mb-4 text-neutral-800  dark:text-neutral-200 flex items-center gap-2">
         <TextIcon className="h-4 w-4 text-primary/70" />
         General Settings
       </h3>
       
-      <div className="space-y-6">
+      <div className="space-y-5 border border-neutral-200 dark:border-zinc-800 rounded-md p-4">
         <div className="relative">
           <Label 
             htmlFor="form-title" 
-            className="text-sm font-medium text-neutral-800 dark:text-neutral-300 block mb-2 flex items-center gap-1.5"
+            className="text-sm font-medium text-neutral-800 dark:text-neutral-300  mb-2 flex items-center gap-1.5"
           >
             Form Title
             <span className="text-red-500 text-xs">*</span>
@@ -43,9 +43,8 @@ export function FormSettingsTab({
             className={cn(
               "bg-white dark:bg-neutral-900",
               "border border-neutral-200 dark:border-neutral-700",
-              "rounded-lg p-2.5",
+              "rounded-md p-2 cursor-text",
               "text-neutral-900 dark:text-neutral-200",
-              "shadow-sm",
               "focus:ring-2 focus:ring-primary/20 focus:border-primary/60 transition-all duration-200"
             )}
             required
@@ -71,9 +70,8 @@ export function FormSettingsTab({
             className={cn(
               "bg-white dark:bg-neutral-900",
               "border border-neutral-200 dark:border-neutral-700",
-              "rounded-lg p-3",
+              "rounded-md p-2 cursor-text",
               "text-neutral-900 dark:text-neutral-200",
-              "shadow-sm",
               "focus:ring-2 focus:ring-primary/20 focus:border-primary/60 transition-all duration-200",
               "resize-none"
             )}

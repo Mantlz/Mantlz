@@ -26,11 +26,30 @@ interface Form {
 
 interface FormsListProps {
   itemsPerPage?: number
+  viewMode?: 'grid' | 'list'
+  onViewModeChange?: (mode: 'grid' | 'list') => void
 }
 
-export function FormsList({ itemsPerPage = 8 }: FormsListProps) {
+export function FormsList({ 
+  itemsPerPage = 8, 
+  viewMode: externalViewMode,
+  onViewModeChange
+}: FormsListProps) {
   const [currentPage, setCurrentPage] = useState(1)
+  const [internalViewMode, setInternalViewMode] = useState<'grid' | 'list'>('grid')
   const { user } = useUser()
+  
+  // Use external viewMode if provided, otherwise use internal state
+  const viewMode = externalViewMode || internalViewMode
+
+  // Handle view mode change
+  const handleViewModeChange = (mode: 'grid' | 'list') => {
+    if (onViewModeChange) {
+      onViewModeChange(mode)
+    } else {
+      setInternalViewMode(mode)
+    }
+  }
   
   const { data: forms = [], isLoading, error } = useQuery<Form[]>({
     queryKey: ['forms'],
@@ -167,28 +186,102 @@ export function FormsList({ itemsPerPage = 8 }: FormsListProps) {
         </div>
       </div>
 
-      {/* Forms Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-        {currentForms.map((form: Form) => (
-          <Card 
-            key={form.id}
-            className="group bg-white dark:bg-zinc-900 border border-gray-100 dark:border-gray-800/50 hover:border-gray-200 dark:hover:border-gray-700 transition-all duration-200 cursor-pointer hover:shadow-md"
-            onClick={() => window.location.href = `/dashboard/form/${form.id}`}
-          >
-            <div className="p-4 sm:p-6">
-              <div className="flex items-center justify-between mb-3 sm:mb-4">
-                <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
-                  {form.name}
-                </h3>
-                <span className="text-xs sm:text-sm bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-white px-2 sm:px-3 py-1 rounded-full">
-                  {form.responsesCount} responses
-                </span>
+      {/* View Toggle */}
+      {forms.length > 0 && (
+        <div className="flex justify-end mb-2">
+          <div className="bg-white dark:bg-zinc-800 border border-gray-100 dark:border-gray-800 rounded-lg p-1 flex items-center">
+            <button
+              onClick={() => handleViewModeChange('grid')}
+              className={`p-1.5 rounded-md ${viewMode === 'grid' 
+                ? 'bg-gray-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
+              aria-label="Grid view"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect width="7" height="7" x="3" y="3" rx="1" />
+                <rect width="7" height="7" x="14" y="3" rx="1" />
+                <rect width="7" height="7" x="14" y="14" rx="1" />
+                <rect width="7" height="7" x="3" y="14" rx="1" />
+              </svg>
+            </button>
+            <button
+              onClick={() => handleViewModeChange('list')}
+              className={`p-1.5 rounded-md ${viewMode === 'list' 
+                ? 'bg-gray-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
+              aria-label="List view"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="3" x2="21" y1="6" y2="6" />
+                <line x1="3" x2="21" y1="12" y2="12" />
+                <line x1="3" x2="21" y1="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Forms Grid or List View */}
+      {viewMode === 'grid' ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+          {currentForms.map((form: Form) => (
+            <Card 
+              key={form.id}
+              className="group bg-white dark:bg-zinc-900 border border-gray-100 dark:border-gray-800/50 hover:border-gray-200 dark:hover:border-gray-700 transition-all duration-200 cursor-pointer hover:shadow-md"
+              onClick={() => window.location.href = `/dashboard/form/${form.id}`}
+            >
+              <div className="p-4 sm:p-6">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
+                    {form.name}
+                  </h3>
+                  <span className="text-xs sm:text-sm bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-white px-2 sm:px-3 py-1 rounded-full">
+                    {form.responsesCount} responses
+                  </span>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                    <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
+                    <span>{format(new Date(form.createdAt), "MMM d, yyyy")}</span>
+                  </div>
+                  <div className="flex items-center gap-1 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                    <span>View</span>
+                    <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 transform translate-x-0 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
               </div>
-              
-              <div className="flex items-center justify-between">
-                <div className="flex items-center text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                  <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
-                  <span>{format(new Date(form.createdAt), "MMM d, yyyy")}</span>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {currentForms.map((form: Form) => (
+            <div 
+              key={form.id}
+              className="group bg-white dark:bg-zinc-900 border border-gray-100 dark:border-gray-800/50 hover:border-gray-200 dark:hover:border-gray-700 transition-all duration-200 cursor-pointer hover:shadow-md rounded-lg"
+              onClick={() => window.location.href = `/dashboard/form/${form.id}`}
+            >
+              <div className="p-4 sm:p-5 flex items-center justify-between">
+                <div className="flex items-center space-x-4 flex-1 min-w-0">
+                  <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                    <FileSpreadsheet className="h-5 w-5 text-gray-900 dark:text-white" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
+                      {form.name}
+                    </h3>
+                    <div className="flex items-center gap-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                      <div className="flex items-center">
+                        <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5" />
+                        <span>{format(new Date(form.createdAt), "MMM d, yyyy")}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5" />
+                        <span>{form.responsesCount} responses</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div className="flex items-center gap-1 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
                   <span>View</span>
@@ -196,9 +289,9 @@ export function FormsList({ itemsPerPage = 8 }: FormsListProps) {
                 </div>
               </div>
             </div>
-          </Card>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
       
       {/* Empty State */}
       {forms.length === 0 && (
