@@ -2,15 +2,8 @@
 
 import * as React from "react"
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
-import { ChevronDown, Info, Lock, Users, Activity, Clock, Chrome, MonitorSmartphone, CircleIcon, Globe, GlobeIcon } from "lucide-react"
+import { Lock, Chrome, MonitorSmartphone, CircleIcon, Globe, GlobeIcon } from "lucide-react"
 
-
-import {
-  ChartConfig,
-  ChartContainer,
-
-  ChartTooltipContent,
-} from "@/components/ui/chart"
 import { AdvancedAnalytics } from "./AdvancedAnalytics"
 import { Button } from "@/components/ui/button"
 import { BarChart3 } from "lucide-react"
@@ -59,31 +52,21 @@ interface FormAnalyticsChartProps {
     locationStats?: CountryStat[];
   };
   isLoading: boolean;
-  formCreatedAt?: Date;
   timeRange: 'day' | 'week' | 'month';
   onTimeRangeChange: (range: 'day' | 'week' | 'month') => void;
 }
-
-const chartConfig = {
-  submissions: {
-    label: "Form Submissions",
-    color: "hsl(var(--chart-1))",
-  },
-} satisfies ChartConfig
 
 export function FormAnalyticsChart({
   chartData: rawChartData,
   latestDataPoint,
   analytics,
   isLoading,
-  formCreatedAt,
   timeRange,
   onTimeRangeChange
 }: FormAnalyticsChartProps) {
 
-    React.useState<keyof typeof chartConfig>("submissions")
-  const [isCollapsed, setIsCollapsed] = React.useState(false)
   const [activeTab, setActiveTab] = React.useState<'overview' | 'insights'>('overview')
+  const [isCollapsed, setIsCollapsed] = React.useState(false)
   
   // Debug logs for analytics data
   React.useEffect(() => {
@@ -102,13 +85,6 @@ export function FormAnalyticsChart({
 
   // Use the real data directly from the backend
   const chartData = React.useMemo(() => rawChartData, [rawChartData]);
-
-  const total = React.useMemo(
-    () => ({
-      submissions: chartData.reduce((acc, curr) => acc + curr.submissions, 0),
-    }),
-    [chartData]
-  )
 
   // User insights data
   const userInsights = React.useMemo(() => {
@@ -312,7 +288,7 @@ export function FormAnalyticsChart({
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 dark:text-white">No data yet</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 max-w-sm text-center">
-                  Once your form starts receiving submissions, you'll see analytics data here.
+                  Once your form starts receiving submissions, you&apos;ll see analytics data here.
                 </p>
               </div>
             ) : (

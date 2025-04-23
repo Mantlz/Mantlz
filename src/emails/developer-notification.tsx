@@ -10,7 +10,7 @@ import { BrandedEmailTemplate } from './templates/branded-email-template';
 
 interface DeveloperNotificationEmailProps {
   formName: string;
-  submissionData: Record<string, any>;
+  submissionData: Record<string, unknown>;
   formId: string;
 }
 

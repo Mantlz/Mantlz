@@ -1,6 +1,6 @@
 "use client"
 
-import { Loader2, MessageSquare, Search, Calendar, Mail, Lock, Sparkles, Clock, BarChart, Globe, MapPin, Inbox, ArrowUpRight, FileSearch, FileSpreadsheet, AlertCircle, Copy, CheckCheck, Maximize2, Check } from "lucide-react"
+import { Loader2, Search, Calendar, Mail, Lock, Sparkles, Globe, MapPin, FileSearch, Maximize2, Copy } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
 import { toast } from "sonner"
 import { SearchResult, Submission } from "./types"

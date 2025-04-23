@@ -1,7 +1,7 @@
 "use client"
 
 import { client } from "@/lib/client"
-import { Form, SearchResult, Submission } from "./types"
+import { Form, SearchResult, Submission, NotificationLog } from "./types"
 
 /**
  * Fetches user forms
@@ -20,22 +20,30 @@ export async function fetchUserForms() {
   }
 }
 
+// Define interfaces for advanced filters
+interface AdvancedFilters {
+  dateRange?: { from: Date | undefined; to?: Date | undefined };
+  showOnlyWithAttachments?: boolean;
+  sortOrder?: 'newest' | 'oldest';
+  timeFrame?: 'all' | '24h' | '7d' | '30d';
+  hasEmail?: boolean;
+  browser?: string;
+  location?: string;
+}
+
+// Define form data interface
+interface FormsData {
+  forms: Form[];
+}
+
 /**
  * Main search function that directs search to specific, all, or multiple forms
  */
 export async function performSearch(
   searchTerm: string, 
   formId: string | null,
-  formsData?: any,
-  advancedFilters?: {
-    dateRange?: { from: Date | undefined; to?: Date | undefined };
-    showOnlyWithAttachments?: boolean;
-    sortOrder?: 'newest' | 'oldest';
-    timeFrame?: 'all' | '24h' | '7d' | '30d';
-    hasEmail?: boolean;
-    browser?: string;
-    location?: string;
-  }
+  formsData?: FormsData,
+  advancedFilters?: AdvancedFilters
 ): Promise<SearchResult> {
   if (!searchTerm || searchTerm.trim() === "") {
     return { submissions: [] }
@@ -67,15 +75,7 @@ export async function performSearch(
 export async function searchInSpecificForm(
   searchTerm: string, 
   formId: string,
-  advancedFilters?: {
-    dateRange?: { from: Date | undefined; to?: Date | undefined };
-    showOnlyWithAttachments?: boolean;
-    sortOrder?: 'newest' | 'oldest';
-    timeFrame?: 'all' | '24h' | '7d' | '30d';
-    hasEmail?: boolean;
-    browser?: string;
-    location?: string;
-  }
+  advancedFilters?: AdvancedFilters
 ): Promise<SearchResult> {
   try {
     // Log to debug specific form search
@@ -101,7 +101,7 @@ export async function searchInSpecificForm(
       // Add time frame as an alternative date filter
       if (advancedFilters.timeFrame && advancedFilters.timeFrame !== 'all') {
         const now = new Date()
-        let startDate = new Date()
+        const startDate = new Date()
         
         switch(advancedFilters.timeFrame) {
           case '24h':
@@ -150,14 +150,16 @@ export async function searchInSpecificForm(
     
     // Try to parse the response as JSON
     try {
-      const responseData = JSON.parse(responseText) as any
+      const responseData = JSON.parse(responseText) as Record<string, unknown>
       
       // Handle superjson format
       if (responseData.json && responseData.meta) {
-        const data = responseData.json
+        const data = responseData.json as { submissions?: unknown[] }
         
         if (data.submissions && Array.isArray(data.submissions)) {
-          const mappedSubmissions = data.submissions.map(mapSubmissionData(formId))
+          const mappedSubmissions = data.submissions.map((submission) => 
+            mapSubmissionData(formId)(submission)
+          )
           console.log(`Found ${mappedSubmissions.length} submissions in superjson format`)
           return { submissions: mappedSubmissions }
         }
@@ -165,14 +167,18 @@ export async function searchInSpecificForm(
       
       // Handle regular JSON format
       if (responseData.submissions && Array.isArray(responseData.submissions)) {
-        const mappedSubmissions = responseData.submissions.map(mapSubmissionData(formId))
+        const mappedSubmissions = (responseData.submissions as unknown[]).map((submission) => 
+          mapSubmissionData(formId)(submission)
+        )
         console.log(`Found ${mappedSubmissions.length} submissions in regular format`)
         return { submissions: mappedSubmissions }
       }
 
       // If we have a pagination object, data might be in a different format
       if (responseData.pagination && responseData.data && Array.isArray(responseData.data)) {
-        const mappedSubmissions = responseData.data.map(mapSubmissionData(formId))
+        const mappedSubmissions = (responseData.data as unknown[]).map((submission) => 
+          mapSubmissionData(formId)(submission)
+        )
         console.log(`Found ${mappedSubmissions.length} submissions in pagination format`)
         return { submissions: mappedSubmissions }
       }
@@ -194,16 +200,8 @@ export async function searchInSpecificForm(
  */
 export async function searchAcrossAllForms(
   searchTerm: string, 
-  formsData?: any,
-  advancedFilters?: {
-    dateRange?: { from: Date | undefined; to?: Date | undefined };
-    showOnlyWithAttachments?: boolean;
-    sortOrder?: 'newest' | 'oldest';
-    timeFrame?: 'all' | '24h' | '7d' | '30d';
-    hasEmail?: boolean;
-    browser?: string;
-    location?: string;
-  }
+  formsData?: FormsData,
+  advancedFilters?: AdvancedFilters
 ): Promise<SearchResult> {
   try {
     // Log to debug advanced filters application
@@ -212,7 +210,7 @@ export async function searchAcrossAllForms(
     // Ensure query parameter is always set
     const params: {
       query: string,
-      [key: string]: any
+      [key: string]: unknown
     } = { 
       query: searchTerm 
     };
@@ -229,7 +227,7 @@ export async function searchAcrossAllForms(
       // Handle time frame filter
       if (advancedFilters.timeFrame && advancedFilters.timeFrame !== 'all') {
         const now = new Date();
-        let startDate = new Date();
+        const startDate = new Date();
         
         switch(advancedFilters.timeFrame) {
           case '24h':
@@ -276,38 +274,49 @@ export async function searchAcrossAllForms(
     
     // Make the API request with proper type casting
     const response = await client.forms.searchSubmissions.$get(params);
-    const rawData = await response.json();
+    const rawData = await response.json() as Record<string, unknown>;
     
     const submissions: Submission[] = [];
     
-    if (rawData.submissions && Array.isArray(rawData.submissions)) {
+    if (rawData && 
+        typeof rawData === 'object' && 
+        'submissions' in rawData && 
+        Array.isArray(rawData.submissions)) {
       // Transform the raw submissions to match our expected Submission type
-      rawData.submissions.forEach((sub: any) => {
+      (rawData.submissions as unknown[]).forEach((sub: unknown) => {
         try {
           // Transform notification logs to match the expected type
-          const notificationLogs = (sub.notificationLogs || []).map((log: any) => ({
-            id: log.id,
+          const subObject = sub as Record<string, unknown>;
+          const notificationLogs = ((subObject.notificationLogs as Array<Record<string, unknown>>) || []).map((log): NotificationLog => ({
+            id: log.id as string,
             type: log.type as 'SUBMISSION_CONFIRMATION' | 'DEVELOPER_NOTIFICATION' | 'DIGEST',
             status: log.status as 'SENT' | 'FAILED' | 'SKIPPED' | 'PENDING',
-            error: log.error,
-            createdAt: log.createdAt
+            error: log.error as string | null,
+            createdAt: log.createdAt as string
           }));
           
-          submissions.push({
-            id: sub.id,
-            createdAt: new Date(sub.createdAt),
-            email: sub.email || (sub.data && typeof sub.data === 'object' ? sub.data.email : null),
-            formId: sub.formId || "",
-            formName: sub.formName || "Unknown Form",
-            formDescription: sub.formDescription || "",
-            data: sub.data || {}, // Ensure data is always present, even if empty
+          const submissionData: Submission = {
+            id: subObject.id as string,
+            createdAt: new Date(subObject.createdAt as string),
+            email: subObject.email as string || ((subObject.data && typeof subObject.data === 'object') ? 
+              (subObject.data as Record<string, unknown>).email as string : null),
+            formId: subObject.formId as string || "",
+            formName: subObject.formName as string || "Unknown Form",
+            formDescription: subObject.formDescription as string || "",
+            data: subObject.data as Record<string, unknown> || {}, // Ensure data is always present, even if empty
             notificationLogs: notificationLogs,
-            analytics: sub.analytics || {
-              browser: sub.data?._meta?.browser || "Unknown",
-              location: sub.data?._meta?.country || "Unknown"
+            analytics: subObject.analytics as Record<string, unknown> || {
+              browser: subObject.data && typeof subObject.data === 'object' && 
+                (subObject.data as Record<string, unknown>)._meta ? 
+                ((subObject.data as Record<string, unknown>)._meta as Record<string, unknown>).browser as string || "Unknown" : "Unknown",
+              location: subObject.data && typeof subObject.data === 'object' && 
+                (subObject.data as Record<string, unknown>)._meta ? 
+                ((subObject.data as Record<string, unknown>)._meta as Record<string, unknown>).country as string || "Unknown" : "Unknown"
             },
-            status: sub.status || null
-          });
+            status: subObject.status as string || undefined
+          };
+          
+          submissions.push(submissionData);
         } catch (subError) {
           console.error("Error mapping submission:", subError);
         }
@@ -320,7 +329,10 @@ export async function searchAcrossAllForms(
         // Filter by attachment presence
         if (advancedFilters.showOnlyWithAttachments) {
           filteredSubmissions = filteredSubmissions.filter((sub) => 
-            sub.data && sub.data.attachments && sub.data.attachments.length > 0
+            sub.data && 
+            (sub.data as Record<string, unknown>).attachments && 
+            Array.isArray((sub.data as Record<string, unknown>).attachments) && 
+            ((sub.data as Record<string, unknown>).attachments as unknown[]).length > 0
           );
         }
         
@@ -409,7 +421,7 @@ function parseAdvancedSearchQuery(query: string): Record<string, string> {
 export async function searchMultipleForms(
   searchTerm: string, 
   formsToSearch: Form[],
-  advancedFilters?: any
+  advancedFilters?: AdvancedFilters
 ): Promise<SearchResult> {
   const allResults: Submission[] = []
   
@@ -421,7 +433,7 @@ export async function searchMultipleForms(
         search: string,
         page: number,
         limit: number,
-        [key: string]: any
+        [key: string]: unknown
       } = {
         formId: form.id,
         search: searchTerm,
@@ -450,20 +462,15 @@ export async function searchMultipleForms(
       
       const response = await client.forms.getSubmissionLogs.$get(params)
       
-      const data = await response.json()
+      const data = await response.json() as Record<string, unknown>
       
-      if (data.submissions?.length) {
+      if (data && 
+          typeof data === 'object' && 
+          'submissions' in data && 
+          Array.isArray(data.submissions) && 
+          data.submissions.length > 0) {
         // Map the submissions data to match the required types
-        const mappedSubmissions = data.submissions.map((submission: any) => {
-          // Transform notification logs to match the expected type
-          const mappedNotificationLogs = submission.notificationLogs?.map((log: any) => ({
-            id: log.id,
-            type: log.type as 'SUBMISSION_CONFIRMATION' | 'DEVELOPER_NOTIFICATION' | 'DIGEST',
-            status: log.status as 'SENT' | 'FAILED' | 'SKIPPED' | 'PENDING',
-            error: log.error,
-            createdAt: log.createdAt
-          })) || [];
-
+        const mappedSubmissions = (data.submissions as unknown[]).map((submission: unknown) => {
           return mapSubmissionData(form.id, form.name)(submission);
         });
         
@@ -481,7 +488,10 @@ export async function searchMultipleForms(
     // Filter by attachment presence
     if (advancedFilters.showOnlyWithAttachments) {
       filteredResults = filteredResults.filter(sub => 
-        sub.data && sub.data.attachments && sub.data.attachments.length > 0
+        sub.data && 
+        (sub.data as Record<string, unknown>).attachments && 
+        Array.isArray((sub.data as Record<string, unknown>).attachments) && 
+        ((sub.data as Record<string, unknown>).attachments as unknown[]).length > 0
       )
     }
     
@@ -504,49 +514,55 @@ export async function searchMultipleForms(
  * Helper to map submission data from API response to Submission interface
  */
 export function mapSubmissionData(formId?: string, formName?: string) {
-  return (sub: any) => {
+  return (sub: unknown): Submission => {
+    const subObj = sub as Record<string, unknown>;
+    
     // First extract the form information with fallbacks
-    const mappedFormId = formId || sub.form?.id || sub.formId || "";
-    const mappedFormName = formName || sub.form?.name || sub.formName || "Unknown Form";
+    const formObj = subObj.form as Record<string, unknown> | undefined;
+    const mappedFormId = formId || (formObj?.id as string) || (subObj.formId as string) || "";
+    const mappedFormName = formName || (formObj?.name as string) || (subObj.formName as string) || "Unknown Form";
     
     // Extract email with fallbacks
-    const email = sub.email || (sub.data && typeof sub.data === 'object' ? sub.data.email : null);
+    const dataObj = subObj.data as Record<string, unknown> | undefined;
+    const email = subObj.email as string || (dataObj && typeof dataObj === 'object' ? dataObj.email as string : null);
     
     // Transform notification logs to match the expected type
-    const notificationLogs = (sub.notificationLogs || []).map((log: any) => ({
-      id: log.id,
+    const notificationLogs = ((subObj.notificationLogs as Array<Record<string, unknown>>) || []).map((log): NotificationLog => ({
+      id: log.id as string,
       type: log.type as 'SUBMISSION_CONFIRMATION' | 'DEVELOPER_NOTIFICATION' | 'DIGEST',
       status: log.status as 'SENT' | 'FAILED' | 'SKIPPED' | 'PENDING',
-      error: log.error,
-      createdAt: log.createdAt
+      error: log.error as string | null,
+      createdAt: log.createdAt as string
     }));
     
     // Create the complete submission object with all available data
     return {
-      id: sub.id,
-      createdAt: new Date(sub.createdAt),
+      id: subObj.id as string,
+      createdAt: new Date(subObj.createdAt as string),
       email: email,
       formId: mappedFormId,
       formName: mappedFormName,
-      formDescription: sub.formDescription || sub.form?.description || "",
-      data: sub.data || {}, // Ensure data is always present, even if empty
+      formDescription: (subObj.formDescription as string) || (formObj?.description as string) || "",
+      data: dataObj || {}, // Ensure data is always present, even if empty
       notificationLogs: notificationLogs,
-      analytics: sub.analytics || {
-        browser: sub.data?._meta?.browser || "Unknown",
-        location: sub.data?._meta?.country || "Unknown"
+      analytics: (subObj.analytics as Record<string, unknown>) || {
+        browser: dataObj?._meta ? 
+          ((dataObj._meta as Record<string, unknown>).browser as string) || "Unknown" : "Unknown",
+        location: dataObj?._meta ? 
+          ((dataObj._meta as Record<string, unknown>).country as string) || "Unknown" : "Unknown"
       },
-      status: sub.status || null
+      status: subObj.status as string || undefined
     };
   };
 }
 
 // Helper function to add forms to the search result
-function addFormsToSearchResult(result: any, rawData: any) {
+function addFormsToSearchResult(result: SearchResult, rawData: Record<string, unknown>) {
   if (rawData.forms && Array.isArray(rawData.forms)) {
-    result.forms = rawData.forms.map((form: any) => ({
-      id: form.id || '',
-      name: form.name || 'Unknown Form',
-      submissionCount: form.submissionCount || 0
+    result.forms = (rawData.forms as Array<Record<string, unknown>>).map((form) => ({
+      id: form.id as string || '',
+      name: form.name as string || 'Unknown Form',
+      submissionCount: form.submissionCount as number || 0
     }));
   }
 } 

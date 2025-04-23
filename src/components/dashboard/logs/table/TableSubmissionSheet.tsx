@@ -20,13 +20,9 @@ import {
   MapPin, 
   Bell,
   File,
-  ArrowUpRight,
   Lock,
   Sparkles,
-  Check,
-  Eye,
-  ChevronLeft,
-  ChevronRight
+ 
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Submission } from "./types"
@@ -47,7 +43,6 @@ export function TableSubmissionSheet({
   isOpen, 
   setIsOpen, 
   submission, 
-  onViewFull,
   isPremium = false
 }: TableSubmissionSheetProps) {
   const [copiedField, setCopiedField] = useState<string | null>(null)

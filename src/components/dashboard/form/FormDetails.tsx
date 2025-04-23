@@ -56,21 +56,16 @@ interface NotificationLog {
   createdAt: string;
 }
 
-interface Submission {
+interface FormSubmissionData {
+  [key: string]: string | number | boolean | null | Record<string, unknown>;
+}
+
+// Define a basic submission type that matches what comes from the API
+interface ApiSubmission {
   id: string;
   createdAt: Date;
-  email: string | null;
-  data: any;
-  formId: string;
-  form: {
-    id: string;
-    name: string;
-  };
-  notificationLogs: NotificationLog[];
-  analytics: {
-    browser: string;
-    location: string;
-  };
+  data: unknown;
+  [key: string]: unknown;
 }
 
 function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
@@ -154,7 +149,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
         ];
 
         return {
-          submissions: data.submissions.map((sub: any, index: number) => ({
+          submissions: data.submissions.map((sub: ApiSubmission) => ({
             ...sub,
             submittedAt: sub.createdAt,
             // Assign a random location from the mock data
@@ -172,8 +167,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
   // Fetch form analytics data with time range
   const { 
     data: analytics, 
-    isLoading: isLoadingAnalytics,
-    refetch: refetchAnalytics
+    isLoading: isLoadingAnalytics
   } = useQuery<FormAnalytics>({
     queryKey: ["formAnalytics", formId, timeRange],
     queryFn: async () => {
@@ -182,8 +176,13 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
           throw new Error('Form ID is required for analytics');
         }
         
-        // Type assertion to work around missing type until next build
-        const formsClient = client.forms as any;
+        // Type assertion with a more specific type
+        interface FormsClient {
+          getFormAnalytics: {
+            $get: (params: { formId: string; timeRange: string }) => Promise<Response>;
+          };
+        }
+        const formsClient = client.forms as FormsClient;
         const response = await formsClient.getFormAnalytics.$get({
           formId: formId,
           timeRange: timeRange

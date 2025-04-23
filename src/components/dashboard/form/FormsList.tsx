@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { ChevronLeft, ChevronRight, FileSpreadsheet, Clock, ArrowRight, Plus, Users, BarChart3, Calendar } from 'lucide-react'
+import { ChevronLeft, ChevronRight, FileSpreadsheet, Clock, ArrowRight, Plus, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { useQuery } from '@tanstack/react-query'
@@ -15,6 +15,20 @@ interface Form {
   name: string
   createdAt: Date | string
   responsesCount: number
+  emailSettings?: {
+    enabled: boolean
+    fromEmail?: string
+    subject?: string
+    template?: string
+    replyTo?: string
+  }
+}
+
+interface FormApiResponse {
+  id: string
+  name: string
+  createdAt: Date | string
+  submissionCount: number
   emailSettings?: {
     enabled: boolean
     fromEmail?: string
@@ -57,7 +71,7 @@ export function FormsList({
       try {
         const response = await client.forms.getUserForms.$get()
         const data = await response.json()
-        return (data.forms || []).map((form: any) => ({
+        return (data.forms || []).map((form: FormApiResponse) => ({
           ...form,
           responsesCount: form.submissionCount
         }))
@@ -97,9 +111,6 @@ export function FormsList({
   const currentForms = forms.slice(startIndex, endIndex)
 
   const totalResponses = forms.reduce((acc, form) => acc + form.responsesCount, 0)
-  const mostRecentForm = forms.length > 0 ? forms.reduce((latest, current) => 
-    new Date(current.createdAt) > new Date(latest.createdAt) ? current : latest
-  ) : null
   
   return (
     <div className="space-y-6 sm:space-y-8">

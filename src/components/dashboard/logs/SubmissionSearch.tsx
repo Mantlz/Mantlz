@@ -1,22 +1,21 @@
 "use client"
 
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Search, AlertCircle } from "lucide-react"
+import { Search } from "lucide-react"
 import { useSubscription } from "@/hooks/useSubscription"
 import { useQuery } from "@tanstack/react-query"
 import { useDebouncedValue } from "@/hooks/useDebouncedValue"
 import { UpgradeModal } from "@/components/modals/UpgradeModal"
-import { FileSearch, Sparkles } from "lucide-react"
+import { FileSearch } from "lucide-react"
 import { SearchButton } from "./search/SearchButton"
 import { SearchDialog } from "./search/SearchDialog"
 import { SubmissionDetailsSheet } from "./search/SubmissionDetailsSheet"
 import { 
   performSearch, 
   fetchUserForms, 
-  mapSubmissionData 
 } from "./search/searchUtils"
-import { Form, Submission, SearchResult } from "./search/types"
+import { Submission, SearchResult, Form } from "./search/types"
 
 // Define the advanced filters type
 interface AdvancedFilters {
@@ -41,9 +40,6 @@ export function SubmissionSearch() {
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null)
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const [advancedFilters, setAdvancedFilters] = useState<AdvancedFilters>({})
-  const [isSearching, setIsSearching] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [searchResults, setSearchResults] = useState<SearchResult>({ submissions: [] })
 
   // Hooks
   const searchParams = useSearchParams()
@@ -99,7 +95,7 @@ export function SubmissionSearch() {
   }, [open, currentFormId, isProUser])
 
   // Query to get all forms for the search selector
-  const { data: formsData } = useQuery({
+  const { data: formsData } = useQuery<{ forms: Form[] }>({
     queryKey: ["userForms"],
     queryFn: fetchUserForms,
     enabled: isPremium && open,
@@ -164,35 +160,20 @@ export function SubmissionSearch() {
 
   // Function to handle search
   const handleSearch = async (searchTerm: string, localFormId: string | null = selectedFormId) => {
-    setIsSearching(true);
-    setError(null);
+    // Ensure searchTerm is a string
+    const sanitizedTerm = typeof searchTerm === 'string' ? searchTerm : '';
     
-    try {
-      // Ensure searchTerm is a string
-      const sanitizedTerm = typeof searchTerm === 'string' ? searchTerm : '';
-      
-      // Clear previous results if empty search
-      if (!sanitizedTerm.trim()) {
-        setSearchResults({ submissions: [] });
-        setIsSearching(false);
-        return;
-      }
-
-      const results = await performSearch(
-        sanitizedTerm, 
-        localFormId,
-        formsData,
-        advancedFilters
-      );
-      
-      setSearchResults(results);
-    } catch (err) {
-      console.error("Search error:", err);
-      setError("An error occurred while searching. Please try again.");
-      setSearchResults({ submissions: [] });
-    } finally {
-      setIsSearching(false);
+    // Clear previous results if empty search
+    if (!sanitizedTerm.trim()) {
+      return;
     }
+
+    await performSearch(
+      sanitizedTerm, 
+      localFormId,
+      formsData,
+      advancedFilters
+    );
   };
 
   // Show premium upgrade option for non-premium users
@@ -221,7 +202,7 @@ export function SubmissionSearch() {
         setSearch={setSearch}
         isLoading={isLoading}
         debouncedSearch={debouncedSearch}
-        formsData={formsData}
+        formsData={formsData || { forms: [] }}
         selectedFormId={selectedFormId}
         handleFormSelect={handleFormSelect}
         onClose={() => setOpen(false)}

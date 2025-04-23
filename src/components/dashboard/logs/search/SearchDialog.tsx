@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Filter, Search, X, Lock, Sparkles, Clock, CalendarRange, ArrowDownUp, Mail, Globe } from "lucide-react"
+import { Filter, Search, X, Lock, Sparkles, Clock, CalendarRange, ArrowDownUp } from "lucide-react"
 import { Form, SearchResult, Submission } from "./types"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -36,7 +36,7 @@ interface SearchDialogProps {
   setSearch: (value: string) => void
   isLoading: boolean
   debouncedSearch: string
-  formsData: any
+  formsData: { forms: Form[] }
   selectedFormId: string | null
   handleFormSelect: (formId: string) => void
   onClose: () => void
@@ -227,7 +227,7 @@ export function SearchDialog({
                           {['all', '24h', '7d', '30d'].map((period) => (
                             <button
                               key={period}
-                              onClick={() => setTempFilters({...tempFilters, timeFrame: period as any})}
+                              onClick={() => setTempFilters({...tempFilters, timeFrame: period as 'all' | '24h' | '7d' | '30d'})}
                               className={`px-2 py-1 text-xs rounded-lg border ${
                                 tempFilters.timeFrame === period 
                                   ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400' 

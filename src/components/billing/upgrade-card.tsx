@@ -10,7 +10,7 @@ import { Sparkles, Zap, ArrowRight } from "lucide-react"
 
 export function UpgradeCard() {
   const router = useRouter()
-  const { user } = useUser()
+
 
   const { data: usageData, isLoading } = useQuery({
     queryKey: ["usage"],

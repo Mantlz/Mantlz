@@ -1,7 +1,5 @@
 "use client"
 
-import { ChevronDown } from "lucide-react"
-import { Button } from "../ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export function NavUserSkeleton() {

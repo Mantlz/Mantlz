@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ChevronLeft, Users, Clock, File, FileSpreadsheet, RefreshCcw, LayoutGrid, List } from "lucide-react"
+import { ChevronLeft, Users, Clock, File} from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
 import { SubmissionSearch } from "../SubmissionSearch"
 import { LogsTableHeaderProps } from "./types"

@@ -11,7 +11,7 @@ export function NoFormsMessage() {
         </div>
         <h3 className="text-xl  font-bold mb-2">No Forms Yet</h3>
         <p className="text-muted-foreground mb-6">
-          You haven't created any forms yet. Create a form to get started.
+          You haven&apos;t created any forms yet. Create a form to get started.
         </p>
         <Link href="/dashboard/form-builder" passHref>
           <Button className=" bg-black hover:bg-gray-800 text-white dark:bg-white dark:hover:bg-gray-200 dark:text-black">

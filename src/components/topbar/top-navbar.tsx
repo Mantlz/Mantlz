@@ -2,7 +2,7 @@
 
 import { useState, useEffect, memo } from "react"
 import Link from "next/link"
-import { ChevronDown, HelpCircle, Settings, Activity, TestTube2, Plus } from "lucide-react"
+import { ChevronDown, HelpCircle, Settings, Activity, TestTube2 } from "lucide-react"
 import { useUser, useClerk } from "@clerk/nextjs"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"

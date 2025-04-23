@@ -23,7 +23,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { useUser } from "@clerk/nextjs";
 import { Badge } from "@/components/ui/badge";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { client } from "@/lib/client";
@@ -230,7 +229,7 @@ export default function EmailSettings() {
                   <FormField
                     control={form.control}
                     name="developerNotificationsEnabled"
-                    render={({ field }) => (
+                    render={() => (
                       <FormItem className="flex flex-col sm:flex-row sm:items-center gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
                         <div className="flex items-center gap-4 flex-1">
                           <div className="bg-white dark:bg-zinc-900 rounded-full p-2 border border-zinc-200 dark:border-zinc-800">

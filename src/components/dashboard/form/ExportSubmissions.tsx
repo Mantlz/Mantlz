@@ -17,10 +17,9 @@ import { cn } from "@/lib/utils";
 
 interface ExportSubmissionsProps {
   formId: string;
-  formName: string;
 }
 
-export function ExportSubmissions({ formId, formName }: ExportSubmissionsProps) {
+export function ExportSubmissions({ formId }: ExportSubmissionsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [endDate, setEndDate] = useState<Date | undefined>();

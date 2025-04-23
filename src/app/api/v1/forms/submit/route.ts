@@ -21,6 +21,8 @@ const submitSchema = z.object({
   }),
 });
 
+type SubmitSchemaType = z.infer<typeof submitSchema>;
+
 // interface RecaptchaResponse {
 //   success: boolean;
 //   score: number;
@@ -62,7 +64,7 @@ export async function POST(req: Request) {
       console.log('Rate limiting is disabled or not configured');
     }
 
-    const body = await req.json() as { apiKey?: string; [key: string]: any };
+    const body = await req.json() as { apiKey?: string; [key: string]: unknown };
     
     // Accept API key from body or header
     const apiKeyHeader = req.headers.get('X-API-Key');
@@ -72,7 +74,7 @@ export async function POST(req: Request) {
     // Replace body.apiKey with our apiKey variable in the parse call
     body.apiKey = apiKey;
     
-    const { formId, redirectUrl, data } = submitSchema.parse(body);
+    const { formId, redirectUrl, data } = submitSchema.parse(body) as SubmitSchemaType;
 
     // Verify reCAPTCHA token
     // const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
@@ -172,7 +174,7 @@ export async function POST(req: Request) {
       const submission = await db.submission.create({
         data: {
           formId,
-          data: enhancedData,
+          data: enhancedData as Prisma.InputJsonValue,
           email: typeof data.email === 'string' ? data.email : undefined,
         },
       });

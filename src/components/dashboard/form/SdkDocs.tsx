@@ -12,12 +12,10 @@ interface SdkDocsProps {
 }
 
 export function SdkDocs({ formId }: SdkDocsProps) {
-  const [copied, setCopied] = useState(false)
 
   const handleCopy = (code: string) => {
     navigator.clipboard.writeText(code)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    // No need to manage state here as each CodeSnippet manages its own copy state
   }
 
   const installCode = `npm install @mantlz/nextjs`

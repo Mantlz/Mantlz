@@ -5,7 +5,7 @@ import { formatDistanceToNow } from "date-fns"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Mail, Globe, MapPin, Loader2, Maximize2, Bell, Lock, Sparkles, BarChart, AlertCircle, Filter, CalendarRange, Calendar as CalendarIcon } from "lucide-react"
+import { Mail, Globe, MapPin,  Maximize2, Bell, Lock, Sparkles,  AlertCircle, Filter, CalendarRange, Calendar as CalendarIcon } from "lucide-react"
 import { UpgradeModal } from "@/components/modals/UpgradeModal"
 import { LogsTableContentProps, Submission } from "./types"
 import { TableSubmissionSheet } from "./TableSubmissionSheet"
@@ -20,12 +20,11 @@ import {
 } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
 import { usePathname } from "next/navigation"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 export function TableContent({ 
   data, 
   isLoading, 
-  page, 
+ 
   pagination, 
   searchParams, 
   router, 
@@ -91,15 +90,6 @@ export function TableContent({
 
   if (submissions.length === 0) {
     return <NoSubmissionsView />
-  }
-
-  // A function to stringify search params safely
-  function createSearchParams() {
-    if (typeof searchParams.toString === 'function') {
-      return new URLSearchParams(searchParams.toString())
-    }
-    // Fallback for when toString is not available
-    return new URLSearchParams()
   }
 
   // Update handlePaginationChange
@@ -178,6 +168,7 @@ export function TableContent({
     
     router.push(`${pathname}?${params.toString()}`);
     setIsCalendarOpen(false);
+    setIsFiltering(true);
     
     // Trigger refetch of data with new parameters
     if (refetch) {
@@ -198,6 +189,7 @@ export function TableContent({
     
     router.push(`${pathname}?${params.toString()}`);
     setIsCalendarOpen(false);
+    setIsFiltering(false);
     
     // Trigger refetch of data with new parameters
     if (refetch) {
