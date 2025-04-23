@@ -182,7 +182,7 @@ export function AdvancedAnalytics({
                   User Insights
                 </CardTitle>
                 <CardDescription className="text-zinc-600 dark:text-zinc-400 text-[10px] xs:text-xs">
-                  Discover who's using your form
+                  Discover who&apos;s using your form
                 </CardDescription>
               </div>
             </CardHeader>

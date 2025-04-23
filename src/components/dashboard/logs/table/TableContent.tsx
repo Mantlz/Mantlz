@@ -567,7 +567,7 @@ export function TableContent({
   )
 }
 
-function EmailStatusBadge({ submission, isPremium }: { submission: Submission, isPremium: boolean }) {
+function EmailStatusBadge({ submission }: { submission: Submission, isPremium: boolean }) {
   // User Email Status
   const userEmailStatus = getUserEmailStatus(submission);
   

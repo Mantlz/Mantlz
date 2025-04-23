@@ -21,7 +21,7 @@ export interface Submission {
   id: string
   createdAt: Date
   email: string | null
-  data: any
+  data: Record<string, unknown>
   formId: string
   form: {
     id: string
@@ -64,6 +64,15 @@ export interface FormsResponse {
   }
 }
 
+export interface RouterType {
+  push: (url: string) => void
+  replace: (url: string) => void
+  back: () => void
+  forward: () => void
+  refresh: () => void
+  prefetch: (href: string) => void
+}
+
 export interface LogsTableContentProps {
   data: SubmissionResponse | undefined
   isLoading: boolean
@@ -75,7 +84,7 @@ export interface LogsTableContentProps {
     totalPages: number
   } | undefined
   searchParams: ReadonlyURLSearchParams
-  router: any
+  router: RouterType
   isPremium: boolean
   userPlan?: 'FREE' | 'STANDARD' | 'PRO'
   refetch?: () => void
@@ -86,6 +95,6 @@ export interface LogsTableHeaderProps {
   formId: string | null
   formsData: FormsResponse | undefined
   searchParams: ReadonlyURLSearchParams
-  router: any
+  router: RouterType
   submissionsData?: SubmissionResponse | undefined
 } 

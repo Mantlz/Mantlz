@@ -1,7 +1,6 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
-import { useUser } from "@clerk/nextjs"
 import { client } from "@/lib/client"
 import { useQuery } from "@tanstack/react-query"
 import { FREE_QUOTA, STANDARD_QUOTA, PRO_QUOTA } from "@/config/usage"

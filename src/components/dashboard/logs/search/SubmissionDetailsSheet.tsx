@@ -20,10 +20,7 @@ import {
   MapPin, 
   Bell,
   File,
-  Eye,
-  ChevronLeft,
-  ChevronRight,
-  Check
+
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Submission } from "./types"
@@ -41,13 +38,12 @@ export function SubmissionDetailsSheet({
   isOpen, 
   setIsOpen, 
   submission, 
-  onNavigate 
 }: SubmissionDetailsSheetProps) {
   const [copiedField, setCopiedField] = useState<string | null>(null)
   
   if (!submission) return null
   
-  const copyToClipboard = (key: string, value: any) => {
+  const copyToClipboard = (key: string, value: unknown) => {
     navigator.clipboard.writeText(String(value))
     setCopiedField(key)
     setTimeout(() => setCopiedField(null), 2000)

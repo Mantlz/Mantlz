@@ -5,15 +5,19 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import { Globe, MapPin, Maximize2, TrendingUp } from "lucide-react"
-import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from "react-simple-maps"
+import { 
+  ComposableMap, 
+  Geographies, 
+  Geography, 
+  Marker, 
+  ZoomableGroup,
+} from "react-simple-maps"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
-// Add type declaration for foreignObject
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      foreignObject: React.SVGProps<SVGForeignObjectElement>
-    }
+// Add proper module declaration for SVG elements if needed
+declare module 'react' {
+  interface SVGAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
+    // Any additional SVG attributes can be added here if required
   }
 }
 
@@ -308,8 +312,8 @@ export function BrowserAndLocationStats({
                             ]}
                           >
                             <Geographies geography={geoUrl}>
-                              {({ geographies }: { geographies: any[] }) =>
-                                geographies.map((geo: any) => (
+                              {({ geographies }) =>
+                                geographies.map((geo) => (
                                   <Geography
                                     key={geo.rsmKey}
                                     geography={geo}
@@ -547,8 +551,8 @@ export function BrowserAndLocationStats({
                   ]}
                 >
                   <Geographies geography={geoUrl}>
-                    {({ geographies }: { geographies: any[] }) =>
-                      geographies.map((geo: any) => (
+                    {({ geographies }) =>
+                      geographies.map((geo) => (
                         <Geography
                           key={geo.rsmKey}
                           geography={geo}

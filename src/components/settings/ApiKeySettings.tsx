@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { useQuery, useMutation } from '@tanstack/react-query'
-import { Loader2, Key, Copy, AlertCircle, Eye, EyeOff, Terminal, Shield } from 'lucide-react'
+import { Loader2, Key, Copy, AlertCircle, Eye, EyeOff, Terminal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { client } from '@/lib/client'
@@ -11,7 +11,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { cn } from '@/lib/utils'
+
 
 interface ApiKey {
   id: string
@@ -49,13 +49,13 @@ export default function ApiKeySettings() {
       const data = await response.json()
       return data
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success('API key created successfully')
       setKeyName('')
       setIsCreating(false)
       refetch()
     },
-    onError: (error) => {
+    onError: () => {
       toast.error('Failed to create API key')
       setIsCreating(false)
     }

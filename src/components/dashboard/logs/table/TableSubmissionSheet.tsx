@@ -315,8 +315,8 @@ export function TableSubmissionSheet({
                   </div>
                 )}
 
-                {/* Form Data Section - Limited for non-premium */}
-                {submission.data && (
+
+                {submission.data && typeof submission.data === 'object' && (
                   <div>
                     <div className="flex items-center mb-3">
                       <File className="h-3.5 w-3.5 mr-2 text-gray-500" />
@@ -366,7 +366,7 @@ export function TableSubmissionSheet({
                 )}
 
                 {/* Analytics Section - Premium Only */}
-                {submission.data?._meta && (
+                {submission.data && typeof submission.data === 'object' && '_meta' in submission.data && (
                   <div>
                     <div className="flex items-center mb-3">
                       <BarChart className="h-3.5 w-3.5 mr-2 text-gray-500" />
@@ -388,7 +388,10 @@ export function TableSubmissionSheet({
                             <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Browser</p>
                           </div>
                           <p className="text-xs sm:text-sm text-gray-900 dark:text-white">
-                            {submission.data._meta.browser || submission.analytics?.browser || 'Unknown'}
+                            {typeof submission.data._meta === 'object' && submission.data._meta !== null && 
+                             'browser' in (submission.data._meta as Record<string, unknown>) 
+                              ? String((submission.data._meta as Record<string, unknown>).browser)
+                              : submission.analytics?.browser || 'Unknown'}
                           </p>
                         </div>
                         <div className="p-3 sm:p-4 border border-gray-100 dark:border-zinc-800/50 rounded-lg bg-white dark:bg-zinc-900">
@@ -397,7 +400,10 @@ export function TableSubmissionSheet({
                             <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Location</p>
                           </div>
                           <p className="text-xs sm:text-sm text-gray-900 dark:text-white">
-                            {submission.data._meta.country || submission.analytics?.location || 'Unknown'}
+                            {typeof submission.data._meta === 'object' && submission.data._meta !== null && 
+                             'country' in (submission.data._meta as Record<string, unknown>)
+                              ? String((submission.data._meta as Record<string, unknown>).country)
+                              : submission.analytics?.location || 'Unknown'}
                           </p>
                         </div>
                       </div>

@@ -1,7 +1,8 @@
 "use client"
 
 import { client } from "@/lib/client"
-import { FormsResponse, SubmissionResponse, Submission } from "./types"
+import { FormsResponse, SubmissionResponse, Submission, Form } from "./types"
+import { ReadonlyURLSearchParams } from "next/navigation"
 
 /**
  * Fetches user forms
@@ -15,7 +16,7 @@ export async function fetchUserForms(page: number = 1, itemsPerPage: number = 8)
     })
 
     const responseData = await response.json()
-    const forms = responseData.forms.map((form: any) => ({
+    const forms = responseData.forms.map((form: Form) => ({
       id: form.id,
       name: form.name,
       description: form.description,
@@ -73,28 +74,29 @@ export async function fetchSubmissions(
       endDate,
     });
 
-    // Cast to any first to avoid TypeScript errors during transformation
-    const responseData = await response.json() as any;
+    // First convert to unknown to avoid TypeScript errors during transformation
+    const responseData = await response.json() as unknown;
     
-    // Ensure we have a consistent pagination structure
-    let pagination = responseData.pagination || {};
+    // Use a type guard to handle the response data safely
+    const submissionsData = typeof responseData === 'object' && responseData !== null ? responseData : {};
+    
+    // Use type assertion with Record to avoid using 'any'
+    const typedData = submissionsData as Record<string, unknown>;
+    const submissions = Array.isArray(typedData.submissions) ? typedData.submissions : [];
+    const paginationData = typedData.pagination as Record<string, number> || {};
     
     // Convert pages to totalPages if needed
-    if (pagination.pages && !pagination.totalPages) {
-      pagination.totalPages = pagination.pages;
-    } else if (!pagination.totalPages) {
-      // Fallback calculation if totalPages is missing
-      pagination.totalPages = Math.ceil((pagination.total || 0) / itemsPerPage) || 1;
-    }
+    const totalPages = paginationData.totalPages || paginationData.pages || 
+      Math.ceil((paginationData.total || 0) / itemsPerPage) || 1;
     
     // Make sure the response has the format we expect
     const result: SubmissionResponse = {
-      submissions: (responseData.submissions || []) as Submission[],
+      submissions: submissions as Submission[],
       pagination: {
-        total: pagination.total || 0,
-        pages: pagination.pages || 1,
-        currentPage: pagination.currentPage || page,
-        totalPages: pagination.totalPages || 1
+        total: paginationData.total || 0,
+        pages: paginationData.pages || 1,
+        currentPage: paginationData.currentPage || page,
+        totalPages
       },
       formId
     };
@@ -111,8 +113,8 @@ export async function fetchSubmissions(
  */
 export function enhanceSubmissions(submissions: Submission[]): Submission[] {
   return submissions.map(submission => {
-    const data = submission.data as any;
-    const meta = data?._meta || {};
+    const data = submission.data as Record<string, unknown>;
+    const meta = (data?._meta as { browser?: string; country?: string }) || {};
     return {
       ...submission,
       analytics: {
@@ -124,7 +126,7 @@ export function enhanceSubmissions(submissions: Submission[]): Submission[] {
 }
 
 // Add a utility function for safely working with searchParams
-export function safeSearchParamsToString(searchParams: any): string {
+export function safeSearchParamsToString(searchParams: ReadonlyURLSearchParams | unknown): string {
   try {
     if (typeof searchParams?.toString === 'function') {
       return searchParams.toString();

@@ -9,7 +9,7 @@ import { Resend } from 'resend';
 import { FormSubmissionEmail } from '@/emails/form-submission';
 import { render } from '@react-email/components';
 import { Prisma } from "@prisma/client";
-import { enhanceDataWithAnalytics, extractAnalyticsFromSubmissions } from "@/lib/analytics-utils";
+import { enhanceDataWithAnalytics, extractAnalyticsFromSubmissions, Submission } from "@/lib/analytics-utils";
 import { exportFormSubmissions } from "@/services/export-service";
 
 
@@ -659,10 +659,12 @@ export const formRouter = j.router({
       }
       
       // Use our utility function to extract browser and location stats
-      const { browserStats, locationStats } = extractAnalyticsFromSubmissions(submissions);
+      const { browserStats, locationStats } = extractAnalyticsFromSubmissions(
+        submissions as unknown as Submission[]
+      );
       
       // Empty user insights array (we're not using this anymore)
-      const userInsights: any[] = [];
+      const userInsights: unknown[] = [];
       
       return c.superjson({
         totalSubmissions: submissions.length,
@@ -689,7 +691,7 @@ export const formRouter = j.router({
       formId: z.string(),
       data: z.record(z.any())
     }))
-    .mutation(async ({ c, input, ctx }) => {
+    .mutation(async ({ c, input }) => {
       const { formId, data } = input;
       
       // Get the form to validate the submission
@@ -747,8 +749,8 @@ export const formRouter = j.router({
       const submission = await db.submission.create({
         data: {
           formId,
-          data: enhancedData,
-          email: data.email, // Store email if provided in form
+          data: enhancedData as unknown as Prisma.InputJsonValue,
+          email: data.email, 
         },
       });
 
