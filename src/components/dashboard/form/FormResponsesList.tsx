@@ -17,10 +17,16 @@ import {
 } from "@/components/ui/pagination"
 import { Card, CardContent } from "@/components/ui/card"
 
+// Define a FormData interface for submission data
+export interface FormData {
+  email?: string
+  [key: string]: any // Allow other form fields while still specifying the structure
+}
+
 interface Submission {
   id: string
   createdAt: Date
-  data: any
+  data: FormData
 }
 
 interface FormResponsesListProps {
@@ -52,7 +58,6 @@ export function FormResponsesList({
 
   useEffect(() => {
     if (localSubmissions.length > 0) {
-      const totalPages = Math.ceil(localSubmissions.length / itemsPerPage)
       const startIndex = (currentPage - 1) * itemsPerPage
       const endIndex = Math.min(startIndex + itemsPerPage, localSubmissions.length)
       const currentPageItems = localSubmissions.slice(startIndex, endIndex)

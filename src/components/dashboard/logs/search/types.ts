@@ -13,13 +13,13 @@ export interface Submission {
   formId: string
   formName: string
   formDescription?: string
-  data?: any
+  data?: Record<string, unknown>
   notificationLogs?: NotificationLog[]
   status?: string
   analytics?: {
     browser?: string
     location?: string
-    [key: string]: any
+    [key: string]: unknown
   }
 }
 

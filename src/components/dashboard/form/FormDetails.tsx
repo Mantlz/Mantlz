@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { client } from '@/lib/client';
 import { format } from 'date-fns';
 import { FormHeader } from './FormHeader';
-import { FormResponsesList } from './FormResponsesList';
+import { FormResponsesList, FormData as FormResponseData } from './FormResponsesList';
 import { FormAnalyticsChart } from './FormAnalyticsChart';
 import { toast } from 'sonner';
 import { AlertCircle } from 'lucide-react';
@@ -48,17 +48,7 @@ interface TimeSeriesPoint {
   fullDate?: string;
 }
 
-interface NotificationLog {
-  id: string;
-  type: 'SUBMISSION_CONFIRMATION' | 'DEVELOPER_NOTIFICATION' | 'DIGEST';
-  status: 'SENT' | 'FAILED' | 'SKIPPED';
-  error: string | null;
-  createdAt: string;
-}
 
-interface FormSubmissionData {
-  [key: string]: string | number | boolean | null | Record<string, unknown>;
-}
 
 // Define a basic submission type that matches what comes from the API
 interface ApiSubmission {
@@ -413,7 +403,12 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
       />
 
       <FormResponsesList
-        submissions={{ submissions: submissions?.submissions || [] }}
+        submissions={{ 
+          submissions: submissions?.submissions.map(sub => ({
+            ...sub,
+            data: sub.data as FormResponseData
+          })) || [] 
+        }}
         isLoading={isLoadingSubmissions}
         isError={isSubmissionsError}
         onRetry={refetchSubmissions}

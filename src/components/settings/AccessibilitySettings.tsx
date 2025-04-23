@@ -135,7 +135,7 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className={`w-full max-w-4xl mx-auto ${className || ''}`}>
       <ScrollArea className="h-[550px]">
         <div className="w-full space-y-4 pr-4">
           <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">

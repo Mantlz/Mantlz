@@ -66,7 +66,7 @@ export function FormAnalyticsChart({
 }: FormAnalyticsChartProps) {
 
   const [activeTab, setActiveTab] = React.useState<'overview' | 'insights'>('overview')
-  const [isCollapsed, setIsCollapsed] = React.useState(false)
+  const [isCollapsed, _setIsCollapsed] = React.useState(false)
   
   // Debug logs for analytics data
   React.useEffect(() => {

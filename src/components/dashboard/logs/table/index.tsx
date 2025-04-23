@@ -65,7 +65,6 @@ export function LogsTable({ itemsPerPage = 8 }: LogsTableProps) {
   const { 
     data, 
     isLoading: isLoadingSubmissions, 
-    error: submissionsError,
     refetch 
   } = useQuery<SubmissionResponse>({
     queryKey: ["submissionLogs", formId, page, startDateParam, endDateParam],
@@ -161,7 +160,7 @@ export function LogsTable({ itemsPerPage = 8 }: LogsTableProps) {
                   <div className="flex items-center gap-3">
                     <div>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Let's create your first form
+                        Let&apos;s create your first form
                       </p>
                     </div>
                   </div>

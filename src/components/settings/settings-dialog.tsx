@@ -32,7 +32,15 @@ import EmailSettings from './EmailSettings';
 import { AccessibilitySettings } from "./AccessibilitySettings"
 import { AdvancedSettings } from "./AdvancedSettings"
 import BillingSettings from "./BillingSettings";
-const data = navigationData as Array<{ name: string; icon: keyof typeof iconMap } & { [key: string]: any }>;
+
+// Define a more specific type for navigation data items
+type NavigationItem = {
+  name: string;
+  icon: keyof typeof iconMap;
+  [key: string]: string | number | boolean;
+};
+
+const data = navigationData as NavigationItem[];
 
 interface SettingsDialogProps {
   children: React.ReactNode
@@ -42,7 +50,6 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
   const [open, setOpen] = React.useState(false)
   const [selectedTab, setSelectedTab] = React.useState('Appearance')
   const pathname = usePathname()
-  const isDashboard = pathname?.startsWith('/dashboard')
 
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen)
