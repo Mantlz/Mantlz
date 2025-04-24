@@ -1,5 +1,5 @@
 {
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- ':!docs-site/'",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- ':!docs-site/' ':!mantlz-sdk/'",
   "builds": [
     {
       "src": "package.json",

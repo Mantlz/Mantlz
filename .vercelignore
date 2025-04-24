@@ -1,2 +1,4 @@
 # Ignore docs-site directory
-docs-site/** 
+docs-site/**
+# Ignore mantlz-sdk directory
+mantlz-sdk/** 
