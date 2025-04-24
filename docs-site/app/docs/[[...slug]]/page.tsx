@@ -1,4 +1,4 @@
-import Toc from "@/components/toc";
+import Toc from "@/app/components/toc";
 import { page_routes } from "@/lib/routes-config";
 import { notFound } from "next/navigation";
 import { getDocsForSlug } from "@/lib/markdown";

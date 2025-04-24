@@ -37,4 +37,4 @@ export default async function Toc({ path }: { path: string }) {
       </div>
     </div>
   );
-}
+} 
