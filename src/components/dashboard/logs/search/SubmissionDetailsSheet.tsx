@@ -27,6 +27,16 @@ import { Submission } from "./types"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { getUserEmailStatus } from '@/lib/submissionUtils'
 
+// Add a type definition for the submission data
+interface SubmissionData {
+  _meta?: {
+    browser?: string;
+    country?: string;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
 interface SubmissionDetailsSheetProps {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
@@ -245,7 +255,7 @@ export function SubmissionDetailsSheet({
                 </div>
               )}
 
-              {/* Form Data Section */}
+
               {submission.data && (
                 <div>
                   <div className="flex items-center mb-3">
@@ -255,7 +265,7 @@ export function SubmissionDetailsSheet({
                     </p>
                   </div>
                   <div className="space-y-3">
-                    {Object.entries(submission.data)
+                    {Object.entries(submission.data as SubmissionData)
                       .filter(([key]) => key !== '_meta')
                       .map(([key, value]) => (
                       <div
@@ -296,7 +306,7 @@ export function SubmissionDetailsSheet({
               )}
 
               {/* Analytics Section */}
-              {submission.data?._meta && (
+              {submission.data && (submission.data as SubmissionData)._meta && (
                 <div>
                   <div className="flex items-center mb-3">
                     <BarChart className="h-3.5 w-3.5 mr-2 text-gray-500" />
@@ -311,7 +321,7 @@ export function SubmissionDetailsSheet({
                         <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Browser</p>
                       </div>
                       <p className="text-xs sm:text-sm text-gray-900 dark:text-white">
-                        {submission.data._meta.browser || 'Unknown'}
+                        {(submission.data as SubmissionData)._meta?.browser || 'Unknown'}
                       </p>
                     </div>
                     <div className="p-3 sm:p-4 border border-gray-100 dark:border-gray-800/50 rounded-xl bg-white dark:bg-zinc-900">
@@ -320,7 +330,7 @@ export function SubmissionDetailsSheet({
                         <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Location</p>
                       </div>
                       <p className="text-xs sm:text-sm text-gray-900 dark:text-white">
-                        {submission.data._meta.country || 'Unknown'}
+                        {(submission.data as SubmissionData)._meta?.country || 'Unknown'}
                       </p>
                     </div>
                   </div>
