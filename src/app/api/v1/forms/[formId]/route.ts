@@ -146,25 +146,8 @@ export async function GET(
       );
     }
     
-    // Determine form type from schema (restore this logic)
-    let formType = '';
-    try {
-      const schemaObject = JSON.parse(form.schema);
-      // Basic logic based on common field names
-      if (schemaObject.referralSource) {
-        formType = 'waitlist';
-      } else if (schemaObject.rating && schemaObject.feedback) {
-        formType = 'feedback';
-      } else if (schemaObject.message && !schemaObject.rating) {
-        formType = 'contact';
-      } else {
-        // Add a default or more sophisticated type detection if needed
-        formType = 'other'; 
-      }
-    } catch (error) {
-      console.error('Error determining form type:', error);
-      formType = 'error'; // Assign a default/error type
-    }
+    // Use the formType directly from the database
+    const formType = form.formType.toLowerCase();
     
     // Parse the schema to extract fields (restore this logic)
     const fields = [];

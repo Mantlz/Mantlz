@@ -7,7 +7,7 @@ import React, { useState, useEffect, Suspense } from 'react'
 
 const DashboardPage = () => {
   return (
-    <Suspense fallback={<div className="container py-6">Loading dashboard...</div>}>
+    <Suspense>
       <DashboardContent />
     </Suspense>
   )
