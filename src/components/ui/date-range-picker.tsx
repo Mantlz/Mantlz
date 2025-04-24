@@ -66,7 +66,7 @@ export function DateRangePicker({
             selected={date}
             onSelect={(newDate) => {
               setDate(newDate);
-              onChange?.(newDate);
+              if (newDate) onChange?.(newDate);
             }}
             numberOfMonths={2}
           />
