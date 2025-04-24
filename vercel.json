@@ -1,5 +1,5 @@
 {
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./ -- ':!docs-site/'",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- ':!docs-site/'",
   "builds": [
     {
       "src": "package.json",
