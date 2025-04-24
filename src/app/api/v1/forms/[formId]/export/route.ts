@@ -126,7 +126,7 @@ async function handleExport(formId: string, userId: string, startDate?: string, 
 
 export async function GET(
   req: Request,
-  context: { params: { formId: string } }
+  { params }: { params: Promise<{ formId: string }> }
 ) {
   try {
     // 1. Check authentication
@@ -142,13 +142,13 @@ export async function GET(
     const endDate = searchParams.get('endDate') || undefined;
 
     // 3. Get formId from params
-    const formId = context.params.formId;
+    const { formId } = await params;
 
     return handleExport(formId, userId, startDate, endDate);
   } catch (error) {
     console.error("❌ Export Error:", {
       error: error instanceof Error ? error.message : "Unknown error",
-      formId: context.params.formId
+      formId: (await params).formId
     });
     return new NextResponse("Internal Error", { status: 500 });
   }
@@ -156,7 +156,7 @@ export async function GET(
 
 export async function POST(
   req: Request,
-  { params }: { params: { formId: string } }
+  { params }: { params: Promise<{ formId: string }> }
 ) {
   try {
     // 1. Check authentication
@@ -171,13 +171,13 @@ export async function POST(
     const { startDate, endDate } = exportRequestSchema.parse(body);
 
     // 3. Get formId from params
-    const formId = params.formId;
+    const { formId } = await params;
 
     return handleExport(formId, userId, startDate, endDate);
   } catch (error) {
     console.error("❌ Export Error:", {
       error: error instanceof Error ? error.message : "Unknown error",
-      formId: params.formId
+      formId: (await params).formId
     });
     return new NextResponse("Internal Error", { status: 500 });
   }

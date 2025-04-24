@@ -10,7 +10,7 @@ interface FormSettings {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { formId: string } }
+  { params }: { params: Promise<{ formId: string }> }
 ) {
   try {
     // Validate API key
@@ -32,7 +32,7 @@ export async function GET(
     }
 
     // Get the formId from params
-    const formId = params.formId;
+    const { formId } = await params;
     
     // Find the form by ID
     const form = await db.form.findUnique({

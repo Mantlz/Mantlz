@@ -28,11 +28,11 @@ interface FormSettings {
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { formId: string } }
+  { params }: { params: Promise<{ formId: string }> }
 ) {
   try {
     // Get the formId from the URL parameters
-    const formId = params.formId;
+    const { formId } = await params;
 
     // Get query parameters
     const { searchParams } = new URL(req.url);
