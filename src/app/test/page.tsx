@@ -17,7 +17,7 @@ export default function CustomerFeedbackPage() {
 
 
       <WaitlistForm
-        formId="cm9snvmho000j0jtur0noz6cp"
+        formId="cm9vniz180001l8041i4zlpo3"
        
         theme="neobrutalism"
         
