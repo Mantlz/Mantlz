@@ -156,7 +156,7 @@ export async function GET(
 
 export async function POST(
   req: Request,
-  context: { params: { formId: string } }
+  { params }: { params: { formId: string } }
 ) {
   try {
     // 1. Check authentication
@@ -171,13 +171,13 @@ export async function POST(
     const { startDate, endDate } = exportRequestSchema.parse(body);
 
     // 3. Get formId from params
-    const formId = context.params.formId;
+    const formId = params.formId;
 
     return handleExport(formId, userId, startDate, endDate);
   } catch (error) {
     console.error("❌ Export Error:", {
       error: error instanceof Error ? error.message : "Unknown error",
-      formId: context.params.formId
+      formId: params.formId
     });
     return new NextResponse("Internal Error", { status: 500 });
   }

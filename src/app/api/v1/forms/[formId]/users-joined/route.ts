@@ -31,8 +31,8 @@ export async function GET(
       );
     }
 
-    // Get the formId from params and ensure it's properly awaited
-    const { formId } = await Promise.resolve(params);
+    // Get the formId from params
+    const formId = params.formId;
     
     // Find the form by ID
     const form = await db.form.findUnique({

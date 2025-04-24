@@ -11,11 +11,11 @@ const requestSchema = z.object({
 
 export async function GET(
   req: NextRequest,
-  context: { params: { formId: string } }
+  { params }: { params: { formId: string } }
 ) {
   try {
     // Get the formId from the URL parameters
-    const { formId } = await Promise.resolve(context.params);
+    const formId = params.formId;
 
     // Get query parameters
     const { searchParams } = new URL(req.url);
