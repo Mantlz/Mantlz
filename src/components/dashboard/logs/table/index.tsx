@@ -13,13 +13,21 @@ import { TableContent } from "./TableContent"
 import { LogsTableHeaderSkeleton } from "@/components/skeletons"
 import { SubmissionSearch } from "../../logs/SubmissionSearch"
 import { SubmissionTableSkeleton } from "./SubmissionTableSkeleton"
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 
 interface LogsTableProps {
   itemsPerPage?: number;
 }
 
 export function LogsTable({ itemsPerPage = 8 }: LogsTableProps) {
+  return (
+    <Suspense fallback={<StatsGridSkeleton />}>
+      <LogsTableContent itemsPerPage={itemsPerPage} />
+    </Suspense>
+  )
+}
+
+function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const page = Number(searchParams.get("page")) || 1

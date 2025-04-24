@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Search } from "lucide-react"
 import { useSubscription } from "@/hooks/useSubscription"
@@ -32,6 +32,39 @@ interface AdvancedFilters {
 }
 
 export function SubmissionSearch() {
+  // For non-premium users, we don't need to use useSearchParams, so no Suspense needed
+  const { isPremium } = useSubscription()
+  
+  if (!isPremium) {
+    return <SubmissionSearchBasic />
+  }
+
+  return (
+    <Suspense fallback={<SearchButton onClick={() => {}} />}>
+      <SubmissionSearchWithParams />
+    </Suspense>
+  )
+}
+
+function SubmissionSearchBasic() {
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  
+  return (
+    <>
+      <SearchButton onClick={() => setShowUpgradeModal(true)} />
+
+      <UpgradeModal 
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        featureName="Global Submission Search"
+        featureIcon={<FileSearch className="h-5 w-5 m-2 text-slate-700 dark:text-slate-300" />}
+        description="Quickly search across all your submissions with our powerful search capability. Find any submission by email, ID, or content in seconds."
+      />
+    </>
+  )
+}
+
+function SubmissionSearchWithParams() {
   // State
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState("")
@@ -175,23 +208,6 @@ export function SubmissionSearch() {
       advancedFilters
     );
   };
-
-  // Show premium upgrade option for non-premium users
-  if (!isPremium) {
-    return (
-      <>
-        <SearchButton onClick={() => setShowUpgradeModal(true)} />
-
-        <UpgradeModal 
-          isOpen={showUpgradeModal}
-          onClose={() => setShowUpgradeModal(false)}
-          featureName="Global Submission Search"
-          featureIcon={<FileSearch className="h-5 w-5 m-2 text-slate-700 dark:text-slate-300" />}
-          description="Quickly search across all your submissions with our powerful search capability. Find any submission by email, ID, or content in seconds."
-        />
-      </>
-    )
-  }
 
   return (
     <>

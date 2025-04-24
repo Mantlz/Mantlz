@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -17,6 +17,14 @@ import { Save, Grid3X3, SettingsIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export default function CustomizeFormPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading form builder...</div>}>
+      <CustomizeFormContent />
+    </Suspense>
+  )
+}
+
+function CustomizeFormContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const formType = searchParams.get('type') || 'waitlist'

@@ -8,6 +8,8 @@ import BeforeAfter from "@/components/global/landing/before-after";
 import TrustedCompanies from "@/components/global/landing/trustedcompanies";
 import { WobbleCardDemo } from "@/components/global/landing/bento-grid";
 import CTA from "@/components/global/landing/cta";
+import { Suspense } from "react";
+
 export default function LandingPage() {
   return (
     <Container>
@@ -20,7 +22,9 @@ export default function LandingPage() {
       <TrustedCompanies />
       <BeforeAfter />
       <WobbleCardDemo />
-      <Pricing />
+      <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading pricing...</div>}>
+        <Pricing />
+      </Suspense>
       <Faq />
       <BottomCTA />
       <Footer />

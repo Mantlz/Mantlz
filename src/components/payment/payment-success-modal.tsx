@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { CheckIcon } from "lucide-react"
@@ -8,7 +8,14 @@ import { useQuery } from "@tanstack/react-query"
 import { client } from "@/lib/client"
 
 export function PaymentSuccessModal() {
+  return (
+    <Suspense fallback={null}>
+      <PaymentSuccessModalContent />
+    </Suspense>
+  )
+}
 
+function PaymentSuccessModalContent() {
   const searchParams = useSearchParams()
   const [isOpen, setIsOpen] = useState(false)
   

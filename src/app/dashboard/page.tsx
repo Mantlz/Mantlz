@@ -3,9 +3,17 @@ import { FormsList } from '@/components/dashboard/form/FormsList'
 import { FormDetails } from '@/components/dashboard/form/FormDetails'
 import { PaymentSuccessModal } from '@/components/payment/payment-success-modal'
 import { useParams, useSearchParams } from 'next/navigation'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 
 const DashboardPage = () => {
+  return (
+    <Suspense fallback={<div className="container py-6">Loading dashboard...</div>}>
+      <DashboardContent />
+    </Suspense>
+  )
+}
+
+const DashboardContent = () => {
   const params = useParams()
   const searchParams = useSearchParams()
   const formId = params?.id as string | undefined

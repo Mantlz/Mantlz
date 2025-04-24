@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { Button } from "@/components/ui/button"
 import { useUser } from "@clerk/nextjs"
 import { toast } from "sonner"
@@ -77,6 +77,19 @@ const plans: Plan[] = [
 ]
 
 export default function Pricing() {
+  return (
+    <Suspense fallback={
+      <div className="py-24 text-center">
+        <div className="animate-pulse mx-auto h-8 w-64 bg-gray-200 dark:bg-zinc-800 rounded mb-4"></div>
+        <div className="animate-pulse mx-auto h-4 w-48 bg-gray-100 dark:bg-zinc-700 rounded"></div>
+      </div>
+    }>
+      <PricingContent />
+    </Suspense>
+  )
+}
+
+function PricingContent() {
   const { isSignedIn, user } = useUser()
   const router = useRouter()
   const searchParams = useSearchParams()
