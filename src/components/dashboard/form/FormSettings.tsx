@@ -499,7 +499,7 @@ export function FormSettings({
                     </Button>
                   ) : (
                     <div className="mt-4">
-                      <ExportSubmissions formId={formId} formName={name} />
+                      <ExportSubmissions formId={formId} />
                     </div>
                   )}
                 </div>
