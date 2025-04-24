@@ -5,6 +5,8 @@ import { ClerkProvider } from "@clerk/nextjs"
 import "./globals.css"
 import { MantlzProvider } from "@mantlz/nextjs"
 import { Toaster } from "@/components/ui/sonner"
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Space_Mono, Space_Grotesk } from "next/font/google"
 
 const sansFont = Space_Grotesk({
@@ -46,6 +48,8 @@ export default function RootLayout({
             <Providers>
               <MantlzProvider apiKey={process.env.MANTLZ_KEY}>{children}</MantlzProvider>
             </Providers>
+            <Analytics />
+            <SpeedInsights />
           </main>
           <Toaster richColors position="top-center" theme="system" />
         </body>
