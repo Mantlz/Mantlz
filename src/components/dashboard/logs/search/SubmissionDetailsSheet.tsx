@@ -32,9 +32,9 @@ interface SubmissionData {
   _meta?: {
     browser?: string;
     country?: string;
-    [key: string]: any;
+    [key: string]: unknown;
   };
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface SubmissionDetailsSheetProps {
