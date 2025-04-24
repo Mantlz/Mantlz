@@ -25,7 +25,6 @@ export const formTemplates = {
     schema: z.object({
       email: z.string().email(),
       name: z.string().min(2),
-      referralSource: z.string().optional(),
     }),
   },
   contact: {
