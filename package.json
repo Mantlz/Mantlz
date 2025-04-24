@@ -129,5 +129,11 @@
   "main": "index.js",
   "keywords": [],
   "author": "Jean daly",
-  "license": "ISC"
+  "license": "ISC",
+  "overrides": {
+    "react-day-picker": {
+      "react": "^19.0.0",
+      "react-dom": "^19.0.0"
+    }
+  }
 }
