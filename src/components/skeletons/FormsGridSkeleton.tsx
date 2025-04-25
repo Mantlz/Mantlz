@@ -12,12 +12,12 @@ export function FormsGridSkeleton({ count = 8 }: FormsGridSkeletonProps) {
           <div className="p-4 sm:p-6">
             <div className="flex items-center justify-between mb-3 sm:mb-4">
               <Skeleton className="h-5 w-28" style={{ animationDelay: `${i * 0.1}s` }} />
-              <Skeleton className="h-5 w-20 rounded-full" style={{ animationDelay: `${i * 0.1 + 0.05}s` }} />
+              <Skeleton className="h-5 w-20 rounded-lg" style={{ animationDelay: `${i * 0.1 + 0.05}s` }} />
             </div>
             
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Skeleton className="h-4 w-4 rounded-full" style={{ animationDelay: `${i * 0.1 + 0.1}s` }} />
+                <Skeleton className="h-4 w-4 rounded-lg" style={{ animationDelay: `${i * 0.1 + 0.1}s` }} />
                 <Skeleton className="h-4 w-24" style={{ animationDelay: `${i * 0.1 + 0.15}s` }} />
               </div>
               <Skeleton className="h-4 w-16" style={{ animationDelay: `${i * 0.1 + 0.2}s` }} />

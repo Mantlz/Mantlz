@@ -274,7 +274,7 @@ export function SubmissionDetailsSheet({
                       >
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center">
-                            <div className="w-2 h-2 bg-gray-300 dark:bg-gray-600 rounded-full mr-2"></div>
+                            <div className="w-2 h-2 bg-gray-300 dark:bg-gray-600 rounded-lg mr-2"></div>
                             <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                               {key}
                             </p>
@@ -282,7 +282,7 @@ export function SubmissionDetailsSheet({
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-7 px-2 text-gray-500 cursor-pointer dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
+                            className="h-7 px-2 text-gray-500 cursor-pointer dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
                             onClick={() => copyToClipboard(key, value)}
                           >
                             {copiedField === key ? (

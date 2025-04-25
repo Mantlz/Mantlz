@@ -120,7 +120,7 @@ export function AdvancedAnalytics({
           <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm w-full rounded-lg sm:rounded-xl">
             <CardHeader className="pb-3 pt-4 px-4 sm:px-5">
               <div className="flex items-center justify-center mb-3 sm:mb-4">
-                <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+                <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
                   <CreditCard className="h-6 w-6 sm:h-7 sm:w-7 text-zinc-500" />
                 </div>
               </div>
@@ -188,7 +188,7 @@ export function AdvancedAnalytics({
             </CardHeader>
             <CardContent className="text-center px-4 sm:px-5 pb-4">
               <div className="py-4 sm:py-5 flex flex-col items-center">
-                <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-3 sm:mb-4">
+                <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-3 sm:mb-4">
                   <Lock className="h-5 w-5 sm:h-6 sm:w-6 text-zinc-500 dark:text-zinc-400" />
                 </div>
                 <p className="text-base sm:text-lg font-medium text-zinc-800 dark:text-zinc-200 mb-2">View User Insights</p>

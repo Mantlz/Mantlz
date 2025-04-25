@@ -8,7 +8,7 @@ export function LoadingSpinner({ className }: LoadingSpinnerProps) {
   return (
     <div
       className={cn(
-        "inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]",
+        "inline-block h-8 w-8 animate-spin rounded-lg border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]",
         className
       )}
       role="status"

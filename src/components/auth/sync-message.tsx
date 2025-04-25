@@ -60,9 +60,9 @@ export function SyncMessage({ title, message, syncStatus, syncTime = 0 }: SyncMe
 
         {/* Modern progress bar */}
         <div className="w-full">
-          <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden backdrop-blur-sm">
+          <div className="h-1.5 w-full bg-white/10 rounded-lg overflow-hidden backdrop-blur-sm">
             <div 
-              className="h-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full transition-all duration-300 ease-out"
+              className="h-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-lg transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -74,8 +74,8 @@ export function SyncMessage({ title, message, syncStatus, syncTime = 0 }: SyncMe
         </div>
 
         {/* Status and spinner in one row */}
-        <div className="flex items-center gap-3 mt-2 py-2.5 px-4 rounded-full bg-white/5 backdrop-blur-sm">
-          <div className={`w-2.5 h-2.5 rounded-full ${
+        <div className="flex items-center gap-3 mt-2 py-2.5 px-4 rounded-lg bg-white/5 backdrop-blur-sm">
+          <div className={`w-2.5 h-2.5 rounded-lg ${
             syncStatus ? 'bg-green-400' : 'bg-indigo-400 animate-pulse'
           }`} />
           <span className="text-sm text-white">

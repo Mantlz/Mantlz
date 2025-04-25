@@ -199,7 +199,7 @@ export function AdvancedSettings() {
                 <div className="space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
                     <div className="flex items-center gap-4 flex-1">
-                      <div className="bg-white dark:bg-zinc-900 rounded-full p-2 border border-zinc-200 dark:border-zinc-800">
+                      <div className="bg-white dark:bg-zinc-900 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
                         <Bell className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
                       </div>
                       <div className="flex flex-col gap-0.5">

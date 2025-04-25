@@ -98,7 +98,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
     return (
       <div className="min-h-[400px] w-full flex items-center justify-center bg-white dark:bg-zinc-900 rounded-lg border border-red-100 dark:border-red-900/50 shadow-sm p-6">
         <div className="flex flex-col items-center gap-4 max-w-md text-center">
-          <div className="w-12 h-12 flex items-center justify-center bg-red-50 dark:bg-red-900/20 text-red-500 rounded-full">
+          <div className="w-12 h-12 flex items-center justify-center bg-red-50 dark:bg-red-900/20 text-red-500 rounded-lg">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
             </svg>
@@ -174,7 +174,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                   </div>
                 </div>
                 <Button
-                  className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-all duration-200 rounded-full px-6 shadow-sm hover:shadow-md"
+                  className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-all duration-200 rounded-lg px-6 shadow-sm hover:shadow-md"
                   onClick={() => router.push("/dashboard/forms/new")}
                 >
                   Create Your First Form
@@ -192,7 +192,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
               Start collecting responses in minutes with our easy-to-use form builder
             </p>
             <Button
-              className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-all duration-200 rounded-full px-6 shadow-sm hover:shadow-md"
+              className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-all duration-200 rounded-lg px-6 shadow-sm hover:shadow-md"
               onClick={() => router.push("/dashboard/forms/new")}
             >
               Create Your First Form

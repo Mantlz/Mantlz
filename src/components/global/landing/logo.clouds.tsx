@@ -31,7 +31,7 @@ export default function LogoClouds() {
               key={name}
               className="group flex flex-col items-center p-4 rounded-lg hover:bg-white hover:shadow-lg transition-all duration-300"
             >
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
+              <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
                 <Icon className="h-7 w-7 text-primary" />
               </div>
               <p className="mt-3 font-semibold text-gray-900 dark:text-white">{name}</p>
@@ -47,7 +47,7 @@ export default function LogoClouds() {
               key={name}
               className="group flex flex-col items-center p-6 rounded-xl hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer"
             >
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary/20 dark:bg-orange-200 transition-colors duration-300">
+              <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-primary/10 group-hover:bg-primary/20 dark:bg-orange-200 transition-colors duration-300">
                 <Icon className="h-8 w-8 text-primary group-hover:scale-110 transition-transform duration-300" />
               </div>
               <p className="mt-4 text-lg font-semibold text-gray-900 dark:text-white">{name}</p>

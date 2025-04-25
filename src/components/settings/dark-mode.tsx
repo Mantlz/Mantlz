@@ -77,7 +77,7 @@ const ThemeOption: React.FC<ThemeOptionProps> = React.memo(({ type, isSelected, 
           {/* Selected indicator */}
           <div className={cn(
             "flex items-center justify-center",
-            "size-5 rounded-full",
+            "size-5 rounded-lg",
             "transition-colors duration-150",
             "border",
             isSelected ? "bg-zinc-900 border-zinc-800 dark:bg-white dark:border-zinc-200" : "bg-zinc-200 border-zinc-300 dark:bg-zinc-800 dark:border-zinc-700",

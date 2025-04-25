@@ -227,7 +227,7 @@ function PricingCard({
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{plan.title}</h3>
           {isCurrentPlan && (
-            <span className="inline-flex items-center rounded-full bg-green-100 dark:bg-green-900 px-3 py-1 text-xs font-medium text-green-800 dark:text-green-200">
+            <span className="inline-flex items-center rounded-lg bg-green-100 dark:bg-green-900 px-3 py-1 text-xs font-medium text-green-800 dark:text-green-200">
               Current Plan
             </span>
           )}

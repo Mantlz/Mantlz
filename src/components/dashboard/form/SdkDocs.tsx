@@ -83,7 +83,7 @@ function Step({ number, title, children, icon }: StepProps) {
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
-        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-xs font-medium dark:bg-zinc-800 dark:text-gray-300">
+        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-gray-100 text-xs font-medium dark:bg-zinc-800 dark:text-gray-300">
           {number}
         </div>
         <h3 className="font-medium flex items-center gap-1.5 text-gray-800 dark:text-gray-200">

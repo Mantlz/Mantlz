@@ -36,7 +36,7 @@ const UserDropdown = memo(function UserDropdown() {
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="flex items-center gap-2 p-1.5 rounded-full hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
+            className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
           >
             <Avatar className="h-7 w-7 xs:h-8 xs:w-8 ring-2 ring-zinc-100 dark:ring-zinc-800">
               <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
@@ -318,7 +318,7 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="flex items-center gap-1.5 px-3 py-2 text-sm hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 rounded-full transition-all duration-200"
+                className="flex items-center gap-1.5 px-3 py-2 text-sm hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 rounded-lg transition-all duration-200"
               >
                 <span>Menu</span>
                 <ChevronDown className="h-4 w-4 text-zinc-500 dark:text-zinc-400 transition-transform duration-200" />
@@ -326,7 +326,7 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="start"
-              className="w-[220px] p-2 m-1 bg-zinc-100/90 backdrop-blur-sm border border-zinc-200/70 dark:bg-zinc-900/90 dark:border-zinc-800/70 shadow-lg rounded-xl"
+              className="w-[220px] p-2 m-1 bg-zinc-100/90 backdrop-blur-sm border border-zinc-200/70 dark:bg-zinc-900/90 dark:border-zinc-800/70 shadow-lg rounded-lg"
             >
               <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5">
                 <Link href="/dashboard" className="flex items-center gap-2.5 py-1.5">
@@ -349,7 +349,7 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
               <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 p-0 rounded-lg my-0.5">
                 <Link 
                   href="/dashboard/form-builder"
-                  className="flex items-center gap-2.5 w-full px-2 py-1.5 cursor-pointer bg-zinc-100/90 dark:bg-zinc-900/90 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/90 backdrop-blur-sm border justify-start gap-2 rounded-lg border-zinc-300 dark:border-zinc-700"
+                  className="flex items-center gap-2.5 w-full px-2 py-1.5 cursor-pointer bg-zinc-100/90 dark:bg-zinc-900/90 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/90 backdrop-blur-sm border justify-start  rounded-lg border-zinc-300 dark:border-zinc-700"
                 >
                   <Plus className="h-4 w-4" />
                   <span>Create Form</span>

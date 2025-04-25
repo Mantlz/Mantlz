@@ -10,7 +10,7 @@ export default function Canceled() {
 
   return (
     <section className="flex min-h-[calc(80vh-8rem)] w-full flex-col bg-white dark:bg-zinc-950 items-center justify-center px-4 py-12 text-center">
-      <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+      <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-lg bg-muted">
         <AlertCircle className="h-8 w-8 text-muted-foreground" />
       </div>
 

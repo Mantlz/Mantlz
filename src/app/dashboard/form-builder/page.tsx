@@ -144,7 +144,7 @@ export default function FormBuilderPage() {
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="rounded-full h-8 w-8 text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 cursor-pointer"
+                className="rounded-lg h-8 w-8 text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 cursor-pointer"
                 onClick={() => router.push('/dashboard')}
               >
                 <IconArrowLeft className="h-4 w-4" />

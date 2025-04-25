@@ -70,13 +70,13 @@ function PaymentSuccessModalContent() {
         <div className="p-6">
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-8">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+              <div className="animate-spin rounded-lg h-12 w-12 border-b-2 border-primary"></div>
               <p className="mt-4 text-center text-black dark:text-white">Processing your payment...</p>
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center">
               <div className="flex items-center justify-center mb-6">
-                <div className="h-16 w-16 flex items-center justify-center rounded-full bg-green-100 dark:bg-green-900 border border-green-200 dark:border-green-800">
+                <div className="h-16 w-16 flex items-center justify-center rounded-lg bg-green-100 dark:bg-green-900 border border-green-200 dark:border-green-800">
                   <CheckIcon className="h-8 w-8 text-green-600 dark:text-green-400" />
                 </div>
               </div>

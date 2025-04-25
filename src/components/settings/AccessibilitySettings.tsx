@@ -175,7 +175,7 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
               {/* High Contrast */}
               <div className="flex items-center justify-between gap-3 bg-zinc-100/50 dark:bg-zinc-950/50 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm opacity-75">
                 <div className="flex items-center gap-4">
-                  <div className="bg-white/50 dark:bg-zinc-900/50 rounded-full p-2 border border-zinc-200 dark:border-zinc-800">
+                  <div className="bg-white/50 dark:bg-zinc-900/50 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
                     <Eye className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                   </div>
                   <div className="flex flex-col gap-0.5">
@@ -198,7 +198,7 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
               {/* Larger Text */}
               <div className="flex items-center justify-between gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
                 <div className="flex items-center gap-4">
-                  <div className="bg-white dark:bg-zinc-900 rounded-full p-2 border border-zinc-200 dark:border-zinc-800">
+                  <div className="bg-white dark:bg-zinc-900 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
                     <Type className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
                   </div>
                   <div className="flex flex-col gap-0.5">
@@ -242,7 +242,7 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
             <CardContent className="px-2 pb-2">
               <div className="flex items-center justify-between gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
                 <div className="flex items-center gap-4">
-                  <div className="bg-white dark:bg-zinc-900 rounded-full p-2 border border-zinc-200 dark:border-zinc-800">
+                  <div className="bg-white dark:bg-zinc-900 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
                     <MousePointer2 className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
                   </div>
                   <div className="flex flex-col">

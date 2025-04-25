@@ -31,7 +31,7 @@ export function SearchResults({
   if (isLoading) {
     return (
       <div className="p-6 text-center">
-        <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-white dark:bg-zinc-800 flex items-center justify-center">
+        <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-white dark:bg-zinc-800 flex items-center justify-center">
           <Loader2 className="h-6 w-6 text-gray-500 animate-spin" />
         </div>
         <p className="text-sm text-gray-600 dark:text-gray-400">Loading results...</p>
@@ -42,7 +42,7 @@ export function SearchResults({
   if (!isProUser && selectedFormId === null) {
     return (
       <div className="py-12 text-center px-4">
-        <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-gray-50 dark:bg-zinc-800 flex items-center justify-center">
+        <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-gray-50 dark:bg-zinc-800 flex items-center justify-center">
           <Lock className="h-6 w-6 text-amber-500" />
         </div>
         <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -71,7 +71,7 @@ export function SearchResults({
   if (!data || data.submissions.length === 0) {
     return (
       <div className="p-6 text-center">
-        <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-white dark:bg-zinc-800 flex items-center justify-center">
+        <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-white dark:bg-zinc-800 flex items-center justify-center">
           <FileSearch className="h-6 w-6 text-gray-400 dark:text-gray-500" />
         </div>
         <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No Results Found</h3>
@@ -108,7 +108,7 @@ export function SearchResults({
       {hasMoreResults && showUpgradeModal && (
         <div className="p-4 bg-gradient-to-b from-amber-50/50 to-amber-50 dark:from-amber-900/10 dark:to-amber-900/20 flex flex-col items-center">
           <div className="text-center mb-3">
-            <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white mb-2 rounded-full px-3 py-1">
+            <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white mb-2 rounded-lg px-3 py-1">
               <Sparkles className="h-3 w-3 mr-1" />
               PRO Feature
             </Badge>
@@ -122,7 +122,7 @@ export function SearchResults({
           <Button
             onClick={showUpgradeModal}
             size="sm"
-            className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-none rounded-full px-4"
+            className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-none rounded-lg px-4"
           >
             <Sparkles className="h-3.5 w-3.5 mr-1.5" />
             Upgrade to PRO

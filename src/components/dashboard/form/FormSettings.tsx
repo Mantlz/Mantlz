@@ -290,12 +290,12 @@ export function FormSettings({
                 </div>
                 <div className="flex items-center">
                   {userPlan === 'FREE' && !emailEnabled && (
-                    <div className="mr-3 px-2 py-0.5 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded-full border border-amber-200 dark:border-amber-800/50">
+                    <div className="mr-3 px-2 py-0.5 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded-lg border border-amber-200 dark:border-amber-800/50">
                       Premium Feature
                     </div>
                   )}
                   <span className={cn(
-                    "text-xs px-2 py-0.5 rounded-full",
+                    "text-xs px-2 py-0.5 rounded-lg",
                     emailEnabled 
                       ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400" 
                       : "bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400"
@@ -372,12 +372,12 @@ export function FormSettings({
                   </div>
                   <div className="flex items-center">
                     {userPlan === 'FREE' && !usersJoinedEnabled && (
-                      <div className="mr-3 px-2 py-0.5 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded-full border border-amber-200 dark:border-amber-800/50">
+                      <div className="mr-3 px-2 py-0.5 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded-lg border border-amber-200 dark:border-amber-800/50">
                         Premium Feature
                       </div>
                     )}
                     <span className={cn(
-                      "text-xs px-2 py-0.5 rounded-full",
+                      "text-xs px-2 py-0.5 rounded-lg",
                       usersJoinedEnabled 
                         ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400" 
                         : "bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400"
@@ -396,7 +396,7 @@ export function FormSettings({
                     </p>
                     {usersJoinedEnabled && usersJoinedSettings?.count !== undefined && (
                       <div className="mt-2 flex items-center">
-                        <div className="inline-flex items-center px-3 py-1 text-sm bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 rounded-full border border-blue-100 dark:border-blue-800/50">
+                        <div className="inline-flex items-center px-3 py-1 text-sm bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 rounded-lg border border-blue-100 dark:border-blue-800/50">
                           <Users className="w-3.5 h-3.5 mr-1.5" />
                           <span>{usersJoinedSettings.count.toLocaleString()} users joined</span>
                         </div>
@@ -461,7 +461,7 @@ export function FormSettings({
                 </div>
                 <div className="flex items-center">
                   {userPlan === 'FREE' && (
-                    <div className="mr-3 px-2 py-0.5 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded-full border border-amber-200 dark:border-amber-800/50">
+                    <div className="mr-3 px-2 py-0.5 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded-lg border border-amber-200 dark:border-amber-800/50">
                       Premium Feature
                     </div>
                   )}
@@ -616,7 +616,7 @@ export function FormSettings({
               >
                 {isDeleting ? (
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-lg animate-spin" />
                     <span>Deleting...</span>
                   </div>
                 ) : (

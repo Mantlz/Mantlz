@@ -175,9 +175,9 @@ export function FormHeader({
                   <p className="text-xs xs:text-sm text-gray-500 dark:text-gray-400">Total Submissions</p>
                 </div>
               </div>
-              <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-zinc-700 rounded-full overflow-hidden">
+              <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-zinc-700 rounded-lg overflow-hidden">
                 <div
-                  className="h-full bg-black dark:bg-white rounded-full transition-all duration-500"
+                  className="h-full bg-black dark:bg-white rounded-lg transition-all duration-500"
                   style={{ width: `${Math.min(((responsesCount || 0) / 100) * 100, 100)}%` }}
                 />
               </div>

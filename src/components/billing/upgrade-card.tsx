@@ -45,7 +45,7 @@ export function UpgradeCard() {
           <div className="grid gap-2 p-2 max-w-lg w-full">
             {/* Forms Usage Skeleton */}
             <div className="flex items-center gap-3 bg-zinc-100 dark:bg-zinc-950 px-2 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
-              <div className="bg-white dark:bg-zinc-900 rounded-full p-1.5 border border-zinc-200 dark:border-zinc-800">
+              <div className="bg-white dark:bg-zinc-900 rounded-lg p-1.5 border border-zinc-200 dark:border-zinc-800">
                 <div className="h-4 w-4 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />
               </div>
               <div className="flex flex-1 items-center justify-between gap-2">
@@ -56,7 +56,7 @@ export function UpgradeCard() {
 
             {/* Submissions Usage Skeleton */}
             <div className="flex items-center gap-3 bg-zinc-100 dark:bg-zinc-950 px-2 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
-              <div className="bg-white dark:bg-zinc-900 rounded-full p-1.5 border border-zinc-200 dark:border-zinc-800">
+              <div className="bg-white dark:bg-zinc-900 rounded-lg p-1.5 border border-zinc-200 dark:border-zinc-800">
                 <div className="h-4 w-4 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />
               </div>
               <div className="flex flex-1 items-center justify-between gap-2">
@@ -99,7 +99,7 @@ export function UpgradeCard() {
       <CardContent className="px-4 pb-3 flex items-center justify-center">
         <div className="grid gap-2 p-2 max-w-lg">
           <div className="flex items-center gap-3 bg-zinc-100 dark:bg-zinc-950 px-2 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
-            <div className="bg-white dark:bg-zinc-900 rounded-full p-1.5 border border-zinc-200 dark:border-zinc-800">
+            <div className="bg-white dark:bg-zinc-900 rounded-lg p-1.5 border border-zinc-200 dark:border-zinc-800">
               <Zap className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
             </div>
             <div className="flex flex-1 items-center justify-between gap-2">
@@ -113,7 +113,7 @@ export function UpgradeCard() {
           </div>
 
           <div className="flex items-center gap-3 bg-zinc-100 dark:bg-zinc-950 px-2 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
-            <div className="bg-white dark:bg-zinc-900 rounded-full p-1.5 border border-zinc-200 dark:border-zinc-800">
+            <div className="bg-white dark:bg-zinc-900 rounded-lg p-1.5 border border-zinc-200 dark:border-zinc-800">
               <Zap className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
             </div>
             <div className="flex flex-1 items-center justify-between gap-2">
@@ -128,7 +128,7 @@ export function UpgradeCard() {
 
           {usageData.plan === "STANDARD" && (
             <div className="flex items-center gap-3 bg-zinc-100 dark:bg-zinc-950 px-2 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
-              <div className="bg-white dark:bg-zinc-900 rounded-full p-1.5 border border-zinc-200 dark:border-zinc-800">
+              <div className="bg-white dark:bg-zinc-900 rounded-lg p-1.5 border border-zinc-200 dark:border-zinc-800">
                 <Sparkles className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
               </div>
               <div className="flex flex-1 items-center justify-between gap-2">

@@ -29,7 +29,7 @@ const defaultAppearance: FeedbackFormAppearance = {
     
     // Emoji rating related
     emojiContainer: 'flex gap-2 my-2 justify-center sm:justify-start',
-    emojiButton: 'p-2 rounded-full transition-all duration-200',
+    emojiButton: 'p-2 rounded-lg transition-all duration-200',
     emojiButtonActive: 'bg-blue-100 ring-2 ring-blue-400 scale-110',
     emojiButtonInactive: 'hover:bg-gray-100',
     
@@ -69,7 +69,7 @@ const darkAppearance: FeedbackFormAppearance = {
     
     // Emoji rating related  
     emojiContainer: 'flex gap-2 my-2 justify-center sm:justify-start',
-    emojiButton: 'p-2 rounded-full transition-all duration-200',
+    emojiButton: 'p-2 rounded-lg transition-all duration-200',
     emojiButtonActive: 'bg-blue-900/60 ring-2 ring-blue-500 scale-110',
     emojiButtonInactive: 'hover:bg-zinc-800',
     
@@ -109,7 +109,7 @@ const purpleAppearance: FeedbackFormAppearance = {
     
     // Emoji rating related
     emojiContainer: 'flex gap-2 my-2 justify-center sm:justify-start',
-    emojiButton: 'p-2 rounded-full transition-all duration-200',
+    emojiButton: 'p-2 rounded-lg transition-all duration-200',
     emojiButtonActive: 'bg-orange-500/30 ring-2 ring-orange-400 scale-110',
     emojiButtonInactive: 'hover:bg-purple-800',
     

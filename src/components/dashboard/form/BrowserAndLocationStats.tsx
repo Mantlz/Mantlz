@@ -75,7 +75,7 @@ const StatItem = ({
     <div className="flex items-center gap-2.5">
       {rank > 0 ? (
         <span className={cn(
-          "text-xs font-medium min-w-[20px] text-center rounded-full py-0.5 px-1",
+          "text-xs font-medium min-w-[20px] text-center rounded-lg py-0.5 px-1",
           rank <= 3 
             ? "bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300" 
             : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
@@ -83,14 +83,14 @@ const StatItem = ({
           {rank}
         </span>
       ) : (
-        <div className={`w-2 h-2 rounded-full bg-${color}-500 opacity-90`} />
+        <div className={`w-2 h-2 rounded-lg bg-${color}-500 opacity-90`} />
       )}
       <span className="text-sm font-medium">{name}</span>
     </div>
     <div className="flex items-center gap-2">
       <span className="text-sm font-medium">{count}</span>
       <span className={cn(
-        "text-xs py-0.5 px-1.5 rounded-full",
+        "text-xs py-0.5 px-1.5 rounded-lg",
         "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
       )}>
         {Math.round(percentage * 100)}%
@@ -109,7 +109,7 @@ const EmptyState = ({
   description: string
 }) => (
   <div className="flex flex-col items-center justify-center py-16">
-    <div className="w-16 h-16 rounded-full bg-gray-50 dark:bg-gray-900 flex items-center justify-center mb-5 animate-pulse">
+    <div className="w-16 h-16 rounded-lg bg-gray-50 dark:bg-gray-900 flex items-center justify-center mb-5 animate-pulse">
       <Icon className="h-7 w-7 text-gray-400 dark:text-gray-600" />
     </div>
     <p className="text-lg font-medium">{title}</p>
@@ -299,7 +299,7 @@ export function BrowserAndLocationStats({
               <CardTitleWithIcon icon={MapPin} title="Geographic Distribution" />
               <button 
                 onClick={() => setMapExpanded(true)}
-                className="text-xs bg-gray-50 dark:bg-gray-900 rounded-full py-1.5 px-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="text-xs bg-gray-50 dark:bg-gray-900 rounded-lg py-1.5 px-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
                 <span className="flex items-center gap-1.5 text-gray-500 hover:text-gray-900 dark:hover:text-white">
                   Full map <Maximize2 className="h-3 w-3" />
@@ -415,7 +415,7 @@ export function BrowserAndLocationStats({
                         </ComposableMap>
                       ) : (
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-5 h-5 border border-gray-300 dark:border-gray-700 border-t-blue-500 rounded-full animate-spin"></div>
+                          <div className="w-5 h-5 border border-gray-300 dark:border-gray-700 border-t-blue-500 rounded-lg animate-spin"></div>
                         </div>
                       )}
                       
@@ -423,7 +423,7 @@ export function BrowserAndLocationStats({
                       {sortedLocations.length > 0 && (
                         <div className="absolute bottom-3 left-3 bg-white/90 dark:bg-black/90 backdrop-blur-sm rounded-lg py-2 px-3 shadow-sm border border-gray-100 dark:border-gray-800">
                           <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                            <div className="w-3 h-3 rounded-lg bg-blue-500"></div>
                             <span className="text-xs font-medium">{sortedLocations[0]?.name}</span>
                             <span className="text-xs text-gray-500">{sortedLocations[0] ? Math.round(sortedLocations[0].percentage * 100) : 0}%</span>
                           </div>
@@ -519,7 +519,7 @@ export function BrowserAndLocationStats({
             {browsers.length > 0 ? (
               <div>
                 {/* Progress bar with all browsers */}
-                <div className="flex h-2 mb-3 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-900">
+                <div className="flex h-2 mb-3 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900">
                   {browsers.map((browser, idx) => {
                     const colors = ["blue", "indigo", "violet", "purple", "cyan", "sky", "teal", "emerald", "green", "lime"];
                     return (
@@ -541,7 +541,7 @@ export function BrowserAndLocationStats({
                     const colors = ["blue", "indigo", "violet", "purple", "cyan"];
                     return (
                       <div key={browser.name} className="flex items-center gap-1.5 text-xs">
-                        <div className={`w-2 h-2 rounded-full bg-${colors[idx % colors.length]}-500`}></div>
+                        <div className={`w-2 h-2 rounded-lg bg-${colors[idx % colors.length]}-500`}></div>
                         <span>{browser.name}</span>
                       </div>
                     );
@@ -698,14 +698,14 @@ export function BrowserAndLocationStats({
                   {sortedLocations.slice(0, 20).map((country, _) => (
                     <div key={country.name} className="flex items-center justify-between px-4 py-2.5">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium py-0.5 px-1.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 min-w-[20px] text-center">
+                        <span className="text-xs font-medium py-0.5 px-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 min-w-[20px] text-center">
                           {_ + 1}
                         </span>
                         <span className="text-sm font-medium">{country.name}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className="text-sm">{country.count}</span>
-                        <span className="text-xs py-0.5 px-1.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                        <span className="text-xs py-0.5 px-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
                           {Math.round(country.percentage * 100)}%
                         </span>
                       </div>

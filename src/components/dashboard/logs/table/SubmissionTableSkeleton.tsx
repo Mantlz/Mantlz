@@ -40,7 +40,7 @@ export function SubmissionTableSkeleton({ isPremium }: { isPremium: boolean }) {
               >
                 <TableCell className="pl-4 sm:pl-6 py-3">
                   <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-600"></div>
+                    <div className="w-1.5 h-1.5 rounded-lg bg-zinc-300 dark:bg-zinc-600"></div>
                     <span className="text-sm text-zinc-400 dark:text-zinc-500"><Skeleton className="h-4 w-16 inline-block" /></span>
                   </div>
                 </TableCell>
@@ -53,7 +53,7 @@ export function SubmissionTableSkeleton({ isPremium }: { isPremium: boolean }) {
                 <TableCell className="py-3">
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-1">
-                      <div className="w-2 h-2 rounded-full bg-zinc-300 dark:bg-zinc-600"></div>
+                      <div className="w-2 h-2 rounded-lg bg-zinc-300 dark:bg-zinc-600"></div>
                       <Skeleton className="h-4 w-16 rounded-md" />
                     </div>
                     <div className="flex items-center gap-1">
@@ -84,7 +84,7 @@ export function SubmissionTableSkeleton({ isPremium }: { isPremium: boolean }) {
                 </TableCell>
                 <TableCell className="text-right py-3">
                   <div className="flex items-center justify-end">
-                    <div className="w-16 h-7 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
+                    <div className="w-16 h-7 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center">
                       <Eye className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
                       <span className="text-xs text-zinc-400 dark:text-zinc-500 ml-1">View</span>
                     </div>
@@ -104,8 +104,8 @@ export function SubmissionTableSkeleton({ isPremium }: { isPremium: boolean }) {
           <Skeleton className="h-8 w-8 rounded-md inline-block" />
         </div>
         <div className="flex gap-2">
-          <div className="w-20 h-8 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-zinc-400 dark:text-zinc-500 text-sm">Previous</div>
-          <div className="w-20 h-8 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-zinc-400 dark:text-zinc-500 text-sm">Next</div>
+          <div className="w-20 h-8 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-400 dark:text-zinc-500 text-sm">Previous</div>
+          <div className="w-20 h-8 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-400 dark:text-zinc-500 text-sm">Next</div>
         </div>
       </div>
     </div>

@@ -70,7 +70,7 @@ export function UpgradeModal({
         <div className="relative -mt-6 -mx-6 mb-5 bg-zinc-100 dark:bg-black p-6 rounded-t-md border-b border-slate-200 dark:border-zinc-800">
           <div className="absolute top-0 left-0 w-full h-px bg-slate-100 dark:bg-white/10"></div>
           <h2 className="text-black dark:text-white text-xl font-medium tracking-tight flex items-center space-x-2">
-            <span className="w-2 h-2 rounded-full bg-slate-800 dark:bg-white inline-block"></span>
+            <span className="w-2 h-2 rounded-lg bg-slate-800 dark:bg-white inline-block"></span>
             <span>Upgrade Required</span>
           </h2>
         </div>
@@ -99,7 +99,7 @@ export function UpgradeModal({
               <div className="flex justify-between py-3 px-4 items-center hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors cursor-default">
                 <span className="font-medium text-black dark:text-white text-sm">FREE</span>
                 <span className="text-black dark:text-white flex items-center text-sm">
-                  <span className="rounded-full h-2 w-2 bg-slate-300 dark:bg-zinc-700 mr-2"></span>
+                  <span className="rounded-lg h-2 w-2 bg-slate-300 dark:bg-zinc-700 mr-2"></span>
                   Basic form features
                 </span>
               </div>
@@ -107,7 +107,7 @@ export function UpgradeModal({
               <div className="flex justify-between py-3 px-4 items-center hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors cursor-default">
                 <span className="font-medium text-black dark:text-white text-sm">STANDARD</span>
                 <span className="text-black dark:text-white flex items-center text-sm">
-                  <span className="rounded-full h-2 w-2 bg-slate-800 dark:bg-white mr-2"></span>
+                  <span className="rounded-lg h-2 w-2 bg-slate-800 dark:bg-white mr-2"></span>
                   Advanced features & analytics
                 </span>
               </div>
@@ -115,7 +115,7 @@ export function UpgradeModal({
               <div className="flex justify-between py-3 px-4 items-center hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors cursor-default">
                 <span className="font-medium text-black dark:text-white text-sm">PRO</span>
                 <span className="text-black dark:text-white flex items-center text-sm">
-                  <span className="rounded-full h-2 w-2 bg-slate-800 dark:bg-white mr-2"></span>
+                  <span className="rounded-lg h-2 w-2 bg-slate-800 dark:bg-white mr-2"></span>
                   Everything in Standard
                 </span>
               </div>

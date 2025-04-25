@@ -108,7 +108,7 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
     return (
       <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
         <CardContent className="flex flex-col items-center justify-center py-16">
-          <div className="rounded-full bg-zinc-100 dark:bg-zinc-800 p-4 mb-4">
+          <div className="rounded-lg bg-zinc-100 dark:bg-zinc-800 p-4 mb-4">
             <File className="h-8 w-8 text-zinc-400" />
           </div>
           <h3 className="text-lg font-medium mb-2">No Submission Selected</h3>
@@ -210,7 +210,7 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center">
-                    <div className="w-2 h-2 bg-zinc-300 dark:bg-zinc-600 rounded-full mr-2"></div>
+                    <div className="w-2 h-2 bg-zinc-300 dark:bg-zinc-600 rounded-lg mr-2"></div>
                     <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
                       {key}
                     </p>

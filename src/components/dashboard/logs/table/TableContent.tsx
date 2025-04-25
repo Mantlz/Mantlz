@@ -261,7 +261,7 @@ export function TableContent({
                   <CalendarRange className="h-3.5 w-3.5" />
                   <span>Date Range</span>
                   {!isProPlan && (
-                    <div className="absolute -top-2 -right-2 bg-amber-500 text-white text-[8px] font-bold px-1 py-0.5 rounded-full">
+                    <div className="absolute -top-2 -right-2 bg-amber-500 text-white text-[8px] font-bold px-1 py-0.5 rounded-lg">
                       PRO
                     </div>
                   )}
@@ -372,7 +372,7 @@ export function TableContent({
                 >
                   <TableCell className="py-3 sm:py-4">
                     <div className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-600"></div>
+                      <div className="w-1.5 h-1.5 rounded-lg bg-zinc-300 dark:bg-zinc-600"></div>
                       <span className="font-mono text-xs text-gray-600 dark:text-gray-400">{submission.id.slice(0, 8)}...</span>
                     </div>
                   </TableCell>
@@ -468,7 +468,7 @@ export function TableContent({
                           setShowUpgradeModal(true)
                           // No toast for the button click since we're showing the modal immediately
                         }}
-                        className="h-8 mt-3 cursor-pointer bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-full transition-all duration-200"
+                        className="h-8 mt-3 cursor-pointer bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-lg transition-all duration-200"
                       >
                         <Sparkles className="h-3.5 w-3.5 mr-1.5" />
                         <span>Upgrade Now</span>

@@ -160,7 +160,7 @@ function CustomizeFormContent() {
                 variant="ghost" 
                 size="icon"
                 onClick={() => router.push('/dashboard/form-builder')}
-                className="rounded-full h-8 w-8 text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 cursor-pointer"
+                className="rounded-lg h-8 w-8 text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 cursor-pointer"
               >
                 <IconArrowLeft className="h-4 w-4" />
               </Button>

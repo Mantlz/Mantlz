@@ -18,7 +18,7 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
       <div className="p-4 sm:p-6">
         <div className="flex items-center justify-between mb-3 sm:mb-4">
           <Skeleton className="h-5 w-3/5 rounded-md" />
-          <div className="text-xs sm:text-sm bg-gray-50 dark:bg-gray-800/50 text-gray-400 dark:text-gray-500 px-2 sm:px-3 py-1 rounded-full flex items-center justify-center">
+          <div className="text-xs sm:text-sm bg-gray-50 dark:bg-gray-800/50 text-gray-400 dark:text-gray-500 px-2 sm:px-3 py-1 rounded-lg flex items-center justify-center">
             <span><Skeleton className="h-4 w-5 rounded-md inline-block mr-1" /></span> responses
           </div>
         </div>
@@ -49,8 +49,8 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">
             <div className="space-y-3 sm:space-y-4 w-full sm:w-auto">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black dark:bg-white flex items-center justify-center overflow-hidden border border-gray-200 dark:border-zinc-700">
-                  <Skeleton className="w-full h-full rounded-full" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-black dark:bg-white flex items-center justify-center overflow-hidden border border-gray-200 dark:border-zinc-700">
+                  <Skeleton className="w-full h-full rounded-lg" />
                 </div>
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white tracking-tight">
@@ -82,8 +82,8 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
                       <p className="text-xs text-gray-500 dark:text-gray-400">Total Forms</p>
                     </div>
                   </div>
-                  <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-gray-300 dark:bg-gray-600 rounded-full transition-all duration-500 w-1/4"></div>
+                  <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+                    <div className="h-full bg-gray-300 dark:bg-gray-600 rounded-lg transition-all duration-500 w-1/4"></div>
                   </div>
                 </div>
                 
@@ -104,8 +104,8 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
                       <p className="text-xs text-gray-500 dark:text-gray-400">Total Submissions</p>
                     </div>
                   </div>
-                  <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-gray-300 dark:bg-gray-600 rounded-full transition-all duration-500 w-1/2"></div>
+                  <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+                    <div className="h-full bg-gray-300 dark:bg-gray-600 rounded-lg transition-all duration-500 w-1/2"></div>
                   </div>
                 </div>
               </div>

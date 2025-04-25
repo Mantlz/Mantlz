@@ -81,7 +81,7 @@ export function ExportSubmissions({ formId }: ExportSubmissionsProps) {
             "w-full sm:w-auto"
           )}
         >
-          <div className="bg-slate-200 dark:bg-zinc-800 rounded-full p-1.5">
+          <div className="bg-slate-200 dark:bg-zinc-800 rounded-lg p-1.5">
             <Download className="h-3.5 w-3.5 text-slate-600 dark:text-slate-300" />
           </div>
           <div className="flex flex-col items-start">
@@ -167,7 +167,7 @@ export function ExportSubmissions({ formId }: ExportSubmissionsProps) {
             >
               {isExporting ? (
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-white/30 border-t-white rounded-lg animate-spin" />
                   <span>Exporting...</span>
                 </div>
               ) : (

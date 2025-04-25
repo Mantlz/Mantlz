@@ -31,7 +31,7 @@ export function TableHeader({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 text-xs cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full px-3"
+                  className="h-8 text-xs cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg px-3"
                   onClick={() => {
                     const newParams = new URLSearchParams(searchParams)
                     newParams.delete("formId")
@@ -71,9 +71,9 @@ export function TableHeader({
                   <p className="text-xs text-gray-500 dark:text-gray-400">Total Submissions</p>
                 </div>
               </div>
-              <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+              <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden">
                 <div 
-                  className="h-full bg-black dark:bg-white rounded-full transition-all duration-500"
+                  className="h-full bg-black dark:bg-white rounded-lg transition-all duration-500"
                   style={{ width: `${Math.min(((selectedForm?.submissionCount || 0) / 100) * 100, 100)}%` }}
                 />
               </div>

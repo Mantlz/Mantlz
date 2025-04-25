@@ -111,7 +111,7 @@ export function FormResponsesList({
     return (
       <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
         <CardContent className="flex flex-col items-center text-center gap-4 py-16">
-          <div className="rounded-full bg-red-100 dark:bg-red-900/30 p-4 mb-2">
+          <div className="rounded-lg bg-red-100 dark:bg-red-900/30 p-4 mb-2">
             <AlertCircle className="h-8 w-8 text-red-600 dark:text-red-400" />
           </div>
           <div>
@@ -132,7 +132,7 @@ export function FormResponsesList({
     return (
       <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
         <CardContent className="flex flex-col items-center text-center gap-4 py-16">
-          <div className="rounded-full bg-zinc-100 dark:bg-zinc-800 p-4 mb-2">
+          <div className="rounded-lg bg-zinc-100 dark:bg-zinc-800 p-4 mb-2">
             <FileText className="h-8 w-8 text-zinc-400" />
           </div>
           <div>
@@ -193,7 +193,7 @@ export function FormResponsesList({
                 <div className="flex items-center">
                   <Badge
                     variant="secondary"
-                    className="text-[10px] px-2 py-0.5 rounded-full bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+                    className="text-[10px] px-2 py-0.5 rounded-lg bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
                   >
                     Complete
                   </Badge>

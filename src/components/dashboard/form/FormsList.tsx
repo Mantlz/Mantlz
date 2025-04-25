@@ -94,7 +94,7 @@ export function FormsList({
     return (
       <div className="min-h-[400px] w-full flex items-center justify-center bg-white dark:bg-zinc-900 rounded-lg border border-red-100 dark:border-red-900/50 shadow-sm p-6">
         <div className="flex flex-col items-center gap-4 max-w-md text-center">
-          <div className="w-12 h-12 flex items-center justify-center bg-red-50 dark:bg-red-900/20 text-red-500 rounded-full">
+          <div className="w-12 h-12 flex items-center justify-center bg-red-50 dark:bg-red-900/20 text-red-500 rounded-lg">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
             </svg>
@@ -122,12 +122,12 @@ export function FormsList({
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">
             <div className="space-y-3 sm:space-y-4 w-full sm:w-auto">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black dark:bg-white flex items-center justify-center overflow-hidden">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-black dark:bg-white flex items-center justify-center overflow-hidden">
                   {user?.imageUrl ? (
                     <img
                       src={user.imageUrl} 
                       alt={`${user?.firstName || 'User'}'s avatar`}
-                      className="w-full h-full bg-gray-100 dark:bg-zinc-800/50 border border-gray-200 dark:border-zinc-700 rounded-full object-cover"
+                      className="w-full h-full bg-gray-100 dark:bg-zinc-800/50 border border-gray-200 dark:border-zinc-700 rounded-lg object-cover"
                     />
                   ) : (
                     <span className="text-lg sm:text-xl font-medium text-white dark:text-black">
@@ -159,9 +159,9 @@ export function FormsList({
                         <p className="text-xs text-gray-500 dark:text-gray-400">Total Forms</p>
                       </div>
                     </div>
-                    <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                    <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
                       <div 
-                        className="h-full bg-black dark:bg-white rounded-full transition-all duration-500"
+                        className="h-full bg-black dark:bg-white rounded-lg transition-all duration-500"
                         style={{ width: `${Math.min((forms.length / 10) * 100, 100)}%` }}
                       />
                     </div>
@@ -177,9 +177,9 @@ export function FormsList({
                         <p className="text-xs text-gray-500 dark:text-gray-400">Total Submissions</p>
                       </div>
                     </div>
-                    <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                    <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
                       <div 
-                        className="h-full bg-black dark:bg-white rounded-full transition-all duration-500"
+                        className="h-full bg-black dark:bg-white rounded-lg transition-all duration-500"
                         style={{ width: `${Math.min((totalResponses / 100) * 100, 100)}%` }}
                       />
                     </div>
@@ -247,7 +247,7 @@ export function FormsList({
                   <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
                     {form.name}
                   </h3>
-                  <span className="text-xs sm:text-sm bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-white px-2 sm:px-3 py-1 rounded-full">
+                  <span className="text-xs sm:text-sm bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-white px-2 sm:px-3 py-1 rounded-lg">
                     {form.responsesCount} responses
                   </span>
                 </div>
@@ -318,7 +318,7 @@ export function FormsList({
             Create your first form to start collecting submissions and managing your data.
           </p>
           <Button
-            className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-all duration-200 rounded-full px-6 shadow-sm hover:shadow-md"
+            className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-all duration-200 rounded-lg px-6 shadow-sm hover:shadow-md"
             onClick={() => window.location.href = '/dashboard/form-builder'}
           >
             <Plus className="h-4 w-4 mr-2" />
@@ -333,7 +333,7 @@ export function FormsList({
           <Button
             variant="outline"
             size="sm"
-            className="rounded-full"
+            className="rounded-lg"
             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
           >
@@ -345,7 +345,7 @@ export function FormsList({
           <Button
             variant="outline"
             size="sm"
-            className="rounded-full"
+            className="rounded-lg"
             onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}
           >

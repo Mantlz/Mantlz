@@ -141,7 +141,7 @@ const TestPage = () => {
               </div>
             </div>
             <div className="flex items-center gap-2 self-end sm:self-auto">
-              <span className="text-xs py-1 px-2 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 rounded-full flex items-center gap-1.5">
+              <span className="text-xs py-1 px-2 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 rounded-lg flex items-center gap-1.5">
                 <Check className="h-3 w-3" />
                 <span>{getActiveFormCount()} Live Preview{getActiveFormCount() !== 1 ? 's' : ''}</span>
               </span>
@@ -177,7 +177,7 @@ const TestPage = () => {
                   e.stopPropagation();
                   toggleFormActive('feedbackForm');
                 }}
-                className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1.5 ${
+                className={`px-2 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 ${
                   formSettings.feedbackForm.active 
                     ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' 
                     : 'bg-gray-100 text-gray-600 dark:bg-zinc-700 dark:text-gray-300'
@@ -215,7 +215,7 @@ const TestPage = () => {
                 </div>
                 <button 
                   onClick={() => toggleDarkMode('feedbackForm')}
-                  className={`text-xs px-2.5 py-1 rounded-full flex items-center gap-1.5 transition-colors ${
+                  className={`text-xs px-2.5 py-1 rounded-lg flex items-center gap-1.5 transition-colors ${
                     formSettings.feedbackForm.darkMode 
                       ? 'bg-gray-800 text-gray-200' 
                       : 'bg-gray-100 text-gray-700 dark:bg-zinc-700 dark:text-gray-300'
@@ -266,7 +266,7 @@ const TestPage = () => {
                   e.stopPropagation();
                   toggleFormActive('waitlistForm');
                 }}
-                className={`px-2 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1.5 ${
+                className={`px-2 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 ${
                   formSettings.waitlistForm.active 
                     ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' 
                     : 'bg-gray-100 text-gray-600 dark:bg-zinc-700 dark:text-gray-300'
@@ -304,7 +304,7 @@ const TestPage = () => {
                 </div>
                 <button 
                   onClick={() => toggleDarkMode('waitlistForm')}
-                  className={`text-xs px-2.5 py-1 rounded-full flex items-center gap-1.5 transition-colors ${
+                  className={`text-xs px-2.5 py-1 rounded-lg flex items-center gap-1.5 transition-colors ${
                     formSettings.waitlistForm.darkMode 
                       ? 'bg-gray-800 text-gray-200' 
                       : 'bg-gray-100 text-gray-700 dark:bg-zinc-700 dark:text-gray-300'
@@ -348,7 +348,7 @@ const TestPage = () => {
               </div>
               <h3 className="text-sm font-medium text-gray-900 dark:text-white">Contact Form</h3>
             </div>
-            <span className="px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400 flex items-center gap-1.5">
+            <span className="px-2 py-1 rounded-lg text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400 flex items-center gap-1.5">
               <Info className="h-3 w-3" />
               <span className="hidden xs:inline">Coming Soon</span>
               <span className="xs:hidden">Soon</span>
@@ -364,7 +364,7 @@ const TestPage = () => {
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-5 sm:mb-6 max-w-md mx-auto">
             We&apos;re working on adding contact form support to make it easier to gather leads and inquiries.
           </p>
-          <button className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-900/20 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
+          <button className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
             <ExternalLink className="h-3.5 w-3.5" />
             Learn more
           </button>

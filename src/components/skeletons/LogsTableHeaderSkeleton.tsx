@@ -12,7 +12,7 @@ export function LogsTableHeaderSkeleton() {
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1">
               <div className="flex items-center gap-3">
-                <div className="h-8 text-xs cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full px-3 bg-zinc-50 dark:bg-zinc-800/50 flex items-center">
+                <div className="h-8 text-xs cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg px-3 bg-zinc-50 dark:bg-zinc-800/50 flex items-center">
                   <ChevronLeft className="h-3.5 w-3.5 mr-1 text-zinc-500 dark:text-zinc-400" />
                   <span className="hidden xs:inline text-zinc-500 dark:text-zinc-400">Back to Forms</span>
                 </div>
@@ -48,8 +48,8 @@ export function LogsTableHeaderSkeleton() {
                   <p className="text-xs text-gray-500 dark:text-gray-400">Total Submissions</p>
                 </div>
               </div>
-              <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
-                <div className="h-full bg-zinc-300 dark:bg-zinc-600 rounded-full w-1/3" />
+              <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden">
+                <div className="h-full bg-zinc-300 dark:bg-zinc-600 rounded-lg w-1/3" />
               </div>
             </div>
             
