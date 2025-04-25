@@ -33,7 +33,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
   const page = Number(searchParams.get("page")) || 1
   const formId = searchParams.get("formId")
   const viewParam = searchParams.get("view") as "grid" | "list" | null
-  const [viewMode, setViewMode] = useState<"grid" | "list">(viewParam || "list")
+  const [viewMode, setViewMode] = useState<"grid" | "list">(viewParam || "grid")
   const { isPremium, subscription } = useSubscription()
 
   // Get the plan from the subscription or default to FREE

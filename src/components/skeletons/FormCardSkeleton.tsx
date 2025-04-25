@@ -49,7 +49,7 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">
             <div className="space-y-3 sm:space-y-4 w-full sm:w-auto">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-black dark:bg-white flex items-center justify-center overflow-hidden border border-gray-200 dark:border-zinc-700">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black dark:bg-white flex items-center justify-center overflow-hidden border border-gray-200 dark:border-zinc-700">
                   <Skeleton className="w-full h-full rounded-full" />
                 </div>
                 <div>
