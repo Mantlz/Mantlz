@@ -83,7 +83,7 @@ export function FormHeader({
                   Form ID: {id.slice(0, 6)}...
                 </Badge>
               </div>
-              <h1 className="text-xl xs:text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white tracking-tight">{name}</h1>
+              <h1 className="text-xl xs:text-1xl sm:text-2xl font-semibold text-gray-900 dark:text-white tracking-tight">{name}</h1>
             </div>
             <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-0">
               <Sheet>

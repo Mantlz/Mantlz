@@ -132,7 +132,7 @@ export function FormSettings({
     };
     
     fetchUserPlan();
-  }, []);
+  }, [usersJoinedEnabled]);
 
   const handleEmailToggle = async (checked: boolean) => {
     // If user is on free plan and trying to enable email notifications, show upgrade modal

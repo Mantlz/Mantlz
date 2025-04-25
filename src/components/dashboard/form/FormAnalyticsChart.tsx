@@ -202,7 +202,7 @@ export function FormAnalyticsChart({
       <div className="relative p-6 sm:p-8 lg:p-12">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
           <div className="space-y-1">
-            <h2 className="text-xl sm:text-2xl font-medium text-gray-900 dark:text-white">Analytics Overview</h2>
+            <h2 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white">Analytics Overview</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">{getTimeRangeLabel()}</p>
           </div>
           <div className="flex items-center gap-2">

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -25,19 +25,9 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
     largerText: false,
     screenReader: false,
   });
+  const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    // Load settings from localStorage on mount
-    const savedSettings = localStorage.getItem('accessibility-settings');
-    if (savedSettings) {
-      const parsedSettings = JSON.parse(savedSettings);
-      setSettings(parsedSettings);
-      // Apply saved settings on mount
-      applyAccessibilitySettings(parsedSettings);
-    }
-  }, []);
-
-  const applyAccessibilitySettings = (newSettings: typeof settings) => {
+  const applyAccessibilitySettings = useCallback((newSettings: typeof settings) => {
     // Apply High Contrast
     if (newSettings.highContrast) {
       document.documentElement.classList.add('high-contrast');
@@ -109,7 +99,18 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
       document.documentElement.removeAttribute('role');
       document.documentElement.removeAttribute('aria-label');
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    // Load settings from localStorage on mount
+    const savedSettings = localStorage.getItem('accessibility-settings');
+    if (savedSettings) {
+      const parsedSettings = JSON.parse(savedSettings);
+      setSettings(parsedSettings);
+      // Apply saved settings on mount
+      applyAccessibilitySettings(parsedSettings);
+    }
+  }, [applyAccessibilitySettings]);
 
   const updateSetting = (key: keyof typeof settings, value: boolean) => {
     // Prevent high contrast from being updated
@@ -127,11 +128,19 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
   };
 
   const saveSettings = () => {
-    localStorage.setItem('accessibility-settings', JSON.stringify(settings));
-    toast.success("Accessibility settings saved", {
-      className: "dark:bg-zinc-900 dark:text-white dark:border-zinc-800",
-      duration: 2000,
-    });
+    setSaving(true);
+    
+    // Simulate a slight delay since localStorage is synchronous
+    setTimeout(() => {
+      localStorage.setItem('accessibility-settings', JSON.stringify(settings));
+      
+      toast.success("Accessibility settings saved", {
+        className: "dark:bg-zinc-900 dark:text-white dark:border-zinc-800",
+        duration: 2000,
+      });
+      
+      setSaving(false);
+    }, 600);
   };
 
   return (
@@ -266,9 +275,18 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
           <footer className="flex justify-end mt-4 pb-4">
             <Button 
               onClick={saveSettings}
+              disabled={saving}
               className="bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white text-sm font-medium px-3 py-1.5 rounded-md border border-zinc-700 dark:border-zinc-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] hover:translate-y-[-1px] transition-all"
             >
-              Save Settings
+              {saving ? (
+                <span className="inline-flex items-center">
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Saving...
+                </span>
+              ) : "Save Settings"}
             </Button>
           </footer>
         </div>

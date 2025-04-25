@@ -27,6 +27,17 @@ export function useUserSync({
     return () => clearInterval(timer)
   }, [])
 
+  const { data: syncResponse, isSuccess } = useQuery({
+    queryFn: async () => {
+      const response = await client.auth.getDatabaseSyncStatus.$get()
+      return response.json()
+    },
+    queryKey: ["get-database-sync-status"],
+    refetchInterval: (query) => {
+      return query.state.data?.isSynced ? false : 1000
+    },
+  })
+
   // Adjust sync time estimate based on elapsed time
   useEffect(() => {
     if (elapsedTime > 0 && elapsedTime % 3 === 0 && !syncResponse?.isSynced) {
@@ -38,18 +49,7 @@ export function useUserSync({
         return prev
       })
     }
-  }, [elapsedTime])
-
-  const { data: syncResponse, isSuccess } = useQuery({
-    queryFn: async () => {
-      const response = await client.auth.getDatabaseSyncStatus.$get()
-      return response.json()
-    },
-    queryKey: ["get-database-sync-status"],
-    refetchInterval: (query) => {
-      return query.state.data?.isSynced ? false : 1000
-    },
-  })
+  }, [elapsedTime, syncResponse])
 
   useEffect(() => {
     if (isSuccess && syncResponse?.isSynced && showingMessage) {

@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
-import { Globe, MapPin, Maximize2, TrendingUp } from "lucide-react"
+import { Globe, MapPin, Maximize2, ChevronRight, BarChart2 } from "lucide-react"
 import { 
   ComposableMap, 
   Geographies, 
@@ -40,17 +40,13 @@ interface BrowserAndLocationStatsProps {
 const CardTitleWithIcon = ({
   icon: Icon,
   title,
-  iconColor = "indigo",
 }: {
   icon: React.ElementType
   title: string
-  iconColor?: string
 }) => (
-  <CardTitle className="text-sm font-medium flex items-center">
-    <div
-      className={`flex items-center justify-center bg-${iconColor}-100 dark:bg-${iconColor}-900/30 w-6 h-6 rounded-md mr-2`}
-    >
-      <Icon className={`h-3.5 w-3.5 text-${iconColor}-600 dark:text-${iconColor}-400`} />
+  <CardTitle className="text-base font-medium flex items-center">
+    <div className="w-7 h-7 flex items-center justify-center rounded-md bg-gray-50 dark:bg-gray-900 mr-3">
+      <Icon className="h-4 w-4 text-gray-700 dark:text-gray-300" />
     </div>
     {title}
   </CardTitle>
@@ -60,21 +56,45 @@ const StatItem = ({
   name,
   count,
   percentage,
-  color = "indigo",
+  color = "blue",
+  rank = 0,
+  isTop = false,
 }: {
   name: string
   count: number
   percentage: number
   color?: string
+  rank?: number
+  isTop?: boolean
 }) => (
-  <div className="flex items-center justify-between">
-    <div className="flex items-center gap-2">
-      <div className={`w-2 h-2 rounded-full bg-${color}-500 dark:bg-${color}-400`}></div>
-      <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200">{name}</span>
+  <div className={cn(
+    "flex items-center justify-between p-2.5 rounded-lg transition-all duration-200",
+    "hover:bg-gray-50 dark:hover:bg-gray-900/70",
+    isTop && "bg-blue-50/50 dark:bg-blue-900/20"
+  )}>
+    <div className="flex items-center gap-2.5">
+      {rank > 0 ? (
+        <span className={cn(
+          "text-xs font-medium min-w-[20px] text-center rounded-full py-0.5 px-1",
+          rank <= 3 
+            ? "bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300" 
+            : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+        )}>
+          {rank}
+        </span>
+      ) : (
+        <div className={`w-2 h-2 rounded-full bg-${color}-500 opacity-90`} />
+      )}
+      <span className="text-sm font-medium">{name}</span>
     </div>
-    <div className="flex items-center gap-1">
-      <span className="text-xs font-medium text-zinc-900 dark:text-zinc-100">{count}</span>
-      <span className="text-[10px] text-zinc-500 dark:text-zinc-400">({Math.round(percentage * 100)}%)</span>
+    <div className="flex items-center gap-2">
+      <span className="text-sm font-medium">{count}</span>
+      <span className={cn(
+        "text-xs py-0.5 px-1.5 rounded-full",
+        "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+      )}>
+        {Math.round(percentage * 100)}%
+      </span>
     </div>
   </div>
 )
@@ -83,19 +103,17 @@ const EmptyState = ({
   icon: Icon,
   title,
   description,
-  iconColor = "indigo",
 }: {
   icon: React.ElementType
   title: string
   description: string
-  iconColor?: string
 }) => (
   <div className="flex flex-col items-center justify-center py-16">
-    <div className={`bg-${iconColor}-50 dark:bg-${iconColor}-900/20 p-5 rounded-full mb-4 animate-pulse`}>
-      <Icon className={`h-7 w-7 text-${iconColor}-500 dark:text-${iconColor}-400`} />
+    <div className="w-16 h-16 rounded-full bg-gray-50 dark:bg-gray-900 flex items-center justify-center mb-5 animate-pulse">
+      <Icon className="h-7 w-7 text-gray-400 dark:text-gray-600" />
     </div>
-    <p className="text-base font-medium text-zinc-900 dark:text-zinc-100">{title}</p>
-    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 text-center max-w-[200px]">{description}</p>
+    <p className="text-lg font-medium">{title}</p>
+    <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center max-w-[280px] leading-relaxed">{description}</p>
   </div>
 )
 
@@ -163,30 +181,30 @@ export function BrowserAndLocationStats({
   locations,
   isLoading
 }: BrowserAndLocationStatsProps) {
-  // Debug log for incoming props
-  React.useEffect(() => {
-    console.log('BrowserAndLocationStats Props:', {
-      browsers,
-      locations,
-      isLoading,
-      hasBrowsers: browsers?.length > 0,
-      hasLocations: locations?.length > 0
-    });
-  }, [browsers, locations, isLoading]);
-
   // Add lazy loading for the map
   const [mapLoaded, setMapLoaded] = React.useState(false)
   const mapRef = React.useRef<HTMLDivElement>(null)
   const [mapExpanded, setMapExpanded] = React.useState(false)
+  
+  // Pagination for countries and browsers lists
+  const ITEMS_PER_PAGE = 5;
+  const [countriesPage, setCountriesPage] = React.useState(1);
+  const [browsersPage, setBrowsersPage] = React.useState(1);
+  
+  // State to toggle between map and list on mobile
+  const [mobileView, setMobileView] = React.useState<'map' | 'list'>('map');
+
+  // Sort locations by count
+  const sortedLocations = [...locations].sort((a, b) => b.count - a.count);
+  const totalVisitors = locations.reduce((sum, loc) => sum + loc.count, 0);
+  const totalBrowsers = browsers.reduce((sum, b) => sum + b.count, 0);
 
   React.useEffect(() => {
     // Use Intersection Observer to lazy load the map when it comes into view
     if (typeof window !== "undefined" && !mapLoaded) {
-      console.log("Setting up map observer")
       const observer = new IntersectionObserver(
         (entries) => {
           if (entries[0]?.isIntersecting) {
-            console.log("Map is intersecting, setting mapLoaded to true")
             setMapLoaded(true)
             observer.disconnect()
           }
@@ -204,24 +222,40 @@ export function BrowserAndLocationStats({
     }
   }, [mapLoaded])
 
+  // Calculate pagination for countries
+  const maxCountriesPages = Math.ceil(sortedLocations?.length / ITEMS_PER_PAGE) || 1;
+  const paginatedLocations = React.useMemo(() => {
+    const startIdx = (countriesPage - 1) * ITEMS_PER_PAGE;
+    return sortedLocations?.slice(startIdx, startIdx + ITEMS_PER_PAGE) || [];
+  }, [sortedLocations, countriesPage]);
+  
+  // Calculate pagination for browsers
+  const maxBrowsersPages = Math.ceil(browsers?.length / ITEMS_PER_PAGE) || 1;
+  const paginatedBrowsers = React.useMemo(() => {
+    const startIdx = (browsersPage - 1) * ITEMS_PER_PAGE;
+    return browsers?.slice(startIdx, startIdx + ITEMS_PER_PAGE) || [];
+  }, [browsers, browsersPage]);
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white dark:bg-zinc-800/50 rounded-xl p-6 border border-gray-100 dark:border-gray-800/50">
-          <div className="animate-pulse space-y-4">
-            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
-            <div className="space-y-2">
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+        <div className="bg-white dark:bg-black rounded-xl p-6 shadow-sm">
+          <div className="animate-pulse space-y-5">
+            <div className="h-5 bg-gray-100 dark:bg-gray-900 rounded-md w-1/3"></div>
+            <div className="space-y-3">
+              <div className="h-4 bg-gray-100 dark:bg-gray-900 rounded-md"></div>
+              <div className="h-4 bg-gray-100 dark:bg-gray-900 rounded-md w-5/6"></div>
+              <div className="h-4 bg-gray-100 dark:bg-gray-900 rounded-md w-4/6"></div>
             </div>
           </div>
         </div>
-        <div className="bg-white dark:bg-zinc-800/50 rounded-xl p-6 border border-gray-100 dark:border-gray-800/50">
-          <div className="animate-pulse space-y-4">
-            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
-            <div className="space-y-2">
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+        <div className="bg-white dark:bg-black rounded-xl p-6 shadow-sm">
+          <div className="animate-pulse space-y-5">
+            <div className="h-5 bg-gray-100 dark:bg-gray-900 rounded-md w-1/3"></div>
+            <div className="space-y-3">
+              <div className="h-4 bg-gray-100 dark:bg-gray-900 rounded-md"></div>
+              <div className="h-4 bg-gray-100 dark:bg-gray-900 rounded-md w-5/6"></div>
+              <div className="h-4 bg-gray-100 dark:bg-gray-900 rounded-md w-4/6"></div>
             </div>
           </div>
         </div>
@@ -229,66 +263,68 @@ export function BrowserAndLocationStats({
     )
   }
 
-  // Debug log for rendering state
-  console.log('BrowserAndLocationStats Rendering:', {
-    browsersLength: browsers?.length,
-    locationsLength: locations?.length,
-    browsers,
-    locations
-  });
-
   return (
-    <div className="w-full space-y-1">
-      <div className="grid grid-cols-1 lg:grid-cols-11 gap-5">
-        {/* Map Card - Now takes 3/4 of the grid width */}
-        <Card
-          className={cn(
-            "border border-zinc-200/50 dark:border-zinc-800/50",
-            "bg-white/80 dark:bg-zinc-900/70 backdrop-blur-sm",
-            "shadow-lg hover:shadow-xl transition-all duration-300",
-            "overflow-hidden rounded-xl",
-            "min-h-[500px] lg:col-span-8",
-          )}
-        >
-          <CardHeader className="border-b border-zinc-200 dark:border-zinc-800 pb-3 pt-4 px-5">
+    <div className="w-full">
+      {/* Mobile view toggle - simplified and more elegant */}
+      <div className="lg:hidden flex justify-center items-center mb-4">
+        <div className="flex rounded-md overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm">
+          <button 
+            onClick={() => setMobileView('map')}
+            className={`px-4 py-2 text-xs font-medium ${
+              mobileView === 'map' 
+                ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400' 
+                : 'bg-white dark:bg-black text-gray-700 dark:text-gray-300'
+            }`}
+          >
+            Map
+          </button>
+          <button
+            onClick={() => setMobileView('list')}
+            className={`px-4 py-2 text-xs font-medium ${
+              mobileView === 'list' 
+                ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400' 
+                : 'bg-white dark:bg-black text-gray-700 dark:text-gray-300'
+            }`}
+          >
+            Browsers
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+        {/* Map Card - Hidden on mobile if list view is selected */}
+        <Card className={`bg-white dark:bg-black shadow-sm border border-gray-100 dark:border-gray-900 rounded-xl lg:col-span-3 overflow-hidden transition-all duration-300 hover:shadow-md ${mobileView !== 'map' ? 'hidden lg:block' : ''}`}>
+          <CardHeader className="pb-3 px-6 pt-5">
             <div className="flex justify-between items-center w-full">
-              <CardTitleWithIcon icon={MapPin} title="Location Analytics" iconColor="indigo" />
-              <Badge
-                className="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 
-                hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors px-2 py-0.5 text-xs rounded-md"
+              <CardTitleWithIcon icon={MapPin} title="Geographic Distribution" />
+              <button 
+                onClick={() => setMapExpanded(true)}
+                className="text-xs bg-gray-50 dark:bg-gray-900 rounded-full py-1.5 px-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
-                World Data
-              </Badge>
+                <span className="flex items-center gap-1.5 text-gray-500 hover:text-gray-900 dark:hover:text-white">
+                  Full map <Maximize2 className="h-3 w-3" />
+                </span>
+              </button>
             </div>
-            <CardDescription className="text-zinc-500 dark:text-zinc-400 text-xs mt-1">
-              Geographic distribution of your visitors
-            </CardDescription>
+            {locations.length > 0 && (
+              <CardDescription className="text-gray-500 text-sm mt-1.5">
+                {totalVisitors.toLocaleString()} visitors from {locations.length} countries
+              </CardDescription>
+            )}
           </CardHeader>
 
-          <CardContent className="px-5 pb-0 pt-3 relative">
+          <CardContent className="px-6 pb-6 pt-2 relative">
             {locations.length > 0 ? (
               <div className="relative">
-                <div className="flex flex-col lg:flex-row gap-4">
-                  {/* World Map container - taking 5/6 of the space */}
-                  <div className="lg:w-4/6">
+                <div className="flex flex-col lg:flex-row gap-5">
+                  {/* World Map container - simplified */}
+                  <div className="lg:flex-grow">
                     <div
                       ref={mapRef}
-                      className="bg-white dark:bg-zinc-800/50 h-[400px] overflow-hidden relative 
-                        border border-zinc-200 dark:border-zinc-700/50 rounded-lg"
+                      className="bg-white dark:bg-black h-[340px] overflow-hidden relative rounded-xl border border-gray-100 dark:border-gray-900"
                     >
-                      {/* Expand button */}
-                      <button
-                        onClick={() => setMapExpanded(true)}
-                        className="absolute top-2 right-2 bg-white/90 dark:bg-zinc-800/90 p-1.5 
-                          rounded-md backdrop-blur-sm z-50 hover:bg-white dark:hover:bg-zinc-700 
-                          shadow-sm hover:shadow transition-all"
-                        aria-label="Expand map"
-                      >
-                        <Maximize2 className="h-3.5 w-3.5 text-zinc-700 dark:text-zinc-300" />
-                      </button>
-
                       {/* Map content */}
-                      {mapLoaded && (
+                      {mapLoaded ? (
                         <ComposableMap
                           projectionConfig={{
                             scale: 160,
@@ -313,86 +349,126 @@ export function BrowserAndLocationStats({
                           >
                             <Geographies geography={geoUrl}>
                               {({ geographies }) =>
-                                geographies.map((geo) => (
-                                  <Geography
-                                    key={geo.rsmKey}
-                                    geography={geo}
-                                    fill="currentColor"
-                                    className="text-zinc-100 dark:text-zinc-800/80"
-                                    stroke="#E4E4E7"
-                                    strokeWidth={0.3}
-                                  />
-                                ))
+                                geographies.map((geo) => {
+                                  // Check if this country is in our locations data
+                                  const geoProps = geo.properties as Record<string, string | number | boolean>;
+                                  const geoName = geoProps.name as string | undefined;
+                                  const isHighlighted = locations.some(
+                                    loc => {
+                                      return geoName && (
+                                        geoName === loc.name || 
+                                        geoName.includes(loc.name) || 
+                                        loc.name.includes(geoName)
+                                      );
+                                    }
+                                  );
+                                  
+                                  return (
+                                    <Geography
+                                      key={geo.rsmKey}
+                                      geography={geo}
+                                      fill="currentColor"
+                                      className={isHighlighted ? 
+                                        "text-blue-50 dark:text-blue-950" : 
+                                        "text-gray-100 dark:text-gray-900"
+                                      }
+                                      stroke="#fff"
+                                      strokeWidth={0.5}
+                                    />
+                                  );
+                                })
                               }
                             </Geographies>
 
-                            {/* Show markers for all countries on the main map */}
-                            {locations.slice(0, 15).map((country) => {
+                            {/* Show only top 8 markers for clarity */}
+                            {sortedLocations.slice(0, 8).map((country, idx) => {
                               const coords = COUNTRY_COORDINATES[country.name]
                               if (!coords) return null
                               const [lat, lng] = coords
-                              const count = country.count; // Ensure count is defined
-                              const radius = 8; // Fixed radius for main map
-                              const fontSize = 10; // Fixed font size for main map
+                              const count = country.count;
+                              const isTop3 = idx < 3;
+                              const radius = isTop3 ? 7 : 5;
 
                               return (
                                 <Marker key={country.name} coordinates={[lng, lat]}>
-                                  <g className="rsm-marker cursor-pointer group">
+                                  <g className="rsm-marker cursor-pointer transition-all duration-300 hover:scale-110">
                                      <circle
                                       r={radius}
-                                      className="fill-indigo-500 dark:fill-indigo-400 opacity-80 group-hover:opacity-100 transition-opacity"
-                                      stroke="#fff" // Add white stroke for better contrast
-                                      strokeWidth="1"
+                                      className={isTop3 ? "fill-blue-600 dark:fill-blue-500" : "fill-blue-400 dark:fill-blue-700"}
+                                      stroke="#fff"
+                                      strokeWidth="1.5"
                                     />
                                     <text
                                       textAnchor="middle"
-                                      y={radius * 0.35} // Vertically center text (approx)
-                                      className="fill-white dark:fill-zinc-900 font-medium pointer-events-none transition-all"
-                                      style={{ fontSize: `${fontSize}px` }} // Fixed font size
+                                      y={radius * 0.35}
+                                      className="fill-white font-medium pointer-events-none"
+                                      style={{ fontSize: isTop3 ? "10px" : "8px" }}
                                     >
                                       {count}
                                     </text>
-                                    {/* Simple SVG Tooltip (renders as native browser tooltip) */}
-                                    <title>{`${country.name}: ${count} visitor${count === 1 ? '' : 's'}`}</title>
+                                    <title>{`${country.name}: ${count.toLocaleString()} visitor${count === 1 ? '' : 's'}`}</title>
                                   </g>
                                 </Marker>
                               )
                             })}
                           </ZoomableGroup>
                         </ComposableMap>
-                      )}
-
-                      {/* Loading indicator */}
-                      {!mapLoaded && (
+                      ) : (
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-8 h-8 border-4 border-zinc-300 dark:border-zinc-600 border-t-indigo-500 dark:border-t-indigo-400 rounded-full animate-spin"></div>
+                          <div className="w-5 h-5 border border-gray-300 dark:border-gray-700 border-t-blue-500 rounded-full animate-spin"></div>
+                        </div>
+                      )}
+                      
+                      {/* Top country callout at bottom */}
+                      {sortedLocations.length > 0 && (
+                        <div className="absolute bottom-3 left-3 bg-white/90 dark:bg-black/90 backdrop-blur-sm rounded-lg py-2 px-3 shadow-sm border border-gray-100 dark:border-gray-800">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                            <span className="text-xs font-medium">{sortedLocations[0]?.name}</span>
+                            <span className="text-xs text-gray-500">{sortedLocations[0] ? Math.round(sortedLocations[0].percentage * 100) : 0}%</span>
+                          </div>
                         </div>
                       )}
                     </div>
                   </div>
 
-                  {/* Country statistics - taking 1/6 of the space */}
-                  <div className="lg:w-1/3">
-                    <div className="h-[500px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-zinc-700 scrollbar-track-transparent">
-                      <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg border border-zinc-200 dark:border-zinc-700/50 p-3 mb-2">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-xs font-medium text-zinc-900 dark:text-zinc-100">Top Countries</span>
-                          <Badge className="bg-indigo-100/80 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 px-1.5 py-0.5 text-[10px] rounded-sm">
-                            {locations.length}
-                          </Badge>
+                  {/* Top 5 Countries - simplified list */}
+                  <div className="lg:w-2/5 max-w-xs">
+                    <div className="mb-2 flex items-center justify-between">
+                      <h3 className="text-sm font-medium">Top Countries</h3>
+                      {maxCountriesPages > 1 && (
+                        <div className="flex items-center space-x-1">
+                          <button 
+                            onClick={() => setCountriesPage(prev => Math.max(prev - 1, 1))}
+                            disabled={countriesPage === 1}
+                            className="p-1 rounded-md disabled:opacity-50 hover:bg-gray-100 dark:hover:bg-gray-800"
+                          >
+                            <ChevronRight className="h-3 w-3 transform rotate-180" />
+                          </button>
+                          <span className="text-xs text-gray-500">{countriesPage}/{maxCountriesPages}</span>
+                          <button 
+                            onClick={() => setCountriesPage(prev => Math.min(prev + 1, maxCountriesPages))}
+                            disabled={countriesPage === maxCountriesPages}
+                            className="p-1 rounded-md disabled:opacity-50 hover:bg-gray-100 dark:hover:bg-gray-800"
+                          >
+                            <ChevronRight className="h-3 w-3" />
+                          </button>
                         </div>
-                        <div className="space-y-2">
-                          {locations.slice(0, 9).map((country, idx) => (
-                            <StatItem
-                              key={country.name}
-                              name={country.name}
-                              count={country.count}
-                              percentage={country.percentage}
-                              color={["indigo", "violet", "blue", "cyan", "emerald"][idx % 5]}
-                            />
-                          ))}
-                        </div>
-                      </div>
+                      )}
+                    </div>
+                    
+                    {/* Country list with better scrolling */}
+                    <div className="space-y-1.5">
+                      {paginatedLocations.map((country, idx) => (
+                        <StatItem
+                          key={country.name}
+                          name={country.name}
+                          count={country.count}
+                          percentage={country.percentage}
+                          rank={(countriesPage - 1) * ITEMS_PER_PAGE + idx + 1}
+                          isTop={(countriesPage === 1 && idx === 0)}
+                        />
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -400,217 +476,243 @@ export function BrowserAndLocationStats({
             ) : (
               <EmptyState
                 icon={MapPin}
-                title="No Location Data"
-                description="Waiting for first data transmission from your visitors"
-                iconColor="indigo"
+                title="No Location Data Yet"
+                description="Waiting for your visitors. Data will appear here once users start visiting your site."
               />
             )}
           </CardContent>
-
-          {locations.length > 0 && (
-            <CardFooter className="flex-col items-start gap-2 text-sm px-5 py-3 border-t border-zinc-200 dark:border-zinc-800">
-              <div className="flex gap-2 font-medium leading-none">
-                Top Country: {locations[0]?.name} ({locations[0] ? Math.round(locations[0].percentage * 100) : 0}%)
-                <TrendingUp className="h-4 w-4 text-green-500" />
-              </div>
-              <div className="leading-none text-muted-foreground text-xs">
-                Visitors from {locations.length} countries
-              </div>
-            </CardFooter>
-          )}
         </Card>
 
-        {/* Browser Stats Card - Now takes 1/4 of the grid width */}
-        <Card
-          className={cn(
-            "border border-zinc-200/50 dark:border-zinc-800/50",
-            "bg-white/80 dark:bg-zinc-900/70 backdrop-blur-sm",
-            "shadow-lg hover:shadow-xl transition-all duration-300",
-            "overflow-hidden rounded-xl",
-            "min-h-[500px] lg:col-span-3",
-          )}
-        >
-          <CardHeader className="border-b border-zinc-200 dark:border-zinc-800 pb-3 pt-4 px-4">
+        {/* Browser Stats Card - Hidden on mobile if map view is selected */}
+        <Card className={`bg-white dark:bg-black shadow-sm border border-gray-100 dark:border-gray-900 rounded-xl lg:col-span-2 transition-all duration-300 hover:shadow-md ${mobileView !== 'list' ? 'hidden lg:block' : ''}`}>
+          <CardHeader className="pb-3 px-6 pt-5">
             <div className="flex justify-between items-center w-full">
-              <CardTitleWithIcon icon={Globe} title="Browser Stats" iconColor="violet" />
-              <Badge
-                className="bg-violet-50 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 
-                hover:bg-violet-100 dark:hover:bg-violet-900/50 transition-colors px-2 py-0.5 text-xs rounded-md"
-              >
-                {browsers.length}
-              </Badge>
+              <CardTitleWithIcon icon={Globe} title="Browsers" />
+              {maxBrowsersPages > 1 && (
+                <div className="flex items-center space-x-1">
+                  <button 
+                    onClick={() => setBrowsersPage(prev => Math.max(prev - 1, 1))}
+                    disabled={browsersPage === 1}
+                    className="p-1 rounded-md disabled:opacity-50 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  >
+                    <ChevronRight className="h-3 w-3 transform rotate-180" />
+                  </button>
+                  <span className="text-xs text-gray-500">{browsersPage}/{maxBrowsersPages}</span>
+                  <button 
+                    onClick={() => setBrowsersPage(prev => Math.min(prev + 1, maxBrowsersPages))}
+                    disabled={browsersPage === maxBrowsersPages}
+                    className="p-1 rounded-md disabled:opacity-50 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  >
+                    <ChevronRight className="h-3 w-3" />
+                  </button>
+                </div>
+              )}
             </div>
-            <CardDescription className="text-zinc-500 dark:text-zinc-400 text-xs mt-1">
-              Browser usage distribution
-            </CardDescription>
+            {browsers.length > 0 && (
+              <CardDescription className="text-gray-500 text-sm mt-1.5">
+                {totalBrowsers.toLocaleString()} visitors tracked
+              </CardDescription>
+            )}
           </CardHeader>
 
-          <CardContent className="px-4 py-3 relative">
+          <CardContent className="px-6 pb-6 pt-2 relative">
             {browsers.length > 0 ? (
-              <div className="flex flex-col space-y-4">
-                {/* Browser distribution percentages with colored indicators */}
-                <div className="bg-zinc-50/80 dark:bg-zinc-800/50 rounded-lg border border-zinc-200 dark:border-zinc-700/50 p-3">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs font-medium text-zinc-900 dark:text-zinc-100">Distribution</span>
-                    <Badge className="bg-violet-100/80 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 px-1.5 py-0.5 text-[10px] rounded-sm">
-                      {browsers.reduce((sum, b) => sum + b.count, 0)}
-                    </Badge>
-                  </div>
-                  <div className="flex mb-1.5">
-                    {browsers.map((browser, idx) => (
+              <div>
+                {/* Progress bar with all browsers */}
+                <div className="flex h-2 mb-3 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-900">
+                  {browsers.map((browser, idx) => {
+                    const colors = ["blue", "indigo", "violet", "purple", "cyan", "sky", "teal", "emerald", "green", "lime"];
+                    return (
                       <div
                         key={browser.name}
-                        className="h-2"
                         style={{
                           width: `${browser.percentage * 100}%`,
-                          backgroundColor: `var(--${["indigo", "violet", "blue", "cyan", "emerald", "amber", "rose"][idx % 7]}-500)`,
-                          borderRadius: idx === 0 ? "4px 0 0 4px" : idx === browsers.length - 1 ? "0 4px 4px 0" : "0",
                         }}
+                        className={`bg-${colors[idx % colors.length]}-500`}
+                        title={`${browser.name}: ${Math.round(browser.percentage * 100)}%`}
                       />
-                    ))}
-                  </div>
-                  <div className="grid grid-cols-1 gap-2 mt-3">
-                    {browsers.map((browser, idx) => (
-                      <StatItem
-                        key={browser.name}
-                        name={browser.name}
-                        count={browser.count}
-                        percentage={browser.percentage}
-                        color={["indigo", "violet", "blue", "cyan", "emerald", "amber", "rose"][idx % 7]}
-                      />
-                    ))}
-                  </div>
+                    );
+                  })}
+                </div>
+                
+                {/* Color legend - simplified and horizontal */}
+                <div className="mb-5 flex flex-wrap gap-x-4 gap-y-2">
+                  {browsers.slice(0, 5).map((browser, idx) => {
+                    const colors = ["blue", "indigo", "violet", "purple", "cyan"];
+                    return (
+                      <div key={browser.name} className="flex items-center gap-1.5 text-xs">
+                        <div className={`w-2 h-2 rounded-full bg-${colors[idx % colors.length]}-500`}></div>
+                        <span>{browser.name}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+                
+                {/* Browser list */}
+                <div className="space-y-1.5 mt-4">
+                  {paginatedBrowsers.map((browser, idx) => (
+                    <StatItem
+                      key={browser.name}
+                      name={browser.name}
+                      count={browser.count}
+                      percentage={browser.percentage}
+                      color={["blue", "indigo", "violet", "purple", "cyan"][idx % 5]}
+                      isTop={(browsersPage === 1 && idx === 0)}
+                    />
+                  ))}
                 </div>
               </div>
             ) : (
               <EmptyState
                 icon={Globe}
                 title="No Browser Data"
-                description="Waiting for first data transmission from your visitors"
-                iconColor="violet"
+                description="Browser statistics will appear here when you get visitors"
               />
             )}
           </CardContent>
-
-          {browsers.length > 0 && (
-            <CardFooter className="flex-col items-start gap-2 text-sm px-4 py-3 border-t border-zinc-200 dark:border-zinc-800">
-              <div className="flex gap-2 font-medium leading-none">
-                Top: {browsers[0]?.name} ({browsers[0] ? Math.round(browsers[0].percentage * 100) : 0}%)
-                <TrendingUp className="h-4 w-4 text-green-500" />
-              </div>
-              <div className="leading-none text-muted-foreground text-xs">
-                Total: {browsers.reduce((sum, b) => sum + b.count, 0)} visitors
-              </div>
-            </CardFooter>
-          )}
         </Card>
       </div>
 
-      {/* Dialog for expanded map view */}
+      {/* Dialog for expanded map view - simplified to avoid redundancy */}
       <Dialog open={mapExpanded} onOpenChange={setMapExpanded}>
         <DialogContent
-          className="sm:max-w-[800px] p-0 overflow-hidden 
-            bg-white/95 dark:bg-zinc-900/95 backdrop-blur-lg
-            border border-zinc-200 dark:border-zinc-800
-            shadow-2xl rounded-xl"
+          className="sm:max-w-[900px] p-0 overflow-hidden 
+            bg-white dark:bg-black rounded-xl shadow-lg border border-gray-100 dark:border-gray-900"
         >
-          <DialogHeader className="px-6 pt-6 pb-2 border-b border-zinc-200 dark:border-zinc-800">
-            <DialogTitle className="text-xl font-medium text-zinc-900 dark:text-zinc-100 flex items-center">
-              Location Analytics
+          <DialogHeader className="px-8 pt-6 pb-4">
+            <DialogTitle className="text-xl font-medium flex items-center">
+              <BarChart2 className="h-5 w-5 mr-2 opacity-70" />
+              Geographic Analytics
             </DialogTitle>
-            <DialogDescription className="text-zinc-500 dark:text-zinc-400 text-sm">
-              Explore visitor distribution across the world
+            <DialogDescription>
+              {totalVisitors.toLocaleString()} visitors from {locations.length} countries
             </DialogDescription>
           </DialogHeader>
 
-          <div className="p-6 pt-4">
-            <div
-              className="bg-white dark:bg-zinc-800/50 h-[500px] overflow-hidden relative 
-              border border-zinc-200 dark:border-zinc-700/50 rounded-lg"
-            >
-              <ComposableMap
-                projectionConfig={{
-                  scale: 220,
-                  center: [0, 20],
-                }}
-                width={1000}
-                height={600}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  backgroundColor: "transparent",
-                }}
-              >
-                <ZoomableGroup
-                  zoom={1}
-                  maxZoom={6}
-                  minZoom={1}
-                  translateExtent={[
-                    [0, 0],
-                    [1000, 600],
-                  ]}
-                >
-                  <Geographies geography={geoUrl}>
-                    {({ geographies }) =>
-                      geographies.map((geo) => (
-                        <Geography
-                          key={geo.rsmKey}
-                          geography={geo}
-                          fill="currentColor"
-                          className="text-zinc-100 dark:text-zinc-800/80"
-                          stroke="#E4E4E7"
-                          strokeWidth={0.3}
-                        />
-                      ))
-                    }
-                  </Geographies>
+          <div className="p-6 pt-0">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              <div className="md:col-span-2">
+                <div className="h-[400px] overflow-hidden relative rounded-xl border border-gray-100 dark:border-gray-900">
+                  <ComposableMap
+                    projectionConfig={{
+                      scale: 170,
+                      center: [0, 20],
+                    }}
+                    width={1000}
+                    height={600}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      backgroundColor: "transparent",
+                    }}
+                  >
+                    <ZoomableGroup
+                      zoom={1}
+                      maxZoom={6}
+                      minZoom={1}
+                      translateExtent={[
+                        [0, 0],
+                        [1000, 600],
+                      ]}
+                    >
+                      <Geographies geography={geoUrl}>
+                        {({ geographies }) =>
+                          geographies.map((geo) => {
+                            const geoProps = geo.properties as Record<string, string | number | boolean>;
+                            const geoName = geoProps.name as string | undefined;
+                            const isHighlighted = locations.some(
+                              loc => {
+                                return geoName && (
+                                  geoName === loc.name || 
+                                  geoName.includes(loc.name) || 
+                                  loc.name.includes(geoName)
+                                );
+                              }
+                            );
+                            
+                            return (
+                              <Geography
+                                key={geo.rsmKey}
+                                geography={geo}
+                                fill="currentColor"
+                                className={isHighlighted ? 
+                                  "text-blue-50 dark:text-blue-950" : 
+                                  "text-gray-100 dark:text-gray-900"
+                                }
+                                stroke="#ffffff"
+                                strokeWidth={0.5}
+                              />
+                            );
+                          })
+                        }
+                      </Geographies>
 
-                  {locations.map((country) => {
-                    const coords = COUNTRY_COORDINATES[country.name]
-                    if (!coords) return null
-                    const [lat, lng] = coords
+                      {sortedLocations.slice(0, 15).map((country, idx) => {
+                        const coords = COUNTRY_COORDINATES[country.name]
+                        if (!coords) return null
+                        const [lat, lng] = coords
+                        const count = country.count;
+                        const isTop5 = idx < 5;
+                        const radius = isTop5 ? 8 : 6;
 
-                    // Define marker size based on count for expanded map
-                    const count = country.count;
-                    const baseRadius = 8; // Base radius for the circle
-                    const radius = baseRadius + Math.min(Math.log2(count + 1) * 1.5, 8); // Scale radius logarithmically, max increase of 8
-                    const fontSize = Math.max(8, Math.min(11 + Math.log2(count + 1) * 0.5, 14)); // Scale font size slightly, cap at 14px
-
-                    return (
-                      <Marker key={country.name} coordinates={[lng, lat]}>
-                        <g className="rsm-marker cursor-pointer group">
-                           <circle
-                            r={radius}
-                            className="fill-indigo-500 dark:fill-indigo-400 opacity-80 group-hover:opacity-100 transition-opacity"
-                            stroke="#fff" // Add white stroke for better contrast
-                            strokeWidth="1"
-                          />
-                          <text
-                            textAnchor="middle"
-                            y={radius * 0.35} // Vertically center text (approx)
-                            className="fill-white dark:fill-zinc-900 font-medium pointer-events-none transition-all"
-                            style={{ fontSize: `${fontSize}px` }} // Dynamic font size
-                          >
-                            {count}
-                          </text>
-                          {/* Simple SVG Tooltip (renders as native browser tooltip) */}
-                          <title>{`${country.name}: ${count} visitor${count === 1 ? '' : 's'}`}</title>
-                        </g>
-                      </Marker>
-                    )
-                  })}
-                </ZoomableGroup>
-              </ComposableMap>
-            </div>
-
-            <div
-              className="mt-4 text-xs text-zinc-500 dark:text-zinc-400 
-              border-t border-zinc-200 dark:border-zinc-800 pt-3 flex justify-between items-center"
-            >
-              <p>Displaying {locations.length} territories</p>
-              <Badge className="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
-                Use mouse wheel to zoom
-              </Badge>
+                        return (
+                          <Marker key={country.name} coordinates={[lng, lat]}>
+                            <g className="rsm-marker cursor-pointer transition-all duration-300 hover:scale-110">
+                              <circle
+                                r={radius}
+                                className={isTop5 ? "fill-blue-600 dark:fill-blue-500" : "fill-blue-400 dark:fill-blue-700"}
+                                stroke="#fff"
+                                strokeWidth="1.5"
+                              />
+                              <text
+                                textAnchor="middle"
+                                y={radius * 0.35}
+                                className="fill-white font-medium pointer-events-none"
+                                style={{ fontSize: isTop5 ? "11px" : "9px" }}
+                              >
+                                {count}
+                              </text>
+                              <title>{`${country.name}: ${count.toLocaleString()} visitor${count === 1 ? '' : 's'}`}</title>
+                            </g>
+                          </Marker>
+                        )
+                      })}
+                    </ZoomableGroup>
+                  </ComposableMap>
+                </div>
+                
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {sortedLocations.slice(0, 5).map((country) => (
+                    <Badge 
+                      key={country.name}
+                      className="bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300"
+                    >
+                      {country.name}: {Math.round(country.percentage * 100)}%
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+              
+              <div>
+                <div className="h-[400px] overflow-y-auto rounded-xl border border-gray-100 dark:border-gray-900 divide-y divide-gray-100 dark:divide-gray-900">
+                  {sortedLocations.slice(0, 20).map((country, _) => (
+                    <div key={country.name} className="flex items-center justify-between px-4 py-2.5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-medium py-0.5 px-1.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 min-w-[20px] text-center">
+                          {_ + 1}
+                        </span>
+                        <span className="text-sm font-medium">{country.name}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-sm">{country.count}</span>
+                        <span className="text-xs py-0.5 px-1.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                          {Math.round(country.percentage * 100)}%
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </DialogContent>
