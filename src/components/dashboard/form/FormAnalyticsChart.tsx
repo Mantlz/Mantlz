@@ -181,11 +181,11 @@ export function FormAnalyticsChart({
 
   if (isLoading) {
     return (
-      <div className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 rounded-xl sm:rounded-2xl border border-gray-100 dark:border-gray-800/50">
+      <div className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 rounded-lg sm:rounded-xl border border-gray-100 dark:border-gray-800/50">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative p-6 sm:p-8 lg:p-12">
           <div className="flex flex-col items-center justify-center h-[400px] gap-4">
-            <div className="w-8 h-8 animate-spin rounded-full border-4 border-gray-200 dark:border-gray-800 border-t-black dark:border-t-white"></div>
+            <div className="w-8 h-8 animate-spin rounded-lg border-4 border-gray-200 dark:border-gray-800 border-t-black dark:border-t-white"></div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Loading analytics data...</p>
           </div>
         </div>
@@ -197,7 +197,7 @@ export function FormAnalyticsChart({
   const hasData = chartData.some(point => point.submissions > 0);
   
   return (
-    <div className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 rounded-xl sm:rounded-2xl border border-gray-100 dark:border-gray-800/50">
+    <div className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 rounded-lg sm:rounded-xl border border-gray-100 dark:border-gray-800/50">
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
       <div className="relative p-6 sm:p-8 lg:p-12">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
@@ -210,7 +210,7 @@ export function FormAnalyticsChart({
               variant={timeRange === 'day' ? 'default' : 'ghost'}
               size="sm"
               className={cn(
-                "rounded-xl cursor-pointer",
+                "rounded-lg cursor-pointer",
                 timeRange === 'day' 
                   ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100" 
                   : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
@@ -223,7 +223,7 @@ export function FormAnalyticsChart({
               variant={timeRange === 'week' ? 'default' : 'ghost'}
               size="sm"
               className={cn(
-                "rounded-xl cursor-pointer",
+                "rounded-lg cursor-pointer",
                 timeRange === 'week' 
                   ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100" 
                   : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
@@ -236,7 +236,7 @@ export function FormAnalyticsChart({
               variant={timeRange === 'month' ? 'default' : 'ghost'}
               size="sm"
               className={cn(
-                "rounded-xl cursor-pointer",
+                "rounded-lg cursor-pointer",
                 timeRange === 'month' 
                   ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100" 
                   : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
@@ -254,7 +254,7 @@ export function FormAnalyticsChart({
             variant={activeTab === 'overview' ? 'default' : 'ghost'}
             size="sm"
             className={cn(
-              "rounded-xl cursor-pointer",
+              "rounded-lg cursor-pointer",
               activeTab === 'overview' 
                 ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100" 
                 : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
@@ -267,7 +267,7 @@ export function FormAnalyticsChart({
             variant={activeTab === 'insights' ? 'default' : 'ghost'}
             size="sm"
             className={cn(
-              "rounded-xl cursor-pointer",
+              "rounded-lg cursor-pointer",
               activeTab === 'insights' 
                 ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100" 
                 : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
@@ -283,7 +283,7 @@ export function FormAnalyticsChart({
           <>
             {!hasData ? (
               <div className="flex flex-col items-center justify-center h-[400px] gap-4">
-                <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
                   <BarChart3 className="w-6 h-6 text-gray-400 dark:text-gray-500" />
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 dark:text-white">No data yet</h3>
@@ -294,7 +294,7 @@ export function FormAnalyticsChart({
             ) : (
 
               
-                <div className="bg-white dark:bg-zinc-800/50 rounded-xl p-4 sm:p-5 border border-gray-100 dark:border-gray-800/50">
+                <div className="bg-white dark:bg-zinc-800/50 rounded-lg p-4 sm:p-5 border border-gray-100 dark:border-gray-800/50">
                   <div className="h-[300px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={chartData || []}>

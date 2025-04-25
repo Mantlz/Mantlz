@@ -23,7 +23,7 @@ import { QuestionModal } from "@/components/modals/QuestionModal"
 const UserDropdown = memo(function UserDropdown() {
   const { user, isLoaded: isUserLoaded } = useUser()
   const { signOut, openUserProfile } = useClerk()
-  const [showSettings, setShowSettings] = useState(false)
+
 
   // Show loading state when user data is not yet loaded
   if (!isUserLoaded) {
