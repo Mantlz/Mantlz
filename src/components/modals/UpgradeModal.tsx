@@ -1,5 +1,6 @@
 import { Mail, BarChart, Maximize2, Bell, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 interface UpgradeModalProps {
   isOpen: boolean;
@@ -35,6 +36,20 @@ export function UpgradeModal({
   featureIcon,
   description
 }: UpgradeModalProps) {
+  useEffect(() => {
+    if (isOpen) {
+      // Save the current overflow style
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      // Prevent background scrolling
+      document.body.style.overflow = 'hidden';
+      
+      // Restore original overflow when component unmounts or modal closes
+      return () => {
+        document.body.style.overflow = originalStyle;
+      };
+    }
+  }, [isOpen]);
+  
   if (!isOpen) return null;
   
   const featureInfo = featureDescriptions[featureName] || {
@@ -46,13 +61,10 @@ export function UpgradeModal({
   const featureDescription = description || featureInfo.description;
   
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100]">
+    <div className="fixed inset-0 h-full bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] overflow-hidden">
       <div className="bg-white dark:bg-zinc-900 p-6 rounded-md max-w-md w-full border border-slate-200 dark:border-zinc-800 shadow-xl">
-        {/* Subtle gradient background */}
-        {/* <div className="absolute inset-0 bg-gradient-to-br from-slate-50/50 to-slate-100/50 dark:from-zinc-900/50 dark:to-zinc-800/50 pointer-events-none" /> */}
       
-        {/* Accent line */}
-        <div className="absolute top-0 left-0 h-full w-1 bg-gradient-to-b from-slate-300 via-slate-400 to-slate-500 dark:from-zinc-700 dark:via-zinc-600 dark:to-zinc-500" />
+
         
         {/* Modern minimal header */}
         <div className="relative -mt-6 -mx-6 mb-5 bg-zinc-100 dark:bg-black p-6 rounded-t-md border-b border-slate-200 dark:border-zinc-800">

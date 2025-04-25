@@ -118,22 +118,22 @@ export function AdvancedAnalytics({
       <div className={`transition-all duration-300 ${isCollapsed ? "max-h-0 opacity-0" : ""}`}>
         {!hasPremiumAccess && showPaywall ? (
           <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm w-full rounded-lg sm:rounded-xl">
-            <CardHeader className="pb-2 pt-3 px-3 xs:px-4 sm:px-4">
-              <div className="flex items-center justify-center mb-1 sm:mb-2">
-                <div className="h-8 w-8 xs:h-9 xs:w-9 sm:h-10 sm:w-10 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-                  <CreditCard className="h-4 w-4 xs:h-4.5 xs:w-4.5 sm:h-5 sm:w-5 text-zinc-500" />
+            <CardHeader className="pb-3 pt-4 px-4 sm:px-5">
+              <div className="flex items-center justify-center mb-3 sm:mb-4">
+                <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+                  <CreditCard className="h-6 w-6 sm:h-7 sm:w-7 text-zinc-500" />
                 </div>
               </div>
-              <CardTitle className="text-center text-zinc-900 dark:text-white text-sm xs:text-base">
+              <CardTitle className="text-center text-zinc-900 dark:text-white text-lg sm:text-xl mb-2">
                 Premium Feature
               </CardTitle>
-              <CardDescription className="text-center text-zinc-600 dark:text-zinc-400 text-[10px] xs:text-xs">
+              <CardDescription className="text-center text-zinc-600 dark:text-zinc-400 text-sm sm:text-base">
                 Upgrade to Standard or Pro plan to access detailed user insights
               </CardDescription>
             </CardHeader>
-            <CardContent className="text-center px-3 xs:px-4 sm:px-4 pb-3">
-              <div className="space-y-2 mb-3">
-                <div className="p-1.5 xs:p-2 bg-zinc-50 dark:bg-zinc-800/50 rounded-md text-[10px] xs:text-xs text-zinc-700 dark:text-zinc-300">
+            <CardContent className="text-center px-4 sm:px-5 pb-5">
+              <div className="space-y-3 mb-4">
+                <div className="p-3 sm:p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-md text-sm sm:text-base text-zinc-700 dark:text-zinc-300">
                   <div className="items-center">
                     <div>
                       <p className="pl-0">
@@ -143,18 +143,18 @@ export function AdvancedAnalytics({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-1.5 xs:gap-2">
-                  <div className="p-1.5 xs:p-2 border border-zinc-200 dark:border-zinc-800 rounded-md text-center">
-                    <p className="text-[10px] xs:text-xs text-zinc-600 dark:text-zinc-400 mb-0.5 xs:mb-1">Browsers</p>
-                    <p className="text-xs xs:text-sm font-medium text-zinc-900 dark:text-white mt-0.5">
-                      <Lock className="h-2.5 w-2.5 xs:h-3 xs:w-3 inline-block mr-1 mb-0.5 align-text-bottom" />
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800 rounded-md text-center">
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-1">Browsers</p>
+                    <p className="text-base font-medium text-zinc-900 dark:text-white mt-1">
+                      <Lock className="h-4 w-4 inline-block mr-1.5 align-text-bottom" />
                       Premium
                     </p>
                   </div>
-                  <div className="p-1.5 xs:p-2 border border-zinc-200 dark:border-zinc-800 rounded-md text-center">
-                    <p className="text-[10px] xs:text-xs text-zinc-600 dark:text-zinc-400 mb-0.5 xs:mb-1">Locations</p>
-                    <p className="text-xs xs:text-sm font-medium text-zinc-900 dark:text-white mt-0.5">
-                      <Lock className="h-2.5 w-2.5 xs:h-3 xs:w-3 inline-block mr-1 mb-0.5 align-text-bottom" />
+                  <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800 rounded-md text-center">
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-1">Locations</p>
+                    <p className="text-base font-medium text-zinc-900 dark:text-white mt-1">
+                      <Lock className="h-4 w-4 inline-block mr-1.5 align-text-bottom" />
                       Premium
                     </p>
                   </div>
@@ -162,11 +162,11 @@ export function AdvancedAnalytics({
               </div>
 
               <Button
-                size="sm"
-                className="bg-zinc-900 cursor-pointer dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 w-full h-8 xs:h-9 text-xs xs:text-sm"
+                size="default"
+                className="bg-zinc-900 cursor-pointer dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 w-full h-11 sm:h-12 text-sm sm:text-base font-medium"
                 onClick={() => setIsUpgradeModalOpen(true)}
               >
-                <Rocket className="h-3.5 w-3.5 xs:h-4 xs:w-4 mr-1.5 xs:mr-2" />
+                <Rocket className="h-5 w-5 mr-2" />
                 Upgrade Now
               </Button>
             </CardContent>
@@ -176,23 +176,23 @@ export function AdvancedAnalytics({
             onClick={() => setShowPaywall(true)}
             className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all w-full rounded-lg sm:rounded-xl"
           >
-            <CardHeader className="pb-2 pt-3 px-3 xs:px-4 sm:px-4 flex flex-row items-start justify-between space-y-0">
+            <CardHeader className="pb-2 pt-4 px-4 sm:px-5 flex flex-row items-start justify-center content-center space-y-0">
               <div>
-                <CardTitle className="text-zinc-900 dark:text-white text-xs xs:text-sm flex items-center">
+                <CardTitle className="text-zinc-900 dark:text-white text-base sm:text-lg">
                   User Insights
                 </CardTitle>
-                <CardDescription className="text-zinc-600 dark:text-zinc-400 text-[10px] xs:text-xs">
+                <CardDescription className="text-zinc-600 dark:text-zinc-400 text-sm">
                   Discover who&apos;s using your form
                 </CardDescription>
               </div>
             </CardHeader>
-            <CardContent className="text-center px-3 xs:px-4 sm:px-4 pb-3">
-              <div className="py-3 xs:py-4 flex flex-col items-center">
-                <div className="h-8 w-8 xs:h-9 xs:w-9 sm:h-10 sm:w-10 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-1.5 xs:mb-2">
-                  <Lock className="h-3.5 w-3.5 xs:h-4 xs:w-4 text-zinc-500 dark:text-zinc-400" />
+            <CardContent className="text-center px-4 sm:px-5 pb-4">
+              <div className="py-4 sm:py-5 flex flex-col items-center">
+                <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-3 sm:mb-4">
+                  <Lock className="h-5 w-5 sm:h-6 sm:w-6 text-zinc-500 dark:text-zinc-400" />
                 </div>
-                <p className="text-xs xs:text-sm font-medium text-zinc-800 dark:text-zinc-200">View User Insights</p>
-                <p className="text-[10px] xs:text-xs text-zinc-500 dark:text-zinc-400 mt-0.5 xs:mt-1 max-w-[180px] xs:max-w-[220px] mx-auto">
+                <p className="text-base sm:text-lg font-medium text-zinc-800 dark:text-zinc-200 mb-2">View User Insights</p>
+                <p className="text-sm sm:text-base text-zinc-500 dark:text-zinc-400 max-w-[240px] sm:max-w-[280px] mx-auto">
                   Click to upgrade and see detailed analytics about your users
                 </p>
               </div>
