@@ -50,7 +50,7 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
             <div className="space-y-3 sm:space-y-4 w-full sm:w-auto">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-black dark:bg-white flex items-center justify-center overflow-hidden border border-gray-200 dark:border-zinc-700">
-                  <Skeleton className="w-full h-full rounded-lg" />
+                  <Skeleton className="w-full h-full rounded-full" />
                 </div>
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white tracking-tight">

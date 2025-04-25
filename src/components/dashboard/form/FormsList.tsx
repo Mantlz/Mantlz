@@ -122,7 +122,7 @@ export function FormsList({
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">
             <div className="space-y-3 sm:space-y-4 w-full sm:w-auto">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-black dark:bg-white flex items-center justify-center overflow-hidden">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black dark:bg-white flex items-center justify-center overflow-hidden">
                   {user?.imageUrl ? (
                     <img
                       src={user.imageUrl} 
