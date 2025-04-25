@@ -23,6 +23,7 @@ import { QuestionModal } from "@/components/modals/QuestionModal"
 const UserDropdown = memo(function UserDropdown() {
   const { user, isLoaded: isUserLoaded } = useUser()
   const { signOut, openUserProfile } = useClerk()
+  const [showSettings, setShowSettings] = useState(false)
 
   // Show loading state when user data is not yet loaded
   if (!isUserLoaded) {
@@ -30,41 +31,50 @@ const UserDropdown = memo(function UserDropdown() {
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="flex items-center gap-2 p-1.5 rounded-full hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            className="flex items-center gap-2 p-1.5 rounded-full hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
+          >
+            <Avatar className="h-7 w-7 xs:h-8 xs:w-8 ring-2 ring-zinc-100 dark:ring-zinc-800">
+              <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
+              <AvatarFallback className="bg-zinc-700 text-zinc-100">
+                {user?.firstName?.[0] || user?.lastName?.[0] || "U"}
+              </AvatarFallback>
+            </Avatar>
+            <span className="hidden sm:inline text-sm font-medium">{user?.fullName || "User"}</span>
+            <ChevronDown className="hidden sm:inline h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          align="end"
+          className="w-[220px] p-2 m-1 bg-zinc-100/90 backdrop-blur-sm border border-zinc-200/70 dark:bg-zinc-900/90 dark:border-zinc-800/70 shadow-lg rounded-xl"
         >
-          <Avatar className="h-7 w-7 xs:h-8 xs:w-8 ring-2 ring-zinc-100 dark:ring-zinc-800">
-            <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
-            <AvatarFallback className="bg-zinc-700 text-zinc-100">
-              {user?.firstName?.[0] || user?.lastName?.[0] || "U"}
-            </AvatarFallback>
-          </Avatar>
-          <span className="hidden sm:inline text-sm font-medium">{user?.fullName || "User"}</span>
-          <ChevronDown className="hidden sm:inline h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="end"
-        className="w-[220px] p-2 m-1 bg-zinc-100/90 backdrop-blur-sm border border-zinc-200/70 dark:bg-zinc-900/90 dark:border-zinc-800/70 shadow-lg rounded-xl"
-      >
-        <DropdownMenuItem className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5" onClick={() => openUserProfile()}>
-          <User className="h-4 w-4 mr-2" />
-          Profile
-        </DropdownMenuItem>
-        <DropdownMenuItem className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5" onClick={() => openUserProfile()}>
-          <Settings className="h-4 w-4 mr-2" />
-          Settings
-        </DropdownMenuItem>
-        <Separator className="my-1.5 bg-zinc-300 dark:bg-zinc-700" />
-        <DropdownMenuItem className="hover:bg-red-100/70 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 p-2 cursor-pointer rounded-lg transition-all duration-200 my-0.5" onClick={() => signOut()}>
-          <LogOut className="h-4 w-4 mr-2" />
-          Sign out
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          <DropdownMenuItem className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5" onClick={() => openUserProfile()}>
+            <User className="h-4 w-4 mr-2" />
+            Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem 
+            className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5" 
+            asChild
+          >
+            <SettingsDialog>
+              <div className="flex items-center w-full px-2 py-1.5">
+                <Settings className="h-4 w-4 mr-2" />
+                Settings
+              </div>
+            </SettingsDialog>
+          </DropdownMenuItem>
+          <Separator className="my-1.5 bg-zinc-300 dark:bg-zinc-700" />
+          <DropdownMenuItem className="hover:bg-red-100/70 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 p-2 cursor-pointer rounded-lg transition-all duration-200 my-0.5" onClick={() => signOut()}>
+            <LogOut className="h-4 w-4 mr-2" />
+            Sign out
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
   )
 })
 
@@ -187,21 +197,24 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                       </div>
                     )}
 
-                    <button
-                      onClick={() => openUserProfile()}
-                      className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors w-full"
-                    >
-                      <User className="h-4 w-4" />
-                      <span>Profile</span>
-                    </button>
+                    <SheetClose asChild>
+                      <button
+                        onClick={() => openUserProfile()}
+                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors w-full"
+                      >
+                        <User className="h-4 w-4" />
+                        <span>Profile</span>
+                      </button>
+                    </SheetClose>
 
-                    <button
-                      onClick={() => openUserProfile()}
-                      className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors w-full"
-                    >
-                      <Settings className="h-4 w-4" />
-                      <span>Settings</span>
-                    </button>
+                    <SheetClose asChild>
+                      <SettingsDialog>
+                        <button className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors w-full">
+                          <Settings className="h-4 w-4" />
+                          <span>Settings</span>
+                        </button>
+                      </SettingsDialog>
+                    </SheetClose>
 
                     <button
                       onClick={() => signOut()}
@@ -245,7 +258,7 @@ const ActionButtonsSection = memo(function ActionButtonsSection() {
           <Button
             variant="ghost"
             size="icon"
-            className="h-9 w-9 rounded-full hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
+            className="h-9 w-9 rounded-lg hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
             aria-label="Help"
           >
             <HelpCircle className="h-4.5 w-4.5" />
@@ -257,7 +270,7 @@ const ActionButtonsSection = memo(function ActionButtonsSection() {
         <Button
           variant="ghost"
           size="icon"
-          className="h-9 w-9 rounded-full hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
+          className="h-9 w-9 rounded-lg hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
           aria-label="Settings"
         >
           <Settings className="h-4.5 w-4.5" />

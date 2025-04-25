@@ -9,7 +9,7 @@ import { client } from '@/lib/client'
 import { format } from 'date-fns'
 import { FormCardSkeleton } from '@/components/skeletons/FormCardSkeleton'
 import { useUser } from '@clerk/nextjs'
-import Image from 'next/image'
+
 
 interface Form {
   id: string
@@ -124,7 +124,7 @@ export function FormsList({
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black dark:bg-white flex items-center justify-center overflow-hidden">
                   {user?.imageUrl ? (
-                    <Image
+                    <img
                       src={user.imageUrl} 
                       alt={`${user?.firstName || 'User'}'s avatar`}
                       className="w-full h-full bg-gray-100 dark:bg-zinc-800/50 border border-gray-200 dark:border-zinc-700 rounded-full object-cover"
