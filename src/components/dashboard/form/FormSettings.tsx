@@ -325,7 +325,7 @@ export function FormSettings({
                     onCheckedChange={handleEmailToggle}
                     className={cn(
                       userPlan === 'FREE' && !emailEnabled ? "text-amber-500" : "",
-                      "cursor-pointer",
+                      "!cursor-pointer",
                       isEmailSettingsLoading ? "opacity-50" : ""
                     )}
                     disabled={isEmailSettingsLoading || (userPlan === 'FREE' && !emailEnabled)}
@@ -415,7 +415,7 @@ export function FormSettings({
                       onCheckedChange={handleUsersJoinedToggle}
                       className={cn(
                         userPlan === 'FREE' && !usersJoinedEnabled ? "text-amber-500" : "",
-                        "cursor-pointer",
+                        "!cursor-pointer",
                         isUsersJoinedSettingsLoading ? "opacity-50" : ""
                       )}
                       disabled={isUsersJoinedSettingsLoading || (userPlan === 'FREE' && !usersJoinedEnabled)}
