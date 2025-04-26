@@ -144,7 +144,7 @@ export default function DynamicForm({
         
         // Fall back to direct API call if client method failed or is not available
         if (!formData) {
-          const apiUrl = client?.apiUrl || process.env.NEXT_PUBLIC_MANTLZ_API_URL || 'https://api.mantlz.io';
+          const apiUrl = client?.apiUrl || process.env.NEXT_PUBLIC_MANTLZ_API_URL || 'https://form-quay.vercel.app';
           const res = await fetch(`${apiUrl}/api/v1/forms/${formId}`, {
             headers: {
               'x-api-key': apiKey,
