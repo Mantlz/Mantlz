@@ -473,6 +473,40 @@ You can dynamically adjust styles based on the current theme:
 />
 ```
 
+## Configuration Options
+
+When creating a client, you can pass a configuration object with the following options:
+
+```typescript
+interface MantlzClientConfig {
+  toastHandler?: ToastHandler;  // Custom toast handler
+  notifications?: boolean;      // Enable/disable notifications (default: true)
+  showApiKeyErrorToasts?: boolean;  // Show API key error toasts (default: false)
+  apiUrl?: string;              // Custom API URL
+  logger?: (message: string, ...args: any[]) => void;  // Custom logger function
+  developmentMode?: boolean;    // Enable development mode for local testing
+}
+```
+
+### Development Mode
+
+When working in a local development environment, you may encounter CORS issues when making requests to the Mantlz API. To handle this, you can enable `developmentMode`:
+
+```typescript
+const client = createMantlzClient('your_api_key', {
+  developmentMode: true  // Enable local development mode
+});
+```
+
+In development mode:
+- API requests use 'no-cors' mode to bypass CORS restrictions
+- Mock data is returned for API responses
+- Form submissions are simulated to work without actually submitting data
+
+This allows you to develop and test your application locally without needing to configure CORS on the server side.
+
+**Note:** Development mode should only be used for local testing and should be disabled in production.
+
 ## License
 
 MIT 

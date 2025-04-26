@@ -76,6 +76,9 @@ export function createMantlzClient(
 
   // Notification enabled flag (default true)
   let notificationsEnabled = config?.notifications !== false;
+  
+  // Development mode for local testing (bypasses CORS)
+  const developmentMode = config?.developmentMode === true;
 
   // Notification state to prevent duplicate toasts per formId
   const notificationState = {
@@ -243,9 +246,35 @@ export function createMantlzClient(
             'Content-Type': 'application/json',
             'X-API-Key': key,
           },
-          credentials: 'include',
-          mode: 'cors',
+          credentials: developmentMode ? 'omit' : 'include',
+          mode: developmentMode ? 'no-cors' : 'cors',
         });
+        
+        // With no-cors mode, the response type is 'opaque' and cannot be read
+        // In development mode, return a default schema with a note
+        if (developmentMode && response.type === 'opaque') {
+          log('Development mode: Returning mock schema for form', formId);
+          return {
+            id: formId,
+            name: 'Development Form',
+            description: 'This is a mock form generated in development mode',
+            formType: 'custom',
+            schema: {
+              email: {
+                type: 'email',
+                required: true,
+                label: 'Email',
+                placeholder: 'your@email.com',
+              },
+              name: {
+                type: 'text',
+                required: true,
+                label: 'Name',
+                placeholder: 'Your Name',
+              },
+            }
+          };
+        }
 
         if (!response.ok) {
           const error = await handleApiError(response, formId);
@@ -319,9 +348,29 @@ export function createMantlzClient(
             data,
             redirectUrl,
           }),
-          credentials: 'include',
-          mode: 'cors',
+          credentials: developmentMode ? 'omit' : 'include',
+          mode: developmentMode ? 'no-cors' : 'cors',
         });
+        
+        // Handle opaque responses in development mode
+        if (developmentMode && response.type === 'opaque') {
+          log('Development mode: Simulating successful form submission');
+          
+          // Return simulated success response
+          const mockResponse: FormSubmitResponse = {
+            success: true,
+            submissionId: 'dev-' + Math.random().toString(36).substring(2, 11),
+            message: 'Form submitted successfully in development mode',
+          };
+          
+          if (notificationsEnabled) {
+            toast.success('Form submitted successfully (Dev Mode)', {
+              duration: 3000,
+            });
+          }
+          
+          return mockResponse;
+        }
 
         if (!response.ok) {
           const error = await handleApiError(response, formId);
@@ -378,9 +427,16 @@ export function createMantlzClient(
           headers: {
             'X-API-Key': key,
           },
-          credentials: 'include',
-          mode: 'cors',
+          credentials: developmentMode ? 'omit' : 'include',
+          mode: developmentMode ? 'no-cors' : 'cors',
         });
+        
+        // In development mode with opaque response, return a random number
+        if (developmentMode && response.type === 'opaque') {
+          const mockCount = Math.floor(Math.random() * 100) + 1;
+          log('Development mode: Returning mock users count:', mockCount);
+          return mockCount;
+        }
 
         if (!response.ok) {
           const error = await handleApiError(response, formId);
