@@ -31,7 +31,7 @@ export function createMantlzClient(apiKey?: string, config?: MantlzClientConfig)
       ? process.env.NEXT_PUBLIC_MANTLZ_API_URL
       : (typeof window !== 'undefined') // Check if running in browser
         ? '' // Use relative path for same-origin requests
-        : 'https://api.mantlz.io'; // Fallback for non-browser env
+        : 'https://form-quay.vercel.app'; // Fallback for non-browser env
 
   // Apply toast handler if provided in config
   if (config?.toastHandler) {
