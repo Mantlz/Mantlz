@@ -21,6 +21,24 @@ function isValidOrigin(origin: string | null): boolean {
   }
 }
 
+export function handlePreflightRequest() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
+      'Access-Control-Allow-Credentials': 'true',
+    },
+  });
+}
+
+export function addCorsHeadersToResponse(response: NextResponse) {
+  response.headers.set('Access-Control-Allow-Origin', '*');
+  response.headers.set('Access-Control-Allow-Credentials', 'true');
+  return response;
+}
+
 export function middleware(req: NextRequest) {
   const origin = req.headers.get('origin');
   const response = NextResponse.next();
