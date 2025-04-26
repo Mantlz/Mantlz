@@ -4,10 +4,36 @@ A modern, customizable React component library for building beautiful feedback f
 
 ## Installation
 
+Choose your preferred package manager:
+
 ```bash
-npm install mantlz-sdk
-# or
-yarn add mantlz-sdk
+# npm
+npm install @mantlz/nextjs
+
+# yarn
+yarn add @mantlz/nextjs
+
+# pnpm
+pnpm add @mantlz/nextjs
+
+# bun
+bun add @mantlz/nextjs
+```
+
+## Usage
+
+Wrap your application with the `MantlzProvider`:
+
+```tsx
+import { MantlzProvider } from "@mantlz/nextjs";
+
+export default function Layout({ children }) {
+  return (
+    <MantlzProvider apiKey="your-mantlz-api-key">
+      {children}
+    </MantlzProvider>
+  );
+}
 ```
 
 ## FeedbackForm Component

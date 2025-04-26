@@ -6,6 +6,7 @@ import { apiKeyRouter } from "./routers/api-key-router"
 import { usageRouter } from "./routers/usage-router"
 import { userRouter } from "./routers/user-router"
 import { paymentRouter } from "./routers/payment-router"
+import { campaignRouter } from "./routers/campaign-router"
 
 const api = j
   .router()
@@ -21,6 +22,7 @@ const appRouter = j.mergeRouters(api, {
   usage: usageRouter,
   user: userRouter,
   payment: paymentRouter,
+  campaigns: campaignRouter,
 })
 
 export type AppRouter = typeof appRouter

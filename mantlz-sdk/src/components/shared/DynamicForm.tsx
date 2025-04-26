@@ -335,7 +335,7 @@ export default function DynamicForm({
 
   if (submitted) {
     return (
-      <Card className={cn(bgColorClass, borderColorClass, className)}>
+      <Card className={cn("mantlz-form", bgColorClass, borderColorClass, className)}>
         <CardHeader>
           <CardTitle className={textColorClass}>Thank You!</CardTitle>
           <CardDescription className={colorMode === 'dark' ? 'text-gray-300' : 'text-gray-500'}>
@@ -347,7 +347,7 @@ export default function DynamicForm({
   }
 
   return (
-    <Card className={cn(bgColorClass, borderColorClass, className)}>
+    <Card className={cn("mantlz-form", bgColorClass, borderColorClass, className)}>
       <CardHeader>
         <CardTitle className={textColorClass}>{formData.title || formData.name}</CardTitle>
         {formData.description && (

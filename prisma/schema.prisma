@@ -28,6 +28,7 @@ model User {
   subscription     Subscription?
   payments         Payment[]
   invoices         Invoice[]
+  campaigns        Campaign[]
 
   @@index([clerkId])
   @@index([stripeCustomerId])
@@ -125,6 +126,10 @@ model Form {
   submissions Submission[]
   emailSettings EmailSettings?
   notificationLogs NotificationLog[]
+  campaigns   Campaign[]
+
+  @@index([userId, formType])
+  @@index([userId])
 }
 
 model EmailSettings {
@@ -154,6 +159,7 @@ model Submission {
   createdAt DateTime @default(now())
   form      Form     @relation(fields: [formId], references: [id])
   notificationLogs NotificationLog[]
+  campaignRecipients CampaignRecipient[]
 
   @@unique([formId, email])
   @@index([email])
@@ -199,6 +205,51 @@ model GlobalSettings {
   maxNotificationsPerHour Int @default(10)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+// Campaign models
+model Campaign {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  subject     String
+  content     String
+  formId      String
+  form        Form     @relation(fields: [formId], references: [id])
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  status      CampaignStatus @default(DRAFT)
+  filterSettings Json?
+  sentCount   Int      @default(0)
+  openCount   Int      @default(0)
+  clickCount  Int      @default(0)
+  senderEmail String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  recipients  CampaignRecipient[]
+
+  @@index([userId, status])
+  @@index([formId])
+}
+
+model CampaignRecipient {
+  id          String   @id @default(cuid())
+  campaignId  String
+  campaign    Campaign @relation(fields: [campaignId], references: [id])
+  submissionId String
+  submission  Submission @relation(fields: [submissionId], references: [id])
+  email       String
+  status      CampaignSendStatus @default(PENDING)
+  sentAt      DateTime?
+  openedAt    DateTime?
+  clickedAt   DateTime?
+  error       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([campaignId, status])
+  @@index([submissionId])
+  @@index([email])
 }
 
 enum DigestFrequency {
@@ -247,4 +298,23 @@ enum Plan {
   FREE
   STANDARD
   PRO
+}
+
+// Add new enums for Campaign status
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  SENDING
+  SENT
+  FAILED
+  CANCELLED
+}
+
+enum CampaignSendStatus {
+  PENDING
+  SENT
+  FAILED
+  BOUNCED
+  OPENED
+  CLICKED
 }

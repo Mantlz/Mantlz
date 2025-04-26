@@ -1,0 +1,34 @@
+# Source files
+src/
+tsconfig.json
+tsup.config.ts
+postcss.config.js
+tailwind.config.js
+process-css.js
+postbuild.js
+
+# Development files
+node_modules/
+.git/
+.github/
+.gitignore
+.npmrc
+.DS_Store
+
+# Build artifacts
+*.tgz
+*.log
+
+# Tests
+tests/
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo 

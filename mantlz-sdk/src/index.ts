@@ -1,5 +1,7 @@
 'use client';
 
+// CSS is now automatically injected - no need for manual imports
+
 export { MantlzProvider, useMantlz } from './context/mantlzContext';
 export { WaitlistForm } from './components/waitlist/WaitlistForm';
 export { FeedbackForm } from './components/feedback/FeedbackForm';

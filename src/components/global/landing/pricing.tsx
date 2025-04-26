@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect, Suspense } from "react"
-import { Button } from "@/components/ui/button"
 import { useUser } from "@clerk/nextjs"
 import { toast } from "sonner"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -11,6 +10,7 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import Canceled from "./canceled"
 import Navbar from "./navbar"
 import Footer from "./footer"
+import PricingComparison from "./pricing-comparison"
 
 type Plan = {
   title: string
@@ -75,6 +75,88 @@ const plans: Plan[] = [
     quota: PRO_QUOTA
   },
 ]
+
+// Create a consolidated feature list for comparison
+const allFeatures = [
+  // Form limits
+  "Number of forms",
+  "Monthly submissions",
+  // Core features
+  "Form builder",
+  "Form themes",
+  "Analytics",
+  "Email notifications",
+  "Support",
+  "API access",
+  "Webhook integrations",
+  "Team collaboration",
+  "Custom branding",
+  "Dedicated account manager",
+];
+
+// Feature availability by plan
+const featureMatrix = {
+  "Number of forms": {
+    "FREE": "1 form",
+    "STANDARD": "10 forms",
+    "PRO": "Unlimited"
+  },
+  "Monthly submissions": {
+    "FREE": "100",
+    "STANDARD": "5,000",
+    "PRO": "Unlimited"
+  },
+  "Form builder": {
+    "FREE": "Basic",
+    "STANDARD": "Advanced",
+    "PRO": "Advanced"
+  },
+  "Form themes": {
+    "FREE": "—",
+    "STANDARD": "Custom themes",
+    "PRO": "Custom themes"
+  },
+  "Analytics": {
+    "FREE": "Basic",
+    "STANDARD": "Advanced",
+    "PRO": "Advanced with reporting"
+  },
+  "Email notifications": {
+    "FREE": "—",
+    "STANDARD": "✓",
+    "PRO": "✓"
+  },
+  "Support": {
+    "FREE": "Community",
+    "STANDARD": "Priority",
+    "PRO": "Priority"
+  },
+  "API access": {
+    "FREE": "—",
+    "STANDARD": "✓",
+    "PRO": "Advanced features"
+  },
+  "Webhook integrations": {
+    "FREE": "—",
+    "STANDARD": "✓",
+    "PRO": "✓"
+  },
+  "Team collaboration": {
+    "FREE": "—",
+    "STANDARD": "—",
+    "PRO": "✓"
+  },
+  "Custom branding": {
+    "FREE": "—",
+    "STANDARD": "—",
+    "PRO": "✓"
+  },
+  "Dedicated account manager": {
+    "FREE": "—",
+    "STANDARD": "—",
+    "PRO": "✓"
+  }
+};
 
 export default function Pricing() {
   return (
@@ -176,162 +258,23 @@ function PricingContent() {
               <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
                 Simple, transparent pricing
               </h2>
-              <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
+              <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 mb-12">
                 Choose the plan that works best for you
               </p>
             </div>
-            <div className="grid gap-8 lg:grid-cols-3">
-              {plans.map((plan) => (
-                <PricingCard 
-                  key={plan.title} 
-                  plan={plan} 
-                  onCheckout={() => handleCheckout(plan)}
-                  isLoading={isPending}
-                  isCurrentPlan={currentPlan === plan.title.toUpperCase()}
-                />
-              ))}
-            </div>
+            
+            {/* Pricing Comparison Table */}
+            <PricingComparison
+              plans={plans}
+              currentPlan={currentPlan}
+              isPending={isPending}
+              onCheckout={handleCheckout}
+            />
           </div>
         </section>
       </main>
       {/* <Footer /> */}
     </>
-  )
-}
-
-function PricingCard({
-  plan,
-  onCheckout,
-  isLoading,
-  isCurrentPlan,
-}: {
-  plan: Plan
-  onCheckout: () => void
-  isLoading: boolean
-  isCurrentPlan: boolean
-}) {
-  const price = plan.monthlyPrice
-  const period = "/month"
-
-  return (
-    <div className={`relative w-full rounded-2xl bg-white dark:bg-zinc-900 shadow-xl border border-gray-200 dark:border-zinc-700 overflow-hidden ${plan.isFeatured ? 'ring-2 ring-blue-500 dark:ring-blue-400' : ''}`}>
-      {plan.isFeatured && (
-        <div className="absolute right-0 top-0">
-          <div className="bg-blue-500 dark:bg-blue-400 text-white text-xs font-semibold px-4 py-1 rounded-bl-lg">
-            Featured
-          </div>
-        </div>
-      )}
-      
-      <div className="p-8">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{plan.title}</h3>
-          {isCurrentPlan && (
-            <span className="inline-flex items-center rounded-lg bg-green-100 dark:bg-green-900 px-3 py-1 text-xs font-medium text-green-800 dark:text-green-200">
-              Current Plan
-            </span>
-          )}
-        </div>
-        
-        <div className="mb-8 flex items-baseline">
-          <span className="text-5xl font-bold text-gray-900 dark:text-white">${price}</span>
-          <span className="ml-1 text-gray-500 dark:text-gray-400">{period}</span>
-        </div>
-        
-        <Button
-          onClick={onCheckout}
-          disabled={isLoading || isCurrentPlan}
-          className={`mb-8 w-full rounded-md py-5 text-center font-medium transition-colors duration-200 ${
-            isCurrentPlan 
-              ? "bg-gray-200 hover:bg-gray-300 text-gray-700 dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:text-gray-300" 
-              : plan.isFeatured
-                ? "bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600"
-                : "bg-gray-100 hover:bg-gray-200 text-gray-900 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-white"
-          }`}
-        >
-          {isLoading ? "Processing..." : isCurrentPlan ? "Current Plan" : plan.buttonText}
-        </Button>
-        
-        <ul className="space-y-4 text-sm">
-          <li className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              className="text-green-500 dark:text-green-400 mt-0.5 min-w-[18px]"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <path d="M8 12l2 2 4-4" />
-            </svg>
-            <span>{plan.quota.maxForms} {plan.quota.maxForms === 1 ? 'form' : 'forms'}</span>
-          </li>
-          <li className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              className="text-green-500 dark:text-green-400 mt-0.5 min-w-[18px]"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <path d="M8 12l2 2 4-4" />
-            </svg>
-            <span>{new Intl.NumberFormat().format(plan.quota.maxSubmissionsPerMonth)} submissions per month</span>
-          </li>
-          
-          {plan.features.map((feature, index) => (
-            <li key={index} className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="text-green-500 dark:text-green-400 mt-0.5 min-w-[18px]"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M8 12l2 2 4-4" />
-              </svg>
-              <span>{feature}</span>
-            </li>
-          ))}
-        </ul>
-        
-        {plan.includedPlans && plan.includedPlans.length > 0 && (
-          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-zinc-700">
-            <ul className="space-y-3">
-              {plan.includedPlans.map((includedPlan, index) => (
-                <li key={index} className="flex items-start gap-3 text-gray-700 dark:text-gray-300 text-sm">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    className="text-blue-500 dark:text-blue-400 mt-0.5 min-w-[18px]"
-                  >
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M8 12l2 2 4-4" />
-                  </svg>
-                  <span>{includedPlan}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-    </div>
   )
 }
 

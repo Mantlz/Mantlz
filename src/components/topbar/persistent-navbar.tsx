@@ -2,7 +2,7 @@
 
 import { memo, useState, useEffect } from "react"
 import Link from "next/link"
-import { ChevronDown, HelpCircle, Settings, Activity, TestTube2, Plus, Menu, User, LogOut, Home } from "lucide-react"
+import { ChevronDown, HelpCircle, Settings, Activity, TestTube2, Plus, Menu, User, LogOut, Home, Mail } from "lucide-react"
 import { useUser, useClerk } from "@clerk/nextjs"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -143,6 +143,15 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                     </SheetClose>
                     <SheetClose asChild>
                       <Link
+                        href="/dashboard/campaigns"
+                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                      >
+                        <Mail className="h-4 w-4" />
+                        <span>Campaigns</span>
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link
                         href="/dashboard/logs"
                         className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
                       >
@@ -150,7 +159,6 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                         <span>Logs</span>
                       </Link>
                     </SheetClose>
-
                     <SheetClose asChild>
                       <Link
                         href="/dashboard/test"
@@ -332,6 +340,12 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
                 <Link href="/dashboard" className="flex items-center gap-2.5 py-1.5">
                   <Home className="h-4 w-4" />
                   <span>Dashboard</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5">
+                <Link href="/dashboard/campaigns" className="flex items-center gap-2.5 py-1.5">
+                  <Mail className="h-4 w-4" />
+                  <span>Campaigns</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5">

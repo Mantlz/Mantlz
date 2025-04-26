@@ -62,16 +62,9 @@ export default function CTA() {
           }}
           className="relative z-10 mt-8 flex flex-wrap items-center justify-center gap-4"
         >
-          {/* <button className="w-40 transform rounded-lg bg-black px-6 py-2 font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
-            Build Forms
-          </button> */}
 
-          <WaitlistForm
-      formId="cm9mq9rj70007o7v5q81m7npq"
-      showUsersJoined={true}
-      usersJoinedLabel="joined"
-      theme="neobrutalism"
-      />
+
+
         </motion.div>
         <motion.div
           initial={{

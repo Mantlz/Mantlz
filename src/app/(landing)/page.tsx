@@ -22,7 +22,7 @@ export default function LandingPage() {
       <TrustedCompanies />
       <BeforeAfter />
       <WobbleCardDemo />
-      <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading pricing...</div>}>
+      <Suspense>
         <Pricing />
       </Suspense>
       <Faq />
