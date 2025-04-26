@@ -25,3 +25,6 @@ export type { FeedbackFormProps } from './components/feedback/FeedbackForm';
 export type { DynamicFormProps, FormSchema } from './components/shared/DynamicForm';
 export type { ToastHandler, ToastOptions, ToastType } from './utils/toast';
 export type { BaseTheme } from './components/shared/types';
+
+// Export Config
+export { SDK_CONFIG } from './config';

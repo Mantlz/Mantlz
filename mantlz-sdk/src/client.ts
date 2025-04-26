@@ -7,6 +7,7 @@ import {
 } from './types';
 import { toast, ToastHandler } from './utils/toast';
 import { FormSchema } from './components/shared/DynamicForm';
+import { getApiUrl } from './config';
 
 // Global error tracking to prevent duplicate toasts across different client instances
 const globalErrorState = {
@@ -59,15 +60,8 @@ export function createMantlzClient(
     );
   }
 
-  // Determine the base API URL
-  const baseUrl =
-    config?.apiUrl !== undefined
-      ? config.apiUrl
-      : typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_MANTLZ_API_URL !== undefined
-      ? process.env.NEXT_PUBLIC_MANTLZ_API_URL
-      : typeof window !== 'undefined'
-      ? '' // relative path for same-origin requests in browser
-      : 'https://form-quay.vercel.app'; // fallback for server environment
+  // Determine the base API URL using our centralized configuration
+  const baseUrl = getApiUrl(config?.apiUrl);
 
   // Setup toast handler if provided
   if (config?.toastHandler) {

@@ -13,6 +13,7 @@ import { Loader2, Star } from 'lucide-react';
 import { useMantlz } from '../../context/mantlzContext';
 import { ApiKeyErrorCard } from '../ui/ApiKeyErrorCard';
 import { toast } from '../../utils/toast';
+import { SDK_CONFIG } from '../../config';
 
 // Simple Checkbox component if it's missing
 const Checkbox = ({ 
@@ -144,7 +145,7 @@ export default function DynamicForm({
         
         // Fall back to direct API call if client method failed or is not available
         if (!formData) {
-          const apiUrl = client?.apiUrl || process.env.NEXT_PUBLIC_MANTLZ_API_URL || 'https://form-quay.vercel.app';
+          const apiUrl = client?.apiUrl || SDK_CONFIG.DEFAULT_API_URL;
           const res = await fetch(`${apiUrl}/api/v1/forms/${formId}`, {
             headers: {
               'x-api-key': apiKey,
