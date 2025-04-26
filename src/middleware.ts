@@ -6,7 +6,7 @@ import { isProtectedRoute, isAuthRoute } from "./utils/routes";
 export default clerkMiddleware(async (auth, req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return handlePreflightRequest();
+    return handlePreflightRequest(req); // Pass the request object to access origin
   }
 
   // For regular requests
@@ -15,7 +15,7 @@ export default clerkMiddleware(async (auth, req) => {
   
   // Add CORS headers for API routes
   if (req.nextUrl.pathname.startsWith('/api')) {
-    response = addCorsHeadersToResponse(response);
+    response = addCorsHeadersToResponse(response, req); // Pass both response and request
   }
   
   // Allow auth routes even without userId, they'll handle auth internally
@@ -36,4 +36,4 @@ export const config = {
     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
     "/(api|trpc)(.*)",
   ],
-}; 
+};

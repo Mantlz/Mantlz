@@ -73,6 +73,9 @@ export function createMantlzClient(
   
   // Development mode for local testing (bypasses CORS)
   const developmentMode = config?.developmentMode === true;
+  
+  // Credentials mode for fetch requests (default to 'omit' for cross-origin safety)
+  const credentialsMode = config?.credentials || 'omit';
 
   // Notification state to prevent duplicate toasts per formId
   const notificationState = {
@@ -241,7 +244,7 @@ export function createMantlzClient(
             'Content-Type': 'application/json',
             'X-API-Key': key,
           },
-          credentials: developmentMode ? 'omit' : 'include',
+          credentials: developmentMode ? 'omit' : credentialsMode,
           mode: developmentMode ? 'no-cors' : 'cors',
         });
         
@@ -344,7 +347,7 @@ export function createMantlzClient(
             data,
             redirectUrl,
           }),
-          credentials: developmentMode ? 'omit' : 'include',
+          credentials: developmentMode ? 'omit' : credentialsMode,
           mode: developmentMode ? 'no-cors' : 'cors',
         });
         
@@ -422,7 +425,7 @@ export function createMantlzClient(
           headers: {
             'X-API-Key': key,
           },
-          credentials: developmentMode ? 'omit' : 'include',
+          credentials: developmentMode ? 'omit' : credentialsMode,
           mode: developmentMode ? 'no-cors' : 'cors',
         });
         
