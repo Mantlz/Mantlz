@@ -1,10 +1,7 @@
-export const API_BASE_URL = 'http://localhost:3000';
+export const API_BASE_URL = 'http://form-quay.vercel.app';
 
 export const API_ENDPOINTS = {
-  SUBMIT_FORM: '/forms/submit',
-  CREATE_FORM: '/forms/create',
-  GET_TEMPLATES: '/forms/templates',
-  CREATE_FROM_TEMPLATE: '/forms/create-from-template',
+  SUBMIT_FORM: '/v1/forms/submit',
 } as const;
 
 export const API_HEADERS = {

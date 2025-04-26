@@ -20,18 +20,9 @@ export const SDK_CONFIG = {
 }
 
 /**
- * Get the API URL from various possible sources
- * with a guaranteed fallback to the default
+ * Get the API URL from config or use the default
  */
 export function getApiUrl(configUrl?: string): string {
-  // First priority: explicitly passed config
-  if (configUrl) return configUrl;
-  
-  // Second priority: environment variable if available
-  if (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_MANTLZ_API_URL) {
-    return process.env.NEXT_PUBLIC_MANTLZ_API_URL;
-  }
-  
-  // Final fallback: always use our default
-  return SDK_CONFIG.DEFAULT_API_URL;
+  // Use config if provided, otherwise use default
+  return configUrl || SDK_CONFIG.DEFAULT_API_URL;
 } 
