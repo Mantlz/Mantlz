@@ -24,5 +24,12 @@ export const SDK_CONFIG = {
  */
 export function getApiUrl(configUrl?: string): string {
   // Use config if provided, otherwise use default
-  return configUrl || SDK_CONFIG.DEFAULT_API_URL;
+  const url = configUrl || SDK_CONFIG.DEFAULT_API_URL;
+  
+  // Ensure the URL has a protocol
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    return `https://${url}`;
+  }
+  
+  return url;
 } 

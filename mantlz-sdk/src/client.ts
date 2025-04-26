@@ -231,7 +231,8 @@ export function createMantlzClient(
       }
 
       try {
-        const url = `${baseUrl}/api/v1/forms/${encodeURIComponent(formId)}`;
+        // Ensure the URL is absolute by making sure baseUrl has protocol and domain
+        const url = new URL(`/api/v1/forms/${encodeURIComponent(formId)}`, baseUrl).toString();
         log('Fetching form schema from:', url);
 
         const response = await fetch(url, {
@@ -326,7 +327,8 @@ export function createMantlzClient(
       const { formId, data, redirectUrl } = options;
 
       try {
-        const url = `${baseUrl}/api/v1/forms/submit`;
+        // Ensure the URL is absolute by making sure baseUrl has protocol and domain
+        const url = new URL('/api/v1/forms/submit', baseUrl).toString();
         log('Submitting form to:', url, { type, formId });
 
         const response = await fetch(url, {
@@ -411,9 +413,8 @@ export function createMantlzClient(
 
     getUsersJoinedCount: async (formId: string): Promise<number> => {
       try {
-        const url = `${baseUrl}/api/v1/forms/${encodeURIComponent(
-          formId
-        )}/users-joined`;
+        // Ensure the URL is absolute by making sure baseUrl has protocol and domain
+        const url = new URL(`/api/v1/forms/${encodeURIComponent(formId)}/users-joined`, baseUrl).toString();
         log('Fetching users joined count:', url);
 
         const response = await fetch(url, {
