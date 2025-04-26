@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { WaitlistForm } from "@mantlz/nextjs"
+
 
 export default function CTA() {
   return (
