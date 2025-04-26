@@ -7,6 +7,7 @@ export interface MantlzClientConfig {
   notifications?: boolean;  // Enable/disable toast notifications
   showApiKeyErrorToasts?: boolean;  // Control API key error toasts separately
   apiUrl?: string;  // Custom API URL
+  logger?: (message: string, ...args: any[]) => void;  // Optional logger function
 }
 
 export interface MantlzError {
