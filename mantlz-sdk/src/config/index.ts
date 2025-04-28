@@ -6,7 +6,7 @@ export const SDK_CONFIG = {
   /**
    * The default API URL to use when no specific URL is provided
    */
-  DEFAULT_API_URL: 'https://mantlz.app',
+  DEFAULT_API_URL: 'https://api.mantlz.app',
 
   /**
    * Default timeout for API requests in milliseconds
