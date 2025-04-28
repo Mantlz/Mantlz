@@ -153,7 +153,7 @@ export default function SoftwareComparison() {
                             <X className="w-5 h-5 text-gray-300 dark:text-gray-600" />
                           )}
                           
-                          {featureData.note && (
+                          {'note' in featureData && featureData.note && (
                             <span className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                               {featureData.note}
                             </span>
