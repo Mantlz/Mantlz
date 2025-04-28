@@ -226,7 +226,7 @@ export function TableContent({
               </Badge>
             )}
             {isPremium && isDateFilterActive && (
-              <Badge className="ml-2 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+              <Badge className="ml-2 bg-zinc-100 text-blue-800 dark:bg-zinc-900/30 dark:text-blue-400">
                 Date Filtered
               </Badge>
             )}
@@ -279,7 +279,7 @@ export function TableContent({
                       setStartDate(range?.from ?? null);
                       setEndDate(range?.to ?? null);
                     }}
-                    className="rounded-md border"
+                    className="rounded-lg border"
                   />
                   <div className="flex gap-2 mt-3">
                     <Button
@@ -305,7 +305,7 @@ export function TableContent({
         
         {/* Include active filter info when filter is applied */}
         {isPremium && isProPlan && isDateFilterActive && (
-          <div className="px-4 py-2 bg-blue-50 dark:bg-blue-950/20 border-b border-blue-200 dark:border-zinc-800/50 flex items-center justify-between">
+          <div className="px-4 py-2 bg-zinc-50 dark:bg-zinc-950/20 border-b border-blue-200 dark:border-zinc-800/50 flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm text-blue-700 dark:text-blue-400">
               <CalendarRange className="h-4 w-4" />
               <span>
@@ -328,7 +328,7 @@ export function TableContent({
               variant="ghost"
               size="sm"
               onClick={handleClearFilter}
-              className="h-7 text-xs text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/20"
+              className="h-7 text-xs text-blue-600 dark:text-blue-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/20"
             >
               Clear Filter
             </Button>

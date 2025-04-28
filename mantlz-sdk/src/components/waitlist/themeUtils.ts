@@ -13,12 +13,12 @@ const defaultAppearance: WaitlistFormAppearance = {
     cardTitle: 'text-2xl font-semibold tracking-tight',
     cardDescription: 'text-sm text-zinc-500',
     cardContent: 'p-2',
-    formButtonPrimary: 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white shadow-sm hover:shadow transition-all duration-200',
+    formButtonPrimary: 'bg-zinc-600 hover:bg-zinc-700 active:bg-zinc-800 text-white shadow-sm hover:shadow transition-all duration-200',
     formButtonIcon: 'text-white ml-1',
     inputLabel: 'text-sm font-medium text-zinc-800',
     input: 'bg-white border-zinc-200 focus:border-blue-500/50 focus:ring-blue-500/30 shadow-sm',
     inputError: 'text-sm text-red-500 mt-1 font-medium',
-    usersJoinedCounter: 'bg-blue-50 text-blue-700 border border-blue-100',
+    usersJoinedCounter: 'bg-zinc-50 text-blue-700 border border-blue-100',
   },
 };
 
@@ -34,7 +34,7 @@ const darkAppearance: WaitlistFormAppearance = {
     cardTitle: 'text-2xl font-semibold tracking-tight text-white',
     cardDescription: 'text-sm text-zinc-400',
     cardContent: 'p-2',
-    formButtonPrimary: 'bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white shadow-sm hover:shadow transition-all duration-200',
+    formButtonPrimary: 'bg-zinc-600 hover:bg-zinc-500 active:bg-zinc-700 text-white shadow-sm hover:shadow transition-all duration-200',
     formButtonIcon: 'text-white ml-1',
     inputLabel: 'text-sm font-medium text-zinc-300',
     input: 'bg-zinc-800 border-zinc-700 focus:border-blue-500/50 focus:ring-blue-500/30 text-white placeholder:text-zinc-500 shadow-sm',

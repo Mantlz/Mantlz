@@ -41,7 +41,7 @@ export function ApiKeyErrorCard({
         </CardHeader>
         <CardContent variant="error" colorMode={colorMode}>
           <div className={cn(
-            "p-3 rounded-md text-xs flex items-center mb-4",
+            "p-3 rounded-lg text-xs flex items-center mb-4",
             colorMode === "light"
               ? "bg-amber-50 border border-amber-200 text-amber-800"
               : "bg-amber-900/30 border border-amber-800/30 text-amber-400"

@@ -21,7 +21,7 @@ export default async function Toc({ path }: { path: string }) {
                 key={href}
                 href={href}
                 className={clsx(
-                  "py-1.5 px-3 rounded-md transition-colors hover:bg-accent hover:text-accent-foreground",
+                  "py-1.5 px-3 rounded-lg transition-colors hover:bg-accent hover:text-accent-foreground",
                   {
                     "pl-3": level == 2,
                     "pl-6": level == 3,

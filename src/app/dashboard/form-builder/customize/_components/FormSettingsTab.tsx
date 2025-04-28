@@ -27,7 +27,7 @@ export function FormSettingsTab({
         General Settings
       </h3>
       
-      <div className="space-y-5 border border-neutral-200 dark:border-zinc-800 rounded-md p-4">
+      <div className="space-y-5 border border-neutral-200 dark:border-zinc-800 rounded-lg p-4">
         <div className="relative">
           <Label 
             htmlFor="form-title" 
@@ -41,9 +41,9 @@ export function FormSettingsTab({
             value={formTitle}
             onChange={(e) => onTitleChange(e.target.value)}
             className={cn(
-              "bg-white dark:bg-neutral-900",
-              "border border-neutral-200 dark:border-neutral-700",
-              "rounded-md p-2 cursor-text",
+              "bg-white dark:bg-zinc-900",
+              "border border-neutral-200 dark:border-zinc-700",
+              "rounded-lg p-2 cursor-text",
               "text-neutral-900 dark:text-neutral-200",
               "focus:ring-2 focus:ring-primary/20 focus:border-primary/60 transition-all duration-200"
             )}
@@ -68,9 +68,9 @@ export function FormSettingsTab({
             onChange={(e) => onDescriptionChange(e.target.value)}
             rows={4}
             className={cn(
-              "bg-white dark:bg-neutral-900",
-              "border border-neutral-200 dark:border-neutral-700",
-              "rounded-md p-2 cursor-text",
+              "bg-white dark:bg-zinc-900",
+              "border border-neutral-200 dark:border-zinc-700",
+              "rounded-lg p-2 cursor-text",
               "text-neutral-900 dark:text-neutral-200",
               "focus:ring-2 focus:ring-primary/20 focus:border-primary/60 transition-all duration-200",
               "resize-none"

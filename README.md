@@ -114,8 +114,8 @@ All form components support multiple theming options:
   appearance={{
     background: '#f8f9fa',
     border: '1px solid #dee2e6',
-    submitButton: 'bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md',
-    formInput: 'bg-white border border-gray-300 rounded px-3 py-2',
+    submitButton: 'bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg',
+    formInput: 'bg-white border border-zinc-300 rounded px-3 py-2',
   }}
 />
 ```

@@ -17,7 +17,7 @@ export function BreadcrumbSkeleton() {
     return (
       <div key={index} className="flex items-center">
         {index > 0 && <ChevronRight className="mx-1.5 h-3 w-3 text-gray-500" />}
-        <Skeleton className={`h-4 ${width} bg-zinc-200 dark:bg-zinc-700 rounded-md`} />
+        <Skeleton className={`h-4 ${width} bg-zinc-200 dark:bg-zinc-700 rounded-lg`} />
       </div>
     )
   })

@@ -92,7 +92,7 @@ The flat appearance API provides an intuitive way to style your form:
     inputError: 'text-red-500',
     
     // Button styling
-    submitButton: 'bg-blue-600 hover:bg-blue-700 text-white font-medium',
+    submitButton: 'bg-zinc-600 hover:bg-zinc-700 text-white font-medium',
     
     // Counter styling
     usersJoinedCounter: 'text-blue-700 font-medium',
@@ -114,14 +114,14 @@ You can apply different styles based on the selected theme:
   theme="dark"
   appearance={(theme) => ({
     container: theme === 'dark' 
-      ? 'bg-gray-900 text-white' 
+      ? 'bg-zinc-900 text-white' 
       : 'bg-white text-gray-900',
     submitButton: theme === 'dark'
       ? 'bg-purple-600 hover:bg-purple-700 text-white'
-      : 'bg-blue-600 hover:bg-blue-700 text-white',
+      : 'bg-zinc-600 hover:bg-zinc-700 text-white',
     input: theme === 'dark'
-      ? 'bg-gray-800 border-gray-700 text-white'
-      : 'bg-white border-gray-300 text-gray-900'
+      ? 'bg-zinc-800 border-zinc-700 text-white'
+      : 'bg-white border-zinc-300 text-gray-900'
   })}
 />
 ```
@@ -146,7 +146,7 @@ Here's an example of a waitlist form styled with a neobrutalism aesthetic:
       cardDescription: 'text-black font-medium',
       inputLabel: 'text-black font-bold uppercase',
       input: 'bg-white border-2 border-black',
-      submitButton: 'bg-black hover:bg-gray-800 text-white font-bold uppercase px-6 py-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]',
+      submitButton: 'bg-black hover:bg-zinc-800 text-white font-bold uppercase px-6 py-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]',
       usersJoinedCounter: 'text-black font-bold',
     }
   }}
@@ -198,10 +198,10 @@ All styling properties accept Tailwind CSS classes, making it easy to customize 
   formId="your-form-id"
   appearance={{
     // Tailwind utility classes for container
-    container: 'bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg',
+    container: 'bg-white dark:bg-zinc-900 p-6 rounded-xl shadow-lg',
     
     // Custom border radius and shadow
-    card: 'rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700',
+    card: 'rounded-2xl shadow-xl border border-zinc-200 dark:border-zinc-700',
     
     // Responsive text sizing
     cardTitle: 'text-xl sm:text-2xl font-bold',

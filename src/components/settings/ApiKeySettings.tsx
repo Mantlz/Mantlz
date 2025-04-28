@@ -160,7 +160,7 @@ export default function ApiKeySettings() {
             <CardContent className="px-5 pb-4">
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <code className="flex-1 p-3 bg-zinc-100 dark:bg-zinc-800 rounded-md text-sm ">
+                  <code className="flex-1 p-3 bg-zinc-100 dark:bg-zinc-800 rounded-lg text-sm ">
                     {showKey ? apiKey.key : '••••••••••••••••'}
                   </code>
                   <Button

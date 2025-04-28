@@ -17,7 +17,7 @@ module.exports = {
     // Input classes
     'border-input', 'ring-offset-background', 'placeholder:text-muted-foreground',
     // Form element classes
-    'flex', 'flex-col', 'gap-2', 'mt-4', 'mb-4', 'rounded-md',
+    'flex', 'flex-col', 'gap-2', 'mt-4', 'mb-4', 'rounded-lg',
     // Button classes
     'bg-primary', 'text-primary-foreground', 'hover:bg-primary/90',
   ]

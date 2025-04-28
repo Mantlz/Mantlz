@@ -13,7 +13,7 @@ const defaultAppearance: FeedbackFormAppearance = {
     cardTitle: 'text-2xl font-semibold tracking-tight',
     cardDescription: 'text-sm text-zinc-500',
     cardContent: 'p-6',
-    formButtonPrimary: 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white shadow-sm hover:shadow transition-all duration-200',
+    formButtonPrimary: 'bg-zinc-600 hover:bg-zinc-700 active:bg-zinc-800 text-white shadow-sm hover:shadow transition-all duration-200',
     formButtonIcon: 'text-white ml-1',
     inputLabel: 'text-sm font-medium text-zinc-800',
     ratingLabel: 'text-sm font-medium text-zinc-800 block mb-2',
@@ -30,14 +30,14 @@ const defaultAppearance: FeedbackFormAppearance = {
     // Emoji rating related
     emojiContainer: 'flex gap-2 my-2 justify-center sm:justify-start',
     emojiButton: 'p-2 rounded-lg transition-all duration-200',
-    emojiButtonActive: 'bg-blue-100 ring-2 ring-blue-400 scale-110',
-    emojiButtonInactive: 'hover:bg-gray-100',
+    emojiButtonActive: 'bg-zinc-100 ring-2 ring-blue-400 scale-110',
+    emojiButtonInactive: 'hover:bg-zinc-100',
     
     // Radio rating related
     radioContainer: 'flex flex-wrap gap-2 my-2',
-    radioButtonActive: 'bg-blue-100 border-blue-500 text-blue-800 ring-2 ring-blue-400 transition-all duration-200',
-    radioButtonInactive: 'bg-white border-zinc-200 text-zinc-800 hover:bg-gray-50 transition-all duration-200',
-    radioButton: 'px-4 py-2 rounded-md border font-medium text-sm cursor-pointer', 
+    radioButtonActive: 'bg-zinc-100 border-blue-500 text-blue-800 ring-2 ring-blue-400 transition-all duration-200',
+    radioButtonInactive: 'bg-white border-zinc-200 text-zinc-800 hover:bg-zinc-50 transition-all duration-200',
+    radioButton: 'px-4 py-2 rounded-lg border font-medium text-sm cursor-pointer', 
   },
 };
 
@@ -53,7 +53,7 @@ const darkAppearance: FeedbackFormAppearance = {
     cardTitle: 'text-2xl font-semibold tracking-tight text-white',
     cardDescription: 'text-sm text-zinc-400',
     cardContent: 'p-6',
-    formButtonPrimary: 'bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white shadow-sm hover:shadow transition-all duration-200',
+    formButtonPrimary: 'bg-zinc-600 hover:bg-zinc-500 active:bg-zinc-700 text-white shadow-sm hover:shadow transition-all duration-200',
     formButtonIcon: 'text-white ml-1',
     inputLabel: 'text-sm font-medium text-zinc-300',
     ratingLabel: 'text-sm font-medium text-zinc-300 block mb-2',
@@ -70,14 +70,14 @@ const darkAppearance: FeedbackFormAppearance = {
     // Emoji rating related  
     emojiContainer: 'flex gap-2 my-2 justify-center sm:justify-start',
     emojiButton: 'p-2 rounded-lg transition-all duration-200',
-    emojiButtonActive: 'bg-blue-900/60 ring-2 ring-blue-500 scale-110',
+    emojiButtonActive: 'bg-zinc-900/60 ring-2 ring-blue-500 scale-110',
     emojiButtonInactive: 'hover:bg-zinc-800',
     
     // Radio rating related
     radioContainer: 'flex flex-wrap gap-2 my-2',
-    radioButtonActive: 'bg-blue-900/60 border-blue-600 text-blue-200 ring-2 ring-blue-500 transition-all duration-200',
+    radioButtonActive: 'bg-zinc-900/60 border-blue-600 text-blue-200 ring-2 ring-blue-500 transition-all duration-200',
     radioButtonInactive: 'bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700 transition-all duration-200',
-    radioButton: 'px-4 py-2 rounded-md border font-medium text-sm cursor-pointer',
+    radioButton: 'px-4 py-2 rounded-lg border font-medium text-sm cursor-pointer',
   },
 };
 
@@ -117,7 +117,7 @@ const purpleAppearance: FeedbackFormAppearance = {
     radioContainer: 'flex flex-wrap gap-2 my-2',
     radioButtonActive: 'bg-orange-500/20 border-orange-400 text-orange-100 ring-2 ring-orange-400 transition-all duration-200',
     radioButtonInactive: 'bg-purple-800/80 border-purple-600 text-purple-200 hover:bg-purple-700/70 transition-all duration-200',
-    radioButton: 'px-4 py-2 rounded-md border font-medium text-sm cursor-pointer',
+    radioButton: 'px-4 py-2 rounded-lg border font-medium text-sm cursor-pointer',
   },
 };
 
@@ -149,7 +149,7 @@ const neobrutalistAppearance: FeedbackFormAppearance = {
     
     // Emoji rating related
     emojiContainer: 'flex gap-3 my-2 justify-center sm:justify-start',
-    emojiButton: 'p-2 rounded-md transition-all duration-200 border-2 border-black',
+    emojiButton: 'p-2 rounded-lg transition-all duration-200 border-2 border-black',
     emojiButtonActive: 'bg-pink-400 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] scale-110',
     emojiButtonInactive: 'bg-white hover:bg-yellow-100 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]',
     
@@ -157,7 +157,7 @@ const neobrutalistAppearance: FeedbackFormAppearance = {
     radioContainer: 'flex flex-wrap gap-3 my-2',
     radioButtonActive: 'bg-pink-400 border-2 border-black text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all duration-200 font-black',
     radioButtonInactive: 'bg-white border-2 border-black text-black hover:bg-yellow-100 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all duration-200',
-    radioButton: 'px-4 py-2 rounded-md font-bold text-sm cursor-pointer',
+    radioButton: 'px-4 py-2 rounded-lg font-bold text-sm cursor-pointer',
   },
 };
 

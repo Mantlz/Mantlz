@@ -58,25 +58,17 @@ export function AdvancedAnalytics({
 
   // Debug logs for incoming props
   React.useEffect(() => {
-    console.log("🔍 AdvancedAnalytics Component Mount/Update:", {
-      hasPremiumAccess,
-      browserStats,
-      locationStats,
-      userInsights,
-      isCollapsed,
-      showPaywall,
-      isUpgradeModalOpen
-    })
+
   }, [hasPremiumAccess, browserStats, locationStats, userInsights, isCollapsed, showPaywall, isUpgradeModalOpen])
 
   // When tab changes, reset paywall state
   React.useEffect(() => {
-    console.log("🔄 Tab Changed - Resetting Paywall State")
+
     setShowPaywall(false)
   }, [activeTab])
 
   const getBrowserIcon = (browserName: string) => {
-    console.log("🎨 Getting Browser Icon for:", browserName)
+
     switch (browserName.toLowerCase()) {
       case "chrome":
         return <Chrome className="h-4 w-4 xs:h-4.5 xs:w-4.5 sm:h-5 sm:w-5 text-white dark:text-zinc-900" />
@@ -94,23 +86,18 @@ export function AdvancedAnalytics({
 
   // Transform browser stats with icons
   const browsersWithIcons = React.useMemo(() => {
-    console.log("🔄 Transforming Browser Stats:", browserStats)
+
     const transformed = browserStats.map((browser) => ({
       ...browser,
       icon: getBrowserIcon(browser.name),
     }))
-    console.log("✅ Transformed Browser Stats:", transformed)
+
     return transformed
   }, [browserStats])
 
   // Debug log for transformed data
   React.useEffect(() => {
-    console.log("📊 AdvancedAnalytics Transformed Data:", {
-      browsersWithIcons,
-      locationStats,
-      hasPremiumAccess,
-      showPaywall,
-    })
+
   }, [browsersWithIcons, locationStats, hasPremiumAccess, showPaywall])
 
   return (
@@ -133,7 +120,7 @@ export function AdvancedAnalytics({
             </CardHeader>
             <CardContent className="text-center px-4 sm:px-5 pb-5">
               <div className="space-y-3 mb-4">
-                <div className="p-3 sm:p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-md text-sm sm:text-base text-zinc-700 dark:text-zinc-300">
+                <div className="p-3 sm:p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg text-sm sm:text-base text-zinc-700 dark:text-zinc-300">
                   <div className="items-center">
                     <div>
                       <p className="pl-0">
@@ -144,14 +131,14 @@ export function AdvancedAnalytics({
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800 rounded-md text-center">
+                  <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg text-center">
                     <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-1">Browsers</p>
                     <p className="text-base font-medium text-zinc-900 dark:text-white mt-1">
                       <Lock className="h-4 w-4 inline-block mr-1.5 align-text-bottom" />
                       Premium
                     </p>
                   </div>
-                  <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800 rounded-md text-center">
+                  <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg text-center">
                     <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-1">Locations</p>
                     <p className="text-base font-medium text-zinc-900 dark:text-white mt-1">
                       <Lock className="h-4 w-4 inline-block mr-1.5 align-text-bottom" />

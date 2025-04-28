@@ -181,7 +181,7 @@ export function SearchDialog({
                 <button
                   className={`ml-2 p-1.5 rounded-lg ${
                     Object.keys(advancedFilters || {}).length > 0 
-                      ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700/50 text-blue-500" 
+                      ? "bg-zinc-50 dark:bg-zinc-900/30 border border-blue-200 dark:border-blue-700/50 text-blue-500" 
                       : "bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-gray-500 dark:text-gray-400"
                   } transition-colors cursor-pointer`}
                   title="Advanced Filters"
@@ -230,7 +230,7 @@ export function SearchDialog({
                               onClick={() => setTempFilters({...tempFilters, timeFrame: period as 'all' | '24h' | '7d' | '30d'})}
                               className={`px-2 py-1 text-xs rounded-lg border ${
                                 tempFilters.timeFrame === period 
-                                  ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400' 
+                                  ? 'bg-zinc-50 border-blue-200 text-blue-700 dark:bg-zinc-900/30 dark:border-blue-800 dark:text-blue-400' 
                                   : 'bg-zinc-50 border-zinc-200 text-gray-700 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-300'
                               } hover:shadow-sm transition-all`}
                             >
@@ -254,7 +254,7 @@ export function SearchDialog({
                             onClick={() => setTempFilters({...tempFilters, sortOrder: 'newest'})}
                             className={`flex-1 px-3 py-1.5 text-xs rounded-lg border ${
                               tempFilters.sortOrder !== 'oldest' 
-                                ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400' 
+                                ? 'bg-zinc-50 border-blue-200 text-blue-700 dark:bg-zinc-900/30 dark:border-blue-800 dark:text-blue-400' 
                                 : 'bg-zinc-50 border-zinc-200 text-gray-700 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-300'
                             } hover:shadow-sm transition-all`}
                           >
@@ -264,7 +264,7 @@ export function SearchDialog({
                             onClick={() => setTempFilters({...tempFilters, sortOrder: 'oldest'})}
                             className={`flex-1 px-3 py-1.5 text-xs rounded-lg border ${
                               tempFilters.sortOrder === 'oldest'
-                                ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400' 
+                                ? 'bg-zinc-50 border-blue-200 text-blue-700 dark:bg-zinc-900/30 dark:border-blue-800 dark:text-blue-400' 
                                 : 'bg-zinc-50 border-zinc-200 text-gray-700 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-300'
                             } hover:shadow-sm transition-all`}
                           >
@@ -288,7 +288,7 @@ export function SearchDialog({
                               id="has-email" 
                               checked={tempFilters.hasEmail || false}
                               onCheckedChange={(checked) => setTempFilters({...tempFilters, hasEmail: checked})}
-                              className="data-[state=checked]:bg-blue-500"
+                              className="data-[state=checked]:bg-zinc-500"
                             />
                             <Label htmlFor="has-email" className="text-xs">Only with email</Label>
                           </div>
@@ -297,7 +297,7 @@ export function SearchDialog({
                               id="has-attachments" 
                               checked={tempFilters.showOnlyWithAttachments || false}
                               onCheckedChange={(checked) => setTempFilters({...tempFilters, showOnlyWithAttachments: checked})}
-                              className="data-[state=checked]:bg-blue-500"
+                              className="data-[state=checked]:bg-zinc-500"
                             />
                             <Label htmlFor="has-attachments" className="text-xs">Has attachments</Label>
                           </div>
@@ -319,7 +319,7 @@ export function SearchDialog({
                   </Button>
                   <Button 
                     onClick={handleApplyFilters} 
-                    className="text-xs h-8 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium"
+                    className="text-xs h-8 rounded-lg bg-zinc-600 hover:bg-zinc-700 text-white font-medium"
                   >
                     Apply Filters
                   </Button>
@@ -352,30 +352,30 @@ export function SearchDialog({
         {renderSearchHint()}
         
         {isProUser && advancedFilters && Object.keys(advancedFilters).length > 0 && (
-          <div className="px-4 py-2 bg-blue-50/80 dark:bg-blue-900/10 border-b border-blue-100 dark:border-blue-800/20 flex flex-wrap gap-2 items-center">
+          <div className="px-4 py-2 bg-zinc-50/80 dark:bg-zinc-900/10 border-b border-blue-100 dark:border-blue-800/20 flex flex-wrap gap-2 items-center">
             <span className="text-xs text-blue-700 dark:text-blue-400">Active filters:</span>
             {advancedFilters.dateRange && (
-              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
+              <Badge className="bg-zinc-100 text-blue-700 dark:bg-zinc-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
                 Date Range
               </Badge>
             )}
             {advancedFilters.timeFrame && advancedFilters.timeFrame !== 'all' && (
-              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
+              <Badge className="bg-zinc-100 text-blue-700 dark:bg-zinc-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
                 Last {advancedFilters.timeFrame}
               </Badge>
             )}
             {advancedFilters.sortOrder && (
-              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
+              <Badge className="bg-zinc-100 text-blue-700 dark:bg-zinc-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
                 {advancedFilters.sortOrder === 'newest' ? 'Newest First' : 'Oldest First'}
               </Badge>
             )}
             {advancedFilters.hasEmail && (
-              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
+              <Badge className="bg-zinc-100 text-blue-700 dark:bg-zinc-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
                 Has Email
               </Badge>
             )}
             {advancedFilters.showOnlyWithAttachments && (
-              <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
+              <Badge className="bg-zinc-100 text-blue-700 dark:bg-zinc-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
                 Has Attachments
               </Badge>
             )}

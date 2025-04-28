@@ -83,7 +83,7 @@ function Step({ number, title, children, icon }: StepProps) {
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
-        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-gray-100 text-xs font-medium dark:bg-zinc-800 dark:text-gray-300">
+        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-zinc-100 text-xs font-medium dark:bg-zinc-800 dark:text-gray-300">
           {number}
         </div>
         <h3 className="font-medium flex items-center gap-1.5 text-gray-800 dark:text-gray-200">
@@ -111,7 +111,7 @@ function CodeSnippet({ code, onCopy }: CodeSnippetProps) {
   }
 
   return (
-    <div className="relative rounded-md bg-gray-50 dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800">
+    <div className="relative rounded-lg bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800">
       <Button
         variant="ghost"
         size="sm"

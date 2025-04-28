@@ -19,8 +19,8 @@ import { ContactForm, BASE_THEMES } from 'mantlz-sdk';
   theme={BASE_THEMES.NEOBRUTALISM}
   appearance={{
     // Direct styling - no need for nested objects!
-    container: 'bg-blue-100 border-4 border-black',
-    button: 'bg-blue-500 text-black border-4 border-black',
+    container: 'bg-zinc-100 border-4 border-black',
+    button: 'bg-zinc-500 text-black border-4 border-black',
     input: 'border-2 border-black',
     textarea: 'border-2 border-black',
     label: 'text-black font-bold',
@@ -85,7 +85,7 @@ import { FeedbackForm, BASE_THEMES } from 'mantlz-sdk';
   appearance={{
     // Override specific parts of the theme
     button: 'bg-purple-600 hover:bg-purple-700 text-white',
-    input: 'bg-gray-800 border-gray-700 text-white',
+    input: 'bg-zinc-800 border-zinc-700 text-white',
   }}
 />
 ```
@@ -102,11 +102,11 @@ You can also dynamically adjust styles based on the current theme:
     // Styles can change based on theme
     container: theme === 'neobrutalism'
       ? 'bg-yellow-100 border-4 border-black'
-      : 'bg-gray-900 border border-gray-800',
+      : 'bg-zinc-900 border border-zinc-800',
     
     button: theme === 'neobrutalism'
       ? 'bg-yellow-400 text-black border-4 border-black'
-      : 'bg-blue-600 text-white'
+      : 'bg-zinc-600 text-white'
   })}
 />
 ```

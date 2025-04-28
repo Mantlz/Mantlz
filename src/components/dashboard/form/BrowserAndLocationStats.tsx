@@ -45,7 +45,7 @@ const CardTitleWithIcon = ({
   title: string
 }) => (
   <CardTitle className="text-base font-medium flex items-center">
-    <div className="w-7 h-7 flex items-center justify-center rounded-md bg-gray-50 dark:bg-gray-900 mr-3">
+    <div className="w-7 h-7 flex items-center justify-center rounded-lg bg-zinc-50 dark:bg-zinc-900 mr-3">
       <Icon className="h-4 w-4 text-gray-700 dark:text-gray-300" />
     </div>
     {title}
@@ -69,16 +69,16 @@ const StatItem = ({
 }) => (
   <div className={cn(
     "flex items-center justify-between p-2.5 rounded-lg transition-all duration-200",
-    "hover:bg-gray-50 dark:hover:bg-gray-900/70",
-    isTop && "bg-blue-50/50 dark:bg-blue-900/20"
+    "hover:bg-zinc-50 dark:hover:bg-zinc-900/70",
+    isTop && "bg-zinc-50/50 dark:bg-zinc-900/20"
   )}>
     <div className="flex items-center gap-2.5">
       {rank > 0 ? (
         <span className={cn(
           "text-xs font-medium min-w-[20px] text-center rounded-lg py-0.5 px-1",
           rank <= 3 
-            ? "bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300" 
-            : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+            ? "bg-zinc-100 dark:bg-zinc-900/40 text-blue-700 dark:text-blue-300" 
+            : "bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400"
         )}>
           {rank}
         </span>
@@ -91,7 +91,7 @@ const StatItem = ({
       <span className="text-sm font-medium">{count}</span>
       <span className={cn(
         "text-xs py-0.5 px-1.5 rounded-lg",
-        "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+        "bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400"
       )}>
         {Math.round(percentage * 100)}%
       </span>
@@ -109,7 +109,7 @@ const EmptyState = ({
   description: string
 }) => (
   <div className="flex flex-col items-center justify-center py-16">
-    <div className="w-16 h-16 rounded-lg bg-gray-50 dark:bg-gray-900 flex items-center justify-center mb-5 animate-pulse">
+    <div className="w-16 h-16 rounded-lg bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center mb-5 animate-pulse">
       <Icon className="h-7 w-7 text-gray-400 dark:text-gray-600" />
     </div>
     <p className="text-lg font-medium">{title}</p>
@@ -241,21 +241,21 @@ export function BrowserAndLocationStats({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white dark:bg-black rounded-xl p-6 shadow-sm">
           <div className="animate-pulse space-y-5">
-            <div className="h-5 bg-gray-100 dark:bg-gray-900 rounded-md w-1/3"></div>
+            <div className="h-5 bg-zinc-100 dark:bg-zinc-900 rounded-lg w-1/3"></div>
             <div className="space-y-3">
-              <div className="h-4 bg-gray-100 dark:bg-gray-900 rounded-md"></div>
-              <div className="h-4 bg-gray-100 dark:bg-gray-900 rounded-md w-5/6"></div>
-              <div className="h-4 bg-gray-100 dark:bg-gray-900 rounded-md w-4/6"></div>
+              <div className="h-4 bg-zinc-100 dark:bg-zinc-900 rounded-lg"></div>
+              <div className="h-4 bg-zinc-100 dark:bg-zinc-900 rounded-lg w-5/6"></div>
+              <div className="h-4 bg-zinc-100 dark:bg-zinc-900 rounded-lg w-4/6"></div>
             </div>
           </div>
         </div>
         <div className="bg-white dark:bg-black rounded-xl p-6 shadow-sm">
           <div className="animate-pulse space-y-5">
-            <div className="h-5 bg-gray-100 dark:bg-gray-900 rounded-md w-1/3"></div>
+            <div className="h-5 bg-zinc-100 dark:bg-zinc-900 rounded-lg w-1/3"></div>
             <div className="space-y-3">
-              <div className="h-4 bg-gray-100 dark:bg-gray-900 rounded-md"></div>
-              <div className="h-4 bg-gray-100 dark:bg-gray-900 rounded-md w-5/6"></div>
-              <div className="h-4 bg-gray-100 dark:bg-gray-900 rounded-md w-4/6"></div>
+              <div className="h-4 bg-zinc-100 dark:bg-zinc-900 rounded-lg"></div>
+              <div className="h-4 bg-zinc-100 dark:bg-zinc-900 rounded-lg w-5/6"></div>
+              <div className="h-4 bg-zinc-100 dark:bg-zinc-900 rounded-lg w-4/6"></div>
             </div>
           </div>
         </div>
@@ -267,12 +267,12 @@ export function BrowserAndLocationStats({
     <div className="w-full">
       {/* Mobile view toggle - simplified and more elegant */}
       <div className="lg:hidden flex justify-center items-center mb-4">
-        <div className="flex rounded-md overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm">
+        <div className="flex rounded-lg overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-sm">
           <button 
             onClick={() => setMobileView('map')}
             className={`px-4 py-2 text-xs font-medium ${
               mobileView === 'map' 
-                ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400' 
+                ? 'bg-zinc-50 dark:bg-zinc-900/30 text-blue-700 dark:text-blue-400' 
                 : 'bg-white dark:bg-black text-gray-700 dark:text-gray-300'
             }`}
           >
@@ -282,7 +282,7 @@ export function BrowserAndLocationStats({
             onClick={() => setMobileView('list')}
             className={`px-4 py-2 text-xs font-medium ${
               mobileView === 'list' 
-                ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400' 
+                ? 'bg-zinc-50 dark:bg-zinc-900/30 text-blue-700 dark:text-blue-400' 
                 : 'bg-white dark:bg-black text-gray-700 dark:text-gray-300'
             }`}
           >
@@ -293,13 +293,13 @@ export function BrowserAndLocationStats({
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
         {/* Map Card - Hidden on mobile if list view is selected */}
-        <Card className={`bg-white dark:bg-black shadow-sm border border-gray-100 dark:border-gray-900 rounded-xl lg:col-span-3 overflow-hidden transition-all duration-300 hover:shadow-md ${mobileView !== 'map' ? 'hidden lg:block' : ''}`}>
+        <Card className={`bg-white dark:bg-black shadow-sm border border-zinc-100 dark:border-zinc-900 rounded-xl lg:col-span-3 overflow-hidden transition-all duration-300 hover:shadow-md ${mobileView !== 'map' ? 'hidden lg:block' : ''}`}>
           <CardHeader className="pb-3 px-6 pt-5">
             <div className="flex justify-between items-center w-full">
               <CardTitleWithIcon icon={MapPin} title="Geographic Distribution" />
               <button 
                 onClick={() => setMapExpanded(true)}
-                className="text-xs bg-gray-50 dark:bg-gray-900 rounded-lg py-1.5 px-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="text-xs bg-zinc-50 dark:bg-zinc-900 rounded-lg py-1.5 px-3 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
               >
                 <span className="flex items-center gap-1.5 text-gray-500 hover:text-gray-900 dark:hover:text-white">
                   Full map <Maximize2 className="h-3 w-3" />
@@ -321,7 +321,7 @@ export function BrowserAndLocationStats({
                   <div className="lg:flex-grow">
                     <div
                       ref={mapRef}
-                      className="bg-white dark:bg-black h-[340px] overflow-hidden relative rounded-xl border border-gray-100 dark:border-gray-900"
+                      className="bg-white dark:bg-black h-[340px] overflow-hidden relative rounded-xl border border-zinc-100 dark:border-zinc-900"
                     >
                       {/* Map content */}
                       {mapLoaded ? (
@@ -415,15 +415,15 @@ export function BrowserAndLocationStats({
                         </ComposableMap>
                       ) : (
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-5 h-5 border border-gray-300 dark:border-gray-700 border-t-blue-500 rounded-lg animate-spin"></div>
+                          <div className="w-5 h-5 border border-zinc-300 dark:border-zinc-700 border-t-blue-500 rounded-lg animate-spin"></div>
                         </div>
                       )}
                       
                       {/* Top country callout at bottom */}
                       {sortedLocations.length > 0 && (
-                        <div className="absolute bottom-3 left-3 bg-white/90 dark:bg-black/90 backdrop-blur-sm rounded-lg py-2 px-3 shadow-sm border border-gray-100 dark:border-gray-800">
+                        <div className="absolute bottom-3 left-3 bg-white/90 dark:bg-black/90 backdrop-blur-sm rounded-lg py-2 px-3 shadow-sm border border-zinc-100 dark:border-zinc-800">
                           <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded-lg bg-blue-500"></div>
+                            <div className="w-3 h-3 rounded-lg bg-zinc-500"></div>
                             <span className="text-xs font-medium">{sortedLocations[0]?.name}</span>
                             <span className="text-xs text-gray-500">{sortedLocations[0] ? Math.round(sortedLocations[0].percentage * 100) : 0}%</span>
                           </div>
@@ -441,7 +441,7 @@ export function BrowserAndLocationStats({
                           <button 
                             onClick={() => setCountriesPage(prev => Math.max(prev - 1, 1))}
                             disabled={countriesPage === 1}
-                            className="p-1 rounded-md disabled:opacity-50 hover:bg-gray-100 dark:hover:bg-gray-800"
+                            className="p-1 rounded-lg disabled:opacity-50 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                           >
                             <ChevronRight className="h-3 w-3 transform rotate-180" />
                           </button>
@@ -449,7 +449,7 @@ export function BrowserAndLocationStats({
                           <button 
                             onClick={() => setCountriesPage(prev => Math.min(prev + 1, maxCountriesPages))}
                             disabled={countriesPage === maxCountriesPages}
-                            className="p-1 rounded-md disabled:opacity-50 hover:bg-gray-100 dark:hover:bg-gray-800"
+                            className="p-1 rounded-lg disabled:opacity-50 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                           >
                             <ChevronRight className="h-3 w-3" />
                           </button>
@@ -484,7 +484,7 @@ export function BrowserAndLocationStats({
         </Card>
 
         {/* Browser Stats Card - Hidden on mobile if map view is selected */}
-        <Card className={`bg-white dark:bg-black shadow-sm border border-gray-100 dark:border-gray-900 rounded-xl lg:col-span-2 transition-all duration-300 hover:shadow-md ${mobileView !== 'list' ? 'hidden lg:block' : ''}`}>
+        <Card className={`bg-white dark:bg-black shadow-sm border border-zinc-100 dark:border-zinc-900 rounded-xl lg:col-span-2 transition-all duration-300 hover:shadow-md ${mobileView !== 'list' ? 'hidden lg:block' : ''}`}>
           <CardHeader className="pb-3 px-6 pt-5">
             <div className="flex justify-between items-center w-full">
               <CardTitleWithIcon icon={Globe} title="Browsers" />
@@ -493,7 +493,7 @@ export function BrowserAndLocationStats({
                   <button 
                     onClick={() => setBrowsersPage(prev => Math.max(prev - 1, 1))}
                     disabled={browsersPage === 1}
-                    className="p-1 rounded-md disabled:opacity-50 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    className="p-1 rounded-lg disabled:opacity-50 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                   >
                     <ChevronRight className="h-3 w-3 transform rotate-180" />
                   </button>
@@ -501,7 +501,7 @@ export function BrowserAndLocationStats({
                   <button 
                     onClick={() => setBrowsersPage(prev => Math.min(prev + 1, maxBrowsersPages))}
                     disabled={browsersPage === maxBrowsersPages}
-                    className="p-1 rounded-md disabled:opacity-50 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    className="p-1 rounded-lg disabled:opacity-50 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                   >
                     <ChevronRight className="h-3 w-3" />
                   </button>
@@ -519,7 +519,7 @@ export function BrowserAndLocationStats({
             {browsers.length > 0 ? (
               <div>
                 {/* Progress bar with all browsers */}
-                <div className="flex h-2 mb-3 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900">
+                <div className="flex h-2 mb-3 rounded-lg overflow-hidden bg-zinc-100 dark:bg-zinc-900">
                   {browsers.map((browser, idx) => {
                     const colors = ["blue", "indigo", "violet", "purple", "cyan", "sky", "teal", "emerald", "green", "lime"];
                     return (
@@ -577,7 +577,7 @@ export function BrowserAndLocationStats({
       <Dialog open={mapExpanded} onOpenChange={setMapExpanded}>
         <DialogContent
           className="sm:max-w-[900px] p-0 overflow-hidden 
-            bg-white dark:bg-black rounded-xl shadow-lg border border-gray-100 dark:border-gray-900"
+            bg-white dark:bg-black rounded-xl shadow-lg border border-zinc-100 dark:border-zinc-900"
         >
           <DialogHeader className="px-8 pt-6 pb-4">
             <DialogTitle className="text-xl font-medium flex items-center">
@@ -592,7 +592,7 @@ export function BrowserAndLocationStats({
           <div className="p-6 pt-0">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <div className="md:col-span-2">
-                <div className="h-[400px] overflow-hidden relative rounded-xl border border-gray-100 dark:border-gray-900">
+                <div className="h-[400px] overflow-hidden relative rounded-xl border border-zinc-100 dark:border-zinc-900">
                   <ComposableMap
                     projectionConfig={{
                       scale: 170,
@@ -685,7 +685,7 @@ export function BrowserAndLocationStats({
                   {sortedLocations.slice(0, 5).map((country) => (
                     <Badge 
                       key={country.name}
-                      className="bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300"
+                      className="bg-zinc-50 dark:bg-zinc-900 text-gray-700 dark:text-gray-300"
                     >
                       {country.name}: {Math.round(country.percentage * 100)}%
                     </Badge>
@@ -694,18 +694,18 @@ export function BrowserAndLocationStats({
               </div>
               
               <div>
-                <div className="h-[400px] overflow-y-auto rounded-xl border border-gray-100 dark:border-gray-900 divide-y divide-gray-100 dark:divide-gray-900">
+                <div className="h-[400px] overflow-y-auto rounded-xl border border-zinc-100 dark:border-zinc-900 divide-y divide-gray-100 dark:divide-gray-900">
                   {sortedLocations.slice(0, 20).map((country, _) => (
                     <div key={country.name} className="flex items-center justify-between px-4 py-2.5">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium py-0.5 px-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 min-w-[20px] text-center">
+                        <span className="text-xs font-medium py-0.5 px-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-300 min-w-[20px] text-center">
                           {_ + 1}
                         </span>
                         <span className="text-sm font-medium">{country.name}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className="text-sm">{country.count}</span>
-                        <span className="text-xs py-0.5 px-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                        <span className="text-xs py-0.5 px-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400">
                           {Math.round(country.percentage * 100)}%
                         </span>
                       </div>

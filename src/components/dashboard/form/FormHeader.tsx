@@ -58,7 +58,7 @@ export function FormHeader({
   }
 
   return (
-    <div className="relative overflow-hidden bg-white dark:bg-zinc-900 rounded-xl sm:rounded-2xl border border-gray-100 dark:border-zinc-800 shadow-sm">
+    <div className="relative overflow-hidden bg-white dark:bg-zinc-900 rounded-xl sm:rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm">
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
       <div className="relative p-3 xs:p-4 sm:p-6 lg:p-8">
         <div className="flex flex-col gap-4 sm:gap-6">
@@ -70,7 +70,7 @@ export function FormHeader({
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="flex items-center gap-1 cursor-pointer bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 p-1 h-7"
+                    className="flex items-center gap-1 cursor-pointer bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 p-1 h-7"
                   >
                     <ArrowLeft className="h-4 w-4" />
                     <span className="text-xs font-medium">Back</span>
@@ -78,7 +78,7 @@ export function FormHeader({
                 </Link>
                 <Badge
                   variant="secondary"
-                  className="bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 text-xs xs:text-sm"
+                  className="bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 text-xs xs:text-sm"
                 >
                   Form ID: {id.slice(0, 6)}...
                 </Badge>
@@ -91,7 +91,7 @@ export function FormHeader({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="flex items-center gap-1 xs:gap-2 cursor-pointer bg-gray-50 dark:bg-zinc-800 px-2 xs:px-3 sm:px-4 py-1.5 xs:py-2 rounded-lg border border-gray-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200 h-8 xs:h-9"
+                    className="flex items-center gap-1 xs:gap-2 cursor-pointer bg-zinc-50 dark:bg-zinc-800 px-2 xs:px-3 sm:px-4 py-1.5 xs:py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200 h-8 xs:h-9"
                   >
                     <Code className="h-3.5 w-3.5 xs:h-4 xs:w-4 text-gray-600 dark:text-gray-300" />
                     <span className="text-sm xs:text-base font-medium text-gray-800 dark:text-gray-200">
@@ -102,13 +102,13 @@ export function FormHeader({
                 </SheetTrigger>
                 <SheetContent side="right" className="w-[100vw] sm:w-[100vw] lg:w-[1800px] xl:w-[2000px] p-0 max-w-screen-2xl h-screen overflow-hidden">
                   <div className="h-full flex flex-col">
-                    <SheetHeader className="px-6 py-4 border-b border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                    <SheetHeader className="px-6 py-4 border-b border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900">
                       <SheetTitle className="text-xl font-bold">Integration Guide</SheetTitle>
                       <SheetDescription className="text-base">
                         Follow these steps to integrate this form into your Next.js application
                       </SheetDescription>
                     </SheetHeader>
-                    <div className="flex-1 overflow-y-auto px-6 py-6 bg-gray-50 dark:bg-zinc-900">
+                    <div className="flex-1 overflow-y-auto px-6 py-6 bg-zinc-50 dark:bg-zinc-900">
                       <SdkDocs formId={id} />
                     </div>
                   </div>
@@ -120,7 +120,7 @@ export function FormHeader({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="flex items-center gap-1 xs:gap-2 cursor-pointer bg-gray-50 dark:bg-zinc-800 px-2 xs:px-3 sm:px-4 py-1.5 xs:py-2 rounded-lg border border-gray-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200 h-8 xs:h-9"
+                    className="flex items-center gap-1 xs:gap-2 cursor-pointer bg-zinc-50 dark:bg-zinc-800 px-2 xs:px-3 sm:px-4 py-1.5 xs:py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200 h-8 xs:h-9"
                   >
                     <Settings className="h-3.5 w-3.5 xs:h-4 xs:w-4 text-gray-600 dark:text-gray-300" />
                     <span className="text-sm xs:text-base font-medium text-gray-800 dark:text-gray-200">Settings</span>
@@ -128,7 +128,7 @@ export function FormHeader({
                 </SheetTrigger>
                 <SheetContent side="right" className="w-[100vw] sm:w-[100vw] lg:w-[1800px] xl:w-[2000px] p-0 max-w-screen-2xl h-screen overflow-hidden">
                   <div className="h-full flex flex-col">
-                    <SheetHeader className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-zinc-700">
+                    <SheetHeader className="px-4 sm:px-6 py-3 sm:py-4 border-b border-zinc-200 dark:border-zinc-700">
                       <SheetTitle className="text-lg sm:text-xl">Form Settings</SheetTitle>
                       <SheetDescription className="text-sm sm:text-base">
                         Manage your form settings and preferences.
@@ -151,7 +151,7 @@ export function FormHeader({
               <Button
                 variant="outline"
                 size="sm"
-                className="flex items-center gap-1 xs:gap-2 cursor-pointer bg-gray-50 dark:bg-zinc-800 px-2 xs:px-3 sm:px-4 py-1.5 xs:py-2 rounded-lg border border-gray-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200 h-8 xs:h-9"
+                className="flex items-center gap-1 xs:gap-2 cursor-pointer bg-zinc-50 dark:bg-zinc-800 px-2 xs:px-3 sm:px-4 py-1.5 xs:py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200 h-8 xs:h-9"
                 onClick={copyId}
               >
                 <Copy className="h-3.5 w-3.5 xs:h-4 xs:w-4 text-gray-600 dark:text-gray-300" />
@@ -165,7 +165,7 @@ export function FormHeader({
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 xs:gap-3 sm:gap-4">
-            <div className="bg-gray-50 dark:bg-zinc-800/50 rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 border border-gray-100 dark:border-zinc-700/50 hover:border-gray-200 dark:hover:border-zinc-600/50 transition-all duration-200">
+            <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
               <div className="flex items-center gap-2 xs:gap-3">
                 <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                   <Users className="h-4 w-4 xs:h-4.5 xs:w-4.5 sm:h-5 sm:w-5 text-gray-900 dark:text-white" />
@@ -175,7 +175,7 @@ export function FormHeader({
                   <p className="text-xs xs:text-sm text-gray-500 dark:text-gray-400">Total Submissions</p>
                 </div>
               </div>
-              <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-zinc-700 rounded-lg overflow-hidden">
+              <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-700 rounded-lg overflow-hidden">
                 <div
                   className="h-full bg-black dark:bg-white rounded-lg transition-all duration-500"
                   style={{ width: `${Math.min(((responsesCount || 0) / 100) * 100, 100)}%` }}
@@ -183,7 +183,7 @@ export function FormHeader({
               </div>
             </div>
 
-            <div className="bg-gray-50 dark:bg-zinc-800/50 rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 border border-gray-100 dark:border-zinc-700/50 hover:border-gray-200 dark:hover:border-zinc-600/50 transition-all duration-200">
+            <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
               <div className="flex items-center gap-2 xs:gap-3">
                 <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                   <Activity className="h-4 w-4 xs:h-4.5 xs:w-4.5 sm:h-5 sm:w-5 text-gray-900 dark:text-white" />
@@ -197,7 +197,7 @@ export function FormHeader({
               </div>
             </div>
 
-            <div className="bg-gray-50 dark:bg-zinc-800/50 rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 border border-gray-100 dark:border-zinc-700/50 hover:border-gray-200 dark:hover:border-zinc-600/50 transition-all duration-200">
+            <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
               <div className="flex items-center gap-2 xs:gap-3">
                 <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                   <BarChart3 className="h-4 w-4 xs:h-4.5 xs:w-4.5 sm:h-5 sm:w-5 text-gray-900 dark:text-white" />
@@ -211,7 +211,7 @@ export function FormHeader({
               </div>
             </div>
 
-            <div className="bg-gray-50 dark:bg-zinc-800/50 rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 border border-gray-100 dark:border-zinc-700/50 hover:border-gray-200 dark:hover:border-zinc-600/50 transition-all duration-200">
+            <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
               <div className="flex items-center gap-2 xs:gap-3">
                 <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                   <Clock className="h-4 w-4 xs:h-4.5 xs:w-4.5 sm:h-5 sm:w-5 text-gray-900 dark:text-white" />

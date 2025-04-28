@@ -147,7 +147,7 @@ type PlanBadgeProps = {
 const PlanBadge: React.FC<PlanBadgeProps> = ({ plan }) => {
   const badgeStyles = {
     FREE: "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200",
-    STANDARD: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
+    STANDARD: "bg-zinc-100 text-blue-800 dark:bg-zinc-900 dark:text-blue-200",
     PRO: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
   }[plan?.toUpperCase() || 'FREE'] || "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200";
 
@@ -165,7 +165,7 @@ type StatusBadgeProps = {
 
 const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
   const getStatusColor = (status: string | undefined) => {
-    if (!status) return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200";
+    if (!status) return "bg-zinc-100 text-gray-800 dark:bg-zinc-800 dark:text-gray-200";
     
     switch (status.toLowerCase()) {
       case "active":
@@ -175,9 +175,9 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
       case "past_due":
         return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
       case "trialing":
-        return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
+        return "bg-zinc-100 text-blue-800 dark:bg-zinc-900 dark:text-blue-200";
       default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200";
+        return "bg-zinc-100 text-gray-800 dark:bg-zinc-800 dark:text-gray-200";
     }
   };
 
@@ -297,7 +297,7 @@ export default function BillingSettings() {
             </CardHeader>
             <CardContent className="px-5 pb-4 pt-0">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                <div className="p-3 border border-zinc-200 dark:border-zinc-800 rounded-md">
+                <div className="p-3 border border-zinc-200 dark:border-zinc-800 rounded-lg">
                   <p className="text-xs text-zinc-600 dark:text-zinc-400">Price</p>
                   <p className="text-sm font-medium text-zinc-900 dark:text-white">
                     {subscription?.price 
@@ -307,7 +307,7 @@ export default function BillingSettings() {
                 </div>
                 
                 {/* Plan Features */}
-                <div className="p-3 border border-zinc-200 dark:border-zinc-800 rounded-md">
+                <div className="p-3 border border-zinc-200 dark:border-zinc-800 rounded-lg">
                   <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-2">Plan Features</p>
                   <ul className="space-y-1.5 text-xs text-zinc-700 dark:text-zinc-300">
                     {subscription?.plan === "PRO" && (
@@ -384,7 +384,7 @@ export default function BillingSettings() {
               
               {/* Free Plan Upgrade Message */}
               {(!subscription?.plan || subscription?.plan === "FREE") && (
-                <div className="mt-2 p-2 bg-amber-50 border border-amber-200 rounded-md text-amber-800 dark:bg-amber-900/30 dark:border-amber-800/30 dark:text-amber-400 text-xs flex items-center  justify-between">
+                <div className="mt-2 p-2 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 dark:bg-amber-900/30 dark:border-amber-800/30 dark:text-amber-400 text-xs flex items-center  justify-between">
                   <div className="flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />

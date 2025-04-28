@@ -1,6 +1,6 @@
 "use client"
 
-import { Loader2, Search, Calendar, Mail, Lock, Sparkles, Globe, MapPin, FileSearch, Maximize2, Copy } from "lucide-react"
+import { Loader2, Search, Calendar, Mail, Lock, Sparkles, Globe, MapPin, FileSearch, Maximize2 } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
 import { toast } from "sonner"
 import { SearchResult, Submission } from "./types"
@@ -42,7 +42,7 @@ export function SearchResults({
   if (!isProUser && selectedFormId === null) {
     return (
       <div className="py-12 text-center px-4">
-        <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-gray-50 dark:bg-zinc-800 flex items-center justify-center">
+        <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center">
           <Lock className="h-6 w-6 text-amber-500" />
         </div>
         <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -165,7 +165,7 @@ function SubmissionSearchResult({
               <Badge 
                 variant="secondary" 
                 className={cn(
-                  "ml-2 rounded-md text-[9px] px-1.5 py-0 h-4 font-medium leading-none", 
+                  "ml-2 rounded-lg text-[9px] px-1.5 py-0 h-4 font-medium leading-none", 
                   userEmailStatus.color
                 )}
               >
@@ -215,15 +215,6 @@ function SubmissionSearchResult({
       </div>
       
       <div className="flex items-center space-x-2 ml-auto shrink-0">
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-7 w-7 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 cursor-pointer dark:hover:text-gray-300 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border-zinc-200 dark:border-zinc-700"
-          onClick={onCopyClick}
-          aria-label="Copy submission ID"
-        >
-          <Copy className="h-4 w-4" />
-        </Button>
         <Button
           variant="outline"
           size="sm"

@@ -37,7 +37,7 @@ export default function Faq() {
 
   return (
     <div
-      className="w-full bg-white dark:bg-neutral-950 py-20 mt-10"
+      className="w-full bg-white dark:bg-zinc-950 py-20 mt-10"
       id="faq"
     >
       <Container>
@@ -56,12 +56,12 @@ export default function Faq() {
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="border-2 border-neutral-200 dark:border-neutral-800 rounded-sm overflow-hidden "
+                  className="border-2 border-neutral-200 dark:border-zinc-800 rounded-sm overflow-hidden "
                 >
-                  <AccordionTrigger className="px-4 py-3 text-left font-medium text-neutral-900 dark:text-neutral-50 transition-colors bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800">
+                  <AccordionTrigger className="px-4 py-3 text-left font-medium text-neutral-900 dark:text-neutral-50 transition-colors bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800">
                     {item.question}
                   </AccordionTrigger>
-                  <AccordionContent className="px-4 py-3 text-neutral-700 dark:text-neutral-300 bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800">
+                  <AccordionContent className="px-4 py-3 text-neutral-700 dark:text-neutral-300 bg-white dark:bg-zinc-900 border-t border-neutral-200 dark:border-zinc-800">
                     {item.answer}
                   </AccordionContent>
                 </AccordionItem>

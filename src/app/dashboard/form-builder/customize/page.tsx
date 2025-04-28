@@ -180,7 +180,7 @@ function CustomizeFormContent() {
                 size="sm"
                 onClick={() => router.push('/dashboard/form-builder')}
                 disabled={isCreating}
-                className="text-sm h-9 px-4 rounded-md cursor-pointer border-neutral-200 dark:border-zinc-800 text-neutral-600 dark:text-neutral-400"
+                className="text-sm h-9 px-4 rounded-lg cursor-pointer border-neutral-200 dark:border-zinc-800 text-neutral-600 dark:text-neutral-400"
               >
                 Cancel
               </Button>
@@ -188,7 +188,7 @@ function CustomizeFormContent() {
                 onClick={createForm}
                 disabled={isCreating || formFields.length === 0}
                 className={cn(
-                  "flex items-center gap-2 font-medium rounded-md cursor-pointer",
+                  "flex items-center gap-2 font-medium rounded-lg cursor-pointer",
                   "bg-primary hover:bg-primary/90 text-white dark:text-black dark:bg-primary",
                   "disabled:opacity-60 disabled:pointer-events-none transition-all duration-200",
                   "text-sm px-4 h-9"
@@ -210,16 +210,16 @@ function CustomizeFormContent() {
             <div className="p-4">
               {isClient ? (
                 <Tabs defaultValue="fields" className="w-full">
-                  <TabsList className="bg-white dark:bg-zinc-900 p-1 h-auto flex space-x-1 overflow-x-auto border border-neutral-200 dark:border-zinc-800 rounded-md mb-4">
+                  <TabsList className="bg-white dark:bg-zinc-900 p-1 h-auto flex space-x-1 overflow-x-auto border border-neutral-200 dark:border-zinc-800 rounded-lg mb-4">
                     <TabsTrigger 
                       value="fields" 
                       className={cn(
                         "flex items-center gap-2 px-3 py-1.5 text-sm transition-all duration-150 cursor-pointer whitespace-nowrap",
-                        "data-[state=active]:bg-neutral-100 dark:data-[state=active]:bg-zinc-800",
+                        "data-[state=active]:bg-zinc-100 dark:data-[state=active]:bg-zinc-800",
                         "data-[state=active]:text-neutral-900 dark:data-[state=active]:text-white",
                         "data-[state=inactive]:text-neutral-500 dark:data-[state=inactive]:text-neutral-400",
                         "data-[state=inactive]:hover:text-neutral-700 dark:data-[state=inactive]:hover:text-neutral-300",
-                        "font-medium rounded-md"
+                        "font-medium rounded-lg"
                       )}
                     >
                       <Grid3X3 className="h-4 w-4" />
@@ -229,11 +229,11 @@ function CustomizeFormContent() {
                       value="settings" 
                       className={cn(
                         "flex items-center gap-2 px-3 py-1.5 text-sm transition-all duration-150 cursor-pointer whitespace-nowrap",
-                        "data-[state=active]:bg-neutral-100 dark:data-[state=active]:bg-zinc-800",
+                        "data-[state=active]:bg-zinc-100 dark:data-[state=active]:bg-zinc-800",
                         "data-[state=active]:text-neutral-900 dark:data-[state=active]:text-white",
                         "data-[state=inactive]:text-neutral-500 dark:data-[state=inactive]:text-neutral-400",
                         "data-[state=inactive]:hover:text-neutral-700 dark:data-[state=inactive]:hover:text-neutral-300",
-                        "font-medium rounded-md"
+                        "font-medium rounded-lg"
                       )}
                     >
                       <SettingsIcon className="h-4 w-4" />
@@ -265,11 +265,11 @@ function CustomizeFormContent() {
                 </Tabs>
               ) : (
                 <div className="animate-pulse">
-                  <div className="h-10 bg-neutral-100 dark:bg-zinc-800 rounded-md mb-6"></div>
+                  <div className="h-10 bg-zinc-100 dark:bg-zinc-800 rounded-lg mb-6"></div>
                   <div className="space-y-4">
-                    <div className="h-12 bg-neutral-100 dark:bg-zinc-800 rounded-md"></div>
-                    <div className="h-12 bg-neutral-100 dark:bg-zinc-800 rounded-md"></div>
-                    <div className="h-12 bg-neutral-100 dark:bg-zinc-800 rounded-md"></div>
+                    <div className="h-12 bg-zinc-100 dark:bg-zinc-800 rounded-lg"></div>
+                    <div className="h-12 bg-zinc-100 dark:bg-zinc-800 rounded-lg"></div>
+                    <div className="h-12 bg-zinc-100 dark:bg-zinc-800 rounded-lg"></div>
                   </div>
                 </div>
               )}

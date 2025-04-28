@@ -74,8 +74,8 @@ The flat appearance API provides an intuitive way to style your form:
     // Container styling
     container: 'bg-white p-6 rounded-lg',
     form: 'space-y-6',
-    background: 'bg-gray-50',
-    border: 'border border-gray-200',
+    background: 'bg-zinc-50',
+    border: 'border border-zinc-200',
     
     // Card styling
     card: 'shadow-md rounded-xl',
@@ -85,13 +85,13 @@ The flat appearance API provides an intuitive way to style your form:
     cardContent: 'pt-2',
     
     // Form elements styling
-    input: 'border-gray-300 focus:ring-blue-500 focus:border-blue-500',
-    textarea: 'border-gray-300 focus:ring-blue-500 focus:border-blue-500 min-h-[120px]',
+    input: 'border-zinc-300 focus:ring-blue-500 focus:border-blue-500',
+    textarea: 'border-zinc-300 focus:ring-blue-500 focus:border-blue-500 min-h-[120px]',
     inputLabel: 'text-gray-700 font-medium',
     inputError: 'text-red-500 text-sm',
     
     // Button styling
-    submitButton: 'bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md px-4 py-2',
+    submitButton: 'bg-zinc-600 hover:bg-zinc-700 text-white font-medium rounded-lg px-4 py-2',
     
     // Text customizations
     submitText: 'Submit',
@@ -113,14 +113,14 @@ You can dynamically style your form based on the current theme:
     container: theme === 'purple' 
       ? 'bg-purple-50' 
       : theme === 'dark' 
-        ? 'bg-gray-900' 
+        ? 'bg-zinc-900' 
         : 'bg-white',
     
     submitButton: theme === 'purple'
       ? 'bg-purple-600 hover:bg-purple-700 text-white'
       : theme === 'dark'
-        ? 'bg-gray-800 hover:bg-gray-700 text-white'
-        : 'bg-blue-600 hover:bg-blue-700 text-white',
+        ? 'bg-zinc-800 hover:bg-zinc-700 text-white'
+        : 'bg-zinc-600 hover:bg-zinc-700 text-white',
         
     cardTitle: theme === 'purple'
       ? 'text-purple-800 font-bold'
@@ -212,7 +212,7 @@ Create responsive contact forms using Tailwind's responsive modifiers:
     form: 'space-y-4 sm:space-y-6',
     
     // Responsive button
-    submitButton: 'w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white rounded-md px-4 py-2 sm:px-6 sm:py-3',
+    submitButton: 'w-full sm:w-auto bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg px-4 py-2 sm:px-6 sm:py-3',
   }}
 />
 ```

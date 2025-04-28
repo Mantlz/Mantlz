@@ -52,7 +52,7 @@ function Logo() {
     <Link href="/" className="flex items-center gap-3">
       <LogoIcon />
       <h2 className="text-md font-bold font-code tracking-tight">Mantlz</h2>
-      <span className="px-1.5 py-0.5 text-xs font-medium bg-primary/10 text-primary rounded-md backdrop-blur-sm border border-primary/20">Beta</span>
+      <span className="px-1.5 py-0.5 text-xs font-medium bg-primary/10 text-primary rounded-lg backdrop-blur-sm border border-primary/20">Beta</span>
     </Link>
   );
 }

@@ -65,8 +65,8 @@ const Checkbox = ({
   <input 
     type="checkbox" 
     className={cn(
-      "h-4 w-4 rounded border-gray-300", 
-      colorMode === 'dark' ? "bg-gray-700 border-gray-600" : "bg-white",
+      "h-4 w-4 rounded border-zinc-300", 
+      colorMode === 'dark' ? "bg-zinc-700 border-zinc-600" : "bg-white",
     )}
     {...props} 
   />
@@ -133,11 +133,11 @@ export default function DynamicForm({
   // Theme classes
   const themeClasses = {
     text: colorMode === 'dark' ? 'text-white' : 'text-gray-900',
-    bg: colorMode === 'dark' ? 'bg-gray-800' : 'bg-white',
-    border: colorMode === 'dark' ? 'border-gray-700' : 'border-gray-200',
-    inputBg: colorMode === 'dark' ? 'bg-gray-700' : 'bg-white',
+    bg: colorMode === 'dark' ? 'bg-zinc-800' : 'bg-white',
+    border: colorMode === 'dark' ? 'border-zinc-700' : 'border-zinc-200',
+    inputBg: colorMode === 'dark' ? 'bg-zinc-700' : 'bg-white',
     inputText: colorMode === 'dark' ? 'text-white' : 'text-gray-900',
-    inputBorder: colorMode === 'dark' ? 'border-gray-600' : 'border-gray-300',
+    inputBorder: colorMode === 'dark' ? 'border-zinc-600' : 'border-zinc-300',
     description: colorMode === 'dark' ? 'text-gray-300' : 'text-gray-500',
   };
 
@@ -407,7 +407,7 @@ export default function DynamicForm({
           <select
             id={field.id}
             className={cn(
-              "w-full rounded-md p-2 border border-input",
+              "w-full rounded-lg p-2 border border-input",
               themeClasses.inputBg, 
               themeClasses.inputText, 
               themeClasses.inputBorder

@@ -103,9 +103,9 @@ The FeedbackForm component offers two ways to customize its appearance:
       textarea: {
         input: theme === 'dark' 
           ? 'bg-zinc-800 border-zinc-700' 
-          : 'bg-gray-50 border-gray-200',
+          : 'bg-zinc-50 border-zinc-200',
       },
-      submitButton: 'bg-blue-600 hover:bg-blue-700 text-white rounded-lg',
+      submitButton: 'bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg',
     },
     typography: {
       feedbackPlaceholder: "What do you think about our service?",
@@ -217,7 +217,7 @@ The appearance prop allows advanced customization similar to Clerk's approach:
       // Customize button style
       formButtonPrimary: 'bg-slate-500 hover:bg-slate-400 text-sm',
       // Customize input style
-      input: 'bg-gray-100 border-gray-300',
+      input: 'bg-zinc-100 border-zinc-300',
       // Customize card style
       card: 'shadow-lg rounded-lg',
     },
@@ -238,10 +238,10 @@ All form components (ContactForm, FeedbackForm, WaitlistForm) now support a flat
     border: '1px solid #dee2e6',
     
     // Button styling
-    submitButton: 'bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md',
+    submitButton: 'bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg',
     
     // Input styling
-    formInput: 'bg-white border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-indigo-500',
+    formInput: 'bg-white border border-zinc-300 rounded px-3 py-2 focus:ring-2 focus:ring-indigo-500',
     
     // Card styling
     card: 'shadow-lg rounded-xl p-6',
@@ -249,7 +249,7 @@ All form components (ContactForm, FeedbackForm, WaitlistForm) now support a flat
     
     // Style mapping - you can use any of these aliases
     button: 'bg-indigo-600', // Aliases to submitButton/formButtonPrimary
-    input: 'border-gray-300', // Generic input styling
+    input: 'border-zinc-300', // Generic input styling
     label: 'text-gray-700 font-medium', // Label styling
   }}
 />
@@ -315,9 +315,9 @@ You can directly customize any form element using Tailwind CSS classes:
   appearance={{
     elements: {
       // Primary button styling
-      formButtonPrimary: 'bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm',
+      formButtonPrimary: 'bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg text-sm',
       // Input styling
-      input: 'bg-gray-50 border-gray-300 rounded-md focus:ring-blue-500',
+      input: 'bg-zinc-50 border-zinc-300 rounded-lg focus:ring-blue-500',
       // Card styling
       card: 'shadow-xl rounded-xl border-0',
     }
@@ -356,7 +356,7 @@ You can use aliases for common elements, whichever is more intuitive:
       // Instead of formButtonPrimary
       
       // Both work the same way
-      formInput: 'bg-gray-100 border-gray-300',
+      formInput: 'bg-zinc-100 border-zinc-300',
       // Instead of input
     }
   }}
@@ -374,13 +374,13 @@ You can select a base theme and then override specific parts:
   appearance={{
     baseStyle: {
       // Override container styles
-      container: 'bg-gray-900 text-white',
+      container: 'bg-zinc-900 text-white',
     },
     elements: {
       // Add custom gradient to button
       formButtonPrimary: 'bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600',
       // Custom input styling
-      input: 'bg-gray-800 border-gray-700 text-white placeholder:text-gray-400',
+      input: 'bg-zinc-800 border-zinc-700 text-white placeholder:text-gray-400',
     }
   }}
 />
@@ -400,8 +400,8 @@ You can dynamically adjust styles based on the current theme:
       card: theme === 'purple' 
         ? 'border-purple-400 bg-purple-900' 
         : theme === 'dark' 
-          ? 'border-gray-700 bg-gray-900'
-          : 'border-gray-200 bg-white',
+          ? 'border-zinc-700 bg-zinc-900'
+          : 'border-zinc-200 bg-white',
       
       // Custom badge on card
       cardHeader: 'relative',
@@ -424,8 +424,8 @@ import { ContactForm, BASE_THEMES } from '@mantlz/nextjs';
   theme={BASE_THEMES.NEOBRUTALISM}
   appearance={{
     // Direct styling - no need for nested objects!
-    container: 'bg-blue-100 border-4 border-black',
-    button: 'bg-blue-500 text-black border-4 border-black',
+    container: 'bg-zinc-100 border-4 border-black',
+    button: 'bg-zinc-500 text-black border-4 border-black',
     input: 'border-2 border-black',
     textarea: 'border-2 border-black',
     label: 'text-black font-bold',
@@ -464,11 +464,11 @@ You can dynamically adjust styles based on the current theme:
     // Styles can change based on theme
     container: theme === 'neobrutalism'
       ? 'bg-yellow-100 border-4 border-black'
-      : 'bg-gray-900 border border-gray-800',
+      : 'bg-zinc-900 border border-zinc-800',
     
     button: theme === 'neobrutalism'
       ? 'bg-yellow-400 text-black border-4 border-black'
-      : 'bg-blue-600 text-white'
+      : 'bg-zinc-600 text-white'
   })}
 />
 ```

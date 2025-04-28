@@ -108,7 +108,7 @@ type PlanBadgeProps = {
 const PlanBadge: React.FC<PlanBadgeProps> = ({ plan }) => {
   const badgeStyles = {
     FREE: "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200",
-    STANDARD: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
+    STANDARD: "bg-zinc-100 text-blue-800 dark:bg-zinc-900 dark:text-blue-200",
     PRO: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
   }[plan] || "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200";
 
@@ -228,7 +228,7 @@ export default function UsageSettings() {
             </p>
             
             {((planData?.formsUsed ?? 0) >= (planData?.formsLimit ?? Infinity) * 0.8) && (
-              <div className="mt-2 p-2 bg-amber-50 border border-amber-200 rounded-md text-amber-800 dark:bg-amber-900/30 dark:border-amber-800/30 dark:text-amber-400 text-xs flex items-center">
+              <div className="mt-2 p-2 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 dark:bg-amber-900/30 dark:border-amber-800/30 dark:text-amber-400 text-xs flex items-center">
                 <AlertCircle className="h-3.5 w-3.5 mr-1.5 flex-shrink-0" />
                 <span>You&apos;re approaching your form limit. Consider upgrading your plan for more forms.</span>
               </div>
@@ -280,13 +280,13 @@ export default function UsageSettings() {
                     )}
                   />
                   <div className="grid grid-cols-2 gap-2 mt-3 text-center">
-                    <div className="p-2 border border-zinc-200 dark:border-zinc-800 rounded-md">
+                    <div className="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg">
                       <p className="text-xs text-zinc-600 dark:text-zinc-400">Remaining</p>
                       <p className="text-lg font-semibold text-zinc-900 dark:text-white">
                         {Math.max(0, planData.formsLimit - planData.formsUsed).toLocaleString()}
                       </p>
                     </div>
-                    <div className="p-2 border border-zinc-200 dark:border-zinc-800 rounded-md">
+                    <div className="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg">
                       <p className="text-xs text-zinc-600 dark:text-zinc-400">Total</p>
                       <p className="text-lg font-semibold text-zinc-900 dark:text-white">
                         {planData.formsLimit.toLocaleString()}
@@ -341,13 +341,13 @@ export default function UsageSettings() {
                     )}
                   />
                   <div className="grid grid-cols-2 gap-2 mt-3 text-center">
-                    <div className="p-2 border border-zinc-200 dark:border-zinc-800 rounded-md">
+                    <div className="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg">
                       <p className="text-xs text-zinc-600 dark:text-zinc-400">Remaining</p>
                       <p className="text-lg font-semibold text-zinc-900 dark:text-white">
                         {Math.max(0, planData.submissionsLimit - planData.submissionsUsed).toLocaleString()}
                       </p>
                     </div>
-                    <div className="p-2 border border-zinc-200 dark:border-zinc-800 rounded-md">
+                    <div className="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg">
                       <p className="text-xs text-zinc-600 dark:text-zinc-400">Total</p>
                       <p className="text-lg font-semibold text-zinc-900 dark:text-white">
                         {planData.submissionsLimit.toLocaleString()}

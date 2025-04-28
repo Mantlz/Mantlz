@@ -95,13 +95,13 @@ The flat appearance API provides an intuitive way to style your form:
     ratingLabel: 'text-blue-800 font-medium',
     
     // Form elements styling
-    input: 'border-gray-300 focus:ring-blue-500 focus:border-blue-500',
-    textarea: 'border-gray-300 focus:ring-blue-500 focus:border-blue-500 min-h-[120px]',
+    input: 'border-zinc-300 focus:ring-blue-500 focus:border-blue-500',
+    textarea: 'border-zinc-300 focus:ring-blue-500 focus:border-blue-500 min-h-[120px]',
     inputLabel: 'text-blue-800 font-medium',
     inputError: 'text-red-500 text-sm',
     
     // Button styling
-    submitButton: 'bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md px-4 py-2',
+    submitButton: 'bg-zinc-600 hover:bg-zinc-700 text-white font-medium rounded-lg px-4 py-2',
     
     // Text customizations
     submitText: 'Send Feedback',
@@ -121,7 +121,7 @@ You can apply different styles based on the selected theme:
   appearance={(theme) => ({
     // Styles change based on theme
     container: theme === 'dark' 
-      ? 'bg-gray-900 text-white' 
+      ? 'bg-zinc-900 text-white' 
       : 'bg-white text-gray-900',
     
     ratingStarActive: theme === 'dark'
@@ -133,8 +133,8 @@ You can apply different styles based on the selected theme:
       : 'text-gray-300 hover:text-amber-400',
     
     submitButton: theme === 'dark'
-      ? 'bg-gray-800 hover:bg-gray-700 text-white'
-      : 'bg-blue-600 hover:bg-blue-700 text-white',
+      ? 'bg-zinc-800 hover:bg-zinc-700 text-white'
+      : 'bg-zinc-600 hover:bg-zinc-700 text-white',
   })}
 />
 ```
@@ -254,7 +254,7 @@ All styling properties accept Tailwind CSS classes for comprehensive customizati
     cardTitle: 'text-xl sm:text-2xl md:text-3xl font-bold text-white',
     
     // Hover and focus states
-    textarea: 'border-gray-300 focus:ring-amber-500 focus:border-amber-500 hover:border-amber-400 transition-colors duration-200',
+    textarea: 'border-zinc-300 focus:ring-amber-500 focus:border-amber-500 hover:border-amber-400 transition-colors duration-200',
   }}
 />
 ```

@@ -151,8 +151,8 @@ pre>code {
 }
 
 .highlight-line {
-  @apply dark:bg-neutral-800/90;
-  @apply bg-neutral-200/90;
+  @apply dark:bg-zinc-800/90;
+  @apply bg-zinc-200/90;
 }
 
 .rehype-code-title {

@@ -12,7 +12,7 @@ export function SafariDemo() {
 
            <Safari
              url="NectLink.chat"
-             className="custom-image-size border border-zinc-400 rounded-xl"
+             className="custom-image-size border border-zinc-200 rounded-xl"
              src="/thumbnail.png"
              />
     

@@ -13,7 +13,7 @@ export function HeroSection() {
         
         <Link
           href="/sign-up"
-          className="px-6 py-3 bg-black text-white dark:bg-white dark:text-black rounded-md font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors w-full sm:w-auto text-center animate-pulse"
+          className="px-6 py-3 bg-black text-white dark:bg-white dark:text-black rounded-lg font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors w-full sm:w-auto text-center animate-pulse"
         >
           Start for free
         </Link>

@@ -17,11 +17,11 @@ export function LogsTableHeaderSkeleton() {
                   <span className="hidden xs:inline text-zinc-500 dark:text-zinc-400">Back to Forms</span>
                 </div>
                 <Badge variant="secondary" className="bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400">
-                  Form ID: <Skeleton className="h-3 w-16 rounded-md inline-block" />
+                  Form ID: <Skeleton className="h-3 w-16 rounded-lg inline-block" />
                 </Badge>
               </div>
               <h1 className="text-2xl font-semibold text-gray-900 dark:text-white tracking-tight">
-                <Skeleton className="h-8 w-48 sm:w-64 rounded-md" />
+                <Skeleton className="h-8 w-48 sm:w-64 rounded-lg" />
               </h1>
             </div>
             <div className="h-9 w-48 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm">
@@ -31,7 +31,7 @@ export function LogsTableHeaderSkeleton() {
 
           {/* Description */}
           <div className="text-sm text-gray-500 dark:text-gray-400 max-w-2xl">
-            <Skeleton className="h-4 w-full max-w-md rounded-md" />
+            <Skeleton className="h-4 w-full max-w-md rounded-lg" />
           </div>
 
           {/* Stats Grid */}
@@ -43,7 +43,7 @@ export function LogsTableHeaderSkeleton() {
                 </div>
                 <div>
                   <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    <Skeleton className="h-4 w-10 mb-1 rounded-md" />
+                    <Skeleton className="h-4 w-10 mb-1 rounded-lg" />
                   </div>
                   <p className="text-xs text-gray-500 dark:text-gray-400">Total Submissions</p>
                 </div>
@@ -60,7 +60,7 @@ export function LogsTableHeaderSkeleton() {
                 </div>
                 <div>
                   <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    <Skeleton className="h-4 w-28 mb-1 rounded-md" />
+                    <Skeleton className="h-4 w-28 mb-1 rounded-lg" />
                   </div>
                   <p className="text-xs text-gray-500 dark:text-gray-400">Created</p>
                 </div>
@@ -75,7 +75,7 @@ export function LogsTableHeaderSkeleton() {
                 </div>
                 <div>
                   <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    <Skeleton className="h-4 w-28 mb-1 rounded-md" />
+                    <Skeleton className="h-4 w-28 mb-1 rounded-lg" />
                   </div>
                   <p className="text-xs text-gray-500 dark:text-gray-400">Last Submission</p>
                 </div>

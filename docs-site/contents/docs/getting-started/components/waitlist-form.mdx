@@ -90,12 +90,12 @@ import { WaitlistForm, WAITLIST_THEMES } from 'mantlz-sdk';
         wrapper: 'relative',
         input: theme === 'dark' 
           ? 'bg-zinc-800 border-zinc-700 text-white' 
-          : 'bg-gray-50 border-gray-200',
+          : 'bg-zinc-50 border-zinc-200',
       },
-      submitButton: 'bg-blue-600 hover:bg-blue-700 text-white rounded-lg',
+      submitButton: 'bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg',
       usersJoinedCounter: theme === 'dark'
         ? 'text-white bg-zinc-800 border border-zinc-700'
-        : 'text-gray-700 bg-gray-50 border border-gray-200',
+        : 'text-gray-700 bg-zinc-50 border border-zinc-200',
     },
     typography: {
       title: 'text-2xl font-bold',
@@ -117,10 +117,10 @@ WaitlistForm also supports the simplified appearance API:
   formId="your-waitlist-id"
   appearance={{
     // Direct styling
-    container: 'bg-blue-50 p-8 rounded-xl',
+    container: 'bg-zinc-50 p-8 rounded-xl',
     input: 'border-blue-300 focus:ring-blue-500',
-    button: 'bg-blue-600 hover:bg-blue-700 text-white',
-    counter: 'bg-blue-100 border border-blue-200 text-blue-800',
+    button: 'bg-zinc-600 hover:bg-zinc-700 text-white',
+    counter: 'bg-zinc-100 border border-blue-200 text-blue-800',
     
     // Text customization
     submitText: 'Join the Waitlist',

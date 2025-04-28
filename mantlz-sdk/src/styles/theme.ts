@@ -74,16 +74,16 @@ export const inputVariants = ({
   colorMode?: 'light' | 'dark'
 } = {}) => {
   // Base classes for all inputs
-  const baseClasses = 'block w-full px-4 py-3 rounded-md text-sm focus:outline-none transition-all duration-200';
+  const baseClasses = 'block w-full px-4 py-3 rounded-lg text-sm focus:outline-none transition-all duration-200';
   
   // Variant classes based on color mode
   const variantClasses = {
     default: colorMode === 'dark'
-      ? 'bg-gray-800 border border-gray-700 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/70 shadow-sm'
-      : 'bg-white border border-gray-200 text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 shadow-sm',
+      ? 'bg-zinc-800 border border-zinc-700 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/70 shadow-sm'
+      : 'bg-white border border-zinc-200 text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 shadow-sm',
       
     error: colorMode === 'dark'
-      ? 'bg-gray-800 border-2 border-red-500/70 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 shadow-sm'
+      ? 'bg-zinc-800 border-2 border-red-500/70 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 shadow-sm'
       : 'bg-white border-2 border-red-500/70 text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-red-500/30 focus:border-red-500/50 shadow-sm',
   };
   
@@ -99,16 +99,16 @@ export const textareaVariants = ({
   colorMode?: 'light' | 'dark'
 } = {}) => {
   // Base classes for all textareas
-  const baseClasses = 'block w-full px-4 py-3 rounded-md text-sm focus:outline-none min-h-[120px] resize-y transition-all duration-200';
+  const baseClasses = 'block w-full px-4 py-3 rounded-lg text-sm focus:outline-none min-h-[120px] resize-y transition-all duration-200';
   
   // Variant classes based on color mode
   const variantClasses = {
     default: colorMode === 'dark'
-      ? 'bg-gray-800 border border-gray-700 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/70 shadow-sm'
-      : 'bg-white border border-gray-200 text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 shadow-sm',
+      ? 'bg-zinc-800 border border-zinc-700 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/70 shadow-sm'
+      : 'bg-white border border-zinc-200 text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 shadow-sm',
       
     error: colorMode === 'dark'
-      ? 'bg-gray-800 border-2 border-red-500/70 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 shadow-sm'
+      ? 'bg-zinc-800 border-2 border-red-500/70 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-red-500/50 focus:border-red-500/70 shadow-sm'
       : 'bg-white border-2 border-red-500/70 text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-red-500/30 focus:border-red-500/50 shadow-sm',
   };
   
@@ -119,38 +119,38 @@ export const textareaVariants = ({
 export const cardVariants = {
   default: {
     light: {
-      container: 'bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden',
-      header: 'p-6 border-b border-gray-50',
+      container: 'bg-white border border-zinc-100 rounded-xl shadow-sm overflow-hidden',
+      header: 'p-6 border-b border-zinc-50',
       title: 'text-xl font-semibold text-gray-800 tracking-tight',
       description: 'text-sm text-gray-500 mt-2',
       content: 'p-6',
-      footer: 'p-6 border-t border-gray-50'
+      footer: 'p-6 border-t border-zinc-50'
     },
     dark: {
-      container: 'bg-gray-900 border border-gray-800 rounded-xl shadow-md overflow-hidden',
-      header: 'p-6 border-b border-gray-800',
+      container: 'bg-zinc-900 border border-zinc-800 rounded-xl shadow-md overflow-hidden',
+      header: 'p-6 border-b border-zinc-800',
       title: 'text-xl font-semibold text-white tracking-tight',
       description: 'text-sm text-gray-400 mt-2',
       content: 'p-6',
-      footer: 'p-6 border-t border-gray-800'
+      footer: 'p-6 border-t border-zinc-800'
     }
   },
   glass: {
     light: {
-      container: 'bg-white/90 backdrop-blur-lg border border-gray-200/30 rounded-xl shadow-md overflow-hidden',
-      header: 'p-6 border-b border-gray-100/30',
+      container: 'bg-white/90 backdrop-blur-lg border border-zinc-200/30 rounded-xl shadow-md overflow-hidden',
+      header: 'p-6 border-b border-zinc-100/30',
       title: 'text-xl font-semibold text-gray-800 tracking-tight',
       description: 'text-sm text-gray-500 mt-2',
       content: 'p-6',
-      footer: 'p-6 border-t border-gray-100/30'
+      footer: 'p-6 border-t border-zinc-100/30'
     },
     dark: {
-      container: 'bg-gray-900/90 backdrop-blur-lg border border-gray-800/30 rounded-xl shadow-md overflow-hidden',
-      header: 'p-6 border-b border-gray-800/30',
+      container: 'bg-zinc-900/90 backdrop-blur-lg border border-zinc-800/30 rounded-xl shadow-md overflow-hidden',
+      header: 'p-6 border-b border-zinc-800/30',
       title: 'text-xl font-semibold text-white tracking-tight',
       description: 'text-sm text-gray-400 mt-2',
       content: 'p-6',
-      footer: 'p-6 border-t border-gray-800/30'
+      footer: 'p-6 border-t border-zinc-800/30'
     }
   },
   error: {
@@ -202,7 +202,7 @@ export const buttonVariants = ({
   colorMode?: 'light' | 'dark'
 } = {}) => {
   // Base classes that apply to all buttons
-  const baseClasses = 'inline-flex items-center justify-center rounded-md font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
+  const baseClasses = 'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
   
   // Size classes
   const sizeClasses = {
@@ -215,20 +215,20 @@ export const buttonVariants = ({
   // Variant classes based on color mode
   const variantClasses = {
     default: colorMode === 'dark' 
-      ? 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 shadow-sm hover:shadow focus-visible:ring-blue-500' 
-      : 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 shadow-sm hover:shadow focus-visible:ring-blue-500',
+      ? 'bg-zinc-600 text-white hover:bg-zinc-700 active:bg-zinc-800 shadow-sm hover:shadow focus-visible:ring-blue-500' 
+      : 'bg-zinc-600 text-white hover:bg-zinc-700 active:bg-zinc-800 shadow-sm hover:shadow focus-visible:ring-blue-500',
     
     secondary: colorMode === 'dark'
-      ? 'bg-gray-700 text-white hover:bg-gray-800 active:bg-gray-900 shadow-sm hover:shadow focus-visible:ring-gray-600'
-      : 'bg-gray-100 text-gray-800 hover:bg-gray-200 active:bg-gray-300 shadow-sm hover:shadow focus-visible:ring-gray-300',
+      ? 'bg-zinc-700 text-white hover:bg-zinc-800 active:bg-zinc-900 shadow-sm hover:shadow focus-visible:ring-gray-600'
+      : 'bg-zinc-100 text-gray-800 hover:bg-zinc-200 active:bg-zinc-300 shadow-sm hover:shadow focus-visible:ring-gray-300',
     
     outline: colorMode === 'dark'
-      ? 'border border-gray-700 bg-transparent text-gray-200 hover:bg-gray-800/50 focus-visible:ring-gray-600 active:bg-gray-800'
-      : 'border border-gray-200 bg-transparent text-gray-800 hover:bg-gray-50 focus-visible:ring-gray-400 active:bg-gray-100',
+      ? 'border border-zinc-700 bg-transparent text-gray-200 hover:bg-zinc-800/50 focus-visible:ring-gray-600 active:bg-zinc-800'
+      : 'border border-zinc-200 bg-transparent text-gray-800 hover:bg-zinc-50 focus-visible:ring-gray-400 active:bg-zinc-100',
     
     ghost: colorMode === 'dark'
-      ? 'bg-transparent text-gray-200 hover:bg-gray-800 hover:text-gray-100 focus-visible:ring-gray-600 active:bg-gray-900'
-      : 'bg-transparent text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus-visible:ring-gray-400 active:bg-gray-200',
+      ? 'bg-transparent text-gray-200 hover:bg-zinc-800 hover:text-gray-100 focus-visible:ring-gray-600 active:bg-zinc-900'
+      : 'bg-transparent text-gray-700 hover:bg-zinc-100 hover:text-gray-900 focus-visible:ring-gray-400 active:bg-zinc-200',
     
     link: colorMode === 'dark'
       ? 'bg-transparent text-blue-400 underline-offset-4 hover:underline focus-visible:ring-blue-600 hover:text-blue-300'

@@ -62,7 +62,7 @@ export function UpgradeModal({
   
   return (
     <div className="fixed inset-0 h-full bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] overflow-hidden">
-      <div className="bg-white dark:bg-zinc-900 p-6 rounded-md max-w-md w-full border border-slate-200 dark:border-zinc-800 shadow-xl">
+      <div className="bg-white dark:bg-zinc-900 p-6 rounded-lg max-w-md w-full border border-slate-200 dark:border-zinc-800 shadow-xl">
       
 
         
@@ -78,7 +78,7 @@ export function UpgradeModal({
         {/* Content with monochromatic design */}
         <div className="space-y-5">
           <div className="flex items-start">
-            <div className="mr-4 h-10 w-10 flex items-center justify-center rounded-md bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700">
+            <div className="mr-4 h-10 w-10 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700">
               {icon}
             </div>
             <div>
@@ -90,7 +90,7 @@ export function UpgradeModal({
           </div>
           
           {/* Modern comparison table with hover effects */}
-          <div className="mt-4 rounded-md border border-slate-200 dark:border-zinc-800 overflow-hidden">
+          <div className="mt-4 rounded-lg border border-slate-200 dark:border-zinc-800 overflow-hidden">
             <div className="bg-slate-100 dark:bg-zinc-950 py-2 px-4 border-b border-slate-200 dark:border-zinc-800">
               <p className="text-sm font-medium text-black dark:text-white">Plan Comparison</p>
             </div>

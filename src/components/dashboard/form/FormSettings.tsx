@@ -275,14 +275,14 @@ export function FormSettings({
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Form Name
             </label>
-            <div className="w-full p-2.5 bg-gray-50 dark:bg-zinc-800/50 border border-gray-200 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white text-sm">
+            <div className="w-full p-2.5 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-lg text-gray-900 dark:text-white text-sm">
               {name}
             </div>
           </div>
           
 
-          <div className="mt-6 rounded-xl border border-gray-200 dark:border-zinc-700 overflow-hidden">
-            <div className="px-4 py-3 bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-200 dark:border-zinc-700">
+          <div className="mt-6 rounded-xl border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+            <div className="px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-700">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Mail className="h-4 w-4 text-gray-600 dark:text-gray-400" />
@@ -298,7 +298,7 @@ export function FormSettings({
                     "text-xs px-2 py-0.5 rounded-lg",
                     emailEnabled 
                       ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400" 
-                      : "bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400"
+                      : "bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400"
                   )}>
                     {emailEnabled ? 'Enabled' : 'Disabled'}
                   </span>
@@ -363,8 +363,8 @@ export function FormSettings({
 
           {/* Users Joined Counter (For Waitlist Forms Only) */}
           {(formType?.toUpperCase() === 'WAITLIST' || formType === 'waitlist') && (
-            <div className="mt-6 rounded-xl border border-gray-200 dark:border-zinc-700 overflow-hidden">
-              <div className="px-4 py-3 bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-200 dark:border-zinc-700">
+            <div className="mt-6 rounded-xl border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+              <div className="px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-700">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Users className="h-4 w-4 text-gray-600 dark:text-gray-400" />
@@ -380,7 +380,7 @@ export function FormSettings({
                       "text-xs px-2 py-0.5 rounded-lg",
                       usersJoinedEnabled 
                         ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400" 
-                        : "bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400"
+                        : "bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400"
                     )}>
                       {usersJoinedEnabled ? 'Enabled' : 'Disabled'}
                     </span>
@@ -396,7 +396,7 @@ export function FormSettings({
                     </p>
                     {usersJoinedEnabled && usersJoinedSettings?.count !== undefined && (
                       <div className="mt-2 flex items-center">
-                        <div className="inline-flex items-center px-3 py-1 text-sm bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 rounded-lg border border-blue-100 dark:border-blue-800/50">
+                        <div className="inline-flex items-center px-3 py-1 text-sm bg-zinc-50 dark:bg-zinc-900/20 text-blue-700 dark:text-blue-400 rounded-lg border border-blue-100 dark:border-blue-800/50">
                           <Users className="w-3.5 h-3.5 mr-1.5" />
                           <span>{usersJoinedSettings.count.toLocaleString()} users joined</span>
                         </div>
@@ -452,8 +452,8 @@ export function FormSettings({
             </div>
           )}
 
-          <div className="mt-6 rounded-xl border border-gray-200 dark:border-zinc-700 overflow-hidden">
-            <div className="px-4 py-3 bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-200 dark:border-zinc-700">
+          <div className="mt-6 rounded-xl border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+            <div className="px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-700">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Download className="h-4 w-4 text-gray-600 dark:text-gray-400" />
@@ -509,7 +509,7 @@ export function FormSettings({
         </div>
       </div>
 
-      <div className="mt-12 pt-6 border-t border-gray-100 dark:border-zinc-800">
+      <div className="mt-12 pt-6 border-t border-zinc-100 dark:border-zinc-800">
         <div className="flex items-center justify-between pb-4">
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">Danger Zone</h3>
         </div>
@@ -530,9 +530,9 @@ export function FormSettings({
 
       <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
         <DialogContent className="w-[95vw] max-w-[400px] sm:max-w-[600px] p-0 bg-transparent border-none">
-          <div className="flex flex-col bg-white dark:bg-zinc-900/90 rounded-xl border border-gray-200 dark:border-white/5 shadow-2xl overflow-hidden dark:backdrop-blur-xl">
+          <div className="flex flex-col bg-white dark:bg-zinc-900/90 rounded-xl border border-zinc-200 dark:border-white/5 shadow-2xl overflow-hidden dark:backdrop-blur-xl">
             {/* Header */}
-            <div className="p-6 sm:p-8 bg-white dark:bg-transparent border-b border-gray-200 dark:border-white/5">
+            <div className="p-6 sm:p-8 bg-white dark:bg-transparent border-b border-zinc-200 dark:border-white/5">
               <DialogTitle className={cn(
                 "text-2xl sm:text-3xl",
                 "font-sans font-bold",
@@ -563,8 +563,8 @@ export function FormSettings({
                 className={cn(
                   "font-sans",
                   "px-4 py-3",
-                  "bg-gray-50 dark:bg-zinc-800/50",
-                  "border border-gray-200 dark:border-zinc-700/50",
+                  "bg-zinc-50 dark:bg-zinc-800/50",
+                  "border border-zinc-200 dark:border-zinc-700/50",
                   "rounded-lg",
                   "text-gray-900 dark:text-gray-100",
                   "placeholder:text-gray-400 dark:placeholder:text-gray-500",
@@ -580,7 +580,7 @@ export function FormSettings({
               "flex flex-col sm:flex-row justify-end gap-2 sm:gap-3",
               "p-6 sm:p-8",
               "bg-white dark:bg-zinc-800/30",
-              "border-t border-gray-200 dark:border-white/5"
+              "border-t border-zinc-200 dark:border-white/5"
             )}>
               <Button
                 variant="outline"
@@ -589,9 +589,9 @@ export function FormSettings({
                   "font-sans font-medium cursor-pointer",
                   "px-6 py-2.5",
                   "bg-white dark:bg-transparent",
-                  "border border-gray-200 dark:border-zinc-700",
+                  "border border-zinc-200 dark:border-zinc-700",
                   "text-gray-700 dark:text-gray-200",
-                  "hover:bg-gray-50 dark:hover:bg-zinc-800/50",
+                  "hover:bg-zinc-50 dark:hover:bg-zinc-800/50",
                   "rounded-lg",
                   "transition-all duration-200"
                 )}

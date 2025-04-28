@@ -67,28 +67,12 @@ export function FormAnalyticsChart({
 
   const [activeTab, setActiveTab] = React.useState<'overview' | 'insights'>('overview')
   const [isCollapsed] = React.useState(false)
-  
-  // Debug logs for analytics data
-  React.useEffect(() => {
-    console.log('🔍 FormAnalyticsChart Raw Data:', {
-      analytics,
-      isLoading,
-      timeRange,
-      hasData: !!analytics,
-      chartData: rawChartData,
-      latestDataPoint,
-      browserStats: analytics?.browserStats,
-      locationStats: analytics?.locationStats,
-      userInsights: analytics?.userInsights
-    });
-  }, [analytics, isLoading, timeRange, rawChartData, latestDataPoint]);
 
   // Use the real data directly from the backend
   const chartData = React.useMemo(() => rawChartData, [rawChartData]);
 
   // User insights data
   const userInsights = React.useMemo(() => {
-    console.log('📊 User Insights:', analytics?.userInsights);
     return analytics?.userInsights || [];
   }, [analytics?.userInsights]);
 
@@ -97,7 +81,6 @@ export function FormAnalyticsChart({
 
   // Get browser icon based on name
   const getBrowserIcon = (browserName: string) => {
-    console.log('🎨 Getting Browser Icon for:', browserName);
     switch (browserName.toLowerCase()) {
       case 'chrome':
         return <Chrome className="h-5 w-5 text-white dark:text-zinc-900" />;
@@ -115,46 +98,23 @@ export function FormAnalyticsChart({
 
   // Transform browser stats for the advanced analytics
   const browserStats = React.useMemo(() => {
-    console.log('🔄 Processing Browser Stats:', analytics?.browserStats);
     if (!analytics?.browserStats) {
-      console.log('❌ No browser stats available');
       return [];
     }
     const transformed = analytics.browserStats.map(stat => ({
       ...stat,
       icon: getBrowserIcon(stat.name)
     }));
-    console.log('✅ Transformed Browser Stats:', transformed);
     return transformed;
   }, [analytics?.browserStats]);
 
   // Transform location stats for the advanced analytics
   const locationStats = React.useMemo(() => {
-    console.log('🔄 Processing Location Stats:', analytics?.locationStats);
     if (!analytics?.locationStats) {
-      console.log('❌ No location stats available');
       return [];
     }
-    console.log('✅ Location Stats:', analytics.locationStats);
     return analytics.locationStats;
   }, [analytics?.locationStats]);
-
-  // Debug log for the data being passed to AdvancedAnalytics
-  React.useEffect(() => {
-    console.log('📤 Data being passed to AdvancedAnalytics:', {
-      browserStats,
-      locationStats,
-      userInsights,
-      isPremium,
-      activeTab,
-      isCollapsed,
-      analytics: {
-        browserStats: analytics?.browserStats,
-        locationStats: analytics?.locationStats,
-        userInsights: analytics?.userInsights
-      }
-    });
-  }, [browserStats, locationStats, userInsights, isPremium, activeTab, isCollapsed, analytics]);
 
   // Get the appropriate time range label
   const getTimeRangeLabel = () => {
@@ -174,18 +134,18 @@ export function FormAnalyticsChart({
       const hour12 = hour % 12 || 12;
       return `${hour12}${ampm}`;
     }
-    
+
     // For week and month, return as is
     return value;
   };
 
   if (isLoading) {
     return (
-      <div className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 rounded-lg sm:rounded-xl border border-gray-100 dark:border-gray-800/50">
+      <div className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 rounded-lg sm:rounded-xl border border-zinc-100 dark:border-zinc-800/50">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative p-6 sm:p-8 lg:p-12">
           <div className="flex flex-col items-center justify-center h-[400px] gap-4">
-            <div className="w-8 h-8 animate-spin rounded-lg border-4 border-gray-200 dark:border-gray-800 border-t-black dark:border-t-white"></div>
+            <div className="w-8 h-8 animate-spin rounded-lg border-4 border-zinc-200 dark:border-zinc-800 border-t-black dark:border-t-white"></div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Loading analytics data...</p>
           </div>
         </div>
@@ -195,9 +155,9 @@ export function FormAnalyticsChart({
 
   // Handle empty data scenario
   const hasData = chartData.some(point => point.submissions > 0);
-  
+
   return (
-    <div className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 rounded-lg sm:rounded-xl border border-gray-100 dark:border-gray-800/50">
+    <div className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 rounded-lg sm:rounded-xl border border-zinc-100 dark:border-zinc-800/50">
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
       <div className="relative p-6 sm:p-8 lg:p-12">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
@@ -211,8 +171,8 @@ export function FormAnalyticsChart({
               size="sm"
               className={cn(
                 "rounded-lg cursor-pointer",
-                timeRange === 'day' 
-                  ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100" 
+                timeRange === 'day'
+                  ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100"
                   : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
               )}
               onClick={() => onTimeRangeChange('day')}
@@ -224,8 +184,8 @@ export function FormAnalyticsChart({
               size="sm"
               className={cn(
                 "rounded-lg cursor-pointer",
-                timeRange === 'week' 
-                  ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100" 
+                timeRange === 'week'
+                  ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100"
                   : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
               )}
               onClick={() => onTimeRangeChange('week')}
@@ -237,8 +197,8 @@ export function FormAnalyticsChart({
               size="sm"
               className={cn(
                 "rounded-lg cursor-pointer",
-                timeRange === 'month' 
-                  ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100" 
+                timeRange === 'month'
+                  ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100"
                   : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
               )}
               onClick={() => onTimeRangeChange('month')}
@@ -255,8 +215,8 @@ export function FormAnalyticsChart({
             size="sm"
             className={cn(
               "rounded-lg cursor-pointer",
-              activeTab === 'overview' 
-                ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100" 
+              activeTab === 'overview'
+                ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100"
                 : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
             )}
             onClick={() => setActiveTab('overview')}
@@ -268,8 +228,8 @@ export function FormAnalyticsChart({
             size="sm"
             className={cn(
               "rounded-lg cursor-pointer",
-              activeTab === 'insights' 
-                ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100" 
+              activeTab === 'insights'
+                ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100"
                 : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
             )}
             onClick={() => setActiveTab('insights')}
@@ -283,7 +243,7 @@ export function FormAnalyticsChart({
           <>
             {!hasData ? (
               <div className="flex flex-col items-center justify-center h-[400px] gap-4">
-                <div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
                   <BarChart3 className="w-6 h-6 text-gray-400 dark:text-gray-500" />
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 dark:text-white">No data yet</h3>
@@ -293,25 +253,25 @@ export function FormAnalyticsChart({
               </div>
             ) : (
 
-              
-                <div className="bg-white dark:bg-zinc-800/50 rounded-lg p-4 sm:p-5 border border-gray-100 dark:border-gray-800/50">
+
+                <div className="bg-white dark:bg-zinc-800/50 rounded-lg p-4 sm:p-5 border border-zinc-100 dark:border-zinc-800/50">
                   <div className="h-[300px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={chartData || []}>
                         <CartesianGrid strokeDasharray="3 3" className="stroke-gray-100 dark:stroke-gray-800" />
-                        <XAxis 
-                          dataKey="time" 
+                        <XAxis
+                          dataKey="time"
                           tickFormatter={formatTimeLabel}
                           className="text-xs text-gray-500 dark:text-gray-400"
                         />
-                        <YAxis 
+                        <YAxis
                           className="text-xs text-gray-500 dark:text-gray-400"
                         />
                         <Tooltip
                           content={({ active, payload, label }) => {
                             if (active && payload && payload.length) {
                               return (
-                                <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-3 border border-gray-100 dark:border-gray-800">
+                                <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-3 border border-zinc-100 dark:border-zinc-800">
                                   <p className="text-sm font-medium text-gray-900 dark:text-white">{label}</p>
                                   <p className="text-sm text-gray-500 dark:text-gray-400">
                                     {payload[0]?.value || 0} submissions
@@ -322,9 +282,9 @@ export function FormAnalyticsChart({
                             return null
                           }}
                         />
-                        <Bar 
-                          dataKey="submissions" 
-                          fill="currentColor" 
+                        <Bar
+                          dataKey="submissions"
+                          fill="currentColor"
                           className="fill-black dark:fill-white"
                           radius={[4, 4, 0, 0]}
                         />
@@ -352,4 +312,4 @@ export function FormAnalyticsChart({
       </div>
     </div>
   )
-} 
+}

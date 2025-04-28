@@ -11,9 +11,9 @@ interface TermsSectionProps {
 }
 
 const TermsSection: React.FC<TermsSectionProps> = ({ title, children, icon: Icon }) => (
-  <div className="p-6 rounded-xl bg-[#fffdf7] dark:bg-neutral-900 shadow-sm mb-6 border border-neutral-200 dark:border-neutral-800">
+  <div className="p-6 rounded-xl bg-[#fffdf7] dark:bg-zinc-900 shadow-sm mb-6 border border-neutral-200 dark:border-zinc-800">
     <div className="flex items-center gap-3 mb-3">
-      <div className="p-2 rounded-lg bg-neutral-100 dark:bg-neutral-800">
+      <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800">
         <Icon className="text-neutral-800 dark:text-neutral-200" size={20} />
       </div>
       <h2 className="text-lg font-medium text-neutral-900 dark:text-neutral-50">{title}</h2>
@@ -27,7 +27,7 @@ const TermsSection: React.FC<TermsSectionProps> = ({ title, children, icon: Icon
 const TermsOfService: React.FC = () => (
   <>
     <Navbar />
-    <main className="bg-[#fffdf7] dark:bg-neutral-950 min-h-screen pt-20 pb-16">
+    <main className="bg-[#fffdf7] dark:bg-zinc-950 min-h-screen pt-20 pb-16">
       <div className="max-w-3xl mx-auto px-4 mt-10">
         <header className="text-center mb-10">
           <h1 className="text-5xl font-semibold text-neutral-900 dark:text-neutral-50 mb-3">
@@ -39,7 +39,7 @@ const TermsOfService: React.FC = () => (
         </header>
 
         <div className="space-y-6">
-          <div className="p-4 rounded-xl bg-neutral-100 dark:bg-neutral-800/50 text-neutral-600 dark:text-neutral-300 text-sm">
+          <div className="p-4 rounded-xl bg-zinc-100 dark:bg-zinc-800/50 text-neutral-600 dark:text-neutral-300 text-sm">
             <div className="flex items-start gap-3">
               <AlertCircle className="h-5 w-5 text-neutral-500 dark:text-neutral-400 mt-0.5 flex-shrink-0" />
               <p>
@@ -81,7 +81,7 @@ const TermsOfService: React.FC = () => (
             </p>
           </TermsSection>
 
-          <div className="p-6 rounded-xl bg-[#fffdf7] dark:bg-neutral-900 shadow-sm text-center border border-neutral-200 dark:border-neutral-800">
+          <div className="p-6 rounded-xl bg-[#fffdf7] dark:bg-zinc-900 shadow-sm text-center border border-neutral-200 dark:border-zinc-800">
             <h3 className="text-neutral-800 dark:text-neutral-200 font-medium mb-3">Contact Us</h3>
             <a href="mailto:contact@mantlz.app" 
               className="inline-flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors">

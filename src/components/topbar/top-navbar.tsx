@@ -100,7 +100,7 @@ const NavigationSection = memo(function NavigationSection() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="flex items-center gap-1 px-1 hover:bg-gray-800">
+        <Button variant="ghost" className="flex items-center gap-1 px-1 hover:bg-zinc-800">
           <span>Navigation</span>
           <ChevronDown className="h-4 w-4" />
         </Button>
@@ -138,7 +138,7 @@ const ActionButtonsSection = memo(function ActionButtonsSection() {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="rounded-lg hover:bg-gray-800"
+            className="rounded-lg hover:bg-zinc-800"
           >
             <HelpCircle className="h-5 w-5" />
           </Button>
@@ -146,7 +146,7 @@ const ActionButtonsSection = memo(function ActionButtonsSection() {
       />
 
       <SettingsDialog>
-        <Button variant="ghost" size="icon" className="rounded-lg hover:bg-gray-800 relative">
+        <Button variant="ghost" size="icon" className="rounded-lg hover:bg-zinc-800 relative">
           <Settings className="h-5 w-5" />
           <span className="absolute top-0.5 -right-1 text-[10px] font-medium text-zinc-500 dark:text-zinc-400">⌘/S</span>
         </Button>

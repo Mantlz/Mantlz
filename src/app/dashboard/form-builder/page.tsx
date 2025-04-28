@@ -157,7 +157,7 @@ export default function FormBuilderPage() {
               onClick={handleContinue}
               disabled={!selectedType}
               className={cn(
-                "flex items-center gap-2 font-medium rounded-md",
+                "flex items-center gap-2 font-medium rounded-lg",
                 "bg-primary hover:bg-primary/90 text-white dark:text-black dark:bg-primary",
                 "disabled:opacity-60 disabled:pointer-events-none transition-all duration-200",
                 "text-sm px-4 h-9 cursor-pointer"
@@ -188,19 +188,19 @@ export default function FormBuilderPage() {
               <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-neutral-400" />
               <Input
                 placeholder="Search templates..."
-                className="pl-9 h-9 bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 rounded-md w-full sm:w-80 focus-visible:ring-primary/20 focus-visible:ring-offset-0 text-sm cursor-text"
+                className="pl-9 h-9 bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 rounded-lg w-full sm:w-80 focus-visible:ring-primary/20 focus-visible:ring-offset-0 text-sm cursor-text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
 
             <div className="flex items-center gap-2 w-full justify-between sm:justify-end sm:w-auto">
-              <div className="flex items-center border border-neutral-200 dark:border-zinc-800 rounded-md p-1 bg-white dark:bg-zinc-900">
+              <div className="flex items-center border border-neutral-200 dark:border-zinc-800 rounded-lg p-1 bg-white dark:bg-zinc-900">
                 <button 
                   className={cn(
                     "p-1.5 rounded transition-all duration-150 cursor-pointer",
                     viewMode === 'grid' 
-                      ? "bg-neutral-100 dark:bg-zinc-800 text-neutral-900 dark:text-white" 
+                      ? "bg-zinc-100 dark:bg-zinc-800 text-neutral-900 dark:text-white" 
                       : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300"
                   )}
                   onClick={() => setViewMode('grid')}
@@ -212,7 +212,7 @@ export default function FormBuilderPage() {
                   className={cn(
                     "p-1.5 rounded transition-all duration-150 cursor-pointer",
                     viewMode === 'list' 
-                      ? "bg-neutral-100 dark:bg-zinc-800 text-neutral-900 dark:text-white" 
+                      ? "bg-zinc-100 dark:bg-zinc-800 text-neutral-900 dark:text-white" 
                       : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300"
                   )}
                   onClick={() => setViewMode('list')}
@@ -226,7 +226,7 @@ export default function FormBuilderPage() {
 
           <div className="w-full overflow-x-auto pb-1 -mx-2 px-2">
             <Tabs defaultValue="all" value={activeCategory} onValueChange={setActiveCategory} className="w-full min-w-[480px]">
-              <TabsList className="bg-white dark:bg-zinc-900 p-1 h-auto flex space-x-1 overflow-x-auto border border-neutral-200 dark:border-zinc-800 rounded-md">
+              <TabsList className="bg-white dark:bg-zinc-900 p-1 h-auto flex space-x-1 overflow-x-auto border border-neutral-200 dark:border-zinc-800 rounded-lg">
                 {categories.map(category => {
                   const Icon = category.icon;
                   return (
@@ -235,11 +235,11 @@ export default function FormBuilderPage() {
                       value={category.id}
                       className={cn(
                         "flex items-center gap-2 px-3 py-1.5 text-sm transition-all duration-150 cursor-pointer whitespace-nowrap",
-                        "data-[state=active]:bg-neutral-100 dark:data-[state=active]:bg-zinc-800",
+                        "data-[state=active]:bg-zinc-100 dark:data-[state=active]:bg-zinc-800",
                         "data-[state=active]:text-neutral-900 dark:data-[state=active]:text-white",
                         "data-[state=inactive]:text-neutral-500 dark:data-[state=inactive]:text-neutral-400",
                         "data-[state=inactive]:hover:text-neutral-700 dark:data-[state=inactive]:hover:text-neutral-300",
-                        "font-medium rounded-md"
+                        "font-medium rounded-lg"
                       )}
                     >
                       <Icon className="h-4 w-4" />
@@ -253,7 +253,7 @@ export default function FormBuilderPage() {
         </div>
 
         {filteredForms.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 text-center bg-neutral-50 dark:bg-zinc-900 rounded-lg border border-neutral-200 dark:border-zinc-800">
+          <div className="flex flex-col items-center justify-center py-12 text-center bg-zinc-50 dark:bg-zinc-900 rounded-lg border border-neutral-200 dark:border-zinc-800">
             <IconSearch className="h-10 w-10 text-neutral-300 dark:text-neutral-600 mb-3" />
             <h3 className="text-base font-medium text-neutral-800 dark:text-neutral-200 mb-1.5">No matching templates</h3>
             <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-md px-6">Try adjusting your search or category filter</p>
@@ -297,12 +297,12 @@ export default function FormBuilderPage() {
                         <CardHeader className="p-3 pb-0">
                           <div className="flex items-start justify-between mb-2">
                             <div className={cn(
-                              "p-1.5 rounded-md shrink-0",
+                              "p-1.5 rounded-lg shrink-0",
                               isSelected && !isComingSoon
                                 ? 'bg-primary/10 text-primary' 
                                 : isComingSoon
-                                  ? 'bg-neutral-100 text-neutral-400 dark:bg-zinc-800 dark:text-neutral-500'
-                                  : 'bg-neutral-100 text-neutral-500 dark:bg-zinc-800 dark:text-neutral-400'
+                                  ? 'bg-zinc-100 text-neutral-400 dark:bg-zinc-800 dark:text-neutral-500'
+                                  : 'bg-zinc-100 text-neutral-500 dark:bg-zinc-800 dark:text-neutral-400'
                             )}>
                               <Icon className="h-3.5 w-3.5" />
                             </div>
@@ -319,7 +319,7 @@ export default function FormBuilderPage() {
                             {isComingSoon && (
                               <Badge 
                                 variant="outline" 
-                                className="text-[9px] border-neutral-200 dark:border-zinc-800 text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-zinc-900 font-medium px-1.5 h-4"
+                                className="text-[9px] border-neutral-200 dark:border-zinc-800 text-neutral-500 dark:text-neutral-400 bg-zinc-50 dark:bg-zinc-900 font-medium px-1.5 h-4"
                               >
                                 Coming Soon
                               </Badge>
@@ -354,8 +354,8 @@ export default function FormBuilderPage() {
                               variant={isSelected ? "default" : "outline"} 
                               size="sm" 
                               className={cn(
-                                "mt-2 w-full text-xs rounded-md h-7 cursor-pointer",
-                                !isSelected && "text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-zinc-800 bg-transparent hover:bg-neutral-100 dark:hover:bg-zinc-800"
+                                "mt-2 w-full text-xs rounded-lg h-7 cursor-pointer",
+                                !isSelected && "text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-zinc-800 bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800"
                               )}
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -389,7 +389,7 @@ export default function FormBuilderPage() {
                       onClick={() => !isComingSoon && setSelectedType(type.id)}
                       className={cn(
                         "relative",
-                        !isComingSoon && "cursor-pointer hover:bg-neutral-50 dark:hover:bg-zinc-900/50 transition-colors duration-200",
+                        !isComingSoon && "cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors duration-200",
                         isComingSoon && "opacity-75",
                         isSelected && !isComingSoon && "bg-primary/5 dark:bg-primary/10"
                       )}
@@ -397,12 +397,12 @@ export default function FormBuilderPage() {
                       <div className="flex flex-row items-center px-4 py-3">
                         <div className="flex items-center flex-1 gap-3">
                           <div className={cn(
-                            "p-2 rounded-md shrink-0",
+                            "p-2 rounded-lg shrink-0",
                             isSelected && !isComingSoon
                               ? 'bg-primary/10 text-primary' 
                               : isComingSoon
-                                ? 'bg-neutral-100 text-neutral-400 dark:bg-zinc-800 dark:text-neutral-500'
-                                : 'bg-neutral-100 text-neutral-500 dark:bg-zinc-800 dark:text-neutral-400'
+                                ? 'bg-zinc-100 text-neutral-400 dark:bg-zinc-800 dark:text-neutral-500'
+                                : 'bg-zinc-100 text-neutral-500 dark:bg-zinc-800 dark:text-neutral-400'
                           )}>
                             <Icon className="h-4 w-4" />
                           </div>
@@ -431,7 +431,7 @@ export default function FormBuilderPage() {
                               {isComingSoon && (
                                 <Badge 
                                   variant="outline" 
-                                  className="text-[9px] border-neutral-200 dark:border-zinc-800 text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-zinc-900 font-medium px-1.5 h-4"
+                                  className="text-[9px] border-neutral-200 dark:border-zinc-800 text-neutral-500 dark:text-neutral-400 bg-zinc-50 dark:bg-zinc-900 font-medium px-1.5 h-4"
                                 >
                                   Coming Soon
                                 </Badge>
@@ -461,8 +461,8 @@ export default function FormBuilderPage() {
                                 }
                               }}
                               className={cn(
-                                "text-xs h-7 px-3 rounded-md cursor-pointer",
-                                !isSelected && "text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-zinc-800 bg-transparent hover:bg-neutral-100 dark:hover:bg-zinc-800"
+                                "text-xs h-7 px-3 rounded-lg cursor-pointer",
+                                !isSelected && "text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-zinc-800 bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800"
                               )}
                             >
                               {isSelected ? "Use Template" : "Select"}

@@ -12,19 +12,19 @@ export function FeatureGrid() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {/* Large card - Multiple Form Types */}
-        <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-zinc-800 p-8 lg:col-span-2 flex flex-col">
-          <div className="h-48 mb-6 flex items-center justify-center bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+        <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-md hover:shadow-lg transition-all border border-zinc-100 dark:border-zinc-800 p-8 lg:col-span-2 flex flex-col">
+          <div className="h-48 mb-6 flex items-center justify-center bg-zinc-50 dark:bg-zinc-900/20 rounded-xl">
             <div className="relative w-64 h-32">
               <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
                 <div className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md flex items-center space-x-3">
                   <FileText className="h-6 w-6 text-blue-500" />
-                  <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                  <div className="h-4 w-32 bg-zinc-200 dark:bg-zinc-700 rounded"></div>
                 </div>
               </div>
               <div className="absolute bottom-0 right-0 w-full h-full flex items-center justify-center">
                 <div className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md -mt-6 -ml-6">
-                  <div className="h-4 w-48 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
-                  <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                  <div className="h-4 w-48 bg-zinc-200 dark:bg-zinc-700 rounded mb-2"></div>
+                  <div className="h-4 w-32 bg-zinc-200 dark:bg-zinc-700 rounded"></div>
                 </div>
               </div>
             </div>
@@ -35,11 +35,11 @@ export function FeatureGrid() {
           </p>
         </div>
  {/* Developer-Friendly */}
- <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-zinc-800 p-8 flex flex-col">
-          <div className="h-48 mb-6 flex items-center justify-center bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+ <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-md hover:shadow-lg transition-all border border-zinc-100 dark:border-zinc-800 p-8 flex flex-col">
+          <div className="h-48 mb-6 flex items-center justify-center bg-zinc-50 dark:bg-zinc-900/20 rounded-xl">
             <div className="flex flex-col items-center">
               <Code className="h-16 w-16 text-blue-500 mb-4" />
-              <div className="bg-gray-800 text-gray-300 p-3 rounded-md text-xs font-mono shadow-inner">
+              <div className="bg-zinc-800 text-gray-300 p-3 rounded-lg text-xs font-mono shadow-inner">
                 <div>import {"{"} Mantlz {"}"} from &quot;@mantlz/nextjs&quot;;</div>
               </div>
             </div>
@@ -54,16 +54,16 @@ export function FeatureGrid() {
       
 
         {/* Regular card - Dark Mode */}
-        <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-zinc-800 p-8 flex flex-col">
-          <div className="h-48 mb-6 flex items-center justify-center bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+        <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-md hover:shadow-lg transition-all border border-zinc-100 dark:border-zinc-800 p-8 flex flex-col">
+          <div className="h-48 mb-6 flex items-center justify-center bg-zinc-50 dark:bg-zinc-900/20 rounded-xl">
             <div className="grid grid-cols-2 gap-4 w-48 h-48 p-4">
               <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-md flex items-center justify-center">
-                <div className="h-16 w-16 bg-gray-100 dark:bg-gray-700 rounded-md flex items-center justify-center">
-                  <div className="h-8 w-8 bg-gray-300 dark:bg-gray-600 rounded"></div>
+                <div className="h-16 w-16 bg-zinc-100 dark:bg-zinc-700 rounded-lg flex items-center justify-center">
+                  <div className="h-8 w-8 bg-zinc-300 dark:bg-zinc-600 rounded"></div>
                 </div>
               </div>
-              <div className="bg-gray-800 rounded-lg shadow-md flex items-center justify-center">
-                <div className="h-16 w-16 bg-gray-700 rounded-md flex items-center justify-center">
+              <div className="bg-zinc-800 rounded-lg shadow-md flex items-center justify-center">
+                <div className="h-16 w-16 bg-zinc-700 rounded-lg flex items-center justify-center">
                   <Moon className="h-8 w-8 text-blue-400" />
                 </div>
               </div>
@@ -76,8 +76,8 @@ export function FeatureGrid() {
         </div>
 
         {/* Large card - Analytics */}
-        <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-zinc-800 p-8 lg:col-span-2 flex flex-col">
-          <div className="h-48 mb-6 flex items-center justify-center bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+        <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-md hover:shadow-lg transition-all border border-zinc-100 dark:border-zinc-800 p-8 lg:col-span-2 flex flex-col">
+          <div className="h-48 mb-6 flex items-center justify-center bg-zinc-50 dark:bg-zinc-900/20 rounded-xl">
             <div className="relative w-64 h-32">
               <svg className="absolute inset-0" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
                 <rect x="20" y="60" width="20" height="40" fill="#dbeafe" rx="2" />

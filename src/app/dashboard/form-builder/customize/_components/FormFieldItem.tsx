@@ -51,7 +51,7 @@ export function FormFieldItem({
       ref={setNodeRef} 
       style={style}
       className={cn(
-        "bg-white dark:bg-zinc-950 rounded-md transition-all duration-200",
+        "bg-white dark:bg-zinc-950 rounded-lg transition-all duration-200",
         "border border-neutral-200 dark:border-zinc-800",
         "hover:border-primary/25 dark:hover:border-primary/25",
         "group",
@@ -69,7 +69,7 @@ export function FormFieldItem({
                   "hover:text-primary/80 dark:hover:text-primary/80",
                   "transition-colors duration-200",
                   "p-1 rounded-lg",
-                  "group-hover:bg-neutral-50 dark:group-hover:bg-zinc-900",
+                  "group-hover:bg-zinc-50 dark:group-hover:bg-zinc-900",
                   !isDragging && "group-hover:animate-pulse"
                 )}
                 {...attributes}
@@ -117,7 +117,7 @@ export function FormFieldItem({
               className={cn(
                 "h-9 py-1.5 px-3 text-sm cursor-text",
                 "bg-transparent text-neutral-800 dark:text-neutral-200",
-                "rounded-md",
+                "rounded-lg",
                 "border border-neutral-200 dark:border-zinc-800",
                 "focus:border-primary/30 focus:ring-1 focus:ring-primary/20",
                 "placeholder:text-neutral-400 dark:placeholder:text-neutral-600",
@@ -133,7 +133,7 @@ export function FormFieldItem({
               checked={field.required}
               onCheckedChange={(checked) => onToggleRequired(field.id, checked)}
               className={cn(
-                "data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-neutral-200 border border-zinc-400 dark:border-zinc-800",
+                "data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-zinc-200 border border-zinc-200 dark:border-zinc-800",
                 "cursor-pointer h-4 w-7"
               )}
             />
@@ -154,7 +154,7 @@ export function FormFieldItem({
           className={cn(
             "h-9 py-1.5 px-3 text-sm cursor-text",
             "bg-transparent text-neutral-800 dark:text-neutral-200",
-            "rounded-md",
+            "rounded-lg",
             "border border-neutral-200 dark:border-zinc-800",
             "focus:border-primary/30 focus:ring-1 focus:ring-primary/20",
             "placeholder:text-neutral-400 dark:placeholder:text-neutral-600",

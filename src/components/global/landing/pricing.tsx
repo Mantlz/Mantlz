@@ -241,7 +241,7 @@ function PricingCard({
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             {plan.title === "Starter" && (
-              <div className="w-8 h-8 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center border border-zinc-200 dark:border-zinc-700">
+              <div className="w-8 h-8 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center border border-zinc-200 dark:border-zinc-700">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -262,7 +262,7 @@ function PricingCard({
               </div>
             )}
             {plan.title === "Professional" && (
-              <div className="w-8 h-8 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -282,7 +282,7 @@ function PricingCard({
               </div>
             )}
             {plan.title === "Business" && (
-              <div className="w-8 h-8 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -347,10 +347,10 @@ function PricingCard({
         <Button
           onClick={onCheckout}
           disabled={isLoading || isCurrentPlan}
-          className={`w-full rounded-md py-6 text-center font-medium text-lg transition-colors duration-200 mt-auto ${
+          className={`w-full rounded-lg py-6 text-center font-medium text-lg transition-colors duration-200 mt-auto ${
             plan.title === "Starter"
               ? "bg-[#0a1629] hover:bg-[#152a4a] text-white"
-              : "bg-white hover:bg-gray-100 text-gray-900 border border-gray-200"
+              : "bg-white hover:bg-zinc-100 text-gray-900 border border-zinc-200"
           } ${isCurrentPlan ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           {isLoading ? "Processing..." : isCurrentPlan ? "Current Plan" : plan.buttonText}

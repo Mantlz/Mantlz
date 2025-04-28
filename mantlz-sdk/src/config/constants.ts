@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://form-quay.vercel.app';
+export const API_BASE_URL = 'https://mantlz.app';
 
 export const API_ENDPOINTS = {
   SUBMIT_FORM: '/v1/forms/submit',

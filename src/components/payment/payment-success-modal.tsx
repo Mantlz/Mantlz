@@ -54,7 +54,7 @@ function PaymentSuccessModalContent() {
   
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100]">
-      <div className="bg-white dark:bg-zinc-900 rounded-md max-w-md w-full border border-slate-200 dark:border-zinc-800 shadow-xl overflow-hidden">
+      <div className="bg-white dark:bg-zinc-900 rounded-lg max-w-md w-full border border-slate-200 dark:border-zinc-800 shadow-xl overflow-hidden">
         {/* Accent line */}
         <div className="absolute top-0 left-0 h-full w-1 bg-gradient-to-b from-slate-300 via-slate-400 to-slate-500 dark:from-zinc-700 dark:via-zinc-600 dark:to-zinc-500" />
         

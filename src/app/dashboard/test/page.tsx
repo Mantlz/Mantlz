@@ -128,11 +128,11 @@ const TestPage = () => {
   return (
     <div className="space-y-4 sm:space-y-6">
       {/* Header Card */}
-      <div className="bg-white dark:bg-zinc-900 rounded-xl overflow-hidden border border-gray-100 dark:border-zinc-800 shadow-sm">
-        <div className="bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100 dark:border-zinc-800">
+      <div className="bg-white dark:bg-zinc-900 rounded-xl overflow-hidden border border-zinc-100 dark:border-zinc-800 shadow-sm">
+        <div className="bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 px-4 sm:px-6 py-4 sm:py-5 border-b border-zinc-100 dark:border-zinc-800">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+              <div className="p-2 bg-zinc-50 dark:bg-zinc-900/20 rounded-lg">
                 <PlayCircle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               </div>
               <div>
@@ -141,13 +141,13 @@ const TestPage = () => {
               </div>
             </div>
             <div className="flex items-center gap-2 self-end sm:self-auto">
-              <span className="text-xs py-1 px-2 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 rounded-lg flex items-center gap-1.5">
+              <span className="text-xs py-1 px-2 bg-zinc-100 text-blue-800 dark:bg-zinc-900/30 dark:text-blue-400 rounded-lg flex items-center gap-1.5">
                 <Check className="h-3 w-3" />
                 <span>{getActiveFormCount()} Live Preview{getActiveFormCount() !== 1 ? 's' : ''}</span>
               </span>
               <button 
                 onClick={resetAllForms}
-                className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
+                className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
                 title="Reset all forms"
               >
                 <RefreshCw className="h-4 w-4" />
@@ -160,13 +160,13 @@ const TestPage = () => {
       {/* Form Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Feedback Form Card */}
-        <div className="bg-white dark:bg-zinc-900 rounded-xl overflow-hidden border border-gray-100 dark:border-zinc-800 shadow-sm">
+        <div className="bg-white dark:bg-zinc-900 rounded-xl overflow-hidden border border-zinc-100 dark:border-zinc-800 shadow-sm">
           <div 
-            className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-800/50 cursor-pointer sm:cursor-default"
+            className="flex items-center justify-between px-4 py-3 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 cursor-pointer sm:cursor-default"
             onClick={() => isMobile && toggleExpanded('feedbackForm')}
           >
             <div className="flex items-center gap-2">
-              <div className="p-1.5 bg-blue-50 dark:bg-blue-900/20 rounded-md">
+              <div className="p-1.5 bg-zinc-50 dark:bg-zinc-900/20 rounded-lg">
                 <FileText className="h-4 w-4 text-blue-500" />
               </div>
               <span className="text-sm font-medium text-gray-900 dark:text-white">Feedback Form</span>
@@ -180,7 +180,7 @@ const TestPage = () => {
                 className={`px-2 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 ${
                   formSettings.feedbackForm.active 
                     ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' 
-                    : 'bg-gray-100 text-gray-600 dark:bg-zinc-700 dark:text-gray-300'
+                    : 'bg-zinc-100 text-gray-600 dark:bg-zinc-700 dark:text-gray-300'
                 }`}
               >
                 {formSettings.feedbackForm.active && <Check className="h-3 w-3" />}
@@ -204,7 +204,7 @@ const TestPage = () => {
                   placeholder="Paste your form ID here"
                   value={formSettings.feedbackForm.formId}
                   onChange={(e) => updateFormId('feedbackForm', e.target.value)}
-                  className="w-full text-sm rounded-lg border border-gray-200 dark:border-zinc-700 px-3 py-2 bg-white dark:bg-zinc-800 text-gray-900 dark:text-gray-100 outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all"
+                  className="w-full text-sm rounded-lg border border-zinc-200 dark:border-zinc-700 px-3 py-2 bg-white dark:bg-zinc-800 text-gray-900 dark:text-gray-100 outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all"
                 />
               </div>
               
@@ -217,8 +217,8 @@ const TestPage = () => {
                   onClick={() => toggleDarkMode('feedbackForm')}
                   className={`text-xs px-2.5 py-1 rounded-lg flex items-center gap-1.5 transition-colors ${
                     formSettings.feedbackForm.darkMode 
-                      ? 'bg-gray-800 text-gray-200' 
-                      : 'bg-gray-100 text-gray-700 dark:bg-zinc-700 dark:text-gray-300'
+                      ? 'bg-zinc-800 text-gray-200' 
+                      : 'bg-zinc-100 text-gray-700 dark:bg-zinc-700 dark:text-gray-300'
                   }`}
                 >
                   {formSettings.feedbackForm.darkMode ? 'Dark' : 'Light'}
@@ -226,7 +226,7 @@ const TestPage = () => {
               </div>
               
               {formSettings.feedbackForm.active && formSettings.feedbackForm.formId && (
-                <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800/30">
+                <div className="mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800/30">
                   <div className="w-full overflow-hidden">
                     <FeedbackForm 
                       formId={formSettings.feedbackForm.formId} 
@@ -237,7 +237,7 @@ const TestPage = () => {
               )}
               
               {formSettings.feedbackForm.active && !formSettings.feedbackForm.formId && (
-                <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800/30 flex flex-col items-center justify-center py-6 text-center">
+                <div className="mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800/30 flex flex-col items-center justify-center py-6 text-center">
                   <AlertCircle className="h-8 w-8 text-amber-500 mb-2" />
                   <p className="text-sm text-gray-600 dark:text-gray-400">
                     Please enter a form ID to preview
@@ -249,13 +249,13 @@ const TestPage = () => {
         </div>
 
         {/* Waitlist Form Card */}
-        <div className="bg-white dark:bg-zinc-900 rounded-xl overflow-hidden border border-gray-100 dark:border-zinc-800 shadow-sm">
+        <div className="bg-white dark:bg-zinc-900 rounded-xl overflow-hidden border border-zinc-100 dark:border-zinc-800 shadow-sm">
           <div 
-            className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-800/50 cursor-pointer sm:cursor-default"
+            className="flex items-center justify-between px-4 py-3 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 cursor-pointer sm:cursor-default"
             onClick={() => isMobile && toggleExpanded('waitlistForm')}
           >
             <div className="flex items-center gap-2">
-              <div className="p-1.5 bg-amber-50 dark:bg-amber-900/20 rounded-md">
+              <div className="p-1.5 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
                 <AlertCircle className="h-4 w-4 text-amber-500" />
               </div>
               <span className="text-sm font-medium text-gray-900 dark:text-white">Waitlist Form</span>
@@ -269,7 +269,7 @@ const TestPage = () => {
                 className={`px-2 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 ${
                   formSettings.waitlistForm.active 
                     ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' 
-                    : 'bg-gray-100 text-gray-600 dark:bg-zinc-700 dark:text-gray-300'
+                    : 'bg-zinc-100 text-gray-600 dark:bg-zinc-700 dark:text-gray-300'
                 }`}
               >
                 {formSettings.waitlistForm.active && <Check className="h-3 w-3" />}
@@ -293,7 +293,7 @@ const TestPage = () => {
                   placeholder="Paste your form ID here"
                   value={formSettings.waitlistForm.formId}
                   onChange={(e) => updateFormId('waitlistForm', e.target.value)}
-                  className="w-full text-sm rounded-lg border border-gray-200 dark:border-zinc-700 px-3 py-2 bg-white dark:bg-zinc-800 text-gray-900 dark:text-gray-100 outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all"
+                  className="w-full text-sm rounded-lg border border-zinc-200 dark:border-zinc-700 px-3 py-2 bg-white dark:bg-zinc-800 text-gray-900 dark:text-gray-100 outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all"
                 />
               </div>
               
@@ -306,8 +306,8 @@ const TestPage = () => {
                   onClick={() => toggleDarkMode('waitlistForm')}
                   className={`text-xs px-2.5 py-1 rounded-lg flex items-center gap-1.5 transition-colors ${
                     formSettings.waitlistForm.darkMode 
-                      ? 'bg-gray-800 text-gray-200' 
-                      : 'bg-gray-100 text-gray-700 dark:bg-zinc-700 dark:text-gray-300'
+                      ? 'bg-zinc-800 text-gray-200' 
+                      : 'bg-zinc-100 text-gray-700 dark:bg-zinc-700 dark:text-gray-300'
                   }`}
                 >
                   {formSettings.waitlistForm.darkMode ? 'Dark' : 'Light'}
@@ -315,7 +315,7 @@ const TestPage = () => {
               </div>
               
               {formSettings.waitlistForm.active && formSettings.waitlistForm.formId && (
-                <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800/30">
+                <div className="mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800/30">
                   <div className="w-full overflow-hidden">
                     <WaitlistForm 
                       formId={formSettings.waitlistForm.formId} 
@@ -326,7 +326,7 @@ const TestPage = () => {
               )}
               
               {formSettings.waitlistForm.active && !formSettings.waitlistForm.formId && (
-                <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800/30 flex flex-col items-center justify-center py-6 text-center">
+                <div className="mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800/30 flex flex-col items-center justify-center py-6 text-center">
                   <AlertCircle className="h-8 w-8 text-amber-500 mb-2" />
                   <p className="text-sm text-gray-600 dark:text-gray-400">
                     Please enter a form ID to preview
@@ -339,11 +339,11 @@ const TestPage = () => {
       </div>
 
       {/* Coming Soon Card - Contact Form */}
-      <div className="bg-white dark:bg-zinc-900 rounded-xl overflow-hidden border border-gray-100 dark:border-zinc-800 shadow-sm">
-        <div className="px-4 sm:px-6 py-4 border-b border-gray-100 dark:border-zinc-800">
+      <div className="bg-white dark:bg-zinc-900 rounded-xl overflow-hidden border border-zinc-100 dark:border-zinc-800 shadow-sm">
+        <div className="px-4 sm:px-6 py-4 border-b border-zinc-100 dark:border-zinc-800">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="p-1.5 bg-purple-50 dark:bg-purple-900/20 rounded-md">
+              <div className="p-1.5 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
                 <MessageSquare className="h-4 w-4 text-purple-500" />
               </div>
               <h3 className="text-sm font-medium text-gray-900 dark:text-white">Contact Form</h3>
@@ -357,14 +357,14 @@ const TestPage = () => {
         </div>
         
         <div className="flex flex-col items-center justify-center py-8 sm:py-10 text-center px-4">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-2xl bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 flex items-center justify-center">
             <Plus className="h-5 w-5 sm:h-6 sm:w-6 text-gray-400 dark:text-gray-500" />
           </div>
           <h3 className="text-base font-medium text-gray-900 dark:text-white mb-2">Contact Form Support</h3>
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-5 sm:mb-6 max-w-md mx-auto">
             We&apos;re working on adding contact form support to make it easier to gather leads and inquiries.
           </p>
-          <button className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
+          <button className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 bg-zinc-50 dark:text-blue-400 dark:bg-zinc-900/20 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-900/30 transition-colors">
             <ExternalLink className="h-3.5 w-3.5" />
             Learn more
           </button>
@@ -372,7 +372,7 @@ const TestPage = () => {
       </div>
       
       {/* Developer Note */}
-      <div className="bg-blue-50 dark:bg-blue-900/10 rounded-lg p-3 sm:p-3.5 border border-blue-100 dark:border-blue-900/20 text-xs sm:text-sm text-blue-700 dark:text-blue-400 flex items-start gap-2">
+      <div className="bg-zinc-50 dark:bg-zinc-900/10 rounded-lg p-3 sm:p-3.5 border border-blue-100 dark:border-blue-900/20 text-xs sm:text-sm text-blue-700 dark:text-blue-400 flex items-start gap-2">
         <Info className="h-4 w-4 mt-0.5 flex-shrink-0" />
         <p>
           This playground processes real form submissions. Any data submitted will be recorded in your Mantlz dashboard.

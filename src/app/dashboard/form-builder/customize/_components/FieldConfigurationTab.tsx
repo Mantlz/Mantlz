@@ -111,7 +111,7 @@ export function FieldConfigurationTab({
       return (
         <div className="space-y-3">
           {formFields.map((field) => (
-            <div key={field.id} className="bg-white dark:bg-zinc-950 rounded-md border border-neutral-200 dark:border-zinc-800 p-3">
+            <div key={field.id} className="bg-white dark:bg-zinc-950 rounded-lg border border-neutral-200 dark:border-zinc-800 p-3">
               <div className="flex items-center justify-between">
                 <span>{field.label}</span>
               </div>
@@ -153,7 +153,7 @@ export function FieldConfigurationTab({
 
   return (
     <div className="space-y-5">
-      <div className="bg-blue-50/50 dark:bg-blue-950/20 p-3 rounded-md border border-blue-100 dark:border-blue-900/30">
+      <div className="bg-zinc-50/50 dark:bg-zinc-950/20 p-3 rounded-lg border border-blue-100 dark:border-blue-900/30">
         <div className="flex gap-2 text-sm text-blue-600 dark:text-blue-400">
           <InfoIcon className="h-4 w-4 mt-0.5 shrink-0 text-blue-500 dark:text-blue-400" />
           <div>
@@ -174,7 +174,7 @@ export function FieldConfigurationTab({
           </span>
         </h3>
         {formFields.length === 0 ? (
-          <div className="text-center py-6 px-4 bg-neutral-50/80 dark:bg-zinc-800/30 rounded-md border border-dashed border-neutral-200 dark:border-zinc-800 transition-all duration-300">
+          <div className="text-center py-6 px-4 bg-zinc-50/80 dark:bg-zinc-800/30 rounded-lg border border-dashed border-neutral-200 dark:border-zinc-800 transition-all duration-300">
             <GripHorizontal className="h-8 w-8 mx-auto text-neutral-300 dark:text-neutral-600 mb-2" />
             <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400">No fields added yet</p>
             <div className="mt-2 flex items-center justify-center text-primary">
@@ -195,7 +195,7 @@ export function FieldConfigurationTab({
           </span>
         </h3>
         {availableFields.length === 0 ? (
-           <p className="text-sm text-neutral-500 dark:text-neutral-400 p-3 bg-neutral-50/80 dark:bg-zinc-800/30 rounded-md border border-neutral-200 dark:border-zinc-800">
+           <p className="text-sm text-neutral-500 dark:text-neutral-400 p-3 bg-zinc-50/80 dark:bg-zinc-800/30 rounded-lg border border-neutral-200 dark:border-zinc-800">
              No additional fields available for this form type.
            </p>
         ) : (
@@ -206,9 +206,9 @@ export function FieldConfigurationTab({
                 <div 
                   key={field.id} 
                   className={cn(
-                    "flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-200 cursor-pointer",
+                    "flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 cursor-pointer",
                     isAdded 
-                      ? 'bg-neutral-100/80 text-neutral-400 dark:bg-zinc-800/60 dark:text-neutral-500 border border-neutral-200 dark:border-zinc-800 opacity-60 cursor-not-allowed' 
+                      ? 'bg-zinc-100/80 text-neutral-400 dark:bg-zinc-800/60 dark:text-neutral-500 border border-neutral-200 dark:border-zinc-800 opacity-60 cursor-not-allowed' 
                       : 'bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 hover:border-primary/20 dark:hover:border-primary/20 hover:shadow-sm'
                   )}
                   onClick={() => !isAdded && onToggleField(field)}

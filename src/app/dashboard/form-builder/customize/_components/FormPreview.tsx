@@ -51,7 +51,7 @@ export function FormPreview({
                   </Label>
                 )}
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="text-xs px-1.5 py-0.5 bg-neutral-100 dark:bg-zinc-800 rounded text-neutral-500 dark:text-neutral-400 font-mono">
+                  <div className="text-xs px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-neutral-500 dark:text-neutral-400 font-mono">
                     {field.type}
                   </div>
                 </div>
@@ -61,9 +61,9 @@ export function FormPreview({
                 <Input
                   type="text"
                   className={cn(
-                    "w-full p-2 rounded-md",
-                    "bg-neutral-50 dark:bg-neutral-900",
-                    "border border-neutral-200 dark:border-neutral-800",
+                    "w-full p-2 rounded-lg",
+                    "bg-zinc-50 dark:bg-zinc-900",
+                    "border border-neutral-200 dark:border-zinc-800",
                     "text-neutral-500 dark:text-neutral-400",
                     "placeholder:text-neutral-400 dark:placeholder:text-neutral-500",
                     "cursor-not-allowed transition-colors group-hover:border-primary/30",
@@ -77,9 +77,9 @@ export function FormPreview({
                 <Input
                   type="email"
                   className={cn(
-                    "w-full p-2 rounded-md",
-                    "bg-neutral-50 dark:bg-neutral-900",
-                    "border border-neutral-200 dark:border-neutral-800",
+                    "w-full p-2 rounded-lg",
+                    "bg-zinc-50 dark:bg-zinc-900",
+                    "border border-neutral-200 dark:border-zinc-800",
                     "text-neutral-500 dark:text-neutral-400",
                     "placeholder:text-neutral-400 dark:placeholder:text-neutral-500",
                     "cursor-not-allowed transition-colors group-hover:border-primary/30",
@@ -92,9 +92,9 @@ export function FormPreview({
               {field.type === 'textarea' && (
                 <Textarea
                   className={cn(
-                    "w-full p-2 rounded-md",
-                    "bg-neutral-50 dark:bg-neutral-900",
-                    "border border-neutral-200 dark:border-neutral-800",
+                    "w-full p-2 rounded-lg",
+                    "bg-zinc-50 dark:bg-zinc-900",
+                    "border border-neutral-200 dark:border-zinc-800",
                     "text-neutral-500 dark:text-neutral-400",
                     "placeholder:text-neutral-400 dark:placeholder:text-neutral-500",
                     "cursor-not-allowed transition-colors group-hover:border-primary/30",
@@ -109,9 +109,9 @@ export function FormPreview({
                 <Input
                   type="number"
                   className={cn(
-                    "w-full p-2 rounded-md",
-                    "bg-neutral-50 dark:bg-neutral-900",
-                    "border border-neutral-200 dark:border-neutral-800",
+                    "w-full p-2 rounded-lg",
+                    "bg-zinc-50 dark:bg-zinc-900",
+                    "border border-neutral-200 dark:border-zinc-800",
                     "text-neutral-500 dark:text-neutral-400",
                     "placeholder:text-neutral-400 dark:placeholder:text-neutral-500",
                     "cursor-not-allowed transition-colors group-hover:border-primary/30",
@@ -123,7 +123,7 @@ export function FormPreview({
               )}
               {field.type === 'checkbox' && (
                 <div className="flex items-center gap-2 opacity-70 py-1">
-                  <Checkbox disabled className="rounded-md border-neutral-400 dark:border-neutral-600 h-4 w-4" />
+                  <Checkbox disabled className="rounded-lg border-neutral-400 dark:border-zinc-600 h-4 w-4" />
                   <span className="text-sm text-neutral-600 dark:text-neutral-400">{field.placeholder || 'Check this option'}</span>
                 </div>
               )}
@@ -131,9 +131,9 @@ export function FormPreview({
                 <div className="relative">
                   <select 
                     className={cn(
-                      "w-full p-2 rounded-md appearance-none pr-8",
-                      "bg-neutral-50 dark:bg-neutral-900",
-                      "border border-neutral-200 dark:border-neutral-800",
+                      "w-full p-2 rounded-lg appearance-none pr-8",
+                      "bg-zinc-50 dark:bg-zinc-900",
+                      "border border-neutral-200 dark:border-zinc-800",
                       "text-neutral-500 dark:text-neutral-400",
                       "placeholder:text-neutral-400 dark:placeholder:text-neutral-500",
                       "cursor-not-allowed transition-colors group-hover:border-primary/30",
@@ -154,7 +154,7 @@ export function FormPreview({
             </div>
           ))
         ) : (
-          <div className="py-8 text-center text-neutral-500 dark:text-neutral-400 border-2 border-dashed border-neutral-200 dark:border-neutral-700 rounded-md bg-neutral-50/80 dark:bg-neutral-900/50">
+          <div className="py-8 text-center text-neutral-500 dark:text-neutral-400 border-2 border-dashed border-neutral-200 dark:border-zinc-700 rounded-lg bg-zinc-50/80 dark:bg-zinc-900/50">
             <div className="flex flex-col items-center justify-center">
               <svg className="h-12 w-12 text-neutral-300 dark:text-neutral-600 mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -168,7 +168,7 @@ export function FormPreview({
         {formFields.length > 0 && (
           <Button 
             className={cn(
-              "w-full mt-6 py-2 rounded-md cursor-pointer",
+              "w-full mt-6 py-2 rounded-lg cursor-pointer",
               "bg-primary hover:bg-primary/90",
               "text-white dark:text-black dark:bg-primary font-medium text-sm",
               "disabled:opacity-60 disabled:pointer-events-none transition-all duration-200"

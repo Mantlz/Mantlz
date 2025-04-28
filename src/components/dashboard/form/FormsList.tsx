@@ -116,7 +116,7 @@ export function FormsList({
   return (
     <div className="space-y-6 sm:space-y-8">
       {/* Welcome Section with Stats */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-zinc-100 via-zinc-50 to-zinc-100 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-800 rounded-xl sm:rounded-2xl border border-gray-100 dark:border-gray-800/50">
+      <div className="relative overflow-hidden bg-gradient-to-br from-zinc-100 via-zinc-50 to-zinc-100 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-800 rounded-xl sm:rounded-2xl border border-zinc-100 dark:border-zinc-800/50">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative p-6 sm:p-8 lg:p-12">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">
@@ -127,7 +127,7 @@ export function FormsList({
                     <img
                       src={user.imageUrl} 
                       alt={`${user?.firstName || 'User'}'s avatar`}
-                      className="w-full h-full bg-gray-100 dark:bg-zinc-800/50 border border-gray-200 dark:border-zinc-700 rounded-lg object-cover"
+                      className="w-full h-full bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-lg object-cover"
                     />
                   ) : (
                     <span className="text-lg sm:text-xl font-medium text-white dark:text-black">
@@ -149,7 +149,7 @@ export function FormsList({
               
               {forms.length > 0 && (
                 <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full sm:w-auto">
-                  <div className="bg-white dark:bg-zinc-800/50 rounded-xl p-4 sm:p-5 border border-gray-100 dark:border-gray-800/50 hover:border-gray-200 dark:hover:border-gray-700 transition-all duration-200">
+                  <div className="bg-white dark:bg-zinc-800/50 rounded-xl p-4 sm:p-5 border border-zinc-100 dark:border-zinc-800/50 hover:border-zinc-200 dark:hover:border-zinc-700 transition-all duration-200">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                         <FileSpreadsheet className="h-5 w-5 text-gray-900 dark:text-white" />
@@ -159,7 +159,7 @@ export function FormsList({
                         <p className="text-xs text-gray-500 dark:text-gray-400">Total Forms</p>
                       </div>
                     </div>
-                    <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+                    <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden">
                       <div 
                         className="h-full bg-black dark:bg-white rounded-lg transition-all duration-500"
                         style={{ width: `${Math.min((forms.length / 10) * 100, 100)}%` }}
@@ -167,7 +167,7 @@ export function FormsList({
                     </div>
                   </div>
                   
-                  <div className="bg-white dark:bg-zinc-800/50 rounded-xl p-4 sm:p-5 border border-gray-100 dark:border-gray-800/50 hover:border-gray-200 dark:hover:border-gray-700 transition-all duration-200">
+                  <div className="bg-white dark:bg-zinc-800/50 rounded-xl p-4 sm:p-5 border border-zinc-100 dark:border-zinc-800/50 hover:border-zinc-200 dark:hover:border-zinc-700 transition-all duration-200">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                         <Users className="h-5 w-5 text-gray-900 dark:text-white" />
@@ -177,7 +177,7 @@ export function FormsList({
                         <p className="text-xs text-gray-500 dark:text-gray-400">Total Submissions</p>
                       </div>
                     </div>
-                    <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+                    <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden">
                       <div 
                         className="h-full bg-black dark:bg-white rounded-lg transition-all duration-500"
                         style={{ width: `${Math.min((totalResponses / 100) * 100, 100)}%` }}
@@ -188,7 +188,7 @@ export function FormsList({
               )}
             </div>
             <Button
-              className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-all duration-200 rounded-xl px-6 shadow-sm hover:shadow-md"
+              className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-xl px-6 shadow-sm hover:shadow-md"
               onClick={() => window.location.href = '/dashboard/form-builder'}
             >
               <Plus className="h-4 w-4 mr-2" />
@@ -201,11 +201,11 @@ export function FormsList({
       {/* View Toggle */}
       {forms.length > 0 && (
         <div className="flex justify-end mb-2">
-          <div className="bg-white dark:bg-zinc-800 border border-gray-100 dark:border-gray-800 rounded-lg p-1 flex items-center">
+          <div className="bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-800 rounded-lg p-1 flex items-center">
             <button
               onClick={() => handleViewModeChange('grid')}
-              className={`p-1.5 rounded-md ${viewMode === 'grid' 
-                ? 'bg-gray-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
+              className={`p-1.5 rounded-lg ${viewMode === 'grid' 
+                ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
                 : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
               aria-label="Grid view"
             >
@@ -218,8 +218,8 @@ export function FormsList({
             </button>
             <button
               onClick={() => handleViewModeChange('list')}
-              className={`p-1.5 rounded-md ${viewMode === 'list' 
-                ? 'bg-gray-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
+              className={`p-1.5 rounded-lg ${viewMode === 'list' 
+                ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
                 : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
               aria-label="List view"
             >
@@ -239,7 +239,7 @@ export function FormsList({
           {currentForms.map((form: Form) => (
             <Card 
               key={form.id}
-              className="group bg-white dark:bg-zinc-900 border border-gray-100 dark:border-gray-800/50 hover:border-gray-200 dark:hover:border-gray-700 transition-all duration-200 cursor-pointer hover:shadow-md"
+              className="group bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/50 hover:border-zinc-200 dark:hover:border-zinc-700 transition-all duration-200 cursor-pointer hover:shadow-md"
               onClick={() => window.location.href = `/dashboard/form/${form.id}`}
             >
               <div className="p-4 sm:p-6">
@@ -247,7 +247,7 @@ export function FormsList({
                   <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
                     {form.name}
                   </h3>
-                  <span className="text-xs sm:text-sm bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-white px-2 sm:px-3 py-1 rounded-lg">
+                  <span className="text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-800/50 text-gray-900 dark:text-white px-2 sm:px-3 py-1 rounded-lg">
                     {form.responsesCount} responses
                   </span>
                 </div>
@@ -271,7 +271,7 @@ export function FormsList({
           {currentForms.map((form: Form) => (
             <div 
               key={form.id}
-              className="group bg-white dark:bg-zinc-900 border border-gray-100 dark:border-gray-800/50 hover:border-gray-200 dark:hover:border-gray-700 transition-all duration-200 cursor-pointer hover:shadow-md rounded-lg"
+              className="group bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/50 hover:border-zinc-200 dark:hover:border-zinc-700 transition-all duration-200 cursor-pointer hover:shadow-md rounded-lg"
               onClick={() => window.location.href = `/dashboard/form/${form.id}`}
             >
               <div className="p-4 sm:p-5 flex items-center justify-between">
@@ -307,8 +307,8 @@ export function FormsList({
       
       {/* Empty State */}
       {forms.length === 0 && (
-        <div className="text-center py-12 sm:py-16 bg-white dark:bg-zinc-900 rounded-xl border border-dashed border-gray-200 dark:border-gray-800">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 rounded-2xl bg-gray-50 dark:bg-gray-800/50 flex items-center justify-center">
+        <div className="text-center py-12 sm:py-16 bg-white dark:bg-zinc-900 rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 flex items-center justify-center">
             <FileSpreadsheet className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 dark:text-gray-500" />
           </div>
           <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">
@@ -318,7 +318,7 @@ export function FormsList({
             Create your first form to start collecting submissions and managing your data.
           </p>
           <Button
-            className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-all duration-200 rounded-lg px-6 shadow-sm hover:shadow-md"
+            className="bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-lg px-6 shadow-sm hover:shadow-md"
             onClick={() => window.location.href = '/dashboard/form-builder'}
           >
             <Plus className="h-4 w-4 mr-2" />

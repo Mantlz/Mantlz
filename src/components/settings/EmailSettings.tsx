@@ -203,7 +203,7 @@ export default function EmailSettings() {
           
           <CardContent className="px-5 pb-4">
             {!isPro ? (
-              <div className="rounded-md bg-amber-50 border border-amber-200 p-3 sm:p-4 dark:bg-amber-900/20 dark:border-amber-800/30">
+              <div className="rounded-lg bg-amber-50 border border-amber-200 p-3 sm:p-4 dark:bg-amber-900/20 dark:border-amber-800/30">
                 <div className="flex gap-2 sm:gap-3">
                   <AlertCircle className="h-4 w-4 text-amber-500 dark:text-amber-400 flex-shrink-0 mt-0.5" />
                   <div className="space-y-1">
@@ -264,7 +264,7 @@ export default function EmailSettings() {
                     )}
                   />
 
-                  <div className="rounded-md bg-blue-50 border border-blue-200 p-3 sm:p-4 dark:bg-blue-900/20 dark:border-blue-800/30">
+                  <div className="rounded-lg bg-zinc-50 border border-blue-200 p-3 sm:p-4 dark:bg-zinc-900/20 dark:border-blue-800/30">
                     <div className="flex gap-2 sm:gap-3">
                       <Info className="h-4 w-4 text-blue-500 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                       <div>

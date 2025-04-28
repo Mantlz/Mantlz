@@ -125,7 +125,7 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
                           isActive={item.name === selectedTab}
                           onClick={() => setSelectedTab(item.name)}
                           className={cn(
-                            "w-full text-sm font-medium rounded-md",
+                            "w-full text-sm font-medium rounded-lg",
                             "transition-all duration-150",
                             "border",
                             // Default state

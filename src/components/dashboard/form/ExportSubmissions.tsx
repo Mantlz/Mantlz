@@ -91,8 +91,8 @@ export function ExportSubmissions({ formId }: ExportSubmissionsProps) {
         </Button>
       </DialogTrigger>
       <DialogContent className="w-[95vw] max-w-[400px] sm:max-w-[600px]">
-        <div className="flex flex-col gap-4 sm:gap-6 bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 shadow-sm">
-          <div className="p-4 sm:p-5 lg:p-6 bg-gradient-to-r from-zinc-100 to-white dark:from-zinc-900 dark:to-zinc-800 border-b border-gray-200 dark:border-zinc-800">
+        <div className="flex flex-col gap-4 sm:gap-6 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+          <div className="p-4 sm:p-5 lg:p-6 bg-gradient-to-r from-zinc-100 to-white dark:from-zinc-900 dark:to-zinc-800 border-b border-zinc-200 dark:border-zinc-800">
             <DialogTitle className={cn(
               "text-xl sm:text-2xl lg:text-2xl",
               "font-bold tracking-tight",
@@ -134,7 +134,7 @@ export function ExportSubmissions({ formId }: ExportSubmissionsProps) {
             "flex justify-end gap-2 sm:gap-3",
             "p-4 sm:p-5 lg:p-6",
             "bg-gradient-to-r from-zinc-50 to-white dark:from-zinc-900/50 dark:to-zinc-800/50",
-            "border-t border-gray-200 dark:border-zinc-800"
+            "border-t border-zinc-200 dark:border-zinc-800"
           )}>
             <Button
               variant="outline"
@@ -145,9 +145,9 @@ export function ExportSubmissions({ formId }: ExportSubmissionsProps) {
                 "px-4 py-2 sm:px-5 sm:py-2.5",
                 "bg-white dark:bg-zinc-900",
                 "cursor-pointer",
-                "border border-gray-200 dark:border-zinc-800",
+                "border border-zinc-200 dark:border-zinc-800",
                 "text-gray-700 dark:text-gray-300",
-                "hover:bg-gray-50 dark:hover:bg-zinc-800"
+                "hover:bg-zinc-50 dark:hover:bg-zinc-800"
               )}
             >
               Cancel
@@ -158,10 +158,10 @@ export function ExportSubmissions({ formId }: ExportSubmissionsProps) {
               className={cn(
                 "text-sm sm:text-base lg:text-lg",
                 "px-4 py-2 sm:px-6 sm:py-2.5 lg:px-8 lg:py-3",
-                "bg-gray-900 dark:bg-white",
+                "bg-zinc-900 dark:bg-white",
                 "cursor-pointer",
                 "text-white dark:text-gray-900",
-                "hover:bg-gray-800 dark:hover:bg-gray-100",
+                "hover:bg-zinc-800 dark:hover:bg-zinc-100",
                 "shadow-sm"
               )}
             >
