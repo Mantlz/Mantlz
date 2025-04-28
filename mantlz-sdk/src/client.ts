@@ -74,8 +74,43 @@ export function createMantlzClient(
   // Development mode for local testing (bypasses CORS)
   const developmentMode = config?.developmentMode === true;
   
-  // Credentials mode for fetch requests (default to 'omit' for cross-origin safety)
-  const credentialsMode = config?.credentials || 'omit';
+  // Credentials mode for fetch requests (default to 'include' for cross-origin requests)
+  const credentialsMode = config?.credentials || 'include';
+
+  // Default headers for all requests
+  const defaultHeaders = {
+    'X-API-Key': key,
+    'Content-Type': 'application/json',
+  };
+
+  // Helper function to make API requests with proper CORS handling
+  const makeRequest = async (endpoint: string, options: RequestInit = {}) => {
+    const url = `${baseUrl}/api/v1${endpoint}`;
+    const headers = {
+      ...defaultHeaders,
+      ...options.headers,
+    };
+
+    try {
+      const response = await fetch(url, {
+        ...options,
+        headers,
+        credentials: credentialsMode,
+        mode: 'cors',
+      });
+
+      if (!response.ok) {
+        throw await handleApiError(response);
+      }
+
+      return response;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error('An unexpected error occurred');
+    }
+  };
 
   // Notification state to prevent duplicate toasts per formId
   const notificationState = {
@@ -416,36 +451,13 @@ export function createMantlzClient(
 
     getUsersJoinedCount: async (formId: string): Promise<number> => {
       try {
-        // Ensure the URL is absolute by making sure baseUrl has protocol and domain
-        const url = new URL(`/api/v1/forms/${encodeURIComponent(formId)}/users-joined`, baseUrl).toString();
-        log('Fetching users joined count:', url);
-
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'X-API-Key': key,
-          },
-          credentials: developmentMode ? 'omit' : credentialsMode,
-          mode: developmentMode ? 'no-cors' : 'cors',
-        });
-        
-        // In development mode with opaque response, return a random number
-        if (developmentMode && response.type === 'opaque') {
-          const mockCount = Math.floor(Math.random() * 100) + 1;
-          log('Development mode: Returning mock users count:', mockCount);
-          return mockCount;
-        }
-
-        if (!response.ok) {
-          const error = await handleApiError(response, formId);
-          log('Failed to get users joined count:', error);
-          throw error;
-        }
-
-        const result = await response.json();
-        return typeof result.count === 'number' ? result.count : 0;
+        const response = await makeRequest(`/forms/${formId}/users-joined`);
+        const data = await response.json();
+        return data.count || 0;
       } catch (error) {
-        log('Error getting users joined count:', error);
+        if (isMantlzError(error)) {
+          showErrorNotification(error, formId);
+        }
         return 0;
       }
     },

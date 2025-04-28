@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { clerkMiddleware } from "@clerk/nextjs/server";
-import { handlePreflightRequest, addCorsHeadersToResponse } from "./utils/cors";
+import { handlePreflightRequest, addCorsHeadersToResponse, handleRedirectWithCors } from "./utils/cors";
 import { isProtectedRoute, isAuthRoute } from "./utils/routes";
 
 export default clerkMiddleware(async (auth, req) => {
@@ -25,6 +25,11 @@ export default clerkMiddleware(async (auth, req) => {
   
   // Protect dashboard and other routes
   if (!authResult.userId && isProtectedRoute(req)) {
+    // Use the new redirect function that preserves CORS headers
+    const signInUrl = authResult.redirectToSignIn().headers.get('location');
+    if (signInUrl) {
+      return handleRedirectWithCors(req, signInUrl);
+    }
     return authResult.redirectToSignIn();
   }
   

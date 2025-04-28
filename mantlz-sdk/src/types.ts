@@ -8,8 +8,9 @@ export interface MantlzClientConfig {
   showApiKeyErrorToasts?: boolean;  // Control API key error toasts separately
   apiUrl?: string;  // Custom API URL
   logger?: (message: string, ...args: any[]) => void;  // Optional logger function
-  developmentMode?: boolean;  // Enable development mode to bypass CORS for local testing
-  credentials?: RequestCredentials;  // Control credentials mode for fetch requests ('omit', 'same-origin', or 'include')
+  developmentMode?: boolean;  // Enable development mode for local testing
+  credentials?: RequestCredentials;  // Control credentials mode for fetch requests ('include' recommended for cross-origin)
+  corsMode?: RequestMode;  // Control CORS mode ('cors' recommended for cross-origin)
 }
 
 export interface MantlzError {

@@ -45,3 +45,17 @@ export function addCorsHeadersToResponse(response: NextResponse, req: NextReques
   
   return response;
 }
+
+// New function to handle redirects with CORS headers
+export function handleRedirectWithCors(req: NextRequest, redirectUrl: string) {
+  const origin = req.headers.get('origin');
+  const response = NextResponse.redirect(redirectUrl);
+  
+  if (isValidOrigin(origin)) {
+    console.log(`Adding CORS headers for redirect to: ${redirectUrl}`);
+    response.headers.set('Access-Control-Allow-Origin', origin!);
+    response.headers.set('Access-Control-Allow-Credentials', 'true');
+  }
+  
+  return response;
+}
