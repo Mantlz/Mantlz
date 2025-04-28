@@ -62,6 +62,11 @@ const inlineCssPlugin = () => {
       document.head.appendChild(style);
     }
   }
+  
+  // Set the CSS content as a global variable for development mode
+  if (typeof window !== 'undefined') {
+    window.__MANTLZ_CSS__ = ${JSON.stringify(cssContent)};
+  }
 })();
 `;
             

@@ -2,11 +2,12 @@
 import { TextHoverEffectDemo } from "@/components/global/textHoverEffect"
 import { Code, Server, Cpu } from "lucide-react"
 import { Logo } from "@/components/global/logo"
+import { Container } from "./container"
 
 const Footer = () => {
   return (
-    <footer className="w-full border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-neutral-700 dark:text-neutral-300 py-12 ">
-      <div className="max-w-7xl mx-auto px-4">
+    <footer className="w-full border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-neutral-700 dark:text-neutral-300 py-12">
+      <Container>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="flex flex-col items-center md:items-start">
             <div className="flex items-center space-x-2 mb-4">
@@ -82,14 +83,14 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 text-center text-sm text-neutral-500 dark:text-neutral-400 border-t border-neutral-200 dark:border-neutral-800 pt-8">
+        <div className="mt-8 text-center text-sm text-neutral-500 dark:text-neutral-400 pt-8">
           <p>&copy; 2024 Mantlz. All rights reserved.</p>
         </div>
 
         <div className="mt-8">
           <TextHoverEffectDemo />
         </div>
-      </div>
+      </Container>
     </footer>
   )
 }

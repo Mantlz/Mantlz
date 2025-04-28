@@ -1,12 +1,13 @@
 import Image from "next/image"
+import { Container } from "./container"
 
 const TrustedCompanies = () => {
   return (
-    <section className="w-full py-12 border-y border-neutral-200 dark:border-neutral-800 bg-[#fffaf2] dark:bg-neutral-900">
-      <div className="container px-4 md:px-6">
+    <section className="w-full py-12 bg-white dark:bg-zinc-950">
+      <Container>
         <div className="flex flex-col items-center justify-center space-y-6 text-center">
-          <p className="text-sm font-medium text-neutral-600 dark:text-neutral-400  tracking-wide">
-            Trusted by innovative companies worldwide
+          <p className="text-sm font-medium text-neutral-600 dark:text-neutral-400 tracking-wide">
+            Powered by trusted software
           </p>
           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16">
             {[1, 2, 3, 4, 5].map((i) => (
@@ -25,7 +26,7 @@ const TrustedCompanies = () => {
             ))}
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   )
 }

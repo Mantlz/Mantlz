@@ -1,194 +1,292 @@
-"use client"
-import Link from "next/link"
-import { Menu } from "lucide-react"
-import { usePathname } from "next/navigation"
-import { UserButton, SignedIn, SignedOut, useClerk } from "@clerk/nextjs"
+"use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import {
+  Menu,
+  ChevronRight,
+  User,
+  LogOut,
+
+}
+ from "lucide-react";
+import {
+  useUser,
+
+  useClerk,
+  useAuth,
+} from "@clerk/nextjs";
+import { Logo } from "@/components/global/logo";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer"
-import { Button } from "@/components/ui/button"
-import { Logo } from "@/components/global/logo"
+  DrawerClose,
+} from "@/components/ui/drawer";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useMediaQuery } from "@/hooks/user-media-query";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 
-type NavItem = {
-  name: string
-  href: string
-}
+export function Navbar() {
+  const { user } = useUser(); // Use for user details when available
+  const { isLoaded: isAuthLoaded, isSignedIn } = useAuth(); // Use for primary auth state
 
-const navItems: NavItem[] = [
-  { name: "Home", href: "/" },
-  { name: "Pricing", href: "/#pricing" },
-  { name: "Blog", href: "/blog" },
-]
+  const { signOut, openUserProfile } = useClerk();
+  const { isMobile } = useMediaQuery();
+  const [open, setOpen] = useState(false);
+  // Removed 'mounted' and 'hasClerkCookie'
 
-export default function Navbar() {
-  const currentPath = usePathname()
-  const { loaded } = useClerk()
-
-  const isActive = (href: string) => {
-    if (href === "/") {
-      return currentPath === href
+  // Close drawer when switching from mobile to desktop
+  useEffect(() => {
+    if (!isMobile && open) {
+      setOpen(false);
     }
-    return currentPath?.startsWith(href) || false
-  }
+  }, [isMobile, open]);
+
+  // Render the appropriate auth section
+  const renderAuthSection = () => {
+    // If auth state is not yet loaded
+    // During this phase, we don't know definitively if the user
+    // will be signed in or out after hydration.
+    // The skeleton is appropriate *only* if we anticipate a user
+    // might be signed in (which is the typical hydration scenario
+    // where you see the flicker).
+    // If Clerk finishes loading and the user is NOT signed in,
+    // we immediately show the "Sign In" button below.
+    if (!isAuthLoaded) {
+      // Show skeleton only while Clerk is loading initially.
+      // This placeholder bridges the gap until Clerk determines
+      // if the user is signed in or out.
+       return (
+        <div className="flex items-center space-x-4">
+          {/* Dashboard button placeholder */}
+          <Skeleton className="h-9 w-24" />
+          {/* Avatar placeholder */}
+          <Skeleton className="h-8 w-8 rounded-full" />
+        </div>
+      );
+    }
+
+    // If auth state is loaded AND user is signed in
+    if (isSignedIn) {
+      return (
+        <div className="flex items-center space-x-4">
+          <Link
+            href="/dashboard"
+            className="flex items-center text-sm font-medium"
+          >
+            <Button size="sm" className="flex items-center gap-1">
+              Dashboard
+            </Button>
+          </Link>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              {/* Use user object from useUser(), which should be available if isSignedIn is true */}
+              <Avatar className="h-8 w-8 cursor-pointer bg-white rounded-full ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
+                <AvatarFallback>
+                  {user?.firstName?.[0] || user?.lastName?.[0] || "U"}
+                </AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <div className="flex items-center justify-start gap-2 p-2">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
+                  <AvatarFallback>
+                    {user?.firstName?.[0] || user?.lastName?.[0] || "U"}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">
+                    {user?.fullName || "User"}
+                  </p>
+                  <p className="text-xs leading-none text-muted-foreground">
+                    {user?.primaryEmailAddress?.emailAddress}
+                  </p>
+                </div>
+              </div>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => openUserProfile()}
+                className="cursor-pointer"
+              >
+                <User className="mr-2 h-4 w-4" />
+                <span>Manage Account</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => signOut()}
+                className="cursor-pointer text-destructive focus:text-destructive"
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Sign out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      );
+    }
+
+    // If auth state is loaded AND user is NOT signed in
+    // This is the state reached after the initial loading phase (!isAuthLoaded)
+    // if no session was found, or if the user explicitly signed out.
+    return (
+      <Link href="/signin" className="flex items-center text-sm font-medium">
+        Sign in <ChevronRight className="h-4 w-4 ml-1" />
+      </Link>
+    );
+  };
 
   return (
-    <>
-      {/* <CTASection /> */}
-      <header className="fixed top-0 left-0 right-0 z-50">
-        {/* top-[40px] when CTASection is active */}
-      {/* <header className="fixed top-0 left-0 right-0 z-50"> */}
+    <nav className="flex items-center justify-between pt-10">
+      <div className="flex items-center">
+        <Link href="/" className="flex items-center">
+          <Logo className="h-8 w-8" size={32} />
+          <span className="font-semibold text-lg">Mantlz</span>
+        </Link>
+      </div>
 
-        <div className="absolute inset-0 bg-white dark:bg-neutral-950/90 backdrop-blur-[8px]  dark:border-neutral-800" />
-        <div className="relative">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <Link href="/" className="flex items-center group">
-                <Logo className="h-8 w-8" size={32} />
-                <div className="flex items-center relative">
-                  <span className="ml-1 text-lg font-bold text-neutral-900 dark:text-neutral-50 ">Mantlz</span>
-                  <div className="absolute -top-2 -right-9 inline-flex items-center justify-center px-1 h-[14px] rounded-sm bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700">
-                    <span className="text-[10px] leading-none font-medium text-neutral-800 dark:text-neutral-200 tracking-wider ">
-                      BETA
-                    </span>
-                  </div>
-                </div>
-              </Link>
+      {isMobile ? (
+        <Drawer open={open} onOpenChange={setOpen}>
+          <DrawerTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <Menu className="h-6 w-6" />
+            </Button>
+          </DrawerTrigger>
+          <DrawerContent className="p-4">
+            <div className="flex flex-col space-y-4 mt-2">
+              <MobileNavLink href="/" isActive>
+                Home
+              </MobileNavLink>
+              <MobileNavLink href="/solution">Solution</MobileNavLink>
+              <MobileNavLink href="/features">Features</MobileNavLink>
+              <MobileNavLink href="/pricing">Pricing</MobileNavLink>
+              <MobileNavLink href="/resources">Resources</MobileNavLink>
 
-              <nav className="hidden md:flex items-center space-x-6">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={`relative py-2 text-sm transition-colors duration-200  ${
-                      isActive(item.href)
-                        ? "text-neutral-900 dark:text-neutral-50"
-                        : "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-50"
-                    }`}
-                  >
-                    {item.name}
-                    {isActive(item.href) && (
-                      <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-neutral-800 dark:bg-neutral-200" />
-                    )}
-                  </Link>
-                ))}
-              </nav>
-
-              <div className="hidden md:flex items-center space-x-4">
-                <SignedIn>
-                  <Link href="/dashboard">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-9 px-4 cursor-pointer bg-neutral-800 text-neutral-50 dark:bg-neutral-200 dark:text-neutral-900 hover:bg-neutral-700 dark:hover:bg-neutral-300 border-2 border-neutral-700 dark:border-neutral-300 rounded-sm"
-                    >
-                      Dashboard
-                    </Button>
-                  </Link>
-                  {loaded && <UserButton afterSignOutUrl="/" />}
-                </SignedIn>
-                <SignedOut>
-                  <Link href="/sign-in">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-9 px-4 text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-50 hover:bg-[#fff5e6] dark:hover:bg-neutral-800 transition-colors duration-200  rounded-sm"
-                    >
-                      Sign in
-                    </Button>
-                  </Link>
-                  <Link href="/sign-up">
-                    <Button
-                      size="sm"
-                      className="h-9 px-4 bg-neutral-800 dark:bg-neutral-200 text-neutral-50 dark:text-neutral-900 hover:bg-neutral-700 dark:hover:bg-neutral-300 transition-colors duration-200 border-2 border-neutral-700 dark:border-neutral-300  rounded-sm"
-                    >
-                      Sign up
-                    </Button>
-                  </Link>
-                </SignedOut>
-              </div>
-
-              <Drawer>
-                <DrawerTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="md:hidden h-9 w-9 text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-50 hover:bg-[#fff5e6] dark:hover:bg-neutral-800 rounded-sm"
-                  >
-                    <Menu className="h-5 w-5" />
-                    <span className="sr-only">Open menu</span>
-                  </Button>
-                </DrawerTrigger>
-                <DrawerContent className="bg-[#fffdf7] dark:bg-neutral-950 backdrop-blur-md border-t border-neutral-200 dark:border-neutral-800">
-                  <DrawerHeader>
-                    <DrawerTitle>
-                      <div className="flex items-center justify-center">
-                        <Logo className="h-8 w-8" />
+             {/* Mobile Drawer Auth Content based on auth state */}
+              {!isAuthLoaded ? (
+                 // Show skeleton placeholders while loading in mobile drawer
+                 <div className="flex flex-col space-y-2 mt-2">
+                    <Skeleton className="h-6 w-full" /> {/* Dashboard link */}
+                    <div className="flex items-center justify-between pt-2">
                         <div className="flex items-center">
-                          <span className="ml-3 text-lg font-bold text-neutral-900 dark:text-neutral-50 ">
-                            Mantlz
-                          </span>
-                          <div className="ml-2 inline-flex items-center px-1.5 h-[18px] rounded-sm bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700">
-                            <span className="text-[10px] leading-none font-medium text-neutral-800 dark:text-neutral-200 ">
-                              BETA
-                            </span>
-                          </div>
+                           <Skeleton className="h-8 w-8 rounded-full mr-2" />
+                           <Skeleton className="h-5 w-20" />
                         </div>
+                        <Skeleton className="h-8 w-20" /> {/* Sign out button */}
+                    </div>
+                 </div>
+              ) : isSignedIn ? (
+                 // Render SignedIn content if auth is loaded and user is in
+                 <>
+                   <MobileNavLink href="/dashboard">Dashboard</MobileNavLink>
+                    <div className="pt-2 flex items-center justify-between">
+                      <div className="flex items-center">
+                         {/* Use user object from useUser() */}
+                        <Avatar className="h-8 w-8 mr-2">
+                          <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
+                          <AvatarFallback>
+                            {user?.firstName?.[0] || user?.lastName?.[0] || "U"}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="font-medium">
+                          {user?.fullName || "User"}
+                        </span>
                       </div>
-                    </DrawerTitle>
-                  </DrawerHeader>
-                  <div className="px-4 py-2">
-                    <div className="space-y-1">
-                      {navItems.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          className={`block px-4 py-2 text-base rounded-sm transition-colors duration-200  ${
-                            isActive(item.href)
-                              ? "text-neutral-900 dark:text-neutral-50 bg-neutral-200 dark:bg-neutral-800"
-                              : "text-neutral-700 dark:text-neutral-400 hover:text-neutral-900 hover:bg-neutral-200 dark:hover:text-neutral-50 dark:hover:bg-neutral-800"
-                          }`}
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                      {!loaded && (
-                        <>
-                          <div className="h-10 w-full bg-neutral-200 dark:bg-neutral-800 animate-pulse rounded-sm" />
-                        </>
-                      )}
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => signOut()}
+                      >
+                        Sign out
+                      </Button>
                     </div>
-                  </div>
-                  <DrawerFooter>
-                    <div className="space-y-2">
-                      {!loaded && (
-                        <div className="space-y-2">
-                          <div className="h-10 w-full bg-neutral-200 dark:bg-neutral-800 animate-pulse rounded-sm" />
-                          <div className="h-10 w-full bg-neutral-200 dark:bg-neutral-800 animate-pulse rounded-sm" />
-                        </div>
-                      )}
-                      <DrawerClose asChild>
-                        <Button
-                          variant="outline"
-                          className="w-full h-10 text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-50 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors duration-200 rounded-sm border-2 border-neutral-300 dark:border-neutral-700"
-                        >
-                          Close
-                        </Button>
-                      </DrawerClose>
-                    </div>
-                  </DrawerFooter>
-                </DrawerContent>
-              </Drawer>
+                 </>
+              ) : (
+                 // Render SignedOut content if auth is loaded and user is out
+                 <>
+                  <DrawerClose asChild>
+                    <Link
+                      href="/signin"
+                      className="flex items-center mt-2 font-medium"
+                    >
+                      Sign in <ChevronRight className="h-4 w-4 ml-1" />
+                    </Link>
+                  </DrawerClose>
+                </>
+              )}
+
             </div>
+          </DrawerContent>
+        </Drawer>
+      ) : (
+        // Desktop Navigation
+        <>
+          <div className="hidden md:flex items-center space-x-8">
+            <NavLink href="/" active>
+              Home
+            </NavLink>
+            <NavLink href="/solution">Solution</NavLink>
+            <NavLink href="/features">Features</NavLink>
+            <NavLink href="/pricing">Pricing</NavLink>
+            <NavLink href="/resources">Resources</NavLink>
           </div>
-        </div>
-      </header>
-    </>
-  )
+          {/* Render Auth Section using the refined logic */}
+          <div>{renderAuthSection()}</div>
+        </>
+      )}
+    </nav>
+  );
 }
 
+// Helper component for Desktop Nav Links
+interface NavLinkProps {
+  href: string;
+  children: React.ReactNode;
+  active?: boolean;
+}
+
+function NavLink({ href, children, active }: NavLinkProps) {
+  return (
+    <Link
+      href={href}
+      className={`text-sm ${
+        active ? "font-medium" : "text-gray-600 hover:text-gray-900"
+      }`}
+    >
+      {children}
+    </Link>
+  );
+}
+
+// Helper component for Mobile Nav Links in Drawer
+function MobileNavLink({
+  href,
+  children,
+  isActive,
+}: {
+  href: string;
+  children: React.ReactNode;
+  isActive?: boolean;
+}) {
+  return (
+    <DrawerClose asChild>
+      <Link
+        href={href}
+        className={`text-base py-2 ${isActive ? "font-medium" : "text-gray-600"}`}
+      >
+        {children}
+      </Link>
+    </DrawerClose>
+  );
+}

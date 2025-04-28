@@ -9,6 +9,7 @@ export interface MantlzClientConfig {
   apiUrl?: string;  // Custom API URL
   logger?: (message: string, ...args: any[]) => void;  // Optional logger function
   developmentMode?: boolean;  // Enable development mode to bypass CORS for local testing
+  credentials?: RequestCredentials;  // Control credentials mode for fetch requests ('omit', 'same-origin', or 'include')
 }
 
 export interface MantlzError {

@@ -7,6 +7,9 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  corePlugins: {
+    preflight: false, // Disable preflight to prevent looking for external files
+  },
   // Important to keep the classes even when not referenced directly
   safelist: [
     // Add classes that must be preserved in the production build

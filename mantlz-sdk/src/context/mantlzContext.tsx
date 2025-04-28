@@ -4,6 +4,7 @@ import React, { createContext, useContext, type PropsWithChildren } from 'react'
 import { createMantlzClient } from '../client';
 import { MantlzClient } from '../types';
 import { toast } from '../utils/toast';
+import { injectStyles } from '../utils/styles';
 
 interface MantlzContextType {
   apiKey: string | undefined;
@@ -26,6 +27,11 @@ interface MantlzProviderProps extends PropsWithChildren {
 
 export function MantlzProvider({ apiKey, children }: MantlzProviderProps) {
   const [hasShownApiKeyError, setHasShownApiKeyError] = React.useState(false);
+  
+  // Inject styles on mount - works in both dev and prod
+  React.useEffect(() => {
+    injectStyles();
+  }, []);
   
   // Show a warning toast if apiKey is missing
   React.useEffect(() => {
@@ -68,7 +74,7 @@ export function MantlzProvider({ apiKey, children }: MantlzProviderProps) {
   React.useEffect(() => {
     if (typeof window !== 'undefined' && client) {
       window.mantlz = client;
-      console.log('Mantlz client initialized with API key:', apiKey);
+     // console.log('Mantlz client initialized with API key:', apiKey);
     }
   }, [apiKey, client]);
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Footer from '@/components/global/landing/footer'
-import Navbar from '@/components/global/landing/navbar'
+import { Navbar } from '@/components/global/landing/navbar'
 import Link from 'next/link'
 import { AlertCircle } from 'lucide-react'
 

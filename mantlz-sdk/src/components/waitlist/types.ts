@@ -3,7 +3,6 @@ import { z } from 'zod';
 export const waitlistSchema = z.object({
   email: z.string().email('Please enter a valid email'),
   name: z.string().min(2, 'Name is required'),
-  referralSource: z.string().optional(),
 });
 
 export type WaitlistFormTheme = 'default' | 'dark' | 'purple' | 'neobrutalism';

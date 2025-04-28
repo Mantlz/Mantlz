@@ -5,14 +5,14 @@ import { cn } from '../../utils/cn';
 const defaultAppearance: WaitlistFormAppearance = {
   baseStyle: {
     container: 'bg-white text-zinc-900',
-    form: 'space-y-5',
+    form: 'space-y-2',
   },
   elements: {
     card: 'border border-zinc-100 shadow-sm rounded-xl',
-    cardHeader: 'space-y-2 p-6 pb-1',
+    cardHeader: 'space-y-1 p-2 pb-1',
     cardTitle: 'text-2xl font-semibold tracking-tight',
     cardDescription: 'text-sm text-zinc-500',
-    cardContent: 'p-6',
+    cardContent: 'p-2',
     formButtonPrimary: 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white shadow-sm hover:shadow transition-all duration-200',
     formButtonIcon: 'text-white ml-1',
     inputLabel: 'text-sm font-medium text-zinc-800',
@@ -26,14 +26,14 @@ const defaultAppearance: WaitlistFormAppearance = {
 const darkAppearance: WaitlistFormAppearance = {
   baseStyle: {
     container: 'bg-zinc-950 text-zinc-50',
-    form: 'space-y-5',
+    form: 'space-y-2',
   },
   elements: {
     card: 'border border-zinc-800 rounded-xl shadow-md bg-zinc-900',
-    cardHeader: 'space-y-2 p-6 pb-1',
+    cardHeader: 'space-y-2 p-2 pb-1',
     cardTitle: 'text-2xl font-semibold tracking-tight text-white',
     cardDescription: 'text-sm text-zinc-400',
-    cardContent: 'p-6',
+    cardContent: 'p-2',
     formButtonPrimary: 'bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white shadow-sm hover:shadow transition-all duration-200',
     formButtonIcon: 'text-white ml-1',
     inputLabel: 'text-sm font-medium text-zinc-300',
@@ -47,14 +47,14 @@ const darkAppearance: WaitlistFormAppearance = {
 const purpleAppearance: WaitlistFormAppearance = {
   baseStyle: {
     container: 'bg-gradient-to-br from-purple-900 to-indigo-900 text-purple-50',
-    form: 'space-y-5',
+    form: 'space-y-2',
   },
   elements: {
     card: 'border border-purple-700/30 shadow-lg rounded-xl backdrop-blur-sm bg-purple-900/80',
-    cardHeader: 'space-y-2 p-6 pb-1',
+    cardHeader: 'space-y-2 p-2 pb-1',
     cardTitle: 'text-2xl font-semibold tracking-tight text-purple-100',
     cardDescription: 'text-sm text-purple-300',
-    cardContent: 'p-6',
+    cardContent: 'p-2',
     formButtonPrimary: 'bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 active:from-orange-700 active:to-pink-700 text-white shadow-md hover:shadow-lg transition-all duration-200',
     formButtonIcon: 'text-white ml-1',
     inputLabel: 'text-sm font-medium text-purple-200',
@@ -68,14 +68,14 @@ const purpleAppearance: WaitlistFormAppearance = {
 const neobrutalistAppearance: WaitlistFormAppearance = {
   baseStyle: {
     container: 'bg-yellow-200 text-black',
-    form: 'space-y-6',
+    form: 'space-y-2',
   },
   elements: {
     card: 'border-3 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] bg-yellow-100',
-    cardHeader: 'space-y-2 p-6 pb-1',
+    cardHeader: 'space-y-2 p-2 pb-1',
     cardTitle: 'text-2xl font-black uppercase tracking-wider',
     cardDescription: 'text-base font-medium text-black',
-    cardContent: 'p-6',
+    cardContent: 'p-2',
     formButtonPrimary: 'bg-pink-500 hover:bg-pink-400 active:bg-pink-600 text-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all font-bold uppercase',
     formButtonIcon: 'text-white ml-1',
     inputLabel: 'text-sm font-black uppercase',
@@ -88,14 +88,10 @@ const neobrutalistAppearance: WaitlistFormAppearance = {
 // Get default appearance for a specific theme
 export function getDefaultAppearance(theme: WaitlistFormTheme = 'default'): WaitlistFormAppearance {
   switch (theme) {
-    case 'dark':
-      return darkAppearance;
-    case 'purple':
-      return purpleAppearance;
-    case 'neobrutalism':
-      return neobrutalistAppearance;
-    default:
-      return defaultAppearance;
+    case 'dark': return darkAppearance;
+    case 'purple': return purpleAppearance;
+    case 'neobrutalism': return neobrutalistAppearance;
+    default: return defaultAppearance;
   }
 }
 
@@ -108,9 +104,7 @@ export function processAppearance(
   const defaultThemeAppearance = getDefaultAppearance(theme);
   
   // If no appearance provided, return the default theme appearance
-  if (!appearance) {
-    return defaultThemeAppearance;
-  }
+  if (!appearance) return defaultThemeAppearance;
   
   // If appearance is a function, call it with the current theme
   const customAppearance = typeof appearance === 'function' 
@@ -144,4 +138,4 @@ export function processAppearance(
       usersJoinedCounter: cn(defaultThemeAppearance.elements?.usersJoinedCounter, customAppearance.elements?.usersJoinedCounter),
     },
   };
-} 
+}

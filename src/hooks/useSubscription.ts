@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { client } from "@/lib/client"
+import { useUser } from "@clerk/nextjs"
 
 type Plan = 'FREE' | 'PRO' | 'STANDARD'
 
@@ -8,6 +9,8 @@ interface Subscription {
 }
 
 export function useSubscription() {
+  const { isSignedIn } = useUser()
+  
   const { data: subscription, isLoading } = useQuery<Subscription>({
     queryKey: ["subscription"],
     queryFn: async () => {
@@ -20,8 +23,9 @@ export function useSubscription() {
         return { plan: 'FREE' }
       }
     },
-    retry: 3,
+    retry: 2,
     staleTime: 30000,
+    enabled: !!isSignedIn,
   })
 
   const isPremium = subscription?.plan === 'PRO' || subscription?.plan === 'STANDARD'

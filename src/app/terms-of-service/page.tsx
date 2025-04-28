@@ -2,7 +2,7 @@
 import React from 'react';
 import { AlertCircle, Lock, Shield, UserCheck, Mail } from 'lucide-react';
 import Footer from '@/components/global/landing/footer';
-import Navbar from '@/components/global/landing/navbar';
+import { Navbar } from '@/components/global/landing/navbar';
 
 interface TermsSectionProps {
   title: string;

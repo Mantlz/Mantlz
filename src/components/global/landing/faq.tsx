@@ -1,52 +1,53 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Container } from "./container"
 
 export default function Faq() {
   const faqData = [
     {
-      question: "Why should I add reviews to my website?",
+      question: "What is Mantlz?",
       answer:
-        "Adding reviews to your website can increase trust, provide social proof, and help potential customers make informed decisions.",
+        "Mantlz is a powerful platform that helps you create, customize, and manage forms for your business or personal needs with ease and efficiency.",
     },
     {
-      question: "Why choose YoReview to add reviews on my website?",
+      question: "How can Mantlz help my business?",
       answer:
-        "YoReview offers easy integration, customizable widgets, and reliable service for showcasing authentic customer reviews on your website.",
+        "Mantlz simplifies the form creation process, helps you collect and organize data efficiently, integrate with your existing workflows, and gain valuable insights from form submissions.",
     },
     {
-      question: "Which reviews can I embed on my website for free?",
+      question: "Is there a free plan available?",
       answer:
-        "You can embed a certain number of reviews for free with our basic plan. Check our pricing page for more details on free and paid options.",
+        "Yes, Mantlz offers a free tier that includes essential form features. For advanced functionality, check our pricing page for premium plan options.",
     },
     {
-      question: "How can I trust YoReview?",
+      question: "How secure is the data collected through Mantlz forms?",
       answer:
-        "YoReview uses verified review collection methods and has strict policies against fake reviews to ensure authenticity and trustworthiness.",
+        "Mantlz employs industry-standard security measures to protect your data. All form submissions are encrypted, and we comply with data protection regulations to ensure your information remains safe.",
     },
     {
-      question: "How to use review widget Component Code?",
+      question: "Can I customize the look and feel of my forms?",
       answer:
-        "We provide easy-to-use code snippets for our review widgets. Simply copy the code from your YoReview dashboard and paste it into your website's HTML.",
+        "Absolutely! Mantlz provides extensive customization options, allowing you to match forms to your brand identity with custom colors, logos, fonts, and layouts.",
     },
     {
-      question: "How can I embed reviews on my website?",
+      question: "Can I integrate Mantlz forms with other tools I use?",
       answer:
-        "You can embed reviews using our customizable widgets. We offer various styles and options to match your website's design.",
+        "Yes, Mantlz seamlessly integrates with popular tools like Google Sheets, Slack, Zapier, and many CRM systems to fit into your existing workflow.",
     },
   ]
 
   return (
     <div
-      className="w-full bg-[#fffdf7] dark:bg-neutral-950 py-20 mt-10 px-4 sm:px-6 lg:px-8 border-t border-neutral-200 dark:border-neutral-800"
+      className="w-full bg-white dark:bg-neutral-950 py-20 mt-10"
       id="faq"
     >
-      <div className="max-w-7xl mx-auto">
+      <Container>
         <div className="flex flex-col items-center text-center lg:flex-row lg:items-start lg:text-left gap-8">
           <div className="lg:w-1/3">
             <h2 className="text-3xl font-bold mb-2 text-neutral-900 dark:text-neutral-50 max-w-7xl">
-              Frequent questions and answers
+              Frequently Asked Questions
             </h2>
             <p className="text-neutral-600 dark:text-neutral-300 ">
-              Answers to commonly asked questions about our services/packages
+              Everything you need to know about Mantlz and our form management platform
             </p>
           </div>
           <div className="lg:w-2/3 w-full">
@@ -57,10 +58,10 @@ export default function Faq() {
                   value={`item-${index}`}
                   className="border-2 border-neutral-200 dark:border-neutral-800 rounded-sm overflow-hidden "
                 >
-                  <AccordionTrigger className="px-4 py-3 text-left font-medium text-neutral-900 dark:text-neutral-50 transition-colors bg-[#fffaf2] dark:bg-neutral-900 hover:bg-[#fff5e6] dark:hover:bg-neutral-800">
+                  <AccordionTrigger className="px-4 py-3 text-left font-medium text-neutral-900 dark:text-neutral-50 transition-colors bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800">
                     {item.question}
                   </AccordionTrigger>
-                  <AccordionContent className="px-4 py-3 text-neutral-700 dark:text-neutral-300 bg-[#fffaf2] dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800">
+                  <AccordionContent className="px-4 py-3 text-neutral-700 dark:text-neutral-300 bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800">
                     {item.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -68,7 +69,7 @@ export default function Faq() {
             </Accordion>
           </div>
         </div>
-      </div>
+      </Container>
     </div>
   )
 }

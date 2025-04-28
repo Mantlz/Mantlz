@@ -9,7 +9,7 @@ const nextConfig = {
             key: 'Access-Control-Allow-Origin',
             value: process.env.VERCEL_URL 
               ? `https://${process.env.VERCEL_URL}`
-              : 'https://form-quay.vercel.app',
+              : 'https://app.mantlz.app',
           },
           {
             key: 'Access-Control-Allow-Methods',

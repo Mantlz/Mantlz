@@ -1,19 +1,20 @@
 {
   "name": "@mantlz/nextjs",
-  "version": "0.1.9",
+  "version": "0.2.8",
   "description": "TypeScript-native form backend service for NextJS",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
+    "dist/styles.css",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
     "prebuild": "node process-css.js",
     "build": "tsup && node postbuild.js",
-    "dev": "npm run prebuild && tsup --watch",
+    "dev": "npm run prebuild && concurrently \"tsup --watch\" \"node serve-dev.js\"",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
     "prepublishOnly": "npm run clean && npm run build",
@@ -44,16 +45,17 @@
     "zod": ">=3.0.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^0.1.0",
     "@types/node": "^20.11.19",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "autoprefixer": "^10.4.16",
+    "concurrently": "^9.1.2",
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.2.1",
+    "express": "^5.1.0",
     "postcss": "^8.4.32",
     "postcss-cli": "^10.1.0",
-    "tailwindcss": "^4.0.0",
+    "tailwindcss": "^4.1.4",
     "tsup": "^8.4.0",
     "typescript": "^5.3.3"
   },
