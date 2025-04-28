@@ -12,6 +12,11 @@ import Canceled from "./canceled"
 import { useSubscription } from "@/hooks/useSubscription"
 import { Badge } from "@/components/ui/badge"
 
+// Define subscription type
+type Subscription = {
+  plan: "FREE" | "STANDARD" | "PRO" | null;
+  // Add other properties as needed
+}
 
 type Plan = {
   title: string
@@ -94,7 +99,7 @@ export default function Pricing() {
             isSignedIn={isSignedIn}
             user={user}
             router={router}
-            subscription={subscription}
+            subscription={subscription ?? null}
           />
         </Suspense>
       </main>
@@ -111,7 +116,7 @@ function PricingContent({
   isSignedIn: boolean | undefined;
   user: ReturnType<typeof useUser>['user'];
   router: ReturnType<typeof useRouter>;
-  subscription: any;
+  subscription: Subscription | null | undefined;
 }) {
   const searchParams = useSearchParams()
   const [processingPlan, setProcessingPlan] = useState<string | null>(null)
