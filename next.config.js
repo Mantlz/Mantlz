@@ -7,9 +7,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: process.env.VERCEL_URL 
-              ? `https://${process.env.VERCEL_URL}`
-              : 'https://mantlz.app',
+            value:'*',
           },
           {
             key: 'Access-Control-Allow-Methods',
