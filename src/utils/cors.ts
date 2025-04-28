@@ -38,6 +38,8 @@ export function addCorsHeadersToResponse(response: NextResponse, req: NextReques
   if (isValidOrigin(origin)) {
     console.log(`Adding CORS headers for origin: ${origin}`);
     response.headers.set('Access-Control-Allow-Origin', origin!);
+    response.headers.set('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-API-Key');
     response.headers.set('Access-Control-Allow-Credentials', 'true');
   } else {
     console.log(`Not adding CORS headers for invalid origin: ${origin}`);

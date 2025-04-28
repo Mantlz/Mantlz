@@ -4,9 +4,20 @@ import { handlePreflightRequest, addCorsHeadersToResponse, handleRedirectWithCor
 import { isProtectedRoute, isAuthRoute } from "./utils/routes";
 
 export default clerkMiddleware(async (auth, req) => {
+  const url = req.nextUrl;
+  const hostname = req.headers.get('host') || '';
+  
+  // Check if the request is coming from the API subdomain
+  const isApiSubdomain = hostname.startsWith('api.');
+  
+  // If it's the API subdomain, ensure we're only allowing API routes
+  if (isApiSubdomain && !url.pathname.startsWith('/api')) {
+    return new NextResponse('Not Found', { status: 404 });
+  }
+
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return handlePreflightRequest(req); // Pass the request object to access origin
+    return handlePreflightRequest(req);
   }
 
   // For regular requests
@@ -14,8 +25,8 @@ export default clerkMiddleware(async (auth, req) => {
   let response = NextResponse.next();
   
   // Add CORS headers for API routes
-  if (req.nextUrl.pathname.startsWith('/api')) {
-    response = addCorsHeadersToResponse(response, req); // Pass both response and request
+  if (url.pathname.startsWith('/api')) {
+    response = addCorsHeadersToResponse(response, req);
   }
   
   // Allow auth routes even without userId, they'll handle auth internally
@@ -25,7 +36,6 @@ export default clerkMiddleware(async (auth, req) => {
   
   // Protect dashboard and other routes
   if (!authResult.userId && isProtectedRoute(req)) {
-    // Use the new redirect function that preserves CORS headers
     const signInUrl = authResult.redirectToSignIn().headers.get('location');
     if (signInUrl) {
       return handleRedirectWithCors(req, signInUrl);
