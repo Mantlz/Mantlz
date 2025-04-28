@@ -2,7 +2,6 @@
 
 import { Loader2, Search, Calendar, Mail, Lock, Sparkles, Globe, MapPin, FileSearch, Maximize2 } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
-import { toast } from "sonner"
 import { SearchResult, Submission } from "./types"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
