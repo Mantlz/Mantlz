@@ -58,7 +58,6 @@ interface FormAnalyticsChartProps {
 
 export function FormAnalyticsChart({
   chartData: rawChartData,
-  latestDataPoint,
   analytics,
   isLoading,
   timeRange,

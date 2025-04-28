@@ -94,10 +94,6 @@ export function SearchResults({
           submission={submission}
           onClick={() => onSelectSubmission(submission)}
           isProUser={isProUser}
-          onCopyClick={(e) => {
-            e.stopPropagation()
-            copyToClipboard(submission.id)
-          }}
           onViewClick={(e) => {
             e.stopPropagation()
             onSelectSubmission(submission)
@@ -137,7 +133,6 @@ interface SubmissionSearchResultProps {
   submission: Submission
   onClick: () => void
   isProUser?: boolean
-  onCopyClick: (e: React.MouseEvent) => void
   onViewClick: (e: React.MouseEvent) => void
 }
 
@@ -145,7 +140,6 @@ function SubmissionSearchResult({
   submission, 
   onClick, 
   isProUser = false,
-  onCopyClick,
   onViewClick 
 }: SubmissionSearchResultProps) {
   const userEmailStatus = getUserEmailStatus(submission.notificationLogs);
