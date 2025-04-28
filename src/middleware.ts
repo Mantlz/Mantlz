@@ -10,9 +10,21 @@ export default clerkMiddleware(async (auth, req) => {
   // Check if the request is coming from the API subdomain
   const isApiSubdomain = hostname.startsWith('api.');
   
-  // If it's the API subdomain, ensure we're only allowing API routes
-  if (isApiSubdomain && !url.pathname.startsWith('/api')) {
-    return new NextResponse('Not Found', { status: 404 });
+  // Block v1 API routes on the main domain
+  if (!isApiSubdomain && url.pathname.startsWith('/api/v1')) {
+    return new NextResponse('Please use api.mantlz.app for v1 API endpoints', { 
+      status: 301,
+      headers: {
+        'Location': `https://api.mantlz.app${url.pathname}${url.search}`,
+      }
+    });
+  }
+
+  // If it's the API subdomain, only allow v1 API routes
+  if (isApiSubdomain) {
+    if (!url.pathname.startsWith('/api/v1')) {
+      return new NextResponse('Not Found', { status: 404 });
+    }
   }
 
   // Handle CORS preflight requests
