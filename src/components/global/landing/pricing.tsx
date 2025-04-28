@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, Suspense } from "react"
 import { Button } from "@/components/ui/button"
 import { useUser } from "@clerk/nextjs"
 import { toast } from "sonner"
@@ -81,12 +81,41 @@ const plans: Plan[] = [
 export default function Pricing() {
   const { isSignedIn, user } = useUser()
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const [processingPlan, setProcessingPlan] = useState<string | null>(null)
-  const isCanceled = searchParams.get("canceled") === "true"
   
   // Always call the hook but conditionally enable the query
   const { subscription } = useSubscription()
+
+  // Render the pricing section
+  return (
+    <>
+      <main className="pt-16">
+        <Suspense>
+          <PricingContent
+            isSignedIn={isSignedIn}
+            user={user}
+            router={router}
+            subscription={subscription}
+          />
+        </Suspense>
+      </main>
+    </>
+  )
+}
+
+function PricingContent({
+  isSignedIn,
+  user,
+  router,
+  subscription
+}: {
+  isSignedIn: boolean | undefined;
+  user: ReturnType<typeof useUser>['user'];
+  router: ReturnType<typeof useRouter>;
+  subscription: any;
+}) {
+  const searchParams = useSearchParams()
+  const [processingPlan, setProcessingPlan] = useState<string | null>(null)
+  const isCanceled = searchParams.get("canceled") === "true"
 
   const { mutate: handleStripeCheckout } = useMutation({
     mutationFn: async ({ priceId }: { priceId: string }) => {
@@ -155,38 +184,33 @@ export default function Pricing() {
     )
   }
 
-  // Render the pricing section
   return (
-    <>
-      <main className="pt-16">
-        <section className="overflow-hidden bg-white dark:bg-zinc-950" id="pricing">
-          <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-                Choose <span className="font-extrabold">The Plan</span> That&apos;s Right For
-              </h2>
-              <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-                Your Form Management Needs
-              </h2>
-            </div>
+    <section className="overflow-hidden bg-white dark:bg-zinc-950" id="pricing">
+      <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+            Choose <span className="font-extrabold">The Plan</span> That&apos;s Right For
+          </h2>
+          <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+            Your Form Management Needs
+          </h2>
+        </div>
 
-            <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6">
-              <div className="grid gap-8 lg:grid-cols-3">
-                {plans.map((plan) => (
-                  <PricingCard
-                    key={plan.title}
-                    plan={plan}
-                    onCheckout={() => handleCheckout(plan)}
-                    isLoading={processingPlan === plan.title}
-                    isCurrentPlan={isCurrentUserPlan(plan.title)}
-                  />
-                ))}
-              </div>
-            </div>
+        <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6">
+          <div className="grid gap-8 lg:grid-cols-3">
+            {plans.map((plan) => (
+              <PricingCard
+                key={plan.title}
+                plan={plan}
+                onCheckout={() => handleCheckout(plan)}
+                isLoading={processingPlan === plan.title}
+                isCurrentPlan={isCurrentUserPlan(plan.title)}
+              />
+            ))}
           </div>
-        </section>
-      </main>
-    </>
+        </div>
+      </div>
+    </section>
   )
 }
 

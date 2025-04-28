@@ -7,11 +7,10 @@ import TrustedCompanies from "@/components/global/landing/trustedcompanies";
 import { VersionBadge } from "@/components/global/landing/version-badge";
 import { Container } from "@/components/global/landing/container";
 import SoftwareComparison from "@/components/global/landing/software-comparison";
-
-
 import Pricing from "@/components/global/landing/pricing";
 import Faq from "@/components/global/landing/faq";
 import BottomCTA from "@/components/global/landing/bottomcta";
+import { Suspense } from "react";
 
 
 export default function LandingPage() {
@@ -47,7 +46,9 @@ export default function LandingPage() {
       </Container>
       
       <SoftwareComparison />
-      <Pricing />
+      <Suspense>
+        <Pricing />
+      </Suspense>
       <Faq />
       <BottomCTA />
       <Footer />
