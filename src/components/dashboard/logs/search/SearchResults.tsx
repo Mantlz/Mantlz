@@ -222,13 +222,3 @@ function SubmissionSearchResult({
     </div>
   )
 }
-
-const copyToClipboard = async (text: string) => {
-  try {
-    await navigator.clipboard.writeText(text);
-    toast.success("Submission ID copied to clipboard!");
-  } catch (err) {
-    console.error("Failed to copy text: ", err);
-    toast.error("Failed to copy submission ID.");
-  }
-}; 
