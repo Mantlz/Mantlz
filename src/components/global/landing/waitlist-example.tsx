@@ -1,16 +1,16 @@
 "use client"
 import { WaitlistForm } from '@mantlz/nextjs';
-import { useState } from 'react';
+// import { useState } from 'react';
 
 export function WaitlistExample() {
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+  // const [email, setEmail] = useState('');
+  // const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
-  };
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setSubmitted(true);
+  //   setTimeout(() => setSubmitted(false), 3000);
+  // };
 
   return (
     <div className="animate-float -rotate-12">

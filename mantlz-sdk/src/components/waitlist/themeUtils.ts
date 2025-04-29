@@ -5,7 +5,7 @@ import { cn } from '../../utils/cn';
 const defaultAppearance: WaitlistFormAppearance = {
   baseStyle: {
     container: 'bg-white text-zinc-900',
-    form: 'space-y-2',
+    form: 'space-y-1',
   },
   elements: {
     card: 'border border-zinc-100 shadow-sm rounded-xl',
@@ -26,11 +26,11 @@ const defaultAppearance: WaitlistFormAppearance = {
 const darkAppearance: WaitlistFormAppearance = {
   baseStyle: {
     container: 'bg-zinc-950 text-zinc-50',
-    form: 'space-y-2',
+    form: 'space-y-1',
   },
   elements: {
     card: 'border border-zinc-800 rounded-xl shadow-md bg-zinc-900',
-    cardHeader: 'space-y-2 p-2 pb-1',
+    cardHeader: 'space-y-1 p-2 pb-1',
     cardTitle: 'text-2xl font-semibold tracking-tight text-white',
     cardDescription: 'text-sm text-zinc-400',
     cardContent: 'p-2',
@@ -47,11 +47,11 @@ const darkAppearance: WaitlistFormAppearance = {
 const purpleAppearance: WaitlistFormAppearance = {
   baseStyle: {
     container: 'bg-gradient-to-br from-purple-900 to-indigo-900 text-purple-50',
-    form: 'space-y-2',
+    form: 'space-y-1',
   },
   elements: {
     card: 'border border-purple-700/30 shadow-lg rounded-xl backdrop-blur-sm bg-purple-900/80',
-    cardHeader: 'space-y-2 p-2 pb-1',
+    cardHeader: 'space-y-1 p-2 pb-1',
     cardTitle: 'text-2xl font-semibold tracking-tight text-purple-100',
     cardDescription: 'text-sm text-purple-300',
     cardContent: 'p-2',
@@ -68,11 +68,11 @@ const purpleAppearance: WaitlistFormAppearance = {
 const neobrutalistAppearance: WaitlistFormAppearance = {
   baseStyle: {
     container: 'bg-yellow-200 text-black',
-    form: 'space-y-2',
+    form: 'space-y-1',
   },
   elements: {
     card: 'border-3 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] bg-yellow-100',
-    cardHeader: 'space-y-2 p-2 pb-1',
+    cardHeader: 'space-y-1 p-2 pb-1',
     cardTitle: 'text-2xl font-black uppercase tracking-wider',
     cardDescription: 'text-base font-medium text-black',
     cardContent: 'p-2',
@@ -104,12 +104,29 @@ export function processAppearance(
   const defaultThemeAppearance = getDefaultAppearance(theme);
   
   // If no appearance provided, return the default theme appearance
-  if (!appearance) return defaultThemeAppearance;
+  if (!appearance) {
+    return defaultThemeAppearance;
+  }
   
   // If appearance is a function, call it with the current theme
   const customAppearance = typeof appearance === 'function' 
     ? appearance(theme) 
     : appearance;
+  
+  // Special handling for neobrutalism theme in dark mode
+  if (theme === 'neobrutalism' && document.documentElement.classList.contains('dark')) {
+    return {
+      ...defaultThemeAppearance,
+      elements: {
+        ...defaultThemeAppearance.elements,
+        card: 'border-3 border-white shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] bg-yellow-100',
+        formButtonPrimary: 'bg-pink-500 hover:bg-pink-400 active:bg-pink-600 text-white border-2 border-white shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all font-bold uppercase',
+        input: 'bg-white border-2 border-white placeholder:text-gray-500 focus:ring-white focus:border-white',
+        inputError: 'text-sm font-bold text-red-500 mt-1',
+        usersJoinedCounter: 'bg-black text-white border-2 border-white shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]',
+      }
+    };
+  }
   
   // Merge custom appearance with default theme appearance
   return {
