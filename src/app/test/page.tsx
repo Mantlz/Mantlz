@@ -1,3 +1,4 @@
+"use client"
 import { WaitlistForm } from '@mantlz/nextjs';
 
 export default function CustomerFeedbackPage() {
