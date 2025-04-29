@@ -123,7 +123,7 @@ export function processAppearance(
         formButtonPrimary: 'bg-pink-500 hover:bg-pink-400 active:bg-pink-600 text-white border-2 border-white shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all font-bold uppercase',
         input: 'bg-white border-2 border-white placeholder:text-gray-500 focus:ring-white focus:border-white',
         inputError: 'text-sm font-bold text-red-500 mt-1',
-        usersJoinedCounter: 'bg-black text-white border-2 border-white shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]',
+        usersJoinedCounter: 'bg-black text-white border-2 border-white shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] text-sm font-light [&>span]:font-bold',
       }
     };
   }

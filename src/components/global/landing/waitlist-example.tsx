@@ -1,6 +1,12 @@
 "use client"
-import { WaitlistForm } from '@mantlz/nextjs';
+import dynamic from 'next/dynamic';
 // import { useState } from 'react';
+
+// Dynamically import the WaitlistForm component with ssr disabled
+const WaitlistForm = dynamic(
+  () => import('@mantlz/nextjs').then(mod => mod.WaitlistForm),
+  { ssr: false }
+);
 
 export function WaitlistExample() {
   // const [email, setEmail] = useState('');
