@@ -3,7 +3,7 @@ import { Container } from "./container"
 
 const TrustedCompanies = () => {
   return (
-    <section className="w-full py-12 bg-white dark:bg-zinc-950">
+    <section className="w-full py-24 mt-10 bg-white dark:bg-zinc-950">
       <Container>
         <div className="flex flex-col items-center justify-center space-y-6 text-center">
           <p className="text-sm font-medium text-neutral-600 dark:text-neutral-400 tracking-wide">

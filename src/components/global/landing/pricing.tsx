@@ -191,18 +191,18 @@ function PricingContent({
 
   return (
     <section className="overflow-hidden bg-white dark:bg-zinc-950" id="pricing">
-      <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 lg:py-24">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
             Choose <span className="font-extrabold">The Plan</span> That&apos;s Right For
           </h2>
-          <h2 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
             Your Form Management Needs
           </h2>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6">
-          <div className="grid gap-8 lg:grid-cols-3">
+        <div className="bg-white dark:bg-zinc-900 rounded-3xl p-4 sm:p-6">
+          <div className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {plans.map((plan) => (
               <PricingCard
                 key={plan.title}
@@ -237,15 +237,15 @@ function PricingCard({
     <div
       className={`relative w-full rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-lg overflow-hidden ${plan.isFeatured ? "ring-1 ring-blue-500 dark:ring-blue-400" : ""} ${isCurrentPlan ? "ring-2 ring-green-500 dark:ring-green-400" : ""}`}
     >
-      <div className="p-8 flex flex-col h-full">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
+      <div className="p-6 sm:p-8 flex flex-col h-full">
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <div className="flex items-center gap-2 sm:gap-3">
             {plan.title === "Starter" && (
-              <div className="w-8 h-8 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center border border-zinc-200 dark:border-zinc-700">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center border border-zinc-200 dark:border-zinc-700">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
+                  width="18"
+                  height="18"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -262,11 +262,11 @@ function PricingCard({
               </div>
             )}
             {plan.title === "Professional" && (
-              <div className="w-8 h-8 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
+                  width="18"
+                  height="18"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -282,11 +282,11 @@ function PricingCard({
               </div>
             )}
             {plan.title === "Business" && (
-              <div className="w-8 h-8 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
+                  width="18"
+                  height="18"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -300,21 +300,21 @@ function PricingCard({
                 </svg>
               </div>
             )}
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white">{plan.title}</h3>
+            <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">{plan.title}</h3>
           </div>
           {isCurrentPlan && (
-            <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 border-green-200 dark:border-green-800">
+            <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 border-green-200 dark:border-green-800 text-xs sm:text-sm">
               Current Plan
             </Badge>
           )}
         </div>
 
-        <div className="mb-6">
-          <span className="text-4xl font-bold text-gray-900 dark:text-white">${price}</span>
+        <div className="mb-4 sm:mb-6">
+          <span className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">${price}</span>
           <span className="ml-1 text-gray-500 dark:text-gray-400">{period}</span>
         </div>
 
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-4 sm:mb-6">
           {plan.title === "Starter" &&
             "Perfect for individuals or small projects needing a simple form solution with essential features."}
           {plan.title === "Professional" &&
@@ -323,18 +323,18 @@ function PricingCard({
             "Enterprise-grade solution for organizations with high-volume form needs and advanced customization requirements."}
         </p>
 
-        <ul className="space-y-4 text-sm mb-8 flex-grow">
+        <ul className="space-y-3 sm:space-y-4 text-xs sm:text-sm mb-6 sm:mb-8 flex-grow">
           {plan.features.map((feature, index) => (
-            <li key={index} className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
+            <li key={index} className="flex items-start gap-2 sm:gap-3 text-gray-700 dark:text-gray-300">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
-                className="text-blue-500 dark:text-blue-400 mt-0.5 min-w-[18px]"
+                className="text-blue-500 dark:text-blue-400 mt-0.5 min-w-[16px]"
               >
                 <circle cx="12" cy="12" r="10" />
                 <path d="M8 12l2 2 4-4" />
@@ -347,7 +347,7 @@ function PricingCard({
         <Button
           onClick={onCheckout}
           disabled={isLoading || isCurrentPlan}
-          className={`w-full rounded-lg py-6 text-center font-medium text-lg transition-colors duration-200 mt-auto ${
+          className={`w-full rounded-lg py-4 sm:py-6 text-center font-medium text-base sm:text-lg transition-colors duration-200 mt-auto ${
             plan.title === "Starter"
               ? "bg-[#0a1629] hover:bg-[#152a4a] text-white"
               : "bg-white hover:bg-zinc-100 text-gray-900 border border-zinc-200"
@@ -357,8 +357,8 @@ function PricingCard({
           {plan.title !== "Starter" && !isCurrentPlan && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
