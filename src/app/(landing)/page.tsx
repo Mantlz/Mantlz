@@ -1,3 +1,4 @@
+"use client"
 import { FeatureGrid } from "@/components/global/landing/feature";
 import Footer from "@/components/global/landing/footer";
 import { HeroSection } from "@/components/global/landing/hero-section";
