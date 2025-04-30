@@ -60,7 +60,7 @@ export function QuestionModal({ isOpen, onClose, trigger }: QuestionModalProps) 
           </p>
           
           <div className="grid grid-cols-2 gap-6">
-            {helpOptions.slice(0, 2).map((option) => (
+            {helpOptions.map((option) => (
               <Link 
                 key={option.id}
                 href={option.href}
