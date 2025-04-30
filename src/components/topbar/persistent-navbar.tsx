@@ -107,7 +107,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
     <>
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="md:hidden">
+          <Button variant="ghost" size="icon" className="md:hidden cursor-pointer">
             <Menu className="h-5 w-5" />
             <span className="sr-only">Open menu</span>
           </Button>
@@ -119,7 +119,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
           <SheetTitle className="sr-only">Mantlz Navigation</SheetTitle>
           <div className="flex flex-col h-full">
             <div className="flex items-center justify-between p-4 border-b border-zinc-200 dark:border-zinc-800">
-              <Link href="/dashboard" className="flex items-center gap-1 xs:gap-2 font-semibold">
+              <Link href="/dashboard" className="flex items-center gap-1 xs:gap-2 font-semibold cursor-pointer">
                 <Logo />
                 <span className="text-sm sm:text-base">Mantlz</span>
               </Link>
@@ -135,7 +135,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                     <SheetClose asChild>
                       <Link
                         href="/dashboard"
-                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
                       >
                         <Home className="h-4 w-4" />
                         <span>Dashboard</span>
@@ -144,7 +144,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                     <SheetClose asChild>
                       <Link
                         href="/dashboard/campaigns"
-                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
                       >
                         <Mail className="h-4 w-4" />
                         <span>Campaigns</span>
@@ -153,7 +153,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                     <SheetClose asChild>
                       <Link
                         href="/dashboard/logs"
-                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
                       >
                         <Activity className="h-4 w-4" />
                         <span>Logs</span>
@@ -162,7 +162,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                     <SheetClose asChild>
                       <Link
                         href="/dashboard/test"
-                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
                       >
                         <TestTube2 className="h-4 w-4" />
                         <span>Test</span>
@@ -208,7 +208,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                     <SheetClose asChild>
                       <button
                         onClick={() => openUserProfile()}
-                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors w-full"
+                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors w-full cursor-pointer"
                       >
                         <User className="h-4 w-4" />
                         <span>Profile</span>
@@ -217,7 +217,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
 
                     <SheetClose asChild>
                       <SettingsDialog>
-                        <button className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors w-full">
+                        <button className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors w-full cursor-pointer">
                           <Settings className="h-4 w-4" />
                           <span>Settings</span>
                         </button>
@@ -226,7 +226,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
 
                     <button
                       onClick={() => signOut()}
-                      className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 transition-colors w-full"
+                      className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 transition-colors w-full cursor-pointer"
                     >
                       <LogOut className="h-4 w-4" />
                       <span>Sign out</span>
@@ -242,7 +242,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    className="w-full gap-2 rounded-lg border-zinc-300 dark:border-zinc-700"
+                    className="w-full gap-2 rounded-lg border-zinc-300 dark:border-zinc-700 cursor-pointer"
                   >
                     <HelpCircle className="h-4 w-4" />
                     <span>Help & Support</span>
@@ -316,7 +316,7 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
       <div className="flex items-center gap-2 md:gap-6">
         <MobileNavMenu />
 
-        <Link href="/dashboard" className="flex items-center gap-1 xs:gap-2 font-semibold group">
+        <Link href="/dashboard" className="flex items-center gap-1 xs:gap-2 font-semibold group cursor-pointer">
           <Logo />
           <span className="text-sm sm:text-base group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors duration-200">Mantlz</span>
         </Link>
@@ -337,25 +337,25 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
               className="w-[220px] p-2 m-1 bg-zinc-100/90 backdrop-blur-sm border border-zinc-200/70 dark:bg-zinc-900/90 dark:border-zinc-800/70 shadow-lg rounded-lg"
             >
               <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5">
-                <Link href="/dashboard" className="flex items-center gap-2.5 py-1.5">
+                <Link href="/dashboard" className="flex items-center gap-2.5 py-1.5 cursor-pointer">
                   <Home className="h-4 w-4" />
                   <span>Dashboard</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5">
-                <Link href="/dashboard/campaigns" className="flex items-center gap-2.5 py-1.5">
+                <Link href="/dashboard/campaigns" className="flex items-center gap-2.5 py-1.5 cursor-pointer">
                   <Mail className="h-4 w-4" />
                   <span>Campaigns</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5">
-                <Link href="/dashboard/logs" className="flex items-center gap-2.5 py-1.5">
+                <Link href="/dashboard/logs" className="flex items-center gap-2.5 py-1.5 cursor-pointer">
                   <Activity className="h-4 w-4" />
                   <span>Logs</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5">
-                <Link href="/dashboard/test" className="flex items-center gap-2.5 py-1.5">
+                <Link href="/dashboard/test" className="flex items-center gap-2.5 py-1.5 cursor-pointer">
                   <TestTube2 className="h-4 w-4" />
                   <span>Test</span>
                 </Link>
@@ -363,7 +363,7 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
               <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 p-0 rounded-lg my-0.5">
                 <Link 
                   href="/dashboard/form-builder"
-                  className="flex items-center gap-2.5 w-full px-2 py-1.5 cursor-pointer bg-zinc-100/90 dark:bg-zinc-900/90 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/90 backdrop-blur-sm border justify-start  rounded-lg border-zinc-300 dark:border-zinc-700"
+                  className="flex items-center gap-2.5 w-full px-2 py-1.5 cursor-pointer bg-zinc-100/90 dark:bg-zinc-900/90 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/90 backdrop-blur-sm border justify-start  rounded-lg border-zinc-300 dark:border-zinc-700 cursor-pointer"
                 >
                   <Plus className="h-4 w-4" />
                   <span>Create Form</span>

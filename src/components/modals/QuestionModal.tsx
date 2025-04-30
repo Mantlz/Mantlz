@@ -1,4 +1,4 @@
-import { Book, HelpCircle, MessageSquare, ShoppingCart, Users } from "lucide-react";
+import { Book, HelpCircle, MessageSquare, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import {
   Dialog,
@@ -18,31 +18,25 @@ const helpOptions = [
     id: "documentation",
     icon: <Book className="h-8 w-8 text-indigo-500" />,
     label: "Documentation",
-    href: "/docs"
+    href: "https://doc.mantlz.app"
   },
   {
     id: "support",
     icon: <HelpCircle className="h-8 w-8 text-blue-500" />,
     label: "Support",
-    href: "/support"
+    href: "mailto:contact@mantlz.app"
   },
   {
     id: "feature-request",
     icon: <MessageSquare className="h-8 w-8 text-green-500" />,
     label: "Feature request",
-    href: "/feature-request"
+    href: "https://mantlz.featurebase.app/"
   },
   {
     id: "contact-sales",
     icon: <ShoppingCart className="h-8 w-8 text-amber-500" />,
     label: "Contact sales",
-    href: "/contact-sales"
-  },
-  {
-    id: "discord",
-    icon: <Users className="h-8 w-8 text-purple-500" />,
-    label: "Discord",
-    href: "https://discord.gg/mantlz"
+    href: "mailto:sale@mantlz.app"
   }
 ];
 
@@ -70,7 +64,7 @@ export function QuestionModal({ isOpen, onClose, trigger }: QuestionModalProps) 
               <Link 
                 key={option.id}
                 href={option.href}
-                className="flex flex-col items-center justify-center p-6 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-750 transition-all shadow-sm hover:shadow"
+                className="flex flex-col items-center justify-center p-6 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-750 transition-all shadow-sm hover:shadow cursor-pointer"
                 onClick={() => onClose?.()}
               >
                 <div className="flex justify-center items-center mb-3">
@@ -86,7 +80,7 @@ export function QuestionModal({ isOpen, onClose, trigger }: QuestionModalProps) 
               <Link 
                 key={option.id}
                 href={option.href}
-                className="flex flex-col items-center justify-center p-4 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-750 transition-all shadow-sm hover:shadow"
+                className="flex flex-col items-center justify-center p-4 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-750 transition-all shadow-sm hover:shadow cursor-pointer"
                 onClick={() => onClose?.()}
               >
                 <div className="flex justify-center items-center mb-2">

@@ -100,20 +100,20 @@ const NavigationSection = memo(function NavigationSection() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="flex items-center gap-1 px-1 hover:bg-zinc-800">
+        <Button variant="ghost" className="flex items-center gap-1 px-1 hover:bg-zinc-800 cursor-pointer">
           <span>Navigation</span>
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[220px] bg-white dark:bg-zinc-900 border-zinc-800">
         <DropdownMenuItem asChild className="hover:bg-zinc-800">
-          <Link href="/dashboard/logs" className="flex items-center gap-2">
+          <Link href="/dashboard/logs" className="flex items-center gap-2 cursor-pointer">
             <Activity className="h-4 w-4" />
             <span>Logs</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="hover:bg-zinc-800">
-          <Link href="/dashboard/test" className="flex items-center gap-2">
+          <Link href="/dashboard/test" className="flex items-center gap-2 cursor-pointer">
             <TestTube2 className="h-4 w-4" />
             <span>Test</span>
           </Link>
@@ -138,7 +138,7 @@ const ActionButtonsSection = memo(function ActionButtonsSection() {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="rounded-lg hover:bg-zinc-800"
+            className="rounded-lg hover:bg-zinc-800 cursor-pointer"
           >
             <HelpCircle className="h-5 w-5" />
           </Button>
@@ -146,7 +146,7 @@ const ActionButtonsSection = memo(function ActionButtonsSection() {
       />
 
       <SettingsDialog>
-        <Button variant="ghost" size="icon" className="rounded-lg hover:bg-zinc-800 relative">
+        <Button variant="ghost" size="icon" className="rounded-lg hover:bg-zinc-800 relative cursor-pointer">
           <Settings className="h-5 w-5" />
           <span className="absolute top-0.5 -right-1 text-[10px] font-medium text-zinc-500 dark:text-zinc-400">⌘/S</span>
         </Button>
@@ -178,7 +178,7 @@ export const Navbar = memo(function Navbar() {
     return (
       <nav className="fixed top-0 left-0 right-0 z-50 flex h-14 items-center justify-between bg-black px-4 text-white">
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2 font-semibold">
+          <Link href="/" className="flex items-center gap-2 font-semibold cursor-pointer">
             <Logo />
             <p className="text-xs text-gray-500 dark:text-gray-400">Beta</p>
             <span>Mantlz</span>
@@ -199,7 +199,7 @@ export const Navbar = memo(function Navbar() {
       )}
     >
       <div className="flex items-center gap-6">
-        <Link href="/" className="flex items-center gap-2 font-semibold">
+        <Link href="/" className="flex items-center gap-2 font-semibold cursor-pointer">
           <Logo />
           <span>Mantlz</span>
         </Link>
