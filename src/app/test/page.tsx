@@ -12,11 +12,7 @@ export default function CustomerFeedbackPage() {
 
      
 
-         
-
-      
-
-
+        
       <WaitlistForm
         formId="cm9x3lzt4001xo7wpo1mxticz"
        
