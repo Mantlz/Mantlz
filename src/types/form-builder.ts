@@ -1,16 +1,16 @@
-import { LucideIcon } from "lucide-react"
+import { Icon } from "@tabler/icons-react"
 
 export interface FormCategory {
   id: string
   name: string
-  icon: LucideIcon
+  icon: Icon
 }
 
 export interface FormTemplate {
   id: string
   name: string
   description: string
-  icon: LucideIcon
+  icon: Icon
   category: string
   popular?: boolean
   comingSoon?: boolean
