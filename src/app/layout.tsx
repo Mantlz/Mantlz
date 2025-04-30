@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Space_Mono, Space_Grotesk } from "next/font/google"
+import { CookieConsent } from "@/components/global/cookie-consent"
 
 const sansFont = Space_Grotesk({
   subsets: ["latin"],
@@ -46,12 +47,15 @@ export default function RootLayout({
         <body className={`${sansFont.variable} ${monoFont.variable} font-regular antialiased tracking-wide`}>
           <main className="h-screen bg-background text-foreground transition-colors duration-300">
             <Providers>
-              <MantlzProvider apiKey={process.env.MANTLZ_KEY}>{children}</MantlzProvider>
+              <MantlzProvider apiKey={process.env.MANTLZ_KEY}>
+                {children}
+                <Toaster richColors position="top-center" theme="system" />
+                <Analytics />
+                <SpeedInsights />
+                <CookieConsent />
+              </MantlzProvider>
             </Providers>
-            <Analytics />
-            <SpeedInsights />
           </main>
-          <Toaster richColors position="top-center" theme="system" />
         </body>
       </html>
     </ClerkProvider>

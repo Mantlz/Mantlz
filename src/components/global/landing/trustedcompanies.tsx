@@ -13,7 +13,7 @@ const TrustedCompanies = () => {
             {[1, 2, 3, 4, 5].map((i) => (
               <div
                 key={i}
-                className="p-3 border-2 border-neutral-200 dark:border-zinc-800 rounded-sm bg-[#fffdf7] dark:bg-zinc-950 transition-all hover:border-neutral-400 dark:hover:border-neutral-600"
+                className="p-3 border-2 border-neutral-200 dark:border-zinc-800 rounded-sm bg-white dark:bg-zinc-950 transition-all hover:border-neutral-400 dark:hover:border-neutral-600"
               >
                 <Image
                   src={`/logo-dark.svg`}

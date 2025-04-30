@@ -142,7 +142,7 @@ const softwareCompared = [
 
 export default function SoftwareComparison() {
   return (
-    <section className="py-24 bg-white dark:bg-zinc-950">
+    <section className="py-24 bg-white dark:bg-zinc-950" id="features">
       <Container>
         <div className="text-center mb-16">
           <h2 className="text-6xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">

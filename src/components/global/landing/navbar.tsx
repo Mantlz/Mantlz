@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Menu,
-  ChevronRight,
   User,
   LogOut,
 
@@ -141,9 +140,16 @@ export function Navbar() {
     // This is the state reached after the initial loading phase (!isAuthLoaded)
     // if no session was found, or if the user explicitly signed out.
     return (
-      <Link href="/signin" className="flex items-center text-sm font-medium">
-        Sign in <ChevronRight className="h-4 w-4 ml-1" />
-      </Link>
+      <div className="flex items-center gap-4">
+        <Link href="/sign-in" className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+          Sign in
+        </Link>
+        <Link href="/sign-up">
+          <Button size="sm" className="flex items-center gap-1 ">
+            Sign up 
+          </Button>
+        </Link>
+      </div>
     );
   };
 
@@ -168,10 +174,15 @@ export function Navbar() {
               <MobileNavLink href="/" isActive>
                 Home
               </MobileNavLink>
-              <MobileNavLink href="/solution">Solution</MobileNavLink>
-              <MobileNavLink href="/features">Features</MobileNavLink>
-              <MobileNavLink href="/pricing">Pricing</MobileNavLink>
-              <MobileNavLink href="/resources">Resources</MobileNavLink>
+              <MobileNavLink href="#features">Features</MobileNavLink>
+              <MobileNavLink href="#pricing">Pricing</MobileNavLink>
+              <MobileNavLink href="#faq">FAQ</MobileNavLink>
+              <MobileNavLink href="https://doc.mantlz.app" target="_blank">
+                Docs
+              </MobileNavLink>
+              <MobileNavLink href="https://mantlz.featurebase.app/changelog" target="_blank">
+                Changelog
+              </MobileNavLink>
 
              {/* Mobile Drawer Auth Content based on auth state */}
               {!isAuthLoaded ? (
@@ -214,16 +225,20 @@ export function Navbar() {
                  </>
               ) : (
                  // Render SignedOut content if auth is loaded and user is out
-                 <>
-                  <DrawerClose asChild>
-                    <Link
-                      href="/signin"
-                      className="flex items-center mt-2 font-medium"
-                    >
-                      Sign in <ChevronRight className="h-4 w-4 ml-1" />
-                    </Link>
-                  </DrawerClose>
-                </>
+                 <div className="flex flex-col space-y-3 mt-2">
+                   <DrawerClose asChild>
+                     <Link href="/sign-in" className="text-base py-2 text-gray-600 dark:text-gray-400">
+                       Sign in
+                     </Link>
+                   </DrawerClose>
+                   <DrawerClose asChild>
+                     <Link href="/sign-up">
+                       <Button size="sm" className="w-full flex items-center justify-center gap-1 dark:text-white">
+                         Sign up 
+                       </Button>
+                     </Link>
+                   </DrawerClose>
+                 </div>
               )}
 
             </div>
@@ -236,10 +251,11 @@ export function Navbar() {
             <NavLink href="/" active>
               Home
             </NavLink>
-            <NavLink href="/solution">Solution</NavLink>
-            <NavLink href="/features">Features</NavLink>
-            <NavLink href="/pricing">Pricing</NavLink>
-            <NavLink href="/resources">Resources</NavLink>
+            <NavLink href="#features">Features</NavLink>
+            <NavLink href="#pricing">Pricing</NavLink>
+            <NavLink href="#faq">FAQ</NavLink>
+            <NavLink href="https://doc.mantlz.app" target="_blank">Docs</NavLink>
+            <NavLink href="https://mantlz.featurebase.app" target="_blank">Changelog</NavLink>
           </div>
           {/* Render Auth Section using the refined logic */}
           <div>{renderAuthSection()}</div>
@@ -250,18 +266,20 @@ export function Navbar() {
 }
 
 // Helper component for Desktop Nav Links
-interface NavLinkProps {
+interface NavLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   href: string;
   children: React.ReactNode;
   active?: boolean;
 }
 
-function NavLink({ href, children, active }: NavLinkProps) {
+function NavLink({ href, children, active, target, ...props }: NavLinkProps) {
   return (
     <Link
       href={href}
+      target={target}
+      {...props}
       className={`text-sm ${
-        active ? "font-medium" : "text-gray-600 hover:text-gray-900"
+        active ? "font-medium text-gray-900 dark:text-white" : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
       }`}
     >
       {children}
@@ -270,20 +288,28 @@ function NavLink({ href, children, active }: NavLinkProps) {
 }
 
 // Helper component for Mobile Nav Links in Drawer
+interface MobileNavLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  href: string;
+  children: React.ReactNode;
+  isActive?: boolean;
+}
+
 function MobileNavLink({
   href,
   children,
   isActive,
-}: {
-  href: string;
-  children: React.ReactNode;
-  isActive?: boolean;
-}) {
+  target,
+  ...props
+}: MobileNavLinkProps) {
   return (
     <DrawerClose asChild>
       <Link
         href={href}
-        className={`text-base py-2 ${isActive ? "font-medium" : "text-gray-600"}`}
+        target={target}
+        {...props}
+        className={`text-base py-2 ${
+          isActive ? "font-medium text-gray-900 dark:text-white" : "text-gray-600 dark:text-gray-400"
+        }`}
       >
         {children}
       </Link>

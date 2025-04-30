@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge"
 // Define subscription type
 type Subscription = {
   plan: "FREE" | "STANDARD" | "PRO" | null;
-  // Add other properties as needed
+  
 }
 
 type Plan = {
@@ -27,6 +27,7 @@ type Plan = {
   stripePriceIdMonthly: string
   includedPlans?: string[]
   quota: typeof FREE_QUOTA | typeof STANDARD_QUOTA | typeof PRO_QUOTA
+  isPopular?: boolean
 }
 
 const plans: Plan[] = [
@@ -45,8 +46,8 @@ const plans: Plan[] = [
     quota: FREE_QUOTA,
   },
   {
-    title: "Professional",
-    monthlyPrice: 29,
+    title: "Standard",
+    monthlyPrice: 8,
     features: [
       "5 Forms",
       "5,000 submissions per month",
@@ -56,15 +57,14 @@ const plans: Plan[] = [
       "Priority support",
       "Custom branding",
     ],
-    buttonText: "Get Started",
-    isFeatured: true,
+    buttonText: "Get Standard",
     stripePriceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_STANDARD_PRICE_ID ?? "",
     includedPlans: [],
     quota: STANDARD_QUOTA,
   },
   {
-    title: "Business",
-    monthlyPrice: 99,
+    title: "Professional",
+    monthlyPrice: 15,
     features: [
       "10 Forms",
       "10,000 submissions per month",
@@ -76,10 +76,12 @@ const plans: Plan[] = [
       "Team collaboration",
       "API access",
     ],
-    buttonText: "Get Started",
+    buttonText: "Get Pro",
     stripePriceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID ?? "",
     includedPlans: [],
     quota: PRO_QUOTA,
+    isPopular: true,
+    isFeatured: true,
   },
 ]
 
@@ -201,7 +203,7 @@ function PricingContent({
           </h2>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 rounded-3xl p-4 sm:p-6">
+        <div className=" rounded-3xl p-4 sm:p-6">
           <div className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {plans.map((plan) => (
               <PricingCard
@@ -235,13 +237,13 @@ function PricingCard({
 
   return (
     <div
-      className={`relative w-full rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-lg overflow-hidden ${plan.isFeatured ? "ring-1 ring-blue-500 dark:ring-blue-400" : ""} ${isCurrentPlan ? "ring-2 ring-green-500 dark:ring-green-400" : ""}`}
+      className={`relative w-full rounded-2xl border border-zinc-200 dark:border-zinc-700  shadow-lg overflow-hidden ${plan.isFeatured ? "ring-1 ring-blue-500 dark:ring-blue-400" : ""} ${isCurrentPlan ? "ring-2 ring-green-500 dark:ring-green-400" : ""}`}
     >
       <div className="p-6 sm:p-8 flex flex-col h-full">
         <div className="flex items-center justify-between mb-4 sm:mb-6">
           <div className="flex items-center gap-2 sm:gap-3">
             {plan.title === "Starter" && (
-              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center border border-zinc-200 dark:border-zinc-700">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border border-zinc-200 dark:border-zinc-700">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="18"
@@ -261,8 +263,8 @@ function PricingCard({
                 </svg>
               </div>
             )}
-            {plan.title === "Professional" && (
-              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
+            {plan.title === "Standard" && (
+              <div className="w-7 h-7 sm:w-8 sm:h-8  rounded-full flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="18"
@@ -281,8 +283,8 @@ function PricingCard({
                 </svg>
               </div>
             )}
-            {plan.title === "Business" && (
-              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
+            {plan.title === "Professional" && (
+              <div className="w-7 h-7 sm:w-8 sm:h-8  rounded-full flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="18"
@@ -307,6 +309,11 @@ function PricingCard({
               Current Plan
             </Badge>
           )}
+          {plan.isPopular && (
+            <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100 border-blue-200 dark:border-blue-800 text-xs sm:text-sm">
+              Most Popular
+            </Badge>
+          )}
         </div>
 
         <div className="mb-4 sm:mb-6">
@@ -317,9 +324,9 @@ function PricingCard({
         <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-4 sm:mb-6">
           {plan.title === "Starter" &&
             "Perfect for individuals or small projects needing a simple form solution with essential features."}
-          {plan.title === "Professional" &&
+          {plan.title === "Standard" &&
             "Ideal for growing businesses that need multiple forms and advanced features to engage with their audience."}
-          {plan.title === "Business" &&
+          {plan.title === "Professional" &&
             "Enterprise-grade solution for organizations with high-volume form needs and advanced customization requirements."}
         </p>
 
@@ -349,8 +356,8 @@ function PricingCard({
           disabled={isLoading || isCurrentPlan}
           className={`w-full rounded-lg py-4 sm:py-6 text-center font-medium text-base sm:text-lg transition-colors duration-200 mt-auto ${
             plan.title === "Starter"
-              ? "bg-[#0a1629] hover:bg-[#152a4a] text-white"
-              : "bg-white hover:bg-zinc-100 text-gray-900 border border-zinc-200"
+              ? "bg-gradient-to-bl from-zinc-800 via-zinc-600 to-zinc-950 hover:from-zinc-700 hover:to-zinc-900 text-white border border-zinc-200 dark:border-zinc-800"
+              : "bg-gradient-to-bl from-zinc-800 via-zinc-600 to-zinc-950 hover:from-zinc-700 hover:to-zinc-900 text-white border border-zinc-200 dark:border-zinc-800"
           } ${isCurrentPlan ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           {isLoading ? "Processing..." : isCurrentPlan ? "Current Plan" : plan.buttonText}
