@@ -19,11 +19,11 @@ export function WelcomeEmail({ userName }: WelcomeEmailProps) {
       
       <Section>
         <Text>
-          We're thrilled to have you join the Mantlz community. You're now part of a growing ecosystem of developers building amazing things.
+          We&apos;re thrilled to have you join the Mantlz community. You&apos;re now part of a growing ecosystem of developers building amazing things.
         </Text>
         
         <Text>
-          To help you get started, we've prepared comprehensive documentation that covers everything from basic setup to advanced features.
+          To help you get started, we&apos;ve prepared comprehensive documentation that covers everything from basic setup to advanced features.
         </Text>
         
         <Button
@@ -42,7 +42,7 @@ export function WelcomeEmail({ userName }: WelcomeEmailProps) {
         </Button>
         
         <Text>
-          If you have any questions or need assistance, don't hesitate to reach out to our support team.
+          If you have any questions or need assistance, don&apos;t hesitate to reach out to our support team.
         </Text>
       </Section>
       
