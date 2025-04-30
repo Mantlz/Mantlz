@@ -26,20 +26,21 @@ export function WelcomeEmail({ userName }: WelcomeEmailProps) {
           To help you get started, we&apos;ve prepared comprehensive documentation that covers everything from basic setup to advanced features.
         </Text>
         
-        <Button
-          href="https://doc.mantlz.app"
-          style={{
-            backgroundColor: '#000000',
-            color: '#ffffff',
-            padding: '12px 20px',
-            borderRadius: '4px',
-            textDecoration: 'none',
-            display: 'inline-block',
-            margin: '20px 0',
-          }}
-        >
-          View Documentation
-        </Button>
+        <Section style={{ textAlign: 'center', margin: '20px 0' }}>
+          <Button
+            href="https://doc.mantlz.app"
+            style={{
+              backgroundColor: '#000000',
+              color: '#ffffff',
+              padding: '12px 20px',
+              borderRadius: '4px',
+              textDecoration: 'none',
+              display: 'inline-block',
+            }}
+          >
+            View Documentation
+          </Button>
+        </Section>
         
         <Text>
           If you have any questions or need assistance, don&apos;t hesitate to reach out to our support team.
