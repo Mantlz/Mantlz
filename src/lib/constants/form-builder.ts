@@ -10,7 +10,7 @@ import {
   IconUsers,
   IconLayoutGrid
 } from "@tabler/icons-react"
-import { FormCategory, FormTemplate } from "@/types/form"
+import { FormCategory, FormTemplate } from "@/types/form-builder"
 
 export const categories: FormCategory[] = [
   { id: "all", name: "All Forms", icon: IconLayoutGrid },
