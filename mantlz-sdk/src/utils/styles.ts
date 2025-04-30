@@ -17,4 +17,13 @@ export const injectStyles = (): void => {
     style.textContent = (window as any).__MANTLZ_CSS__;
     document.head.appendChild(style);
   }
+};
+
+/**
+ * Safe version of injectStyles that can be used in components
+ */
+export const useInjectStyles = () => {
+  React.useEffect(() => {
+    injectStyles();
+  }, []);
 }; 

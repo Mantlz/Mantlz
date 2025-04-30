@@ -1,5 +1,4 @@
 import { WaitlistFormAppearance, WaitlistFormTheme } from './types';
-import { cn } from '../../utils/cn';
 
 // Default appearance for light theme
 const defaultAppearance: WaitlistFormAppearance = {
@@ -113,46 +112,6 @@ export function processAppearance(
     ? appearance(theme) 
     : appearance;
   
-  // Special handling for neobrutalism theme in dark mode
-  if (theme === 'neobrutalism' && document.documentElement.classList.contains('dark')) {
-    return {
-      ...defaultThemeAppearance,
-      elements: {
-        ...defaultThemeAppearance.elements,
-        card: 'border-3 border-white shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] bg-yellow-100',
-        formButtonPrimary: 'bg-pink-500 hover:bg-pink-400 active:bg-pink-600 text-white border-2 border-white shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all font-bold uppercase',
-        input: 'bg-white border-2 border-white placeholder:text-gray-500 focus:ring-white focus:border-white',
-        inputError: 'text-sm font-bold text-red-500 mt-1',
-        usersJoinedCounter: 'bg-black text-white border-2 border-white shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] text-sm font-light [&>span]:font-bold',
-      }
-    };
-  }
-  
-  // Merge custom appearance with default theme appearance
-  return {
-    baseStyle: {
-      container: cn(defaultThemeAppearance.baseStyle?.container, customAppearance.baseStyle?.container),
-      form: cn(defaultThemeAppearance.baseStyle?.form, customAppearance.baseStyle?.form),
-      background: customAppearance.baseStyle?.background,
-      border: customAppearance.baseStyle?.border,
-    },
-    elements: {
-      card: cn(defaultThemeAppearance.elements?.card, customAppearance.elements?.card),
-      cardHeader: cn(defaultThemeAppearance.elements?.cardHeader, customAppearance.elements?.cardHeader),
-      cardTitle: cn(defaultThemeAppearance.elements?.cardTitle, customAppearance.elements?.cardTitle),
-      cardDescription: cn(defaultThemeAppearance.elements?.cardDescription, customAppearance.elements?.cardDescription),
-      cardContent: cn(defaultThemeAppearance.elements?.cardContent, customAppearance.elements?.cardContent),
-      formButtonPrimary: cn(defaultThemeAppearance.elements?.formButtonPrimary, customAppearance.elements?.formButtonPrimary),
-      formButtonIcon: cn(defaultThemeAppearance.elements?.formButtonIcon, customAppearance.elements?.formButtonIcon),
-      inputLabel: cn(defaultThemeAppearance.elements?.inputLabel, customAppearance.elements?.inputLabel),
-      input: cn(defaultThemeAppearance.elements?.input, customAppearance.elements?.input),
-      inputError: cn(defaultThemeAppearance.elements?.inputError, customAppearance.elements?.inputError),
-      background: customAppearance.elements?.background,
-      border: customAppearance.elements?.border,
-      submitButton: customAppearance.elements?.submitButton,
-      buttonIcon: customAppearance.elements?.buttonIcon,
-      formInput: customAppearance.elements?.formInput,
-      usersJoinedCounter: cn(defaultThemeAppearance.elements?.usersJoinedCounter, customAppearance.elements?.usersJoinedCounter),
-    },
-  };
+  // Remove the document check here and handle it in the component instead
+  return customAppearance;
 }
