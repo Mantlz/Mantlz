@@ -69,7 +69,7 @@ export function CookieConsent() {
                 </button>
               </div>
               <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
-                We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking "Accept All", you consent to our use of cookies.{" "}
+                We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking &ldquo;Accept All&rdquo;, you consent to our use of cookies.{" "}
                 <Link href="/gdpr" className="text-blue-600 dark:text-blue-400 hover:underline">
                   Learn more
                 </Link>

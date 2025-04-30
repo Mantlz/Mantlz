@@ -1,6 +1,6 @@
 "use client"
 import React from 'react';
-import { AlertCircle, Lock, Shield, Globe, Smartphone, Database, Mail } from 'lucide-react';
+import { AlertCircle, Lock, Shield, Globe, Database, Mail } from 'lucide-react';
 import Footer from '@/components/global/landing/footer';
 import { Navbar } from '@/components/global/landing/navbar';
 import { Container } from '@/components/global/landing/container';
