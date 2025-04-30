@@ -5,10 +5,12 @@ on:
     branches: [ main ]
     paths-ignore:
       - 'docs-site/**'
+      - 'mantlz-sdk/**'
   pull_request:
     branches: [ main ]
     paths-ignore:
       - 'docs-site/**'
+      - 'mantlz-sdk/**'
 
 jobs:
   build:
@@ -31,8 +33,8 @@ jobs:
 
     - name: Build application
       run: |
-        # Remove docs-site from the build
-        rm -rf docs-site
+        # Remove docs-site and mantlz-sdk from the build
+        rm -rf docs-site mantlz-sdk
         npm run build
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -64,8 +66,8 @@ jobs:
 
     - name: Build application
       run: |
-        # Remove docs-site from the build
-        rm -rf docs-site
+        # Remove docs-site and mantlz-sdk from the build
+        rm -rf docs-site mantlz-sdk
         npm run build
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}

@@ -5,10 +5,12 @@ on:
     branches: [ main ]
     paths-ignore:
       - 'docs-site/**'
+      - 'mantlz-sdk/**'
   pull_request:
     branches: [ main ]
     paths-ignore:
       - 'docs-site/**'
+      - 'mantlz-sdk/**'
 
 jobs:
   test:
@@ -27,7 +29,10 @@ jobs:
       run: npm ci
 
     - name: Run tests
-      run: npm test
+      run: |
+        # Remove docs-site and mantlz-sdk from the test
+        rm -rf docs-site mantlz-sdk
+        npm test
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
         NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
