@@ -74,22 +74,6 @@ export function QuestionModal({ isOpen, onClose, trigger }: QuestionModalProps) 
               </Link>
             ))}
           </div>
-          
-          <div className="grid grid-cols-3 gap-4 mt-6">
-            {helpOptions.slice(2).map((option) => (
-              <Link 
-                key={option.id}
-                href={option.href}
-                className="flex flex-col items-center justify-center p-4 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-750 transition-all shadow-sm hover:shadow cursor-pointer"
-                onClick={() => onClose?.()}
-              >
-                <div className="flex justify-center items-center mb-2">
-                  {option.icon}
-                </div>
-                <span className="text-xs font-medium text-center">{option.label}</span>
-              </Link>
-            ))}
-          </div>
         </div>
       </DialogContent>
     </Dialog>
