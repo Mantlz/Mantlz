@@ -171,7 +171,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
 
                     <SheetClose asChild>
                       <Link
-                        href="/dashboard/form-builder"
+                        href="/dashboard/form"
                         className="w-full cursor-pointer"
                       >
                         <Button variant="outline" className="w-full cursor-pointer bg-zinc-100/90 dark:bg-zinc-900/90 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/90 backdrop-blur-sm border justify-start gap-2 rounded-lg border-zinc-300 dark:border-zinc-700">
@@ -362,8 +362,8 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
               </DropdownMenuItem>
               <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 p-0 rounded-lg my-0.5">
                 <Link 
-                  href="/dashboard/form-builder"
-                  className="flex items-center gap-2.5 w-full px-2 py-1.5 cursor-pointer bg-zinc-100/90 dark:bg-zinc-900/90 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/90 backdrop-blur-sm border justify-start  rounded-lg border-zinc-300 dark:border-zinc-700 cursor-pointer"
+                  href="/dashboard/form"
+                  className="flex items-center gap-2.5 w-full px-2 py-1.5  bg-zinc-100/90 dark:bg-zinc-900/90 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/90 backdrop-blur-sm border justify-start  rounded-lg border-zinc-300 dark:border-zinc-700 cursor-pointer"
                 >
                   <Plus className="h-4 w-4" />
                   <span>Create Form</span>

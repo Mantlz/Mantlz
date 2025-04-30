@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { IconStar } from "@tabler/icons-react"
-import { FormTemplate } from "@/types/form-builder"
+import { FormTemplate } from "@/types/form"
 
 interface FormTemplateListItemProps {
   template: FormTemplate

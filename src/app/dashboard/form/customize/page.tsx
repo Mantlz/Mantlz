@@ -46,7 +46,7 @@ function CustomizeFormContent() {
   useEffect(() => {
     if (formType && !['waitlist', 'contact', 'feedback'].includes(formType)) {
       toast.error('Invalid form type')
-      router.push('/dashboard/form-builder')
+      router.push('/dashboard/form')
     }
   }, [formType, router])
   
@@ -159,7 +159,7 @@ function CustomizeFormContent() {
               <Button 
                 variant="ghost" 
                 size="icon"
-                onClick={() => router.push('/dashboard/form-builder')}
+                onClick={() => router.push('/dashboard/form')}
                 className="rounded-lg h-8 w-8 text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 cursor-pointer"
               >
                 <IconArrowLeft className="h-4 w-4" />
@@ -178,7 +178,7 @@ function CustomizeFormContent() {
               <Button 
                 variant="outline" 
                 size="sm"
-                onClick={() => router.push('/dashboard/form-builder')}
+                onClick={() => router.push('/dashboard/form')}
                 disabled={isCreating}
                 className="text-sm h-9 px-4 rounded-lg cursor-pointer border-neutral-200 dark:border-zinc-800 text-neutral-600 dark:text-neutral-400"
               >

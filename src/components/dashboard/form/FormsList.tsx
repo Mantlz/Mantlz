@@ -189,7 +189,7 @@ export function FormsList({
             </div>
             <Button
               className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-xl px-6 shadow-sm hover:shadow-md"
-              onClick={() => window.location.href = '/dashboard/form-builder'}
+              onClick={() => window.location.href = '/dashboard/form'}
             >
               <Plus className="h-4 w-4 mr-2" />
               {forms.length === 0 ? 'Create Your First Form' : 'New Form'}
@@ -319,7 +319,7 @@ export function FormsList({
           </p>
           <Button
             className="bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-lg px-6 shadow-sm hover:shadow-md"
-            onClick={() => window.location.href = '/dashboard/form-builder'}
+            onClick={() => window.location.href = '/dashboard/form'}
           >
             <Plus className="h-4 w-4 mr-2" />
             Create Your First Form

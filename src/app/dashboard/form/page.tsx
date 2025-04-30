@@ -46,34 +46,34 @@ export default function FormBuilderPage() {
       />
 
       {/* Main content */}
-      <div className="w-full max-w-5xl mx-auto px-5 py-6">
-        <div className="mb-6 max-w-2xl">
-          <h2 className="text-xl font-semibold text-neutral-900 dark:text-white tracking-tight mb-2">
+      <div className="w-full max-w-5xl mx-auto px-6 py-8">
+        <div className="mb-8 max-w-2xl">
+          <h2 className="text-2xl font-semibold text-neutral-900 dark:text-white tracking-tight mb-3">
             Choose a template
           </h2>
-          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          <p className="text-base text-neutral-500 dark:text-neutral-400">
             Start with a pre-built template or customize from scratch
           </p>
         </div>
 
         {/* Filters and search */}
-        <div className="mb-5 space-y-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="mb-6 space-y-5">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="relative w-full sm:w-auto max-w-md">
-              <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-neutral-400" />
+              <IconSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-400" />
               <Input
                 placeholder="Search templates..."
-                className="pl-9 h-9 bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 rounded-lg w-full sm:w-80 focus-visible:ring-primary/20 focus-visible:ring-offset-0 text-sm cursor-text"
+                className="pl-12 h-11 bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 rounded-lg w-full sm:w-96 focus-visible:ring-primary/20 focus-visible:ring-offset-0 text-base cursor-text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
 
-            <div className="flex items-center gap-2 w-full justify-between sm:justify-end sm:w-auto">
-              <div className="flex items-center border border-neutral-200 dark:border-zinc-800 rounded-lg p-1 bg-white dark:bg-zinc-900">
+            <div className="flex items-center gap-3 w-full justify-between sm:justify-end sm:w-auto">
+              <div className="flex items-center border border-neutral-200 dark:border-zinc-800 rounded-lg p-1.5 bg-white dark:bg-zinc-900">
                 <button 
                   className={cn(
-                    "p-1.5 rounded transition-all duration-150 cursor-pointer",
+                    "p-2 rounded transition-all duration-150 cursor-pointer",
                     viewMode === 'grid' 
                       ? "bg-zinc-100 dark:bg-zinc-800 text-neutral-900 dark:text-white" 
                       : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300"
@@ -81,11 +81,11 @@ export default function FormBuilderPage() {
                   onClick={() => setViewMode('grid')}
                   aria-label="Grid view"
                 >
-                  <IconLayoutGrid className="h-4 w-4" />
+                  <IconLayoutGrid className="h-5 w-5" />
                 </button>
                 <button 
                   className={cn(
-                    "p-1.5 rounded transition-all duration-150 cursor-pointer",
+                    "p-2 rounded transition-all duration-150 cursor-pointer",
                     viewMode === 'list' 
                       ? "bg-zinc-100 dark:bg-zinc-800 text-neutral-900 dark:text-white" 
                       : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300"
@@ -93,15 +93,15 @@ export default function FormBuilderPage() {
                   onClick={() => setViewMode('list')}
                   aria-label="List view"
                 >
-                  <IconListDetails className="h-4 w-4" />
+                  <IconListDetails className="h-5 w-5" />
                 </button>
               </div>
             </div>
           </div>
 
-          <div className="w-full overflow-x-auto pb-1 -mx-2 px-2">
+          <div className="w-full overflow-x-auto pb-2 -mx-2 px-2">
             <Tabs defaultValue="all" value={activeCategory} onValueChange={setActiveCategory} className="w-full min-w-[480px]">
-              <TabsList className="bg-white dark:bg-zinc-900 p-1 h-auto flex space-x-1 overflow-x-auto border border-neutral-200 dark:border-zinc-800 rounded-lg">
+              <TabsList className="bg-white dark:bg-zinc-900 p-1.5 h-auto flex space-x-2 overflow-x-auto border border-neutral-200 dark:border-zinc-800 rounded-lg">
                 {categories.map(category => {
                   const Icon = category.icon;
                   return (
@@ -109,7 +109,7 @@ export default function FormBuilderPage() {
                       key={category.id} 
                       value={category.id}
                       className={cn(
-                        "flex items-center gap-2 px-3 py-1.5 text-sm transition-all duration-150 cursor-pointer whitespace-nowrap",
+                        "flex items-center gap-2 px-4 py-2 text-base transition-all duration-150 cursor-pointer whitespace-nowrap",
                         "data-[state=active]:bg-zinc-100 dark:data-[state=active]:bg-zinc-800",
                         "data-[state=active]:text-neutral-900 dark:data-[state=active]:text-white",
                         "data-[state=inactive]:text-neutral-500 dark:data-[state=inactive]:text-neutral-400",
@@ -117,7 +117,7 @@ export default function FormBuilderPage() {
                         "font-medium rounded-lg"
                       )}
                     >
-                      <Icon className="h-4 w-4" />
+                      <Icon className="h-5 w-5" />
                       {category.name}
                     </TabsTrigger>
                   );
@@ -128,15 +128,15 @@ export default function FormBuilderPage() {
         </div>
 
         {filteredForms.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 text-center bg-zinc-50 dark:bg-zinc-900 rounded-lg border border-neutral-200 dark:border-zinc-800">
-            <IconSearch className="h-10 w-10 text-neutral-300 dark:text-neutral-600 mb-3" />
-            <h3 className="text-base font-medium text-neutral-800 dark:text-neutral-200 mb-1.5">No matching templates</h3>
-            <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-md px-6">Try adjusting your search or category filter</p>
+          <div className="flex flex-col items-center justify-center py-16 text-center bg-zinc-50 dark:bg-zinc-900 rounded-lg border border-neutral-200 dark:border-zinc-800">
+            <IconSearch className="h-12 w-12 text-neutral-300 dark:text-neutral-600 mb-4" />
+            <h3 className="text-lg font-medium text-neutral-800 dark:text-neutral-200 mb-2">No matching templates</h3>
+            <p className="text-base text-neutral-500 dark:text-neutral-400 max-w-md px-6">Try adjusting your search or category filter</p>
           </div>
         ) : (
           <>
             {viewMode === 'grid' ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5 mb-8">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 sm:gap-6 mb-8">
                 {filteredForms.map((template) => (
                   <FormTemplateCard
                     key={template.id}
