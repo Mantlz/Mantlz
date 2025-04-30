@@ -1,8 +1,8 @@
-import Toc from "@/components/toc";
-import { page_routes } from "@/lib/routes-config";
+import Toc from "../../../components/toc";
+import { page_routes } from "../../../lib/routes-config";
 import { notFound } from "next/navigation";
-import { getDocsForSlug } from "@/lib/markdown";
-import { Typography } from "@/components/typography";
+import { getDocsForSlug } from "../../../lib/markdown";
+import { Typography } from "../../../components/typography";
 
 type PageProps = {
   params: { slug: string[] };
