@@ -3,6 +3,7 @@ import { db } from "@/lib/db"
 import { currentUser } from "@clerk/nextjs/server"
 import { HTTPException } from "hono/http-exception"
 import { j } from "../jstack"
+import { sendWelcomeEmail } from "@/services/welcome-email-service"
 
 export const authRouter = j.router({
   getDatabaseSyncStatus: j.procedure.query(async ({ c }) => {
@@ -39,6 +40,20 @@ export const authRouter = j.router({
           },
         })
         console.log('Created new user:', newUser)
+
+        // Send welcome email
+        try {
+          await sendWelcomeEmail({
+            userName: `${newUser.firstName || 'there'}`,
+            userEmail: newUser.email,
+            resendApiKey: process.env.RESEND_API_KEY || '',
+          })
+          console.log('Welcome email sent successfully')
+        } catch (emailError) {
+          console.error('Failed to send welcome email:', emailError)
+          // Don't throw error here, just log it since email sending is not critical
+        }
+
         return c.superjson({ isSynced: true }) // Important: return isSynced true after creation
       }
 
