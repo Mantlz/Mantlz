@@ -12,6 +12,18 @@ export interface CampaignType {
   }
 }
 
+export interface FormType {
+  id: string;
+  name: string;
+  slug: string;
+  createdAt: string;
+  description?: string;
+  _count?: {
+    submissions: number;
+    unsubscribed: number;
+  };
+}
+
 export interface FormsResponse {
   forms: Array<{
     id: string
@@ -19,6 +31,10 @@ export interface FormsResponse {
     slug: string
     createdAt: string
     description?: string
+    _count?: {
+      submissions: number
+      unsubscribed: number
+    }
   }>
   pagination?: {
     totalItems: number

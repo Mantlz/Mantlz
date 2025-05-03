@@ -12,12 +12,16 @@ interface DeveloperNotificationEmailProps {
   formName: string;
   submissionData: Record<string, unknown>;
   formId: string;
+  trackingPixelUrl?: string;
+  clickTrackingUrl?: string;
 }
 
 export function DeveloperNotificationEmail({ 
   formName, 
   submissionData,
   formId,
+  trackingPixelUrl,
+  clickTrackingUrl,
 }: DeveloperNotificationEmailProps) {
   const submissionTime = new Date().toLocaleString();
   // Get a preview of important fields without showing all details
@@ -25,7 +29,11 @@ export function DeveloperNotificationEmail({
   const totalFields = Object.keys(submissionData).length;
   
   return (
-    <BrandedEmailTemplate previewText={`🎯 New submission waiting for your review on ${formName}`}>
+    <BrandedEmailTemplate 
+      previewText={`🎯 New submission waiting for your review on ${formName}`}
+      trackingPixelUrl={trackingPixelUrl}
+      clickTrackingUrl={clickTrackingUrl}
+    >
       <Heading>New Submission Alert!</Heading>
       
       <Text style={{ fontSize: '16px', color: '#666666' }}>
@@ -60,7 +68,7 @@ export function DeveloperNotificationEmail({
           View the complete submission details in your secure dashboard
         </Text>
         <Button
-          href={`${process.env.NEXT_PUBLIC_APP_URL}/dashboard/form/${formId}`}
+          href={clickTrackingUrl ? `${clickTrackingUrl}&url=${process.env.NEXT_PUBLIC_APP_URL}/dashboard/form/${formId}` : `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/form/${formId}`}
           style={{
             background: 'white',
             color: '#4f46e5',

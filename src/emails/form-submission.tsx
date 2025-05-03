@@ -11,11 +11,22 @@ import { BrandedEmailTemplate } from './templates/branded-email-template';
 interface FormSubmissionEmailProps {
   formName: string;
   submissionData: Record<string, unknown>;
+  trackingPixelUrl?: string;
+  clickTrackingUrl?: string;
 }
 
-export function FormSubmissionEmail({ formName, submissionData }: FormSubmissionEmailProps) {
+export function FormSubmissionEmail({ 
+  formName, 
+  submissionData,
+  trackingPixelUrl,
+  clickTrackingUrl,
+}: FormSubmissionEmailProps) {
   return (
-    <BrandedEmailTemplate previewText={`Your submission to ${formName} has been received`}>
+    <BrandedEmailTemplate 
+      previewText={`Your submission to ${formName} has been received`}
+      trackingPixelUrl={trackingPixelUrl}
+      clickTrackingUrl={clickTrackingUrl}
+    >
       <Heading style={styles.heading}>Form Submission</Heading>
       
       <Text style={styles.paragraph}>
@@ -37,7 +48,7 @@ export function FormSubmissionEmail({ formName, submissionData }: FormSubmission
       
       <Section style={styles.ctaContainer}>
         <Button
-          href="https://mantlz.app"
+          href={clickTrackingUrl ? `${clickTrackingUrl}&url=https://mantlz.app` : "https://mantlz.app"}
           style={styles.button}
         >
           Visit Mantlz

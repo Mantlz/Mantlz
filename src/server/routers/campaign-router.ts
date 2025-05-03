@@ -3,7 +3,8 @@ import { j, privateProcedure } from "../jstack";
 import { HTTPException } from "hono/http-exception";
 import { db } from "@/lib/db";
 import { Resend } from 'resend';
-import { NotificationStatus, NotificationType } from "@prisma/client";
+import { render } from '@react-email/render';
+import { CampaignEmail } from '@/emails/campaign-email';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -81,10 +82,37 @@ export const campaignRouter = j.router({
               sentEmails: true,
             },
           },
+          form: {
+            include: {
+              _count: {
+                select: {
+                  submissions: true,
+                },
+              },
+            },
+          },
         },
         orderBy: {
           createdAt: 'desc',
         },
+      });
+
+      // Get unsubscribed count
+      const unsubscribedCount = await db.submission.count({
+        where: {
+          formId,
+          unsubscribed: true,
+        },
+      });
+
+      // Add unsubscribed count to each campaign's form
+      campaigns.forEach(campaign => {
+        if (campaign.form) {
+          campaign.form._count = {
+            ...campaign.form._count,
+            unsubscribed: unsubscribedCount,
+          };
+        }
       });
 
       return c.superjson(campaigns);
@@ -142,24 +170,43 @@ export const campaignRouter = j.router({
 
       for (const submission of campaign.form.submissions) {
         try {
-          // Create unsubscribe link
-          const unsubscribeLink = `${process.env.NEXT_PUBLIC_APP_URL}/unsubscribe?email=${encodeURIComponent(submission.email!)}&formId=${campaign.formId}&campaignId=${campaignId}`;
-          
-          // Send email
-          await resend.emails.send({
-            from: campaign.form.emailSettings?.fromEmail || 'contact@mantlz.app',
-            to: submission.email!,
-            subject: campaign.subject,
-            html: `${campaign.content}<br><br><a href="${unsubscribeLink}">Unsubscribe</a>`,
-          });
-
-          // Create sent email record
+          // Create sent email record first
           const sentEmail = await db.sentEmail.create({
             data: {
               campaignId,
               submissionId: submission.id,
               status: 'SENT',
             },
+          });
+
+          // Create unsubscribe link
+          const unsubscribeLink = `${process.env.NEXT_PUBLIC_APP_URL}/unsubscribe?email=${encodeURIComponent(submission.email!)}&formId=${campaign.formId}&campaignId=${campaignId}`;
+          
+          // Create tracking pixel URL
+          const trackingPixelUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/v1/tracking/open?sentEmailId=${sentEmail.id}`;
+          
+          // Create click tracking URL
+          const clickTrackingUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/v1/tracking/click?sentEmailId=${sentEmail.id}`;
+          
+          // Render the email with tracking using BrandedEmailTemplate
+          const emailHtml = await render(
+            CampaignEmail({
+              subject: campaign.subject,
+              previewText: campaign.description || campaign.subject,
+              content: campaign.content,
+              ctaText: "Unsubscribe",
+              ctaUrl: unsubscribeLink,
+              trackingPixelUrl,
+              clickTrackingUrl,
+            })
+          );
+          
+          // Send email
+          await resend.emails.send({
+            from: campaign.form.emailSettings?.fromEmail || 'contact@mantlz.app',
+            to: submission.email!,
+            subject: campaign.subject,
+            html: emailHtml,
           });
 
           sentEmails.push(sentEmail);

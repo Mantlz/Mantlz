@@ -116,7 +116,17 @@ export const formRouter = j.router({
         orderBy: { createdAt: 'desc' },
         include: {
           _count: {
-            select: { submissions: true }
+            select: { 
+              submissions: true
+            }
+          },
+          submissions: {
+            where: {
+              unsubscribed: true
+            },
+            select: {
+              id: true
+            }
           }
         }
       });
@@ -131,6 +141,7 @@ export const formRouter = j.router({
           name: form.name,
           description: form.description,
           submissionCount: form._count.submissions,
+          unsubscribedCount: form.submissions.length,
           createdAt: form.createdAt,
           updatedAt: form.updatedAt,
         })),

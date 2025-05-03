@@ -16,7 +16,11 @@ export async function fetchUserForms(page = 1, itemsPerPage = 8): Promise<FormsR
         id: form.id,
         name: form.name,
         slug: form.id, // Using ID as slug
-        createdAt: form.createdAt.toString()
+        createdAt: form.createdAt.toString(),
+        _count: {
+          submissions: form.submissionCount || 0,
+          unsubscribed: form.unsubscribedCount || 0
+        }
       })),
       pagination: {
         totalItems: data.forms.length,

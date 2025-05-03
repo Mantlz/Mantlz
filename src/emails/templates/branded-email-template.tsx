@@ -13,11 +13,15 @@ import {
 interface BrandedEmailTemplateProps {
   children: React.ReactNode;
   previewText?: string;
+  trackingPixelUrl?: string;
+  clickTrackingUrl?: string;
 }
 
 export function BrandedEmailTemplate({
   children,
   previewText = 'Email from Mantlz',
+  trackingPixelUrl,
+  clickTrackingUrl,
 }: BrandedEmailTemplateProps) {
   return (
     <Html>
@@ -40,9 +44,6 @@ export function BrandedEmailTemplate({
           
           {/* Main Content */}
           <Section style={styles.content}>
-
-
-            
             {/* Content */}
             {children}
           </Section>
@@ -54,12 +55,23 @@ export function BrandedEmailTemplate({
               © {new Date().getFullYear()} Mantlz • All rights reserved
             </Text>
             <Text style={styles.footerText}>
-              <Link href="mailto:contact@mantlz.app" style={styles.link}>contact@mantlz.app</Link>
+              <Link href={clickTrackingUrl ? `${clickTrackingUrl}&url=mailto:contact@mantlz.app` : "mailto:contact@mantlz.app"} style={styles.link}>contact@mantlz.app</Link>
             </Text>
           </Section>
           
           {/* Simple footer pixel border */}
           <div style={styles.pixelBorder}></div>
+          
+          {/* Tracking Pixel */}
+          {trackingPixelUrl && (
+            <img 
+              src={trackingPixelUrl} 
+              width="1" 
+              height="1" 
+              style={{ display: 'none' }} 
+              alt=""
+            />
+          )}
         </Container>
       </Body>
     </Html>

@@ -3,13 +3,13 @@
 import { useRef } from "react"
 import { useRouter, ReadonlyURLSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { PlusCircle, ChevronLeft, Mail, Clock, Send } from "lucide-react"
+import { PlusCircle, ChevronLeft, Mail, Clock, Send, Users } from "lucide-react"
 
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { FormsResponse, CampaignResponse } from "./types"
+import { FormsResponse, CampaignResponse, FormType } from "./types"
 import { useState } from "react"
 import { client } from "@/lib/client"
 import { CampaignSearch } from "../CampaignSearch"
@@ -39,9 +39,9 @@ export function TableHeader({
   const [campaignContent, setCampaignContent] = useState("")
   const createButtonRef = useRef<HTMLButtonElement>(null)
   
-  // Find the current form name
-  const currentForm = formsData?.forms.find(form => form.id === formId)
-  
+  const selectedForm = formsData?.forms?.find((f) => f.id === formId)
+  const campaignCount = campaignsData?.campaigns?.length || 0
+
   const handleFormSelect = (formId: string) => {
     const newParams = new URLSearchParams(searchParams.toString())
     newParams.set("formId", formId)
@@ -93,10 +93,6 @@ export function TableHeader({
       setLoading(false)
     }
   }
-  
-  const selectedForm = formsData?.forms?.find((f: any) => f.id === formId)
-  const campaignCount = campaignsData?.campaigns?.length || 0
-  const lastCampaign = campaignCount > 0 ? campaignsData?.campaigns[0] : null
 
   return (
     <div className="relative overflow-hidden bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm">
@@ -215,7 +211,7 @@ export function TableHeader({
           )}
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
@@ -225,12 +221,6 @@ export function TableHeader({
                   <p className="text-sm font-medium text-gray-900 dark:text-white">{campaignCount}</p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">Total Campaigns</p>
                 </div>
-              </div>
-              <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden">
-                <div 
-                  className="h-full bg-black dark:bg-white rounded-lg transition-all duration-500"
-                  style={{ width: `${Math.min((campaignCount / 100) * 100, 100)}%` }}
-                />
               </div>
             </div>
             
@@ -248,7 +238,20 @@ export function TableHeader({
               </div>
             </div>
 
-            {/* Last Campaign Card */}
+            <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                  <Users className="h-5 w-5 text-gray-900 dark:text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    {selectedForm?._count?.submissions || 0}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Total Submissions</p>
+                </div>
+              </div>
+            </div>
+
             <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
@@ -256,9 +259,9 @@ export function TableHeader({
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-900 dark:text-white">
-                    {lastCampaign ? formatDistanceToNow(new Date(lastCampaign.createdAt), { addSuffix: true }) : 'No campaigns yet'}
+                    {selectedForm?._count?.unsubscribed || 0}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Last Campaign</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Unsubscribed</p>
                 </div>
               </div>
             </div>

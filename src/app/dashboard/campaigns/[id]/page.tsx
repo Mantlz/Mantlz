@@ -10,14 +10,6 @@ import { formatCampaignStatus } from '@/components/dashboard/campaigns/table/tab
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { formatDistanceToNow } from 'date-fns';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -254,27 +246,11 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
               <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
-                    <Calendar className="h-5 w-5 text-gray-900 dark:text-white" />
+                    <Users className="h-5 w-5 text-gray-900 dark:text-white" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">
-                      {campaign.sentAt ? formatDistanceToNow(new Date(campaign.sentAt), { addSuffix: true }) : 'Not sent yet'}
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Sent</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
-                    <FileText className="h-5 w-5 text-gray-900 dark:text-white" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">
-                      {campaign.formId.slice(0, 8)}...
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Form ID</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">{campaign.form?._count?.submissions || 0}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Unsubscribed</p>
                   </div>
                 </div>
               </div>
