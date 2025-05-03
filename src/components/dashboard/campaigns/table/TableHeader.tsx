@@ -1,31 +1,26 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
-import { ReadonlyURLSearchParams } from "next/navigation"
-import { CampaignSearch } from "../CampaignSearch"
+import { useRef } from "react"
+import { useRouter, ReadonlyURLSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, PlusCircle } from "lucide-react"
-import { CampaignResponse, FormsResponse } from "./types"
-import { 
-  Dialog,
-  DialogContent,
-  DialogDescription, 
-  DialogFooter, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogTrigger 
-} from "@/components/ui/dialog"
+import { PlusCircle, ChevronLeft, ChevronDown, Mail, Clock, Send } from "lucide-react"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { createCampaign } from "./tableUtils"
+import { FormsResponse, CampaignResponse } from "./types"
+import { CampaignSearch } from "../CampaignSearch"
+import { useState } from "react"
+import { client } from "@/lib/client"
+import { Badge } from "@/components/ui/badge"
+import { formatDistanceToNow } from "date-fns"
 
 interface TableHeaderProps {
-  formId: string
+  formId: string | null
   formsData?: FormsResponse
   searchParams: ReadonlyURLSearchParams
-  router: AppRouterInstance
+  router: ReturnType<typeof useRouter>
   campaignsData?: CampaignResponse
 }
 
@@ -36,171 +31,239 @@ export function TableHeader({
   router,
   campaignsData,
 }: TableHeaderProps) {
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
-  const [isCreating, setIsCreating] = useState(false)
-  const [newCampaign, setNewCampaign] = useState({
-    name: "",
-    description: "",
-    subject: "",
-    content: ""
-  })
-
-  // Get the current form
-  const currentForm = formsData?.forms.find((form) => form.id === formId)
-
-  // Handle going back to forms list
-  const handleBackToForms = () => {
-    const newParams = new URLSearchParams()
-    router.push(`/dashboard/campaigns?${newParams.toString()}`)
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [campaignName, setCampaignName] = useState("")
+  const [campaignDescription, setCampaignDescription] = useState("")
+  const [campaignSubject, setCampaignSubject] = useState("")
+  const [campaignContent, setCampaignContent] = useState("")
+  const createButtonRef = useRef<HTMLButtonElement>(null)
+  
+  // Find the current form name
+  const currentForm = formsData?.forms.find(form => form.id === formId)
+  
+  const handleFormSelect = (formId: string) => {
+    const newParams = new URLSearchParams(searchParams.toString())
+    newParams.set("formId", formId)
+    newParams.delete("page")
+    router.push(`?${newParams.toString()}`)
   }
   
-  // Handle input change
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setNewCampaign({
-      ...newCampaign,
-      [e.target.name]: e.target.value,
-    })
+  const handleBackClick = () => {
+    router.push("/dashboard/campaigns")
   }
   
-  // Handle campaign creation
   const handleCreateCampaign = async () => {
+    if (!formId) {
+      alert("Please select a form first")
+      return
+    }
+    
+    if (!campaignName || !campaignSubject || !campaignContent) {
+      alert("Please fill out all required fields")
+      return
+    }
+    
     try {
-      setIsCreating(true)
+      setLoading(true)
       
-      await createCampaign({
-        ...newCampaign,
-        formId
+      const response = await client.campaign.create.$post({
+        name: campaignName,
+        description: campaignDescription || undefined,
+        formId,
+        subject: campaignSubject,
+        content: campaignContent
       })
       
-      // Close dialog and reset form
-      setIsCreateDialogOpen(false)
-      setNewCampaign({
-        name: "",
-        description: "",
-        subject: "",
-        content: ""
-      })
+      // Reset form
+      setCampaignName("")
+      setCampaignDescription("")
+      setCampaignSubject("")
+      setCampaignContent("")
       
-      // Force a refresh to show the new campaign
+      // Close dialog
+      setOpen(false)
+      
+      // Refresh page
       router.refresh()
     } catch (error) {
-      console.error("Error creating campaign:", error)
+      console.error("Error creating campaign", error)
+      alert("Failed to create campaign")
     } finally {
-      setIsCreating(false)
+      setLoading(false)
     }
   }
+  
+  const selectedForm = formsData?.forms?.find((f: any) => f.id === formId)
+  const campaignCount = campaignsData?.campaigns?.length || 0
+  const lastCampaign = campaignCount > 0 ? campaignsData?.campaigns[0] : null
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={handleBackToForms}
-          >
-            <ChevronLeft className="h-4 w-4" />
-            <span className="sr-only">Back to forms</span>
-          </Button>
-          <div>
-            <h2 className="text-xl font-semibold">
-              {currentForm?.name || "Form Campaigns"}
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              {campaignsData?.campaigns.length || 0} campaign(s)
-            </p>
+    <div className="relative overflow-hidden bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm">
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
+      <div className="relative p-6 lg:p-8">
+        <div className="flex flex-col gap-6">
+          {/* Header Section */}
+          <div className="flex items-start justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-3">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 text-xs cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg px-3"
+                  onClick={handleBackClick}
+                >
+                  <ChevronLeft className="h-3.5 w-3.5 mr-1" />
+                  <span className="hidden xs:inline">Back to Forms</span>
+                </Button>
+                {selectedForm && (
+                  <Badge variant="secondary" className="bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
+                    Form ID: {selectedForm?.id.slice(0, 8)}...
+                  </Badge>
+                )}
+              </div>
+              <h1 className="text-2xl font-semibold text-gray-900 dark:text-white tracking-tight">
+                {selectedForm?.name || "Select a Form"}
+              </h1>
+            </div>
+            <div className="flex items-center gap-2">
+              <CampaignSearch />
+              
+              <Dialog open={open} onOpenChange={setOpen}>
+                <DialogTrigger asChild>
+                  <Button 
+                    size="sm" 
+                    className="gap-1.5"
+                    data-create-campaign-button
+                    ref={createButtonRef}
+                  >
+                    <PlusCircle className="h-4 w-4" />
+                    <span className="hidden sm:inline">Create Campaign</span>
+                    <span className="sm:hidden">Create</span>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[625px]">
+                  <DialogHeader>
+                    <DialogTitle>Create New Campaign</DialogTitle>
+                    <DialogDescription>
+                      Create a new email campaign to send to your form submissions.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Campaign Name</Label>
+                      <Input 
+                        id="name" 
+                        placeholder="Monthly Newsletter" 
+                        value={campaignName}
+                        onChange={(e) => setCampaignName(e.target.value)}
+                      />
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        This is for your reference only. Recipients won't see this.
+                      </p>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="description">Description (Optional)</Label>
+                      <Textarea 
+                        id="description" 
+                        placeholder="Brief description of this campaign's purpose"
+                        value={campaignDescription}
+                        onChange={(e) => setCampaignDescription(e.target.value)}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="subject">Email Subject</Label>
+                      <Input 
+                        id="subject" 
+                        placeholder="Your form has been received"
+                        value={campaignSubject}
+                        onChange={(e) => setCampaignSubject(e.target.value)}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="content">Email Content</Label>
+                      <Textarea 
+                        id="content" 
+                        placeholder="Enter email content (HTML supported)" 
+                        className="min-h-[200px]"
+                        value={campaignContent}
+                        onChange={(e) => setCampaignContent(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex justify-end gap-2">
+                    <Button variant="outline" onClick={() => setOpen(false)}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleCreateCampaign} disabled={loading}>
+                      {loading ? "Creating..." : "Create Campaign"}
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
           </div>
-        </div>
 
-        <div className="flex gap-2">
-          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-            <DialogTrigger asChild>
-              <Button
-                size="sm"
-                className="ml-auto flex items-center gap-1"
-                data-create-campaign-button
-              >
-                <PlusCircle className="h-4 w-4" />
-                New Campaign
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px]">
-              <DialogHeader>
-                <DialogTitle>Create a new campaign</DialogTitle>
-                <DialogDescription>
-                  Create an email campaign to send to your form submissions.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="name">Campaign Name</Label>
-                  <Input 
-                    id="name" 
-                    name="name"
-                    value={newCampaign.name} 
-                    onChange={handleInputChange}
-                    placeholder="Enter campaign name" 
-                  />
+          {/* Description */}
+          {selectedForm?.description && (
+            <p className="text-sm text-gray-600 dark:text-gray-300 max-w-2xl">
+              {selectedForm.description}
+            </p>
+          )}
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                  <Mail className="h-5 w-5 text-gray-900 dark:text-white" />
                 </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="description">Description (optional)</Label>
-                  <Textarea 
-                    id="description" 
-                    name="description"
-                    value={newCampaign.description} 
-                    onChange={handleInputChange}
-                    placeholder="Enter campaign description" 
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="subject">Email Subject</Label>
-                  <Input 
-                    id="subject" 
-                    name="subject"
-                    value={newCampaign.subject} 
-                    onChange={handleInputChange}
-                    placeholder="Enter email subject" 
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="content">Email Content</Label>
-                  <Textarea 
-                    id="content" 
-                    name="content"
-                    value={newCampaign.content} 
-                    onChange={handleInputChange}
-                    placeholder="Enter email content (HTML supported)" 
-                    className="min-h-[120px]"
-                  />
+                <div>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">{campaignCount}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Total Campaigns</p>
                 </div>
               </div>
-              <DialogFooter>
-                <Button 
-                  variant="outline" 
-                  onClick={() => setIsCreateDialogOpen(false)}
-                >
-                  Cancel
-                </Button>
-                <Button 
-                  onClick={handleCreateCampaign} 
-                  disabled={
-                    isCreating || 
-                    !newCampaign.name || 
-                    !newCampaign.subject || 
-                    !newCampaign.content
-                  }
-                >
-                  {isCreating ? "Creating..." : "Create Campaign"}
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+              <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden">
+                <div 
+                  className="h-full bg-black dark:bg-white rounded-lg transition-all duration-500"
+                  style={{ width: `${Math.min((campaignCount / 100) * 100, 100)}%` }}
+                />
+              </div>
+            </div>
+            
+            <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                  <Clock className="h-5 w-5 text-gray-900 dark:text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    {selectedForm?.createdAt ? formatDistanceToNow(new Date(selectedForm.createdAt), { addSuffix: true }) : 'N/A'}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Form Created</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Last Campaign Card */}
+            <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                  <Send className="h-5 w-5 text-gray-900 dark:text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    {lastCampaign ? formatDistanceToNow(new Date(lastCampaign.createdAt), { addSuffix: true }) : 'No campaigns yet'}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Last Campaign</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      
-      <div className="flex items-center justify-between">
-        <CampaignSearch />
       </div>
     </div>
   )

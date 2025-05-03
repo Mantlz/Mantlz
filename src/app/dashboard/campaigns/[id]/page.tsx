@@ -29,7 +29,15 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 
-export default function CampaignDetailPage({ params }: { params: { id: string } }) {
+interface CampaignDetailPageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default function CampaignDetailPage({ params }: CampaignDetailPageProps) {
+  const campaignId = params.id;
+  
   const [campaign, setCampaign] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
@@ -56,7 +64,7 @@ export default function CampaignDetailPage({ params }: { params: { id: string } 
             });
             const campaigns = await campaignsResponse.json();
             
-            const foundCampaign = campaigns.find((c: any) => c.id === params.id);
+            const foundCampaign = campaigns.find((c: any) => c.id === campaignId);
             if (foundCampaign) {
               setCampaign(foundCampaign);
               break;
@@ -69,7 +77,7 @@ export default function CampaignDetailPage({ params }: { params: { id: string } 
           });
           const campaigns = await campaignsResponse.json();
           
-          const foundCampaign = campaigns.find((c: any) => c.id === params.id);
+          const foundCampaign = campaigns.find((c: any) => c.id === campaignId);
           setCampaign(foundCampaign || null);
         }
       } catch (error) {
@@ -80,18 +88,18 @@ export default function CampaignDetailPage({ params }: { params: { id: string } 
     }
 
     fetchCampaign();
-  }, [params.id, formId]);
+  }, [campaignId, formId]);
 
   const handleSendCampaign = async () => {
     try {
       setIsSending(true);
       await client.campaign.send.$post({
-        campaignId: params.id
+        campaignId: campaignId
       });
       
       // Get stats to update the UI
       const statsResponse = await client.campaign.getStats.$get({
-        campaignId: params.id
+        campaignId: campaignId
       });
       
       // Fetch the campaign again to get updated status
@@ -101,7 +109,7 @@ export default function CampaignDetailPage({ params }: { params: { id: string } 
         });
         const campaigns = await campaignsResponse.json();
         
-        const updatedCampaign = campaigns.find((c: any) => c.id === params.id);
+        const updatedCampaign = campaigns.find((c: any) => c.id === campaignId);
         if (updatedCampaign) {
           setCampaign(updatedCampaign);
         }
@@ -152,8 +160,7 @@ export default function CampaignDetailPage({ params }: { params: { id: string } 
   }
 
   const statusInfo = formatCampaignStatus(campaign.status);
-  const isDisabled = campaign.status !== 'DRAFT';
-
+  
   return (
     <div className="container py-8 space-y-6">
       {/* Top Header Section */}
