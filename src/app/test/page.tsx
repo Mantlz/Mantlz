@@ -14,17 +14,17 @@ export default function CustomerFeedbackPage() {
 
         
       <WaitlistForm
-        formId="cm9x3lzt4001xo7wpo1mxticz"
+        formId="cma4ie3y20001o7dmzm7ri5lc"
        
         theme="neobrutalism"
         
       /> 
 
-      <WaitlistForm
+      {/* <WaitlistForm
         formId="cm9yc2lge0001ie0480n9d87a"
         theme="default"
         
-      />
+      /> */}
 
       {/* <FeedbackForm
         formId="cm9muq8dg0013o7ks90uz4ljx"

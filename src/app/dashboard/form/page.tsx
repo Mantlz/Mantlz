@@ -33,7 +33,7 @@ export default function FormBuilderPage() {
 
   const handleContinue = () => {
     if (selectedType) {
-      router.push(`/dashboard/form-builder/customize?type=${selectedType}`)
+      router.push(`/dashboard/form/customize?type=${selectedType}`)
     }
   }
 
