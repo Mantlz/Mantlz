@@ -10,9 +10,11 @@ import { FormsResponse, CampaignResponse } from "./types"
 import { fetchUserForms, fetchCampaigns } from "./tableUtils"
 import { TableHeader } from "./TableHeader"
 import { TableContent } from "./TableContent"
-import { CampaignSearch } from "../CampaignSearch"
+
 import { CampaignTableSkeleton } from "./CampaignTableSkeleton"
 import { useState, useEffect, Suspense } from "react"
+import { LogsTableHeaderSkeleton } from "@/components/skeletons"
+import { CampaignSearch } from "../../campaigns/CampaignSearch"
 
 interface CampaignsTableProps {
   itemsPerPage?: number;
@@ -115,18 +117,7 @@ function CampaignsTableContent({ itemsPerPage = 8 }: CampaignsTableProps) {
     if (isLoadingForms || isLoadingCampaigns || !data) {
       return (
         <div className="space-y-6 sm:space-y-8">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold">Campaigns</h2>
-            <div className="space-x-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => router.push("/dashboard/campaigns/new")}
-              >
-                Create Campaign
-              </Button>
-            </div>
-          </div>
+          <LogsTableHeaderSkeleton />
           <CampaignTableSkeleton isPremium={isPremium} />
         </div>
       );
@@ -212,80 +203,183 @@ function CampaignsTableContent({ itemsPerPage = 8 }: CampaignsTableProps) {
       );
     }
 
-    // Display the list of forms
+    // Show forms grid/list based on viewMode
     return (
       <div className="space-y-6 sm:space-y-8">
-        <div className="flex items-center justify-between">
-          <div className="flex gap-4">
-            <div className="flex items-center space-x-2">
-              <span className="text-lg font-medium">View</span>
-              <div className="flex items-center space-x-1 rounded-md bg-muted p-1">
-                <button
-                  className={`rounded-sm p-1.5 ${
-                    viewMode === "grid"
-                      ? "bg-background text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                  onClick={() => handleViewModeChange("grid")}
-                >
-                  <LayoutGrid className="h-5 w-5" />
-                  <span className="sr-only">Grid view</span>
-                </button>
-                <button
-                  className={`rounded-sm p-1.5 ${
-                    viewMode === "list"
-                      ? "bg-background text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                  onClick={() => handleViewModeChange("list")}
-                >
-                  <List className="h-5 w-5" />
-                  <span className="sr-only">List view</span>
-                </button>
+        <div className="relative overflow-hidden bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm mb-6">
+          <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
+          <div className="relative p-6 lg:p-8">
+            <div className="flex flex-col gap-6">
+              {/* Header Section */}
+              <div className="flex items-start justify-between gap-4">
+                <div className="space-y-1">
+                  <h1 className="text-2xl font-semibold text-gray-900 dark:text-white tracking-tight">
+                    Your Forms
+                  </h1>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    {formsData.forms.length} form{formsData.forms.length !== 1 ? 's' : ''} available
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  {/* View Toggle */}
+                  <div className="bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-800 rounded-lg p-1 flex items-center">
+                    <button
+                      onClick={() => handleViewModeChange('grid')}
+                      className={`p-1.5 rounded-lg ${viewMode === 'grid' 
+                        ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
+                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                      aria-label="Grid view"
+                    >
+                      <LayoutGrid className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => handleViewModeChange('list')}
+                      className={`p-1.5 rounded-lg ${viewMode === 'list' 
+                        ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
+                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                      aria-label="List view"
+                    >
+                      <List className="h-4 w-4" />
+                    </button>
+                  </div>
+                  <CampaignSearch />
+                </div>
+              </div>
+
+              {/* Stats Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="bg-white dark:bg-zinc-900 rounded-xl hover:bg-zinc-100 p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-300 dark:hover:border-zinc-300/50 transition-all duration-200">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                      <FileSpreadsheet className="h-5 w-5 text-gray-900 dark:text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">{formsData.forms.length}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Total Forms</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                      <Mail className="h-5 w-5 text-gray-900 dark:text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        {formsData.forms.reduce((total, form) => total + (form.campaignCount || 0), 0)}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Total Campaigns</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {formsData?.forms.map((form) => (
-            <div
-              key={form.id}
-              className="bg-white dark:bg-zinc-900 p-6 rounded-xl border border-zinc-100 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
-              onClick={() => handleFormClick(form.id)}
-            >
-              <div className="flex justify-between items-start mb-4">
-                <div className="space-y-1">
-                  <h3 className="font-medium text-lg text-gray-900 dark:text-white truncate max-w-[200px]">
-                    {form.name}
-                  </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Created on{" "}
-                    {new Date(form.createdAt).toLocaleDateString(undefined, {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </p>
-                </div>
-                <div className="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 p-2 rounded-lg">
-                  <Mail className="h-5 w-5" />
+        
+        {viewMode === 'grid' ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {formsData.forms.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((form) => (
+              <div
+                key={form.id}
+                className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/50 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer"
+                onClick={() => handleFormClick(form.id)}
+              >
+                <div className="p-4 sm:p-6">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-2 truncate">{form.name}</h3>
+                  {form.description && (
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 line-clamp-2">{form.description}</p>
+                  )}
+                  <div className="flex justify-between items-center mt-4">
+                    <div className="flex items-center gap-1">
+                      <Mail className="h-4 w-4 text-gray-400" />
+                      <span className="text-xs text-gray-500 dark:text-gray-400">{form.campaignCount} campaign{form.campaignCount !== 1 ? 's' : ''}</span>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 px-2 text-xs hover:bg-zinc-200 cursor-pointer dark:hover:bg-zinc-950 text-gray-600 dark:text-gray-300 rounded-lg"
+                    >
+                      View Campaigns
+                    </Button>
+                  </div>
                 </div>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleFormClick(form.id);
-                }}
+            ))}
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {formsData.forms.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((form) => (
+              <div
+                key={form.id}
+                className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                onClick={() => handleFormClick(form.id)}
               >
-                View Campaigns
-              </Button>
-            </div>
-          ))}
-        </div>
+                <div className="p-4 sm:p-5 flex items-center justify-between">
+                  <div className="flex items-center space-x-4 flex-1 min-w-0">
+                    <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                      <FileSpreadsheet className="h-5 w-5 text-gray-900 dark:text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
+                        {form.name}
+                      </h3>
+                      <div className="flex items-center gap-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                        <div className="flex items-center">
+                          <Mail className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5" />
+                          <span>{form.campaignCount} campaign{form.campaignCount !== 1 ? 's' : ''}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 min-w-20 text-xs hover:bg-zinc-200 cursor-pointer dark:hover:bg-zinc-950 text-gray-600 dark:text-gray-300 rounded-lg"
+                  >
+                    View Campaigns
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Pagination for forms list */}
+        {formsData?.forms?.length > itemsPerPage && (
+          <div className="flex items-center justify-center gap-4 mt-8">
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 px-3 rounded-lg"
+              disabled={page <= 1}
+              onClick={() => {
+                const newParams = new URLSearchParams(searchParams.toString())
+                newParams.set("page", String(page - 1))
+                router.push(`?${newParams.toString()}`)
+              }}
+            >
+              Previous
+            </Button>
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              Page {page} of {totalFormsPages}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 px-3 rounded-lg"
+              disabled={page >= totalFormsPages}
+              onClick={() => {
+                const newParams = new URLSearchParams(searchParams.toString())
+                newParams.set("page", String(page + 1))
+                router.push(`?${newParams.toString()}`)
+              }}
+            >
+              Next
+            </Button>
+          </div>
+        )}
       </div>
     );
   }

@@ -18,6 +18,7 @@ export interface FormsResponse {
     name: string
     slug: string
     createdAt: string
+    description?: string
   }>
   pagination?: {
     totalItems: number
