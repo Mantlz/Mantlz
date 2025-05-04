@@ -9,6 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import { formatCampaignStatus } from '@/components/dashboard/campaigns/table/tableUtils';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { formatDistanceToNow } from 'date-fns';
+import { useSubscription } from '@/hooks/useSubscription';
+import { UpgradeModal } from '@/components/modals/UpgradeModal';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,6 +31,8 @@ interface CampaignDetailPageProps {
 
 export default function CampaignDetailPage({ params }: CampaignDetailPageProps) {
   const campaignId = params.id;
+  const { isPremium } = useSubscription();
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   
   const [campaign, setCampaign] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -83,6 +87,10 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
   }, [campaignId, formId]);
 
   const handleSendCampaign = async () => {
+    if (!isPremium) {
+      setShowUpgradeModal(true);
+      return;
+    }
     try {
       setIsSending(true);
       await client.campaign.send.$post({
@@ -185,7 +193,10 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
               {campaign.status === 'DRAFT' && (
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button className="gap-1">
+                    <Button 
+                      className="gap-1"
+                      onClick={() => !isPremium && setShowUpgradeModal(true)}
+                    >
                       <Send className="h-4 w-4" />
                       Send Campaign
                     </Button>
@@ -358,6 +369,14 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
           </div>
         </TabsContent>
       </Tabs>
+
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        featureName="Email Campaigns"
+        featureIcon={<Mail className="h-5 w-5 text-slate-700 dark:text-slate-300" />}
+        description="Create and manage email campaigns with advanced features like scheduling, analytics, and more. Available on Standard and Pro plans."
+      />
     </div>
   );
 } 

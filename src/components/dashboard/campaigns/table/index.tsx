@@ -18,24 +18,26 @@ import { CampaignSearch } from "../../campaigns/CampaignSearch"
 
 interface CampaignsTableProps {
   itemsPerPage?: number;
+  isPremium?: boolean;
+  onUpgradeClick?: () => void;
 }
 
-export function CampaignsTable({ itemsPerPage = 8 }: CampaignsTableProps) {
+export function CampaignsTable({ itemsPerPage = 8, isPremium = false, onUpgradeClick }: CampaignsTableProps) {
   return (
     <Suspense fallback={<StatsGridSkeleton />}>
-      <CampaignsTableContent itemsPerPage={itemsPerPage} />
+      <CampaignsTableContent itemsPerPage={itemsPerPage} isPremium={isPremium} onUpgradeClick={onUpgradeClick} />
     </Suspense>
   )
 }
 
-function CampaignsTableContent({ itemsPerPage = 8 }: CampaignsTableProps) {
+function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeClick }: CampaignsTableProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const page = Number(searchParams.get("page")) || 1
   const formId = searchParams.get("formId")
   const viewParam = searchParams.get("view") as "grid" | "list" | null
   const [viewMode, setViewMode] = useState<"grid" | "list">(viewParam || "grid")
-  const { isPremium, subscription } = useSubscription()
+  const { isPremium: subscriptionIsPremium, subscription } = useSubscription()
 
   // Get the plan from the subscription or default to FREE
   const userPlan = subscription?.plan || 'FREE'
@@ -81,11 +83,15 @@ function CampaignsTableContent({ itemsPerPage = 8 }: CampaignsTableProps) {
     enabled: !!formId,
   })
 
-  // Handle form selection
+  // Handle form selection with premium check
   function handleFormClick(formId: string) {
+    if (!isPremium) {
+      onUpgradeClick?.();
+      return;
+    }
     const newParams = new URLSearchParams(searchParams)
     newParams.set("formId", formId)
-    newParams.set("page", "1") // Reset to page 1 when selecting a form
+    newParams.set("page", "1")
     router.push(`?${newParams.toString()}`)
   }
 
@@ -157,7 +163,7 @@ function CampaignsTableContent({ itemsPerPage = 8 }: CampaignsTableProps) {
       );
     }
 
-    // No forms state
+    // No forms state with premium check
     if (!formsData?.forms?.length) {
       return (
         <div className="space-y-6 sm:space-y-8">
@@ -169,16 +175,16 @@ function CampaignsTableContent({ itemsPerPage = 8 }: CampaignsTableProps) {
                   <div className="flex items-center gap-3">
                     <div>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Let&apos;s create your first form
+                        {isPremium ? "Let's create your first form" : "Upgrade to create email campaigns"}
                       </p>
                     </div>
                   </div>
                 </div>
                 <Button
                   className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-lg px-6 shadow-sm hover:shadow-md"
-                  onClick={() => router.push("/dashboard/forms/new")}
+                  onClick={() => isPremium ? router.push("/dashboard/forms/new") : onUpgradeClick?.()}
                 >
-                  Create Your First Form
+                  {isPremium ? "Create Your First Form" : "Upgrade to Create Campaigns"}
                 </Button>
               </div>
             </div>
@@ -188,15 +194,19 @@ function CampaignsTableContent({ itemsPerPage = 8 }: CampaignsTableProps) {
             <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 rounded-2xl bg-white dark:bg-zinc-800/50 flex items-center justify-center">
               <FileSpreadsheet className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 dark:text-gray-500" />
             </div>
-            <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">Ready to create your first form?</h3>
+            <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">
+              {isPremium ? "Ready to create your first form?" : "Upgrade to access email campaigns"}
+            </h3>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 sm:mb-6 max-w-sm mx-auto px-4">
-              Start collecting responses in minutes with our easy-to-use form builder
+              {isPremium 
+                ? "Start collecting responses in minutes with our easy-to-use form builder"
+                : "Create and manage email campaigns with advanced features like scheduling, analytics, and more"}
             </p>
             <Button
               className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-lg px-6 shadow-sm hover:shadow-md"
-              onClick={() => router.push("/dashboard/forms/new")}
+              onClick={() => isPremium ? router.push("/dashboard/forms/new") : onUpgradeClick?.()}
             >
-              Create Your First Form
+              {isPremium ? "Create Your First Form" : "Upgrade Now"}
             </Button>
           </div>
         </div>

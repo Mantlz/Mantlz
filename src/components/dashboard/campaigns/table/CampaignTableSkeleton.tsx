@@ -33,7 +33,7 @@ export function CampaignTableSkeleton({ isPremium }: { isPremium: boolean }) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {Array.from({ length: 10 }).map((_, index) => (
+            {Array.from({ length: 5 }).map((_, index) => (
               <TableRow 
                 key={index} 
                 className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 last:border-0"

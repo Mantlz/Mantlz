@@ -11,17 +11,10 @@ import {
   TableBody, 
   TableCell 
 } from "@/components/ui/table"
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
+
 import { Button } from "@/components/ui/button"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
-import { Mail, MoreHorizontal, Send, CalendarIcon, AlertCircle } from "lucide-react"
+import { Mail, MoreHorizontal, Send, CalendarIcon, AlertCircle, Trash2, Eye } from "lucide-react"
 import { CampaignResponse } from "./types"
 import { formatCampaignStatus, sendCampaign } from "./tableUtils"
 import { Badge } from "@/components/ui/badge"
@@ -30,6 +23,8 @@ import { NoCampaignsView } from "./NoCampaignsView"
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query"
 import { usePathname } from "next/navigation"
 import { formatDistanceToNow } from "date-fns"
+import { client } from "@/lib/client"
+import { toast } from "sonner"
 
 interface TableContentProps {
   data: CampaignResponse
@@ -47,6 +42,7 @@ interface TableContentProps {
   userPlan: string
   refetch: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<CampaignResponse, Error>>
   itemsPerPage: number
+  onUpgradeClick?: () => void
 }
 
 export function TableContent({
@@ -60,13 +56,16 @@ export function TableContent({
   userPlan,
   refetch,
   itemsPerPage,
+  onUpgradeClick,
 }: TableContentProps) {
   const [sendingCampaignId, setSendingCampaignId] = useState<string | null>(null)
+  const [deletingCampaignId, setDeletingCampaignId] = useState<string | null>(null)
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<string | null>(null)
   const pathname = usePathname();
   
   // If there are no campaigns, display empty state
   if (!data.campaigns.length) {
-    return <NoCampaignsView />
+    return <NoCampaignsView isPremium={isPremium} onUpgradeClick={onUpgradeClick} />
   }
 
   // Handle pagination change
@@ -78,14 +77,39 @@ export function TableContent({
 
   // Handle sending a campaign
   const handleSendCampaign = async (campaignId: string) => {
+    if (!isPremium) {
+      onUpgradeClick?.();
+      return;
+    }
     try {
       setSendingCampaignId(campaignId)
-      await sendCampaign(campaignId)
+      await client.campaign.send.$post({ campaignId })
       refetch() // Refresh the data after sending the campaign
     } catch (error) {
       console.error("Error sending campaign:", error)
     } finally {
       setSendingCampaignId(null)
+    }
+  }
+
+  // Handle deleting a campaign
+  const handleDeleteCampaign = async (campaignId: string) => {
+    if (!isPremium) {
+      onUpgradeClick?.();
+      return;
+    }
+    try {
+      setDeletingCampaignId(campaignId)
+      await client.campaign.delete.$post({ campaignId })
+      toast.success("Campaign deleted successfully")
+      refetch()
+      // Only close the dialog after successful deletion
+      setIsDeleteDialogOpen(null)
+    } catch (error) {
+      console.error("Error deleting campaign:", error)
+      toast.error("Failed to delete campaign")
+    } finally {
+      setDeletingCampaignId(null)
     }
   }
 
@@ -117,7 +141,7 @@ export function TableContent({
           <TableBody>
             {data.campaigns.map((campaign) => {
               const statusInfo = formatCampaignStatus(campaign.status)
-              const isDisabled = campaign.status !== 'DRAFT'
+              const isDisabled = campaign.status !== 'DRAFT' || !isPremium
               
               return (
                 <TableRow key={campaign.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 last:border-0">
@@ -129,7 +153,7 @@ export function TableContent({
                       <div>
                         <div className="font-medium text-gray-700 dark:text-gray-300">{campaign.name}</div>
                         {campaign.description && (
-                          <div className="text-xs text-muted-foreground text-gray-500 dark:text-gray-400">
+                          <div className="text-xs  text-gray-500 dark:text-gray-400">
                             {campaign.description}
                           </div>
                         )}
@@ -178,6 +202,7 @@ export function TableContent({
                             size="sm"
                             className="h-7 px-2 text-xs cursor-pointer gap-1 bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
                             disabled={isDisabled}
+                            onClick={() => !isPremium && onUpgradeClick?.()}
                           >
                             <Send className="h-3.5 w-3.5" />
                             Send
@@ -215,11 +240,53 @@ export function TableContent({
                         </PopoverTrigger>
                         <PopoverContent align="end" className="w-[180px] p-0 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
                           <button
-                            className="w-full flex items-center px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left text-sm"
-                            onClick={() => router.push(`/dashboard/campaigns/${campaign.id}`)}
+                            className="w-full flex items-center px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left text-sm text-gray-700 dark:text-gray-300 cursor-pointer"
+                            onClick={() => !isPremium ? onUpgradeClick?.() : router.push(`/dashboard/campaigns/${campaign.id}`)}
                           >
+                            <Eye className="h-4 w-4 mr-2" />
                             View Details
                           </button>
+                          <AlertDialog open={isDeleteDialogOpen === campaign.id} onOpenChange={(open) => {
+                            // Prevent closing the dialog while deletion is in progress
+                            if (!deletingCampaignId) {
+                              setIsDeleteDialogOpen(open ? campaign.id : null)
+                            }
+                          }}>
+                            <AlertDialogTrigger asChild>
+                              <button
+                                className="w-full flex items-center px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left text-sm text-red-600 dark:text-red-400 border-t border-zinc-200 dark:border-zinc-800 cursor-pointer"
+                                onClick={() => !isPremium && onUpgradeClick?.()}
+                              >
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Delete
+                              </button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+                              <AlertDialogHeader>
+                                <AlertDialogTitle className="text-gray-900 dark:text-gray-100">Delete Campaign</AlertDialogTitle>
+                                <AlertDialogDescription className="text-gray-600 dark:text-gray-400">
+                                  Are you sure you want to delete this campaign? This action cannot be undone.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel disabled={deletingCampaignId === campaign.id}>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => handleDeleteCampaign(campaign.id)}
+                                  disabled={deletingCampaignId === campaign.id}
+                                  className="bg-red-600 hover:bg-red-700 text-white"
+                                >
+                                  {deletingCampaignId === campaign.id ? (
+                                    <>
+                                      <span className="animate-spin mr-2">⏳</span>
+                                      Deleting...
+                                    </>
+                                  ) : (
+                                    "Delete"
+                                  )}
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </PopoverContent>
                       </Popover>
                     </div>

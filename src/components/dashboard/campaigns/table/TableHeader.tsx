@@ -4,6 +4,8 @@ import { useRef } from "react"
 import { useRouter, ReadonlyURLSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { PlusCircle, ChevronLeft, Mail, Clock, Send, Users } from "lucide-react"
+import { useSubscription } from "@/hooks/useSubscription"
+import { toast } from "sonner"
 
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
@@ -15,6 +17,7 @@ import { client } from "@/lib/client"
 import { CampaignSearch } from "../CampaignSearch"
 import { Badge } from "@/components/ui/badge"
 import { formatDistanceToNow } from "date-fns"
+import { UpgradeModal } from "@/components/modals/UpgradeModal"
 
 interface TableHeaderProps {
   formId: string | null
@@ -37,8 +40,10 @@ export function TableHeader({
   const [campaignDescription, setCampaignDescription] = useState("")
   const [campaignSubject, setCampaignSubject] = useState("")
   const [campaignContent, setCampaignContent] = useState("")
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const createButtonRef = useRef<HTMLButtonElement>(null)
   
+  const { isPremium } = useSubscription()
   const selectedForm = formsData?.forms?.find((f) => f.id === formId)
   const campaignCount = campaignsData?.campaigns?.length || 0
 
@@ -54,13 +59,18 @@ export function TableHeader({
   }
   
   const handleCreateCampaign = async () => {
+    if (!isPremium) {
+      setShowUpgradeModal(true)
+      return
+    }
+
     if (!formId) {
-      alert("Please select a form first")
+      toast.error("Please select a form first")
       return
     }
     
     if (!campaignName || !campaignSubject || !campaignContent) {
-      alert("Please fill out all required fields")
+      toast.error("Please fill out all required fields")
       return
     }
     
@@ -84,11 +94,14 @@ export function TableHeader({
       // Close dialog
       setOpen(false)
       
+      // Show success toast
+      toast.success("Campaign created successfully")
+      
       // Refresh page
       router.refresh()
     } catch (error) {
       console.error("Error creating campaign", error)
-      alert("Failed to create campaign")
+      toast.error("Failed to create campaign")
     } finally {
       setLoading(false)
     }
@@ -132,6 +145,8 @@ export function TableHeader({
                     className="gap-1.5"
                     data-create-campaign-button
                     ref={createButtonRef}
+                    onClick={() => !isPremium && setShowUpgradeModal(true)}
+                    disabled={!isPremium}
                   >
                     <PlusCircle className="h-4 w-4" />
                     <span className="hidden sm:inline">Create Campaign</span>
@@ -268,6 +283,14 @@ export function TableHeader({
           </div>
         </div>
       </div>
+
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        featureName="Email Campaigns"
+        featureIcon={<Mail className="h-5 w-5 text-slate-700 dark:text-slate-300" />}
+        description="Create and manage email campaigns with advanced features like scheduling, analytics, and more. Available on Standard and Pro plans."
+      />
     </div>
   )
 } 

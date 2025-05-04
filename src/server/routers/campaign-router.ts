@@ -111,7 +111,7 @@ export const campaignRouter = j.router({
           campaign.form._count = {
             ...campaign.form._count,
             unsubscribed: unsubscribedCount,
-          };
+          } as { submissions: number; unsubscribed: number };
         }
       });
 
@@ -306,5 +306,49 @@ export const campaignRouter = j.router({
         openRate: 0, // TODO: Implement email tracking
         clickRate: 0, // TODO: Implement email tracking
       });
+    }),
+
+  // Delete a campaign
+  delete: privateProcedure
+    .input(z.object({
+      campaignId: z.string(),
+    }))
+    .mutation(async ({ c, input, ctx }) => {
+      const { campaignId } = input;
+      
+      try {
+        // First verify the user owns this campaign
+        const campaign = await db.campaign.findFirst({
+          where: {
+            id: campaignId,
+            userId: ctx.user.id,
+          },
+        });
+
+        if (!campaign) {
+          throw new HTTPException(404, { message: 'Campaign not found or you do not have permission to delete it' });
+        }
+
+        // Delete everything in a transaction to ensure data consistency
+        await db.$transaction([
+          // 1. Delete sent emails first
+          db.sentEmail.deleteMany({
+            where: { campaignId }
+          }),
+
+          // 2. Finally delete the campaign itself
+          db.campaign.delete({
+            where: {
+              id: campaignId,
+              userId: ctx.user.id,
+            },
+          })
+        ]);
+
+        return c.superjson({ success: true });
+      } catch (error) {
+        console.error('Error deleting campaign:', error);
+        throw new HTTPException(500, { message: 'Failed to delete campaign' });
+      }
     }),
 }); 

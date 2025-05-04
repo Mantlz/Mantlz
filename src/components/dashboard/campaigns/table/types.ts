@@ -18,6 +18,7 @@ export interface FormType {
   slug: string;
   createdAt: string;
   description?: string;
+  campaignCount?: number;
   _count?: {
     submissions: number;
     unsubscribed: number;
@@ -31,6 +32,7 @@ export interface FormsResponse {
     slug: string
     createdAt: string
     description?: string
+    campaignCount?: number
     _count?: {
       submissions: number
       unsubscribed: number
