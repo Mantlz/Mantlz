@@ -143,21 +143,42 @@ export async function createCampaign(data: {
 }
 
 // Function to format campaign status for display
-export function formatCampaignStatus(status: string): { label: string; color: string } {
+export function formatCampaignStatus(status: 'DRAFT' | 'SCHEDULED' | 'SENDING' | 'SENT' | 'FAILED' | 'CANCELLED') {
   switch (status) {
     case 'DRAFT':
-      return { label: 'Draft', color: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300' }
-    case 'SENDING':
-      return { label: 'Sending', color: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400' }
-    case 'SENT':
-      return { label: 'Sent', color: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' }
-    case 'FAILED':
-      return { label: 'Failed', color: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400' }
+      return {
+        label: 'Draft',
+        color: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300'
+      }
     case 'SCHEDULED':
-      return { label: 'Scheduled', color: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400' }
+      return {
+        label: 'Scheduled',
+        color: 'bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400'
+      }
+    case 'SENDING':
+      return {
+        label: 'Sending',
+        color: 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+      }
+    case 'SENT':
+      return {
+        label: 'Sent',
+        color: 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400'
+      }
+    case 'FAILED':
+      return {
+        label: 'Failed',
+        color: 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400'
+      }
     case 'CANCELLED':
-      return { label: 'Cancelled', color: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400' }
+      return {
+        label: 'Cancelled',
+        color: 'bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400'
+      }
     default:
-      return { label: status, color: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300' }
+      return {
+        label: status,
+        color: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300'
+      }
   }
 } 

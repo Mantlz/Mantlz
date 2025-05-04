@@ -351,4 +351,82 @@ export const campaignRouter = j.router({
         throw new HTTPException(500, { message: 'Failed to delete campaign' });
       }
     }),
+
+  // Schedule a campaign
+  schedule: privateProcedure
+    .input(z.object({
+      campaignId: z.string(),
+      scheduleDate: z.string()
+    }))
+    .mutation(async ({ c, input, ctx }) => {
+      const { campaignId, scheduleDate } = input;
+      
+      // Verify campaign ownership and status
+      const campaign = await db.campaign.findFirst({
+        where: {
+          id: campaignId,
+          userId: ctx.user.id,
+          status: 'DRAFT', // Only draft campaigns can be scheduled
+        },
+      });
+
+      if (!campaign) {
+        throw new HTTPException(404, { message: 'Campaign not found or cannot be scheduled' });
+      }
+
+      // Ensure schedule date is in the future
+      const scheduleDateObj = new Date(scheduleDate);
+      if (scheduleDateObj <= new Date()) {
+        throw new HTTPException(400, { message: 'Schedule date must be in the future' });
+      }
+
+      // Update campaign with schedule
+      const updatedCampaign = await db.campaign.update({
+        where: { id: campaignId },
+        data: {
+          status: 'SCHEDULED',
+          scheduledAt: scheduleDateObj,
+        },
+      });
+
+      return c.superjson({
+        success: true,
+        scheduledAt: updatedCampaign.scheduledAt,
+      });
+    }),
+
+  // Cancel scheduled campaign
+  cancelSchedule: privateProcedure
+    .input(z.object({
+      campaignId: z.string(),
+    }))
+    .mutation(async ({ c, input, ctx }) => {
+      const { campaignId } = input;
+      
+      // Verify campaign ownership and status
+      const campaign = await db.campaign.findFirst({
+        where: {
+          id: campaignId,
+          userId: ctx.user.id,
+          status: 'SCHEDULED', // Only scheduled campaigns can be cancelled
+        },
+      });
+
+      if (!campaign) {
+        throw new HTTPException(404, { message: 'Scheduled campaign not found' });
+      }
+
+      // Update campaign back to draft status
+      const updatedCampaign = await db.campaign.update({
+        where: { id: campaignId },
+        data: {
+          status: 'DRAFT',
+          scheduledAt: null,
+        },
+      });
+
+      return c.superjson({
+        success: true,
+      });
+    }),
 }); 

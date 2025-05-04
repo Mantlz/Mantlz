@@ -4,7 +4,6 @@
   - You are about to drop the column `clickCount` on the `Campaign` table. All the data in the column will be lost.
   - You are about to drop the column `filterSettings` on the `Campaign` table. All the data in the column will be lost.
   - You are about to drop the column `openCount` on the `Campaign` table. All the data in the column will be lost.
-  - You are about to drop the column `senderEmail` on the `Campaign` table. All the data in the column will be lost.
   - You are about to drop the column `sentCount` on the `Campaign` table. All the data in the column will be lost.
   - You are about to drop the `CampaignRecipient` table. If the table is not empty, all the data it contains will be lost.
 
@@ -28,7 +27,6 @@ DROP INDEX "Campaign_userId_status_idx";
 ALTER TABLE "Campaign" DROP COLUMN "clickCount",
 DROP COLUMN "filterSettings",
 DROP COLUMN "openCount",
-DROP COLUMN "senderEmail",
 DROP COLUMN "sentCount",
 ADD COLUMN     "scheduledAt" TIMESTAMP(3),
 ADD COLUMN     "sentAt" TIMESTAMP(3);
@@ -43,6 +41,17 @@ DROP TABLE "CampaignRecipient";
 DROP TYPE "DigestFrequency";
 
 -- CreateTable
+CREATE TABLE "TestEmailSubmission" (
+    "id" TEXT NOT NULL,
+    "formId" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "data" JSONB,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "TestEmailSubmission_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "SentEmail" (
     "id" TEXT NOT NULL,
     "status" "CampaignSendStatus" NOT NULL DEFAULT 'PENDING',
@@ -50,7 +59,9 @@ CREATE TABLE "SentEmail" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "campaignId" TEXT NOT NULL,
-    "submissionId" TEXT NOT NULL,
+    "submissionId" TEXT,
+    "testSubmissionId" TEXT,
+    "isTest" BOOLEAN NOT NULL DEFAULT false,
     "openedAt" TIMESTAMP(3),
     "clickedAt" TIMESTAMP(3),
     "lastOpenedAt" TIMESTAMP(3),
@@ -68,10 +79,19 @@ CREATE TABLE "SentEmail" (
 );
 
 -- CreateIndex
+CREATE INDEX "TestEmailSubmission_email_idx" ON "TestEmailSubmission"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "TestEmailSubmission_formId_email_key" ON "TestEmailSubmission"("formId", "email");
+
+-- CreateIndex
 CREATE INDEX "SentEmail_campaignId_idx" ON "SentEmail"("campaignId");
 
 -- CreateIndex
 CREATE INDEX "SentEmail_submissionId_idx" ON "SentEmail"("submissionId");
+
+-- CreateIndex
+CREATE INDEX "SentEmail_testSubmissionId_idx" ON "SentEmail"("testSubmissionId");
 
 -- CreateIndex
 CREATE INDEX "SentEmail_openedAt_idx" ON "SentEmail"("openedAt");
@@ -83,6 +103,9 @@ CREATE INDEX "SentEmail_clickedAt_idx" ON "SentEmail"("clickedAt");
 CREATE INDEX "SentEmail_status_idx" ON "SentEmail"("status");
 
 -- CreateIndex
+CREATE INDEX "SentEmail_isTest_idx" ON "SentEmail"("isTest");
+
+-- CreateIndex
 CREATE INDEX "Campaign_userId_idx" ON "Campaign"("userId");
 
 -- AddForeignKey
@@ -92,7 +115,13 @@ ALTER TABLE "Campaign" ADD CONSTRAINT "Campaign_formId_fkey" FOREIGN KEY ("formI
 ALTER TABLE "Campaign" ADD CONSTRAINT "Campaign_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "TestEmailSubmission" ADD CONSTRAINT "TestEmailSubmission_formId_fkey" FOREIGN KEY ("formId") REFERENCES "Form"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "SentEmail" ADD CONSTRAINT "SentEmail_campaignId_fkey" FOREIGN KEY ("campaignId") REFERENCES "Campaign"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "SentEmail" ADD CONSTRAINT "SentEmail_submissionId_fkey" FOREIGN KEY ("submissionId") REFERENCES "Submission"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SentEmail" ADD CONSTRAINT "SentEmail_testSubmissionId_fkey" FOREIGN KEY ("testSubmissionId") REFERENCES "TestEmailSubmission"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -1,10 +1,11 @@
 "use client"
 
+import React, { Suspense, useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
-import { useSubscription } from "@/hooks/useSubscription"
-import { StatsGridSkeleton } from "@/components/skeletons"
-import { Button } from "@/components/ui/button"
+import { useSubscription } from "../../../../hooks/useSubscription"
+import { StatsGridSkeleton } from "../../../../components/skeletons"
+import { Button } from "../../../../components/ui/button"
 import { FileSpreadsheet, Mail, LayoutGrid, List } from "lucide-react"
 import { FormsResponse, CampaignResponse } from "./types"
 import { fetchUserForms, fetchCampaigns } from "./tableUtils"
@@ -12,8 +13,7 @@ import { TableHeader } from "./TableHeader"
 import { TableContent } from "./TableContent"
 
 import { CampaignTableSkeleton } from "./CampaignTableSkeleton"
-import { useState, useEffect, Suspense } from "react"
-import { LogsTableHeaderSkeleton } from "@/components/skeletons"
+import { LogsTableHeaderSkeleton } from "../../../../components/skeletons"
 import { CampaignSearch } from "../../campaigns/CampaignSearch"
 
 interface CampaignsTableProps {
@@ -37,7 +37,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
   const formId = searchParams.get("formId")
   const viewParam = searchParams.get("view") as "grid" | "list" | null
   const [viewMode, setViewMode] = useState<"grid" | "list">(viewParam || "grid")
-  const { isPremium: subscriptionIsPremium, subscription } = useSubscription()
+  const { subscription } = useSubscription()
 
   // Get the plan from the subscription or default to FREE
   const userPlan = subscription?.plan || 'FREE'

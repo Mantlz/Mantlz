@@ -127,6 +127,7 @@ model Form {
   emailSettings EmailSettings?
   notificationLogs NotificationLog[]
   campaigns   Campaign[]
+  testSubmissions TestEmailSubmission[]
 
   @@index([userId, formType])
   @@index([userId])
@@ -215,6 +216,7 @@ model Campaign {
   description String?
   subject     String
   content     String
+  senderEmail String?
   status      CampaignStatus @default(DRAFT)
   scheduledAt DateTime?
   sentAt      DateTime?
@@ -230,6 +232,19 @@ model Campaign {
   @@index([userId])
 }
 
+model TestEmailSubmission {
+  id        String   @id @default(cuid())
+  formId    String
+  email     String
+  data      Json?
+  createdAt DateTime @default(now())
+  form      Form     @relation(fields: [formId], references: [id])
+  sentEmails SentEmail[]
+
+  @@unique([formId, email])
+  @@index([email])
+}
+
 model SentEmail {
   id           String    @id @default(cuid())
   status       CampaignSendStatus @default(PENDING)
@@ -237,9 +252,12 @@ model SentEmail {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   campaignId   String
-  submissionId String
+  submissionId String?
+  testSubmissionId String?
   campaign     Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  submission   Submission? @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  testSubmission TestEmailSubmission? @relation(fields: [testSubmissionId], references: [id], onDelete: Cascade)
+  isTest      Boolean   @default(false)
   
   // Email tracking
   openedAt     DateTime?
@@ -257,9 +275,11 @@ model SentEmail {
 
   @@index([campaignId])
   @@index([submissionId])
+  @@index([testSubmissionId])
   @@index([openedAt])
   @@index([clickedAt])
   @@index([status])
+  @@index([isTest])
 }
 
 enum NotificationType {

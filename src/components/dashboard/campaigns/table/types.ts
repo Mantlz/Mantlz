@@ -7,6 +7,7 @@ export interface CampaignType {
   status: 'DRAFT' | 'SENDING' | 'SENT' | 'FAILED' | 'SCHEDULED' | 'CANCELLED'
   createdAt: string
   sentAt?: string
+  scheduledAt?: string
   _count?: {
     sentEmails: number
   }
