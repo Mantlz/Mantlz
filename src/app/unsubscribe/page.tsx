@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import { redirect } from 'next/navigation';
+
 
 interface UnsubscribePageProps {
   searchParams: {

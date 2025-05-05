@@ -4,15 +4,27 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function sendEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
-  if (!process.env.RESEND_API_KEY) {
-    throw new Error('Email service not configured: Missing API key');
+interface EmailOptions {
+  to: string;
+  subject: string;
+  html: string;
+  from?: string;
+  replyTo?: string;
+}
+
+export async function sendEmail({ to, subject, html, from, replyTo }: EmailOptions) {
+  try {
+    const defaultFrom = process.env.DEFAULT_FROM_EMAIL || 'noreply@mantlz.app';
+    
+    await resend.emails.send({
+      from: from || defaultFrom,
+      to,
+      subject,
+      html,
+      replyTo
+    });
+  } catch (error) {
+    console.error('Failed to send email:', error);
+    throw error;
   }
-  
-  return resend.emails.send({
-    from: 'Mantlz <noreply@mantlz.app>',
-    to,
-    subject,
-    html,
-  });
 } 

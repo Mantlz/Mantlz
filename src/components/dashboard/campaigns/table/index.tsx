@@ -4,7 +4,7 @@ import React, { Suspense, useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { useSubscription } from "../../../../hooks/useSubscription"
-import { StatsGridSkeleton } from "../../../../components/skeletons"
+import { CampaignsGridSkeleton } from "../../../../components/skeletons"
 import { Button } from "../../../../components/ui/button"
 import { FileSpreadsheet, Mail, LayoutGrid, List } from "lucide-react"
 import { FormsResponse, CampaignResponse } from "./types"
@@ -14,7 +14,7 @@ import { TableContent } from "./TableContent"
 
 import { CampaignTableSkeleton } from "./CampaignTableSkeleton"
 import { LogsTableHeaderSkeleton } from "../../../../components/skeletons"
-import { CampaignSearch } from "../../campaigns/CampaignSearch"
+
 
 interface CampaignsTableProps {
   itemsPerPage?: number;
@@ -24,7 +24,7 @@ interface CampaignsTableProps {
 
 export function CampaignsTable({ itemsPerPage = 8, isPremium = false, onUpgradeClick }: CampaignsTableProps) {
   return (
-    <Suspense fallback={<StatsGridSkeleton />}>
+    <Suspense fallback={<CampaignsGridSkeleton />}>
       <CampaignsTableContent itemsPerPage={itemsPerPage} isPremium={isPremium} onUpgradeClick={onUpgradeClick} />
     </Suspense>
   )
@@ -124,7 +124,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
       return (
         <div className="space-y-6 sm:space-y-8">
           <LogsTableHeaderSkeleton />
-          <CampaignTableSkeleton isPremium={isPremium} />
+          <CampaignTableSkeleton />
         </div>
       );
     }
@@ -158,7 +158,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
     if (isLoadingForms) {
       return (
         <div className="space-y-6 sm:space-y-8">
-          <StatsGridSkeleton />
+          <CampaignsGridSkeleton />
         </div>
       );
     }
@@ -252,7 +252,6 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                       <List className="h-4 w-4" />
                     </button>
                   </div>
-                  <CampaignSearch />
                 </div>
               </div>
 

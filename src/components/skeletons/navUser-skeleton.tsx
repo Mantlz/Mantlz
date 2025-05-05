@@ -1,13 +1,17 @@
 "use client"
 
 import { Skeleton } from "@/components/ui/skeleton"
+import { Button } from "@/components/ui/button"
+import { ChevronDown } from "lucide-react"
 
 export function NavUserSkeleton() {
   return (
-    <div className="flex items-center gap-3">
-      <Skeleton className="h-5 w-24 bg-zinc-200 dark:bg-zinc-700 rounded-lg" />
-      <Skeleton className="h-5 w-24 bg-zinc-200 dark:bg-zinc-700 rounded-lg" />
-      <Skeleton className="h-9 w-9 rounded-lg bg-zinc-200 dark:bg-zinc-700" />
-    </div>
+    <Button variant="ghost" className="flex items-center cursor-pointer gap-2 hover:bg-zinc-200 dark:hover:bg-zinc-800">
+      <div className="h-8 w-8 rounded-lg overflow-hidden bg-zinc-200 dark:bg-zinc-800">
+        <Skeleton className="h-full w-full" />
+      </div>
+      <Skeleton className="h-5 w-20 bg-zinc-200 dark:bg-zinc-800 rounded-lg" />
+      <ChevronDown className="h-4 w-4" />
+    </Button>
   )
 }

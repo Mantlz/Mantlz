@@ -4,6 +4,7 @@ import { currentUser } from "@clerk/nextjs/server"
 import { HTTPException } from "hono/http-exception"
 import { j } from "../jstack"
 import { sendWelcomeEmail } from "@/services/welcome-email-service"
+import { FREE_QUOTA } from "@/config/usage"
 
 export const authRouter = j.router({
   getDatabaseSyncStatus: j.procedure.query(async ({ c }) => {
@@ -27,7 +28,12 @@ export const authRouter = j.router({
       console.log('User in Database 👨:', user)
 
       if (!user) {
-        // If no user, create one
+        // Get current month and year for quota
+        const now = new Date()
+        const currentYear = now.getFullYear()
+        const currentMonth = now.getMonth() + 1 // JavaScript months are 0-indexed
+
+        // If no user, create one with FREE plan quotas
         const newUser = await db.user.create({
           data: {
             clerkId: auth.id,
@@ -35,8 +41,28 @@ export const authRouter = j.router({
             firstName: auth.firstName ?? null,
             lastName: auth.lastName ?? null,
             imageUrl: auth.imageUrl ?? null,
-            //plan: "FREE",
-            quotaLimit: 1,
+            plan: "FREE",
+            quotaLimit: FREE_QUOTA.maxSubmissionsPerMonth,
+            // Create initial global settings
+            globalSettings: {
+              create: {
+                developerNotificationsEnabled: false,
+                maxNotificationsPerHour: FREE_QUOTA.maxSubmissionsPerMonth
+              }
+            },
+            // Create initial quota for current month
+            quota: {
+              create: {
+                year: currentYear,
+                month: currentMonth,
+                submissionCount: 0,
+                formCount: 0,
+                campaignCount: 0,
+                emailsSent: 0,
+                emailsOpened: 0,
+                emailsClicked: 0
+              }
+            }
           },
         })
         console.log('Created new user:', newUser)
@@ -55,6 +81,36 @@ export const authRouter = j.router({
         }
 
         return c.superjson({ isSynced: true }) // Important: return isSynced true after creation
+      }
+
+      // For existing users, ensure they have a quota record for the current month
+      const now = new Date()
+      const currentYear = now.getFullYear()
+      const currentMonth = now.getMonth() + 1
+
+      const currentQuota = await db.quota.findFirst({
+        where: {
+          userId: user.id,
+          year: currentYear,
+          month: currentMonth
+        }
+      })
+
+      // If no quota record exists for current month, create one
+      if (!currentQuota) {
+        await db.quota.create({
+          data: {
+            userId: user.id,
+            year: currentYear,
+            month: currentMonth,
+            submissionCount: 0,
+            formCount: 0,
+            campaignCount: 0,
+            emailsSent: 0,
+            emailsOpened: 0,
+            emailsClicked: 0
+          }
+        })
       }
 
       // User exists

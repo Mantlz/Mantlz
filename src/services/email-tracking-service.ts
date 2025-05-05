@@ -72,7 +72,10 @@ export class EmailTrackingService {
 
   static async getCampaignAnalytics(campaignId: string) {
     const sentEmails = await db.sentEmail.findMany({
-      where: { campaignId },
+      where: { 
+        campaignId,
+        isTest: false // Exclude test emails
+      },
       select: {
         status: true,
         openedAt: true,

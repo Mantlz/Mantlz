@@ -61,7 +61,7 @@ const UserDropdown = memo(function UserDropdown() {
             asChild
           >
             <SettingsDialog>
-              <div className="flex items-center w-full px-2 py-1.5">
+              <div className="flex items-center w-full px-2 py-1.5 cursor-pointer hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 rounded-lg transition-all duration-200">
                 <Settings className="h-4 w-4 mr-2" />
                 Settings
               </div>
@@ -278,7 +278,7 @@ const ActionButtonsSection = memo(function ActionButtonsSection() {
         <Button
           variant="ghost"
           size="icon"
-          className="h-9 w-9 rounded-lg hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
+          className="h-9 w-9 rounded-lg hover:bg-zinc-200/50  hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
           aria-label="Settings"
         >
           <Settings className="h-4.5 w-4.5" />

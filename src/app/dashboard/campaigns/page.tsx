@@ -1,6 +1,6 @@
 'use client';
 import { Suspense } from 'react';
-import { CampaignsTable } from '@/components/dashboard/campaigns/CampaignsTable';
+import { CampaignsTableWrapper as CampaignsTable } from '@/components/dashboard/campaigns/CampaignsTable';
 import { UpgradeModal } from '@/components/modals/UpgradeModal';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useState } from 'react';

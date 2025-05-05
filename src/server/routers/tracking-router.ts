@@ -4,6 +4,7 @@ import { HTTPException } from "hono/http-exception";
 import { EmailTrackingService } from "@/services/email-tracking-service";
 import { db } from "@/lib/db";
 
+
 export const trackingRouter = j.router({
   // Track email open
   trackOpen: publicProcedure

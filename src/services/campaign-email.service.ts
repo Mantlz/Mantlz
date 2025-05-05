@@ -68,7 +68,10 @@ export async function sendCampaignEmail({
 
 export async function getCampaignMetrics(campaignId: string) {
   const sentEmails = await db.sentEmail.findMany({
-    where: { campaignId },
+    where: { 
+      campaignId,
+      isTest: false // Exclude test emails
+    },
   });
 
   return {

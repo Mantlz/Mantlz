@@ -88,6 +88,7 @@ export async function fetchCampaigns(
         status: c.status,
         createdAt: c.createdAt.toString(),
         sentAt: c.sentAt ? c.sentAt.toString() : undefined,
+        scheduledAt: c.scheduledAt ? c.scheduledAt.toString() : undefined,
         _count: c._count
       })),
       pagination: {
@@ -107,10 +108,13 @@ export async function fetchCampaigns(
 export async function sendCampaign(campaignId: string): Promise<{ success: boolean }> {
   try {
     const response = await client.campaign.send.$post({
-      campaignId
+      campaignId,
+      recipientSettings: {
+        type: "first",
+        count: 100
+      }
     })
 
-    const result = await response.json()
     return { success: true }
   } catch (error) {
     console.error('Error sending campaign:', error)

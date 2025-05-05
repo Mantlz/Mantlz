@@ -5,7 +5,13 @@ export const FREE_QUOTA = {
   campaigns: {
     enabled: false,
     maxCampaignsPerMonth: 0,
-    maxRecipientsPerCampaign: 0
+    maxRecipientsPerCampaign: 0,
+    features: {
+      analytics: false,
+      scheduling: false,
+      templates: false,
+      customDomain: false
+    }
   }
 } as {
   maxForms: number;
@@ -14,6 +20,12 @@ export const FREE_QUOTA = {
     enabled: boolean;
     maxCampaignsPerMonth: number;
     maxRecipientsPerCampaign: number;
+    features: {
+      analytics: boolean;
+      scheduling: boolean;
+      templates: boolean;
+      customDomain: boolean;
+    }
   }
 }
 
@@ -23,7 +35,13 @@ export const STANDARD_QUOTA = {
   campaigns: {
     enabled: true,
     maxCampaignsPerMonth: 3,
-    maxRecipientsPerCampaign: 500
+    maxRecipientsPerCampaign: 500,
+    features: {
+      analytics: false,
+      scheduling: true,
+      templates: false,
+      customDomain: false
+    }
   }
 } as {
   maxForms: number;
@@ -32,6 +50,12 @@ export const STANDARD_QUOTA = {
     enabled: boolean;
     maxCampaignsPerMonth: number;
     maxRecipientsPerCampaign: number;
+    features: {
+      analytics: boolean;
+      scheduling: boolean;
+      templates: boolean;
+      customDomain: boolean;
+    }
   }
 }
 
@@ -41,7 +65,13 @@ export const PRO_QUOTA = {
   campaigns: {
     enabled: true,
     maxCampaignsPerMonth: 10,
-    maxRecipientsPerCampaign: 10000
+    maxRecipientsPerCampaign: 10000,
+    features: {
+      analytics: true,
+      scheduling: true,
+      templates: true,
+      customDomain: true
+    }
   }
 } as {
   maxForms: number;
@@ -50,6 +80,12 @@ export const PRO_QUOTA = {
     enabled: boolean;
     maxCampaignsPerMonth: number;
     maxRecipientsPerCampaign: number;
+    features: {
+      analytics: boolean;
+      scheduling: boolean;
+      templates: boolean;
+      customDomain: boolean;
+    }
   }
 }
 

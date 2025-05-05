@@ -98,7 +98,7 @@ function CustomizeFormContent() {
       // Convert formType string to uppercase enum value
       const formTypeEnum = formType.toUpperCase() as FormType;
 
-      const response = await client.forms.create.$post({
+      const response = await client.forms.createForm.$post({
         name: formTitle,
         description: formDescription,
         schema: JSON.stringify(formSchema),

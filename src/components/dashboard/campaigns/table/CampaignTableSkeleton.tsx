@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Mail, Calendar, Globe, MapPin, Eye } from "lucide-react"
 import { Skeleton } from "@/components/ui/skeleton"
 
-export function CampaignTableSkeleton({ isPremium }: { isPremium: boolean }) {
+export function CampaignTableSkeleton() {
   return (
     <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800/50 overflow-hidden">
       <div className="overflow-x-auto">
@@ -19,11 +19,7 @@ export function CampaignTableSkeleton({ isPremium }: { isPremium: boolean }) {
               <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
                 Status
               </TableHead>
-              {isPremium && (
-                <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4 hidden md:table-cell">
-                  Analytics
-                </TableHead>
-              )}
+             
               <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
                 Submitted
               </TableHead>
@@ -62,20 +58,7 @@ export function CampaignTableSkeleton({ isPremium }: { isPremium: boolean }) {
                     </div>
                   </div>
                 </TableCell>
-                {isPremium && (
-                  <TableCell className="py-3 hidden md:table-cell">
-                    <div className="flex flex-col gap-1">
-                      <div className="flex items-center gap-1">
-                        <Globe className="h-3 w-3 text-zinc-300 dark:text-zinc-600" />
-                        <Skeleton className="h-4 w-20 sm:w-28 rounded-lg" />
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3 text-zinc-300 dark:text-zinc-600" />
-                        <Skeleton className="h-3.5 w-24 sm:w-32 rounded-lg" />
-                      </div>
-                    </div>
-                  </TableCell>
-                )}
+                
                 <TableCell className="py-3">
                   <div className="flex items-center gap-1">
                     <Calendar className="h-3.5 w-3.5 text-zinc-300 dark:text-zinc-600" />

@@ -3,35 +3,34 @@ import { j, privateProcedure } from "../jstack";
 import { db } from "@/lib/db";
 import { HTTPException } from "hono/http-exception";
 import { NotificationStatus, NotificationType, FormType } from "@prisma/client";
-import { getQuotaByPlan } from "@/config/usage";
-import { startOfMonth } from "date-fns";
 import { Resend } from 'resend';
 import { FormSubmissionEmail } from '@/emails/form-submission';
 import { render } from '@react-email/components';
 import { Prisma } from "@prisma/client";
 import { enhanceDataWithAnalytics, extractAnalyticsFromSubmissions, Submission } from "@/lib/analytics-utils";
 import { exportFormSubmissions } from "@/services/export-service";
+import { QuotaService } from "@/services/quota-service";
 
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-interface EmailSettings {
-  enabled: boolean;
-  fromEmail?: string;
-  subject?: string;
-  template?: string;
-  replyTo?: string;
-  // Developer notification settings
-  developerNotificationsEnabled?: boolean;
-  developerEmail?: string;
-  maxNotificationsPerHour?: number;
-  notificationConditions?: {
-    field: string;
-    operator: string;
-    value: string;
-  }[];
-  lastNotificationSentAt?: Date;
-}
+// interface EmailSettings {
+//   enabled: boolean;
+//   fromEmail?: string;
+//   subject?: string;
+//   template?: string;
+//   replyTo?: string;
+//   // Developer notification settings
+//   developerNotificationsEnabled?: boolean;
+//   developerEmail?: string;
+//   maxNotificationsPerHour?: number;
+//   notificationConditions?: {
+//     field: string;
+//     operator: string;
+//     value: string;
+//   }[];
+//   lastNotificationSentAt?: Date;
+// }
 
 // Define available form templates
 const formTemplates = {
@@ -92,6 +91,14 @@ const detectFormType = (schema: string): FormType => {
     return FormType.CUSTOM;
   }
 };
+
+// Helper to update form quota metrics
+async function updateFormQuotaMetrics(userId: string, updates: {
+  incrementForms?: boolean;
+  incrementSubmissions?: boolean;
+}) {
+  await QuotaService.updateQuota(userId, updates);
+}
 
 export const formRouter = j.router({
   // Get all forms created by the authenticated user
@@ -160,30 +167,8 @@ export const formRouter = j.router({
       const { user } = ctx;
       if (!user) throw new HTTPException(401, { message: "Unauthorized" });
 
-      // Get user with plan
-      const userWithPlan = await db.user.findUnique({
-        where: { id: user.id },
-        select: { 
-          plan: true,
-          id: true
-        }
-      });
-
-      if (!userWithPlan) throw new HTTPException(404, { message: "User not found" });
-
-      // Get form count
-      const formCount = await db.form.count({
-        where: { userId: user.id }
-      });
-
-      // Check form limits based on plan
-      const quota = getQuotaByPlan(userWithPlan.plan);
-      
-      if (formCount >= quota.maxForms) {
-        throw new HTTPException(403, { 
-          message: `Form limit reached (${formCount}/${quota.maxForms}) for your plan`
-        });
-      }
+      // Check quota before creating form
+      await QuotaService.canCreateForm(user.id);
 
       const template = formTemplates[input.templateId];
       
@@ -206,7 +191,7 @@ export const formRouter = j.router({
           name: input.name || template.name,
           description: input.description || template.description,
           schema: template.schema.toString(), // Serialize the schema
-          userId: userWithPlan.id,
+          userId: user.id,
           formType, // Use the enum value
           settings, // Keep settings for backward compatibility
           emailSettings: {
@@ -217,6 +202,9 @@ export const formRouter = j.router({
         },
       });
 
+      // After form is created successfully
+      await updateFormQuotaMetrics(user.id, { incrementForms: true });
+
       return c.superjson({
         id: form.id,
         name: form.name,
@@ -224,8 +212,8 @@ export const formRouter = j.router({
       });
     }),
 
-  // Create custom form (existing create endpoint)
-  create: privateProcedure
+  // Create custom form
+  createForm: privateProcedure
     .input(z.object({
       name: z.string(),
       description: z.string().optional(),
@@ -236,30 +224,8 @@ export const formRouter = j.router({
       const { user } = ctx;
       if (!user) throw new HTTPException(401, { message: "Unauthorized" });
 
-      // Get user with plan
-      const userWithPlan = await db.user.findUnique({
-        where: { id: user.id },
-        select: { 
-          plan: true,
-          id: true
-        }
-      });
-
-      if (!userWithPlan) throw new HTTPException(404, { message: "User not found" });
-
-      // Get form count
-      const formCount = await db.form.count({
-        where: { userId: user.id }
-      });
-
-      // Check form limits based on plan
-      const quota = getQuotaByPlan(userWithPlan.plan);
-      
-      if (formCount >= quota.maxForms) {
-        throw new HTTPException(403, { 
-          message: `Form limit reached (${formCount}/${quota.maxForms}) for your plan`
-        });
-      }
+      // Check quota before creating form
+      await QuotaService.canCreateForm(user.id);
       
       // Determine form type: Prioritize provided type, fallback to detection
       const finalFormType = input.formType || detectFormType(input.schema);
@@ -280,7 +246,7 @@ export const formRouter = j.router({
           name: input.name,
           description: input.description,
           schema: input.schema,
-          userId: userWithPlan.id,
+          userId: user.id,
           formType: finalFormType,
           settings,
           emailSettings: {
@@ -297,6 +263,9 @@ export const formRouter = j.router({
           }
         },
       });
+
+      // After form is created successfully
+      await updateFormQuotaMetrics(user.id, { incrementForms: true });
 
       return c.superjson({
         id: form.id,
@@ -697,95 +666,65 @@ export const formRouter = j.router({
     }),
 
   // Submit form
-  submit: privateProcedure
+  submitForm: privateProcedure
     .input(z.object({
       formId: z.string(),
-      data: z.record(z.any())
+      data: z.record(z.any()),
     }))
-    .mutation(async ({ c, input }) => {
-      const { formId, data } = input;
-      
-      // Get the form to validate the submission
+    .mutation(async ({ c, input, ctx }) => {
+      const { user } = ctx;
+      if (!user) throw new HTTPException(401, { message: "Unauthorized" });
+
       const form = await db.form.findUnique({
-        where: { id: formId },
-        include: {
-          user: {
-            select: {
-              id: true,
-              plan: true,
-              email: true
-            }
-          },
+        where: { id: input.formId },
+        include: { 
+          user: true,
           emailSettings: true
         }
       });
-      
-      if (!form) {
-        throw new HTTPException(404, { message: 'Form not found' });
-      }
 
-      // Check if user has reached their monthly submission limit
-      const currentDate = startOfMonth(new Date());
-      
-      // Count the submissions for the current month for all user forms
-      const monthlySubmissionsCount = await db.submission.count({
-        where: {
-          form: {
-            userId: form.user.id
-          },
-          createdAt: {
-            gte: currentDate
-          }
-        }
-      });
-      
-      // Get the quota for the user's plan
-      const quota = getQuotaByPlan(form.user.plan);
-      
-      if (monthlySubmissionsCount >= quota.maxSubmissionsPerMonth) {
-        throw new HTTPException(403, { 
-          message: `Monthly submission limit reached (${monthlySubmissionsCount}/${quota.maxSubmissionsPerMonth}) for this plan`
-        });
-      }
+      if (!form) throw new HTTPException(404, { message: "Form not found" });
+
+      // Check quota before submitting
+      await QuotaService.canSubmitForm(form.user.id);
       
       // Use our utility function to enhance data with analytics info
-      const enhancedData = enhanceDataWithAnalytics(data, {
+      const enhancedData = enhanceDataWithAnalytics(input.data, {
         userAgent: c.req.header('user-agent'),
         cfCountry: c.req.header('cf-ipcountry'),
         acceptLanguage: c.req.header('accept-language'),
         ip: c.req.header('x-forwarded-for')
       });
-      
-      // Create the submission
+
       const submission = await db.submission.create({
         data: {
-          formId,
+          formId: input.formId,
           data: enhancedData as unknown as Prisma.InputJsonValue,
-          email: data.email, 
+          email: input.data.email, 
         },
       });
 
       // Send confirmation email for STANDARD and PRO users
       if (
         (form.user.plan === 'STANDARD' || form.user.plan === 'PRO') && 
-        (form.emailSettings as unknown as EmailSettings)?.enabled &&
-        data.email && 
-        typeof data.email === 'string'
+        form.emailSettings?.enabled &&
+        input.data.email && 
+        typeof input.data.email === 'string'
       ) {
         try {
           const htmlContent = await render(
             FormSubmissionEmail({
               formName: form.name,
-              submissionData: data,
+              submissionData: input.data,
             })
           );
 
           await resend.emails.send({
-            from: (form.emailSettings as unknown as EmailSettings)?.fromEmail || 'contact@mantlz.app',
-            to: data.email,
-            subject: (form.emailSettings as unknown as EmailSettings)?.subject || `Confirmation: ${form.name} Submission`,
+            from: form.emailSettings?.fromEmail || 'contact@mantlz.app',
+            to: input.data.email,
+            subject: form.emailSettings?.subject || `Confirmation: ${form.name} Submission`,
             replyTo: 'contact@mantlz.app',
-            html: htmlContent,
+            html: htmlContent
           });
 
           // Create notification log for successful email
@@ -823,10 +762,10 @@ export const formRouter = j.router({
         });
       }
 
-      return c.superjson({
-        id: submission.id,
-        message: 'Form submitted successfully'
-      });
+      // Update quota after successful submission
+      await updateFormQuotaMetrics(form.user.id, { incrementSubmissions: true });
+
+      return c.superjson({ success: true });
     }),
 
   // Add this new procedure

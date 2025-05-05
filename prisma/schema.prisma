@@ -107,9 +107,21 @@ model Quota {
   userId    String
   year      Int
   month     Int
-  count     Int      @default(0)
+  // Different types of usage counts
+  submissionCount Int @default(0)
+  formCount      Int @default(0)
+  campaignCount  Int @default(0)
+  // Track email campaign specific metrics
+  emailsSent     Int @default(0)
+  emailsOpened   Int @default(0)
+  emailsClicked  Int @default(0)
+  // Metadata
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, year, month])
+  @@index([userId])
+  @@index([year, month])
 }
 
 model Form {
@@ -162,6 +174,7 @@ model Submission {
   notificationLogs NotificationLog[]
   sentEmails SentEmail[]
   unsubscribed Boolean @default(false)
+  campaignRecipients CampaignRecipient[]
 
   @@unique([formId, email])
   @@index([email])
@@ -211,25 +224,49 @@ model GlobalSettings {
 
 // Campaign models
 model Campaign {
-  id          String       @id @default(cuid())
-  name        String
-  description String?
-  subject     String
-  content     String
-  senderEmail String?
-  status      CampaignStatus @default(DRAFT)
-  scheduledAt DateTime?
-  sentAt      DateTime?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  formId      String
-  userId      String
-  form        Form         @relation(fields: [formId], references: [id], onDelete: Cascade)
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  sentEmails  SentEmail[]
+  id           String    @id @default(cuid())
+  name         String
+  description  String?
+  subject      String
+  content      String
+  formId       String
+  userId       String
+  status       CampaignStatus @default(DRAFT)
+  senderEmail  String?
+  recipientCount Int     @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  scheduledAt  DateTime?
+  sentAt       DateTime?
+  
+  // Relations
+  form         Form      @relation(fields: [formId], references: [id])
+  user         User      @relation(fields: [userId], references: [id])
+  sentEmails   SentEmail[]
+  recipients   CampaignRecipient[]
 
+  @@index([userId, status])
   @@index([formId])
-  @@index([userId])
+}
+
+model CampaignRecipient {
+  id           String    @id @default(cuid())
+  campaignId   String
+  submissionId String
+  email        String
+  status       CampaignSendStatus @default(PENDING)
+  error        String?
+  sentAt       DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Relations
+  campaign     Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([campaignId, status])
+  @@index([submissionId])
+  @@index([email])
 }
 
 model TestEmailSubmission {

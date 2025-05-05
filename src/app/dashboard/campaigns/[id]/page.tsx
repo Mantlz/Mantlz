@@ -22,6 +22,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { SendCampaignDialog } from '@/components/dashboard/campaigns/dialogs/SendCampaignDialog'
+import { ScheduleCampaignDialog } from '@/components/dashboard/campaigns/dialogs/ScheduleCampaignDialog'
 
 interface CampaignDetailPageProps {
   params: {
@@ -31,7 +33,7 @@ interface CampaignDetailPageProps {
 
 export default function CampaignDetailPage({ params }: CampaignDetailPageProps) {
   const campaignId = params.id;
-  const { isPremium } = useSubscription();
+  const { isPremium, userPlan } = useSubscription();
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   
   const [campaign, setCampaign] = useState<any>(null);
@@ -191,31 +193,49 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
               </div>
               
               {campaign.status === 'DRAFT' && (
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button 
-                      className="gap-1"
-                      onClick={() => !isPremium && setShowUpgradeModal(true)}
-                    >
-                      <Send className="h-4 w-4" />
-                      Send Campaign
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Send Campaign</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Are you sure you want to send this campaign? This action cannot be undone.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleSendCampaign} disabled={isSending}>
-                        {isSending ? 'Sending...' : 'Send Campaign'}
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                <div className="flex items-center gap-2">
+                  <SendCampaignDialog
+                    campaignId={campaignId}
+                    onSent={() => {
+                      // Refresh campaign data after sending
+                      if (campaign?.formId) {
+                        const campaignsResponse = client.campaign.getFormCampaigns.$get({
+                          formId: campaign.formId
+                        });
+                        const campaigns = campaignsResponse.json();
+                        
+                        const updatedCampaign = campaigns.find((c: any) => c.id === campaignId);
+                        if (updatedCampaign) {
+                          setCampaign(updatedCampaign);
+                        }
+                      }
+                    }}
+                    isPremium={isPremium}
+                    onUpgradeClick={() => setShowUpgradeModal(true)}
+                    userPlan={userPlan}
+                  />
+                  
+                  <ScheduleCampaignDialog
+                    campaignId={campaignId}
+                    onScheduled={() => {
+                      // Refresh campaign data after scheduling
+                      if (campaign?.formId) {
+                        const campaignsResponse = client.campaign.getFormCampaigns.$get({
+                          formId: campaign.formId
+                        });
+                        const campaigns = campaignsResponse.json();
+                        
+                        const updatedCampaign = campaigns.find((c: any) => c.id === campaignId);
+                        if (updatedCampaign) {
+                          setCampaign(updatedCampaign);
+                        }
+                      }
+                    }}
+                    isPremium={isPremium}
+                    onUpgradeClick={() => setShowUpgradeModal(true)}
+                    userPlan={userPlan}
+                  />
+                </div>
               )}
             </div>
             

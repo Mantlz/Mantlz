@@ -1,6 +1,6 @@
 "use client"
 
-import { CampaignsTable as ModularTable } from "./table"
+import { CampaignsTable } from "./table"
 
 interface CampaignsTableProps {
   itemsPerPage?: number
@@ -8,6 +8,6 @@ interface CampaignsTableProps {
   onUpgradeClick?: () => void
 }
 
-export function CampaignsTable({ itemsPerPage = 8, isPremium = false, onUpgradeClick }: CampaignsTableProps) {
-  return <ModularTable itemsPerPage={itemsPerPage} isPremium={isPremium} onUpgradeClick={onUpgradeClick} />
+export function CampaignsTableWrapper({ itemsPerPage = 8, isPremium = false, onUpgradeClick }: CampaignsTableProps) {
+  return <CampaignsTable itemsPerPage={itemsPerPage} isPremium={isPremium} onUpgradeClick={onUpgradeClick} />
 } 

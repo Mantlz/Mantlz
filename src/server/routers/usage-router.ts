@@ -20,34 +20,47 @@ export const usageRouter = j.router({
       // Get the current date info for this month's quota
       const now = new Date();
       const currentYear = now.getFullYear();
-      const currentMonth = now.getMonth() + 1; // JavaScript months are 0-indexed
+      const currentMonth = now.getMonth() + 1;
       
-      // Get the user with their current month quota
-      const userWithCurrentQuota = await db.user.findUnique({
-        where: { id: user.id },
-        include: {
-          quota: {
-            where: {
-              year: currentYear,
-              month: currentMonth,
-            },
-          },
+      // Get or create quota for current month
+      let currentQuota = await db.quota.findFirst({
+        where: {
+          userId: user.id,
+          year: currentYear,
+          month: currentMonth,
         },
       });
 
-      if (!userWithCurrentQuota) {
-        throw new HTTPException(404, { message: "User not found" });
+      // If no quota exists for current month, create a new one with reset counts
+      if (!currentQuota) {
+        // Get the previous month's quota to carry over non-submission metrics
+        const previousDate = new Date(now);
+        previousDate.setMonth(previousDate.getMonth() - 1);
+        const previousMonthQuota = await db.quota.findFirst({
+          where: {
+            userId: user.id,
+            year: previousDate.getFullYear(),
+            month: previousDate.getMonth() + 1
+          }
+        });
+
+        currentQuota = await db.quota.create({
+          data: {
+            userId: user.id,
+            year: currentYear,
+            month: currentMonth,
+            // Reset only submission count
+            submissionCount: 0,
+            // Carry over other metrics from previous month or start at 0 if no previous month
+            formCount: previousMonthQuota?.formCount || 0,
+            campaignCount: previousMonthQuota?.campaignCount || 0,
+            emailsSent: previousMonthQuota?.emailsSent || 0,
+            emailsOpened: previousMonthQuota?.emailsOpened || 0,
+            emailsClicked: previousMonthQuota?.emailsClicked || 0
+          }
+        });
       }
 
-      // Get total forms created by the user
-      const totalForms = await db.form.count({
-        where: { userId: user.id },
-      });
-
-      // Get form creation history for the last 6 months
-      const sixMonthsAgo = new Date();
-      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 5);
-      
       // Get monthly quota records for the past 6 months
       const usageHistory = await db.quota.findMany({
         where: {
@@ -67,13 +80,7 @@ export const usageRouter = j.router({
         ],
       });
 
-      // Use totalForms for usedQuota instead of the quota count
-      // This matches the actual number of forms the user has created
-      const usedQuota = totalForms;
-      const remainingQuota = Math.max(0, userWithCurrentQuota.quotaLimit - usedQuota);
-
       // Format usage history for the chart
-      // Fill in any missing months with zero counts
       const formattedHistory = Array.from({ length: 6 }).map((_, index) => {
         const date = new Date();
         date.setMonth(date.getMonth() - index);
@@ -87,21 +94,31 @@ export const usageRouter = j.router({
         return {
           month: date.toLocaleString('default', { month: 'short' }),
           year,
-          count: historyItem?.count || 0,
+          submissions: historyItem?.submissionCount || 0,
+          forms: historyItem?.formCount || 0,
+          campaigns: historyItem?.campaignCount || 0,
+          emailStats: {
+            sent: historyItem?.emailsSent || 0,
+            opened: historyItem?.emailsOpened || 0,
+            clicked: historyItem?.emailsClicked || 0,
+          }
         };
       }).reverse(); // Show earliest month first
 
       return c.superjson({
-        plan: userWithCurrentQuota.plan,
-        limit: userWithCurrentQuota.quotaLimit,
-        usedQuota,
-        remainingQuota,
-        totalForms,
+        plan: user.plan,
+        currentUsage: {
+          submissions: currentQuota.submissionCount,
+          forms: currentQuota.formCount,
+          campaigns: currentQuota.campaignCount,
+          emailStats: {
+            sent: currentQuota.emailsSent,
+            opened: currentQuota.emailsOpened,
+            clicked: currentQuota.emailsClicked,
+          }
+        },
+        limits: getQuotaByPlan(user.plan),
         history: formattedHistory,
-        usagePercentage: Math.min(
-          Math.round((usedQuota / userWithCurrentQuota.quotaLimit) * 100),
-          100
-        ),
       });
     } catch (error) {
       if (error instanceof HTTPException) throw error;
@@ -112,32 +129,26 @@ export const usageRouter = j.router({
   }),
 
   /**
-   * Get current user usage with form and submission counts/limits
+   * Get current user usage with detailed metrics
    */
   getUsage: privateProcedure.query(async ({ c, ctx }) => {
     const { user } = ctx;
 
     try {
       const currentDate = startOfMonth(new Date());
+      const currentYear = currentDate.getFullYear();
+      const currentMonth = currentDate.getMonth() + 1;
       
-      // Get form count
-      const formCount = await db.form.count({
-        where: { userId: user.id },
-      });
-      
-      // Get submission count for current month
-      const submissionsCount = await db.submission.count({
+      // Get current month's quota
+      const currentQuota = await db.quota.findFirst({
         where: {
-          form: {
-            userId: user.id
-          },
-          createdAt: {
-            gte: currentDate
-          }
+          userId: user.id,
+          year: currentYear,
+          month: currentMonth
         }
       });
       
-      // Get user's plan from the database
+      // Get user's plan
       const userWithPlan = await db.user.findUnique({
         where: { id: user.id },
         select: { plan: true }
@@ -150,55 +161,89 @@ export const usageRouter = j.router({
       // Calculate reset date
       const resetDate = addMonths(currentDate, 1);
 
+      // Calculate engagement rates
+      const emailEngagement = currentQuota ? {
+        openRate: currentQuota.emailsSent > 0 
+          ? (currentQuota.emailsOpened / currentQuota.emailsSent) * 100 
+          : 0,
+        clickRate: currentQuota.emailsSent > 0 
+          ? (currentQuota.emailsClicked / currentQuota.emailsSent) * 100 
+          : 0,
+      } : { openRate: 0, clickRate: 0 };
+
       return c.superjson({
-        formsUsed: formCount,
-        formsLimit: quota.maxForms,
-        submissionsUsed: submissionsCount,
-        submissionsLimit: quota.maxSubmissionsPerMonth,
+        usage: {
+          forms: {
+            used: currentQuota?.formCount || 0,
+            limit: quota.maxForms,
+            percentage: ((currentQuota?.formCount || 0) / quota.maxForms) * 100
+          },
+          submissions: {
+            used: currentQuota?.submissionCount || 0,
+            limit: quota.maxSubmissionsPerMonth,
+            percentage: ((currentQuota?.submissionCount || 0) / quota.maxSubmissionsPerMonth) * 100
+          },
+          campaigns: {
+            used: currentQuota?.campaignCount || 0,
+            limit: quota.campaigns.maxCampaignsPerMonth,
+            percentage: ((currentQuota?.campaignCount || 0) / quota.campaigns.maxCampaignsPerMonth) * 100
+          },
+          email: {
+            sent: currentQuota?.emailsSent || 0,
+            opened: currentQuota?.emailsOpened || 0,
+            clicked: currentQuota?.emailsClicked || 0,
+            ...emailEngagement
+          }
+        },
+        features: {
+          campaigns: quota.campaigns.enabled,
+          analytics: quota.campaigns.features.analytics,
+          scheduling: quota.campaigns.features.scheduling,
+          templates: quota.campaigns.features.templates,
+          customDomain: quota.campaigns.features.customDomain
+        },
         resetDate,
         plan
       });
-    } catch {
+    } catch (error) {
+      console.error('Error getting usage:', error);
       throw new HTTPException(500, { 
         message: "Failed to retrieve usage information" 
       });
     }
   }),
 
-
   /**
    * Get total submissions across all user forms
-   * Returns count of all submissions received from all forms created by the user
    */
   getTotalSubmissions: privateProcedure.query(async ({ ctx, c }) => {
     const { user } = ctx;
 
     try {
-      // Get all forms created by the user
-      const userForms = await db.form.findMany({
+      // Get all-time submission count
+      const totalSubmissions = await db.quota.aggregate({
         where: { userId: user.id },
-        select: { id: true }
+        _sum: {
+          submissionCount: true
+        }
       });
 
-      // If user has no forms, return zero
-      if (userForms.length === 0) {
-        return c.superjson({ totalSubmissions: 0 });
-      }
-
-      // Get form IDs
-      const formIds = userForms.map(form => form.id);
-
-      // Count submissions for all forms
-      const totalSubmissions = await db.submission.count({
+      // Get current month's submission count
+      const now = new Date();
+      const currentMonthSubmissions = await db.quota.findFirst({
         where: {
-          formId: {
-            in: formIds
-          }
+          userId: user.id,
+          year: now.getFullYear(),
+          month: now.getMonth() + 1
+        },
+        select: {
+          submissionCount: true
         }
       });
 
       return c.superjson({
-        totalSubmissions
+        totalSubmissions: totalSubmissions._sum.submissionCount || 0,
+        currentMonthSubmissions: currentMonthSubmissions?.submissionCount || 0
       });
     } catch (error) {
       if (error instanceof HTTPException) throw error;

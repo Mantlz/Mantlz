@@ -61,83 +61,81 @@ export function UpgradeModal({
   const featureDescription = description || featureInfo.description;
   
   return (
-    <div className="fixed inset-0 h-full bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] overflow-hidden">
-      <div className="bg-white dark:bg-zinc-900 p-6 rounded-lg max-w-md w-full border border-slate-200 dark:border-zinc-800 shadow-xl">
-      
-
-        
-        {/* Modern minimal header */}
-        <div className="relative -mt-6 -mx-6 mb-5 bg-zinc-100 dark:bg-black p-6 rounded-t-md border-b border-slate-200 dark:border-zinc-800">
-          <div className="absolute top-0 left-0 w-full h-px bg-slate-100 dark:bg-white/10"></div>
-          <h2 className="text-black dark:text-white text-xl font-medium tracking-tight flex items-center space-x-2">
-            <span className="w-2 h-2 rounded-lg bg-slate-800 dark:bg-white inline-block"></span>
-            <span>Upgrade Required</span>
-          </h2>
-        </div>
-        
-        {/* Content with monochromatic design */}
-        <div className="space-y-5">
-          <div className="flex items-start">
-            <div className="mr-4 h-10 w-10 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700">
-              {icon}
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] overflow-y-auto">
+      <div className="min-h-full flex items-center justify-center p-4">
+        <div className="relative bg-white dark:bg-zinc-900 rounded-lg max-w-md w-full border border-slate-200 dark:border-zinc-800 shadow-xl overflow-hidden">
+          {/* Modern minimal header */}
+          <div className="bg-zinc-100 dark:bg-black p-6 rounded-t-lg border-b border-slate-200 dark:border-zinc-800">
+            <h2 className="text-black dark:text-white text-xl font-medium tracking-tight flex items-center space-x-2">
+              <span className="w-2 h-2 rounded-lg bg-slate-800 dark:bg-white inline-block"></span>
+              <span>Upgrade Required</span>
+            </h2>
+          </div>
+          
+          {/* Content with monochromatic design */}
+          <div className="p-6">
+            <div className="flex items-start gap-4 max-w-full">
+              <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700">
+                {icon}
+              </div>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-lg font-medium text-black dark:text-white truncate">{featureName}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 break-words">
+                  {featureDescription}
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-lg font-medium text-black dark:text-white">{featureName}</h3>
-              <p className="text-sm text-black dark:text-white mt-1">
-                {featureDescription}
-              </p>
+            
+            {/* Modern comparison table with hover effects */}
+            <div className="mt-6 rounded-lg border border-slate-200 dark:border-zinc-800 overflow-hidden">
+              <div className="bg-slate-100 dark:bg-zinc-950 py-2 px-4 border-b border-slate-200 dark:border-zinc-800">
+                <p className="text-sm font-medium text-black dark:text-white">Plan Comparison</p>
+              </div>
+              
+              <div className="divide-y divide-slate-200 dark:divide-zinc-800">
+                <div className="flex justify-between py-3 px-4 items-center hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors cursor-default">
+                  <span className="font-medium text-black dark:text-white text-sm">FREE</span>
+                  <span className="text-gray-600 dark:text-gray-400 flex items-center text-sm">
+                    <span className="rounded-lg h-2 w-2 bg-slate-300 dark:bg-zinc-700 mr-2"></span>
+                    Basic form features
+                  </span>
+                </div>
+                
+                <div className="flex justify-between py-3 px-4 items-center hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors cursor-default">
+                  <span className="font-medium text-black dark:text-white text-sm">STANDARD</span>
+                  <span className="text-gray-600 dark:text-gray-400 flex items-center text-sm">
+                    <span className="rounded-lg h-2 w-2 bg-slate-800 dark:bg-white mr-2"></span>
+                    Advanced features & analytics
+                  </span>
+                </div>
+                
+                <div className="flex justify-between py-3 px-4 items-center hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors cursor-default">
+                  <span className="font-medium text-black dark:text-white text-sm">PRO</span>
+                  <span className="text-gray-600 dark:text-gray-400 flex items-center text-sm">
+                    <span className="rounded-lg h-2 w-2 bg-slate-800 dark:bg-white mr-2"></span>
+                    Everything in Standard
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
           
-          {/* Modern comparison table with hover effects */}
-          <div className="mt-4 rounded-lg border border-slate-200 dark:border-zinc-800 overflow-hidden">
-            <div className="bg-slate-100 dark:bg-zinc-950 py-2 px-4 border-b border-slate-200 dark:border-zinc-800">
-              <p className="text-sm font-medium text-black dark:text-white">Plan Comparison</p>
-            </div>
-            
-            <div className="divide-y divide-slate-200 dark:divide-zinc-800">
-              <div className="flex justify-between py-3 px-4 items-center hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors cursor-default">
-                <span className="font-medium text-black dark:text-white text-sm">FREE</span>
-                <span className="text-black dark:text-white flex items-center text-sm">
-                  <span className="rounded-lg h-2 w-2 bg-slate-300 dark:bg-zinc-700 mr-2"></span>
-                  Basic form features
-                </span>
-              </div>
-              
-              <div className="flex justify-between py-3 px-4 items-center hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors cursor-default">
-                <span className="font-medium text-black dark:text-white text-sm">STANDARD</span>
-                <span className="text-black dark:text-white flex items-center text-sm">
-                  <span className="rounded-lg h-2 w-2 bg-slate-800 dark:bg-white mr-2"></span>
-                  Advanced features & analytics
-                </span>
-              </div>
-              
-              <div className="flex justify-between py-3 px-4 items-center hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors cursor-default">
-                <span className="font-medium text-black dark:text-white text-sm">PRO</span>
-                <span className="text-black dark:text-white flex items-center text-sm">
-                  <span className="rounded-lg h-2 w-2 bg-slate-800 dark:bg-white mr-2"></span>
-                  Everything in Standard
-                </span>
-              </div>
-            </div>
+          {/* Minimal modern buttons */}
+          <div className="flex justify-end gap-3 p-6 border-t border-slate-200 dark:border-zinc-800">
+            <Button 
+              variant="outline" 
+              onClick={onClose}
+              className="border border-slate-200 dark:border-zinc-800 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors font-medium text-sm cursor-pointer"
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={() => window.location.href = '/settings/billing'}
+              className="bg-slate-800 hover:bg-slate-700 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white transition-colors font-medium text-sm cursor-pointer"
+            >
+              Upgrade Plan
+            </Button>
           </div>
-        </div>
-        
-        {/* Minimal modern buttons */}
-        <div className="flex justify-end gap-3 mt-8">
-          <Button 
-            variant="outline" 
-            onClick={onClose}
-            className="border border-slate-200 dark:border-zinc-800 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors font-medium text-sm cursor-pointer"
-          >
-            Cancel
-          </Button>
-          <Button 
-            onClick={() => window.location.href = '/settings/billing'}
-            className="bg-slate-800 hover:bg-slate-700 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white transition-colors font-medium text-sm cursor-pointer"
-          >
-            Upgrade Plan
-          </Button>
         </div>
       </div>
     </div>

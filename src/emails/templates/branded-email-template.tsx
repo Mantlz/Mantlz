@@ -10,26 +10,66 @@ import {
   Link,
 } from '@react-email/components';
 
-interface BrandedEmailTemplateProps {
+export interface BrandedEmailTemplateProps {
   children: React.ReactNode;
-  previewText?: string;
+  previewText: string;
   trackingPixelUrl?: string;
   clickTrackingUrl?: string;
+  unsubscribeUrl?: string;
 }
 
 export function BrandedEmailTemplate({
   children,
-  previewText = 'Email from Mantlz',
+  previewText,
   trackingPixelUrl,
   clickTrackingUrl,
+  unsubscribeUrl
 }: BrandedEmailTemplateProps) {
   return (
     <Html>
       <Head>
-        {previewText && <meta name="description" content={previewText} />}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="color-scheme" content="light" />
+        <meta name="supported-color-schemes" content="light" />
+        <title>{previewText}</title>
         <style>
           {`
             @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+            body {
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+              margin: 0;
+              padding: 0;
+              width: 100% !important;
+              -webkit-font-smoothing: antialiased;
+            }
+            .previewText {
+              display: none !important;
+              max-height: 0;
+              overflow: hidden;
+            }
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 20px;
+            }
+            .footer {
+              margin-top: 32px;
+              padding-top: 20px;
+              border-top: 1px solid #e2e8f0;
+              text-align: center;
+              font-size: 12px;
+              color: #718096;
+            }
+            .footer a {
+              color: #718096;
+              text-decoration: underline;
+            }
+            @media only screen and (max-width: 600px) {
+              .container {
+                width: 100% !important;
+                padding: 10px !important;
+              }
+            }
           `}
         </style>
       </Head>
@@ -57,6 +97,14 @@ export function BrandedEmailTemplate({
             <Text style={styles.footerText}>
               <Link href={clickTrackingUrl ? `${clickTrackingUrl}&url=mailto:contact@mantlz.app` : "mailto:contact@mantlz.app"} style={styles.link}>contact@mantlz.app</Link>
             </Text>
+            <Text style={styles.footerText}>
+              {unsubscribeUrl && (
+                <>
+                  <br />
+                  <Link href={unsubscribeUrl} style={styles.link}>Unsubscribe</Link>
+                </>
+              )}
+            </Text>
           </Section>
           
           {/* Simple footer pixel border */}
@@ -66,6 +114,17 @@ export function BrandedEmailTemplate({
           {trackingPixelUrl && (
             <img 
               src={trackingPixelUrl} 
+              width="1" 
+              height="1" 
+              style={{ display: 'none' }} 
+              alt=""
+            />
+          )}
+          
+          {/* Click Tracking Pixel */}
+          {clickTrackingUrl && (
+            <img 
+              src={clickTrackingUrl} 
               width="1" 
               height="1" 
               style={{ display: 'none' }} 

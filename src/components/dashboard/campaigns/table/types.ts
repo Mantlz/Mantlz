@@ -10,6 +10,7 @@ export interface CampaignType {
   scheduledAt?: string
   _count?: {
     sentEmails: number
+    //actualRecipients: number
   }
 }
 

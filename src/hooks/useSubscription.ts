@@ -29,10 +29,12 @@ export function useSubscription() {
   })
 
   const isPremium = subscription?.plan === 'PRO' || subscription?.plan === 'STANDARD'
+  const userPlan = subscription?.plan || 'FREE'
 
   return {
     subscription,
     isLoading,
     isPremium,
+    userPlan,
   }
 } 

@@ -106,20 +106,20 @@ const NavigationSection = memo(function NavigationSection() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[220px] bg-white dark:bg-zinc-900 border-zinc-800">
-        <DropdownMenuItem asChild className="hover:bg-zinc-800">
+        <DropdownMenuItem asChild className="hover:bg-zinc-800 cursor-pointer">
           <Link href="/dashboard/logs" className="flex items-center gap-2 cursor-pointer">
             <Activity className="h-4 w-4" />
             <span>Logs</span>
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild className="hover:bg-zinc-800">
+        <DropdownMenuItem asChild className="hover:bg-zinc-800 cursor-pointer">
           <Link href="/dashboard/test" className="flex items-center gap-2 cursor-pointer">
             <TestTube2 className="h-4 w-4" />
             <span>Test</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem 
-          className="hover:bg-zinc-800 p-0"
+          className="hover:bg-zinc-800 p-0 cursor-pointer"
           onSelect={(e) => e.preventDefault()}
         >
 

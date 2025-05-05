@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { EmailTrackingService } from '@/services/email-tracking-service';
 
 export async function GET(request: Request) {

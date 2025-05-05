@@ -5,8 +5,121 @@ import { db } from "@/lib/db";
 import { Resend } from 'resend';
 import { render } from '@react-email/render';
 import { CampaignEmail } from '@/emails/campaign-email';
+import { getQuotaByPlan } from "@/config/usage";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Helper to check campaign feature access
+async function checkCampaignAccess(userId: string, feature?: 'analytics' | 'scheduling' | 'templates' | 'customDomain') {
+  const user = await db.user.findUnique({
+    where: { id: userId },
+    select: { plan: true }
+  });
+
+  if (!user) {
+    throw new HTTPException(404, { message: 'User not found' });
+  }
+
+  const quota = getQuotaByPlan(user.plan);
+
+  if (!quota.campaigns.enabled) {
+    throw new HTTPException(403, { message: 'Campaigns not available in your plan' });
+  }
+
+  if (feature && !quota.campaigns.features[feature]) {
+    throw new HTTPException(403, { message: `${feature} feature not available in your plan` });
+  }
+
+  return quota;
+}
+
+// Helper to check campaign limits
+async function checkCampaignLimits(userId: string, recipientCount: number) {
+  const quota = await checkCampaignAccess(userId);
+
+  // Check recipient limit
+  if (recipientCount > quota.campaigns.maxRecipientsPerCampaign) {
+    throw new HTTPException(403, { 
+      message: `Recipient count exceeds plan limit of ${quota.campaigns.maxRecipientsPerCampaign}` 
+    });
+  }
+
+  // Check monthly campaign limit
+  const thisMonth = new Date();
+  thisMonth.setDate(1);
+  thisMonth.setHours(0, 0, 0, 0);
+
+  const campaignCount = await db.campaign.count({
+    where: {
+      userId,
+      createdAt: {
+        gte: thisMonth
+      }
+    }
+  });
+
+  if (campaignCount >= quota.campaigns.maxCampaignsPerMonth) {
+    throw new HTTPException(403, { 
+      message: `Monthly campaign limit of ${quota.campaigns.maxCampaignsPerMonth} reached` 
+    });
+  }
+}
+
+// Helper to update quota metrics
+async function updateQuotaMetrics(userId: string, updates: {
+  incrementCampaigns?: boolean;
+  incrementEmails?: number;
+  incrementOpens?: number;
+  incrementClicks?: number;
+}) {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth() + 1;
+
+  // Get or create quota for current month
+  let quota = await db.quota.findFirst({
+    where: {
+      userId,
+      year: currentYear,
+      month: currentMonth
+    }
+  });
+
+  if (!quota) {
+    quota = await db.quota.create({
+      data: {
+        userId,
+        year: currentYear,
+        month: currentMonth,
+        submissionCount: 0,
+        formCount: 0,
+        campaignCount: 0,
+        emailsSent: 0,
+        emailsOpened: 0,
+        emailsClicked: 0
+      }
+    });
+  }
+
+  // Update metrics
+  await db.quota.update({
+    where: { id: quota.id },
+    data: {
+      campaignCount: updates.incrementCampaigns 
+        ? { increment: 1 }
+        : undefined,
+      emailsSent: updates.incrementEmails 
+        ? { increment: updates.incrementEmails }
+        : undefined,
+      emailsOpened: updates.incrementOpens
+        ? { increment: updates.incrementOpens }
+        : undefined,
+      emailsClicked: updates.incrementClicks
+        ? { increment: updates.incrementClicks }
+        : undefined
+    }
+  });
+}
 
 // Campaign schema
 const campaignSchema = z.object({
@@ -16,6 +129,18 @@ const campaignSchema = z.object({
   subject: z.string().min(1),
   content: z.string().min(1),
   scheduledAt: z.date().optional(),
+});
+
+// Recipient settings schema
+const recipientSettingsSchema = z.object({
+  type: z.enum(['first', 'last', 'custom']),
+  count: z.number().min(1).max(200)
+});
+
+// Send campaign schema
+const sendCampaignSchema = z.object({
+  campaignId: z.string(),
+  recipientSettings: recipientSettingsSchema
 });
 
 // Unsubscribe schema
@@ -29,6 +154,9 @@ export const campaignRouter = j.router({
   create: privateProcedure
     .input(campaignSchema)
     .mutation(async ({ c, input, ctx }) => {
+      await checkCampaignAccess(ctx.user.id);
+      await checkCampaignLimits(ctx.user.id, 1); // Check campaign limits before creation
+      
       const { formId, ...campaignData } = input;
       
       // Verify form ownership
@@ -56,6 +184,9 @@ export const campaignRouter = j.router({
         },
       });
 
+      // Update quota for campaign creation
+      await updateQuotaMetrics(ctx.user.id, { incrementCampaigns: true });
+
       return c.superjson({
         id: campaign.id,
         name: campaign.name,
@@ -79,7 +210,11 @@ export const campaignRouter = j.router({
         include: {
           _count: {
             select: {
-              sentEmails: true,
+              sentEmails: {
+                where: {
+                  isTest: false // Only count non-test emails
+                }
+              }
             },
           },
           form: {
@@ -120,17 +255,18 @@ export const campaignRouter = j.router({
 
   // Send a campaign
   send: privateProcedure
-    .input(z.object({
-      campaignId: z.string(),
-    }))
+    .input(sendCampaignSchema)
     .mutation(async ({ c, input, ctx }) => {
-      const { campaignId } = input;
+      const { campaignId, recipientSettings } = input;
       
-      // Get campaign with form and submissions
-      const campaign = await db.campaign.findUnique({
+      await checkCampaignLimits(ctx.user.id, recipientSettings.count);
+      
+      // Get campaign with form details
+      const campaign = await db.campaign.findFirst({
         where: {
           id: campaignId,
           userId: ctx.user.id,
+          status: 'DRAFT', // Only draft campaigns can be sent
         },
         include: {
           form: {
@@ -138,56 +274,85 @@ export const campaignRouter = j.router({
               emailSettings: true,
               submissions: {
                 where: {
-                  email: {
-                    not: null,
-                  },
-                  unsubscribed: false,
+                  email: { not: null },
+                  unsubscribed: false
                 },
+                orderBy: recipientSettings.type === 'last' 
+                  ? { createdAt: 'desc' }
+                  : { createdAt: 'asc' },
+                take: recipientSettings.count,
                 select: {
                   id: true,
-                  email: true,
-                  data: true,
-                },
-              },
-            },
-          },
-        },
+                  email: true
+                }
+              }
+            }
+          }
+        }
       });
 
       if (!campaign) {
-        throw new HTTPException(404, { message: 'Campaign not found' });
+        throw new HTTPException(404, { message: 'Campaign not found or cannot be sent' });
       }
 
-      // Update campaign status to sending
-      await db.campaign.update({
-        where: { id: campaignId },
-        data: { status: 'SENDING' },
-      });
+      // Store selected recipients and update campaign in a transaction
+      await db.$transaction([
+        // Store recipient list
+        ...campaign.form.submissions.map(submission => 
+          db.campaignRecipient.create({
+            data: {
+              campaignId,
+              submissionId: submission.id,
+              email: submission.email!,
+              status: 'PENDING'
+            }
+          })
+        ),
 
-      // Send emails to each submission
+        // Update campaign status and recipient count
+        db.campaign.update({
+          where: { id: campaignId },
+          data: {
+            status: 'SENDING',
+            recipientCount: recipientSettings.count
+          }
+        })
+      ]);
+
+      // Send emails to each recipient
       const sentEmails = [];
       const failedEmails = [];
 
-      for (const submission of campaign.form.submissions) {
+      const recipients = await db.campaignRecipient.findMany({
+        where: {
+          campaignId,
+          status: 'PENDING'
+        },
+        include: {
+          submission: true
+        }
+      });
+
+      for (const recipient of recipients) {
         try {
           // Create sent email record first
           const sentEmail = await db.sentEmail.create({
             data: {
               campaignId,
-              submissionId: submission.id,
+              submissionId: recipient.submissionId,
               status: 'SENT',
             },
           });
 
           // Create unsubscribe link
-          const unsubscribeLink = `${process.env.NEXT_PUBLIC_APP_URL}/unsubscribe?email=${encodeURIComponent(submission.email!)}&formId=${campaign.formId}&campaignId=${campaignId}`;
+          const unsubscribeLink = `${process.env.NEXT_PUBLIC_APP_URL}/unsubscribe?email=${encodeURIComponent(recipient.email)}&formId=${campaign.formId}&campaignId=${campaignId}`;
           
           // Create tracking pixel URL
           const trackingPixelUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/v1/tracking/open?sentEmailId=${sentEmail.id}`;
           
           // Create click tracking URL
           const clickTrackingUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/v1/tracking/click?sentEmailId=${sentEmail.id}`;
-          
+        
           // Render the email with tracking using BrandedEmailTemplate
           const emailHtml = await render(
             CampaignEmail({
@@ -204,9 +369,18 @@ export const campaignRouter = j.router({
           // Send email
           await resend.emails.send({
             from: campaign.form.emailSettings?.fromEmail || 'contact@mantlz.app',
-            to: submission.email!,
+            to: recipient.email,
             subject: campaign.subject,
             html: emailHtml,
+          });
+
+          // Update recipient status
+          await db.campaignRecipient.update({
+            where: { id: recipient.id },
+            data: { 
+              status: 'SENT',
+              sentAt: new Date()
+            }
           });
 
           sentEmails.push(sentEmail);
@@ -215,10 +389,19 @@ export const campaignRouter = j.router({
           const failedEmail = await db.sentEmail.create({
             data: {
               campaignId,
-              submissionId: submission.id,
+              submissionId: recipient.submissionId,
               status: 'FAILED',
               error: error instanceof Error ? error.message : 'Unknown error',
             },
+          });
+
+          // Update recipient status
+          await db.campaignRecipient.update({
+            where: { id: recipient.id },
+            data: { 
+              status: 'FAILED',
+              error: error instanceof Error ? error.message : 'Unknown error'
+            }
           });
 
           failedEmails.push(failedEmail);
@@ -229,9 +412,14 @@ export const campaignRouter = j.router({
       await db.campaign.update({
         where: { id: campaignId },
         data: { 
-          status: 'SENT',
+          status: failedEmails.length === recipients.length ? 'FAILED' : 'SENT',
           sentAt: new Date(),
         },
+      });
+
+      // After sending emails successfully
+      await updateQuotaMetrics(ctx.user.id, { 
+        incrementEmails: sentEmails.length 
       });
 
       return c.superjson({
@@ -264,12 +452,14 @@ export const campaignRouter = j.router({
       });
     }),
 
-  // Get campaign statistics
+  // Get campaign statistics (Pro feature)
   getStats: privateProcedure
     .input(z.object({
       campaignId: z.string(),
     }))
     .query(async ({ c, input, ctx }) => {
+      await checkCampaignAccess(ctx.user.id, 'analytics');
+      
       const { campaignId } = input;
       
       const stats = await db.campaign.findUnique({
@@ -286,6 +476,12 @@ export const campaignRouter = j.router({
           sentEmails: {
             select: {
               status: true,
+              openCount: true,
+              clickCount: true,
+              bounced: true,
+              spamReported: true,
+              openedAt: true,
+              clickedAt: true,
             },
           },
         },
@@ -295,16 +491,24 @@ export const campaignRouter = j.router({
         throw new HTTPException(404, { message: 'Campaign not found' });
       }
 
-      const sentCount = stats._count.sentEmails;
-      const failedCount = stats.sentEmails.filter(e => e.status === 'FAILED').length;
-      const successCount = stats.sentEmails.filter(e => e.status === 'SENT').length;
+      const totalOpens = stats.sentEmails.reduce((sum, email) => sum + (email.openCount || 0), 0);
+      const totalClicks = stats.sentEmails.reduce((sum, email) => sum + (email.clickCount || 0), 0);
+      const uniqueOpens = stats.sentEmails.filter(e => e.openedAt).length;
+      const uniqueClicks = stats.sentEmails.filter(e => e.clickedAt).length;
+      const bounces = stats.sentEmails.filter(e => e.bounced).length;
+      const spamReports = stats.sentEmails.filter(e => e.spamReported).length;
 
       return c.superjson({
-        sentCount,
-        failedCount,
-        successCount,
-        openRate: 0, // TODO: Implement email tracking
-        clickRate: 0, // TODO: Implement email tracking
+        sentCount: stats._count.sentEmails,
+        totalOpens,
+        totalClicks,
+        uniqueOpens,
+        uniqueClicks,
+        bounces,
+        spamReports,
+        openRate: stats._count.sentEmails ? (uniqueOpens / stats._count.sentEmails) * 100 : 0,
+        clickRate: stats._count.sentEmails ? (uniqueClicks / stats._count.sentEmails) * 100 : 0,
+        bounceRate: stats._count.sentEmails ? (bounces / stats._count.sentEmails) * 100 : 0,
       });
     }),
 
@@ -352,14 +556,21 @@ export const campaignRouter = j.router({
       }
     }),
 
-  // Schedule a campaign
+  // Schedule a campaign (Standard & Pro feature)
   schedule: privateProcedure
     .input(z.object({
       campaignId: z.string(),
-      scheduleDate: z.string()
+      scheduleDate: z.string(),
+      recipientSettings: z.object({
+        type: z.enum(['first', 'last', 'custom']),
+        count: z.number().min(1).max(200)
+      })
     }))
     .mutation(async ({ c, input, ctx }) => {
-      const { campaignId, scheduleDate } = input;
+      await checkCampaignAccess(ctx.user.id, 'scheduling');
+      await checkCampaignLimits(ctx.user.id, input.recipientSettings.count);
+      
+      const { campaignId, scheduleDate, recipientSettings } = input;
       
       // Verify campaign ownership and status
       const campaign = await db.campaign.findFirst({
@@ -368,6 +579,26 @@ export const campaignRouter = j.router({
           userId: ctx.user.id,
           status: 'DRAFT', // Only draft campaigns can be scheduled
         },
+        include: {
+          form: {
+            include: {
+              submissions: {
+                where: {
+                  email: { not: null },
+                  unsubscribed: false
+                },
+                orderBy: recipientSettings.type === 'last' 
+                  ? { createdAt: 'desc' }
+                  : { createdAt: 'asc' },
+                take: recipientSettings.count,
+                select: {
+                  id: true,
+                  email: true
+                }
+              }
+            }
+          }
+        }
       });
 
       if (!campaign) {
@@ -380,19 +611,32 @@ export const campaignRouter = j.router({
         throw new HTTPException(400, { message: 'Schedule date must be in the future' });
       }
 
-      // Update campaign with schedule
-      const updatedCampaign = await db.campaign.update({
-        where: { id: campaignId },
-        data: {
-          status: 'SCHEDULED',
-          scheduledAt: scheduleDateObj,
-        },
-      });
+      // Store selected recipients
+      await db.$transaction([
+        // Store recipient list
+        ...campaign.form.submissions.map(submission => 
+          db.campaignRecipient.create({
+            data: {
+              campaignId,
+              submissionId: submission.id,
+              email: submission.email!,
+              status: 'PENDING'
+            }
+          })
+        ),
 
-      return c.superjson({
-        success: true,
-        scheduledAt: updatedCampaign.scheduledAt,
-      });
+        // Update campaign status and schedule
+        db.campaign.update({
+          where: { id: campaignId },
+          data: {
+            status: 'SCHEDULED',
+            scheduledAt: scheduleDateObj,
+            recipientCount: recipientSettings.count
+          }
+        })
+      ]);
+
+      return c.superjson({ success: true });
     }),
 
   // Cancel scheduled campaign
@@ -417,7 +661,7 @@ export const campaignRouter = j.router({
       }
 
       // Update campaign back to draft status
-      const updatedCampaign = await db.campaign.update({
+      await db.campaign.update({
         where: { id: campaignId },
         data: {
           status: 'DRAFT',
@@ -428,5 +672,47 @@ export const campaignRouter = j.router({
       return c.superjson({
         success: true,
       });
+    }),
+
+  // Track email open
+  trackOpen: privateProcedure
+    .input(z.object({
+      sentEmailId: z.string(),
+    }))
+    .mutation(async ({ c, input, ctx }) => {
+      const sentEmail = await db.sentEmail.findUnique({
+        where: { id: input.sentEmailId },
+        include: { campaign: true }
+      });
+
+      if (!sentEmail || sentEmail.campaign.userId !== ctx.user.id) {
+        throw new HTTPException(404, { message: 'Email not found' });
+      }
+
+      // Update quota for email open
+      await updateQuotaMetrics(ctx.user.id, { incrementOpens: 1 });
+
+      return c.superjson({ success: true });
+    }),
+
+  // Track email click
+  trackClick: privateProcedure
+    .input(z.object({
+      sentEmailId: z.string(),
+    }))
+    .mutation(async ({ c, input, ctx }) => {
+      const sentEmail = await db.sentEmail.findUnique({
+        where: { id: input.sentEmailId },
+        include: { campaign: true }
+      });
+
+      if (!sentEmail || sentEmail.campaign.userId !== ctx.user.id) {
+        throw new HTTPException(404, { message: 'Email not found' });
+      }
+
+      // Update quota for email click
+      await updateQuotaMetrics(ctx.user.id, { incrementClicks: 1 });
+
+      return c.superjson({ success: true });
     }),
 }); 

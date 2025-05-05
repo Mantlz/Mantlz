@@ -20,26 +20,85 @@ import { client } from "@/lib/client";
 // Type definitions for our usage data
 interface UsageData {
   plan: string;
-  limit: number;
-  usedQuota: number;
-  remainingQuota: number;
-  totalForms: number;
-  usagePercentage: number;
+  currentUsage: {
+    submissions: number;
+    forms: number;
+    campaigns: number;
+    emailStats: {
+      sent: number;
+      opened: number;
+      clicked: number;
+    };
+  };
+  limits: {
+    maxForms: number;
+    maxSubmissionsPerMonth: number;
+    campaigns: {
+      enabled: boolean;
+      maxCampaignsPerMonth: number;
+      maxRecipientsPerCampaign: number;
+      features: {
+        analytics: boolean;
+        scheduling: boolean;
+        templates: boolean;
+        customDomain: boolean;
+      };
+    };
+  };
   history: Array<{
     month: string;
     year: number;
-    count: number;
+    submissions: number;
+    forms: number;
+    campaigns: number;
+    emailStats: {
+      sent: number;
+      opened: number;
+      clicked: number;
+    };
   }>;
 }
 
 // Interface for the submissions and plan data
 interface PlanUsageData {
-  formsUsed: number;
-  formsLimit: number;
-  submissionsUsed: number;
-  submissionsLimit: number;
+  usage: {
+    forms: {
+      used: number;
+      limit: number;
+      percentage: number;
+    };
+    submissions: {
+      used: number;
+      limit: number;
+      percentage: number;
+    };
+    campaigns: {
+      used: number;
+      limit: number;
+      percentage: number;
+    };
+    email: {
+      sent: number;
+      opened: number;
+      clicked: number;
+      openRate: number;
+      clickRate: number;
+    };
+  };
+  features: {
+    campaigns: boolean;
+    analytics: boolean;
+    scheduling: boolean;
+    templates: boolean;
+    customDomain: boolean;
+  };
   resetDate: string;
   plan: string;
+}
+
+// Interface for total submissions data
+interface TotalSubmissionsData {
+  totalSubmissions: number;
 }
 
 // Create custom hooks for API calls
@@ -49,9 +108,7 @@ const useUsageData = () => {
     queryFn: async () => {
       try {
         const response = await client.usage.getUserUsage.$get();
-        const data = await response.json();
-        console.log("Received usage data:", data); // For debugging
-        return data;
+        return response.json();
       } catch (err) {
         console.error("Error fetching usage data:", err);
         throw err;
@@ -68,12 +125,9 @@ const usePlanUsage = () => {
       try {
         const response = await client.usage.getUsage.$get();
         const data = await response.json();
-        console.log("Received plan usage data:", data);
-        
-        // Convert Date to string if needed
         return {
           ...data,
-          resetDate: data.resetDate ? data.resetDate.toString() : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+          resetDate: data.resetDate ? new Date(data.resetDate).toISOString() : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
         };
       } catch (err) {
         console.error("Error fetching plan usage data:", err);
@@ -85,14 +139,12 @@ const usePlanUsage = () => {
 
 // Create hook for fetching total submissions
 const useTotalSubmissions = () => {
-  return useQuery({
+  return useQuery<TotalSubmissionsData>({
     queryKey: ["totalSubmissions"],
     queryFn: async () => {
       try {
         const response = await client.usage.getTotalSubmissions.$get();
-        const data = await response.json();
-        console.log("Received submissions data:", data);
-        return data;
+        return response.json();
       } catch (err) {
         console.error("Error fetching submissions data:", err);
         throw err;
@@ -148,11 +200,8 @@ export default function UsageSettings() {
   // Validate that the data is properly formatted
   const isValidData = data && 
     typeof data.plan === 'string' &&
-    typeof data.limit === 'number' &&
-    typeof data.usedQuota === 'number' &&
-    typeof data.remainingQuota === 'number' &&
-    typeof data.totalForms === 'number' &&
-    typeof data.usagePercentage === 'number' &&
+    typeof data.currentUsage === 'object' &&
+    typeof data.limits === 'object' &&
     Array.isArray(data.history);
 
   // Handle refresh with loading state
@@ -200,7 +249,7 @@ export default function UsageSettings() {
                 <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
                   Usage Information
                 </h2>
-                <PlanBadge plan={planData?.plan || data?.plan || 'FREE'} />
+                <PlanBadge plan={planData?.plan || 'FREE'} />
               </div>
               <Button 
                 variant="outline" 
@@ -227,7 +276,7 @@ export default function UsageSettings() {
               {planData && <span className="ml-1">• Resets on {formattedResetDate}</span>}
             </p>
             
-            {((planData?.formsUsed ?? 0) >= (planData?.formsLimit ?? Infinity) * 0.8) && (
+            {(planData?.usage.forms.percentage ?? 0) >= 80 && (
               <div className="mt-2 p-2 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 dark:bg-amber-900/30 dark:border-amber-800/30 dark:text-amber-400 text-xs flex items-center">
                 <AlertCircle className="h-3.5 w-3.5 mr-1.5 flex-shrink-0" />
                 <span>You&apos;re approaching your form limit. Consider upgrading your plan for more forms.</span>
@@ -235,7 +284,7 @@ export default function UsageSettings() {
             )}
           </header>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Forms usage card */}
             {planData && (
               <Card className={cn(
@@ -251,31 +300,31 @@ export default function UsageSettings() {
                       Forms
                     </CardTitle>
                     <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
-                      {planData.formsUsed.toLocaleString()}/{planData.formsLimit.toLocaleString()} forms • {Math.min(Math.round((planData.formsUsed / planData.formsLimit) * 100), 100)}%
+                      {planData.usage.forms.used.toLocaleString()}/{planData.usage.forms.limit.toLocaleString()} forms • {planData.usage.forms.percentage.toFixed(1)}%
                     </CardDescription>
                   </div>
                   <div className={cn(
                     "px-1.5 py-0.5 rounded text-xs font-medium",
-                    (planData.formsUsed / planData.formsLimit) > 0.9 
+                    planData.usage.forms.percentage > 90
                       ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400" 
-                      : (planData.formsUsed / planData.formsLimit) > 0.7 
+                      : planData.usage.forms.percentage > 70
                         ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
                         : "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
                   )}>
-                    {(planData.formsUsed / planData.formsLimit) > 0.9 
+                    {planData.usage.forms.percentage > 90
                       ? "Critical" 
-                      : (planData.formsUsed / planData.formsLimit) > 0.7 
+                      : planData.usage.forms.percentage > 70
                         ? "High"
                         : "Good"}
                   </div>
                 </CardHeader>
                 <CardContent className="px-5 pb-4 pt-0">
                   <Progress 
-                    value={Math.min((planData.formsUsed / planData.formsLimit) * 100, 100)} 
+                    value={planData.usage.forms.percentage} 
                     className={cn(
                       "h-1.5 bg-zinc-100 dark:bg-zinc-800",
-                      (planData.formsUsed / planData.formsLimit) > 0.9 ? "bg-red-500 dark:bg-red-600" : 
-                      (planData.formsUsed / planData.formsLimit) > 0.7 ? "bg-amber-500 dark:bg-amber-600" :
+                      planData.usage.forms.percentage > 90 ? "bg-red-500 dark:bg-red-600" : 
+                      planData.usage.forms.percentage > 70 ? "bg-amber-500 dark:bg-amber-600" :
                       "bg-green-500 dark:bg-green-600"
                     )}
                   />
@@ -283,13 +332,13 @@ export default function UsageSettings() {
                     <div className="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg">
                       <p className="text-xs text-zinc-600 dark:text-zinc-400">Remaining</p>
                       <p className="text-lg font-semibold text-zinc-900 dark:text-white">
-                        {Math.max(0, planData.formsLimit - planData.formsUsed).toLocaleString()}
+                        {Math.max(0, planData.usage.forms.limit - planData.usage.forms.used).toLocaleString()}
                       </p>
                     </div>
                     <div className="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg">
                       <p className="text-xs text-zinc-600 dark:text-zinc-400">Total</p>
                       <p className="text-lg font-semibold text-zinc-900 dark:text-white">
-                        {planData.formsLimit.toLocaleString()}
+                        {planData.usage.forms.limit.toLocaleString()}
                       </p>
                     </div>
                   </div>
@@ -312,31 +361,31 @@ export default function UsageSettings() {
                       Monthly Submissions
                     </CardTitle>
                     <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
-                      {planData.submissionsUsed.toLocaleString()}/{planData.submissionsLimit.toLocaleString()} submissions • {Math.min(Math.round((planData.submissionsUsed / planData.submissionsLimit) * 100), 100)}%
+                      {planData.usage.submissions.used.toLocaleString()}/{planData.usage.submissions.limit.toLocaleString()} submissions • {planData.usage.submissions.percentage.toFixed(1)}%
                     </CardDescription>
                   </div>
                   <div className={cn(
                     "px-1.5 py-0.5 rounded text-xs font-medium",
-                    (planData.submissionsUsed / planData.submissionsLimit) > 0.9 
+                    planData.usage.submissions.percentage > 90
                       ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400" 
-                      : (planData.submissionsUsed / planData.submissionsLimit) > 0.7 
+                      : planData.usage.submissions.percentage > 70
                         ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
                         : "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
                   )}>
-                    {(planData.submissionsUsed / planData.submissionsLimit) > 0.9 
+                    {planData.usage.submissions.percentage > 90
                       ? "Critical" 
-                      : (planData.submissionsUsed / planData.submissionsLimit) > 0.7 
+                      : planData.usage.submissions.percentage > 70
                         ? "High"
                         : "Good"}
                   </div>
                 </CardHeader>
                 <CardContent className="px-4 pb-3 pt-0">
                   <Progress 
-                    value={Math.min((planData.submissionsUsed / planData.submissionsLimit) * 100, 100)} 
+                    value={planData.usage.submissions.percentage} 
                     className={cn(
                       "h-1.5 bg-zinc-100 dark:bg-zinc-800",
-                      (planData.submissionsUsed / planData.submissionsLimit) > 0.9 ? "bg-red-500 dark:bg-red-600" : 
-                      (planData.submissionsUsed / planData.submissionsLimit) > 0.7 ? "bg-amber-500 dark:bg-amber-600" :
+                      planData.usage.submissions.percentage > 90 ? "bg-red-500 dark:bg-red-600" : 
+                      planData.usage.submissions.percentage > 70 ? "bg-amber-500 dark:bg-amber-600" :
                       "bg-green-500 dark:bg-green-600"
                     )}
                   />
@@ -344,13 +393,74 @@ export default function UsageSettings() {
                     <div className="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg">
                       <p className="text-xs text-zinc-600 dark:text-zinc-400">Remaining</p>
                       <p className="text-lg font-semibold text-zinc-900 dark:text-white">
-                        {Math.max(0, planData.submissionsLimit - planData.submissionsUsed).toLocaleString()}
+                        {Math.max(0, planData.usage.submissions.limit - planData.usage.submissions.used).toLocaleString()}
                       </p>
                     </div>
                     <div className="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg">
                       <p className="text-xs text-zinc-600 dark:text-zinc-400">Total</p>
                       <p className="text-lg font-semibold text-zinc-900 dark:text-white">
-                        {planData.submissionsLimit.toLocaleString()}
+                        {planData.usage.submissions.limit.toLocaleString()}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Campaigns usage card */}
+            {planData && planData.features.campaigns && (
+              <Card className={cn(
+                "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm w-full",
+                planData.plan === "FREE" ? "min-h-[200px]" : "min-h-[250px]"
+              )}>
+                <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
+                  <div>
+                    <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                      Campaigns
+                    </CardTitle>
+                    <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+                      {planData.usage.campaigns.used.toLocaleString()}/{planData.usage.campaigns.limit.toLocaleString()} campaigns • {planData.usage.campaigns.percentage.toFixed(1)}%
+                    </CardDescription>
+                  </div>
+                  <div className={cn(
+                    "px-1.5 py-0.5 rounded text-xs font-medium",
+                    planData.usage.campaigns.percentage > 90
+                      ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400" 
+                      : planData.usage.campaigns.percentage > 70
+                        ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
+                        : "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+                  )}>
+                    {planData.usage.campaigns.percentage > 90
+                      ? "Critical" 
+                      : planData.usage.campaigns.percentage > 70
+                        ? "High"
+                        : "Good"}
+                  </div>
+                </CardHeader>
+                <CardContent className="px-4 pb-3 pt-0">
+                  <Progress 
+                    value={planData.usage.campaigns.percentage} 
+                    className={cn(
+                      "h-1.5 bg-zinc-100 dark:bg-zinc-800",
+                      planData.usage.campaigns.percentage > 90 ? "bg-red-500 dark:bg-red-600" : 
+                      planData.usage.campaigns.percentage > 70 ? "bg-amber-500 dark:bg-amber-600" :
+                      "bg-green-500 dark:bg-green-600"
+                    )}
+                  />
+                  <div className="grid grid-cols-2 gap-2 mt-3 text-center">
+                    <div className="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg">
+                      <p className="text-xs text-zinc-600 dark:text-zinc-400">Remaining</p>
+                      <p className="text-lg font-semibold text-zinc-900 dark:text-white">
+                        {Math.max(0, planData.usage.campaigns.limit - planData.usage.campaigns.used).toLocaleString()}
+                      </p>
+                    </div>
+                    <div className="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg">
+                      <p className="text-xs text-zinc-600 dark:text-zinc-400">Total</p>
+                      <p className="text-lg font-semibold text-zinc-900 dark:text-white">
+                        {planData.usage.campaigns.limit.toLocaleString()}
                       </p>
                     </div>
                   </div>
@@ -358,6 +468,62 @@ export default function UsageSettings() {
               </Card>
             )}
           </div>
+
+          {/* Features Overview Card */}
+          {planData && (
+            <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm w-full">
+              <CardHeader className="pb-3 pt-4 px-5">
+                <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                  </svg>
+                  Available Features
+                </CardTitle>
+                <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+                  Features included in your {planData.plan} plan
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="px-4 pb-3 pt-0">
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="flex items-center space-x-2">
+                    <div className={cn(
+                      "w-2 h-2 rounded-full",
+                      planData.features.campaigns ? "bg-green-500" : "bg-zinc-300 dark:bg-zinc-600"
+                    )} />
+                    <span className="text-sm text-zinc-600 dark:text-zinc-400">Campaigns</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className={cn(
+                      "w-2 h-2 rounded-full",
+                      planData.features.analytics ? "bg-green-500" : "bg-zinc-300 dark:bg-zinc-600"
+                    )} />
+                    <span className="text-sm text-zinc-600 dark:text-zinc-400">Analytics</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className={cn(
+                      "w-2 h-2 rounded-full",
+                      planData.features.scheduling ? "bg-green-500" : "bg-zinc-300 dark:bg-zinc-600"
+                    )} />
+                    <span className="text-sm text-zinc-600 dark:text-zinc-400">Scheduling</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className={cn(
+                      "w-2 h-2 rounded-full",
+                      planData.features.templates ? "bg-green-500" : "bg-zinc-300 dark:bg-zinc-600"
+                    )} />
+                    <span className="text-sm text-zinc-600 dark:text-zinc-400">Templates</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className={cn(
+                      "w-2 h-2 rounded-full",
+                      planData.features.customDomain ? "bg-green-500" : "bg-zinc-300 dark:bg-zinc-600"
+                    )} />
+                    <span className="text-sm text-zinc-600 dark:text-zinc-400">Custom Domain</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
           
           {/* All-time submissions card */}
           {submissionsData && (
