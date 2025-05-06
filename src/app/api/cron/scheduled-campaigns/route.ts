@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { db } from "@/lib/db";
 import { render } from "@react-email/render";
 import { CampaignEmail } from "@/emails/campaign-email";
@@ -9,7 +9,17 @@ import { sendEmail } from "@/services/email-service";
 
 // This is a cron job that will be called by Vercel's cron job scheduler
 // See vercel.json configuration for the schedule
-export async function GET() {
+export async function GET(request: NextRequest) {
+  // Verify the cron secret
+  const authHeader = request.headers.get('authorization');
+  const cronSecret = process.env.CRON_SECRET;
+  
+  // If CRON_SECRET is set, verify it
+  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+    console.error("Unauthorized cron job attempt");
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     console.log("Processing scheduled campaigns...");
 
