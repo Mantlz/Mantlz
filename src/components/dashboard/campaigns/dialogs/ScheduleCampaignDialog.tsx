@@ -210,8 +210,11 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                       min={1}
                       max={200}
                       value={customRecipientCount}
-                      onChange={(e) => setCustomRecipientCount(Number(e.target.value))}
-                      className="w-20 h-8 text-sm rounded-md border-gray-200 dark:border-zinc-700 focus:ring-purple-500 dark:focus:ring-purple-400 pl-8"
+                      onChange={(e) => {
+                        const value = Number(e.target.value);
+                        setCustomRecipientCount(Math.min(Math.max(value, 1), 200));
+                      }}
+                      className="w-24 h-8 text-sm rounded-md border-gray-200 dark:border-zinc-700 focus:ring-purple-500 dark:focus:ring-purple-400 pl-8"
                     />
                     <div className="absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center text-gray-500">
                       <span>#</span>
