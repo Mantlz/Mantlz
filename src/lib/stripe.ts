@@ -237,7 +237,7 @@ export async function handleSubscriptionUpdate(subscription: StripeSubscription)
         await db.quota.update({
           where: { id: existingQuota.id },
           data: {
-            // Don't reset the count when updating an existing quota
+            submissionCount: 0 // Reset count for new quota records
           }
         })
       } else {
@@ -247,7 +247,7 @@ export async function handleSubscriptionUpdate(subscription: StripeSubscription)
             userId,
             year: currentYear,
             month: currentMonth,
-            count: 0 // Reset count for new quota records
+            submissionCount: 0 // Reset count for new quota records
           }
         })
       }
