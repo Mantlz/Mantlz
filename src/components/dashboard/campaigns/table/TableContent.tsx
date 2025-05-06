@@ -241,10 +241,10 @@ export function TableContent({
                             </div>
                           </div>
                         </PopoverTrigger>
-                        <PopoverContent className="w-72 p-4">
+                        <PopoverContent className="w-72 p-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
                           <div className="space-y-3">
                             <div className="flex items-start gap-3">
-                              <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                              <div className="p-2 bg-purple-100 dark:bg-zinc-800 rounded-lg">
                                 <CalendarDays className="h-4 w-4 text-purple-500 dark:text-purple-400" />
                               </div>
                               <div>
