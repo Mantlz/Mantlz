@@ -1,7 +1,7 @@
 "use client"
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Mail, Calendar, Globe, MapPin, Eye } from "lucide-react"
+import { Mail, Calendar, MapPin, Eye } from "lucide-react"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export function CampaignTableSkeleton() {

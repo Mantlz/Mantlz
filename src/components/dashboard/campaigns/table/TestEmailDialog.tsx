@@ -170,7 +170,7 @@ export function TestEmailDialog({
               <div className="flex items-start gap-2 px-1">
                 <AlertCircle className="h-4 w-4 text-gray-400 mt-0.5" />
                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                  This test email will help you preview how your campaign will look in recipients' inboxes.
+                  This test email will help you preview how your campaign will look in recipients&apos; inboxes.
                   {!isPaidUser && " This feature requires a Standard or Pro plan."}
                 </p>
               </div>

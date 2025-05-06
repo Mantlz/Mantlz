@@ -10,10 +10,7 @@ interface NoCampaignsViewProps {
 }
 
 export function NoCampaignsView({ isPremium = false, onUpgradeClick }: NoCampaignsViewProps) {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const formId = searchParams.get("formId")
-  
+
   const handleCreateCampaign = () => {
     if (!isPremium) {
       onUpgradeClick?.();

@@ -66,10 +66,10 @@ export function CreateCampaignDialog({
       
       // Refresh page
       router.refresh()
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error creating campaign", error)
       // Check if it's a quota limit error
-      if (error?.message?.includes("Monthly campaign limit")) {
+      if (error instanceof Error && error.message.includes("Monthly campaign limit")) {
         toast.error("You've reached your monthly campaign limit. Upgrade your plan to create more campaigns.", {
           duration: 3000,
           action: {
@@ -124,7 +124,7 @@ export function CreateCampaignDialog({
                 className="w-full"
               />
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                This is for your reference only. Recipients won't see this.
+                This is for your reference only. Recipients won&apos;t see this.
               </p>
             </div>
             

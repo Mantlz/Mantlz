@@ -42,7 +42,7 @@ export function TestEmail({
         </div>
 
         <p style={styles.disclaimer}>
-          This is a test email. You're receiving this because you're testing your campaign setup.
+          This is a test email. You&apos;re receiving this because you&apos;re testing your campaign setup.
           All tracking features are enabled for verification purposes.
         </p>
 

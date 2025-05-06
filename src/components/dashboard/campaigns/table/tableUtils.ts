@@ -107,7 +107,7 @@ export async function fetchCampaigns(
 // Function to send a campaign
 export async function sendCampaign(campaignId: string): Promise<{ success: boolean }> {
   try {
-    const response = await client.campaign.send.$post({
+    await client.campaign.send.$post({
       campaignId,
       recipientSettings: {
         type: "first",

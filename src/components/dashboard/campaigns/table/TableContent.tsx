@@ -1,82 +1,113 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
-import { ReadonlyURLSearchParams } from "next/navigation"
-import { 
-  Table, 
-  TableHeader, 
-  TableRow, 
-  TableHead, 
-  TableBody, 
-  TableCell 
-} from "@/components/ui/table"
+import { useState } from "react";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { ReadonlyURLSearchParams } from "next/navigation";
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@/components/ui/table";
 
-import { Button } from "@/components/ui/button"
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Mail, MoreHorizontal, Send, CalendarIcon, Trash2, Eye, CalendarDays, X } from "lucide-react"
-import { CampaignResponse } from "./types"
-import { formatCampaignStatus } from "./tableUtils"
-import { Badge } from "@/components/ui/badge"
-import { NoCampaignsView } from "./NoCampaignsView"
-import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query"
-import { usePathname } from "next/navigation"
-import { formatDistanceToNow } from "date-fns"
-import { client } from "@/lib/client"
-import { toast } from "sonner"
-import { ScheduleCampaignDialog } from "../dialogs/ScheduleCampaignDialog"
-import { TestEmailDialog } from "./TestEmailDialog"
-import { SendCampaignDialog } from '../dialogs/SendCampaignDialog'
+import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Mail,
+  MoreHorizontal,
+  CalendarIcon,
+  Trash2,
+  Eye,
+  CalendarDays,
+  X,
+} from "lucide-react";
+import { CampaignResponse } from "./types";
+import { formatCampaignStatus } from "./tableUtils";
+import { Badge } from "@/components/ui/badge";
+import { NoCampaignsView } from "./NoCampaignsView";
+import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+import { usePathname } from "next/navigation";
+import { formatDistanceToNow } from "date-fns";
+import { client } from "@/lib/client";
+import { toast } from "sonner";
+import { ScheduleCampaignDialog } from "../dialogs/ScheduleCampaignDialog";
+import { TestEmailDialog } from "./TestEmailDialog";
+import { SendCampaignDialog } from "../dialogs/SendCampaignDialog";
 
 interface TableContentProps {
-  data: CampaignResponse
-  isLoading: boolean
-  page: number
+  data: CampaignResponse;
+  isLoading: boolean;
+  page: number;
   pagination: {
-    totalItems: number
-    totalPages: number
-    currentPage: number
-    itemsPerPage: number
-  }
-  searchParams: ReadonlyURLSearchParams
-  router: AppRouterInstance
-  isPremium: boolean
-  userPlan: string
-  refetch: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<CampaignResponse, Error>>
-  itemsPerPage: number
-  onUpgradeClick?: () => void
+    totalItems: number;
+    totalPages: number;
+    currentPage: number;
+    itemsPerPage: number;
+  };
+  searchParams: ReadonlyURLSearchParams;
+  router: AppRouterInstance;
+  isPremium: boolean;
+  userPlan: string;
+  refetch: (
+    options?: RefetchOptions | undefined
+  ) => Promise<QueryObserverResult<CampaignResponse, Error>>;
+  itemsPerPage: number;
+  onUpgradeClick?: () => void;
 }
 
 export function TableContent({
   data,
-  isLoading,
-  page,
+
   pagination,
   searchParams,
   router,
   isPremium,
   userPlan,
   refetch,
-  itemsPerPage,
+
   onUpgradeClick,
 }: TableContentProps) {
-  const [deletingCampaignId, setDeletingCampaignId] = useState<string | null>(null)
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<string | null>(null)
-  const [showTestEmailDialog, setShowTestEmailDialog] = useState<string | null>(null)
+  const [deletingCampaignId, setDeletingCampaignId] = useState<string | null>(
+    null
+  );
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<string | null>(
+    null
+  );
+  const [showTestEmailDialog, setShowTestEmailDialog] = useState<string | null>(
+    null
+  );
   const pathname = usePathname();
-  
+
   // If there are no campaigns, display empty state
   if (!data.campaigns.length) {
-    return <NoCampaignsView isPremium={isPremium} onUpgradeClick={onUpgradeClick} />
+    return (
+      <NoCampaignsView isPremium={isPremium} onUpgradeClick={onUpgradeClick} />
+    );
   }
 
   // Handle pagination change
   const handlePaginationChange = (page: number) => {
-    const newParams = new URLSearchParams(searchParams.toString())
-    newParams.set("page", page.toString())
-    router.push(`${pathname}?${newParams.toString()}`)
-  }
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.set("page", page.toString());
+    router.push(`${pathname}?${newParams.toString()}`);
+  };
 
   // Handle deleting a campaign
   const handleDeleteCampaign = async (campaignId: string) => {
@@ -85,19 +116,19 @@ export function TableContent({
       return;
     }
     try {
-      setDeletingCampaignId(campaignId)
-      await client.campaign.delete.$post({ campaignId })
-      toast.success("Campaign deleted successfully")
-      refetch()
+      setDeletingCampaignId(campaignId);
+      await client.campaign.delete.$post({ campaignId });
+      toast.success("Campaign deleted successfully");
+      refetch();
       // Only close the dialog after successful deletion
-      setIsDeleteDialogOpen(null)
+      setIsDeleteDialogOpen(null);
     } catch (error) {
-      console.error("Error deleting campaign:", error)
-      toast.error("Failed to delete campaign")
+      console.error("Error deleting campaign:", error);
+      toast.error("Failed to delete campaign");
     } finally {
-      setDeletingCampaignId(null)
+      setDeletingCampaignId(null);
     }
-  }
+  };
 
   return (
     <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
@@ -111,40 +142,56 @@ export function TableContent({
           </Badge>
         </div>
       </div>
-      
+
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent border-b border-zinc-200 dark:border-zinc-800">
-              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">Campaign Name</TableHead>
-              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">Status</TableHead>
-              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">Created</TableHead>
-              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">Schedule/Sent Date</TableHead>
-              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">Recipients</TableHead>
-              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4 text-right">Actions</TableHead>
+              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
+                Campaign Name
+              </TableHead>
+              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
+                Status
+              </TableHead>
+              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
+                Created
+              </TableHead>
+              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
+                Schedule/Sent Date
+              </TableHead>
+              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
+                Recipients
+              </TableHead>
+              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4 text-right">
+                Actions
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {data.campaigns.map((campaign) => {
-              const statusInfo = formatCampaignStatus(campaign.status)
-              
+              const statusInfo = formatCampaignStatus(campaign.status);
+
               return (
-                <TableRow key={campaign.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 last:border-0">
+                <TableRow
+                  key={campaign.id}
+                  className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 last:border-0"
+                >
                   <TableCell className="py-3 sm:py-4">
                     <div className="flex items-center gap-2">
                       <div className="bg-zinc-50 dark:bg-zinc-900/20 p-2 rounded-md">
                         <Mail className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
                       </div>
                       <div>
-                        <div className="font-medium text-gray-700 dark:text-gray-300">{campaign.name}</div>
+                        <div className="font-medium text-gray-700 dark:text-gray-300">
+                          {campaign.name}
+                        </div>
                         {campaign.description && (
                           <Popover>
                             <PopoverTrigger asChild>
                               <div className="text-xs text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
-                                {campaign.description.length > 50 
+                                {campaign.description.length > 50
                                   ? `${campaign.description.substring(0, 50)}...`
-                                  : campaign.description
-                                }
+                                  : campaign.description}
                               </div>
                             </PopoverTrigger>
                             {campaign.description.length > 50 && (
@@ -168,12 +215,14 @@ export function TableContent({
                     <div className="flex items-center gap-2">
                       <CalendarIcon className="h-3.5 w-3.5 text-gray-400" />
                       <span className="text-xs text-gray-600 dark:text-gray-300">
-                        {formatDistanceToNow(new Date(campaign.createdAt), { addSuffix: true })}
+                        {formatDistanceToNow(new Date(campaign.createdAt), {
+                          addSuffix: true,
+                        })}
                       </span>
                     </div>
                   </TableCell>
                   <TableCell className="py-3 sm:py-4">
-                    {campaign.status === 'SCHEDULED' ? (
+                    {campaign.status === "SCHEDULED" ? (
                       <Popover>
                         <PopoverTrigger>
                           <div className="inline-flex items-center gap-2.5 cursor-help group bg-purple-50/50 dark:bg-purple-900/10 px-2.5 py-1.5 rounded-md">
@@ -181,11 +230,14 @@ export function TableContent({
                               <CalendarDays className="h-3.5 w-3.5 text-purple-500 group-hover:text-purple-600 transition-colors" />
                             </div>
                             <div className="text-xs font-medium text-gray-700 dark:text-gray-200 leading-none">
-                              {campaign.scheduledAt && new Date(campaign.scheduledAt).toLocaleDateString('en-US', {
-                                day: 'numeric',
-                                month: 'long',
-                                year: 'numeric'
-                              })}
+                              {campaign.scheduledAt &&
+                                new Date(
+                                  campaign.scheduledAt
+                                ).toLocaleDateString("en-US", {
+                                  day: "numeric",
+                                  month: "long",
+                                  year: "numeric",
+                                })}
                             </div>
                           </div>
                         </PopoverTrigger>
@@ -196,36 +248,48 @@ export function TableContent({
                                 <CalendarDays className="h-4 w-4 text-purple-500 dark:text-purple-400" />
                               </div>
                               <div>
-                                <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Scheduled Campaign</h4>
+                                <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
+                                  Scheduled Campaign
+                                </h4>
                                 <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
-                                  Will be sent on {campaign.scheduledAt && new Date(campaign.scheduledAt).toLocaleString('en-US', {
-                                    weekday: 'long',
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric',
-                                    hour: 'numeric',
-                                    minute: '2-digit',
-                                    hour12: true,
-                                    timeZoneName: 'short'
-                                  })}
+                                  Will be sent on{" "}
+                                  {campaign.scheduledAt &&
+                                    new Date(
+                                      campaign.scheduledAt
+                                    ).toLocaleString("en-US", {
+                                      weekday: "long",
+                                      year: "numeric",
+                                      month: "long",
+                                      day: "numeric",
+                                      hour: "numeric",
+                                      minute: "2-digit",
+                                      hour12: true,
+                                      timeZoneName: "short",
+                                    })}
                                 </p>
                               </div>
                             </div>
                             <div className="pl-11">
                               <p className="text-xs text-purple-500 dark:text-purple-400">
-                                {campaign.scheduledAt && `${Math.ceil((new Date(campaign.scheduledAt).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} days until sending`}
+                                {campaign.scheduledAt &&
+                                  `${Math.ceil((new Date(campaign.scheduledAt).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} days until sending`}
                               </p>
                             </div>
                           </div>
                         </PopoverContent>
                       </Popover>
                     ) : campaign.sentAt ? (
-                      <div className="flex items-center gap-2 cursor-help group" title={new Date(campaign.sentAt).toLocaleString()}>
+                      <div
+                        className="flex items-center gap-2 cursor-help group"
+                        title={new Date(campaign.sentAt).toLocaleString()}
+                      >
                         <div className="shrink-0">
                           <CalendarIcon className="h-3.5 w-3.5 text-gray-400 group-hover:text-gray-500 transition-colors" />
                         </div>
                         <span className="text-xs text-gray-600 dark:text-gray-300 group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors">
-                          {formatDistanceToNow(new Date(campaign.sentAt), { addSuffix: true })}
+                          {formatDistanceToNow(new Date(campaign.sentAt), {
+                            addSuffix: true,
+                          })}
                         </span>
                       </div>
                     ) : (
@@ -233,7 +297,9 @@ export function TableContent({
                         <div className="shrink-0">
                           <CalendarIcon className="h-3.5 w-3.5 text-gray-400" />
                         </div>
-                        <span className="text-xs text-gray-500 dark:text-gray-400">Not sent</span>
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          Not sent
+                        </span>
                       </div>
                     )}
                   </TableCell>
@@ -258,7 +324,7 @@ export function TableContent({
                   </TableCell>
                   <TableCell className="py-3 sm:py-4 text-right">
                     <div className="flex justify-end items-center gap-2">
-                      {campaign.status === 'DRAFT' && (
+                      {campaign.status === "DRAFT" && (
                         <>
                           <SendCampaignDialog
                             campaignId={campaign.id}
@@ -266,7 +332,7 @@ export function TableContent({
                             onUpgradeClick={onUpgradeClick}
                             userPlan={userPlan}
                           />
-                          
+
                           <ScheduleCampaignDialog
                             campaignId={campaign.id}
                             onScheduled={refetch}
@@ -277,7 +343,7 @@ export function TableContent({
                         </>
                       )}
 
-                      {campaign.status === 'SCHEDULED' && (
+                      {campaign.status === "SCHEDULED" && (
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button
@@ -293,21 +359,33 @@ export function TableContent({
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Cancel Scheduled Campaign</AlertDialogTitle>
+                              <AlertDialogTitle>
+                                Cancel Scheduled Campaign
+                              </AlertDialogTitle>
                               <AlertDialogDescription>
-                                Are you sure you want to cancel this scheduled campaign? It will be moved back to draft status.
+                                Are you sure you want to cancel this scheduled
+                                campaign? It will be moved back to draft status.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>Keep Scheduled</AlertDialogCancel>
+                              <AlertDialogCancel>
+                                Keep Scheduled
+                              </AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={async () => {
                                   try {
-                                    await client.campaign.cancelSchedule.$post({ campaignId: campaign.id });
-                                    toast.success("Campaign schedule cancelled");
+                                    await client.campaign.cancelSchedule.$post({
+                                      campaignId: campaign.id,
+                                    });
+                                    toast.success(
+                                      "Campaign schedule cancelled"
+                                    );
                                     refetch();
                                   } catch (error) {
-                                    console.error("Error cancelling schedule:", error);
+                                    console.error(
+                                      "Error cancelling schedule:",
+                                      error
+                                    );
                                     toast.error("Failed to cancel schedule");
                                   }
                                 }}
@@ -322,35 +400,53 @@ export function TableContent({
 
                       <Popover>
                         <PopoverTrigger asChild>
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
+                          <Button
+                            variant="ghost"
+                            size="icon"
                             className="h-8 w-8 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
                           >
                             <MoreHorizontal className="h-4 w-4" />
                             <span className="sr-only">More options</span>
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent align="end" className="w-[180px] p-0 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+                        <PopoverContent
+                          align="end"
+                          className="w-[180px] p-0 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800"
+                        >
                           <button
                             className="w-full flex items-center px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left text-sm text-gray-700 dark:text-gray-300 cursor-pointer"
-                            onClick={() => !isPremium ? onUpgradeClick?.() : setShowTestEmailDialog(campaign.id)}
+                            onClick={() =>
+                              !isPremium
+                                ? onUpgradeClick?.()
+                                : setShowTestEmailDialog(campaign.id)
+                            }
                           >
                             <Mail className="h-4 w-4 mr-2" />
                             Send Test Email
                           </button>
                           <button
                             className="w-full flex items-center px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left text-sm text-gray-700 dark:text-gray-300 cursor-pointer"
-                            onClick={() => !isPremium ? onUpgradeClick?.() : router.push(`/dashboard/campaigns/${campaign.id}`)}
+                            onClick={() =>
+                              !isPremium
+                                ? onUpgradeClick?.()
+                                : router.push(
+                                    `/dashboard/campaigns/${campaign.id}`
+                                  )
+                            }
                           >
                             <Eye className="h-4 w-4 mr-2" />
                             View Details
                           </button>
-                          <AlertDialog open={isDeleteDialogOpen === campaign.id} onOpenChange={(open) => {
-                            if (!deletingCampaignId) {
-                              setIsDeleteDialogOpen(open ? campaign.id : null)
-                            }
-                          }}>
+                          <AlertDialog
+                            open={isDeleteDialogOpen === campaign.id}
+                            onOpenChange={(open) => {
+                              if (!deletingCampaignId) {
+                                setIsDeleteDialogOpen(
+                                  open ? campaign.id : null
+                                );
+                              }
+                            }}
+                          >
                             <AlertDialogTrigger asChild>
                               <button
                                 className="w-full flex items-center px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left text-sm text-red-600 dark:text-red-400 border-t border-zinc-200 dark:border-zinc-800 cursor-pointer"
@@ -362,21 +458,32 @@ export function TableContent({
                             </AlertDialogTrigger>
                             <AlertDialogContent className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
                               <AlertDialogHeader>
-                                <AlertDialogTitle className="text-gray-900 dark:text-gray-100">Delete Campaign</AlertDialogTitle>
+                                <AlertDialogTitle className="text-gray-900 dark:text-gray-100">
+                                  Delete Campaign
+                                </AlertDialogTitle>
                                 <AlertDialogDescription className="text-gray-600 dark:text-gray-400">
-                                  Are you sure you want to delete this campaign? This action cannot be undone.
+                                  Are you sure you want to delete this campaign?
+                                  This action cannot be undone.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel disabled={deletingCampaignId === campaign.id}>Cancel</AlertDialogCancel>
+                                <AlertDialogCancel
+                                  disabled={deletingCampaignId === campaign.id}
+                                >
+                                  Cancel
+                                </AlertDialogCancel>
                                 <AlertDialogAction
-                                  onClick={() => handleDeleteCampaign(campaign.id)}
+                                  onClick={() =>
+                                    handleDeleteCampaign(campaign.id)
+                                  }
                                   disabled={deletingCampaignId === campaign.id}
                                   className="bg-red-600 hover:bg-red-700 text-white"
                                 >
                                   {deletingCampaignId === campaign.id ? (
                                     <>
-                                      <span className="animate-spin mr-2">⏳</span>
+                                      <span className="animate-spin mr-2">
+                                        ⏳
+                                      </span>
                                       Deleting...
                                     </>
                                   ) : (
@@ -391,7 +498,7 @@ export function TableContent({
                     </div>
                   </TableCell>
                 </TableRow>
-              )
+              );
             })}
           </TableBody>
         </Table>
@@ -437,5 +544,5 @@ export function TableContent({
         />
       )}
     </div>
-  )
-} 
+  );
+}

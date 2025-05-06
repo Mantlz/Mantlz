@@ -25,18 +25,10 @@ export function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onU
   const page = Number(searchParams.get("page")) || 1
   const formId = searchParams.get("formId")
   const viewParam = searchParams.get("view") as "grid" | "list" | null
-  const [viewMode, setViewMode] = useState<"grid" | "list">(viewParam || "grid")
   const { subscription } = useSubscription()
 
   // Get the plan from the subscription or default to FREE
   const userPlan = subscription?.plan || 'FREE'
-
-  // Update viewMode when URL parameter changes
-  useEffect(() => {
-    if (viewParam === "grid" || viewParam === "list") {
-      setViewMode(viewParam)
-    }
-  }, [viewParam])
 
   // Fetch forms data
   const {
@@ -63,18 +55,6 @@ export function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onU
     queryFn: () => fetchCampaigns(formId, page, startDateParam || undefined, endDateParam || undefined, itemsPerPage),
     enabled: !!formId,
   })
-
-  // Handle form selection with premium check
-  function handleFormClick(formId: string) {
-    if (!isPremium) {
-      onUpgradeClick?.()
-      return
-    }
-    const newParams = new URLSearchParams(searchParams)
-    newParams.set("formId", formId)
-    newParams.set("page", "1")
-    router.push(`?${newParams.toString()}`)
-  }
 
   // Error state
   if (formsError) {

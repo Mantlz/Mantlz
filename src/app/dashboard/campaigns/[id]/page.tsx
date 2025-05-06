@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { client } from '@/lib/client';
-import { ChevronLeft, Send, Mail, Calendar, FileText, Clock, CheckCircle, Users } from 'lucide-react';
+import { ChevronLeft, Send, Mail, Clock, CheckCircle, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { formatCampaignStatus } from '@/components/dashboard/campaigns/table/tableUtils';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -26,17 +27,57 @@ import { SendCampaignDialog } from '@/components/dashboard/campaigns/dialogs/Sen
 import { ScheduleCampaignDialog } from '@/components/dashboard/campaigns/dialogs/ScheduleCampaignDialog'
 
 interface CampaignDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
+  }>;
+}
+
+interface FormData {
+  id: string;
+  _count?: {
+    submissions: number;
+  };
+  name?: string;
+  userId?: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  description?: string | null;
+  schema?: string;
+  settings?: unknown;
+  formType?: string;
+}
+
+type CampaignStatus = 'SENT' | 'FAILED' | 'DRAFT' | 'SCHEDULED' | 'SENDING' | 'CANCELLED';
+
+interface Campaign {
+  id: string;
+  name: string;
+  description?: string | null;
+  status: CampaignStatus;
+  subject: string;
+  content: string;
+  createdAt: Date | string;
+  formId?: string;
+  form?: FormData;
+  _count?: {
+    sentEmails: number;
   };
 }
 
+// Helper function to validate campaign status
+function isCampaignStatus(status: string): status is CampaignStatus {
+  return ['SENT', 'FAILED', 'DRAFT', 'SCHEDULED', 'SENDING', 'CANCELLED'].includes(status);
+}
+
 export default function CampaignDetailPage({ params }: CampaignDetailPageProps) {
-  const campaignId = params.id;
+  // Unwrap params using React.use()
+  const unwrappedParams = React.use(params);
+  const campaignId = unwrappedParams.id;
+  
   const { isPremium, userPlan } = useSubscription();
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   
-  const [campaign, setCampaign] = useState<any>(null);
+  const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [loading, setLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const router = useRouter();
@@ -62,10 +103,18 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
             });
             const campaigns = await campaignsResponse.json();
             
-            const foundCampaign = campaigns.find((c: any) => c.id === campaignId);
+            const foundCampaign = campaigns.find((c: unknown) => {
+              const campaign = c as Partial<Campaign>;
+              return campaign.id === campaignId;
+            });
+            
             if (foundCampaign) {
-              setCampaign(foundCampaign);
-              break;
+              const typedCampaign = foundCampaign as unknown as Partial<Campaign>;
+              // Validate status
+              if (typedCampaign.status && isCampaignStatus(typedCampaign.status)) {
+                setCampaign(typedCampaign as Campaign);
+                break;
+              }
             }
           }
         } else {
@@ -75,8 +124,20 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
           });
           const campaigns = await campaignsResponse.json();
           
-          const foundCampaign = campaigns.find((c: any) => c.id === campaignId);
-          setCampaign(foundCampaign || null);
+          const foundCampaign = campaigns.find((c: unknown) => {
+            const campaign = c as Partial<Campaign>;
+            return campaign.id === campaignId;
+          });
+          
+          if (foundCampaign) {
+            const typedCampaign = foundCampaign as unknown as Partial<Campaign>;
+            // Validate status
+            if (typedCampaign.status && isCampaignStatus(typedCampaign.status)) {
+              setCampaign(typedCampaign as Campaign);
+            }
+          } else {
+            setCampaign(null);
+          }
         }
       } catch (error) {
         console.error('Error fetching campaign:', error);
@@ -96,12 +157,11 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
     try {
       setIsSending(true);
       await client.campaign.send.$post({
-        campaignId: campaignId
-      });
-      
-      // Get stats to update the UI
-      const statsResponse = await client.campaign.getStats.$get({
-        campaignId: campaignId
+        campaignId: campaignId,
+        recipientSettings: {
+          type: "first",
+          count: 100
+        }
       });
       
       // Fetch the campaign again to get updated status
@@ -111,9 +171,16 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
         });
         const campaigns = await campaignsResponse.json();
         
-        const updatedCampaign = campaigns.find((c: any) => c.id === campaignId);
+        const updatedCampaign = campaigns.find((c: unknown) => {
+          const campaign = c as Partial<Campaign>;
+          return campaign.id === campaignId;
+        });
+        
         if (updatedCampaign) {
-          setCampaign(updatedCampaign);
+          const typedCampaign = updatedCampaign as unknown as Partial<Campaign>;
+          if (typedCampaign.status && isCampaignStatus(typedCampaign.status)) {
+            setCampaign(typedCampaign as Campaign);
+          }
         }
       }
     } catch (error) {
@@ -154,7 +221,7 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 text-center">
           <h2 className="text-lg font-medium text-red-800 dark:text-red-300">Campaign not found</h2>
           <p className="text-red-600 dark:text-red-400 mt-2">
-            The campaign you're looking for does not exist or you don't have permission to view it.
+            The campaign you&apos;re looking for does not exist or you don&apos;t have permission to view it.
           </p>
         </div>
       </div>
@@ -196,38 +263,52 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
                 <div className="flex items-center gap-2">
                   <SendCampaignDialog
                     campaignId={campaignId}
-                    onSent={() => {
+                    onSent={async () => {
                       // Refresh campaign data after sending
                       if (campaign?.formId) {
-                        const campaignsResponse = client.campaign.getFormCampaigns.$get({
+                        const campaignsResponse = await client.campaign.getFormCampaigns.$get({
                           formId: campaign.formId
                         });
-                        const campaigns = campaignsResponse.json();
+                        const campaigns = await campaignsResponse.json();
                         
-                        const updatedCampaign = campaigns.find((c: any) => c.id === campaignId);
+                        const updatedCampaign = campaigns.find((c: unknown) => {
+                          const campaign = c as Partial<Campaign>;
+                          return campaign.id === campaignId;
+                        });
+                        
                         if (updatedCampaign) {
-                          setCampaign(updatedCampaign);
+                          const typedCampaign = updatedCampaign as unknown as Partial<Campaign>;
+                          if (typedCampaign.status && isCampaignStatus(typedCampaign.status)) {
+                            setCampaign(typedCampaign as Campaign);
+                          }
                         }
                       }
                     }}
-                    isPremium={isPremium}
+
                     onUpgradeClick={() => setShowUpgradeModal(true)}
                     userPlan={userPlan}
                   />
                   
                   <ScheduleCampaignDialog
                     campaignId={campaignId}
-                    onScheduled={() => {
+                    onScheduled={async () => {
                       // Refresh campaign data after scheduling
                       if (campaign?.formId) {
-                        const campaignsResponse = client.campaign.getFormCampaigns.$get({
+                        const campaignsResponse = await client.campaign.getFormCampaigns.$get({
                           formId: campaign.formId
                         });
-                        const campaigns = campaignsResponse.json();
+                        const campaigns = await campaignsResponse.json();
                         
-                        const updatedCampaign = campaigns.find((c: any) => c.id === campaignId);
+                        const updatedCampaign = campaigns.find((c: unknown) => {
+                          const campaign = c as Partial<Campaign>;
+                          return campaign.id === campaignId;
+                        });
+                        
                         if (updatedCampaign) {
-                          setCampaign(updatedCampaign);
+                          const typedCampaign = updatedCampaign as unknown as Partial<Campaign>;
+                          if (typedCampaign.status && isCampaignStatus(typedCampaign.status)) {
+                            setCampaign(typedCampaign as Campaign);
+                          }
                         }
                       }
                     }}
