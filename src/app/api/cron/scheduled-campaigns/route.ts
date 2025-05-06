@@ -25,14 +25,44 @@ export async function GET(request: NextRequest) {
 
     // Get current time
     const currentDate = new Date();
+    
+    // Create date range for the current hour
+    const startOfHour = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate(),
+      currentDate.getHours(),
+      0, 0, 0
+    );
+    
+    const endOfHour = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate(),
+      currentDate.getHours(),
+      59, 59, 999
+    );
 
-    // Find all campaigns that are scheduled to be sent now or in the past
+    // Find all campaigns that are scheduled to be sent in the current hour
+    // or past hours that haven't been processed yet
     const scheduledCampaigns = await db.campaign.findMany({
       where: {
         status: "SCHEDULED",
-        scheduledAt: {
-          lte: currentDate, // Less than or equal to current time
-        },
+        OR: [
+          // Campaigns scheduled for the current hour
+          {
+            scheduledAt: {
+              gte: startOfHour,
+              lte: endOfHour,
+            }
+          },
+          // Past campaigns that weren't processed yet
+          {
+            scheduledAt: {
+              lt: startOfHour
+            }
+          }
+        ]
       },
       include: {
         recipients: {

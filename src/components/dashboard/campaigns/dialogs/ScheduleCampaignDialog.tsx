@@ -47,7 +47,8 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
   // Simple time options
   const timeOptions = [
     "09:00", "10:00", "11:00", "12:00",
-    "01:00", "02:00", "03:00", "04:00", "05:00"
+    "01:00", "02:00", "03:00", "04:00", "05:00",
+    "06:00", "07:00", "08:00"
   ]
 
   const handleScheduleClick = () => {
@@ -104,7 +105,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
       if (period === 'AM' && hour === 12) hour = 0
 
       const scheduleDate = new Date(date)
-      scheduleDate.setHours(hour, minutes, 0, 0)
+      scheduleDate.setHours(hour, 0, 0, 0) // Set minutes and seconds to 0 for exact hour scheduling
 
       // Validate future date
       if (scheduleDate <= new Date()) {
@@ -326,6 +327,9 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                     )
                   })}
                 </div>
+                <div className="mt-2 px-2 py-1 bg-gray-100 dark:bg-zinc-600 rounded text-xs text-gray-500 dark:text-gray-400">
+                  <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> Campaigns are sent at the start of the selected hour</span>
+                </div>
               </div>
 
               {/* Summary */}
@@ -338,7 +342,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                     <div>
                       <h4 className="text-xs font-semibold text-gray-900 dark:text-white mb-0.5">Campaign Schedule</h4>
                       <p className="text-xs text-purple-700 dark:text-purple-300">
-                        <span className="font-medium">{recipientType === "custom" ? customRecipientCount : 100}</span> {recipientType === "first" ? "first" : recipientType === "last" ? "last" : ""} subscribers on {format(date, "MMM d")} at {selectedTime}
+                        <span className="font-medium">{recipientType === "custom" ? customRecipientCount : 100}</span> {recipientType === "first" ? "first" : recipientType === "last" ? "last" : ""} subscribers on {format(date, "MMM d")} at {selectedTime} (sent at the top of the hour)
                       </p>
                     </div>
                   </div>
