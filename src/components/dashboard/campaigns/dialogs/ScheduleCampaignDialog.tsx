@@ -33,6 +33,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
   const [recipientType, setRecipientType] = useState<"first" | "last" | "custom">("first")
   const [customRecipientCount, setCustomRecipientCount] = useState<number>(100)
   const [isMounted, setIsMounted] = useState(false)
+  const [currentStep, setCurrentStep] = useState(1)
 
   // Ensure component is mounted before rendering portals
   useEffect(() => {
@@ -144,6 +145,216 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
     }
   }, [showUpgradeModal])
 
+  const nextStep = () => {
+    if (currentStep < 3) {
+      setCurrentStep(currentStep + 1)
+    }
+  }
+
+  const prevStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1)
+    }
+  }
+
+  // Render step content based on current step
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 1: // Recipients
+        return (
+          <div className="p-6 bg-white dark:bg-zinc-800">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-8 rounded-full bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center">
+                <span className="text-purple-600 dark:text-purple-400 font-medium">1</span>
+              </div>
+              <Label className="text-lg font-medium text-gray-900 dark:text-white">
+                Select Recipients
+              </Label>
+            </div>
+
+            <RadioGroup 
+              value={recipientType} 
+              onValueChange={(value) => setRecipientType(value as "first" | "last" | "custom")}
+              className="mt-4 flex flex-col gap-3"
+            >
+              {[
+                { value: "first", label: "First 100 subscribers" },
+                { value: "last", label: "Last 100 subscribers" },
+                { value: "custom", label: "Custom number" }
+              ].map(({ value, label }) => (
+                <div key={value} 
+                  className={cn(
+                    "flex items-center space-x-3 p-3 rounded-md transition-all duration-200 cursor-pointer",
+                    recipientType === value 
+                      ? "bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-800"
+                      : "hover:bg-gray-50 dark:hover:bg-zinc-700 text-gray-600 dark:text-gray-300 border border-transparent"
+                  )}
+                >
+                  <RadioGroupItem value={value} id={value} className="text-purple-600 dark:text-purple-400 cursor-pointer" />
+                  <Label htmlFor={value} className="text-sm font-medium flex-1 cursor-pointer">
+                    {label}
+                  </Label>
+                </div>
+              ))}
+            </RadioGroup>
+
+            {recipientType === "custom" && (
+              <div className="mt-4 p-4 bg-gray-50 dark:bg-zinc-700 rounded-md">
+                <div className="flex items-center gap-3">
+                  <Input
+                    type="number"
+                    min={1}
+                    max={200}
+                    value={customRecipientCount}
+                    onChange={(e) => setCustomRecipientCount(Number(e.target.value))}
+                    className="w-24 h-10 text-sm rounded-md border-gray-200 dark:border-zinc-700 focus:ring-purple-500 dark:focus:ring-purple-400"
+                  />
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    subscribers (max 200)
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+        )
+      
+      case 2: // Date Selection
+        return (
+          <div className="p-6 bg-white dark:bg-zinc-800">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-8 rounded-full bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center">
+                <span className="text-purple-600 dark:text-purple-400 font-medium">2</span>
+              </div>
+              <Label className="text-lg font-medium text-gray-900 dark:text-white">
+                Select Date
+              </Label>
+            </div>
+
+            <div className="mt-4 flex justify-center">
+              <div className="rounded-md overflow-hidden bg-gray-50 dark:bg-zinc-700 p-2">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  disabled={(date) => date < new Date()}
+                  initialFocus
+                  className="p-3"
+                />
+              </div>
+            </div>
+          </div>
+        )
+      
+      case 3: // Time Selection
+        return (
+          <div className="p-6 bg-white dark:bg-zinc-800">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-8 rounded-full bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center">
+                <span className="text-purple-600 dark:text-purple-400 font-medium">3</span>
+              </div>
+              <Label className="text-lg font-medium text-gray-900 dark:text-white">
+                Select Time
+              </Label>
+            </div>
+
+            <div className="mt-4 max-w-md mx-auto">
+              {/* AM/PM Toggle */}
+              <div className="flex mb-4 bg-gray-50 dark:bg-zinc-700 rounded-md p-1">
+                {["AM", "PM"].map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => setPeriod(p as "AM" | "PM")}
+                    className={cn(
+                      "flex-1 py-2 text-sm font-medium transition-all duration-200 rounded cursor-pointer",
+                      period === p
+                        ? "bg-purple-500 text-white dark:bg-purple-600"
+                        : "text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400"
+                    )}
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
+
+              {/* Time Grid */}
+              <div className="bg-gray-50 dark:bg-zinc-700 rounded-md p-3">
+                <div className="grid grid-cols-3 gap-2">
+                  {timeOptions.map((time) => {
+                    const timeString = `${time} ${period}`
+                    const isSelected = selectedTime === timeString
+
+                    return (
+                      <button
+                        key={time}
+                        onClick={() => setSelectedTime(timeString)}
+                        className={cn(
+                          "py-3 rounded text-sm font-medium transition-all duration-200 cursor-pointer",
+                          isSelected
+                            ? "bg-purple-500 text-white dark:bg-purple-600"
+                            : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-600"
+                        )}
+                      >
+                        {time}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Summary */}
+              {date && (
+                <div className="mt-6 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-100 dark:border-purple-800">
+                  <div className="flex items-center gap-3">
+                    <Clock className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                    <div>
+                      <p className="text-sm font-medium text-purple-700 dark:text-purple-300">
+                        Sending to {recipientType === "custom" ? customRecipientCount : 100} {recipientType === "first" ? "first" : recipientType === "last" ? "last" : ""} subscribers on {format(date, "MMMM d, yyyy")} at {selectedTime}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )
+    }
+  }
+
+  // Progress Bar
+  const renderProgressBar = () => {
+    return (
+      <div className="px-6 pt-6 bg-white dark:bg-zinc-800">
+        <div className="flex items-center justify-between mb-2">
+          {[1, 2, 3].map((step) => (
+            <div key={step} className="flex flex-col items-center">
+              <div
+                className={cn(
+                  "w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-200",
+                  currentStep === step
+                    ? "bg-purple-500 text-white"
+                    : currentStep > step
+                    ? "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300"
+                    : "bg-gray-100 text-gray-500 dark:bg-zinc-700 dark:text-gray-400"
+                )}
+              >
+                {step}
+              </div>
+              <span className="text-xs mt-1 text-gray-500 dark:text-gray-400">
+                {step === 1 ? "Recipients" : step === 2 ? "Date" : "Time"}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="relative h-1 bg-gray-100 dark:bg-zinc-700 rounded-full mt-1 mb-4">
+          <div
+            className="absolute h-1 bg-purple-500 dark:bg-purple-600 rounded-full transition-all duration-300"
+            style={{ width: `${((currentStep - 1) / 2) * 100}%` }}
+          ></div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <>
       <Button 
@@ -159,187 +370,35 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
       {/* Scheduling Dialog - Only shown for Pro users */}
       {!showUpgradeModal && (
         <Dialog open={open && isProUser} onOpenChange={setOpen}>
-          <DialogContent className="sm:max-w-[900px] p-0 rounded-lg border-0 shadow-lg">
+          <DialogContent className="sm:max-w-[600px] p-0 rounded-lg border-0 shadow-lg">
             <DialogHeader className="p-6 bg-white dark:bg-zinc-800 border-b border-gray-100 dark:border-zinc-700">
               <DialogTitle className="text-xl font-semibold text-gray-900 dark:text-white">Schedule Campaign</DialogTitle>
               <DialogDescription className="text-sm text-gray-500 dark:text-gray-400">
-                Configure your campaign schedule in three simple steps
+                Configure when and how to send your campaign
               </DialogDescription>
             </DialogHeader>
 
-            <div className="p-6 bg-white dark:bg-zinc-800">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Column 1: Recipients */}
-                <div className="bg-white dark:bg-zinc-800 border border-gray-100 dark:border-zinc-700 rounded-lg p-4 space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-full bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center">
-                      <span className="text-purple-600 dark:text-purple-400 font-medium">1</span>
-                    </div>
-                    <Label className="text-base font-medium text-gray-900 dark:text-white">
-                      Select Recipients
-                    </Label>
-                  </div>
+            {renderProgressBar()}
+            {renderStepContent()}
 
-                  <RadioGroup 
-                    value={recipientType} 
-                    onValueChange={(value) => setRecipientType(value as "first" | "last" | "custom")}
-                    className="flex flex-col gap-2"
-                  >
-                    {[
-                      { value: "first", label: "First 100 subscribers" },
-                      { value: "last", label: "Last 100 subscribers" },
-                      { value: "custom", label: "Custom number" }
-                    ].map(({ value, label }) => (
-                      <div key={value} 
-                        className={cn(
-                          "flex items-center space-x-3 p-2.5 rounded-md transition-all duration-200 cursor-pointer",
-                          recipientType === value 
-                            ? "bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400"
-                            : "hover:bg-gray-50 dark:hover:bg-zinc-700 text-gray-600 dark:text-gray-300"
-                        )}
-                      >
-                        <RadioGroupItem value={value} id={value} className="text-purple-600 dark:text-purple-400 cursor-pointer" />
-                        <Label htmlFor={value} className="text-sm flex-1 cursor-pointer">
-                          {label}
-                        </Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
-
-                  {recipientType === "custom" && (
-                    <div className="mt-2 p-3 bg-gray-50 dark:bg-zinc-700 rounded-md">
-                      <div className="flex items-center gap-3">
-                        <Input
-                          type="number"
-                          min={1}
-                          max={200}
-                          value={customRecipientCount}
-                          onChange={(e) => setCustomRecipientCount(Number(e.target.value))}
-                          className="w-24 h-9 text-sm rounded-md border-gray-200 dark:border-zinc-700 focus:ring-purple-500 dark:focus:ring-purple-400"
-                        />
-                        <span className="text-sm text-gray-500 dark:text-gray-400">
-                          subscribers (max 200)
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Column 2: Date Selection */}
-                <div className="bg-white dark:bg-zinc-800 border border-gray-100 dark:border-zinc-700 rounded-lg p-4 space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-full bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center">
-                      <span className="text-purple-600 dark:text-purple-400 font-medium">2</span>
-                    </div>
-                    <Label className="text-base font-medium text-gray-900 dark:text-white">
-                      Select Date
-                    </Label>
-                  </div>
-
-                  <div className="rounded-md overflow-hidden bg-gray-50 dark:bg-zinc-700">
-                    <Calendar
-                      mode="single"
-                      selected={date}
-                      onSelect={setDate}
-                      disabled={(date) => date < new Date()}
-                      initialFocus
-                      className="p-3"
-                    />
-                  </div>
-                </div>
-
-                {/* Column 3: Time Selection */}
-                <div className="bg-white dark:bg-zinc-800 border border-gray-100 dark:border-zinc-700 rounded-lg p-4 space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-full bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center">
-                      <span className="text-purple-600 dark:text-purple-400 font-medium">3</span>
-                    </div>
-                    <Label className="text-base font-medium text-gray-900 dark:text-white">
-                      Select Time
-                    </Label>
-                  </div>
-
-                  <div>
-                    {/* AM/PM Toggle */}
-                    <div className="flex mb-3 bg-gray-50 dark:bg-zinc-700 rounded-md p-1">
-                      {["AM", "PM"].map((p) => (
-                        <button
-                          key={p}
-                          onClick={() => setPeriod(p as "AM" | "PM")}
-                          className={cn(
-                            "flex-1 py-1.5 text-sm font-medium transition-all duration-200 rounded cursor-pointer",
-                            period === p
-                              ? "bg-purple-500 text-white dark:bg-purple-600"
-                              : "text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400"
-                          )}
-                        >
-                          {p}
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* Time Grid */}
-                    <div className="bg-gray-50 dark:bg-zinc-700 rounded-md p-2">
-                      <div className="grid grid-cols-3 gap-1.5">
-                        {timeOptions.map((time) => {
-                          const timeString = `${time} ${period}`
-                          const isSelected = selectedTime === timeString
-
-                          return (
-                            <button
-                              key={time}
-                              onClick={() => setSelectedTime(timeString)}
-                              className={cn(
-                                "py-2 px-1 rounded text-sm transition-all duration-200 cursor-pointer",
-                                isSelected
-                                  ? "bg-purple-500 text-white dark:bg-purple-600"
-                                  : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-600"
-                              )}
-                            >
-                              {time}
-                            </button>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Preview Section */}
-              {date && (
-                <div className="mt-6 flex items-center gap-3 p-4 bg-white dark:bg-zinc-800 rounded-lg border border-gray-100 dark:border-zinc-700">
-                  <div className="w-9 h-9 rounded-full bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center">
-                    <Clock className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-0.5">
-                      Campaign Schedule Summary
-                    </h4>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Sending to {recipientType === "custom" ? customRecipientCount : 100} {recipientType === "first" ? "first" : recipientType === "last" ? "last" : ""} subscribers on {format(date, "MMMM d, yyyy")} at {selectedTime}
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="flex justify-end gap-3 p-4 border-t border-gray-100 dark:border-zinc-700 bg-white dark:bg-zinc-800">
+            <div className="flex justify-between p-4 border-t border-gray-100 dark:border-zinc-700 bg-white dark:bg-zinc-800">
               <Button 
                 variant="outline" 
                 size="sm"
-                onClick={() => setOpen(false)}
-                className="h-9 px-4 text-sm bg-white hover:bg-gray-50 text-gray-700 border-gray-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-gray-300 dark:border-zinc-700 rounded-md transition-all duration-200 cursor-pointer"
+                onClick={currentStep === 1 ? () => setOpen(false) : prevStep}
+                className="h-10 px-4 text-sm bg-white hover:bg-gray-50 text-gray-700 border-gray-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-gray-300 dark:border-zinc-700 rounded-md transition-all duration-200 cursor-pointer"
               >
-                Cancel
+                {currentStep === 1 ? "Cancel" : "Back"}
               </Button>
               <Button 
                 size="sm"
-                onClick={handleSchedule} 
-                disabled={loading || !date}
-                className="h-9 px-4 text-sm bg-purple-500 hover:bg-purple-600 dark:bg-purple-600 dark:hover:bg-purple-700 text-white rounded-md transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={currentStep === 3 ? handleSchedule : nextStep} 
+                disabled={(loading || (currentStep === 3 && !date))}
+                className="h-10 px-4 text-sm bg-purple-500 hover:bg-purple-600 dark:bg-purple-600 dark:hover:bg-purple-700 text-white rounded-md transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? "Scheduling..." : "Schedule Campaign"}
+                {currentStep === 3 
+                  ? (loading ? "Scheduling..." : "Schedule Campaign") 
+                  : "Continue"}
               </Button>
             </div>
           </DialogContent>
