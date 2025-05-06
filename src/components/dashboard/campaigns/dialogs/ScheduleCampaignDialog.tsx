@@ -164,7 +164,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
         return (
           <div className="p-4 bg-white dark:bg-zinc-800">
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-6 h-6 rounded-full bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center">
+              <div className="w-6 h-6 bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center">
                 <span className="text-purple-600 dark:text-purple-400 font-medium text-xs">1</span>
               </div>
               <Label className="text-base font-medium text-gray-900 dark:text-white">
@@ -407,8 +407,8 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
       {/* Scheduling Dialog - Only shown for Pro users */}
       {!showUpgradeModal && (
         <Dialog open={open && isProUser} onOpenChange={setOpen}>
-          <DialogContent className="sm:max-w-[480px] p-0 rounded-xl border-0 shadow-xl">
-            <DialogHeader className="p-4 bg-white dark:bg-zinc-800 border-b border-gray-100 dark:border-zinc-700">
+          <DialogContent className="sm:max-w-[480px] p-0 border rounded-lg border-0 shadow-xl ">
+            <DialogHeader className="p-4 bg-white dark:bg-zinc-800 border-b border-gray-100 dark:border-zinc-700 ">
               <DialogTitle className="text-lg font-semibold text-gray-900 dark:text-white">Schedule Campaign</DialogTitle>
               <DialogDescription className="text-xs text-gray-500 dark:text-gray-400">
                 Configure when and how to send your campaign
