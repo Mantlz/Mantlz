@@ -357,7 +357,7 @@ export function TableContent({
                               Cancel Schedule
                             </Button>
                           </AlertDialogTrigger>
-                          <AlertDialogContent>
+                          <AlertDialogContent className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm rounded-lg">
                             <AlertDialogHeader>
                               <AlertDialogTitle>
                                 Cancel Scheduled Campaign
