@@ -6,6 +6,9 @@ import { sendEmail } from "@/services/email-service";
 
 // Vercel Cron Job: This function will be called by Vercel's cron job scheduler
 // See vercel.json configuration for the schedule
+
+// This is a cron job that will be called by Vercel's cron job scheduler
+// See vercel.json configuration for the schedule
 export async function GET() {
   try {
     console.log("Processing scheduled campaigns...");
