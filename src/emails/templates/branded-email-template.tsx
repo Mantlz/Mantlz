@@ -124,11 +124,11 @@ export function BrandedEmailTemplate({
           
           {/* Click Tracking Pixel */}
           {clickTrackingUrl && (
-            <img 
-              src={clickTrackingUrl} 
-              width="1" 
-              height="1" 
-              style={{ display: 'none' }} 
+            <Image
+              src={clickTrackingUrl}
+              width="1"
+              height="1"
+              style={{ display: "none" }}
               alt=""
             />
           )}
