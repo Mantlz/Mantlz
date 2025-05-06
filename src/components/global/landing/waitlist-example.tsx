@@ -57,7 +57,7 @@ export function WaitlistExample() {
         </div> */}
 
         <WaitlistForm
-        formId="cma2jhe2n0001o7raoveu0bcv"
+        formId="cma9tu80t0004o7r0iuisldzg"
         showUsersJoined={true}
         theme="neobrutalism"
 
