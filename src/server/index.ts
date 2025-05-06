@@ -9,6 +9,14 @@ import { paymentRouter } from "./routers/payment-router"
 import { campaignRouter } from "./routers/campaign-router"
 import { trackingRouter } from "./routers/tracking-router"
 
+// This is the main router for the API
+// It combines all the routers into a single router
+// It also sets the base path for the API
+// It also sets the error handler for the API
+// It also sets the cors for the API
+// It also sets the defaults for the API
+// It also sets the router for the API
+
 const api = j
   .router()
   .basePath("/api")
