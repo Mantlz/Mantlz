@@ -82,10 +82,10 @@ const useSubscriptionData = () => {
             interval: "month"
           },
           usage: {
-            formsUsed: usageData.formsUsed || 0,
-            formsLimit: usageData.formsLimit || 0,
-            submissionsUsed: usageData.submissionsUsed || 0,
-            submissionsLimit: usageData.submissionsLimit || 0
+            formsUsed: usageData.usage?.forms?.used || 0,
+            formsLimit: usageData.usage?.forms?.limit || 0,
+            submissionsUsed: usageData.usage?.submissions?.used || 0,
+            submissionsLimit: usageData.usage?.submissions?.limit || 0
           }
         };
       } catch (error) {
