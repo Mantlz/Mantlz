@@ -10,10 +10,7 @@
   "crons": [
     {
       "path": "/api/cron/scheduled-campaigns",
-      "schedule": "*/10 * * * *",
-      "headers": {
-        "Authorization": "Bearer ${CRON_SECRET}"
-      }
+      "schedule": "*/10 * * * *"
     }
   ]
 } 
