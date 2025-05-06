@@ -8,8 +8,8 @@ import {
   Text,
   Hr,
   Link,
+  Img,
 } from '@react-email/components';
-import Image from 'next/image';
 
 export interface BrandedEmailTemplateProps {
   children: React.ReactNode;
@@ -113,7 +113,7 @@ export function BrandedEmailTemplate({
           
           {/* Tracking Pixel */}
           {trackingPixelUrl && (
-            <Image
+            <Img
               src={trackingPixelUrl} 
               width="1" 
               height="1" 
@@ -124,7 +124,7 @@ export function BrandedEmailTemplate({
           
           {/* Click Tracking Pixel */}
           {clickTrackingUrl && (
-            <Image
+            <Img
               src={clickTrackingUrl}
               width="1"
               height="1"
