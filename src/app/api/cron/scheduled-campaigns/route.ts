@@ -1,30 +1,14 @@
+import { NextResponse } from 'next/server';
 import { db } from "@/lib/db";
 import { render } from "@react-email/render";
 import { CampaignEmail } from "@/emails/campaign-email";
 import { sendEmail } from "@/services/email-service";
-import { PrismaClientInitializationError } from "@prisma/client/runtime/library";
 
-/**
- * Process scheduled campaigns that are due to be sent
- */
-export async function processScheduledCampaigns() {
+// Vercel Cron Job: This function will be called by Vercel's cron job scheduler
+// See vercel.json configuration for the schedule
+export async function GET() {
   try {
     console.log("Processing scheduled campaigns...");
-
-    // Perform a simple database query to test the connection
-    try {
-      await db.$queryRaw`SELECT 1`;
-    } catch (error) {
-      if (
-        error instanceof PrismaClientInitializationError ||
-        (error instanceof Error && 
-          (error.message.includes("Can't reach database server") || 
-           error.message.includes("connection")))
-      ) {
-        throw new Error(`Database connection error: ${error.message}`);
-      }
-      console.error("Database test query failed but not due to connection issue:", error);
-    }
 
     // Get current time
     const currentDate = new Date();
@@ -219,19 +203,6 @@ export async function processScheduledCampaigns() {
       } catch (error) {
         console.error(`Error processing campaign ${campaignData.id}:`, error);
         
-        // Check if it's a database connection issue before trying to update the database
-        if (
-          error instanceof PrismaClientInitializationError ||
-          (error instanceof Error && 
-            (error.message.includes("Can't reach database server") || 
-             error.message.includes("connection")))
-        ) {
-          // Don't try to update the database if there's a connection issue
-          console.error("Database connection error - cannot update campaign status");
-          throw error; // Rethrow to be caught by the scheduler's error handling
-        }
-        
-        // Only try to update if it's not a connection issue
         try {
           // Mark campaign as failed
           await db.campaign.update({
@@ -247,16 +218,9 @@ export async function processScheduledCampaigns() {
     }
 
     console.log("Finished processing scheduled campaigns");
+    return NextResponse.json({ success: true, processed: scheduledCampaigns.length });
   } catch (error) {
     console.error("Error in processScheduledCampaigns:", error);
-    // Rethrow database connection errors so the scheduler knows about them
-    if (
-      error instanceof PrismaClientInitializationError ||
-      (error instanceof Error && 
-        (error.message.includes("Can't reach database server") || 
-         error.message.includes("connection")))
-    ) {
-      throw error;
-    }
+    return NextResponse.json({ error: "Failed to process scheduled campaigns" }, { status: 500 });
   }
 } 

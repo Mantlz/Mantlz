@@ -6,5 +6,11 @@
       "use": "@vercel/next"
     }
   ],
-  "installCommand": "npm install --force"
+  "installCommand": "npm install --force",
+  "crons": [
+    {
+      "path": "/api/cron/scheduled-campaigns",
+      "schedule": "*/10 * * * *"
+    }
+  ]
 } 
