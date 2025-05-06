@@ -1,6 +1,5 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { useSubscription } from "../../../../hooks/useSubscription"
@@ -24,7 +23,6 @@ export function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onU
   const router = useRouter()
   const page = Number(searchParams.get("page")) || 1
   const formId = searchParams.get("formId")
-  const viewParam = searchParams.get("view") as "grid" | "list" | null
   const { subscription } = useSubscription()
 
   // Get the plan from the subscription or default to FREE

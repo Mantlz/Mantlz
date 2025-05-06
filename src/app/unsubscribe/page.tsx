@@ -1,18 +1,13 @@
 import { db } from '@/lib/db';
 
-
-interface UnsubscribePageProps {
-  searchParams: {
-    email?: string;
-    formId?: string;
-    campaignId?: string;
-  };
-}
-
-export default async function UnsubscribePage({ searchParams }: UnsubscribePageProps) {
-  const email = searchParams.email;
-  const formId = searchParams.formId;
-  const campaignId = searchParams.campaignId;
+export default async function UnsubscribePage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const email = searchParams.email as string | undefined;
+  const formId = searchParams.formId as string | undefined;
+  const campaignId = searchParams.campaignId as string | undefined;
 
   if (!email || !formId) {
     return (

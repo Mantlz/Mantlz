@@ -9,6 +9,7 @@ import {
   Hr,
   Link,
 } from '@react-email/components';
+import Image from 'next/image';
 
 export interface BrandedEmailTemplateProps {
   children: React.ReactNode;
@@ -112,7 +113,7 @@ export function BrandedEmailTemplate({
           
           {/* Tracking Pixel */}
           {trackingPixelUrl && (
-            <img 
+            <Image
               src={trackingPixelUrl} 
               width="1" 
               height="1" 

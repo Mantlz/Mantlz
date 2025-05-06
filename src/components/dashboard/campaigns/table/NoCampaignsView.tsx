@@ -2,7 +2,6 @@
 
 import { Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useRouter, useSearchParams } from "next/navigation"
 
 interface NoCampaignsViewProps {
   isPremium?: boolean
