@@ -8,7 +8,6 @@ import { client } from '@/lib/client';
 import { ChevronLeft, Send, Mail, Clock, CheckCircle, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { formatCampaignStatus } from '@/components/dashboard/campaigns/table/tableUtils';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { formatDistanceToNow } from 'date-fns';
 import { useSubscription } from '@/hooks/useSubscription';
 import { UpgradeModal } from '@/components/modals/UpgradeModal';
@@ -371,105 +370,74 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
         </div>
       </div>
 
-      {/* Content Tabs */}
-      <Tabs defaultValue="content" className="w-full">
-        <TabsList className="mb-4">
-          <TabsTrigger value="content">Email Content</TabsTrigger>
-          <TabsTrigger value="stats">Statistics</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="content" className="space-y-4">
-          <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800 overflow-hidden">
-            <div className="p-6 border-b border-zinc-100 dark:border-zinc-800">
-              <h3 className="text-lg font-semibold">Email Subject</h3>
-            </div>
-            <div className="p-6">
-              <p className="text-gray-700 dark:text-gray-300">{campaign.subject}</p>
-            </div>
-          </div>
-          
-          <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800 overflow-hidden">
-            <div className="p-6 border-b border-zinc-100 dark:border-zinc-800">
-              <h3 className="text-lg font-semibold">Email Body</h3>
-            </div>
-            <div className="p-6">
-              <div className="p-4 border rounded-md bg-white dark:bg-zinc-950">
-                <div dangerouslySetInnerHTML={{ __html: campaign.content }} />
+      {/* Stats Section */}
+      <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800 overflow-hidden">
+        <div className="p-6 border-b border-zinc-100 dark:border-zinc-800">
+          <h3 className="text-lg font-semibold">Campaign Statistics</h3>
+        </div>
+        <div className="p-6">
+          {campaign.status === 'SENT' ? (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg text-center">
+                <Mail className="h-8 w-8 mx-auto text-blue-600 dark:text-blue-400 mb-2" />
+                <p className="text-2xl font-bold">{campaign._count?.sentEmails || 0}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Emails Sent</p>
+              </div>
+              
+              <div className="bg-green-50 dark:bg-green-900/20 p-6 rounded-lg text-center">
+                <CheckCircle className="h-8 w-8 mx-auto text-green-600 dark:text-green-400 mb-2" />
+                <p className="text-2xl font-bold">0</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Opened</p>
+              </div>
+              
+              <div className="bg-purple-50 dark:bg-purple-900/20 p-6 rounded-lg text-center">
+                <Users className="h-8 w-8 mx-auto text-purple-600 dark:text-purple-400 mb-2" />
+                <p className="text-2xl font-bold">0</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Clicked</p>
+              </div>
+              
+              <div className="bg-amber-50 dark:bg-amber-900/20 p-6 rounded-lg text-center">
+                <Clock className="h-8 w-8 mx-auto text-amber-600 dark:text-amber-400 mb-2" />
+                <p className="text-2xl font-bold">0%</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Open Rate</p>
               </div>
             </div>
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="stats">
-          <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800 overflow-hidden">
-            <div className="p-6 border-b border-zinc-100 dark:border-zinc-800">
-              <h3 className="text-lg font-semibold">Campaign Statistics</h3>
-            </div>
-            <div className="p-6">
-              {campaign.status === 'SENT' ? (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg text-center">
-                    <Mail className="h-8 w-8 mx-auto text-blue-600 dark:text-blue-400 mb-2" />
-                    <p className="text-2xl font-bold">{campaign._count?.sentEmails || 0}</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Emails Sent</p>
-                  </div>
-                  
-                  <div className="bg-green-50 dark:bg-green-900/20 p-6 rounded-lg text-center">
-                    <CheckCircle className="h-8 w-8 mx-auto text-green-600 dark:text-green-400 mb-2" />
-                    <p className="text-2xl font-bold">0</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Opened</p>
-                  </div>
-                  
-                  <div className="bg-purple-50 dark:bg-purple-900/20 p-6 rounded-lg text-center">
-                    <Users className="h-8 w-8 mx-auto text-purple-600 dark:text-purple-400 mb-2" />
-                    <p className="text-2xl font-bold">0</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Clicked</p>
-                  </div>
-                  
-                  <div className="bg-amber-50 dark:bg-amber-900/20 p-6 rounded-lg text-center">
-                    <Clock className="h-8 w-8 mx-auto text-amber-600 dark:text-amber-400 mb-2" />
-                    <p className="text-2xl font-bold">0%</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Open Rate</p>
-                  </div>
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <Mail className="h-12 w-12 mx-auto text-gray-400 dark:text-gray-600 mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No statistics yet</h3>
-                  <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
-                    Statistics will be available after the campaign is sent to your form submissions.
-                  </p>
-                  
-                  {campaign.status === 'DRAFT' && (
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button className="mt-6 gap-1">
-                          <Send className="h-4 w-4" />
-                          Send Campaign Now
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Send Campaign</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Are you sure you want to send this campaign? This action cannot be undone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={handleSendCampaign} disabled={isSending}>
-                            {isSending ? 'Sending...' : 'Send Campaign'}
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  )}
-                </div>
+          ) : (
+            <div className="text-center py-12">
+              <Mail className="h-12 w-12 mx-auto text-gray-400 dark:text-gray-600 mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No statistics yet</h3>
+              <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
+                Statistics will be available after the campaign is sent to your form submissions.
+              </p>
+              
+              {campaign.status === 'DRAFT' && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button className="mt-6 gap-1">
+                      <Send className="h-4 w-4" />
+                      Send Campaign Now
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Send Campaign</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you sure you want to send this campaign? This action cannot be undone.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={handleSendCampaign} disabled={isSending}>
+                        {isSending ? 'Sending...' : 'Send Campaign'}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               )}
             </div>
-          </div>
-        </TabsContent>
-      </Tabs>
+          )}
+        </div>
+      </div>
 
       <UpgradeModal
         isOpen={showUpgradeModal}
