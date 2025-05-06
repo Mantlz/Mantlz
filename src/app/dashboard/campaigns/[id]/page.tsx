@@ -228,7 +228,6 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
   if (loading) {
     return (
       <div className="container py-8 space-y-6">
-        <div className="h-6 w-36 bg-gray-200 dark:bg-gray-800 rounded animate-pulse"></div>
         <div className="grid gap-6 mt-6">
           <div className="h-32 bg-gray-100 dark:bg-gray-900 rounded-lg animate-pulse"></div>
           <div className="h-64 bg-gray-100 dark:bg-gray-900 rounded-lg animate-pulse"></div>
