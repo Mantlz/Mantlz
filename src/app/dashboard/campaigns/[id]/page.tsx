@@ -35,6 +35,7 @@ interface FormData {
   id: string;
   _count?: {
     submissions: number;
+    unsubscribed?: number;
   };
   name?: string;
   userId?: string;
@@ -360,7 +361,7 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
                     <Users className="h-5 w-5 text-gray-900 dark:text-white" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">{campaign.form?._count?.submissions || 0}</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">{campaign.form?._count?.unsubscribed || 0}</p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">Unsubscribed</p>
                   </div>
                 </div>
