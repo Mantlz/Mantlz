@@ -107,7 +107,7 @@ export function UpgradeCard() {
                 Forms
               </span>
               <span className="text-xs text-zinc-500 dark:text-zinc-400  whitespace-nowrap">
-                {usageData.formsUsed || 0}/{currentQuota.maxForms} → {nextQuota.maxForms}
+                {usageData.usage?.forms.used || 0}/{currentQuota.maxForms} → {nextQuota.maxForms}
               </span>
             </div>
           </div>
@@ -121,7 +121,7 @@ export function UpgradeCard() {
                 Submissions
               </span>
               <span className="text-xs text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
-                {usageData.submissionsUsed || 0}/{currentQuota.maxSubmissionsPerMonth} → {nextQuota.maxSubmissionsPerMonth}
+                {usageData.usage?.submissions.used || 0}/{currentQuota.maxSubmissionsPerMonth} → {nextQuota.maxSubmissionsPerMonth}
               </span>
             </div>
           </div>
