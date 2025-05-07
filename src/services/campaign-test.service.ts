@@ -6,6 +6,13 @@ import { sendEmail } from './email-service'
 import { db } from '@/lib/db'
 import { CampaignSendStatus, Prisma } from '@prisma/client'
 
+/**
+ * Response type for test email operations
+ * @property success - indicates if the operation was successful
+ * @property message - descriptive message of the operation result
+ * @property testId - ID of the test email if successful
+ * @property metadata - additional information about the test email
+ */
 interface TestEmailResponse {
   success: boolean
   message: string
@@ -17,6 +24,11 @@ interface TestEmailResponse {
   }
 }
 
+/**
+ * Options for sending a test email
+ * @property campaignId - ID of the campaign to test
+ * @property customTestData - optional custom data to include in the test
+ */
 interface TestEmailOptions {
   campaignId: string
   customTestData?: Prisma.JsonValue
@@ -24,6 +36,9 @@ interface TestEmailOptions {
 
 /**
  * Send a test email for a campaign to the current user's email
+ * @param options - Test email options including campaign ID and custom data
+ * @returns Promise with test email response
+ * @throws Error if email sending fails
  */
 export async function sendTestEmail({ campaignId, customTestData }: TestEmailOptions): Promise<TestEmailResponse> {
   try {
@@ -47,6 +62,7 @@ export async function sendTestEmail({ campaignId, customTestData }: TestEmailOpt
       }
     }
 
+    // Determine sender email from campaign settings or environment variable
     const senderEmail = campaign.senderEmail || campaign.form.emailSettings?.fromEmail || process.env.DEFAULT_FROM_EMAIL
 
     if (!senderEmail) {
@@ -157,10 +173,14 @@ export async function sendTestEmail({ campaignId, customTestData }: TestEmailOpt
 }
 
 /**
- * Get the status of a test email
+ * Get the status of a previously sent test email
+ * @param testId - ID of the test email to check
+ * @returns Promise with test email status and metadata
+ * @throws Error if status retrieval fails
  */
 export async function getTestEmailStatus(testId: string) {
   try {
+    // Retrieve test email record
     const testEmail = await db.sentEmail.findUnique({
       where: { id: testId },
       include: {
@@ -176,6 +196,7 @@ export async function getTestEmailStatus(testId: string) {
       }
     }
 
+    // Return test email status and metadata
     return {
       status: testEmail.status.toLowerCase(),
       error: testEmail.error,
@@ -197,4 +218,4 @@ export async function getTestEmailStatus(testId: string) {
       error: error instanceof Error ? error.message : "Failed to get test status"
     }
   }
-} 
+}

@@ -411,7 +411,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
       {/* Scheduling Dialog - Only shown for Pro users */}
       {!showUpgradeModal && (
         <Dialog open={open && isProUser} onOpenChange={setOpen}>
-          <DialogContent className="sm:max-w-[480px] p-0 border rounded-lg border-0 shadow-xl ">
+          <DialogContent className="sm:max-w-[480px] p-0 border rounded-lg shadow-xl ">
             <DialogHeader className="p-4 bg-white dark:bg-zinc-800 border-b border-gray-100 dark:border-zinc-700 ">
               <DialogTitle className="text-lg font-semibold text-gray-900 dark:text-white">Schedule Campaign</DialogTitle>
               <DialogDescription className="text-xs text-gray-500 dark:text-gray-400">

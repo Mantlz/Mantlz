@@ -1,10 +1,8 @@
 'use client';
 
-import { Mail, Clock, Users } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
 import { Campaign } from './types';
-import { Badge } from '@/components/ui/badge';
-import { formatCampaignStatus } from '@/components/dashboard/campaigns/table/tableUtils';
+
+
 import { CalendarDays } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
@@ -13,14 +11,11 @@ interface CampaignStatsProps {
 }
 
 export function CampaignStats({ campaign }: CampaignStatsProps) {
-  const statusInfo = formatCampaignStatus(campaign.status);
+
 
   return (
     <div className="flex items-center gap-4">
-      <Badge variant="outline" className={`${statusInfo.color}`}>
-        {statusInfo.label}
-      </Badge>
-
+      
       {campaign.status === 'SCHEDULED' && campaign.scheduledAt && (
         <Popover>
           <PopoverTrigger>

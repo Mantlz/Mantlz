@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import React from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,7 @@ import { DetailedMetrics } from './_components/DetailedMetrics';
 import { CampaignActions } from './_components/CampaignActions';
 import { CampaignDetailSkeleton } from './_components/CampaignDetailSkeleton';
 import { fetchCampaignById, fetchCampaignStats, getBackUrl } from './_components/utils';
+import { NoAnalytics } from './_components/NoAnalytics';
 
 interface CampaignDetailPageProps {
   params: Promise<{
@@ -36,6 +37,13 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
   const searchParams = useSearchParams();
   const formId = searchParams.get('formId') ?? undefined;
 
+  const loadStats = useCallback(async () => {
+    setLoadingStats(true);
+    const statsData = await fetchCampaignStats(campaignId);
+    setStats(statsData);
+    setLoadingStats(false);
+  }, [campaignId]);
+
   useEffect(() => {
     async function loadCampaign() {
       setLoading(true);
@@ -47,18 +55,11 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
     loadCampaign();
   }, [campaignId, formId]);
 
-  const loadStats = async () => {
-    setLoadingStats(true);
-    const statsData = await fetchCampaignStats(campaignId);
-    setStats(statsData);
-    setLoadingStats(false);
-  };
-
   useEffect(() => {
     if (campaign?.status === 'SENT' && isPremium) {
       loadStats();
     }
-  }, [campaign?.status, isPremium, campaignId]);
+  }, [campaign?.status, isPremium, campaignId, loadStats]);
 
   const handleBackClick = () => {
     router.push(getBackUrl(formId));
@@ -93,7 +94,7 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
         <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 text-center">
           <h2 className="text-lg font-medium text-red-800 dark:text-red-300">Campaign not found</h2>
           <p className="text-red-600 dark:text-red-400 mt-2">
-            The campaign you're looking for does not exist or you don't have permission to view it.
+            The campaign you&apos;re looking for does not exist or you don&apos;t have permission to view it.
           </p>
         </div>
       </div>
@@ -123,7 +124,7 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
       </div>
 
       {/* Stats Section */}
-      {campaign.status === 'SENT' && (
+      {campaign.status === 'SENT' ? (
         <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm">
           <div className="p-6 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
             <div className="flex items-center gap-2">
@@ -150,6 +151,10 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
             />
           </div>
         </div>
+      ) : (
+        <NoAnalytics 
+          isDraft={campaign.status === 'DRAFT'}
+        />
       )}
 
       <UpgradeModal

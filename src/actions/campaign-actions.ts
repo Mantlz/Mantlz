@@ -2,6 +2,12 @@
 
 import { sendTestEmail, getTestEmailStatus } from '@/services/campaign-test.service';
 
+/**
+ * Sends a test email for a campaign
+ * @param campaignId The ID of the campaign to test
+ * @returns Promise with success status and message
+ * @throws Error if test email fails to send
+ */
 export async function sendCampaignTestEmail(campaignId: string) {
   try {
     return await sendTestEmail({ campaignId });
@@ -14,6 +20,12 @@ export async function sendCampaignTestEmail(campaignId: string) {
   }
 }
 
+/**
+ * Checks the status of a previously sent test email
+ * @param testId The ID of the test email to check
+ * @returns Promise with test email status and any error if present
+ * @throws Error if status check fails
+ */
 export async function checkTestEmailStatus(testId: string) {
   try {
     return await getTestEmailStatus(testId);
@@ -24,4 +36,4 @@ export async function checkTestEmailStatus(testId: string) {
       error: error instanceof Error ? error.message : 'Failed to check test status'
     };
   }
-} 
+}

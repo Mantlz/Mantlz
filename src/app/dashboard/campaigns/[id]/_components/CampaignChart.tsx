@@ -2,14 +2,14 @@
 
 import * as React from 'react';
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+
+
 import {
   ChartConfig,
-  ChartContainer,
   ChartTooltip,
-  ChartTooltipContent,
 } from '@/components/ui/chart';
+
+
 
 interface CampaignMetric {
   date: string;
@@ -94,23 +94,23 @@ export function CampaignChart({ data }: CampaignChartProps) {
   return (
     <div className="relative overflow-hidden">
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-      <div className="relative p-6 sm:p-8 lg:p-12">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
+      <div className="relative p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
           <div className="space-y-1">
-            <h2 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white">Campaign Analytics</h2>
+            <h2 className="text-lg font-medium text-gray-900 dark:text-white">Campaign Analytics</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">Monthly email campaign performance metrics</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {(['opens', 'clicks', 'bounces'] as const).map((key) => (
               <div
                 key={key}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700"
+                className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-white/50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700"
               >
                 <div
-                  className="w-3 h-3 rounded-full"
+                  className="w-2.5 h-2.5 rounded-full"
                   style={{ backgroundColor: chartConfig[key].color }}
                 />
-                <span className="text-sm text-zinc-600 dark:text-zinc-400">
+                <span className="text-xs text-zinc-600 dark:text-zinc-400">
                   {chartConfig[key].label}:
                   <span className="ml-1 font-medium text-zinc-900 dark:text-white">
                     {totals[key].toLocaleString()}
@@ -121,8 +121,8 @@ export function CampaignChart({ data }: CampaignChartProps) {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-800/50 rounded-lg p-4 sm:p-5 border border-zinc-100 dark:border-zinc-800/50">
-          <div className="h-[400px] w-full">
+        <div className="bg-white dark:bg-zinc-800/50 rounded-lg p-3 sm:p-4 border border-zinc-100 dark:border-zinc-800/50">
+          <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={monthlyData}
@@ -153,15 +153,16 @@ export function CampaignChart({ data }: CampaignChartProps) {
                           <p className="text-sm font-medium text-gray-900 dark:text-white mb-2">
                             {label}
                           </p>
-                          {payload.map((entry: any) => {
+                          {payload.map((entry) => {
                             const metricName = entry.dataKey as MetricKey;
+                            const value = typeof entry.value === 'number' ? entry.value : 0;
                             return (
                               <p
                                 key={metricName}
                                 className="text-sm text-gray-500 dark:text-gray-400"
                                 style={{ color: chartConfig[metricName].color }}
                               >
-                                {chartConfig[metricName].label}: {entry.value.toLocaleString()}
+                                {chartConfig[metricName].label}: {value.toLocaleString()}
                               </p>
                             );
                           })}

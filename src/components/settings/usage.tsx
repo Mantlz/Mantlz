@@ -61,10 +61,6 @@ interface PlanUsageData {
   plan: string;
 }
 
-// Interface for total submissions data
-interface TotalSubmissionsData {
-  totalSubmissions: number;
-}
 
 // Create custom hooks for API calls
 const useUsageData = () => {

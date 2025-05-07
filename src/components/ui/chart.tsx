@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import * as RechartsPrimitive from "recharts"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip'
+
 
 import { cn } from "@/lib/utils"
 
