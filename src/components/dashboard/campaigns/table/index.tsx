@@ -4,7 +4,7 @@ import React, { Suspense, useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { useSubscription } from "../../../../hooks/useSubscription"
-import { CampaignsGridSkeleton } from "../../../../components/skeletons"
+import { CampaignsGridSkeleton,CampaignsTableHeaderSkeleton } from "../../../../components/skeletons"
 import { Button } from "../../../../components/ui/button"
 import { FileSpreadsheet, Mail, LayoutGrid, List } from "lucide-react"
 import { FormsResponse, CampaignResponse } from "./types"
@@ -13,7 +13,7 @@ import { TableHeader } from "./TableHeader"
 import { TableContent } from "./TableContent"
 
 import { CampaignTableSkeleton } from "./CampaignTableSkeleton"
-import { LogsTableHeaderSkeleton } from "../../../../components/skeletons"
+
 
 
 interface CampaignsTableProps {
@@ -123,7 +123,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
     if (isLoadingForms || isLoadingCampaigns || !data) {
       return (
         <div className="space-y-6 sm:space-y-8">
-          <LogsTableHeaderSkeleton />
+          <CampaignsTableHeaderSkeleton />
           <CampaignTableSkeleton />
         </div>
       );
