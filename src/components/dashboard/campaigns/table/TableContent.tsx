@@ -48,7 +48,7 @@ import { formatDistanceToNow } from "date-fns";
 import { client } from "@/lib/client";
 import { toast } from "sonner";
 import { ScheduleCampaignDialog } from "../dialogs/ScheduleCampaignDialog";
-import { TestEmailDialog } from "./TestEmailDialog";
+import { TestEmailDialog } from "../dialogs/TestEmailDialog";
 import { SendCampaignDialog } from "../dialogs/SendCampaignDialog";
 
 interface TableContentProps {
@@ -314,7 +314,7 @@ export function TableContent({
                             </span>
                           </div>
                         </PopoverTrigger>
-                        <PopoverContent className="w-60">
+                        <PopoverContent className="w-60 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800">
                           <p className="text-sm text-gray-600 dark:text-gray-300">
                             Number of recipients (excluding test emails)
                           </p>

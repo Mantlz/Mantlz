@@ -276,7 +276,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">
-                        {formsData.forms.reduce((total, form) => total + (form.campaignCount || 0), 0)}
+                        {formsData?.forms?.reduce((total, form) => total + (form._count?.campaigns || 0), 0) || 0}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">Total Campaigns</p>
                     </div>

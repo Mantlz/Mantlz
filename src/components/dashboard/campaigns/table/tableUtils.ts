@@ -19,7 +19,8 @@ export async function fetchUserForms(page = 1, itemsPerPage = 8): Promise<FormsR
         createdAt: form.createdAt.toString(),
         _count: {
           submissions: form.submissionCount || 0,
-          unsubscribed: form.unsubscribedCount || 0
+          unsubscribed: form.unsubscribedCount || 0,
+          campaigns: form.campaignCount || 0
         }
       })),
       pagination: {

@@ -124,7 +124,8 @@ export const formRouter = j.router({
         include: {
           _count: {
             select: { 
-              submissions: true
+              submissions: true,
+              campaigns: true // Add campaigns count
             }
           },
           submissions: {
@@ -148,6 +149,7 @@ export const formRouter = j.router({
           name: form.name,
           description: form.description,
           submissionCount: form._count.submissions,
+          campaignCount: form._count.campaigns, // Add campaign count
           unsubscribedCount: form.submissions.length,
           createdAt: form.createdAt,
           updatedAt: form.updatedAt,

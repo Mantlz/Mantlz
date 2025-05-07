@@ -1,4 +1,4 @@
-export { TestEmailDialog } from './TestEmailDialog'
+export { TestEmailDialog } from '../dialogs/TestEmailDialog'
 export { TableContent } from './TableContent'
 export { TableHeader } from './TableHeader'
 export { ScheduleCampaignDialog } from '../dialogs/ScheduleCampaignDialog'

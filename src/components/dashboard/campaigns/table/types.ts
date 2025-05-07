@@ -38,6 +38,7 @@ export interface FormsResponse {
     _count?: {
       submissions: number
       unsubscribed: number
+      campaigns: number
     }
   }>
   pagination?: {
