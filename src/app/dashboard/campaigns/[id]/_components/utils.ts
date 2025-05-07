@@ -1,50 +1,75 @@
 import { Campaign, CampaignStats } from './types';
 import { client } from '@/lib/client';
 
-function transformCampaign(data: any): Campaign {
+interface ApiCampaign {
+  id: string;
+  name: string;
+  description: string | null;
+  status: Campaign['status'];
+  createdAt: string;
+  sentAt: string | null;
+  scheduledAt: string | null;
+  _count: {
+    sentEmails: number;
+    recipients: number;
+  };
+}
+
+interface ApiCampaignStats {
+  sentCount: number;
+  totalOpens: number;
+  totalClicks: number;
+  bounces: number;
+  spamReports: number;
+  timeSeriesData?: Array<{
+    date: string;
+    opens: number;
+    clicks: number;
+    bounces: number;
+  }>;
+}
+
+function transformCampaign(data: ApiCampaign): Campaign {
   return {
     id: data.id,
     name: data.name,
-    description: data.description,
+    description: data.description || undefined,
     status: data.status,
     createdAt: new Date(data.createdAt).toISOString(),
     sentAt: data.sentAt ? new Date(data.sentAt).toISOString() : undefined,
     scheduledAt: data.scheduledAt ? new Date(data.scheduledAt).toISOString() : undefined,
     _count: {
-      sentEmails: data._count?.sentEmails || 0,
-      recipients: data._count?.recipients || 0
+      sentEmails: data._count.sentEmails,
+      recipients: data._count.recipients
     }
   };
 }
 
-export async function fetchCampaignById(campaignId: string, formId?: string | null): Promise<Campaign | null> {
+export async function fetchCampaignById(id: string, formId?: string): Promise<Campaign | null> {
   try {
     if (!formId) {
-      // Get user forms
       const formsResponse = await client.forms.getUserForms.$get();
       const formsData = await formsResponse.json();
       
-      // Try each form to find the campaign
       for (const form of formsData.forms) {
         const campaignsResponse = await client.campaign.getFormCampaigns.$get({
           formId: form.id
         });
-        const campaigns = await campaignsResponse.json();
+        const campaigns = (await campaignsResponse.json()) as unknown as ApiCampaign[];
         
-        const foundCampaign = campaigns.find((c: any) => c.id === campaignId);
+        const foundCampaign = campaigns.find(c => c.id === id);
         if (foundCampaign) {
           return transformCampaign(foundCampaign);
         }
       }
       return null;
     } else {
-      // If we have formId in the URL, just fetch campaigns for that form
       const campaignsResponse = await client.campaign.getFormCampaigns.$get({
         formId: formId
       });
-      const campaigns = await campaignsResponse.json();
+      const campaigns = (await campaignsResponse.json()) as unknown as ApiCampaign[];
       
-      const foundCampaign = campaigns.find((c: any) => c.id === campaignId);
+      const foundCampaign = campaigns.find(c => c.id === id);
       return foundCampaign ? transformCampaign(foundCampaign) : null;
     }
   } catch (error) {
@@ -53,30 +78,42 @@ export async function fetchCampaignById(campaignId: string, formId?: string | nu
   }
 }
 
-export async function fetchCampaignStats(campaignId: string): Promise<CampaignStats | null> {
+export async function fetchCampaignStats(id: string): Promise<CampaignStats | null> {
   try {
     const response = await client.campaign.getStats.$get({
-      campaignId
+      campaignId: id
     });
-    const data = await response.json();
+    const data = await response.json() as ApiCampaignStats;
     
-    // Transform API response to match CampaignStats interface
-    return {
-      totalRecipients: data.sentCount || 0,
-      totalSent: data.sentCount || 0,
+    console.log('Campaign stats API response:', data);
+    
+    // Generate time series data if not provided by API
+    const timeSeriesData = [{
+      date: new Date().toISOString(),
+      opens: data.totalOpens,
+      clicks: data.totalClicks,
+      bounces: data.bounces
+    }];
+    
+    const stats = {
+      totalRecipients: data.sentCount,
       totalDelivered: data.sentCount - (data.bounces || 0),
-      totalOpened: data.totalOpens || 0,
-      totalClicked: data.totalClicks || 0,
-      totalBounced: data.bounces || 0,
-      totalComplaints: data.spamReports || 0,
-      totalUnsubscribed: 0 // Add if available in API
+      totalOpened: data.totalOpens,
+      totalClicked: data.totalClicks,
+      totalBounced: data.bounces,
+      totalComplaints: data.spamReports,
+      totalUnsubscribed: 0,
+      timeSeriesData
     };
+    
+    console.log('Transformed campaign stats:', stats);
+    return stats;
   } catch (error) {
     console.error('Error fetching campaign stats:', error);
     return null;
   }
 }
 
-export function getBackUrl(formId?: string | null) {
-  return formId ? `/dashboard/campaigns?formId=${formId}` : '/dashboard/campaigns';
+export function getBackUrl(formId?: string): string {
+  return formId ? `/dashboard/forms/${formId}/campaigns` : '/dashboard/campaigns';
 } 

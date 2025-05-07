@@ -34,7 +34,7 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
   const [loadingStats, setLoadingStats] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const formId = searchParams.get('formId');
+  const formId = searchParams.get('formId') ?? undefined;
 
   useEffect(() => {
     async function loadCampaign() {
@@ -47,18 +47,18 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
     loadCampaign();
   }, [campaignId, formId]);
 
-  useEffect(() => {
-    if (campaign?.status === 'SENT' && isPremium) {
-      loadStats();
-    }
-  }, [campaign?.status, isPremium, campaignId]);
-
   const loadStats = async () => {
     setLoadingStats(true);
     const statsData = await fetchCampaignStats(campaignId);
     setStats(statsData);
     setLoadingStats(false);
   };
+
+  useEffect(() => {
+    if (campaign?.status === 'SENT' && isPremium) {
+      loadStats();
+    }
+  }, [campaign?.status, isPremium, campaignId]);
 
   const handleBackClick = () => {
     router.push(getBackUrl(formId));
@@ -123,39 +123,41 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
       </div>
 
       {/* Stats Section */}
-      <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm">
-        <div className="p-6 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <h3 className="text-sm font-medium text-gray-900 dark:text-white">Campaign Statistics</h3>
-            {campaign.status === 'SENT' && !isPremium && (
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => setShowUpgradeModal(true)}
-                className="h-7 px-2 text-xs cursor-pointer gap-1 bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
-              >
-                Upgrade for Analytics
-              </Button>
-            )}
+      {campaign.status === 'SENT' && (
+        <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm">
+          <div className="p-6 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm font-medium text-gray-900 dark:text-white">Campaign Analytics</h3>
+              {!isPremium && (
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setShowUpgradeModal(true)}
+                  className="h-7 px-2 text-xs cursor-pointer gap-1 bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                >
+                  Upgrade for Analytics
+                </Button>
+              )}
+            </div>
+          </div>
+          <div className="p-6">
+            <DetailedMetrics
+              stats={stats}
+              isPremium={isPremium}
+              onUpgradeClick={() => setShowUpgradeModal(true)}
+              onRetryStats={loadStats}
+              loadingStats={loadingStats}
+            />
           </div>
         </div>
-        <div className="p-6">
-          <DetailedMetrics
-            stats={stats}
-            isPremium={isPremium}
-            onUpgradeClick={() => setShowUpgradeModal(true)}
-            onRetryStats={loadStats}
-            loadingStats={loadingStats}
-          />
-        </div>
-      </div>
+      )}
 
       <UpgradeModal
         isOpen={showUpgradeModal}
         onClose={() => setShowUpgradeModal(false)}
-        featureName="Email Campaigns"
+        featureName="Email Campaign Analytics"
         featureIcon={<Mail className="h-5 w-5 text-slate-700 dark:text-slate-300" />}
-        description="Create and manage email campaigns with advanced features like scheduling, analytics, and more. Available on Standard and Pro plans."
+        description="Get detailed insights into your campaign performance with advanced analytics. Track opens, clicks, bounces, and more in real-time."
       />
     </div>
   );
