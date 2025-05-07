@@ -47,14 +47,7 @@ export async function sendTestEmail({ campaignId, customTestData }: TestEmailOpt
       }
     }
 
-    if (!campaign.form.emailSettings?.enabled) {
-      return {
-        success: false,
-        message: "Email settings are not enabled for this form"
-      }
-    }
-
-    const senderEmail = campaign.senderEmail || campaign.form.emailSettings.fromEmail || process.env.DEFAULT_FROM_EMAIL
+    const senderEmail = campaign.senderEmail || campaign.form.emailSettings?.fromEmail || process.env.DEFAULT_FROM_EMAIL
 
     if (!senderEmail) {
       return {

@@ -14,6 +14,7 @@ interface TestEmailDialogProps {
   onClose: () => void
   onUpgradeClick?: () => void
   userPlan: string
+  campaignStatus: 'DRAFT' | 'SCHEDULED' | 'SENDING' | 'SENT' | 'FAILED' | 'CANCELLED'
 }
 
 export function TestEmailDialog({ 
@@ -21,7 +22,8 @@ export function TestEmailDialog({
   isOpen, 
   onClose,
   onUpgradeClick,
-  userPlan
+  userPlan,
+  campaignStatus
 }: TestEmailDialogProps) {
   const [loading, setLoading] = useState(false)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
@@ -29,6 +31,7 @@ export function TestEmailDialog({
   const { user } = useUser()
 
   const isPaidUser = userPlan === 'PRO' || userPlan === 'STANDARD'
+  const isDraft = campaignStatus === 'DRAFT'
 
   // Ensure component is mounted before rendering portals
   useEffect(() => {
@@ -46,6 +49,12 @@ export function TestEmailDialog({
   const handleTestEmail = async () => {
     if (!isPaidUser) {
       onUpgradeClick?.()
+      onClose()
+      return
+    }
+
+    if (!isDraft) {
+      toast.error("Test emails can only be sent for draft campaigns")
       onClose()
       return
     }
@@ -145,6 +154,7 @@ export function TestEmailDialog({
               </DialogTitle>
               <DialogDescription className="mt-2 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
                 Send a test email to verify your campaign content and settings.
+                {!isDraft && " Test emails can only be sent for draft campaigns."}
               </DialogDescription>
             </DialogHeader>
 
@@ -186,8 +196,8 @@ export function TestEmailDialog({
                 </Button>
                 <Button
                   onClick={handleTestEmail}
-                  disabled={loading || !isPaidUser}
-                  className={`${isPaidUser ? 'bg-purple-500 hover:bg-purple-600' : 'bg-gray-400'} text-white px-4 shadow-sm`}
+                  disabled={loading || !isPaidUser || !isDraft}
+                  className={`${isPaidUser && isDraft ? 'bg-purple-500 hover:bg-purple-600' : 'bg-gray-400'} text-white px-4 shadow-sm`}
                 >
                   {loading ? (
                     <>
@@ -197,7 +207,7 @@ export function TestEmailDialog({
                   ) : (
                     <>
                       <Send className="mr-2 h-4 w-4" />
-                      {isPaidUser ? 'Send Test' : 'Upgrade Required'}
+                      {!isPaidUser ? 'Upgrade Required' : !isDraft ? 'Not Available' : 'Send Test'}
                     </>
                   )}
                 </Button>

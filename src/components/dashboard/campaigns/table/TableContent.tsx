@@ -414,12 +414,14 @@ export function TableContent({
                           className="w-[180px] p-0 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800"
                         >
                           <button
-                            className="w-full flex items-center px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left text-sm text-gray-700 dark:text-gray-300 cursor-pointer"
+                            className="w-full flex items-center px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left text-sm text-gray-700 dark:text-gray-300 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                             onClick={() =>
                               !isPremium
                                 ? onUpgradeClick?.()
                                 : setShowTestEmailDialog(campaign.id)
                             }
+                            disabled={campaign.status !== 'DRAFT'}
+                            title={campaign.status !== 'DRAFT' ? "Test emails can only be sent for draft campaigns" : undefined}
                           >
                             <Mail className="h-4 w-4 mr-2" />
                             Send Test Email
@@ -541,6 +543,7 @@ export function TableContent({
           onClose={() => setShowTestEmailDialog(null)}
           onUpgradeClick={onUpgradeClick}
           userPlan={userPlan}
+          campaignStatus={data.campaigns.find(c => c.id === showTestEmailDialog)?.status || 'DRAFT'}
         />
       )}
     </div>
