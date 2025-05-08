@@ -59,7 +59,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://mantlz.com',
+    url: 'https://mantlz.app',
     siteName: 'Mantlz',
     title: 'Mantlz - Professional Form Builder Platform',
     description: 'Create powerful, customizable forms with Mantlz. The ultimate form builder platform for businesses and developers. Build, deploy, and analyze forms effortlessly.',
