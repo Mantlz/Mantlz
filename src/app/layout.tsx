@@ -29,7 +29,7 @@ const monoFont = Space_Mono({
 export const metadata: Metadata = {
   title: "Mantlz - Build Custom Forms with Ease",
   description: "Create powerful, customizable forms with Mantlz. The ultimate form builder platform for businesses and developers. Build, deploy, and analyze forms effortlessly.",
-  metadataBase: new URL('https://mantlz.com'),
+  metadataBase: new URL('https://mantlz.app'),
   keywords: [
     'form builder',
     'custom forms',
