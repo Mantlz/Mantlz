@@ -1,4 +1,4 @@
-import { pricingMetadata } from '../metadata'
+import { pricingMetadata } from '@/config/metadata'
 
 export const metadata = pricingMetadata
 

@@ -1,4 +1,4 @@
-import { logsMetadata } from '@/app/metadata'
+import { logsMetadata } from '@/config/metadata'
 
 export const metadata = logsMetadata
 

@@ -12,19 +12,6 @@ import Pricing from "@/components/global/landing/pricing";
 import Faq from "@/components/global/landing/faq";
 import BottomCTA from "@/components/global/landing/bottomcta";
 import { Suspense } from "react";
-import { Metadata } from 'next'
-import { defaultMetadata } from '@/config/metadata'
-
-export const metadata: Metadata = {
-  ...defaultMetadata,
-  title: 'Welcome to Mantle - Form for developers',
-  description: 'Mantle is a form builder for developers. It is a simple and easy to use form builder that allows you to create forms quickly and easily.',
-  openGraph: {
-    ...defaultMetadata.openGraph,
-    title: 'Welcome to Mantle - Form for developers',
-    description: 'Mantle is a form builder for developers. It is a simple and easy to use form builder that allows you to create forms quickly and easily.',
-  },
-}
 
 export default function LandingPage() {
   return (

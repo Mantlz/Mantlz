@@ -1,15 +1,7 @@
 import { ClientRoot } from "@/components/providers/client-root"
-import { Metadata } from 'next'
+import { dashboardMetadata } from '@/config/metadata'
 
-export const metadata: Metadata = {
-  title: 'Dashboard | Mantle',
-  description: 'Manage your campaigns and forms in one place',
-  robots: {
-    index: false,
-    follow: false,
-  },
-}
-
+export const metadata = dashboardMetadata
 export default function DashboardLayout({
   children,
 }: {

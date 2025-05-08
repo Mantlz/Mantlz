@@ -1,4 +1,4 @@
-import { termsMetadata } from '../metadata'
+import { termsMetadata } from '@/config/metadata'
 
 export const metadata = termsMetadata
 

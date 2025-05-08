@@ -1,4 +1,4 @@
-import { privacyMetadata } from '../metadata'
+import { privacyMetadata } from '@/config/metadata'
 
 export const metadata = privacyMetadata
 
