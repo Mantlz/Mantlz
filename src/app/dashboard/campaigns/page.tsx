@@ -5,16 +5,9 @@ import { UpgradeModal } from '@/components/modals/UpgradeModal';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useState } from 'react';
 import { Mail } from 'lucide-react';
-import { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Campaigns | Dashboard',
-  description: 'View and manage your email campaigns',
-  robots: {
-    index: false,
-    follow: false,
-  },
-}
+
+
 
 export default function CampaignsPage() {
   const { isPremium } = useSubscription();

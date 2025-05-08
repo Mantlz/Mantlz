@@ -4,7 +4,6 @@ import { AlertCircle, Lock, Shield, Eye, Database, Mail } from 'lucide-react';
 import Footer from '@/components/global/landing/footer';
 import { Navbar } from '@/components/global/landing/navbar';
 import { Container } from '@/components/global/landing/container';
-import { Metadata } from 'next'
 
 interface PolicySectionProps {
   title: string;
@@ -176,12 +175,3 @@ const PrivacyPolicy: React.FC = () => (
 );
 
 export default PrivacyPolicy;
-
-export const metadata: Metadata = {
-  title: 'Privacy Policy | Mantle',
-  description: 'Learn about how we collect, use, and protect your personal information',
-  openGraph: {
-    title: 'Privacy Policy | Mantle',
-    description: 'Learn about how we collect, use, and protect your personal information',
-  },
-}
