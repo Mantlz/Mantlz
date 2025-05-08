@@ -16,6 +16,7 @@ import { BreadcrumbSkeleton } from "@/components/skeletons/breadcrumb-skeleton"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { QuestionModal } from "@/components/modals/QuestionModal"
+import { UpgradeButton } from "@/components/global/upgrade-button"
 
 // Custom hook for handling mounted state
 function useIsMounted() {
@@ -133,6 +134,8 @@ const NavigationSection = memo(function NavigationSection() {
 const ActionButtonsSection = memo(function ActionButtonsSection() {
   return (
     <div className="flex items-center gap-4">
+      <UpgradeButton />
+      
       <QuestionModal 
         trigger={
           <Button 

@@ -18,6 +18,7 @@ import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 
 import { QuestionModal } from "@/components/modals/QuestionModal"
+import { UpgradeButton } from "@/components/global/upgrade-button"
 
 // User dropdown with loading state
 const UserDropdown = memo(function UserDropdown() {
@@ -261,6 +262,8 @@ const MobileNavMenu = memo(function MobileNavMenu() {
 const ActionButtonsSection = memo(function ActionButtonsSection() {
   return (
     <>
+      <UpgradeButton />
+      
       <QuestionModal 
         trigger={
           <Button
