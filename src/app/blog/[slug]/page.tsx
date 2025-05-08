@@ -4,11 +4,14 @@ import { groq } from 'next-sanity';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PortableText, PortableTextComponents } from '@portabletext/react';
-import { PortableTextBlock } from '@portabletext/types'; // Import the type
+import { PortableTextBlock } from '@portabletext/types';
+import { Suspense } from 'react';
 
-interface PostParams {
-  params: { slug: string };
-}
+type Props = {
+  params: Promise<{
+    slug: string;
+  }>;
+};
 
 interface Author {
   name: string;
@@ -26,9 +29,19 @@ interface Post {
       _ref: string;
     };
   };
-  body: PortableTextBlock[]; // Use the specific type for Portable Text
+  body: PortableTextBlock[];
   author: Author;
   publishedAt: string;
+}
+
+// Generate static params for all blog posts
+export async function generateStaticParams() {
+  const query = groq`*[_type == "post"]{ 'slug': slug.current }`;
+  const slugs = await client.fetch<Array<{ slug: string }>>(query);
+  
+  return slugs.map((slug) => ({
+    slug: slug.slug,
+  }));
 }
 
 const query = groq`
@@ -48,11 +61,11 @@ const ptComponents: PortableTextComponents = {
         return null;
       }
       return (
-        <div className="relative w-full h-64 md:h-96 my-8">
+        <div className="relative w-full h-64 md:h-96 my-8 rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800">
           <Image
             src={urlFor(value).width(800).height(600).fit('max').auto('format').url()}
             alt={value.alt || ' '}
-            className="rounded-lg"
+            className="rounded-2xl object-cover"
             fill
           />
         </div>
@@ -60,14 +73,14 @@ const ptComponents: PortableTextComponents = {
     },
   },
   block: {
-    h1: ({ children }: { children?: React.ReactNode }) => <h1 className="text-3xl font-bold mt-8 mb-4">{children}</h1>,
-    h2: ({ children }: { children?: React.ReactNode }) => <h2 className="text-2xl font-semibold mt-8 mb-4">{children}</h2>,
-    h3: ({ children }: { children?: React.ReactNode }) => <h3 className="text-xl font-semibold mt-6 mb-3">{children}</h3>,
-    normal: ({ children }: { children?: React.ReactNode }) => <p className="mt-4 leading-7">{children}</p>,
+    h1: ({ children }: { children?: React.ReactNode }) => <h1 className="text-3xl font-bold mt-8 mb-4 text-gray-900 dark:text-white">{children}</h1>,
+    h2: ({ children }: { children?: React.ReactNode }) => <h2 className="text-2xl font-semibold mt-8 mb-4 text-gray-900 dark:text-white">{children}</h2>,
+    h3: ({ children }: { children?: React.ReactNode }) => <h3 className="text-xl font-semibold mt-6 mb-3 text-gray-900 dark:text-white">{children}</h3>,
+    normal: ({ children }: { children?: React.ReactNode }) => <p className="mt-4 leading-7 text-gray-600 dark:text-gray-300">{children}</p>,
   },
   list: {
-    bullet: ({ children }: { children?: React.ReactNode }) => <ul className="mt-4 list-disc list-inside">{children}</ul>,
-    number: ({ children }: { children?: React.ReactNode }) => <ol className="mt-4 list-decimal list-inside">{children}</ol>,
+    bullet: ({ children }: { children?: React.ReactNode }) => <ul className="mt-4 list-disc list-inside text-gray-600 dark:text-gray-300">{children}</ul>,
+    number: ({ children }: { children?: React.ReactNode }) => <ol className="mt-4 list-decimal list-inside text-gray-600 dark:text-gray-300">{children}</ol>,
   },
   listItem: {
     bullet: ({ children }: { children?: React.ReactNode }) => <li className="mt-2">{children}</li>,
@@ -77,7 +90,12 @@ const ptComponents: PortableTextComponents = {
     link: ({ value, children }: { value?: { href: string }; children?: React.ReactNode }) => {
       const target = (value?.href || '').startsWith('http') ? '_blank' : undefined;
       return (
-        <a href={value?.href} target={target} rel={target === '_blank' ? 'noindex nofollow' : undefined} className="text-blue-500 hover:text-blue-600 transition-colors duration-200">
+        <a 
+          href={value?.href} 
+          target={target} 
+          rel={target === '_blank' ? 'noindex nofollow' : undefined} 
+          className="text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
+        >
           {children}
         </a>
       );
@@ -85,64 +103,85 @@ const ptComponents: PortableTextComponents = {
   },
 };
 
-export default async function BlogPost({ params }: PostParams) {
-  const post = await client.fetch<Post>(query, { slug: params.slug });
+async function getPost(slug: string) {
+  const post = await client.fetch<Post>(query, { slug });
+  return post;
+}
+
+export default async function BlogPost({ params }: Props) {
+  // Await the params
+  const { slug } = await params;
+  const post = await getPost(slug);
 
   if (!post) {
-    return <div>Post not found</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-xl text-gray-600 dark:text-gray-400">Post not found</p>
+      </div>
+    );
   }
 
   return (
     <div className="bg-white dark:bg-gray-900 min-h-screen transition-colors duration-300">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <Link href="/blog" className="text-sm font-medium bg-orange-600 p-2  border border-black rounded-lg text-black hover:text-gray-400 dark:text-gray-400 dark:hover:text-white transition-colors duration-200">
-          ← Back to Blog
-        </Link>
-        <article className="mt-8">
-          <header className="mb-16">
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">{post.title}</h1>
-            <div className="mt-6 flex items-center">
-              {post.author.image && (
-                <Image
-                  src={urlFor(post.author.image).width(40).height(40).url()}
-                  alt={post.author.name}
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                />
-              )}
-              <div className="ml-3">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">{post.author.name}</p>
-                <div className="flex space-x-1 text-sm text-gray-500 dark:text-gray-400">
-                  <time dateTime={post.publishedAt}>
-                    {new Date(post.publishedAt).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
-                  </time>
+      <Suspense fallback={<div>Loading...</div>}>
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <Link 
+            href="/blog" 
+            className="inline-flex items-center text-sm font-medium bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
+          >
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Blog
+          </Link>
+          <article className="mt-8">
+            <header className="mb-16">
+              <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">{post.title}</h1>
+              <div className="mt-6 flex items-center">
+                <div className="bg-gray-100 dark:bg-gray-800 rounded-full p-1">
+                  {post.author.image && (
+                    <Image
+                      src={urlFor(post.author.image).width(40).height(40).url()}
+                      alt={post.author.name}
+                      width={40}
+                      height={40}
+                      className="rounded-full"
+                    />
+                  )}
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">{post.author.name}</p>
+                  <div className="flex space-x-1 text-sm text-gray-500 dark:text-gray-400">
+                    <time dateTime={post.publishedAt}>
+                      {new Date(post.publishedAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                    </time>
+                  </div>
                 </div>
               </div>
+            </header>
+            {post.mainImage && (
+            <div className="mb-12 relative h-[400px] md:h-[500px] overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-800">
+              <Image
+                src={urlFor(post.mainImage).width(1240).height(740).url()}
+                alt={post.title}
+                fill
+                className="rounded-2xl shadow-lg object-cover"
+              />
             </div>
-          </header>
-          {post.mainImage && (
-          <div className="mb-12 relative h-[400px] md:h-[500px] border border-orange-600 rounded-lg">
-            <Image
-              src={urlFor(post.mainImage).width(1240).height(740).url()}
-              alt={post.title}
-              fill
-              className=" rounded-lg shadow-lg"
-            />
-          </div>
-          )}
-          <div className="prose prose-lg dark:prose-invert max-w-none">
-            <PortableText
-              value={post.body}
-              components={ptComponents}
-            />
-          </div>
-        </article>
-      </div>
+            )}
+            <div className="prose prose-lg dark:prose-invert prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-600 dark:prose-p:text-gray-300 prose-a:text-gray-900 dark:prose-a:text-white hover:prose-a:text-gray-600 dark:hover:prose-a:text-gray-300 max-w-none">
+              <PortableText
+                value={post.body}
+                components={ptComponents}
+              />
+            </div>
+          </article>
+        </div>
+      </Suspense>
     </div>
   );
 }
