@@ -134,14 +134,13 @@ const NavigationSection = memo(function NavigationSection() {
 const ActionButtonsSection = memo(function ActionButtonsSection() {
   return (
     <div className="flex items-center gap-4">
-      <UpgradeButton />
       
       <QuestionModal 
         trigger={
           <Button 
-            variant="ghost" 
-            size="icon" 
-            className="rounded-lg hover:bg-zinc-800 cursor-pointer"
+          variant="ghost" 
+          size="icon" 
+          className="rounded-lg hover:bg-zinc-800 cursor-pointer"
           >
             <HelpCircle className="h-5 w-5" />
           </Button>
@@ -154,6 +153,7 @@ const ActionButtonsSection = memo(function ActionButtonsSection() {
           <span className="absolute top-0.5 -right-1 text-[10px] font-medium text-zinc-500 dark:text-zinc-400">⌘/S</span>
         </Button>
       </SettingsDialog>
+      <UpgradeButton />
     </div>
   )
 })

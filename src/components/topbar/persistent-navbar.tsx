@@ -262,15 +262,14 @@ const MobileNavMenu = memo(function MobileNavMenu() {
 const ActionButtonsSection = memo(function ActionButtonsSection() {
   return (
     <>
-      <UpgradeButton />
       
       <QuestionModal 
         trigger={
           <Button
-            variant="ghost"
-            size="icon"
-            className="h-9 w-9 rounded-lg hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
-            aria-label="Help"
+          variant="ghost"
+          size="icon"
+          className="h-9 w-9 rounded-lg hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
+          aria-label="Help"
           >
             <HelpCircle className="h-4.5 w-4.5" />
           </Button>
@@ -287,6 +286,7 @@ const ActionButtonsSection = memo(function ActionButtonsSection() {
           <Settings className="h-4.5 w-4.5" />
         </Button>
       </SettingsDialog>
+        <UpgradeButton />
     </>
   )
 })
