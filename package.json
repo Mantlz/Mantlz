@@ -69,7 +69,7 @@
     "@types/react-syntax-highlighter": "^15.5.13",
     "@types/stripe": "^8.0.417",
     "@upstash/ratelimit": "^2.0.5",
-    "@upstash/redis": "^1.34.6",
+    "@upstash/redis": "^1.34.9",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "axios": "^1.8.4",
