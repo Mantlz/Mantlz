@@ -1,0 +1,11 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin and private routes
+Disallow: /api/*
+Disallow: /dashboard/*
+Disallow: /(auth)/*
+
+# Sitemap location - Next.js automatically generates it at /sitemap.xml
+Sitemap: ${process.env.NEXT_PUBLIC_APP_URL}/sitemap.xml 

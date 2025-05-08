@@ -4,6 +4,7 @@ import { AlertCircle, Lock, Shield, UserCheck, Mail } from 'lucide-react';
 import Footer from '@/components/global/landing/footer';
 import { Navbar } from '@/components/global/landing/navbar';
 import { Container } from '@/components/global/landing/container';
+import { Metadata } from 'next'
 
 interface TermsSectionProps {
   title: string;
@@ -104,3 +105,12 @@ const TermsOfService: React.FC = () => (
 );
 
 export default TermsOfService;
+
+export const metadata: Metadata = {
+  title: 'Terms of Service | Mantle',
+  description: 'Read our terms of service and user agreement',
+  openGraph: {
+    title: 'Terms of Service | Mantle',
+    description: 'Read our terms of service and user agreement',
+  },
+}

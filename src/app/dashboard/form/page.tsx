@@ -11,6 +11,16 @@ import { FormTemplateListItem } from "@/components/form-builder/form-template-li
 import { categories, formTemplates } from "@/lib/constants/form-builder"
 import { ViewMode } from "@/types/form-builder"
 import { cn } from '@/lib/utils'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Forms | Dashboard',
+  description: 'Create and manage your feedback forms',
+  robots: {
+    index: false,
+    follow: false,
+  },
+}
 
 export default function FormBuilderPage() {
   const router = useRouter()

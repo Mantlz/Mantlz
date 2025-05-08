@@ -15,11 +15,24 @@ import { CampaignActions } from './_components/CampaignActions';
 import { CampaignDetailSkeleton } from './_components/CampaignDetailSkeleton';
 import { fetchCampaignById, fetchCampaignStats, getBackUrl } from './_components/utils';
 import { NoAnalytics } from './_components/NoAnalytics';
+import { Metadata } from 'next'
 
 interface CampaignDetailPageProps {
   params: Promise<{
     id: string;
   }>;
+}
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  // You can fetch campaign data here if needed
+  return {
+    title: `Campaign ${params.id} | Dashboard`,
+    description: 'Campaign details and analytics',
+    robots: {
+      index: false,
+      follow: false,
+    },
+  }
 }
 
 export default function CampaignDetailPage({ params }: CampaignDetailPageProps) {
