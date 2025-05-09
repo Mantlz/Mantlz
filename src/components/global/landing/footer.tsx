@@ -14,13 +14,13 @@ const Footer = () => {
               <Logo />
               <p className="text-xl font-bold text-neutral-900 dark:text-neutral-50">Mantlz</p>
             </div>
-            <p className="text-sm text-center md:text-left">The best way to create and manage forms</p>
+            <p className="text-sm text-center md:text-left mb-4">The best way to create and manage forms</p>
+            <StatusButton />
           </div>
 
           <div className="flex flex-col items-center md:items-start">
             <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-50 mb-4">Quick Links</h3>
             <nav className="flex flex-col items-center md:items-start space-y-2">
-              <StatusButton />
               <a
                 href="mailto:contact@mantlz.app"
                 className="hover:text-neutral-900 dark:hover:text-neutral-50 transition-colors flex items-center"
