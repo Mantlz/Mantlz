@@ -47,7 +47,7 @@ export function SyncMessage({ title, message, syncStatus, syncTime = 0 }: SyncMe
   
   return (
     <div className="flex justify-center items-center h-full">
-      <div className="flex flex-col items-center gap-7 max-w-md w-full p-8 rounded-lg bg-zinc-800 shadow-xl backdrop-blur-sm">
+      <div className="flex flex-col items-center gap-7 max-w-md w-full p-8 rounded-lg bg-zinc-800">
         {/* Simple title */}
         <Heading className="text-2xl sm:text-3xl font-semibold text-white text-center">
           {title}
