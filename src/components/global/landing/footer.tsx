@@ -2,6 +2,7 @@
 import { TextHoverEffectDemo } from "@/components/global/textHoverEffect"
 import { Logo } from "@/components/global/logo"
 import { Container } from "./container"
+import { StatusButton } from "./status-button"
 
 const Footer = () => {
   return (
@@ -19,32 +20,29 @@ const Footer = () => {
           <div className="flex flex-col items-center md:items-start">
             <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-50 mb-4">Quick Links</h3>
             <nav className="flex flex-col items-center md:items-start space-y-2">
+              <StatusButton />
               <a
                 href="mailto:contact@mantlz.app"
                 className="hover:text-neutral-900 dark:hover:text-neutral-50 transition-colors flex items-center"
               >
-
                 contact@mantlz.app
               </a>
               <a
                 href="/privacy-policy"
                 className="hover:text-neutral-900 dark:hover:text-neutral-50 transition-colors flex items-center"
               >
-
                 Privacy Policy
               </a>
               <a
                 href="/terms-of-service"
                 className="hover:text-neutral-900 dark:hover:text-neutral-50 transition-colors flex items-center"
               >
-
                 Terms of Service
               </a>
               <a
                 href="/gdpr"
                 className="hover:text-neutral-900 dark:hover:text-neutral-50 transition-colors flex items-center"
               >
-
                 GDPR
               </a>
             </nav>
