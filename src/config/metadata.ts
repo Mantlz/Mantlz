@@ -27,7 +27,7 @@ export const baseMetadata: Metadata = {
     icon: '/favicon.ico',
   },
   verification: {
-    google: 'your-google-verification-code', // Add this later
+    google: 'lTqIuvXz5sq4jT9YOLyja5LLMfvKAiZF3g5fTEa70fI', // Add this later
   },
   openGraph: {
     type: 'website',
@@ -119,3 +119,16 @@ export const logsMetadata: Metadata = {
     follow: false,
   },
 } 
+
+export const campaignMetadata: Metadata = {
+  ...baseMetadata,
+  title: 'Campaign | Mantlz',
+  description: 'Create and manage your campaigns',
+  openGraph: {
+    ...baseMetadata.openGraph,
+    title: 'Campaign | Mantlz',
+    description: 'Create and manage your campaigns',
+  },
+}
+
+
