@@ -168,12 +168,13 @@ export async function POST(req: Request) {
 
       console.log('Request headers for analytics:', headers);
       
-      const enhancedData = enhanceDataWithAnalytics(data, headers);
+      const enhancedData = await enhanceDataWithAnalytics(data, headers);
       
       console.log('Enhanced analytics data:', { 
         browser: enhancedData._meta.browser, 
         country: enhancedData._meta.country,
-        rawHeaders: headers
+        rawHeaders: headers,
+        ip: headers.ip
       });
       
       const submission = await db.submission.create({

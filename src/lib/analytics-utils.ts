@@ -72,37 +72,143 @@ export function detectBrowser(userAgent: string | null | undefined): string {
   return "Unknown";
 }
 
+// Cache for IP geolocation results to avoid hitting rate limits
+const ipCache: Record<string, { country: string; timestamp: number }> = {};
+const CACHE_DURATION = 1000 * 60 * 60; // 1 hour
+
 /**
- * Detects country from Cloudflare country code or accept-language header
- * @param cfCountry Cloudflare country code (e.g., "US")
- * @param acceptLanguage Accept-Language header
- * @returns Country name
+ * Detects country from various sources in order of reliability:
+ * 1. Cloudflare headers (most reliable)
+ * 2. IP geolocation
+ * 3. Browser locale (least reliable)
  */
-export function detectCountry(
+export async function detectCountry(
   cfCountry: string | null | undefined, 
-  acceptLanguage: string | null | undefined
-): string | undefined {
-  console.log('Detecting country from:', { cfCountry, acceptLanguage });
+  acceptLanguage: string | null | undefined,
+  ip: string | null | undefined
+): Promise<string | undefined> {
+  console.log('Starting country detection with:', { cfCountry, acceptLanguage, ip });
   
-  // If we have a Cloudflare country code, use that
+  // 1. Try Cloudflare country code (most reliable)
   if (cfCountry && cfCountry.length === 2) {
     const countryName = COUNTRY_MAP[cfCountry.toUpperCase()];
-    console.log('Using Cloudflare country code:', { cfCountry, resolvedName: countryName });
+    console.log('✓ Using Cloudflare country code:', { cfCountry, resolvedName: countryName });
     return countryName || cfCountry;
   }
+  console.log('✗ No Cloudflare country code available, trying IP geolocation...');
   
-  // Fall back to browser locale from accept-language
+  // 2. Try IP geolocation (second most reliable, especially with VPN)
+  if (ip) {
+    console.log('Attempting IP geolocation for:', ip);
+    const ipCountry = await getCountryFromIP(ip);
+    if (ipCountry) {
+      console.log('✓ Successfully detected country from IP:', { ip, resolvedName: ipCountry });
+      return ipCountry;
+    }
+    console.log('✗ IP geolocation failed or returned no results');
+  } else {
+    console.log('✗ No IP address available for geolocation');
+  }
+  
+  // 3. Last resort: browser locale (least reliable with VPN)
   if (acceptLanguage) {
     const browserLocale = acceptLanguage.split(',')[0]?.split('-')[1];
     if (browserLocale && browserLocale.length === 2) {
       const countryName = COUNTRY_MAP[browserLocale.toUpperCase()];
-      console.log('Using browser locale:', { browserLocale, resolvedName: countryName });
+      console.log('⚠ Falling back to browser locale (unreliable with VPN):', { 
+        browserLocale, 
+        resolvedName: countryName,
+        warning: 'Browser locale may not reflect actual location when using VPN'
+      });
       return countryName || browserLocale;
     }
   }
   
-  console.log('Could not detect country from headers');
+  console.log('✗ Could not detect country from any source');
   return undefined;
+}
+
+/**
+ * Get country from IP address using ipapi.co service
+ * @param ip IP address
+ * @returns Promise<string | undefined>
+ */
+async function getCountryFromIP(ip: string | null | undefined): Promise<string | undefined> {
+  if (!ip) {
+    console.log('No IP provided for geolocation');
+    return undefined;
+  }
+
+  // Check cache first
+  const now = Date.now();
+  const cached = ipCache[ip];
+  if (cached && (now - cached.timestamp) < CACHE_DURATION) {
+    console.log('✓ Using cached IP geolocation:', { ip, country: cached.country });
+    return cached.country;
+  }
+  
+  try {
+    console.log('Making request to IP geolocation service...');
+    // Add a small delay to avoid hitting rate limits
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    // Format the URL properly with https and no trailing slash
+    const response = await fetch(`https://ipapi.co/${encodeURIComponent(ip)}/json`, {
+      headers: {
+        'User-Agent': 'Mantlz/1.0',
+        'Accept': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      console.error('✗ IP geolocation API error:', { 
+        status: response.status,
+        statusText: response.statusText 
+      });
+      return undefined;
+    }
+    
+    const data = await response.json() as { 
+      country_name?: string;
+      country_code?: string;
+      error?: boolean;
+      reason?: string;
+    };
+    
+    if (data.error) {
+      console.error('✗ IP geolocation API error:', data.reason);
+      return undefined;
+    }
+    
+    // Prefer country_name if available, fall back to country_code
+    let countryName = data.country_name;
+    if (!countryName && data.country_code) {
+      const countryCode = data.country_code.toUpperCase();
+      countryName = COUNTRY_MAP[countryCode] || countryCode;
+    }
+
+    if (countryName) {
+      // Cache the result
+      ipCache[ip] = { 
+        country: countryName,
+        timestamp: now
+      };
+      
+      console.log('✓ Fresh IP geolocation result:', { 
+        ip, 
+        countryName,
+        cached: false
+      });
+      
+      return countryName;
+    }
+    
+    console.log('✗ IP geolocation returned no country information');
+    return undefined;
+  } catch (error) {
+    console.error('✗ Failed to get country from IP:', error);
+    return undefined;
+  }
 }
 
 // Define a type for form data
@@ -123,9 +229,9 @@ export interface AnalyticsMetadata {
  * Enhances form submission data with analytics metadata
  * @param data Original form data
  * @param headers Request headers
- * @returns Enhanced data with analytics metadata
+ * @returns Promise<FormData & { _meta: AnalyticsMetadata }>
  */
-export function enhanceDataWithAnalytics(
+export async function enhanceDataWithAnalytics(
   data: FormData, 
   headers: {
     userAgent?: string | null;
@@ -133,11 +239,11 @@ export function enhanceDataWithAnalytics(
     acceptLanguage?: string | null;
     ip?: string | null;
   }
-): FormData & { _meta: AnalyticsMetadata } {
+): Promise<FormData & { _meta: AnalyticsMetadata }> {
   const { userAgent, cfCountry, acceptLanguage, ip } = headers;
   
   const browser = detectBrowser(userAgent);
-  const country = detectCountry(cfCountry, acceptLanguage);
+  const country = await detectCountry(cfCountry, acceptLanguage, ip);
   
   return {
     ...data,
