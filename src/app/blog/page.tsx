@@ -44,78 +44,82 @@ export default async function BlogPage() {
   const { posts } = await client.fetch<{ posts: Post[] }>(query);
 
   return (
-    <div className="space-y-8">
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent dark:from-orange-400 dark:to-orange-200">
-          Insights & Innovation
-        </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300">
-          Exploring the cutting edge of technology and beyond
-        </p>
-      </div>
+    <div className="min-h-screen bg-white dark:bg-zinc-950">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="text-center space-y-4 relative mb-16">
+          <div className="absolute inset-0 -z-10 -top-10 -bottom-20 -left-10 -right-10 bg-gradient-to-r from-gray-100 via-gray-50 to-gray-100 dark:from-zinc-900/50 dark:via-black/30 dark:to-zinc-900/50 rounded-3xl blur-3xl opacity-70"></div>
+          <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-gray-900 to-black bg-clip-text text-transparent dark:from-white dark:to-gray-100">
+            Insights & Innovation
+          </h1>
+          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            Exploring the cutting edge of technology and beyond. Discover the latest insights, tutorials, and industry trends.
+          </p>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {posts.map((post: Post) => (
-          <Link 
-            href={`/blog/${post.slug.current}`}
-            key={post._id} 
-            className="group"
-          >
-            <div className="h-full bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700">
-              <div className="relative h-48 w-full overflow-hidden">
-                {post.mainImage && (
-                  <Image
-                    src={urlFor(post.mainImage).width(750).height(440).url()}
-                    alt={post.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                )}
-                <div className="absolute bottom-3 right-3 flex items-center bg-white/90 dark:bg-gray-800/90 rounded-full p-1.5 shadow-lg">
-                  {post.author.image && (
+        <div className="grid grid-cols-1 gap-y-12 lg:gap-y-16">
+          {posts.map((post: Post) => (
+            <Link 
+              href={`/blog/${post.slug.current}`}
+              key={post._id} 
+              className="group"
+            >
+              <article className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-start hover:bg-gray-50 dark:hover:bg-zinc-900/50 p-6 -mx-6 rounded-2xl transition-all duration-300">
+                <div className="lg:col-span-4 relative aspect-[16/10] rounded-xl overflow-hidden bg-gray-100 dark:bg-zinc-900">
+                  {post.mainImage && (
                     <Image
-                      src={urlFor(post.author.image).width(32).height(32).url()}
-                      alt={post.author.name}
-                      width={32}
-                      height={32}
-                      className="rounded-full"
+                      src={urlFor(post.mainImage).width(800).height(500).url()}
+                      alt={post.title}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 33vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   )}
                 </div>
-              </div>
-              
-              <div className="p-6 space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300 px-3 py-1 rounded-full">
-                    {new Date(post.publishedAt).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
-                    })}
-                  </span>
-                  <span className="text-sm font-medium text-gray-600 dark:text-gray-300">{post.author.name}</span>
-                </div>
                 
-                <div className="space-y-2">
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
-                    {post.title}
-                  </h2>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-2">{post.excerpt}</p>
+                <div className="lg:col-span-8 flex flex-col space-y-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-2">
+                      {post.author.image && (
+                        <Image
+                          src={urlFor(post.author.image).width(32).height(32).url()}
+                          alt={post.author.name}
+                          width={32}
+                          height={32}
+                          className="rounded-full"
+                        />
+                      )}
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">{post.author.name}</span>
+                    </div>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">•</span>
+                    <time className="text-sm text-gray-500 dark:text-gray-400">
+                      {new Date(post.publishedAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                    </time>
+                  </div>
+                  
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-black dark:group-hover:text-gray-200 transition-colors">
+                      {post.title}
+                    </h2>
+                    <p className="mt-3 text-base text-gray-600 dark:text-gray-400 line-clamp-2">{post.excerpt}</p>
+                  </div>
+                  
+                  <div className="flex items-center mt-4">
+                    <span className="inline-flex items-center text-sm font-medium text-black dark:text-white group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-200">
+                      Read article
+                      <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </div>
                 </div>
-                
-                <div className="pt-2">
-                  <span className="inline-flex items-center text-sm font-semibold text-orange-600 dark:text-orange-400 group-hover:text-orange-700 dark:group-hover:text-orange-300 transition-colors">
-                    Read more
-                    <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </Link>
-        ))}
+              </article>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

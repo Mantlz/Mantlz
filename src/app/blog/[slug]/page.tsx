@@ -61,11 +61,11 @@ const ptComponents: PortableTextComponents = {
         return null;
       }
       return (
-        <div className="relative w-full h-64 md:h-96 my-8 rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800">
+        <div className="relative w-full h-64 md:h-96 my-8 rounded-xl overflow-hidden bg-gray-100 dark:bg-zinc-900">
           <Image
             src={urlFor(value).width(800).height(600).fit('max').auto('format').url()}
             alt={value.alt || ' '}
-            className="rounded-2xl object-cover"
+            className="rounded-xl object-cover"
             fill
           />
         </div>
@@ -73,14 +73,14 @@ const ptComponents: PortableTextComponents = {
     },
   },
   block: {
-    h1: ({ children }: { children?: React.ReactNode }) => <h1 className="text-3xl font-bold mt-8 mb-4 text-gray-900 dark:text-white">{children}</h1>,
-    h2: ({ children }: { children?: React.ReactNode }) => <h2 className="text-2xl font-semibold mt-8 mb-4 text-gray-900 dark:text-white">{children}</h2>,
-    h3: ({ children }: { children?: React.ReactNode }) => <h3 className="text-xl font-semibold mt-6 mb-3 text-gray-900 dark:text-white">{children}</h3>,
+    h1: ({ children }: { children?: React.ReactNode }) => <h1 className="text-3xl font-bold mt-8 mb-4 bg-gradient-to-r from-gray-900 to-black bg-clip-text text-transparent dark:from-white dark:to-gray-100">{children}</h1>,
+    h2: ({ children }: { children?: React.ReactNode }) => <h2 className="text-2xl font-semibold mt-8 mb-4 bg-gradient-to-r from-gray-900 to-black bg-clip-text text-transparent dark:from-white dark:to-gray-100">{children}</h2>,
+    h3: ({ children }: { children?: React.ReactNode }) => <h3 className="text-xl font-semibold mt-6 mb-3 bg-gradient-to-r from-gray-900 to-black bg-clip-text text-transparent dark:from-white dark:to-gray-100">{children}</h3>,
     normal: ({ children }: { children?: React.ReactNode }) => <p className="mt-4 leading-7 text-gray-600 dark:text-gray-300">{children}</p>,
   },
   list: {
-    bullet: ({ children }: { children?: React.ReactNode }) => <ul className="mt-4 list-disc list-inside text-gray-600 dark:text-gray-300">{children}</ul>,
-    number: ({ children }: { children?: React.ReactNode }) => <ol className="mt-4 list-decimal list-inside text-gray-600 dark:text-gray-300">{children}</ol>,
+    bullet: ({ children }: { children?: React.ReactNode }) => <ul className="mt-4 list-disc list-inside text-gray-600 dark:text-gray-300 marker:text-gray-400 dark:marker:text-gray-500">{children}</ul>,
+    number: ({ children }: { children?: React.ReactNode }) => <ol className="mt-4 list-decimal list-inside text-gray-600 dark:text-gray-300 marker:text-gray-400 dark:marker:text-gray-500">{children}</ol>,
   },
   listItem: {
     bullet: ({ children }: { children?: React.ReactNode }) => <li className="mt-2">{children}</li>,
@@ -94,7 +94,7 @@ const ptComponents: PortableTextComponents = {
           href={value?.href} 
           target={target} 
           rel={target === '_blank' ? 'noindex nofollow' : undefined} 
-          className="text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
+          className="text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-400 transition-colors duration-200"
         >
           {children}
         </a>
@@ -122,12 +122,12 @@ export default async function BlogPost({ params }: Props) {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-900 min-h-screen transition-colors duration-300">
-      <Suspense fallback={<div>Loading...</div>}>
+    <div className="bg-white dark:bg-zinc-950 min-h-screen transition-colors duration-300">
+      <Suspense>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <Link 
             href="/blog" 
-            className="inline-flex items-center text-sm font-medium bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
+            className="inline-flex items-center text-sm font-medium bg-gray-100 hover:bg-gray-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 px-4 py-2 rounded-lg text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-zinc-800 transition-colors duration-200"
           >
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -135,10 +135,11 @@ export default async function BlogPost({ params }: Props) {
             Back to Blog
           </Link>
           <article className="mt-8">
-            <header className="mb-16">
-              <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">{post.title}</h1>
+            <header className="mb-16 relative">
+              <div className="absolute inset-0 -z-10 -top-10 -bottom-20 -left-10 -right-10 bg-gradient-to-r from-gray-100 via-gray-50 to-gray-100 dark:from-zinc-900/50 dark:via-black/30 dark:to-zinc-900/50 rounded-3xl blur-3xl opacity-70"></div>
+              <h1 className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-gray-900 to-black bg-clip-text text-transparent dark:from-white dark:to-gray-100">{post.title}</h1>
               <div className="mt-6 flex items-center">
-                <div className="bg-gray-100 dark:bg-gray-800 rounded-full p-1">
+                <div className="bg-gray-100 dark:bg-zinc-900 rounded-full p-1">
                   {post.author.image && (
                     <Image
                       src={urlFor(post.author.image).width(40).height(40).url()}
@@ -164,16 +165,16 @@ export default async function BlogPost({ params }: Props) {
               </div>
             </header>
             {post.mainImage && (
-            <div className="mb-12 relative h-[400px] md:h-[500px] overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-800">
+            <div className="mb-12 relative h-[400px] md:h-[500px] overflow-hidden rounded-xl bg-gray-100 dark:bg-zinc-900">
               <Image
                 src={urlFor(post.mainImage).width(1240).height(740).url()}
                 alt={post.title}
                 fill
-                className="rounded-2xl shadow-lg object-cover"
+                className="rounded-xl shadow-lg object-cover"
               />
             </div>
             )}
-            <div className="prose prose-lg dark:prose-invert prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-600 dark:prose-p:text-gray-300 prose-a:text-gray-900 dark:prose-a:text-white hover:prose-a:text-gray-600 dark:hover:prose-a:text-gray-300 max-w-none">
+            <div className="prose prose-lg dark:prose-invert prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-600 dark:prose-p:text-gray-300 prose-a:text-gray-900 dark:prose-a:text-white hover:prose-a:text-gray-600 dark:hover:prose-a:text-gray-400 max-w-none">
               <PortableText
                 value={post.body}
                 components={ptComponents}

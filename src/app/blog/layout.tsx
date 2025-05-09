@@ -7,7 +7,7 @@ type Props = {children: React.ReactNode}
 
 const Layout = ({children}: Props) => {
   return (
-    <div className="min-h-screen dark:text-white transition-colors duration-300">
+    <div className="min-h-screen dark:text-white dark:bg-zinc-950 transition-colors duration-300">
       <Container>
         <Navbar />
       </Container>
