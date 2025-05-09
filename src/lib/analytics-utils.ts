@@ -82,19 +82,26 @@ export function detectCountry(
   cfCountry: string | null | undefined, 
   acceptLanguage: string | null | undefined
 ): string | undefined {
+  console.log('Detecting country from:', { cfCountry, acceptLanguage });
+  
   // If we have a Cloudflare country code, use that
   if (cfCountry && cfCountry.length === 2) {
-    return COUNTRY_MAP[cfCountry] || cfCountry;
+    const countryName = COUNTRY_MAP[cfCountry.toUpperCase()];
+    console.log('Using Cloudflare country code:', { cfCountry, resolvedName: countryName });
+    return countryName || cfCountry;
   }
   
   // Fall back to browser locale from accept-language
   if (acceptLanguage) {
     const browserLocale = acceptLanguage.split(',')[0]?.split('-')[1];
     if (browserLocale && browserLocale.length === 2) {
-      return COUNTRY_MAP[browserLocale] || browserLocale;
+      const countryName = COUNTRY_MAP[browserLocale.toUpperCase()];
+      console.log('Using browser locale:', { browserLocale, resolvedName: countryName });
+      return countryName || browserLocale;
     }
   }
   
+  console.log('Could not detect country from headers');
   return undefined;
 }
 

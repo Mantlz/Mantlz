@@ -159,16 +159,21 @@ export async function POST(req: Request) {
     // Create submission
     try {
       // Capture user agent and location information
-      const enhancedData = enhanceDataWithAnalytics(data, {
+      const headers = {
         userAgent: req.headers.get('user-agent'),
         cfCountry: req.headers.get('cf-ipcountry'),
         acceptLanguage: req.headers.get('accept-language'),
         ip: req.headers.get('x-forwarded-for')
-      });
+      };
+
+      console.log('Request headers for analytics:', headers);
       
-      console.log('Capture analytics data:', { 
+      const enhancedData = enhanceDataWithAnalytics(data, headers);
+      
+      console.log('Enhanced analytics data:', { 
         browser: enhancedData._meta.browser, 
-        country: enhancedData._meta.country 
+        country: enhancedData._meta.country,
+        rawHeaders: headers
       });
       
       const submission = await db.submission.create({
