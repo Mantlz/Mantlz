@@ -131,4 +131,15 @@ export const campaignMetadata: Metadata = {
   },
 }
 
+export const formMetadata: Metadata = {
+  ...baseMetadata,
+  title: 'Form | Mantlz',
+  description: 'Create and manage your forms',
+  openGraph: {
+    ...baseMetadata.openGraph,
+    title: 'Form | Mantlz',
+    description: 'Create and manage your forms',
+  },
+}
+
 
