@@ -139,7 +139,7 @@ export default async function BlogPost({ params }: Props) {
               <div className="absolute inset-0 -z-10 -top-10 -bottom-20 -left-10 -right-10 bg-gradient-to-r from-gray-100 via-gray-50 to-gray-100 dark:from-zinc-900/50 dark:via-black/30 dark:to-zinc-900/50 rounded-3xl blur-3xl opacity-70"></div>
               <h1 className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-gray-900 to-black bg-clip-text text-transparent dark:from-white dark:to-gray-100">{post.title}</h1>
               <div className="mt-6 flex items-center">
-                <div className="bg-gray-100 dark:bg-zinc-900 rounded-full p-1">
+                <div className="bg-zinc-200 dark:bg-zinc-700 rounded-full p-1">
                   {post.author.image && (
                     <Image
                       src={urlFor(post.author.image).width(40).height(40).url()}
