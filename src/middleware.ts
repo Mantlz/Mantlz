@@ -35,8 +35,16 @@ const isBot = (userAgent: string | null): boolean => {
   return result;
 };
 
+// Rate limit result type
+interface RateLimitResult {
+  success: boolean;
+  limit: number;
+  reset: number;
+  remaining: number;
+}
+
 // Cache for rate limit results
-const rateLimitCache = new Map<string, { timestamp: number; result: any }>();
+const rateLimitCache = new Map<string, { timestamp: number; result: RateLimitResult }>();
 const RATE_LIMIT_CACHE_TTL = 1000; // 1 second
 
 export default clerkMiddleware(async (auth, req) => {
@@ -69,7 +77,7 @@ export default clerkMiddleware(async (auth, req) => {
           });
         }
       } else {
-        const result = await ratelimitConfig.ratelimit.limit(ip);
+        const result = await ratelimitConfig.ratelimit.limit(ip) as RateLimitResult;
         rateLimitCache.set(ip, { timestamp: Date.now(), result });
         
         if (!result.success) {
