@@ -4,7 +4,7 @@ import { handlePreflightRequest, addCorsHeadersToResponse, handleRedirectWithCor
 import { isProtectedRoute, isAuthRoute } from "./utils/routes";
 import { ratelimitConfig } from "./lib/ratelimiter";
 
-// Bot detection patterns
+// Bot detection patterns - compiled regex for better performance
 const botPatterns = [
   /bot/i,
   /crawl/i,
@@ -12,12 +12,32 @@ const botPatterns = [
   /semrush/i,
   /ahrefs/i,
   /scan/i,
-];
+].map(pattern => new RegExp(pattern));
+
+// Cache for bot detection results
+const botCache = new Map<string, boolean>();
+const BOT_CACHE_TTL = 3600000; // 1 hour
 
 const isBot = (userAgent: string | null): boolean => {
   if (!userAgent) return true;
-  return botPatterns.some(pattern => pattern.test(userAgent));
+  
+  // Check cache first
+  const cached = botCache.get(userAgent);
+  if (cached !== undefined) return cached;
+  
+  // Perform check
+  const result = botPatterns.some(pattern => pattern.test(userAgent));
+  
+  // Cache result
+  botCache.set(userAgent, result);
+  setTimeout(() => botCache.delete(userAgent), BOT_CACHE_TTL);
+  
+  return result;
 };
+
+// Cache for rate limit results
+const rateLimitCache = new Map<string, { timestamp: number; result: any }>();
+const RATE_LIMIT_CACHE_TTL = 1000; // 1 second
 
 export default clerkMiddleware(async (auth, req) => {
   const url = req.nextUrl;
@@ -33,18 +53,36 @@ export default clerkMiddleware(async (auth, req) => {
   // Apply rate limiting if enabled
   if (ratelimitConfig.enabled && ratelimitConfig.ratelimit) {
     try {
-      const { success, limit, reset, remaining } = await ratelimitConfig.ratelimit.limit(ip);
-      
-      if (!success) {
-        return new NextResponse('Too Many Requests', {
-          status: 429,
-          headers: {
-            'X-RateLimit-Limit': limit.toString(),
-            'X-RateLimit-Remaining': remaining.toString(),
-            'X-RateLimit-Reset': reset.toString(),
-            'Retry-After': Math.ceil((reset - Date.now()) / 1000).toString(),
-          },
-        });
+      // Check cache first
+      const cached = rateLimitCache.get(ip);
+      if (cached && Date.now() - cached.timestamp < RATE_LIMIT_CACHE_TTL) {
+        const { success, limit, reset, remaining } = cached.result;
+        if (!success) {
+          return new NextResponse('Too Many Requests', {
+            status: 429,
+            headers: {
+              'X-RateLimit-Limit': limit.toString(),
+              'X-RateLimit-Remaining': remaining.toString(),
+              'X-RateLimit-Reset': reset.toString(),
+              'Retry-After': Math.ceil((reset - Date.now()) / 1000).toString(),
+            },
+          });
+        }
+      } else {
+        const result = await ratelimitConfig.ratelimit.limit(ip);
+        rateLimitCache.set(ip, { timestamp: Date.now(), result });
+        
+        if (!result.success) {
+          return new NextResponse('Too Many Requests', {
+            status: 429,
+            headers: {
+              'X-RateLimit-Limit': result.limit.toString(),
+              'X-RateLimit-Remaining': result.remaining.toString(),
+              'X-RateLimit-Reset': result.reset.toString(),
+              'Retry-After': Math.ceil((result.reset - Date.now()) / 1000).toString(),
+            },
+          });
+        }
       }
     } catch (error) {
       console.error('Rate limiting error:', error);

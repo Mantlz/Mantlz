@@ -15,6 +15,8 @@ const sansFont = Space_Grotesk({
   variable: "--font-geist-sans",
   display: "swap",
   weight: "400",
+  preload: true,
+  adjustFontFallback: true,
 });
 
 const monoFont = Space_Mono({
@@ -22,6 +24,8 @@ const monoFont = Space_Mono({
   variable: "--font-geist-mono",
   display: "swap",
   weight: "400",
+  preload: true,
+  adjustFontFallback: true,
 });
 
 
