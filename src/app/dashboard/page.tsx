@@ -7,9 +7,12 @@ import React, { useState, useEffect, Suspense } from 'react'
 
 const DashboardPage = () => {
   return (
-    <Suspense>
-      <DashboardContent />
-    </Suspense>
+    <>
+      <PaymentSuccessModal />
+      <Suspense>
+        <DashboardContent />
+      </Suspense>
+    </>
   )
 }
 
@@ -38,8 +41,6 @@ const DashboardContent = () => {
 
   return (
     <div className="container py-6">
-      <PaymentSuccessModal />
-      
       {formId ? (
         <FormDetails formId={formId} />
       ) : (
