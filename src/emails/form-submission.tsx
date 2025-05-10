@@ -27,105 +27,73 @@ export function FormSubmissionEmail({
       trackingPixelUrl={trackingPixelUrl}
       clickTrackingUrl={clickTrackingUrl}
     >
-      <Heading style={styles.heading}>Form Submission</Heading>
+      <Heading style={{ textAlign: 'center', marginBottom: '24px' }}>
+        Form Submission
+      </Heading>
       
-      <Text style={styles.paragraph}>
-        Thank you for submitting <span style={styles.highlight}>{formName}</span>. We&apos;ve received your information.
+      <Text style={{ textAlign: 'center', marginBottom: '16px' }}>
+        Thank you for submitting <span style={{ fontWeight: '500' }}>{formName}</span>. We&apos;ve received your information.
       </Text>
       
-      <Hr style={styles.divider} />
+      <Hr style={{ margin: '20px 0' }} />
       
-      <Text style={styles.subheading}>Submission details:</Text>
+      <Text style={{ 
+        textAlign: 'center', 
+        marginBottom: '16px',
+        fontSize: '16px',
+        fontWeight: '500'
+      }}>
+        Submission details:
+      </Text>
       
-      <Section style={styles.detailsSection}>
+      <Section style={{ 
+        background: '#f8fafc', 
+        padding: '20px', 
+        borderRadius: '8px',
+        margin: '20px 0',
+        textAlign: 'center' as const
+      }}>
         {Object.entries(submissionData).map(([key, value]) => (
-          <div key={key} style={styles.detailRow}>
-            <Text style={styles.detailLabel}>{key}</Text>
-            <Text style={styles.detailValue}>{String(value)}</Text>
+          <div key={key} style={{ 
+            marginBottom: '12px',
+            textAlign: 'center' as const
+          }}>
+            <Text style={{ 
+              fontSize: '14px',
+              color: '#666666',
+              margin: '0 0 4px 0',
+              textTransform: 'capitalize' as const
+            }}>
+              {key}
+            </Text>
+            <Text style={{ 
+              fontSize: '16px',
+              color: '#000000',
+              margin: 0
+            }}>
+              {String(value)}
+            </Text>
           </div>
         ))}
       </Section>
       
-      <Section style={styles.ctaContainer}>
+      <Section style={{ textAlign: 'center', margin: '32px 0' }}>
         <Button
           href={clickTrackingUrl ? `${clickTrackingUrl}&url=https://mantlz.app` : "https://mantlz.app"}
-          style={styles.button}
+          style={{
+            backgroundColor: '#000000',
+            color: '#ffffff',
+            padding: '12px 24px',
+            borderRadius: '4px',
+            textDecoration: 'none',
+            display: 'inline-block',
+            fontSize: '16px',
+            fontWeight: '500',
+          }}
         >
           Visit Mantlz
         </Button>
       </Section>
     </BrandedEmailTemplate>
   );
-}
-
-const styles = {
-  heading: {
-    fontFamily: '"IBM Plex Mono", monospace',
-    fontSize: '21px',
-    fontWeight: '600',
-    color: '#000000',
-    marginTop: '10px',
-    marginBottom: '25px',
-    textAlign: 'center' as const,
-    letterSpacing: '0.5px',
-  },
-  subheading: {
-    fontFamily: '"IBM Plex Mono", monospace',
-    fontSize: '14px',
-    fontWeight: '500',
-    color: '#000000',
-    margin: '20px 0 15px',
-  },
-  paragraph: {
-    fontSize: '15px',
-    lineHeight: '1.5',
-    color: '#333333',
-    margin: '0 0 25px',
-  },
-  highlight: {
-    fontFamily: '"IBM Plex Mono", monospace',
-    fontWeight: '500',
-  },
-  divider: {
-    borderTop: '1px dashed #e0e0e0',
-    margin: '20px 0',
-  },
-  detailsSection: {
-    margin: '15px 0 30px',
-  },
-  detailRow: {
-    marginBottom: '12px',
-  },
-  detailLabel: {
-    fontFamily: '"IBM Plex Mono", monospace',
-    fontSize: '13px',
-    fontWeight: '500',
-    color: '#555555',
-    textTransform: 'lowercase' as const,
-    margin: '0 0 2px',
-  },
-  detailValue: {
-    fontSize: '14px',
-    color: '#333333',
-    margin: '0',
-    paddingLeft: '10px',
-    borderLeft: '2px solid #eaeaea',
-  },
-  ctaContainer: {
-    marginTop: '30px',
-    textAlign: 'center' as const,
-  },
-  button: {
-    backgroundColor: '#000000',
-    color: '#ffffff',
-    border: 'none',
-    borderRadius: '0',
-    fontSize: '13px',
-    fontFamily: '"IBM Plex Mono", monospace',
-    fontWeight: '500',
-    textDecoration: 'none',
-    textAlign: 'center' as const,
-    padding: '10px 20px',
-    letterSpacing: '0.5px',
-  },
-}; 
+} 

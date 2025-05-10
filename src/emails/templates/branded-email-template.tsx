@@ -180,6 +180,7 @@ const styles = {
     padding: '10px 30px 40px',
     position: 'relative' as const,
     backgroundColor: '#ffffff',
+    textAlign: 'center' as const,
   },
   watermark: {
     position: 'absolute' as const,
@@ -197,6 +198,7 @@ const styles = {
   },
   footer: {
     padding: '0 30px 30px',
+    textAlign: 'center' as const,
   },
   footerText: {
     fontFamily: '"IBM Plex Mono", monospace',

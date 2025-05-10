@@ -1,4 +1,11 @@
 import React from 'react'
+import {
+  Heading,
+  Text,
+  Section,
+  Button,
+  Hr,
+} from '@react-email/components';
 import { BrandedEmailTemplate } from './templates/branded-email-template'
 
 interface SubscriptionUpgradeSuccessEmailProps {
@@ -13,20 +20,35 @@ const SubscriptionUpgradeSuccessEmail: React.FC<SubscriptionUpgradeSuccessEmailP
   features 
 }) => (
   <BrandedEmailTemplate previewText="Subscription Successfully Upgraded">
-    <h1 style={{ margin: 0, fontSize: 22 }}>Subscription Upgraded Successfully!</h1>
-    <p>Thank you for upgrading your Mantle subscription to the <b>{plan}</b> plan.</p>
+    <Heading style={{ textAlign: 'center', marginBottom: '24px' }}>
+      Subscription Upgraded Successfully!
+    </Heading>
     
-    <div style={{ 
+    <Text style={{ textAlign: 'center', marginBottom: '24px' }}>
+      Thank you for upgrading your Mantle subscription to the <b>{plan}</b> plan.
+    </Text>
+    
+    <Section style={{ 
       backgroundColor: '#f8fafc', 
       padding: '20px', 
       borderRadius: '8px',
-      margin: '20px 0'
+      margin: '20px 0',
+      textAlign: 'center' as const
     }}>
-      <h2 style={{ margin: '0 0 15px 0', fontSize: 18 }}>Your New Plan Includes:</h2>
+      <Text style={{ 
+        margin: '0 0 15px 0', 
+        fontSize: '18px',
+        fontWeight: '500'
+      }}>
+        Your New Plan Includes:
+      </Text>
+      
       <ul style={{ 
         margin: 0, 
         padding: 0, 
-        listStyle: 'none'
+        listStyle: 'none',
+        display: 'inline-block',
+        textAlign: 'left' as const
       }}>
         {features.map((feature, index) => (
           <li key={index} style={{ 
@@ -51,23 +73,37 @@ const SubscriptionUpgradeSuccessEmail: React.FC<SubscriptionUpgradeSuccessEmailP
           </li>
         ))}
       </ul>
-    </div>
+    </Section>
 
-    <p>Next billing date: <b>{nextBillingDate.toLocaleDateString()}</b></p>
+    <Text style={{ textAlign: 'center', marginBottom: '16px' }}>
+      Next billing date: <b>{nextBillingDate.toLocaleDateString()}</b>
+    </Text>
     
-    <p>You can manage your subscription settings at any time from your dashboard.</p>
+    <Text style={{ textAlign: 'center', marginBottom: '24px' }}>
+      You can manage your subscription settings at any time from your dashboard.
+    </Text>
     
-    <a href={`${process.env.NEXT_PUBLIC_APP_URL}/dashboard`} style={{
-      display: 'inline-block',
-      padding: '12px 24px',
-      backgroundColor: '#000',
-      color: '#fff',
-      textDecoration: 'none',
-      borderRadius: 6,
-      margin: '16px 0',
-    }}>Go to Dashboard</a>
+    <Section style={{ textAlign: 'center', margin: '32px 0' }}>
+      <Button
+        href={`${process.env.NEXT_PUBLIC_APP_URL}/dashboard`}
+        style={{
+          backgroundColor: '#000000',
+          color: '#ffffff',
+          padding: '12px 24px',
+          borderRadius: '4px',
+          textDecoration: 'none',
+          display: 'inline-block',
+          fontSize: '16px',
+          fontWeight: '500',
+        }}
+      >
+        Go to Dashboard
+      </Button>
+    </Section>
 
-    <p>If you have any questions, our support team is here to help!</p>
+    <Text style={{ textAlign: 'center', marginBottom: '16px' }}>
+      If you have any questions, our support team is here to help!
+    </Text>
   </BrandedEmailTemplate>
 )
 

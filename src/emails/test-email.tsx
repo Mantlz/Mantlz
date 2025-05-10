@@ -1,4 +1,9 @@
 import React from 'react';
+import {
+  Heading,
+  Text,
+  Section,
+} from '@react-email/components';
 import { BrandedEmailTemplate } from './templates/branded-email-template';
 
 interface TestEmailProps {
@@ -25,97 +30,89 @@ export function TestEmail({
       clickTrackingUrl={clickTrackingUrl}
       unsubscribeUrl={unsubscribeUrl}
     >
-        <div style={styles.previewSection}>
-          <h2 style={styles.subheading}>Campaign Preview</h2>
-          <div style={styles.previewDetails}>
-            <p style={styles.label}>Campaign Name:</p>
-            <p style={styles.value}>{campaignName || 'Untitled Campaign'}</p>
-            
-            <p style={styles.label}>Subject Line:</p>
-            <p style={styles.value}>{subject || 'No subject'}</p>
-          </div>
+      <Heading style={{ textAlign: 'center', marginBottom: '24px' }}>
+        Campaign Preview
+      </Heading>
 
-          <div style={styles.contentPreview}>
-            <p style={styles.label}>Email Content:</p>
-            <div style={styles.contentBox} dangerouslySetInnerHTML={{ __html: content || 'No content' }} />
-          </div>
-        </div>
+      <Section style={{ 
+        background: '#f8fafc', 
+        padding: '20px', 
+        borderRadius: '8px',
+        margin: '20px 0',
+        textAlign: 'center' as const
+      }}>
+        <Text style={{ 
+          fontSize: '14px',
+          color: '#666666',
+          margin: '0 0 4px 0',
+          fontWeight: '500'
+        }}>
+          Campaign Name:
+        </Text>
+        <Text style={{ 
+          fontSize: '16px',
+          color: '#000000',
+          margin: '0 0 16px 0'
+        }}>
+          {campaignName || 'Untitled Campaign'}
+        </Text>
+        
+        <Text style={{ 
+          fontSize: '14px',
+          color: '#666666',
+          margin: '0 0 4px 0',
+          fontWeight: '500'
+        }}>
+          Subject Line:
+        </Text>
+        <Text style={{ 
+          fontSize: '16px',
+          color: '#000000',
+          margin: '0 0 16px 0'
+        }}>
+          {subject || 'No subject'}
+        </Text>
+      </Section>
 
-        <p style={styles.disclaimer}>
-          This is a test email. You&apos;re receiving this because you&apos;re testing your campaign setup.
-          All tracking features are enabled for verification purposes.
-        </p>
+      <Section style={{ 
+        background: '#f8fafc', 
+        padding: '20px', 
+        borderRadius: '8px',
+        margin: '20px 0',
+        textAlign: 'center' as const
+      }}>
+        <Text style={{ 
+          fontSize: '14px',
+          color: '#666666',
+          margin: '0 0 12px 0',
+          fontWeight: '500'
+        }}>
+          Email Content:
+        </Text>
+        <div style={{ 
+          background: '#ffffff',
+          border: '1px solid #e2e8f0',
+          borderRadius: '6px',
+          padding: '15px',
+          fontSize: '14px',
+          color: '#4a5568',
+          minHeight: '100px',
+          textAlign: 'left' as const
+        }} 
+        dangerouslySetInnerHTML={{ __html: content || 'No content' }} 
+        />
+      </Section>
 
+      <Text style={{ 
+        fontSize: '12px',
+        color: '#666666',
+        textAlign: 'center',
+        marginTop: '30px',
+        fontStyle: 'italic'
+      }}>
+        This is a test email. You&apos;re receiving this because you&apos;re testing your campaign setup.
+        All tracking features are enabled for verification purposes.
+      </Text>
     </BrandedEmailTemplate>
   );
-}
-
-const styles = {
-  content: {
-    padding: '20px 0',
-  },
-  heading: {
-    fontSize: '24px',
-    fontWeight: 'bold',
-    color: '#000000',
-    marginBottom: '20px',
-    textAlign: 'center' as const,
-  },
-  subheading: {
-    fontSize: '20px',
-    fontWeight: 'bold',
-    color: '#333333',
-    marginBottom: '15px',
-  },
-  testInfo: {
-    backgroundColor: '#f8f9fa',
-    padding: '20px',
-    borderRadius: '8px',
-    marginBottom: '30px',
-  },
-  infoText: {
-    fontSize: '14px',
-    color: '#2d3748',
-    margin: '8px 0',
-  },
-  previewSection: {
-    backgroundColor: '#ffffff',
-    border: '1px solid #e2e8f0',
-    borderRadius: '8px',
-    padding: '20px',
-    marginBottom: '30px',
-  },
-  previewDetails: {
-    marginBottom: '20px',
-  },
-  label: {
-    fontSize: '14px',
-    color: '#718096',
-    marginBottom: '4px',
-    fontWeight: 'bold' as const,
-  },
-  value: {
-    fontSize: '16px',
-    color: '#2d3748',
-    marginBottom: '15px',
-  },
-  contentPreview: {
-    marginTop: '20px',
-  },
-  contentBox: {
-    backgroundColor: '#f7fafc',
-    border: '1px solid #e2e8f0',
-    borderRadius: '6px',
-    padding: '15px',
-    fontSize: '14px',
-    color: '#4a5568',
-    minHeight: '100px',
-  },
-  disclaimer: {
-    fontSize: '12px',
-    color: '#718096',
-    textAlign: 'center' as const,
-    marginTop: '30px',
-    fontStyle: 'italic' as const,
-  },
-}; 
+} 
