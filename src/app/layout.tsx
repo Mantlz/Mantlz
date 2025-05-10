@@ -9,6 +9,7 @@ import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Space_Mono, Space_Grotesk } from "next/font/google"
 import { CookieConsent } from "@/components/global/cookie-consent"
+import { PostHogProvider } from "@/components/providers/posthog-provider"
 
 const sansFont = Space_Grotesk({
   subsets: ["latin"],
@@ -111,11 +112,13 @@ export default function RootLayout({
           <main className="h-screen bg-background text-foreground transition-colors duration-300">
             <Providers>
               <MantlzProvider apiKey={process.env.MANTLZ_KEY}>
-                {children}
-                <Toaster richColors position="top-center" theme="system" />
-                <Analytics />
-                <SpeedInsights />
-                <CookieConsent />
+                <PostHogProvider>
+                  {children}
+                  <Toaster richColors position="top-center" theme="system" />
+                  <Analytics />
+                  <SpeedInsights />
+                  <CookieConsent />
+                </PostHogProvider>
               </MantlzProvider>
             </Providers>
           </main>
