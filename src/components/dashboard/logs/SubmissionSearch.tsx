@@ -165,7 +165,7 @@ function SubmissionSearchWithParams() {
   // Handle advanced filters updates
   function handleSetAdvancedFilters(filters: AdvancedFilters) {
     if (isProUser) {
-      ("Setting advanced filters:", filters)
+      // console.log("Setting advanced filters:", filters)
       setAdvancedFilters(filters)
       
       // Re-run the search with the new filters if there's an active search
