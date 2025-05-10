@@ -10,22 +10,22 @@ export const authRouter = j.router({
   getDatabaseSyncStatus: j.procedure.query(async ({ c }) => {
     try {
       const auth = await currentUser()
-      ('Auth status:', !!auth)
+      console.log('Auth status:', !!auth)
 
       if (!auth) {
         return c.superjson({ isSynced: false, message: "Not authenticated" })
       }
 
-      const primaryEmail = auth.emailAddresses?.find(email => email.id === auth.primaryEmailAddressId)
+      const primaryEmail = auth.emailAddresses?.find((email: { id: string }) => email.id === auth.primaryEmailAddressId)
       if (!primaryEmail?.emailAddress) {
         return c.superjson({ isSynced: false, message: "No valid email address found" })
       }
 
       const user = await db.user.findFirst({
         where: { clerkId: auth.id },
-      })
+      }) as { id: string; email: string; clerkId: string; firstName: string | null; lastName: string | null; imageUrl: string | null; quotaLimit: number; plan: string } | null
 
-      ('User in Database 👨:', user)
+      console.log('User in Database 👨:', user)
 
       if (!user) {
         // Get current month and year for quota
@@ -64,7 +64,7 @@ export const authRouter = j.router({
             }
           },
         })
-        ('Created new user:', newUser)
+        console.log('Created new user:', newUser)
 
         // Send welcome email
         try {
@@ -73,7 +73,7 @@ export const authRouter = j.router({
             userEmail: newUser.email,
             resendApiKey: process.env.RESEND_API_KEY || '',
           })
-          ('Welcome email sent successfully')
+          console.log('Welcome email sent successfully')
         } catch (emailError) {
           console.error('Failed to send welcome email:', emailError)
           // Don't throw error here, just log it since email sending is not critical

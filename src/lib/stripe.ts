@@ -1,6 +1,7 @@
 import Stripe from "stripe"
 import { db } from "@/lib/db"
 import { Plan, SubscriptionStatus } from "@prisma/client"
+import { PaymentEmailService } from "@/services/payment-email-service"
 
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", {
@@ -52,7 +53,7 @@ export async function createCheckoutSession({
       },
     ],
     mode: "subscription",
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?payment=success`,
+    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?payment=success&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing?canceled=true`,
     metadata: {
       userId,
@@ -214,9 +215,44 @@ export async function handleSubscriptionUpdate(subscription: StripeSubscription)
       }
     })
 
-    // If the plan has changed, update the quota records
+    // If the plan has changed, update the quota records and send success email
     if (currentUser && currentUser.plan !== plan.toUpperCase()) {
-      console.log(`Plan changed from ${currentUser.plan} to ${plan.toUpperCase()}, updating quota records`)
+      console.log(`Plan changed from ${currentUser.plan} to ${plan.toUpperCase()}, updating quota records and sending email`)
+      
+      // Get plan features based on the new plan
+      const planFeatures = plan === "PRO" ? [
+        "10 Forms",
+        "10,000 submissions per month",
+        "Complete analytics suite",
+        "Form campaigns (10/month)",
+        "Up to 10,000 recipients per campaign",
+        "Premium support",
+        "Custom domains",
+        "Team collaboration",
+        "API access"
+      ] : plan === "STANDARD" ? [
+        "5 Forms",
+        "5,000 submissions per month",
+        "Advanced analytics",
+        "Form campaigns (3/month)",
+        "Up to 500 recipients per campaign",
+        "Priority support",
+        "Custom branding"
+      ] : [
+        "1 Form",
+        "200 submissions per month",
+        "Basic form analytics",
+        "Form validation",
+        "Standard support"
+      ]
+
+      // Send success email
+      await PaymentEmailService.sendSubscriptionUpgradeSuccessEmail({
+        to: userEmail,
+        plan: plan.charAt(0) + plan.slice(1).toLowerCase(), // Capitalize first letter
+        nextBillingDate: endDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now if no end date
+        features: planFeatures
+      })
       
       // Get the current date
       const now = new Date()

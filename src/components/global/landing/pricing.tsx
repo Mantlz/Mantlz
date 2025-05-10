@@ -153,8 +153,8 @@ function PricingContent({
     // Map UI plan titles to subscription plan values
     const planMapping: Record<string, string> = {
       "Starter": "FREE",
-      "Professional": "STANDARD",
-      "Business": "PRO"
+      "Standard": "STANDARD",
+      "Professional": "PRO"
     }
     
     return subscription.plan === planMapping[planTitle]

@@ -3,6 +3,13 @@ import { stripe, handleCheckoutSession, handleSubscriptionUpdate } from "@/lib/s
 import { headers } from "next/headers"
 import Stripe from "stripe"
 import { NextResponse } from "next/server"
+import { FREE_QUOTA, getQuotaByPlan } from "@/config/usage"
+import { Plan } from "@prisma/client"
+import { 
+  sendPaymentFailureEmail, 
+  sendSubscriptionCanceledEmail,
+  sendSubscriptionRecoveredEmail 
+} from "@/emails/index"
 
 // Define a proper interface for our Stripe Subscription with necessary properties
 interface StripeSubscription extends Stripe.Subscription {
@@ -371,7 +378,7 @@ export async function POST(req: Request) {
           
           const invoiceRecord = await db.invoice.create({
             data: {
-              invoiceId: invoice.id,
+              invoiceId: invoice.id as string,
               subscriptionId,
               amountPaid: invoice.amount_paid / 100,
               amountDue: invoice.amount_due ? invoice.amount_due / 100 : invoice.amount_paid / 100,
@@ -427,22 +434,138 @@ export async function POST(req: Request) {
         
         if (subscriptionId) {
           try {
-            console.log(`[DEBUG] Updating subscription status to PAST_DUE for: ${subscriptionId}`)
-            
-            const updatedSubscription = await db.subscription.update({
+            // Get the subscription to find the user
+            const subscription = await db.subscription.findUnique({
               where: { subscriptionId },
-              data: {
-                status: "PAST_DUE",
-                updatedAt: new Date()
-              }
+              include: { user: true }
             })
-            
-            console.log(`[DEBUG] Subscription updated:`, updatedSubscription)
+
+            if (subscription) {
+              // Count failed attempts
+              const failedAttempts = await db.paymentFailure.count({
+                where: { subscriptionId }
+              })
+
+              if (failedAttempts < 3) { // Allow 3 failed attempts
+                // Record the failed attempt
+                await db.paymentFailure.create({
+                  data: {
+                    subscriptionId,
+                    invoiceId: invoice.id as string,
+                    amount: invoice.amount_due || 0,
+                    failureReason: invoice.billing_reason || 'unknown',
+                    attemptNumber: failedAttempts + 1
+                  }
+                })
+
+                // Update subscription status to PAST_DUE but don't downgrade yet
+                await db.subscription.update({
+                  where: { subscriptionId },
+                  data: {
+                    status: "PAST_DUE",
+                    updatedAt: new Date()
+                  }
+                })
+
+                // Calculate next attempt date (3 days from now)
+                const nextAttemptDate = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
+
+                // Send email notification
+                await sendPaymentFailureEmail({
+                  to: subscription.user.email,
+                  attemptNumber: failedAttempts + 1,
+                  nextAttemptDate,
+                  updatePaymentUrl: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing`
+                })
+
+                console.log(`[DEBUG] Payment failure recorded for user ${subscription.userId}, attempt ${failedAttempts + 1} of 3`)
+              } else {
+                // After 3 failed attempts, downgrade to free plan
+                await db.subscription.update({
+                  where: { subscriptionId },
+                  data: {
+                    status: "CANCELED",
+                    updatedAt: new Date()
+                  }
+                })
+
+                await db.user.update({
+                  where: { id: subscription.userId },
+                  data: {
+                    plan: "FREE",
+                    quotaLimit: FREE_QUOTA.maxSubmissionsPerMonth
+                  }
+                })
+
+                // Send final notification
+                await sendSubscriptionCanceledEmail({
+                  to: subscription.user.email,
+                  currentPlan: subscription.planId,
+                  reactivationUrl: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`
+                })
+
+                console.log(`[DEBUG] User ${subscription.userId} downgraded to FREE plan after 3 failed payment attempts`)
+              }
+            }
           } catch (error) {
             console.error(`[ERROR] Error processing invoice.payment_failed webhook:`, error)
           }
-        } else {
-          console.log(`[DEBUG] No subscription ID found in invoice: ${invoice.id}`)
+        }
+        break
+      }
+
+      case "customer.subscription.resumed": {
+        const subscription = event.data.object as StripeSubscription
+        
+        if (subscription) {
+          try {
+            // Update subscription status
+            await db.subscription.update({
+              where: { subscriptionId: subscription.id },
+              data: {
+                status: "ACTIVE",
+                updatedAt: new Date()
+              }
+            })
+
+            // Get the plan from metadata
+            const plan = subscription.metadata?.plan || "FREE"
+            const quota = getQuotaByPlan(plan)
+            
+            // Update user's plan and quota
+            await db.user.update({
+              where: { id: subscription.metadata?.userId },
+              data: {
+                plan: plan as Plan,
+                quotaLimit: quota.maxSubmissionsPerMonth
+              }
+            })
+
+            // Mark payment failures as resolved
+            await db.paymentFailure.updateMany({
+              where: { 
+                subscriptionId: subscription.id,
+                resolved: false
+              },
+              data: {
+                resolved: true,
+                resolvedAt: new Date()
+              }
+            })
+
+            // Send recovery confirmation email
+            if (subscription.metadata?.userEmail) {
+              await sendSubscriptionRecoveredEmail({
+                to: subscription.metadata.userEmail,
+                plan,
+                nextBillingDate: new Date(subscription.current_period_end * 1000)
+              })
+            }
+
+            console.log(`[DEBUG] Subscription ${subscription.id} resumed successfully`)
+          } catch (error) {
+            console.error(`[ERROR] Error processing subscription.resumed webhook:`, error)
+          }
         }
         break
       }

@@ -10,6 +10,7 @@ const routerImports = {
   paymentRouter: () => import("./routers/payment-router").then(m => m.paymentRouter),
   campaignRouter: () => import("./routers/campaign-router").then(m => m.campaignRouter),
   trackingRouter: () => import("./routers/tracking-router").then(m => m.trackingRouter),
+
 }
 
 const api = j
@@ -28,6 +29,7 @@ const appRouter = j.mergeRouters(api, {
   payment: routerImports.paymentRouter,
   campaign: routerImports.campaignRouter,
   tracking: routerImports.trackingRouter,
+
 })
 
 export type AppRouter = typeof appRouter

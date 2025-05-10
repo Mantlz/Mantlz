@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, Suspense } from "react"
+import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { CheckIcon } from "lucide-react"
@@ -8,19 +8,12 @@ import { useQuery } from "@tanstack/react-query"
 import { client } from "@/lib/client"
 
 export function PaymentSuccessModal() {
-  return (
-    <Suspense fallback={null}>
-      <PaymentSuccessModalContent />
-    </Suspense>
-  )
-}
-
-function PaymentSuccessModalContent() {
   const searchParams = useSearchParams()
   const [isOpen, setIsOpen] = useState(false)
+  const sessionId = searchParams.get("session_id") || localStorage.getItem('stripeSessionId')
   
   // Check if we should show the modal
-  const showModal = searchParams.get("payment") === "success"
+  const showModal = searchParams.get("payment") === "success" || !!localStorage.getItem('stripeSessionId')
   
   // Fetch the user's current plan
   const { data: userPlan, isLoading } = useQuery({
@@ -30,7 +23,7 @@ function PaymentSuccessModalContent() {
       const data = await response.json()
       return data.plan
     },
-    enabled: showModal,
+    enabled: showModal && !!sessionId,
   })
   
   // Open the modal when the component mounts if payment=success is in the URL
@@ -38,10 +31,14 @@ function PaymentSuccessModalContent() {
     if (showModal) {
       setIsOpen(true)
       
-      // Remove the payment parameter from the URL without refreshing the page
+      // Remove the payment and session_id parameters from the URL without refreshing the page
       const url = new URL(window.location.href)
       url.searchParams.delete("payment")
+      url.searchParams.delete("session_id")
       window.history.replaceState({}, "", url.toString())
+      
+      // Clear the stored session ID
+      localStorage.removeItem('stripeSessionId')
     }
   }, [showModal])
   
@@ -53,16 +50,15 @@ function PaymentSuccessModalContent() {
   if (!isOpen) return null
   
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100]">
-      <div className="bg-white dark:bg-zinc-900 rounded-lg max-w-md w-full border border-slate-200 dark:border-zinc-800 shadow-xl overflow-hidden">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100]">
+      <div className="bg-white dark:bg-zinc-800 rounded-lg max-w-md w-full border border-slate-200 dark:border-zinc-800 shadow-xl overflow-hidden">
         {/* Accent line */}
-        <div className="absolute top-0 left-0 h-full w-1 bg-gradient-to-b from-slate-300 via-slate-400 to-slate-500 dark:from-zinc-700 dark:via-zinc-600 dark:to-zinc-500" />
+
         
         {/* Modern minimal header */}
         <div className="relative bg-zinc-100 dark:bg-black p-6 border-b border-slate-200 dark:border-zinc-800">
           <div className="absolute top-0 left-0 w-full h-px bg-slate-100 dark:bg-white/10"></div>
           <h2 className="text-black dark:text-white text-xl font-medium tracking-tight flex items-center space-x-2 text-center justify-center">
-
             <span>Payment Successful</span>
           </h2>
         </div>
@@ -84,7 +80,7 @@ function PaymentSuccessModalContent() {
               <div className="text-center mb-6">
                 <h3 className="text-xl font-medium text-black dark:text-white mb-2">Thank you for your payment!</h3>
                 <p className="text-sm text-black dark:text-white">
-                  Your account has been upgraded to the <span className="font-medium">{userPlan}</span> plan.
+                  Your account has been upgraded to the <span className="font-medium">{typeof userPlan === 'string' ? userPlan : 'new'}</span> plan.
                 </p>
               </div>
               
@@ -92,7 +88,7 @@ function PaymentSuccessModalContent() {
               <div className="flex justify-center w-full">
                 <Button 
                   onClick={handleClose}
-                  className="bg-slate-800  hover:bg-slate-700 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white transition-colors font-medium text-sm cursor-pointer px-6"
+                  className="bg-slate-800 hover:bg-slate-700 dark:bg-zinc-950 dark:hover:bg-zinc-700 text-white transition-colors font-medium text-sm cursor-pointer px-6"
                 >
                   Continue to Dashboard
                 </Button>

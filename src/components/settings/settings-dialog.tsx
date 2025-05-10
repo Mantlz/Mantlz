@@ -33,6 +33,7 @@ import { AccessibilitySettings } from "./AccessibilitySettings"
 import { AdvancedSettings } from "./AdvancedSettings"
 import BillingSettings from "./BillingSettings";
 
+
 // Define a more specific type for navigation data items
 type NavigationItem = {
   name: string;
@@ -171,12 +172,12 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
             <div className="flex flex-1 flex-col overflow-y-auto">
               <div className="flex-1 p-8">
                 {selectedTab === 'Appearance' && <AppearanceSettings />}
-                {/* {selectedTab === 'Notifications' && <NotificationSettings />} */}
                 {selectedTab === 'Accessibility' && <AccessibilitySettings />}
                 {selectedTab === 'Billing' && <BillingSettings />}
                 {selectedTab === 'Usage' && <UsageSettings />}
                 {selectedTab === 'API Keys' && <ApiKeySettings />}
                 {selectedTab === 'Email Settings' && <EmailSettings />}
+
                 {selectedTab === 'Advanced' && <AdvancedSettings />}
               </div>
             </div>
