@@ -5,7 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs"
 import "./globals.css"
 import { MantlzProvider } from "@mantlz/nextjs"
 import { Toaster } from "@/components/ui/sonner"
-import { Analytics } from "@vercel/analytics/react"
+// import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Space_Mono, Space_Grotesk } from "next/font/google"
 import { CookieConsent } from "@/components/global/cookie-consent"
@@ -115,7 +115,7 @@ export default function RootLayout({
                 <PostHogProvider>
                   {children}
                   <Toaster richColors position="top-center" theme="system" />
-                  <Analytics />
+                  {/* <Analytics /> */}
                   <SpeedInsights />
                   <CookieConsent />
                 </PostHogProvider>

@@ -39,6 +39,16 @@ function PostHogPageView() {
       }
 
       posthog.capture('$pageview', { '$current_url': url })
+
+      // Add page leave tracking
+      const handlePageLeave = () => {
+        posthog.capture('$pageleave', { '$current_url': url })
+      }
+
+      window.addEventListener('beforeunload', handlePageLeave)
+      return () => {
+        window.removeEventListener('beforeunload', handlePageLeave)
+      }
     }
   }, [pathname, searchParams, posthog])
 
