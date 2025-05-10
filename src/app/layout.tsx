@@ -8,8 +8,19 @@ import { Toaster } from "@/components/ui/sonner"
 // import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Space_Mono, Space_Grotesk } from "next/font/google"
-import { CookieConsent } from "@/components/global/cookie-consent"
-import { PostHogProvider } from "@/components/providers/posthog-provider"
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
+
+// Dynamically import heavy components
+const CookieConsent = dynamic(() => import("@/components/global/cookie-consent").then(mod => mod.CookieConsent), {
+  ssr: false,
+  loading: () => null
+})
+
+const PostHogProvider = dynamic(() => import("@/components/providers/posthog-provider").then(mod => mod.PostHogProvider), {
+  ssr: false,
+  loading: () => null
+})
 
 const sansFont = Space_Grotesk({
   subsets: ["latin"],
@@ -18,6 +29,7 @@ const sansFont = Space_Grotesk({
   weight: "400",
   preload: true,
   adjustFontFallback: true,
+  fallback: ['system-ui', 'arial'],
 });
 
 const monoFont = Space_Mono({
@@ -27,9 +39,8 @@ const monoFont = Space_Mono({
   weight: "400",
   preload: true,
   adjustFontFallback: true,
+  fallback: ['monospace'],
 });
-
-
 
 export const metadata: Metadata = {
   title: "Mantlz - Build Custom Forms with Ease",
@@ -102,23 +113,25 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-    // appearance={{
-    //   baseTheme: neobrutalism,  
-    // }}
-    >
+    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="en" suppressHydrationWarning>
+        <head>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        </head>
         <body className={`${sansFont.variable} ${monoFont.variable} font-regular antialiased tracking-wide`}>
           <main className="h-screen bg-background text-foreground transition-colors duration-300">
             <Providers>
               <MantlzProvider apiKey={process.env.MANTLZ_KEY}>
-                <PostHogProvider>
-                  {children}
-                  <Toaster richColors position="top-center" theme="system" />
-                  {/* <Analytics /> */}
-                  <SpeedInsights />
-                  <CookieConsent />
-                </PostHogProvider>
+                <Suspense fallback={null}>
+                  <PostHogProvider>
+                    {children}
+                    <Toaster richColors position="top-center" theme="system" />
+                    {/* <Analytics /> */}
+                    <SpeedInsights />
+                    <CookieConsent />
+                  </PostHogProvider>
+                </Suspense>
               </MantlzProvider>
             </Providers>
           </main>
