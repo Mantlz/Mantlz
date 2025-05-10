@@ -3,7 +3,7 @@ import {
   Heading,
   Text,
   Section,
-  Hr,
+
 } from '@react-email/components';
 import { BrandedEmailTemplate } from './templates/branded-email-template'
 

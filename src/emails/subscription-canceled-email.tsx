@@ -4,7 +4,6 @@ import {
   Text,
   Section,
   Button,
-  Hr,
 } from '@react-email/components';
 import { BrandedEmailTemplate } from './templates/branded-email-template'
 
