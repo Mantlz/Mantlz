@@ -17,24 +17,11 @@ export function CookieConsent() {
       setIsVisible(true)
     } else if (consent === "rejected") {
       // Disable analytics and tracking if consent was previously rejected
-      disableTracking()
+
     }
   }, [])
 
-  const disableTracking = () => {
-    // Disable Vercel Analytics
-    if (window.va) {
-      window.va = function() {}
-    }
-    // Disable other tracking cookies
-    document.cookie.split(";").forEach(cookie => {
-      const [name] = cookie.split("=")
-      if (name?.trim().match(/^(?:__utm|_ga|_gid|_gat)/)) {
-        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`
-      }
-    })
-  }
-
+ 
   const handleAccept = () => {
     localStorage.setItem("cookie-consent", "accepted")
     setIsVisible(false)
@@ -42,7 +29,7 @@ export function CookieConsent() {
 
   const handleReject = () => {
     localStorage.setItem("cookie-consent", "rejected")
-    disableTracking()
+
     setIsVisible(false)
   }
 
