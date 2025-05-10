@@ -48,7 +48,7 @@ export async function getDocsForSlug(slug: string) {
     const rawMdx = await fs.readFile(contentPath, "utf-8");
     return await parseMdx<BaseMdxFrontmatter>(rawMdx);
   } catch (err) {
-    console.log(err);
+    (err);
   }
 }
 

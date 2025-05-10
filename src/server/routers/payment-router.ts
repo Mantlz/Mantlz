@@ -20,7 +20,7 @@ export const paymentRouter = j.router({
       // Determine the plan from the price ID
       const plan = PRICE_TO_PLAN[priceId] || 'FREE'
       
-      console.log('Creating checkout session with:', { priceId, plan, userId: user.id })
+      ('Creating checkout session with:', { priceId, plan, userId: user.id })
 
       const session = await createCheckoutSession({
         userEmail: user.email,
@@ -39,7 +39,7 @@ export const paymentRouter = j.router({
     .mutation(async ({ c, ctx }) => {
       const { user } = ctx
       
-      console.log('Received portal request for user:', user.id)
+      ('Received portal request for user:', user.id)
 
       // Find user's subscription and Stripe customer ID
       const subscription = await db.subscription.findFirst({
@@ -53,7 +53,7 @@ export const paymentRouter = j.router({
       })
 
       if (!subscription?.stripeUserId) {
-        console.log('No active subscription found for user')
+        ('No active subscription found for user')
         return c.json(
           { error: "No active subscription found" },
           { status: 404 }
@@ -61,12 +61,12 @@ export const paymentRouter = j.router({
       }
 
       // Create Stripe portal session
-      console.log('Creating portal session for customer:', subscription.stripeUserId)
+      ('Creating portal session for customer:', subscription.stripeUserId)
       const portalSession = await createPortalSession({
         userId: user.id,
       })
 
-      console.log('Portal session created:', portalSession.id)
+      ('Portal session created:', portalSession.id)
       return c.json({ url: portalSession.url })
     }),
 })

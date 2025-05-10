@@ -74,7 +74,7 @@ export function MantlzProvider({ apiKey, children }: MantlzProviderProps) {
   React.useEffect(() => {
     if (typeof window !== 'undefined' && client) {
       window.mantlz = client;
-     // console.log('Mantlz client initialized with API key:', apiKey);
+     // ('Mantlz client initialized with API key:', apiKey);
     }
   }, [apiKey, client]);
 

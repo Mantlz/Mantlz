@@ -21,7 +21,7 @@ export async function sendDeveloperNotification(
   submissionId: string,
   submissionData: SubmissionData
 ) {
-  console.log('🔍 Starting developer notification process:', { formId, submissionId });
+
   
   // Get form and email settings with user information
   const form = await db.form.findUnique({
@@ -32,25 +32,16 @@ export async function sendDeveloperNotification(
     }
   });
 
-  console.log('📋 Form and settings:', { 
-    formExists: !!form,
-    emailSettings: form?.emailSettings,
-    developerNotificationsEnabled: form?.emailSettings?.developerNotificationsEnabled,
-    userPlan: form?.user?.plan,
-    hasResendApiKey: !!form?.user?.resendApiKey
-  });
 
   if (!form || !form.emailSettings?.developerNotificationsEnabled || form.user.plan !== 'PRO') {
     const reason = !form ? 'form-not-found' :
                   !form.emailSettings?.developerNotificationsEnabled ? 'notifications-disabled' :
                   'not-pro-plan';
-    console.log('❌ Developer notification skipped:', { reason });
     return { sent: false, reason };
   }
 
   // Check if user has provided a Resend API key
   if (!form.user.resendApiKey) {
-    console.log('❌ Developer notification skipped: missing API key');
     return { sent: false, reason: 'missing-api-key' };
   }
   
@@ -69,13 +60,9 @@ export async function sendDeveloperNotification(
     }
   });
 
-  console.log('📊 Rate limit check:', { 
-    recentNotifications, 
-    maxAllowed: form.emailSettings.maxNotificationsPerHour || 10 
-  });
+ 
 
   if (recentNotifications >= (form.emailSettings.maxNotificationsPerHour || 10)) {
-    console.log('❌ Developer notification skipped: rate limited');
     // Too many notifications, don't send
     return { sent: false, reason: 'rate-limited' };
   }
@@ -83,7 +70,6 @@ export async function sendDeveloperNotification(
   // Check conditions if any are set
   const conditions = (form.emailSettings.notificationConditions as unknown as NotificationCondition[] || []);
   if (conditions.length > 0) {
-    console.log('🔍 Checking notification conditions:', conditions);
     
     const shouldSend = conditions.every(condition => {
       const fieldValue = submissionData[condition.field];
@@ -97,19 +83,16 @@ export async function sendDeveloperNotification(
         default: result = true;
       }
       
-      console.log(`  - Condition check: ${condition.field} ${condition.operator} ${condition.value} => ${result}`);
       return result;
     });
 
     if (!shouldSend) {
-      console.log('❌ Developer notification skipped: conditions not met');
       return { sent: false, reason: 'conditions-not-met' };
     }
   }
 
   // Determine target email address
   const targetEmail = form.emailSettings.developerEmail || form.user.email;
-  console.log('📧 Preparing to send notification to:', targetEmail);
 
   // All checks passed, send notification
   try {
@@ -127,8 +110,6 @@ export async function sendDeveloperNotification(
       subject: `New Form Submission: ${form.name}`,
       html: htmlContent,
     });
-
-    console.log('✅ Developer notification sent:', result);
 
     // Log the notification
     await db.notificationLog.create({

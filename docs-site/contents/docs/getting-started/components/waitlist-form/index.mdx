@@ -59,7 +59,7 @@ WaitlistForm can display a counter showing how many users have already joined:
   formId="your-waitlist-id"
   onSubmitSuccess={(data) => {
     // Handle successful submission
-    console.log('Email:', data.email);
+    ('Email:', data.email);
     analytics.track('Waitlist Joined', { email: data.email });
   }}
   onSubmitError={(error) => {

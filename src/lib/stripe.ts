@@ -41,7 +41,7 @@ export async function createCheckoutSession({
     }
   }
 
-  console.log(`Creating checkout session for plan: ${plan} with priceId: ${priceId}`)
+  (`Creating checkout session for plan: ${plan} with priceId: ${priceId}`)
 
   const session = await stripe.checkout.sessions.create({
     customer_email: userEmail,
@@ -117,13 +117,13 @@ export async function handleSubscriptionUpdate(subscription: StripeSubscription)
 
   try {
     // Log subscription data for debugging
-    console.log("Subscription data:", {
-      id: subscription.id,
-      current_period_start: subscription.current_period_start,
-      current_period_end: subscription.current_period_end,
-      status: subscription.status,
-      plan
-    })
+    // ("Subscription data:", {
+    //   id: subscription.id,
+    //   current_period_start: subscription.current_period_start,
+    //   current_period_end: subscription.current_period_end,
+    //   status: subscription.status,
+    //   plan
+    // })
 
     // Safely convert timestamps to Date objects
     let startDate = subscription.current_period_start 
@@ -216,7 +216,7 @@ export async function handleSubscriptionUpdate(subscription: StripeSubscription)
 
     // If the plan has changed, update the quota records
     if (currentUser && currentUser.plan !== plan.toUpperCase()) {
-      console.log(`Plan changed from ${currentUser.plan} to ${plan.toUpperCase()}, updating quota records`)
+      (`Plan changed from ${currentUser.plan} to ${plan.toUpperCase()}, updating quota records`)
       
       // Get the current date
       const now = new Date()
@@ -253,7 +253,7 @@ export async function handleSubscriptionUpdate(subscription: StripeSubscription)
       }
     }
 
-    console.log(`Successfully updated subscription for user ${userId} to plan ${plan}`)
+    (`Successfully updated subscription for user ${userId} to plan ${plan}`)
   } catch (error) {
     console.error("Error updating subscription:", error)
     throw error
@@ -284,7 +284,7 @@ export const handleCheckoutSession = async (session: Stripe.Checkout.Session) =>
     throw new Error("No customer ID found in session")
   }
 
-  console.log(`[DEBUG] Updating user ${userId} with Stripe customer ID: ${customerId}`)
+  (`[DEBUG] Updating user ${userId} with Stripe customer ID: ${customerId}`)
 
   // Update user's stripe customer ID
   await db.user.update({

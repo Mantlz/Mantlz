@@ -132,15 +132,6 @@ After form submission, you can specify a redirect URL (STANDARD and PRO plans on
 ```tsx
 <ContactForm
   formId="your-form-id"
-  onSubmitSuccess={(data) => {
-    // Handle successful submission
-    console.log('Form submitted:', data);
-    // Trigger analytics or other actions
-  }}
-  onSubmitError={(error) => {
-    // Handle submission error
-    console.error('Submission failed:', error);
-  }}
 />
 ```
 

@@ -10,7 +10,7 @@ export const authRouter = j.router({
   getDatabaseSyncStatus: j.procedure.query(async ({ c }) => {
     try {
       const auth = await currentUser()
-      console.log('Auth status:', !!auth)
+      ('Auth status:', !!auth)
 
       if (!auth) {
         return c.superjson({ isSynced: false, message: "Not authenticated" })
@@ -25,7 +25,7 @@ export const authRouter = j.router({
         where: { clerkId: auth.id },
       })
 
-      console.log('User in Database 👨:', user)
+      ('User in Database 👨:', user)
 
       if (!user) {
         // Get current month and year for quota
@@ -64,7 +64,7 @@ export const authRouter = j.router({
             }
           },
         })
-        console.log('Created new user:', newUser)
+        ('Created new user:', newUser)
 
         // Send welcome email
         try {
@@ -73,7 +73,7 @@ export const authRouter = j.router({
             userEmail: newUser.email,
             resendApiKey: process.env.RESEND_API_KEY || '',
           })
-          console.log('Welcome email sent successfully')
+          ('Welcome email sent successfully')
         } catch (emailError) {
           console.error('Failed to send welcome email:', emailError)
           // Don't throw error here, just log it since email sending is not critical

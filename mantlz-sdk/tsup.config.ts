@@ -37,7 +37,7 @@ const inlineCssPlugin = () => {
           return;
         }
         
-        console.log('✅ Found processed CSS file');
+        ('✅ Found processed CSS file');
         const cssContent = fs.readFileSync(cssPath, 'utf8');
         
         // Files to inject CSS into
@@ -45,7 +45,7 @@ const inlineCssPlugin = () => {
         
         for (const file of files) {
           if (fs.existsSync(file)) {
-            console.log(`Injecting CSS into ${file}...`);
+            (`Injecting CSS into ${file}...`);
             const content = fs.readFileSync(file, 'utf8');
             
             // Create a small script to inject CSS into the document head
@@ -73,7 +73,7 @@ const inlineCssPlugin = () => {
             // Inject the CSS after the 'use client' directive
             const updatedContent = content.replace(/'use client';\n\n/, `'use client';\n\n${injectCss}\n\n`);
             fs.writeFileSync(file, updatedContent);
-            console.log(`✅ CSS injected into ${file}`);
+            (`✅ CSS injected into ${file}`);
           } else {
             console.error(`⚠️ Output file not found: ${file}`);
           }

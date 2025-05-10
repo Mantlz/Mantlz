@@ -26,7 +26,7 @@ try {
   // Copy directly to dist for direct imports
   fs.writeFileSync(path.resolve(__dirname, 'dist/styles.css'), processedCss);
   
-  console.log('CSS copied successfully to both src/styles/processed.css and dist/styles.css');
+  ('CSS copied successfully to both src/styles/processed.css and dist/styles.css');
 } catch (error) {
   console.error('Error processing CSS:', error);
 } 

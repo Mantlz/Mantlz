@@ -49,8 +49,8 @@ export function FormSettings({
   // exportSettings,
   onRefresh 
 }: FormSettingsProps) {
-  // Log received props for debugging
-  console.log('FormSettings props:', { formId, formType, usersJoinedSettings });
+
+
   
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState('');
@@ -171,11 +171,7 @@ export function FormSettings({
   };
 
   const handleUsersJoinedToggle = async (checked: boolean) => {
-    console.log(`Toggling users joined counter: ${checked}`, {
-      formId: formId,
-      formType: formType
-    });
-    
+
     if (!formId) {
       console.error('No formId provided for toggle action');
       toast.error('Configuration error');
@@ -219,27 +215,22 @@ export function FormSettings({
   };
 
   const handleDelete = async () => {
-    console.log('Starting delete process for formId:', formId);
-    if (deleteConfirmation !== 'delete') {
-      console.log('Delete confirmation text does not match');
-      return;
-    }
 
     try {
-      console.log('Setting deleting state to true');
+      ('Setting deleting state to true');
       setIsDeleting(true);
       
-      console.log('Making API call to delete form...');
+      ('Making API call to delete form...');
       const response = await client.forms.delete.$post({
         formId: formId
       });
-      console.log('Delete API response:', response);
 
-      console.log('Form deleted successfully, showing toast');
+
+      ('Form deleted successfully, showing toast');
       toast.success('Form deleted successfully');
       setIsDeleteModalOpen(false);
       
-      console.log('Redirecting to dashboard');
+      ('Redirecting to dashboard');
       router.push('/dashboard');
       router.refresh();
       
@@ -255,7 +246,7 @@ export function FormSettings({
         description: error instanceof Error ? error.message : 'An unexpected error occurred',
       });
     } finally {
-      console.log('Cleanup: Setting deleting state to false');
+      ('Cleanup: Setting deleting state to false');
       setIsDeleting(false);
     }
   };

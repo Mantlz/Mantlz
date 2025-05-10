@@ -52,7 +52,7 @@ function MyFeedbackPage() {
       
       <FeedbackForm 
         formId="my-feedback-form"
-        onSubmitSuccess={(data) => console.log('Feedback submitted:', data)}
+        onSubmitSuccess={(data) => ('Feedback submitted:', data)}
       />
     </div>
   );
@@ -154,8 +154,8 @@ The FeedbackForm automatically detects the user's system preference for dark/lig
   formId="my-form"
   onSubmitSuccess={(data) => {
     // Handle successful submission
-    console.log('Rating:', data.rating);
-    console.log('Feedback:', data.feedback);
+    ('Rating:', data.rating);
+    ('Feedback:', data.feedback);
   }}
   onSubmitError={(error) => {
     // Handle submission error

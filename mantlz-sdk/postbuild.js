@@ -12,7 +12,7 @@ typeFiles.forEach(file => {
     // Only add 'use client' if it doesn't already exist
     if (!content.includes("'use client'") && !content.includes('"use client"')) {
       fs.writeFileSync(filePath, "'use client';\n\n" + content);
-      // console.log(`Added 'use client' directive to ${file}`);
+      // (`Added 'use client' directive to ${file}`);
     }
   }
 }); 

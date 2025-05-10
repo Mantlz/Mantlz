@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    console.log("Processing scheduled campaigns...");
+    ("Processing scheduled campaigns...");
 
     // Get current time
     const currentDate = new Date();
@@ -81,17 +81,17 @@ export async function GET(request: NextRequest) {
       }
     });
 
-    console.log(`Found ${scheduledCampaigns.length} campaigns to process`);
+    (`Found ${scheduledCampaigns.length} campaigns to process`);
 
     // Process each campaign
     for (const campaignData of scheduledCampaigns) {
       try {
         let campaign = {...campaignData};
-        console.log(`Campaign ${campaign.id} has ${campaign.recipients.length} recipients`);
+        (`Campaign ${campaign.id} has ${campaign.recipients.length} recipients`);
         
         // If no recipients, try to fetch and set them from the form
         if (campaign.recipients.length === 0) {
-          console.log(`No recipients found for campaign ${campaign.id}, attempting to set them now...`);
+          (`No recipients found for campaign ${campaign.id}, attempting to set them now...`);
           
           // Fetch form submissions to use as recipients
           const formSubmissions = await db.submission.findMany({
@@ -108,7 +108,7 @@ export async function GET(request: NextRequest) {
             }
           });
           
-          console.log(`Found ${formSubmissions.length} potential recipients from form submissions`);
+          (`Found ${formSubmissions.length} potential recipients from form submissions`);
           
           if (formSubmissions.length > 0) {
             // Create recipients for the campaign
@@ -140,7 +140,7 @@ export async function GET(request: NextRequest) {
             });
             
             if (updatedCampaign) {
-              console.log(`Added ${updatedCampaign.recipients.length} recipients to campaign ${campaign.id}`);
+              (`Added ${updatedCampaign.recipients.length} recipients to campaign ${campaign.id}`);
               campaign = updatedCampaign;
             }
           }
@@ -154,7 +154,7 @@ export async function GET(request: NextRequest) {
           }
         });
 
-        console.log(`Processing campaign: ${campaign.id} - ${campaign.name}`);
+        (`Processing campaign: ${campaign.id} - ${campaign.name}`);
         
         // Process each recipient
         const sentEmails = [];
@@ -162,7 +162,7 @@ export async function GET(request: NextRequest) {
 
         for (const recipient of campaign.recipients) {
           try {
-            console.log(`Sending email to recipient: ${recipient.email}`);
+            (`Sending email to recipient: ${recipient.email}`);
             
             // Create sent email record
             const sentEmail = await db.sentEmail.create({
@@ -213,7 +213,7 @@ export async function GET(request: NextRequest) {
             });
 
             sentEmails.push(recipient.email);
-            console.log(`Email sent successfully to ${recipient.email}`);
+            (`Email sent successfully to ${recipient.email}`);
           } catch (error) {
             console.error(`Error sending to recipient ${recipient.email}:`, error);
             
@@ -242,7 +242,7 @@ export async function GET(request: NextRequest) {
           }
         });
 
-        console.log(`Campaign ${campaign.id} processed: ${sentEmails.length} sent, ${failedEmails.length} failed`);
+        (`Campaign ${campaign.id} processed: ${sentEmails.length} sent, ${failedEmails.length} failed`);
       } catch (error) {
         console.error(`Error processing campaign ${campaignData.id}:`, error);
         
@@ -260,7 +260,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    console.log("Finished processing scheduled campaigns");
+    ("Finished processing scheduled campaigns");
     return NextResponse.json({ success: true, processed: scheduledCampaigns.length });
   } catch (error) {
     console.error("Error in processScheduledCampaigns:", error);

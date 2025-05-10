@@ -1112,7 +1112,6 @@ export const formRouter = j.router({
       const skip = (page - 1) * limit;
 
       try {
-        console.log('🔍 Starting getSubmissionLogs query:', { formId, page, limit, status, type, search, startDate, endDate });
 
         // Get user's plan
         const userWithPlan = await db.user.findUnique({
@@ -1168,7 +1167,6 @@ export const formRouter = j.router({
           ...(type ? { type: type as NotificationType } : {}),
         };
 
-        console.log('📝 Query where clause:', where);
 
         const [submissions, total] = await Promise.all([
           db.submission.findMany({
@@ -1274,7 +1272,7 @@ export const formRouter = j.router({
           };
         });
 
-        console.log('✅ Found submissions:', { count: submissions.length, total });
+
 
         return c.superjson({
           submissions: enhancedSubmissions,

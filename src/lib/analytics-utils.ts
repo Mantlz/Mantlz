@@ -87,27 +87,20 @@ export async function detectCountry(
   acceptLanguage: string | null | undefined,
   ip: string | null | undefined
 ): Promise<string | undefined> {
-  console.log('Starting country detection with:', { cfCountry, acceptLanguage, ip });
-  
+
   // 1. Try Cloudflare country code (most reliable)
   if (cfCountry && cfCountry.length === 2) {
     const countryName = COUNTRY_MAP[cfCountry.toUpperCase()];
-    console.log('✓ Using Cloudflare country code:', { cfCountry, resolvedName: countryName });
     return countryName || cfCountry;
   }
-  console.log('✗ No Cloudflare country code available, trying IP geolocation...');
   
   // 2. Try IP geolocation (second most reliable, especially with VPN)
   if (ip) {
-    console.log('Attempting IP geolocation for:', ip);
     const ipCountry = await getCountryFromIP(ip);
     if (ipCountry) {
-      console.log('✓ Successfully detected country from IP:', { ip, resolvedName: ipCountry });
       return ipCountry;
     }
-    console.log('✗ IP geolocation failed or returned no results');
   } else {
-    console.log('✗ No IP address available for geolocation');
   }
   
   // 3. Last resort: browser locale (least reliable with VPN)
@@ -115,16 +108,10 @@ export async function detectCountry(
     const browserLocale = acceptLanguage.split(',')[0]?.split('-')[1];
     if (browserLocale && browserLocale.length === 2) {
       const countryName = COUNTRY_MAP[browserLocale.toUpperCase()];
-      console.log('⚠ Falling back to browser locale (unreliable with VPN):', { 
-        browserLocale, 
-        resolvedName: countryName,
-        warning: 'Browser locale may not reflect actual location when using VPN'
-      });
       return countryName || browserLocale;
     }
   }
   
-  console.log('✗ Could not detect country from any source');
   return undefined;
 }
 
@@ -135,7 +122,7 @@ export async function detectCountry(
  */
 async function getCountryFromIP(ip: string | null | undefined): Promise<string | undefined> {
   if (!ip) {
-    console.log('No IP provided for geolocation');
+    ('No IP provided for geolocation');
     return undefined;
   }
 
@@ -143,12 +130,11 @@ async function getCountryFromIP(ip: string | null | undefined): Promise<string |
   const now = Date.now();
   const cached = ipCache[ip];
   if (cached && (now - cached.timestamp) < CACHE_DURATION) {
-    console.log('✓ Using cached IP geolocation:', { ip, country: cached.country });
     return cached.country;
   }
   
   try {
-    console.log('Making request to IP geolocation service...');
+    ('Making request to IP geolocation service...');
     // Add a small delay to avoid hitting rate limits
     await new Promise(resolve => setTimeout(resolve, 100));
     
@@ -194,16 +180,12 @@ async function getCountryFromIP(ip: string | null | undefined): Promise<string |
         timestamp: now
       };
       
-      console.log('✓ Fresh IP geolocation result:', { 
-        ip, 
-        countryName,
-        cached: false
-      });
+     
       
       return countryName;
     }
     
-    console.log('✗ IP geolocation returned no country information');
+    ('✗ IP geolocation returned no country information');
     return undefined;
   } catch (error) {
     console.error('✗ Failed to get country from IP:', error);

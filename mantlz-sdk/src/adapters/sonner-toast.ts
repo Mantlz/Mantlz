@@ -45,7 +45,7 @@ export function createSonnerToastAdapter(sonnerToast: any): ToastHandler {
         }
       } else {
         // Fallback to console if sonnerToast is not available
-        console.log(`[Toast ${type}] ${message}${description ? `: ${description}` : ''}`);
+        (`[Toast ${type}] ${message}${description ? `: ${description}` : ''}`);
       }
     }
   };

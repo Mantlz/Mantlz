@@ -91,7 +91,7 @@ export function SearchDialog({
 
   const handleApplyFilters = () => {
     if (isProUser && setAdvancedFilters) {
-      console.log("Applying advanced filters:", tempFilters)
+      ("Applying advanced filters:", tempFilters)
       setAdvancedFilters(tempFilters)
       setShowAdvancedSearch(false)
     }

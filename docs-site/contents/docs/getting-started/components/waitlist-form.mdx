@@ -147,7 +147,7 @@ After form submission, you can specify a custom redirect URL (STANDARD and PRO p
   formId="your-waitlist-id"
   onSubmitSuccess={(data) => {
     // Handle successful submission
-    console.log('Email:', data.email);
+    ('Email:', data.email);
     analytics.track('Waitlist Joined', { email: data.email });
   }}
   onSubmitError={(error) => {

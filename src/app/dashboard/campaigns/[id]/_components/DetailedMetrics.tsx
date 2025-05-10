@@ -20,7 +20,7 @@ export function DetailedMetrics({
   onRetryStats,
   loadingStats
 }: DetailedMetricsProps) {
-  console.log('DetailedMetrics render:', { stats, isPremium, loadingStats });
+  ('DetailedMetrics render:', { stats, isPremium, loadingStats });
 
   if (!isPremium) {
     return (
@@ -69,7 +69,7 @@ export function DetailedMetrics({
   }
 
   const hasTimeSeriesData = stats.timeSeriesData && stats.timeSeriesData.length > 0;
-  console.log('Time series data:', { hasTimeSeriesData, data: stats.timeSeriesData });
+  ('Time series data:', { hasTimeSeriesData, data: stats.timeSeriesData });
 
   return (
     <div className="space-y-8">
