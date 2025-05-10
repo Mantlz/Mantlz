@@ -52,7 +52,7 @@ const UserProfileSection = memo(function UserProfileSection() {
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[220px] bg-zinc-200 border-zinc-800 dark:bg-zinc-900 dark:border-zinc-800">
+      <DropdownMenuContent align="end" className="w-[220px] bg-zinc-200 border-zinc-800 dark:bg-zinc-800 dark:border-zinc-800">
         <DropdownMenuItem 
           className="hover:bg-zinc-800 cursor-pointer"
           onClick={() => openUserProfile()}
@@ -106,7 +106,7 @@ const NavigationSection = memo(function NavigationSection() {
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-[220px] bg-white dark:bg-zinc-900 border-zinc-800">
+      <DropdownMenuContent align="start" className="w-[220px] bg-white dark:bg-zinc-800 border-zinc-800">
         <DropdownMenuItem asChild className="hover:bg-zinc-800 cursor-pointer">
           <Link href="/dashboard/logs" className="flex items-center gap-2 cursor-pointer">
             <Activity className="h-4 w-4" />

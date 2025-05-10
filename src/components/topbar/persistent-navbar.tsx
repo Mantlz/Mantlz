@@ -51,7 +51,7 @@ const UserDropdown = memo(function UserDropdown() {
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
-          className="w-[220px] p-2 m-1 bg-zinc-100/90 backdrop-blur-sm border border-zinc-200/70 dark:bg-zinc-900/90 dark:border-zinc-800/70 shadow-lg rounded-xl"
+          className="w-[220px] p-2 m-1 bg-zinc-100/90 backdrop-blur-sm border border-zinc-200/70 dark:bg-zinc-800 dark:border-zinc-800/70 shadow-lg rounded-xl"
         >
           <DropdownMenuItem className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5" onClick={() => openUserProfile()}>
             <User className="h-4 w-4 mr-2" />
