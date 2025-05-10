@@ -43,7 +43,6 @@ export const authRouter = j.router({
             imageUrl: auth.imageUrl ?? null,
             plan: "FREE",
             quotaLimit: FREE_QUOTA.maxSubmissionsPerMonth,
-            // Create initial global settings
             globalSettings: {
               create: {
                 developerNotificationsEnabled: false,

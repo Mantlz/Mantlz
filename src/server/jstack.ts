@@ -14,7 +14,7 @@ const authMiddleware = j.middleware(async ({ c, next }) => {
   const authHeader = c.req.header("Authorization")
 
   if (authHeader) {
-    const apiKey = authHeader.split(" ")[1] // bearer <API_KEY>
+    const apiKey = authHeader.split(" ")[1]
 
     const keyRecord = await db.apiKey.findUnique({
       where: { key: apiKey },
