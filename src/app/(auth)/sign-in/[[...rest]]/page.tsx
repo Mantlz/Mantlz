@@ -1,16 +1,24 @@
 "use client"
 
 import { SignIn } from "@clerk/nextjs"
-import { dark } from "@clerk/themes";
+import { dark } from "@clerk/themes"
+import { useSearchParams } from "next/navigation"
 
 export default function Page() {
-
+  const searchParams = useSearchParams()
+  const paymentSuccess = searchParams.get("payment")
+  const sessionId = searchParams.get("session_id")
+  
+  // Preserve payment success parameters if they exist
+  const redirectUrl = paymentSuccess === "success" && sessionId
+    ? `/welcome-back?redirect=/dashboard&payment=success&session_id=${sessionId}`
+    : "/welcome-back"
   
   return (
     <div className="flex text-center justify-center">
       <SignIn 
-        fallbackRedirectUrl="/welcome-back" 
-        forceRedirectUrl="/welcome-back" 
+        fallbackRedirectUrl={redirectUrl}
+        forceRedirectUrl={redirectUrl}
         appearance={{
           baseTheme: dark,
           variables: {
@@ -30,6 +38,8 @@ export default function Page() {
             footerActionLink: "text-zinc-400 hover:text-white font-medium transition-colors"
           }
         }}
+        afterSignInUrl={redirectUrl}
+        redirectUrl={redirectUrl}
       />
     </div>
   )

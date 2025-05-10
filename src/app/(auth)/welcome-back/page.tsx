@@ -16,8 +16,15 @@ export default function WelcomeBackPage() {
 function WelcomeBackContent() {
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get("redirect") || "/dashboard"
+  const paymentSuccess = searchParams.get("payment")
+  const sessionId = searchParams.get("session_id")
   
-  const { isSynced, syncTime } = useUserSync({ redirectTo })
+  // Preserve payment success parameters if they exist
+  const finalRedirectTo = paymentSuccess === "success" && sessionId
+    ? `${redirectTo}?payment=success&session_id=${sessionId}`
+    : redirectTo
+  
+  const { isSynced, syncTime } = useUserSync({ redirectTo: finalRedirectTo })
 
   return (
     <SyncMessage 

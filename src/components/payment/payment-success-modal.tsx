@@ -10,10 +10,23 @@ import { client } from "@/lib/client"
 export function PaymentSuccessModal() {
   const searchParams = useSearchParams()
   const [isOpen, setIsOpen] = useState(false)
-  const sessionId = searchParams.get("session_id") || localStorage.getItem('stripeSessionId')
+  const sessionId = searchParams.get("session_id")
+  const paymentSuccess = searchParams.get("payment")
   
   // Check if we should show the modal
-  const showModal = searchParams.get("payment") === "success" || !!localStorage.getItem('stripeSessionId')
+  const showModal = paymentSuccess === "success"
+  
+  // Debug logging
+  useEffect(() => {
+    console.log("Payment Success Modal Debug:", {
+      paymentSuccess,
+      sessionId,
+      showModal,
+      isOpen,
+      currentUrl: window.location.href,
+      searchParams: Object.fromEntries(searchParams.entries())
+    })
+  }, [paymentSuccess, sessionId, showModal, isOpen, searchParams])
   
   // Fetch the user's current plan
   const { data: userPlan, isLoading } = useQuery({
@@ -28,22 +41,27 @@ export function PaymentSuccessModal() {
   
   // Open the modal when the component mounts if payment=success is in the URL
   useEffect(() => {
-    if (showModal) {
+    if (showModal && !isOpen) {
+      console.log("Opening payment success modal")
       setIsOpen(true)
-      
-      // Remove the payment and session_id parameters from the URL without refreshing the page
+    }
+  }, [showModal, isOpen])
+  
+  // Remove URL parameters after the modal is shown and data is loaded
+  useEffect(() => {
+    if (isOpen && !isLoading && userPlan) {
+      console.log("Payment processed successfully, removing URL parameters")
       const url = new URL(window.location.href)
       url.searchParams.delete("payment")
       url.searchParams.delete("session_id")
       window.history.replaceState({}, "", url.toString())
-      
-      // Clear the stored session ID
-      localStorage.removeItem('stripeSessionId')
+      console.log("Removed payment parameters from URL")
     }
-  }, [showModal])
+  }, [isOpen, isLoading, userPlan])
   
   // Close the modal and stay on the dashboard
   const handleClose = () => {
+    console.log("Closing payment success modal")
     setIsOpen(false)
   }
   

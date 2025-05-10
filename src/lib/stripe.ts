@@ -44,6 +44,17 @@ export async function createCheckoutSession({
 
   console.log(`Creating checkout session for plan: ${plan} with priceId: ${priceId}`)
 
+  // Ensure NEXT_PUBLIC_APP_URL is set
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL
+  if (!baseUrl) {
+    console.error("NEXT_PUBLIC_APP_URL is not set")
+    throw new Error("NEXT_PUBLIC_APP_URL is not set")
+  }
+
+  // Log the success URL for debugging
+  const successUrl = `${baseUrl}/dashboard?payment=success&session_id={CHECKOUT_SESSION_ID}`
+  console.log("Stripe checkout success URL:", successUrl)
+
   const session = await stripe.checkout.sessions.create({
     customer_email: userEmail,
     line_items: [
@@ -53,8 +64,8 @@ export async function createCheckoutSession({
       },
     ],
     mode: "subscription",
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?payment=success&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing?canceled=true`,
+    success_url: successUrl,
+    cancel_url: `${baseUrl}/pricing?canceled=true`,
     metadata: {
       userId,
       userEmail,
@@ -69,6 +80,12 @@ export async function createCheckoutSession({
         ...metadata
       }
     }
+  })
+
+  console.log("Created Stripe checkout session:", {
+    id: session.id,
+    successUrl: session.success_url,
+    cancelUrl: session.cancel_url
   })
 
   return session
