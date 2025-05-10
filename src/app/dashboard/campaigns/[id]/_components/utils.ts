@@ -85,7 +85,7 @@ export async function fetchCampaignStats(id: string): Promise<CampaignStats | nu
     });
     const data = await response.json() as ApiCampaignStats;
     
-    ('Campaign stats API response:', data);
+    console.log('Campaign stats API response:', data);
     
     // Generate time series data if not provided by API
     const timeSeriesData = [{
@@ -106,7 +106,7 @@ export async function fetchCampaignStats(id: string): Promise<CampaignStats | nu
       timeSeriesData
     };
     
-    ('Transformed campaign stats:', stats);
+    console.log('Transformed campaign stats:', stats);
     return stats;
   } catch (error) {
     console.error('Error fetching campaign stats:', error);

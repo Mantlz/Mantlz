@@ -36,13 +36,13 @@ export async function POST(req: Request) {
     // Apply rate limiting
     if (ratelimitConfig.enabled && ratelimitConfig.ratelimit) {
       const ip = req.headers.get('x-forwarded-for') || 'unknown';
-      (`Rate limiting check for IP: ${ip}`);
+      console.log(`Rate limiting check for IP: ${ip}`);
       
       const { success, limit, reset, remaining } = await ratelimitConfig.ratelimit.limit(ip);
-      // (`Rate limit result:`, { success, limit, reset, remaining });
+      console.log(`Rate limit result:`, { success, limit, reset, remaining });
 
       if (!success) {
-        (`Rate limit exceeded for IP: ${ip}`);
+        console.log(`Rate limit exceeded for IP: ${ip}`);
         return NextResponse.json(
           { 
             message: 'Too many requests, please try again later.',
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
         );
       }
     } else {
-      ('Rate limiting is disabled or not configured');
+      console.log('Rate limiting is disabled or not configured');
     }
 
     const body = await req.json() as { apiKey?: string; [key: string]: unknown };
@@ -140,7 +140,13 @@ export async function POST(req: Request) {
       );
     }
 
-   
+    // Debug log to check form data
+    console.log('Form data:', {
+      formId,
+      userId: form.userId,
+      plan: form.user.plan,
+      emailSettings: form.emailSettings,
+    });
 
     // Validate form ownership
     if (form.userId !== apiKeyRecord.userId) {
@@ -160,11 +166,17 @@ export async function POST(req: Request) {
         ip: req.headers.get('x-forwarded-for')
       };
 
-
+      console.log('Request headers for analytics:', headers);
       
       const enhancedData = await enhanceDataWithAnalytics(data, headers);
       
-     
+      console.log('Enhanced analytics data:', { 
+        browser: enhancedData._meta.browser, 
+        country: enhancedData._meta.country,
+        rawHeaders: headers,
+        ip: headers.ip
+      });
+      
       const submission = await db.submission.create({
         data: {
           formId,
@@ -183,7 +195,12 @@ export async function POST(req: Request) {
         typeof data.email === 'string'
       ) {
         try {
-        
+          console.log('Attempting to send confirmation email:', {
+            plan: form.user.plan,
+            email: data.email,
+            formName: form.name,
+            emailSettings: form.emailSettings,
+          });
 
           const resendApiKey = process.env.RESEND_API_KEY;
           if (!resendApiKey) {
@@ -221,7 +238,7 @@ export async function POST(req: Request) {
             },
           });
 
-          ('Confirmation email sent successfully');
+          console.log('Confirmation email sent successfully');
         } catch (error) {
           console.error('Failed to send confirmation email:', error);
           // Create notification log for failed email
@@ -247,18 +264,27 @@ export async function POST(req: Request) {
             formId: form.id,
           },
         });
-        
+        console.log('Email not sent:', {
+          plan: form.user.plan,
+          hasEmail: !!data.email,
+          emailType: typeof data.email,
+          emailEnabled: form.emailSettings?.enabled,
+        });
       }
 
       // Send notification to developer if PRO plan and notifications enabled
       if (form.user.plan === Plan.PRO) {
         try {
-         
-
+          console.log('🔔 Attempting to send developer notification', {
+            formId,
+            submissionId: submission.id,
+            hasEmailSettings: !!form.emailSettings,
+            notificationsEnabled: form.emailSettings?.developerNotificationsEnabled
+          });
           
           const notificationResult = await sendDeveloperNotification(formId, submission.id, data);
           
-         
+          console.log('🔔 Developer notification result:', notificationResult);
         } catch (error) {
           console.error('❌ Failed to send developer notification:', error);
           // Non-blocking, continue with response
@@ -267,10 +293,11 @@ export async function POST(req: Request) {
 
       // Handle redirect URLs based on the user's plan
       if (redirectUrl) {
+        console.log('Redirect URL requested:', redirectUrl);
         
         // Only users on STANDARD or PRO plans can use custom redirect URLs
         if (form.user.plan === Plan.STANDARD || form.user.plan === Plan.PRO) {
-
+          console.log('User is on a paid plan, allowing custom redirect to:', redirectUrl);
           
           // Return response with redirect URL
           return NextResponse.json({ 
@@ -283,6 +310,7 @@ export async function POST(req: Request) {
             }
           });
         } else {
+          console.log('User is on a FREE plan, custom redirects not allowed. Using default Mantlz thank-you page.');
           
           // For free users, ignore the custom redirect and use the default Mantlz thank-you page
           // Use environment variable with fallback

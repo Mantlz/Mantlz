@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     return new Response(`Webhook Error: ${errorMessage}`, { status: 400 })
   }
 
-  (`Processing webhook: ${event.type}`)
+  console.log(`Processing webhook: ${event.type}`)
 
   try {
     switch (event.type) {
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
         const subscription = event.data.object as StripeSubscription
         try {
           // Log the raw subscription data for debugging
-          (`Processing ${event.type} webhook:`, {
+          console.log(`Processing ${event.type} webhook:`, {
             id: subscription.id,
             status: subscription.status,
             // Access these properties safely
@@ -64,7 +64,7 @@ export async function POST(req: Request) {
           const typedSubscription = expandedSubscription as unknown as StripeSubscription
           
           // Log the expanded subscription data
-          ("Expanded subscription data:", {
+          console.log("Expanded subscription data:", {
             id: typedSubscription.id,
             status: typedSubscription.status,
             // Access these properties safely
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
           // Check if we have a userId in metadata
           const userId = typedSubscription.metadata?.userId
           if (!userId) {
-            (`[DEBUG] No userId in subscription metadata, trying to find user by customer ID`)
+            console.log(`[DEBUG] No userId in subscription metadata, trying to find user by customer ID`)
             
             // Get the customer ID
             const customerId = typeof typedSubscription.customer === 'string' 
@@ -94,14 +94,14 @@ export async function POST(req: Request) {
               })
               
               if (user) {
-                (`[DEBUG] Found user with Stripe customer ID:`, user)
+                console.log(`[DEBUG] Found user with Stripe customer ID:`, user)
                 // Add the userId to the metadata for handleSubscriptionUpdate
                 typedSubscription.metadata = {
                   ...typedSubscription.metadata,
                   userId: user.id
                 }
               } else {
-                (`[DEBUG] No user found with Stripe customer ID: ${customerId}`)
+                console.log(`[DEBUG] No user found with Stripe customer ID: ${customerId}`)
                 
                 // If we have a customer email, try to find the user by email
                 const customerEmail = typeof typedSubscription.customer === 'string'
@@ -109,21 +109,21 @@ export async function POST(req: Request) {
                   : (typedSubscription.customer as Stripe.Customer)?.email
                 
                 if (customerEmail) {
-                  (`[DEBUG] Trying to find user by email: ${customerEmail}`)
+                  console.log(`[DEBUG] Trying to find user by email: ${customerEmail}`)
                   const userByEmail = await db.user.findUnique({
                     where: { email: customerEmail },
                     select: { id: true }
                   })
                   
                   if (userByEmail) {
-                    (`[DEBUG] Found user by email:`, userByEmail)
+                    console.log(`[DEBUG] Found user by email:`, userByEmail)
                     
                     // Update the user's stripeCustomerId
                     await db.user.update({
                       where: { id: userByEmail.id },
                       data: { stripeCustomerId: customerId }
                     })
-                    (`[DEBUG] Updated user's stripeCustomerId to: ${customerId}`)
+                    console.log(`[DEBUG] Updated user's stripeCustomerId to: ${customerId}`)
                     
                     // Add the userId to the metadata for handleSubscriptionUpdate
                     typedSubscription.metadata = {
@@ -131,7 +131,7 @@ export async function POST(req: Request) {
                       userId: userByEmail.id
                     }
                   } else {
-                    (`[DEBUG] No user found with email: ${customerEmail}`)
+                    console.log(`[DEBUG] No user found with email: ${customerEmail}`)
                   }
                 }
               }
@@ -150,7 +150,7 @@ export async function POST(req: Request) {
         const subscription = event.data.object as StripeSubscription
         try {
           // Log the raw subscription data for debugging
-          (`Processing ${event.type} webhook:`, {
+          console.log(`Processing ${event.type} webhook:`, {
             id: subscription.id,
             status: subscription.status,
             // Access these properties safely
@@ -169,7 +169,7 @@ export async function POST(req: Request) {
           const typedSubscription = expandedSubscription as unknown as StripeSubscription
           
           // Log the expanded subscription data
-          ("Expanded subscription data:", {
+          console.log("Expanded subscription data:", {
             id: typedSubscription.id,
             status: typedSubscription.status,
             // Access these properties safely
@@ -184,7 +184,7 @@ export async function POST(req: Request) {
           // Check if we have a userId in metadata
           const userId = typedSubscription.metadata?.userId
           if (!userId) {
-            (`[DEBUG] No userId in subscription metadata, trying to find user by customer ID`)
+            console.log(`[DEBUG] No userId in subscription metadata, trying to find user by customer ID`)
             
             // Get the customer ID
             const customerId = typeof typedSubscription.customer === 'string' 
@@ -199,14 +199,14 @@ export async function POST(req: Request) {
               })
               
               if (user) {
-                (`[DEBUG] Found user with Stripe customer ID:`, user)
+                console.log(`[DEBUG] Found user with Stripe customer ID:`, user)
                 // Add the userId to the metadata for handleSubscriptionUpdate
                 typedSubscription.metadata = {
                   ...typedSubscription.metadata,
                   userId: user.id
                 }
               } else {
-                (`[DEBUG] No user found with Stripe customer ID: ${customerId}`)
+                console.log(`[DEBUG] No user found with Stripe customer ID: ${customerId}`)
                 
                 // If we have a customer email, try to find the user by email
                 const customerEmail = typeof typedSubscription.customer === 'string'
@@ -214,21 +214,21 @@ export async function POST(req: Request) {
                   : (typedSubscription.customer as Stripe.Customer)?.email
                 
                 if (customerEmail) {
-                  (`[DEBUG] Trying to find user by email: ${customerEmail}`)
+                  console.log(`[DEBUG] Trying to find user by email: ${customerEmail}`)
                   const userByEmail = await db.user.findUnique({
                     where: { email: customerEmail },
                     select: { id: true }
                   })
                   
                   if (userByEmail) {
-                    (`[DEBUG] Found user by email:`, userByEmail)
+                    console.log(`[DEBUG] Found user by email:`, userByEmail)
                     
                     // Update the user's stripeCustomerId
                     await db.user.update({
                       where: { id: userByEmail.id },
                       data: { stripeCustomerId: customerId }
                     })
-                    (`[DEBUG] Updated user's stripeCustomerId to: ${customerId}`)
+                    console.log(`[DEBUG] Updated user's stripeCustomerId to: ${customerId}`)
                     
                     // Add the userId to the metadata for handleSubscriptionUpdate
                     typedSubscription.metadata = {
@@ -236,7 +236,7 @@ export async function POST(req: Request) {
                       userId: userByEmail.id
                     }
                   } else {
-                    (`[DEBUG] No user found with email: ${customerEmail}`)
+                    console.log(`[DEBUG] No user found with email: ${customerEmail}`)
                   }
                 }
               }
@@ -270,7 +270,7 @@ export async function POST(req: Request) {
           return typeof id === 'string' && id.length > 0
         }
         
-        (`[DEBUG] Processing subscription invoice webhook:`, {
+        console.log(`[DEBUG] Processing subscription invoice webhook:`, {
           invoiceId: invoice.id,
           subscriptionId: invoice.subscription,
           amountPaid: invoice.amount_paid,
@@ -288,7 +288,7 @@ export async function POST(req: Request) {
           // If we don't have a user ID from metadata, try to find it from the customer
           if (!isValidUserId(userId) && invoice.customer) {
             const customerId = typeof invoice.customer === 'string' ? invoice.customer : invoice.customer.id
-            (`[DEBUG] Looking up user ID for customer: ${customerId}`)
+            console.log(`[DEBUG] Looking up user ID for customer: ${customerId}`)
             
             // Try to find a user with this Stripe customer ID
             const user = await db.user.findFirst({
@@ -298,13 +298,13 @@ export async function POST(req: Request) {
             
             if (user) {
               userId = user.id
-              (`[DEBUG] Found user with Stripe customer ID:`, user)
+              console.log(`[DEBUG] Found user with Stripe customer ID:`, user)
             } else {
-              (`[DEBUG] No user found with Stripe customer ID: ${customerId}`)
+              console.log(`[DEBUG] No user found with Stripe customer ID: ${customerId}`)
               
               // If we have a customer email, try to find the user by email
               if (invoice.customer_email) {
-                (`[DEBUG] Trying to find user by email: ${invoice.customer_email}`)
+                console.log(`[DEBUG] Trying to find user by email: ${invoice.customer_email}`)
                 const userByEmail = await db.user.findUnique({
                   where: { email: invoice.customer_email },
                   select: { id: true }
@@ -312,16 +312,16 @@ export async function POST(req: Request) {
                 
                 if (userByEmail) {
                   userId = userByEmail.id
-                  (`[DEBUG] Found user by email:`, userByEmail)
+                  console.log(`[DEBUG] Found user by email:`, userByEmail)
                   
                   // Update the user's stripeCustomerId
                   await db.user.update({
                     where: { id: userId },
                     data: { stripeCustomerId: customerId }
                   })
-                  (`[DEBUG] Updated user's stripeCustomerId to: ${customerId}`)
+                  console.log(`[DEBUG] Updated user's stripeCustomerId to: ${customerId}`)
                 } else {
-                  (`[DEBUG] No user found with email: ${invoice.customer_email}`)
+                  console.log(`[DEBUG] No user found with email: ${invoice.customer_email}`)
                 }
               }
             }
@@ -333,7 +333,7 @@ export async function POST(req: Request) {
           }
           
           // Create payment record
-          (`[DEBUG] Creating payment record for subscription`)
+          console.log(`[DEBUG] Creating payment record for subscription`)
           
           const stripeId = invoice.payment_intent || invoice.id
           if (!stripeId) {
@@ -355,10 +355,10 @@ export async function POST(req: Request) {
             }
           })
           
-          (`[DEBUG] Payment record created:`, payment)
+          console.log(`[DEBUG] Payment record created:`, payment)
 
           // Create invoice record
-          (`[DEBUG] Creating invoice record for subscription`)
+          console.log(`[DEBUG] Creating invoice record for subscription`)
           
           // Ensure invoice.id is defined
           if (!invoice.id) {
@@ -383,10 +383,10 @@ export async function POST(req: Request) {
             }
           })
           
-          (`[DEBUG] Invoice record created:`, invoiceRecord)
+          console.log(`[DEBUG] Invoice record created:`, invoiceRecord)
 
           // Update subscription status
-          (`[DEBUG] Updating subscription status`)
+          console.log(`[DEBUG] Updating subscription status`)
           
           // Only update subscription if we have a valid subscription ID
           if (invoice.subscription) {
@@ -399,16 +399,16 @@ export async function POST(req: Request) {
                 }
               })
               
-              (`[DEBUG] Subscription updated:`, updatedSubscription)
+              console.log(`[DEBUG] Subscription updated:`, updatedSubscription)
             } catch (error) {
               console.error(`[ERROR] Failed to update subscription status:`, error)
               // Continue processing even if subscription update fails
             }
           } else {
-            (`[DEBUG] No subscription ID found in invoice, skipping subscription update`)
+            console.log(`[DEBUG] No subscription ID found in invoice, skipping subscription update`)
           }
           
-          (`[DEBUG] Successfully processed subscription payment for invoice: ${invoice.id}`)
+          console.log(`[DEBUG] Successfully processed subscription payment for invoice: ${invoice.id}`)
         } catch (error) {
           console.error(`[ERROR] Error processing subscription payment webhook:`, error)
           // Continue processing other webhooks even if this one fails
@@ -420,14 +420,14 @@ export async function POST(req: Request) {
         const invoice = event.data.object as Stripe.Invoice & { subscription?: string }
         const subscriptionId = invoice.subscription
         
-        (`[DEBUG] Processing invoice.payment_failed webhook:`, {
+        console.log(`[DEBUG] Processing invoice.payment_failed webhook:`, {
           invoiceId: invoice.id,
           subscriptionId
         })
         
         if (subscriptionId) {
           try {
-            (`[DEBUG] Updating subscription status to PAST_DUE for: ${subscriptionId}`)
+            console.log(`[DEBUG] Updating subscription status to PAST_DUE for: ${subscriptionId}`)
             
             const updatedSubscription = await db.subscription.update({
               where: { subscriptionId },
@@ -437,12 +437,12 @@ export async function POST(req: Request) {
               }
             })
             
-            (`[DEBUG] Subscription updated:`, updatedSubscription)
+            console.log(`[DEBUG] Subscription updated:`, updatedSubscription)
           } catch (error) {
             console.error(`[ERROR] Error processing invoice.payment_failed webhook:`, error)
           }
         } else {
-          (`[DEBUG] No subscription ID found in invoice: ${invoice.id}`)
+          console.log(`[DEBUG] No subscription ID found in invoice: ${invoice.id}`)
         }
         break
       }

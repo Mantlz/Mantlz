@@ -39,7 +39,7 @@ if (process.env.UPSTASH_REDIS_REST_URL) {
       ephemeralCache: new Map(),
     });
 
-    (`Rate limiter initialized with ${requests} requests per ${window} seconds`);
+    console.log(`Rate limiter initialized with ${requests} requests per ${window} seconds`);
     
     ratelimitConfig = {
       enabled: true,

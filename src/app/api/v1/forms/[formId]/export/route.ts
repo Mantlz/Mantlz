@@ -27,24 +27,49 @@ async function handleExport(formId: string, userId: string, startDate?: string, 
     });
 
     if (!form) {
-      
+      console.log("🚫 Invalid Form Access Attempt:", {
+        formId,
+        userId,
+        error: "Form not found or user does not own the form"
+      });
       return new NextResponse("Form not found or access denied", { status: 403 });
     }
 
-   
+    console.log("✅ Form Access Granted:", {
+      formId,
+      formName: form.name,
+      userId
+    });
 
-   
+    console.log("🔒 Rate Limiting Check:", {
+      enabled: ratelimitConfig.enabled,
+      hasRatelimit: !!ratelimitConfig.ratelimit,
+      userId,
+      formId
+    });
+
     // 2. Apply rate limiting
     if (ratelimitConfig.enabled && ratelimitConfig.ratelimit) {
       const identifier = `export_${userId}_${formId}`;
-
+      console.log("📝 Rate Limit Identifier:", identifier);
 
       const { success, limit, reset, remaining } = await ratelimitConfig.ratelimit.limit(identifier);
       
-     
+      console.log("⚖️ Rate Limit Result:", {
+        success,
+        limit,
+        remaining,
+        resetTime: new Date(reset).toISOString(),
+        timeUntilReset: Math.ceil((reset - Date.now()) / 1000) + " seconds"
+      });
 
       if (!success) {
-       
+        console.log("⚠️ Rate Limit Exceeded:", {
+          userId,
+          formId,
+          remaining,
+          resetTime: new Date(reset).toISOString()
+        });
 
         return new NextResponse(
           `Rate limit exceeded. Please try again in ${Math.ceil((reset - Date.now()) / 1000)} seconds.`,
@@ -60,6 +85,13 @@ async function handleExport(formId: string, userId: string, startDate?: string, 
       }
     }
 
+    console.log("📤 Processing Export:", {
+      formId,
+      startDate,
+      endDate,
+      userId
+    });
+
     // 3. Process export
     const result = await exportFormSubmissions({
       formId,
@@ -67,7 +99,11 @@ async function handleExport(formId: string, userId: string, startDate?: string, 
       endDate: endDate ? new Date(endDate) : undefined,
     });
 
-   
+    console.log("✅ Export Completed:", {
+      formId,
+      filename: result.filename,
+      contentType: result.contentType
+    });
 
     return new NextResponse(result.data, {
       headers: {
@@ -96,7 +132,7 @@ export async function GET(
     // 1. Check authentication
     const { userId } = await auth();
     if (!userId) {
-      ("🚫 Unauthorized Access Attempt");
+      console.log("🚫 Unauthorized Access Attempt");
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
@@ -126,7 +162,7 @@ export async function POST(
     // 1. Check authentication
     const { userId } = await auth();
     if (!userId) {
-      ("🚫 Unauthorized Access Attempt");
+      console.log("🚫 Unauthorized Access Attempt");
       return new NextResponse("Unauthorized", { status: 401 });
     }
 

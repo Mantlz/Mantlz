@@ -208,7 +208,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
       } catch (error) {
         // If it's a 404 error, the submission was already deleted
         if (error instanceof Error && error.message.includes("404")) {
-          ("Submission already deleted or not found");
+          console.log("Submission already deleted or not found");
           return { success: true }; // Treat as success - it's already gone
         }
         throw error; // Rethrow other errors
@@ -292,7 +292,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
     onError: (error, submissionId, context) => {
       // Check if it's a 404 error (submission already deleted)
       if (error instanceof Error && error.message.includes("404")) {
-        ("Submission already deleted or not found, skipping rollback");
+        console.log("Submission already deleted or not found, skipping rollback");
         // Show a less alarming toast
         toast.info("This submission has already been deleted");
         // We still need to ensure our UI is up to date

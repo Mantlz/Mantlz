@@ -50,7 +50,7 @@ export async function performSearch(
   }
 
   // Log what's happening to debug
-  ("Performing search with:", { 
+  console.log("Performing search with:", { 
     searchTerm, 
     formId, 
     hasAdvancedFilters: !!advancedFilters,
@@ -79,7 +79,7 @@ export async function searchInSpecificForm(
 ): Promise<SearchResult> {
   try {
     // Log to debug specific form search
-    ("Searching in specific form with filters:", { formId, advancedFilters })
+    console.log("Searching in specific form with filters:", { formId, advancedFilters })
     
     const apiPath = `/api/forms/getSubmissionLogs`
     const searchParams = new URLSearchParams()
@@ -146,7 +146,7 @@ export async function searchInSpecificForm(
     
     // Get the response as text first
     const responseText = await response.text()
-    ("Raw API response:", responseText)
+    console.log("Raw API response:", responseText)
     
     // Try to parse the response as JSON
     try {
@@ -160,7 +160,7 @@ export async function searchInSpecificForm(
           const mappedSubmissions = data.submissions.map((submission) => 
             mapSubmissionData(formId)(submission)
           )
-          (`Found ${mappedSubmissions.length} submissions in superjson format`)
+          console.log(`Found ${mappedSubmissions.length} submissions in superjson format`)
           return { submissions: mappedSubmissions }
         }
       }
@@ -170,7 +170,7 @@ export async function searchInSpecificForm(
         const mappedSubmissions = (responseData.submissions as unknown[]).map((submission) => 
           mapSubmissionData(formId)(submission)
         )
-        (`Found ${mappedSubmissions.length} submissions in regular format`)
+        console.log(`Found ${mappedSubmissions.length} submissions in regular format`)
         return { submissions: mappedSubmissions }
       }
 
@@ -179,11 +179,11 @@ export async function searchInSpecificForm(
         const mappedSubmissions = (responseData.data as unknown[]).map((submission) => 
           mapSubmissionData(formId)(submission)
         )
-        (`Found ${mappedSubmissions.length} submissions in pagination format`)
+        console.log(`Found ${mappedSubmissions.length} submissions in pagination format`)
         return { submissions: mappedSubmissions }
       }
       
-      ("No submissions found in response", responseData)
+      console.log("No submissions found in response", responseData)
       return { submissions: [] }
     } catch (parseError) {
       console.error("Failed to parse response as JSON:", parseError)
@@ -205,7 +205,7 @@ export async function searchAcrossAllForms(
 ): Promise<SearchResult> {
   try {
     // Log to debug advanced filters application
-    ("Searching across all forms with filters:", advancedFilters)
+    console.log("Searching across all forms with filters:", advancedFilters)
     
     // Ensure query parameter is always set
     const params: {
