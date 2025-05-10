@@ -237,8 +237,19 @@ function PricingCard({
 
   return (
     <div
-      className={`relative w-full rounded-2xl border border-zinc-200 dark:border-zinc-700  shadow-lg overflow-hidden ${plan.isFeatured ? "ring-1 ring-blue-500 dark:ring-blue-400" : ""} ${isCurrentPlan ? "ring-2 ring-green-500 dark:ring-green-400" : ""}`}
+      className={`relative w-full rounded-2xl border ${
+        plan.isPopular 
+          ? "border-2 border-blue-500 dark:border-blue-400 shadow-2xl bg-gradient-to-b from-white to-blue-50 dark:from-zinc-900 dark:to-blue-950/20" 
+          : "border-zinc-200 dark:border-zinc-700"
+      } shadow-lg overflow-hidden ${
+        plan.isFeatured ? "ring-1 ring-blue-500 dark:ring-blue-400" : ""
+      } ${isCurrentPlan ? "ring-2 ring-green-500 dark:ring-green-400" : ""}`}
     >
+      {plan.isPopular && (
+        <div className="absolute -right-12 top-6 transform rotate-45 bg-blue-500 text-white px-12 py-1 text-sm font-medium">
+          Popular
+        </div>
+      )}
       <div className="p-6 sm:p-8 flex flex-col h-full">
         <div className="flex items-center justify-between mb-4 sm:mb-6">
           <div className="flex items-center gap-2 sm:gap-3">
@@ -305,13 +316,12 @@ function PricingCard({
             <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">{plan.title}</h3>
           </div>
           {isCurrentPlan && (
-            <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 border-green-200 dark:border-green-800 text-xs sm:text-sm">
+            <Badge variant="secondary" className={`${
+              plan.isPopular 
+                ? "bg-gradient-to-r from-green-500 to-blue-500 text-white dark:from-green-600 dark:to-blue-600"
+                : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 border-green-200 dark:border-green-800"
+            } text-xs sm:text-sm`}>
               Current Plan
-            </Badge>
-          )}
-          {plan.isPopular && (
-            <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100 border-blue-200 dark:border-blue-800 text-xs sm:text-sm">
-              Most Popular
             </Badge>
           )}
         </div>
