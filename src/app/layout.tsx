@@ -8,19 +8,8 @@ import { Toaster } from "@/components/ui/sonner"
 // import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Space_Mono, Space_Grotesk } from "next/font/google"
-import dynamic from 'next/dynamic'
 import { Suspense } from 'react'
-
-// Dynamically import heavy components
-const CookieConsent = dynamic(() => import("@/components/global/cookie-consent").then(mod => mod.CookieConsent), {
-  ssr: false,
-  loading: () => null
-})
-
-const PostHogProvider = dynamic(() => import("@/components/providers/posthog-provider").then(mod => mod.PostHogProvider), {
-  ssr: false,
-  loading: () => null
-})
+import ClientWrapper from "@/components/global/client-wrapper"
 
 const sansFont = Space_Grotesk({
   subsets: ["latin"],
@@ -124,13 +113,12 @@ export default function RootLayout({
             <Providers>
               <MantlzProvider apiKey={process.env.MANTLZ_KEY}>
                 <Suspense fallback={null}>
-                  <PostHogProvider>
+                  <ClientWrapper>
                     {children}
                     <Toaster richColors position="top-center" theme="system" />
                     {/* <Analytics /> */}
                     <SpeedInsights />
-                    <CookieConsent />
-                  </PostHogProvider>
+                  </ClientWrapper>
                 </Suspense>
               </MantlzProvider>
             </Providers>
