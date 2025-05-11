@@ -6,12 +6,9 @@ import { FormSubmissionEmail } from '@/emails/form-submission';
 import { render } from '@react-email/components';
 import { Plan, Prisma } from '@prisma/client';
 import { sendDeveloperNotification } from '@/services/notifcation-service';
-<<<<<<< HEAD
 import { debugService } from '@/services/debug-service';
-=======
 import { ratelimitConfig } from '@/lib/ratelimiter';
 import { enhanceDataWithAnalytics } from '@/lib/analytics-utils';
->>>>>>> origin/main
 
 const submitSchema = z.object({
   formId: z.string(),
@@ -191,110 +188,6 @@ export async function POST(req: Request) {
         ip: req.headers.get('x-forwarded-for')
       };
 
-<<<<<<< HEAD
-    // Log successful submission
-    await debugService.logFormSubmission(formId, submission.id, data, {
-      userId: apiKeyRecord.userId,
-      userPlan: apiKeyRecord.user.plan,
-      timestamp: new Date().toISOString(),
-      userAgent,
-      ip,
-    });
-
-    // Send confirmation email if:
-    // 1. User is STANDARD or PRO
-    // 2. Form has email settings enabled
-    // 3. Submission includes a valid email
-    if (
-      (form.user.plan === Plan.STANDARD || form.user.plan === Plan.PRO) && 
-      form.emailSettings?.enabled && 
-      typeof data.email === 'string'
-    ) {
-      try {
-        const resendApiKey = process.env.RESEND_API_KEY;
-        if (!resendApiKey) {
-          throw new Error('No Resend API key configured');
-        }
-
-        const resendClient = new Resend(resendApiKey);
-        const fromEmail = form.emailSettings.fromEmail || process.env.RESEND_FROM_EMAIL || 'contact@mantlz.app';
-        const subject = form.emailSettings.subject || `Form Submission Confirmation - ${form.name}`;
-
-        const htmlContent = await render(
-          FormSubmissionEmail({
-            formName: form.name,
-            submissionData: data,
-          })
-        );
-
-        await resendClient.emails.send({
-          from: fromEmail,
-          to: data.email,
-          subject,
-          replyTo: form.emailSettings.replyTo || 'contact@mantlz.app',
-          html: htmlContent,
-        });
-
-        // Log successful email
-        await debugService.logEmailSent(formId, submission.id, {
-          to: data.email,
-          subject,
-          from: fromEmail,
-        }, {
-          userId: apiKeyRecord.userId,
-          userPlan: apiKeyRecord.user.plan,
-          timestamp: new Date().toISOString(),
-          userAgent,
-          ip,
-        });
-      } catch (error) {
-        // Log email error
-        await debugService.logEmailError(formId, submission.id, error as Error, {
-          userId: apiKeyRecord.userId,
-          userPlan: apiKeyRecord.user.plan,
-          timestamp: new Date().toISOString(),
-          userAgent,
-          ip,
-        });
-        console.error('Failed to send confirmation email:', error);
-      }
-    }
-
-    // Send notification to developer if PRO plan and notifications enabled
-    if (form.user.plan === Plan.PRO) {
-      try {
-        const notificationResult = await sendDeveloperNotification(formId, submission.id, data);
-        await debugService.log('developer_notification_sent', {
-          formId,
-          submissionId: submission.id,
-          result: notificationResult,
-        }, {
-          formId,
-          userId: apiKeyRecord.userId,
-          userPlan: apiKeyRecord.user.plan,
-          timestamp: new Date().toISOString(),
-          userAgent,
-          ip,
-        });
-      } catch (error) {
-        await debugService.log('developer_notification_error', {
-          formId,
-          submissionId: submission.id,
-          error: error instanceof Error ? error.message : 'Unknown error',
-        }, {
-          formId,
-          userId: apiKeyRecord.userId,
-          userPlan: apiKeyRecord.user.plan,
-          timestamp: new Date().toISOString(),
-          userAgent,
-          ip,
-        });
-        console.error('Failed to send developer notification:', error);
-      }
-    }
-=======
-      console.log('Request headers for analytics:', headers);
-      
       const enhancedData = await enhanceDataWithAnalytics(data, headers);
       
       console.log('Enhanced analytics data:', { 
@@ -311,7 +204,15 @@ export async function POST(req: Request) {
           email: typeof data.email === 'string' ? data.email : undefined,
         },
       });
->>>>>>> origin/main
+
+      // Log successful submission
+      await debugService.logFormSubmission(formId, submission.id, data, {
+        userId: apiKeyRecord.userId,
+        userPlan: apiKeyRecord.user.plan,
+        timestamp: new Date().toISOString(),
+        userAgent,
+        ip,
+      });
 
       // Send confirmation email if:
       // 1. User is STANDARD or PRO
@@ -323,13 +224,6 @@ export async function POST(req: Request) {
         typeof data.email === 'string'
       ) {
         try {
-          console.log('Attempting to send confirmation email:', {
-            plan: form.user.plan,
-            email: data.email,
-            formName: form.name,
-            emailSettings: form.emailSettings,
-          });
-
           const resendApiKey = process.env.RESEND_API_KEY;
           if (!resendApiKey) {
             throw new Error('No Resend API key configured');
@@ -339,7 +233,6 @@ export async function POST(req: Request) {
           const fromEmail = form.emailSettings.fromEmail || process.env.RESEND_FROM_EMAIL || 'contact@mantlz.app';
           const subject = form.emailSettings.subject || `Form Submission Confirmation - ${form.name}`;
 
-          // Use our branded template with your logo
           const htmlContent = await render(
             FormSubmissionEmail({
               formName: form.name,
@@ -351,71 +244,65 @@ export async function POST(req: Request) {
             from: fromEmail,
             to: data.email,
             subject,
-            // Always set reply-to as contact@mantlz.app unless specifically overridden in settings
             replyTo: form.emailSettings.replyTo || 'contact@mantlz.app',
             html: htmlContent,
           });
 
-          // Create notification log for successful email
-          await db.notificationLog.create({
-            data: {
-              type: 'SUBMISSION_CONFIRMATION',
-              status: 'SENT',
-              submissionId: submission.id,
-              formId: form.id,
-            },
+          // Log successful email
+          await debugService.logEmailSent(formId, submission.id, {
+            to: data.email,
+            subject,
+            from: fromEmail,
+          }, {
+            userId: apiKeyRecord.userId,
+            userPlan: apiKeyRecord.user.plan,
+            timestamp: new Date().toISOString(),
+            userAgent,
+            ip,
           });
-
-          console.log('Confirmation email sent successfully');
         } catch (error) {
-          console.error('Failed to send confirmation email:', error);
-          // Create notification log for failed email
-          await db.notificationLog.create({
-            data: {
-              type: 'SUBMISSION_CONFIRMATION',
-              status: 'FAILED',
-              error: error instanceof Error ? error.message : 'Unknown error',
-              submissionId: submission.id,
-              formId: form.id,
-            },
+          // Log email error
+          await debugService.logEmailError(formId, submission.id, error as Error, {
+            userId: apiKeyRecord.userId,
+            userPlan: apiKeyRecord.user.plan,
+            timestamp: new Date().toISOString(),
+            userAgent,
+            ip,
           });
-          // Don't throw the error, just log it
+          console.error('Failed to send confirmation email:', error);
         }
-      } else {
-        // Create a SKIPPED notification log if email was not sent
-        await db.notificationLog.create({
-          data: {
-            type: 'SUBMISSION_CONFIRMATION',
-            status: 'SKIPPED',
-            error: 'Email not sent - plan or settings not configured',
-            submissionId: submission.id,
-            formId: form.id,
-          },
-        });
-        console.log('Email not sent:', {
-          plan: form.user.plan,
-          hasEmail: !!data.email,
-          emailType: typeof data.email,
-          emailEnabled: form.emailSettings?.enabled,
-        });
       }
 
       // Send notification to developer if PRO plan and notifications enabled
       if (form.user.plan === Plan.PRO) {
         try {
-          console.log('🔔 Attempting to send developer notification', {
+          const notificationResult = await sendDeveloperNotification(formId, submission.id, data);
+          await debugService.log('developer_notification_sent', {
             formId,
             submissionId: submission.id,
-            hasEmailSettings: !!form.emailSettings,
-            notificationsEnabled: form.emailSettings?.developerNotificationsEnabled
+            result: notificationResult,
+          }, {
+            formId,
+            userId: apiKeyRecord.userId,
+            userPlan: apiKeyRecord.user.plan,
+            timestamp: new Date().toISOString(),
+            userAgent,
+            ip,
           });
-          
-          const notificationResult = await sendDeveloperNotification(formId, submission.id, data);
-          
-          console.log('🔔 Developer notification result:', notificationResult);
         } catch (error) {
-          console.error('❌ Failed to send developer notification:', error);
-          // Non-blocking, continue with response
+          await debugService.log('developer_notification_error', {
+            formId,
+            submissionId: submission.id,
+            error: error instanceof Error ? error.message : 'Unknown error',
+          }, {
+            formId,
+            userId: apiKeyRecord.userId,
+            userPlan: apiKeyRecord.user.plan,
+            timestamp: new Date().toISOString(),
+            userAgent,
+            ip,
+          });
+          console.error('Failed to send developer notification:', error);
         }
       }
 
@@ -482,46 +369,16 @@ export async function POST(req: Request) {
       throw error; // Re-throw if it's not a known Prisma error
     }
   } catch (error) {
-<<<<<<< HEAD
-    // Log any errors that occur during submission
-    if (error instanceof z.ZodError) {
-      const message = error.errors[0]?.message || 'Invalid form data';
-      await debugService.log('validation_error', {
-        error: message,
-        details: error.errors,
-      }, {
-        formId: 'unknown',
-        userId: 'unknown',
-        userPlan: 'unknown',
-        timestamp: new Date().toISOString(),
-        userAgent: req.headers.get('user-agent') || undefined,
-        ip: (req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip')) || undefined,
-      });
-=======
     console.error('Error processing form submission:', error);
 
     if (error instanceof z.ZodError) {
       const message = error.errors.map(e => e.message).join(', ') || 'Invalid form data';
->>>>>>> origin/main
       return NextResponse.json(
         { message },
         { status: 400 }
       );
     }
 
-<<<<<<< HEAD
-    await debugService.log('submission_error', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined,
-    }, {
-      formId: 'unknown',
-      userId: 'unknown',
-      userPlan: 'unknown',
-      timestamp: new Date().toISOString(),
-      userAgent: req.headers.get('user-agent') || undefined,
-      ip: (req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip')) || undefined,
-    });
-=======
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === 'P2002') {
         return NextResponse.json(
@@ -531,7 +388,6 @@ export async function POST(req: Request) {
       }
       // Handle other Prisma errors if needed
     }
->>>>>>> origin/main
 
     return NextResponse.json(
       { message: 'Internal server error' },
