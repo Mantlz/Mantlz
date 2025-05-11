@@ -7,7 +7,9 @@ import {
   Loader2, 
   AlertCircle, 
   CheckCircle2, 
-  ExternalLink
+  ExternalLink,
+  Download,
+  FileText
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -50,6 +52,23 @@ interface SubscriptionData {
 // Type definition for portal session response
 interface PortalSessionResponse {
   url: string;
+  error?: string;
+}
+
+// Add invoice type definition
+interface Invoice {
+  id: string;
+  number: string;
+  amount: number;
+  currency: string;
+  status: string;
+  created: number;
+  pdf: string | null;
+  hostedUrl: string | null;
+}
+
+interface InvoiceResponse {
+  invoices: Invoice[];
   error?: string;
 }
 
@@ -139,6 +158,27 @@ const useCreatePortalSession = () => {
   });
 };
 
+// Add invoice query hook
+const useInvoices = () => {
+  return useQuery<Invoice[]>({
+    queryKey: ["userInvoices"],
+    queryFn: async () => {
+      try {
+        const response = await client.payment.getInvoices.$post();
+        const data = await response.json() as InvoiceResponse;
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        return data.invoices;
+      } catch (error) {
+        console.error("Error fetching invoices:", error);
+        return [];
+      }
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+};
+
 // Plan badge component
 type PlanBadgeProps = {
   plan: string | undefined;
@@ -190,6 +230,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
 
 export default function BillingSettings() {
   const { data: subscription, isLoading, error, refetch } = useSubscriptionData();
+  const { data: invoices, isLoading: isLoadingInvoices } = useInvoices();
   const createPortalSession = useCreatePortalSession();
   const [isRedirecting, setIsRedirecting] = useState(false);
 
@@ -266,37 +307,55 @@ export default function BillingSettings() {
     <div className="w-full max-w-5xl mx-auto">
       <ScrollArea className="h-[550px] w-full">
         <div className="w-full space-y-4 p-1">
+          {/* Header with Quick Actions */}
           <header className="p-5 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-            <div className="flex items-center mb-1">
-              <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
-                Subscription Information
-              </h2>
-              <PlanBadge plan={subscription?.plan} />
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center">
+                <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
+                  Subscription Information
+                </h2>
+                <PlanBadge plan={subscription?.plan} />
+              </div>
+              <Button 
+                onClick={handleManageSubscription} 
+                disabled={isRedirecting}
+                variant="outline"
+                size="sm"
+                className="h-8 text-xs"
+              >
+                {isRedirecting ? (
+                  <>
+                    <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                    Redirecting...
+                  </>
+                ) : (
+                  <>
+                    <ExternalLink className="h-3 w-3 mr-1" />
+                    Manage Subscription
+                  </>
+                )}
+              </Button>
             </div>
             <p className="text-xs text-zinc-600 dark:text-zinc-400">
               Manage your subscription and billing information
             </p>
           </header>
 
+          {/* Current Plan Card */}
           <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
-            <CardHeader className="pb-2 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
-              <div>
-                <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  Current Plan
-                </CardTitle>
-                <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
-                  {subscription?.plan ? `${subscription.plan.toUpperCase()} Plan` : "Free Plan"}
-                </CardDescription>
-              </div>
-              <div className="flex items-center">
-                <StatusBadge status={subscription?.status} />
-              </div>
+            <CardHeader className="pb-2 pt-4 px-5">
+              <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Current Plan
+              </CardTitle>
+              <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+                {subscription?.plan ? `${subscription.plan.toUpperCase()} Plan` : "Free Plan"}
+              </CardDescription>
             </CardHeader>
-            <CardContent className="px-5 pb-4 pt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+            <CardContent className="px-5 pb-4">
+              <div className="space-y-4">
                 <div className="p-3 border border-zinc-200 dark:border-zinc-800 rounded-lg">
                   <p className="text-xs text-zinc-600 dark:text-zinc-400">Price</p>
                   <p className="text-sm font-medium text-zinc-900 dark:text-white">
@@ -381,49 +440,120 @@ export default function BillingSettings() {
                   </ul>
                 </div>
               </div>
-              
-              {/* Free Plan Upgrade Message */}
-              {(!subscription?.plan || subscription?.plan === "FREE") && (
-                <div className="mt-2 p-2 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 dark:bg-amber-900/30 dark:border-amber-800/30 dark:text-amber-400 text-xs flex items-center  justify-between">
-                  <div className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                    <span>You are on a free plan. Consider upgrading for more features.</span>
-                  </div>
-                  <Button 
-                    onClick={() => window.location.href = '/pricing'} 
-                    variant="link"
-                    size="sm"
-                    className="h-6 text-xs p-0 text-zinc-950 dark:text-zinc-200 hover:underline"
-                  >
-                    View Plans
-                  </Button>
+            </CardContent>
+          </Card>
+
+          {/* Invoices Section */}
+          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+            <CardHeader className="pb-2 pt-4 px-5">
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
+                    <FileText className="h-3.5 w-3.5 mr-1.5 text-zinc-500" />
+                    Recent Invoices
+                  </CardTitle>
+                  <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+                    View and download your recent invoices
+                  </CardDescription>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 text-xs"
+                  onClick={() => window.location.href = '/dashboard/billing'}
+                >
+                  View All
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="px-5 pb-4">
+              {isLoadingInvoices ? (
+                <div className="flex items-center justify-center py-4">
+                  <Loader2 className="h-4 w-4 text-zinc-400 animate-spin" />
+                  <span className="ml-2 text-sm text-zinc-600 dark:text-zinc-400">Loading invoices...</span>
+                </div>
+              ) : invoices && invoices.length > 0 ? (
+                <div className="space-y-2">
+                  {invoices.slice(0, 3).map((invoice) => (
+                    <div
+                      key={invoice.id}
+                      className="flex items-center justify-between p-3 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+                    >
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-zinc-900 dark:text-white">
+                          Invoice #{invoice.number}
+                        </span>
+                        <span className="text-xs text-zinc-600 dark:text-zinc-400">
+                          {new Date(invoice.created * 1000).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm font-medium text-zinc-900 dark:text-white">
+                          {formatCurrency(invoice.amount, invoice.currency)}
+                        </span>
+                        <Badge
+                          className={cn(
+                            "text-xs",
+                            invoice.status === "paid"
+                              ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                              : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                          )}
+                        >
+                          {invoice.status.toUpperCase()}
+                        </Badge>
+                        <div className="flex space-x-1">
+                          {invoice.pdf && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0"
+                              onClick={() => invoice.pdf && window.open(invoice.pdf, "_blank")}
+                            >
+                              <Download className="h-4 w-4" />
+                            </Button>
+                          )}
+                          {invoice.hostedUrl && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0"
+                              onClick={() => invoice.hostedUrl && window.open(invoice.hostedUrl, "_blank")}
+                            >
+                              <ExternalLink className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-4 text-sm text-zinc-600 dark:text-zinc-400">
+                  No invoices found
                 </div>
               )}
             </CardContent>
-            <CardFooter className="flex justify-end border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 px-5 py-3">
-              <Button 
-                onClick={handleManageSubscription} 
-                disabled={isRedirecting}
-                variant="outline"
-                size="sm"
-                className="h-8 text-xs"
-              >
-                {isRedirecting ? (
-                  <>
-                    <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-                    Redirecting...
-                  </>
-                ) : (
-                  <>
-                    <ExternalLink className="h-3 w-3 mr-1" />
-                    Manage Subscription
-                  </>
-                )}
-              </Button>
-            </CardFooter>
           </Card>
+
+          {/* Free Plan Upgrade Message */}
+          {(!subscription?.plan || subscription?.plan === "FREE") && (
+            <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 dark:bg-amber-900/30 dark:border-amber-800/30 dark:text-amber-400 text-sm flex items-center justify-between">
+              <div className="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                <span>You are on a free plan. Consider upgrading for more features.</span>
+              </div>
+              <Button 
+                onClick={() => window.location.href = '/pricing'} 
+                variant="link"
+                size="sm"
+                className="h-6 text-xs p-0 text-zinc-950 dark:text-zinc-200 hover:underline"
+              >
+                View Plans
+              </Button>
+            </div>
+          )}
         </div>
       </ScrollArea>
     </div>

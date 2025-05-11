@@ -3,6 +3,11 @@ import { j, privateProcedure } from "../jstack"
 import { z } from "zod"
 import { db } from "@/lib/db"
 import { SubscriptionStatus } from "@prisma/client"
+import Stripe from "stripe"
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2025-03-31.basil",
+})
 
 // Price ID to Plan mapping
 const PRICE_TO_PLAN = {
@@ -68,5 +73,43 @@ export const paymentRouter = j.router({
 
       console.log('Portal session created:', portalSession.id)
       return c.json({ url: portalSession.url })
+    }),
+  getInvoices: privateProcedure
+    .mutation(async ({ c, ctx }) => {
+      const { user } = ctx
+      
+      // Find user's subscription and Stripe customer ID
+      const subscription = await db.subscription.findFirst({
+        where: {
+          userId: user.id,
+          status: SubscriptionStatus.ACTIVE,
+        },
+      })
+
+      if (!subscription?.stripeUserId) {
+        return c.json(
+          { error: "No active subscription found" },
+          { status: 404 }
+        )
+      }
+
+      // Get all invoices from Stripe
+      const invoices = await stripe.invoices.list({
+        customer: subscription.stripeUserId,
+        limit: 100, // Increased limit to get more invoices
+      })
+
+      return c.json({
+        invoices: invoices.data.map(invoice => ({
+          id: invoice.id,
+          number: invoice.number,
+          amount: invoice.amount_paid,
+          currency: invoice.currency,
+          status: invoice.status,
+          created: invoice.created,
+          pdf: invoice.invoice_pdf,
+          hostedUrl: invoice.hosted_invoice_url,
+        }))
+      })
     }),
 })
