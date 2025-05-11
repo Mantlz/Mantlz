@@ -17,7 +17,7 @@ export interface ToastHandler {
 // Fallback DOM toast implementation for when no handler is set
 const createDOMToast = (message: string, type: ToastType, options?: ToastOptions) => {
   if (typeof window === 'undefined' || typeof document === 'undefined') {
-    console.log(`[${type.toUpperCase()}] ${message}${options?.description ? `: ${options.description}` : ''}`);
+    (`[${type.toUpperCase()}] ${message}${options?.description ? `: ${options.description}` : ''}`);
     return;
   }
   
@@ -65,120 +65,72 @@ const createDOMToast = (message: string, type: ToastType, options?: ToastOptions
   toast.style.width = '320px';
   toast.style.transition = 'all 0.3s ease';
   toast.style.opacity = '0';
-  toast.style.fontFamily = '"SF Mono", "Roboto Mono", Menlo, Monaco, Consolas, monospace';
-  toast.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-  toast.style.backdropFilter = 'blur(6px)';
   
-  // Set transform based on position
-  if (position.includes('top')) {
-    toast.style.transform = 'translateY(-10px)';
-  } else {
-    toast.style.transform = 'translateY(10px)';
-  }
-  
-  toast.style.animation = 'fadeIn 0.3s forwards';
-  
-  // Add animation with position-specific transforms
-  const animationName = position.includes('top') ? 'fadeInDown' : 'fadeInUp';
-  const animationOutName = position.includes('top') ? 'fadeOutUp' : 'fadeOutDown';
+  // Add animation keyframes
+  const animationInName = `toastIn${Date.now()}`;
+  const animationOutName = `toastOut${Date.now()}`;
   
   const style = document.createElement('style');
   style.textContent = `
-    @keyframes fadeInDown {
+    @keyframes ${animationInName} {
+      from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    @keyframes fadeOutUp {
-      to { opacity: 0; transform: translateY(-10px); }
-    }
-    @keyframes fadeInUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeOutDown {
-      to { opacity: 0; transform: translateY(10px); }
+    @keyframes ${animationOutName} {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(20px); }
     }
   `;
   document.head.appendChild(style);
   
-  toast.style.animation = `${animationName} 0.3s forwards`;
-  
-  // Create icon container
-  const iconContainer = document.createElement('div');
-  iconContainer.style.display = 'flex';
-  iconContainer.style.alignItems = 'center';
-  iconContainer.style.marginBottom = '8px';
-  
-  // Create icon element
-  const icon = document.createElement('div');
-  icon.style.width = '16px';
-  icon.style.height = '16px';
-  icon.style.borderRadius = '50%';
-  icon.style.marginRight = '10px';
-  icon.style.display = 'flex';
-  icon.style.alignItems = 'center';
-  icon.style.justifyContent = 'center';
-  icon.style.flexShrink = '0';
-  
-  // Set colors and icons based on type
-  let iconContent = '';
+  // Set toast content and styles based on type
   switch (type) {
     case 'success':
-      toast.style.background = 'linear-gradient(to right, #1f8a70, #10B981)';
+      toast.style.backgroundColor = '#10B981';
       toast.style.color = 'white';
-      icon.style.background = 'rgba(255, 255, 255, 0.2)';
-      iconContent = '✓';
       break;
     case 'error':
-      toast.style.background = 'linear-gradient(to right, #d03050, #EF4444)';
+      toast.style.backgroundColor = '#EF4444';
       toast.style.color = 'white';
-      icon.style.background = 'rgba(255, 255, 255, 0.2)';
-      iconContent = '✕';
-      break;
-    case 'warning':
-      toast.style.background = 'linear-gradient(to right, #d97706, #F59E0B)';
-      toast.style.color = 'white';
-      icon.style.background = 'rgba(255, 255, 255, 0.2)';
-      iconContent = '!';
       break;
     case 'info':
-      toast.style.background = 'linear-gradient(to right, #2563eb, #3B82F6)';
+      toast.style.backgroundColor = '#3B82F6';
       toast.style.color = 'white';
-      icon.style.background = 'rgba(255, 255, 255, 0.2)';
-      iconContent = 'i';
+      break;
+    case 'warning':
+      toast.style.backgroundColor = '#F59E0B';
+      toast.style.color = 'white';
       break;
   }
   
-  icon.textContent = iconContent;
-  icon.style.fontSize = '10px';
-  icon.style.fontWeight = 'bold';
-  
-  // Create title
-  const title = document.createElement('div');
-  title.style.fontWeight = 'bold';
-  title.style.fontSize = '14px';
-  title.style.letterSpacing = '0.5px';
-  title.textContent = message;
-  
-  // Add icon and title to the container
-  iconContainer.appendChild(icon);
-  iconContainer.appendChild(title);
-  toast.appendChild(iconContainer);
+  // Add message
+  const messageElement = document.createElement('div');
+  messageElement.style.fontWeight = '600';
+  messageElement.textContent = message;
+  toast.appendChild(messageElement);
   
   // Add description if provided
   if (options?.description) {
-    const description = document.createElement('div');
-    description.style.fontSize = '12px';
-    description.style.opacity = '0.9';
-    description.style.marginLeft = '26px'; // Align with title after icon
-    description.style.lineHeight = '1.4';
-    description.textContent = options.description;
-    toast.appendChild(description);
+    const descriptionElement = document.createElement('div');
+    descriptionElement.style.fontSize = '14px';
+    descriptionElement.style.marginTop = '4px';
+    descriptionElement.style.opacity = '0.9';
+    descriptionElement.textContent = options.description;
+    toast.appendChild(descriptionElement);
   }
   
-  // Add to container
+  // Add toast to container
   toastContainer.appendChild(toast);
   
-  // Remove after duration
-  const duration = options?.duration || 5000;
+  // Animate in
+  setTimeout(() => {
+    toast.style.animation = `${animationInName} 0.3s forwards`;
+  }, 10);
+  
+  // Set duration (default 3 seconds)
+  const duration = options?.duration || 3000;
+  
+  // Remove toast after duration
   setTimeout(() => {
     toast.style.animation = `${animationOutName} 0.3s forwards`;
     setTimeout(() => {
@@ -190,6 +142,9 @@ const createDOMToast = (message: string, type: ToastType, options?: ToastOptions
       if (toastContainer.children.length === 0) {
         document.body.removeChild(toastContainer);
       }
+      
+      // Remove animation keyframes
+      document.head.removeChild(style);
     }, 300);
   }, duration);
 };
@@ -198,7 +153,7 @@ const createDOMToast = (message: string, type: ToastType, options?: ToastOptions
 export const defaultToastHandler: ToastHandler = {
   show: (message, type, options) => {
     createDOMToast(message, type, options);
-    console.log(`[${type.toUpperCase()}] ${message}${options?.description ? `: ${options.description}` : ''}`);
+    (`[${type.toUpperCase()}] ${message}${options?.description ? `: ${options.description}` : ''}`);
   }
 };
 

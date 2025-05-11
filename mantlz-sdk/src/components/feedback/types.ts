@@ -1,20 +1,61 @@
 import { z } from 'zod';
-import { FeedbackTheme } from './sharedTypes';
+
+export type FeedbackFormTheme = 
+  | 'default'
+  | 'dark'
+  | 'purple'
+  | 'neobrutalism';
+
+export type RatingType = 
+  | 'star' 
+  | 'emoji' 
+  | 'radio';
+
+export const FEEDBACK_THEMES = {
+  DEFAULT: 'default' as FeedbackFormTheme,
+  DARK: 'dark' as FeedbackFormTheme,
+  PURPLE: 'purple' as FeedbackFormTheme,
+  NEOBRUTALISM: 'neobrutalism' as FeedbackFormTheme,
+};
 
 export const feedbackSchema = z.object({
-  rating: z.number().min(1).max(5),
-  feedback: z.string().min(10, 'Please provide more detailed feedback'),
-  email: z.string().email('Please enter a valid email address').min(1, 'Email is required'),
+  rating: z.number().min(1, 'Please select a rating').max(5),
+  email: z.string().email('Please enter a valid email address'),
+  message: z.string().min(10, 'Please provide more detailed feedback'),
 });
 
-// Define appearance type
 export interface FeedbackFormAppearance {
   baseStyle?: {
     container?: string;
     form?: string;
+    background?: string;
+    border?: string;
   };
   elements?: {
-    ratingContainer?: string;
+    card?: string;
+    cardHeader?: string;
+    cardTitle?: string;
+    cardDescription?: string;
+    cardContent?: string;
+    formButtonPrimary?: string;
+    submitButton?: string; // Alias for formButtonPrimary
+    formButtonIcon?: string; 
+    buttonIcon?: string; // Alias for formButtonIcon
+    input?: string;
+    inputError?: string;
+    inputLabel?: string;
+    textarea?: string;
+    formInput?: string; // Alias for input
+    formTextarea?: string; // Alias for textarea
+    select?: string; // For select elements
+    formSelect?: string; // Alias for select
+    background?: string; // For direct customization
+    border?: string; // For direct customization
+    
+    // Rating label
+    ratingLabel?: string;
+    
+    // Old star rating styles (for backward compatibility)
     ratingWrapper?: string;
     starButton?: string;
     starIcon?: {
@@ -22,92 +63,63 @@ export interface FeedbackFormAppearance {
       filled?: string;
       empty?: string;
     };
-    textarea?: {
-      container?: string;
-      input?: string;
-      error?: string;
-    };
-    email?: {
-      container?: string;
-      input?: string;
-    };
-    submitButton?: string;
-    submitButtonIcon?: string;
-    submitButtonText?: string;
+    
+    // New rating styles
+    // Star rating related
+    ratingContainer?: string;
+    ratingStarActive?: string;
+    ratingStarInactive?: string;
+    
+    // Emoji rating related
+    emojiContainer?: string;
+    emojiButton?: string;
+    emojiButtonActive?: string;
+    emojiButtonInactive?: string;
+    
+    // Radio rating related
+    radioContainer?: string;
+    radioButton?: string;
+    radioButtonActive?: string;
+    radioButtonInactive?: string;
   };
   typography?: {
-    title?: string;
-    description?: string;
-    errorText?: string;
-    feedbackPlaceholder?: string;
     submitButtonText?: string;
+    feedbackPlaceholder?: string;
+    errorText?: string;
   };
-}
-
-// Simplified appearance interface with more intuitive properties
-export interface FeedbackFormSimpleAppearance {
-  theme?: FeedbackTheme;
-  primaryColor?: string; // Like "blue" or "#3b82f6"
-  backgroundColor?: string;
-  borderRadius?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
-  fontSize?: 'xs' | 'sm' | 'base' | 'lg' | 'xl';
-  shadow?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
-  // Add text customizations
-  submitButtonText?: string;
-  feedbackPlaceholder?: string;
-  darkMode?: boolean; // Override auto-detection
 }
 
 export interface FeedbackFormProps {
   // Core props
   formId: string;
-  onSubmitSuccess?: (data: z.infer<typeof feedbackSchema>) => void;
-  onSubmitError?: (error: Error) => void;
   className?: string;
+  variant?: "default" | "glass";
   
-  // Layout options
+  // Content customization
   title?: string;
   description?: string;
-  layout?: 'vertical' | 'horizontal';
-  width?: 'narrow' | 'medium' | 'wide';
-  showLabels?: boolean;
-  showEmailField?: boolean;
-  allowComments?: boolean;
-  
-  // Text content customization
-  submitButtonText?: string;
-  feedbackPlaceholder?: string;
-  successMessage?: string;
-  errorMessage?: string;
-  ratingLabels?: [string, string, string, string, string]; // Custom rating labels
+  ratingLabel?: string;
+  emailLabel?: string;
+  emailPlaceholder?: string;
+  messageLabel?: string;
+  messagePlaceholder?: string;
+  redirectUrl?: string;
   
   // Theme selection
-  theme?: FeedbackTheme;
+  theme?: FeedbackFormTheme;
+  baseTheme?: string; // Simplified theme prop for the new flat API
   darkMode?: boolean;
   
-  // Color customization
-  primaryColor?: string;          // Main accent color
-  backgroundColor?: string;       // Form background color
-  textColor?: string;             // Primary text color
-  secondaryTextColor?: string;    // Secondary text color (descriptions, placeholders)
-  borderColor?: string;           // Border color
+  // Rating type selection
+  ratingType?: RatingType;
   
-  // Button customization
-  buttonTextColor?: string;       // Button text color
-  buttonBgColor?: string;         // Button background color
-  buttonHoverColor?: string;      // Button hover color
+  // Appearance customization
+  appearance?: FeedbackFormAppearance | ((theme: FeedbackFormTheme | string, ratingType?: RatingType) => FeedbackFormAppearance);
   
-  // Star rating customization
-  starColor?: string;             // Color of filled stars
-  starEmptyColor?: string;        // Color of empty stars
+  // Submit text
+  submitButtonText?: string;
   
-  // Form element styling
-  borderRadius?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
-  fontSize?: 'xs' | 'sm' | 'base' | 'lg' | 'xl';
-  fontFamily?: 'sans' | 'serif' | 'mono';
-  shadow?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
-  padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
-  
-  // Advanced customization
-  appearance?: FeedbackFormAppearance | ((theme: 'light' | 'dark') => FeedbackFormAppearance);
-}
+  // Event handlers
+  onSubmitSuccess?: (data: z.infer<typeof feedbackSchema>) => void;
+  onSubmitError?: (error: any) => void;
+} 

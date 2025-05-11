@@ -1,0 +1,154 @@
+---
+title: Simplified Appearance API
+description: An intuitive styling approach that works across all Mantlz form components
+---
+
+# Simplified Appearance API
+
+All Mantlz form components (FeedbackForm, ContactForm, WaitlistForm) support a flatter, more intuitive appearance API to make styling easier and more consistent.
+
+## Basic Usage
+
+The simplified API allows you to style components directly without nesting properties:
+
+```tsx
+import { ContactForm, BASE_THEMES } from 'mantlz-sdk';
+
+<ContactForm
+  formId="your-form-id"
+  theme={BASE_THEMES.NEOBRUTALISM}
+  appearance={{
+    // Direct styling - no need for nested objects!
+    container: 'bg-zinc-100 border-4 border-black',
+    button: 'bg-zinc-500 text-black border-4 border-black',
+    input: 'border-2 border-black',
+    textarea: 'border-2 border-black',
+    label: 'text-black font-bold',
+    title: 'text-2xl font-black text-blue-900',
+    
+    // Text customization
+    submitText: 'Send Message',
+    placeholderText: 'Your message here...'
+  }}
+/>
+```
+
+## Key Benefits
+
+- **Intuitive**: Direct element targeting without nested objects
+- **Consistent**: Same API works across all form components
+- **Flexible**: Compatible with both the original and simplified API
+- **Compatible with themes**: Can be used with built-in themes
+
+## Style Mapping
+
+The simplified API uses intuitive names that map to the underlying elements:
+
+| Simplified Prop | Description | Applies To |
+|-----------------|-------------|------------|
+| `container` | The main form container | All forms |
+| `card` | The form card wrapper | All forms |
+| `button` | The submit button | All forms |
+| `input` | Text input fields | All forms |
+| `textarea` | Multiline text fields | Contact, Feedback |
+| `label` | Form field labels | All forms |
+| `title` | Form title | All forms |
+| `description` | Form description | All forms |
+| `submitText` | Submit button text | All forms |
+| `placeholderText` | Input placeholder text | All forms |
+
+## Direct Background and Border Styling
+
+You can directly set background and border styles:
+
+```tsx
+<WaitlistForm
+  formId="your-form-id"
+  appearance={{
+    // Direct customizations
+    background: 'bg-gradient-to-r from-blue-500 to-purple-600',
+    border: 'border-2 border-indigo-300',
+  }}
+/>
+```
+
+## Combining with Themes
+
+The simplified API works seamlessly with built-in themes:
+
+```tsx
+import { FeedbackForm, BASE_THEMES } from 'mantlz-sdk';
+
+<FeedbackForm
+  formId="your-form-id"
+  theme={BASE_THEMES.DARK}
+  appearance={{
+    // Override specific parts of the theme
+    button: 'bg-purple-600 hover:bg-purple-700 text-white',
+    input: 'bg-zinc-800 border-zinc-700 text-white',
+  }}
+/>
+```
+
+## Dynamic Styling Based on Theme
+
+You can also dynamically adjust styles based on the current theme:
+
+```tsx
+<FeedbackForm
+  formId="your-form-id"
+  theme={BASE_THEMES.DARK}
+  appearance={(theme) => ({
+    // Styles can change based on theme
+    container: theme === 'neobrutalism'
+      ? 'bg-yellow-100 border-4 border-black'
+      : 'bg-zinc-900 border border-zinc-800',
+    
+    button: theme === 'neobrutalism'
+      ? 'bg-yellow-400 text-black border-4 border-black'
+      : 'bg-zinc-600 text-white'
+  })}
+/>
+```
+
+## Compatibility with Original API
+
+The simplified API is fully compatible with the original nested API. You can use both together if needed:
+
+```tsx
+<ContactForm
+  formId="your-form-id"
+  appearance={{
+    // Simplified API
+    button: 'bg-indigo-600 hover:bg-indigo-700',
+    input: 'border-2 border-indigo-300',
+    
+    // Original nested API
+    elements: {
+      formButtonPrimary: 'text-sm font-medium',
+      card: 'shadow-xl',
+    }
+  }}
+/>
+```
+
+## Available Built-in Themes
+
+The SDK includes four pre-built themes that work with the simplified API:
+
+```tsx
+import { WaitlistForm, BASE_THEMES } from 'mantlz-sdk';
+
+// Available themes
+<WaitlistForm theme={BASE_THEMES.DEFAULT} /> // Clean white design
+<WaitlistForm theme={BASE_THEMES.DARK} /> // Dark mode focused
+<WaitlistForm theme={BASE_THEMES.PURPLE} /> // Purple accents
+<WaitlistForm theme={BASE_THEMES.NEOBRUTALISM} /> // Fun, cartoon-like UI
+```
+
+## Best Practices
+
+1. **Start with a theme**: Choose a base theme first, then customize specific elements
+2. **Use aliases consistently**: Stick with either the simplified or original API for clarity
+3. **Leverage Tailwind**: The API works best with Tailwind CSS classes
+4. **Test dark mode**: Ensure your customizations look good in both light and dark modes 

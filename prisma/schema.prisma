@@ -9,23 +9,101 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(cuid())
-  clerkId    String   @unique
-  email      String   @unique
-  firstName  String?
-  lastName   String?
-  imageUrl   String?
-  quotaLimit Int
-  plan       Plan     @default(FREE)
-  resendApiKey String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  forms      Form[]
-  quota      Quota[]
-  apiKeys    ApiKey[]
-  globalSettings GlobalSettings?
+  id               String   @id @default(cuid())
+  clerkId          String   @unique
+  email            String   @unique
+  firstName        String?
+  lastName         String?
+  imageUrl         String?
+  quotaLimit       Int      @default(200) // Default to FREE_QUOTA.maxSubmissionsPerMonth
+  resendApiKey     String?
+  stripeCustomerId String?  @unique
+  plan             Plan     @default(FREE)
+  customDomain     String?
+  domainVerified   Boolean  @default(false)
+  dnsRecords       DnsRecord[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  forms            Form[]
+  quota            Quota[]
+  apiKeys          ApiKey[]
+  globalSettings   GlobalSettings?
+  subscription     Subscription?
+  payments         Payment[]
+  invoices         Invoice[]
+  campaigns        Campaign[]
 
   @@index([clerkId])
+  @@index([stripeCustomerId])
+}
+
+model Subscription {
+  id                     String           @id @default(uuid())
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+  subscriptionId         String           @unique
+  stripeUserId           String
+  status                 SubscriptionStatus
+  startDate              DateTime
+  endDate                DateTime?
+  planId                 String
+  defaultPaymentMethodId String?
+  email                  String
+  clerkId                String
+  user                   User             @relation(fields: [userId], references: [id])
+  userId                 String           @unique
+  plan                   SubscriptionPlan @relation(fields: [planId], references: [id])
+  paymentFailures        PaymentFailure[]
+
+  @@index([clerkId, subscriptionId])
+}
+
+model SubscriptionPlan {
+  id             String         @id @default(uuid())
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  planId         String         @unique
+  name           String         @unique
+  description    String
+  amount         Decimal
+  currency       String
+  maxForms       Int           // Maximum number of forms allowed
+  maxSubmissionsPerMonth Int   // Maximum submissions per month
+  subscriptions  Subscription[]
+}
+
+model Payment {
+  id              String   @id @default(uuid())
+  createdAt       DateTime @default(now())
+  stripeId        String   @unique
+  email           String
+  amount          Decimal
+  paymentTime     DateTime
+  currency        String
+  clerkId         String
+  customerDetails Json
+  paymentIntent   String
+  user            User     @relation(fields: [userId], references: [id])
+  userId          String
+
+  @@index([clerkId, stripeId])
+}
+
+model Invoice {
+  id             String   @id @default(uuid())
+  createdAt      DateTime @default(now())
+  invoiceId      String   @unique
+  subscriptionId String?
+  amountPaid     Decimal
+  amountDue      Decimal?
+  currency       String
+  status         InvoiceStatus
+  email          String
+  clerkId        String   // Make this required since we're using userId
+  user           User     @relation(fields: [userId], references: [id])
+  userId         String
+
+  @@index([clerkId, invoiceId])
 }
 
 model Quota {
@@ -33,9 +111,21 @@ model Quota {
   userId    String
   year      Int
   month     Int
-  count     Int      @default(0)
+  // Different types of usage counts
+  submissionCount Int @default(0)
+  formCount      Int @default(0)
+  campaignCount  Int @default(0)
+  // Track email campaign specific metrics
+  emailsSent     Int @default(0)
+  emailsOpened   Int @default(0)
+  emailsClicked  Int @default(0)
+  // Metadata
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, year, month])
+  @@index([userId])
+  @@index([year, month])
 }
 
 model Form {
@@ -45,12 +135,18 @@ model Form {
   schema      String
   userId      String
   settings    Json?
+  formType    FormType     @default(CUSTOM)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   user        User         @relation(fields: [userId], references: [id])
   submissions Submission[]
   emailSettings EmailSettings?
   notificationLogs NotificationLog[]
+  campaigns   Campaign[]
+  testSubmissions TestEmailSubmission[]
+
+  @@index([userId, formType])
+  @@index([userId])
 }
 
 model EmailSettings {
@@ -80,6 +176,9 @@ model Submission {
   createdAt DateTime @default(now())
   form      Form     @relation(fields: [formId], references: [id])
   notificationLogs NotificationLog[]
+  sentEmails SentEmail[]
+  unsubscribed Boolean @default(false)
+  campaignRecipients CampaignRecipient[]
 
   @@unique([formId, email])
   @@index([email])
@@ -106,10 +205,14 @@ model NotificationLog {
   submissionId String
   submission   Submission @relation(fields: [submissionId], references: [id])
   type         String
+  status       NotificationStatus   @default(SENT)
+  error        String?
+  metadata     Json?
   createdAt    DateTime @default(now())
 
   @@index([formId, type])
   @@index([createdAt])
+  @@index([status])
 }
 
 // New model for global settings
@@ -125,18 +228,101 @@ model GlobalSettings {
   updatedAt   DateTime @updatedAt
 }
 
-enum Plan {
-  FREE
-  STANDARD
-  PRO
+// Campaign models
+model Campaign {
+  id           String    @id @default(cuid())
+  name         String
+  description  String?
+  subject      String
+  content      String
+  formId       String
+  userId       String
+  status       CampaignStatus @default(DRAFT)
+  senderEmail  String?
+  recipientCount Int     @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  scheduledAt  DateTime?
+  sentAt       DateTime?
+  
+  // Relations
+  form         Form      @relation(fields: [formId], references: [id])
+  user         User      @relation(fields: [userId], references: [id])
+  sentEmails   SentEmail[]
+  recipients   CampaignRecipient[]
+
+  @@index([userId, status])
+  @@index([formId])
 }
 
-// New enums for notification system
-enum DigestFrequency {
-  REALTIME
-  HOURLY
-  DAILY
-  WEEKLY
+model CampaignRecipient {
+  id           String    @id @default(cuid())
+  campaignId   String
+  submissionId String
+  email        String
+  status       CampaignSendStatus @default(PENDING)
+  error        String?
+  sentAt       DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Relations
+  campaign     Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([campaignId, status])
+  @@index([submissionId])
+  @@index([email])
+}
+
+model TestEmailSubmission {
+  id        String   @id @default(cuid())
+  formId    String
+  email     String
+  data      Json?
+  createdAt DateTime @default(now())
+  form      Form     @relation(fields: [formId], references: [id])
+  sentEmails SentEmail[]
+
+  @@unique([formId, email])
+  @@index([email])
+}
+
+model SentEmail {
+  id           String    @id @default(cuid())
+  status       CampaignSendStatus @default(PENDING)
+  error        String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  campaignId   String
+  submissionId String?
+  testSubmissionId String?
+  campaign     Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  submission   Submission? @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  testSubmission TestEmailSubmission? @relation(fields: [testSubmissionId], references: [id], onDelete: Cascade)
+  isTest      Boolean   @default(false)
+  
+  // Email tracking
+  openedAt     DateTime?
+  clickedAt    DateTime?
+  lastOpenedAt DateTime?
+  lastClickedAt DateTime?
+  openCount    Int       @default(0)
+  clickCount   Int       @default(0)
+  bounced      Boolean   @default(false)
+  bounceReason String?
+  spamReported Boolean   @default(false)
+  spamReportedAt DateTime?
+  unsubscribeClicked Boolean @default(false)
+  unsubscribeClickedAt DateTime?
+
+  @@index([campaignId])
+  @@index([submissionId])
+  @@index([testSubmissionId])
+  @@index([openedAt])
+  @@index([clickedAt])
+  @@index([status])
+  @@index([isTest])
 }
 
 enum NotificationType {
@@ -149,4 +335,84 @@ enum NotificationStatus {
   SENT
   FAILED
   SKIPPED
+}
+
+enum FormType {
+  WAITLIST
+  FEEDBACK
+  CONTACT
+  CUSTOM
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  PAST_DUE
+  TRIALING
+  UNPAID
+}
+
+enum InvoiceStatus {
+  PAID
+  OPEN
+  VOID
+  UNCOLLECTIBLE
+  ATTEMPTED
+}
+
+enum Plan {
+  FREE
+  STANDARD
+  PRO
+}
+
+// Add new enums for Campaign status
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  SENDING
+  SENT
+  FAILED
+  CANCELLED
+}
+
+enum CampaignSendStatus {
+  PENDING
+  SENT
+  FAILED
+  BOUNCED
+  OPENED
+  CLICKED
+}
+
+// New model for DNS records
+model DnsRecord {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  type        String   // SPF, DKIM, DMARC
+  name        String   // Record name (e.g., @, _dmarc)
+  value       String   // Record value
+  verified    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@unique([userId, type])
+}
+
+model PaymentFailure {
+  id             String   @id @default(uuid())
+  createdAt      DateTime @default(now())
+  subscriptionId String
+  invoiceId      String
+  amount         Decimal
+  failureReason  String
+  attemptNumber  Int
+  resolved       Boolean  @default(false)
+  resolvedAt     DateTime?
+  subscription   Subscription @relation(fields: [subscriptionId], references: [subscriptionId])
+
+  @@index([subscriptionId])
+  @@index([invoiceId])
 }

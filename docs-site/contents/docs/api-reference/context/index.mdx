@@ -1,0 +1,172 @@
+---
+title: Providers and Hooks
+description: Context providers and hooks for managing Mantlz state in your application
+---
+
+# Providers and Hooks
+
+Mantlz provides context providers and hooks to manage state and functionality across your application.
+
+## MantlzProvider
+
+The `MantlzProvider` is the main context provider that should wrap your application to enable Mantlz features.
+
+### Basic Usage
+
+```tsx
+// In your _app.tsx or layout.tsx
+import { MantlzProvider } from '@mantlz/nextjs';
+
+export default function App({ Component, pageProps }) {
+  return (
+    <MantlzProvider apiKey="your_api_key_here">
+      <Component {...pageProps} />
+    </MantlzProvider>
+  );
+}
+```
+
+### Provider Options
+
+The `MantlzProvider` accepts the following props:
+
+```tsx
+<MantlzProvider
+  // Required: Your Mantlz API key
+  apiKey="your_api_key_here"
+  
+  // Optional: Default toast handler
+  toastHandler={customToastHandler}
+  
+  // Optional: Default appearance settings for all forms
+  defaultAppearance={{
+    button: 'bg-zinc-600 hover:bg-zinc-700',
+    input: 'border-zinc-300 focus:ring-blue-500',
+  }}
+  
+  // Optional: Default mode (light/dark)
+  mode="dark"
+/>
+```
+
+## useMantlz Hook
+
+The `useMantlz` hook provides access to the Mantlz context within your components.
+
+### Basic Usage
+
+```tsx
+import { useMantlz } from '@mantlz/nextjs';
+
+function MyComponent() {
+  const { client, mode, setMode } = useMantlz();
+  
+  // Use the Mantlz client for API calls
+  const submitCustomForm = async (data) => {
+    try {
+      const result = await client.forms.submit({
+        formId: 'my-form',
+        data
+      });
+
+    } catch (error) {
+      console.error('Submission failed:', error);
+    }
+  };
+  
+  // Toggle dark mode
+  const toggleMode = () => {
+    setMode(mode === 'dark' ? 'light' : 'dark');
+  };
+  
+  return (
+    <div>
+      <button onClick={toggleMode}>
+        Switch to {mode === 'dark' ? 'light' : 'dark'} mode
+      </button>
+      
+      <button onClick={() => submitCustomForm({ message: 'Hello!' })}>
+        Submit custom form data
+      </button>
+    </div>
+  );
+}
+```
+
+### Available Context Values
+
+The `useMantlz` hook provides the following values:
+
+| Value | Type | Description |
+|-------|------|-------------|
+| `client` | `MantlzClient` | The Mantlz API client instance |
+| `mode` | `'light' \| 'dark'` | Current theme mode |
+| `setMode` | `function` | Function to update the theme mode |
+| `appearance` | `object` | Default appearance settings |
+| `toastHandler` | `function` | Toast notification handler |
+
+## MantlzClientProvider
+
+For more advanced use cases where you need to initialize the client with custom configuration:
+
+```tsx
+import { MantlzClientProvider, createMantlzClient } from '@mantlz/nextjs';
+
+export default function App({ Component, pageProps }) {
+  // Create a client with custom configuration
+  const client = createMantlzClient({
+    apiKey: process.env.MANTLZ_API_KEY,
+    baseUrl: 'https://custom-api.mantlz.com/api/v1',
+    requestTimeout: 10000, // 10 seconds
+  });
+  
+  return (
+    <MantlzClientProvider client={client}>
+      <Component {...pageProps} />
+    </MantlzClientProvider>
+  );
+}
+```
+
+## createMantlzClient
+
+The `createMantlzClient` function allows you to create a custom Mantlz client:
+
+```tsx
+import { createMantlzClient } from '@mantlz/nextjs';
+
+const client = createMantlzClient({
+  apiKey: 'your_api_key_here',
+  baseUrl: 'https://api.mantlz.com/api/v1', // Optional
+  requestTimeout: 5000, // Optional (5 seconds)
+  debug: process.env.NODE_ENV === 'development', // Optional
+});
+```
+
+## Toast System Integration
+
+Mantlz provides a flexible toast system that you can integrate with your preferred toast library:
+
+```tsx
+import { MantlzProvider, createSonnerToastAdapter } from '@mantlz/nextjs';
+import { Toaster } from 'sonner';
+
+// Create an adapter for Sonner toast library
+const sonnerToastAdapter = createSonnerToastAdapter();
+
+export default function App({ Component, pageProps }) {
+  return (
+    <>
+      <Toaster position="top-right" />
+      <MantlzProvider 
+        apiKey="your_api_key_here"
+        toastHandler={sonnerToastAdapter}
+      >
+        <Component {...pageProps} />
+      </MantlzProvider>
+    </>
+  );
+}
+```
+
+Mantlz includes a built-in adapter for the Sonner toast library, but you can create your own adapter for any toast library: 

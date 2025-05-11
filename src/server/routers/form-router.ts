@@ -1,31 +1,36 @@
 import { z } from "zod";
 import { j, privateProcedure } from "../jstack";
 import { db } from "@/lib/db";
-import { currentUser } from "@clerk/nextjs/server";
 import { HTTPException } from "hono/http-exception";
-import { User } from "@prisma/client";
-import { getQuotaByPlan } from "@/config/usage";
-import { startOfMonth } from "date-fns";
+import { NotificationStatus, NotificationType, FormType } from "@prisma/client";
 import { Resend } from 'resend';
 import { FormSubmissionEmail } from '@/emails/form-submission';
 import { render } from '@react-email/components';
 import { Prisma } from "@prisma/client";
+import { enhanceDataWithAnalytics, extractAnalyticsFromSubmissions, Submission } from "@/lib/analytics-utils";
+import { exportFormSubmissions } from "@/services/export-service";
+import { QuotaService } from "@/services/quota-service";
+
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-interface EmailSettings {
-  enabled: boolean;
-  fromEmail?: string;
-  subject?: string;
-  template?: string;
-  replyTo?: string;
-  // Developer notification settings
-  developerNotificationsEnabled?: boolean;
-  developerEmail?: string;
-  maxNotificationsPerHour?: number;
-  notificationConditions?: any;
-  lastNotificationSentAt?: Date;
-}
+// interface EmailSettings {
+//   enabled: boolean;
+//   fromEmail?: string;
+//   subject?: string;
+//   template?: string;
+//   replyTo?: string;
+//   // Developer notification settings
+//   developerNotificationsEnabled?: boolean;
+//   developerEmail?: string;
+//   maxNotificationsPerHour?: number;
+//   notificationConditions?: {
+//     field: string;
+//     operator: string;
+//     value: string;
+//   }[];
+//   lastNotificationSentAt?: Date;
+// }
 
 // Define available form templates
 const formTemplates = {
@@ -44,7 +49,6 @@ const formTemplates = {
     schema: z.object({
       email: z.string().email(),
       name: z.string().min(2),
-      referralSource: z.string().optional(),
     }),
   },
   contact: {
@@ -59,7 +63,42 @@ const formTemplates = {
   // Add more templates as needed
 } as const;
 
-type FormTemplateType = 'feedback' | 'waitlist' | 'contact';
+// Add this helper function near the top of the file with other utility functions
+const detectFormType = (schema: string): FormType => {
+  try {
+    const schemaLower = schema.toLowerCase();
+    
+    // 1. First check explicit form type indicators in schema
+    if (schemaLower.includes('waitlist')) return FormType.WAITLIST;
+    if (schemaLower.includes('feedback')) return FormType.FEEDBACK;
+    if (schemaLower.includes('contact')) return FormType.CONTACT;
+    
+    // 2. Check for field combinations
+    const hasEmail = schema.includes('"email"') || schema.includes('email:');
+    const hasName = schema.includes('"name"') || schema.includes('name:');
+    const hasRating = schema.includes('"rating"') || schema.includes('rating:');
+    const hasFeedback = schema.includes('"feedback"') || schema.includes('feedback:');
+    const hasMessage = schema.includes('"message"') || schema.includes('message:');
+    
+    if (hasRating && hasFeedback) return FormType.FEEDBACK;
+    if (hasEmail && hasName && !hasMessage && !hasRating) return FormType.WAITLIST;
+    if (hasEmail && hasName && hasMessage) return FormType.CONTACT;
+    
+    // 3. Default to custom if no patterns match
+    return FormType.CUSTOM;
+  } catch (error) {
+    console.error('Error detecting form type:', error);
+    return FormType.CUSTOM;
+  }
+};
+
+// Helper to update form quota metrics
+async function updateFormQuotaMetrics(userId: string, updates: {
+  incrementForms?: boolean;
+  incrementSubmissions?: boolean;
+}) {
+  await QuotaService.updateQuota(userId, updates);
+}
 
 export const formRouter = j.router({
   // Get all forms created by the authenticated user
@@ -84,7 +123,18 @@ export const formRouter = j.router({
         orderBy: { createdAt: 'desc' },
         include: {
           _count: {
-            select: { submissions: true }
+            select: { 
+              submissions: true,
+              campaigns: true // Add campaigns count
+            }
+          },
+          submissions: {
+            where: {
+              unsubscribed: true
+            },
+            select: {
+              id: true
+            }
           }
         }
       });
@@ -99,23 +149,14 @@ export const formRouter = j.router({
           name: form.name,
           description: form.description,
           submissionCount: form._count.submissions,
+          campaignCount: form._count.campaigns, // Add campaign count
+          unsubscribedCount: form.submissions.length,
           createdAt: form.createdAt,
           updatedAt: form.updatedAt,
         })),
         nextCursor: hasMore && data.length > 0 ? data[data.length - 1]?.id : undefined,
       });
     }),
-
-  // Get available templates
-  getTemplates: j.procedure.query(({ c }) => {
-    return c.superjson(
-      Object.entries(formTemplates).map(([id, template]) => ({
-        id,
-        name: template.name,
-        description: template.description,
-      }))
-    );
-  }),
 
   // Create form from template
   createFromTemplate: privateProcedure
@@ -128,39 +169,33 @@ export const formRouter = j.router({
       const { user } = ctx;
       if (!user) throw new HTTPException(401, { message: "Unauthorized" });
 
-      // Get user with plan
-      const userWithPlan = await db.user.findUnique({
-        where: { id: user.id },
-        select: { 
-          plan: true,
-          id: true
-        }
-      });
-
-      if (!userWithPlan) throw new HTTPException(404, { message: "User not found" });
-
-      // Get form count
-      const formCount = await db.form.count({
-        where: { userId: user.id }
-      });
-
-      // Check form limits based on plan
-      const quota = getQuotaByPlan(userWithPlan.plan);
-      
-      if (formCount >= quota.maxForms) {
-        throw new HTTPException(403, { 
-          message: `Form limit reached (${formCount}/${quota.maxForms}) for your plan`
-        });
-      }
+      // Check quota before creating form
+      await QuotaService.canCreateForm(user.id);
 
       const template = formTemplates[input.templateId];
+      
+      // Map the template ID to a FormType enum value
+      const formTypeMap: Record<string, FormType> = {
+        'waitlist': FormType.WAITLIST,
+        'feedback': FormType.FEEDBACK,
+        'contact': FormType.CONTACT,
+      };
+      
+      const formType = formTypeMap[input.templateId] || FormType.CUSTOM;
+      
+      // Store form type in settings for backward compatibility
+      const settings = {
+        formType: input.templateId
+      };
       
       const form = await db.form.create({
         data: {
           name: input.name || template.name,
           description: input.description || template.description,
           schema: template.schema.toString(), // Serialize the schema
-          userId: userWithPlan.id,
+          userId: user.id,
+          formType, // Use the enum value
+          settings, // Keep settings for backward compatibility
           emailSettings: {
             create: {
               enabled: false
@@ -169,6 +204,9 @@ export const formRouter = j.router({
         },
       });
 
+      // After form is created successfully
+      await updateFormQuotaMetrics(user.id, { incrementForms: true });
+
       return c.superjson({
         id: form.id,
         name: form.name,
@@ -176,48 +214,43 @@ export const formRouter = j.router({
       });
     }),
 
-  // Create custom form (existing create endpoint)
-  create: privateProcedure
+  // Create custom form
+  createForm: privateProcedure
     .input(z.object({
       name: z.string(),
       description: z.string().optional(),
       schema: z.string(),
+      formType: z.nativeEnum(FormType).optional(),
     }))
     .mutation(async ({ c, input, ctx }) => {
       const { user } = ctx;
       if (!user) throw new HTTPException(401, { message: "Unauthorized" });
 
-      // Get user with plan
-      const userWithPlan = await db.user.findUnique({
-        where: { id: user.id },
-        select: { 
-          plan: true,
-          id: true
-        }
-      });
-
-      if (!userWithPlan) throw new HTTPException(404, { message: "User not found" });
-
-      // Get form count
-      const formCount = await db.form.count({
-        where: { userId: user.id }
-      });
-
-      // Check form limits based on plan
-      const quota = getQuotaByPlan(userWithPlan.plan);
+      // Check quota before creating form
+      await QuotaService.canCreateForm(user.id);
       
-      if (formCount >= quota.maxForms) {
-        throw new HTTPException(403, { 
-          message: `Form limit reached (${formCount}/${quota.maxForms}) for your plan`
-        });
-      }
+      // Determine form type: Prioritize provided type, fallback to detection
+      const finalFormType = input.formType || detectFormType(input.schema);
+      
+      // Create settings object with form type string for backward compatibility
+      const formTypeStrings = {
+        [FormType.WAITLIST]: 'waitlist',
+        [FormType.FEEDBACK]: 'feedback',
+        [FormType.CONTACT]: 'contact',
+        [FormType.CUSTOM]: 'custom'
+      };
+      const settings = {
+        formType: formTypeStrings[finalFormType] || 'custom'
+      };
       
       const form = await db.form.create({
         data: {
           name: input.name,
           description: input.description,
           schema: input.schema,
-          userId: userWithPlan.id,
+          userId: user.id,
+          formType: finalFormType,
+          settings,
           emailSettings: {
             create: {
               enabled: false,
@@ -233,11 +266,15 @@ export const formRouter = j.router({
         },
       });
 
+      // After form is created successfully
+      await updateFormQuotaMetrics(user.id, { incrementForms: true });
+
       return c.superjson({
         id: form.id,
         name: form.name,
         description: form.description,
         schema: form.schema,
+        formType: finalFormType,
       });
     }),
 
@@ -262,6 +299,11 @@ export const formRouter = j.router({
             },
           },
           emailSettings: true,
+          user: {
+            select: {
+              plan: true
+            }
+          }
         },
       });
       
@@ -269,14 +311,74 @@ export const formRouter = j.router({
         throw new Error('Form not found');
       }
       
+      // Use the formType field directly from the database
+      const formType = form.formType; 
+      
+      // Get the users joined settings
+      interface UsersJoinedSettings {
+        enabled: boolean;
+        count: number;
+      }
+      
+      const usersJoinedSettings = ((form.settings as Record<string, unknown>)?.usersJoined || { enabled: false, count: 0 }) as UsersJoinedSettings;
+      // Track if any settings were updated to determine if we need to save changes
+      let settingsUpdated = false;
+      
+      // Check user's plan status
+      const isFreeUser = form.user.plan === 'FREE';
+      
+      // If user is on FREE plan, automatically disable both premium features
+      if (isFreeUser) {
+        // 1. Disable users joined counter if it was enabled
+        if (usersJoinedSettings.enabled) {
+          usersJoinedSettings.enabled = false;
+          settingsUpdated = true;
+        }
+        
+        // 2. Disable email notifications if they were enabled
+        if (form.emailSettings?.enabled) {
+          // Update email settings in the database
+          await db.emailSettings.update({
+            where: { formId: id },
+            data: { enabled: false }
+          });
+        }
+      }
+      
+      // Save form settings if they were updated
+      if (settingsUpdated) {
+        await db.form.update({
+          where: { id },
+          data: {
+            settings: {
+              ...(form.settings as Record<string, unknown> || {}),
+              usersJoined: {
+                enabled: false, // Force disable for FREE users
+              }
+            }
+          },
+        });
+      }
+      
+      // Get the submissions count if needed
+      const submissionsCount = form._count.submissions;
+      usersJoinedSettings.count = submissionsCount;
+      
       return c.superjson({
         id: form.id,
         name: form.name,
         description: form.description,
+        formType, // Include the form type
         createdAt: form.createdAt,
         updatedAt: form.updatedAt,
         submissionCount: form._count.submissions,
-        emailSettings: form.emailSettings || { enabled: false, fromEmail: process.env.RESEND_FROM_EMAIL || 'contact@mantlz.app' },
+        emailSettings: {
+          ...(form.emailSettings || { fromEmail: process.env.RESEND_FROM_EMAIL || 'contact@mantlz.app' }),
+          // If user is on FREE plan, force disable email notifications
+          enabled: isFreeUser ? false : (form.emailSettings?.enabled || false)
+        },
+        usersJoinedSettings,
+        userPlan: form.user.plan, // Include the user's plan in the response
       });
     }),
     
@@ -334,9 +436,10 @@ export const formRouter = j.router({
   getFormAnalytics: privateProcedure
     .input(z.object({
       formId: z.string(),
+      timeRange: z.enum(['day', 'week', 'month']).default('day'),
     }))
     .query(async ({ c, ctx, input }) => {
-      const { formId } = input;
+      const { formId, timeRange } = input;
       const userId = ctx.user.id;
       
       // Verify form ownership
@@ -344,12 +447,23 @@ export const formRouter = j.router({
         where: {
           id: formId,
           userId,
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              plan: true
+            }
+          }
         }
       });
       
       if (!form) {
         throw new Error('Form not found');
       }
+
+      // Get user plan
+      const userPlan = form.user.plan;
       
       // Get all submissions for this form
       const submissions = await db.submission.findMany({
@@ -387,19 +501,17 @@ export const formRouter = j.router({
         ? lastWeekSubmissions.length > 0 ? 1 : 0
         : (lastWeekSubmissions.length - previousWeekSubmissions.length) / previousWeekSubmissions.length;
       
-      // Calculate response rate (submissions in last 24 hours)
+      // Calculate last 24 hours submissions
       const oneDayAgo = new Date(now);
       oneDayAgo.setDate(oneDayAgo.getDate() - 1);
       const last24HoursSubmissions = submissions.filter(sub => 
         new Date(sub.createdAt) >= oneDayAgo
       );
       
-      // Calculate engagement score (based on submission frequency)
-      const submissionFrequency = submissions.length / daysSinceCreation;
-      const recentActivity = last24HoursSubmissions.length > 0 ? 1 : 0;
-      const engagementScore = (submissionFrequency * 0.7) + (recentActivity * 0.3);
-
-      // Calculate peak submission times
+      // Calculate engagement score
+      const engagementScore = Math.min(10, submissions.length / 10);
+      
+      // Peak hour calculation
       const submissionHours = submissions.map(sub => new Date(sub.createdAt).getHours());
       const hourCounts = submissionHours.reduce((acc, hour) => {
         acc[hour] = (acc[hour] || 0) + 1;
@@ -409,60 +521,132 @@ export const formRouter = j.router({
       const peakHour = Object.entries(hourCounts).reduce((max, [hour, count]) => 
         count > (hourCounts[parseInt(max[0])] || 0) ? [hour, count] : max
       , ['0', 0])[0];
-
-      // Calculate completion rate (if we have abandonment data)
+      
+      // Calculate completion rate based on actual form abandonment data
       const abandonedSubmissions = submissions.filter(sub => {
-        const data = sub.data as any;
-        return data.isAbandoned === true;
+        const data = sub.data as Record<string, unknown>;
+        return data?.isAbandoned === true;
       });
+      
       const completionRate = submissions.length > 0 
         ? (submissions.length - abandonedSubmissions.length) / submissions.length 
-        : 0;
-
-      // Calculate average response time (time between submissions)
+        : 0.9; // Default if no submissions
+      
+      // Calculate average response time between submissions
       const sortedSubmissions = [...submissions].sort((a, b) => 
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
       );
-
+      
       // Calculate time differences between consecutive submissions
       const responseTimes = sortedSubmissions.slice(1).map((sub, i) => {
         const currentTime = new Date(sub.createdAt).getTime();
         const previousTime = new Date(sortedSubmissions[i]!.createdAt).getTime();
         return currentTime - previousTime;
       });
-
+      
       // Calculate average response time in minutes
       // Filter out any unreasonable gaps (e.g., > 24 hours) to avoid skewing the average
       const reasonableResponseTimes = responseTimes.filter(time => 
         time <= 24 * 60 * 60 * 1000 // 24 hours in milliseconds
       );
-
+      
       const avgResponseTime = reasonableResponseTimes.length > 0
         ? reasonableResponseTimes.reduce((a, b) => a + b, 0) / reasonableResponseTimes.length
-        : 0;
-
+        : 150000; // Default 2.5 minutes if no submissions
+      
       // Convert to minutes and round to 1 decimal place
       const avgResponseTimeInMinutes = Math.round((avgResponseTime / (1000 * 60)) * 10) / 10;
-
-      // Create time series data (hourly for the last 24 hours)
-      const timeSeriesData = Array.from({ length: 24 }, (_, i) => {
-        const hour = new Date(now);
-        hour.setHours(now.getHours() - 23 + i);
-        hour.setMinutes(0, 0, 0);
-        
-        const nextHour = new Date(hour);
-        nextHour.setHours(hour.getHours() + 1);
-        
-        const hourSubmissions = submissions.filter(sub => {
-          const subDate = new Date(sub.createdAt);
-          return subDate >= hour && subDate < nextHour;
-        });
-        
-        return {
-          time: `${hour.getHours()}:00`,
-          submissions: hourSubmissions.length,
-        };
-      });
+      
+      // Generate time series data
+      interface TimeSeriesPoint {
+        time: string;
+        submissions: number;
+      }
+      
+      const timeSeriesData: TimeSeriesPoint[] = [];
+      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      
+      if (timeRange === 'day') {
+        // Hourly data for the last 24 hours
+        for (let i = 0; i < 24; i++) {
+          const hour = new Date(now);
+          hour.setHours(now.getHours() - 23 + i);
+          hour.setMinutes(0, 0, 0);
+          
+          const nextHour = new Date(hour);
+          nextHour.setHours(hour.getHours() + 1);
+          
+          const hourSubmissions = submissions.filter(sub => {
+            const subDate = new Date(sub.createdAt);
+            return subDate >= hour && subDate < nextHour;
+          });
+          
+          timeSeriesData.push({
+            time: `${hour.getHours()}:00`,
+            submissions: hourSubmissions.length,
+          });
+        }
+      } else if (timeRange === 'week') {
+        // Daily data for the last 7 days
+        for (let i = 0; i < 7; i++) {
+          const day = new Date(now);
+          day.setDate(day.getDate() - 6 + i);
+          day.setHours(0, 0, 0, 0);
+          
+          const nextDay = new Date(day);
+          nextDay.setDate(day.getDate() + 1);
+          
+          const daySubmissions = submissions.filter(sub => {
+            const subDate = new Date(sub.createdAt);
+            return subDate >= day && subDate < nextDay;
+          });
+          
+          timeSeriesData.push({
+            time: dayNames[day.getDay() % 7] || '',
+            submissions: daySubmissions.length,
+          });
+        }
+      } else if (timeRange === 'month') {
+        // Daily data for the last 30 days
+        for (let i = 0; i < 30; i++) {
+          const day = new Date(now);
+          day.setDate(day.getDate() - 29 + i);
+          day.setHours(0, 0, 0, 0);
+          
+          const nextDay = new Date(day);
+          nextDay.setDate(day.getDate() + 1);
+          
+          const daySubmissions = submissions.filter(sub => {
+            const subDate = new Date(sub.createdAt);
+            return subDate >= day && subDate < nextDay;
+          });
+          
+          timeSeriesData.push({
+            time: `${day.getMonth() + 1}/${day.getDate()}`,
+            submissions: daySubmissions.length,
+          });
+        }
+      }
+      
+      // Latest data point
+      let latestDataPoint: TimeSeriesPoint = { time: '', submissions: 0 };
+      if (timeSeriesData.length > 0) {
+        const lastItem = timeSeriesData[timeSeriesData.length - 1];
+        if (lastItem) {
+          latestDataPoint = {
+            time: lastItem.time,
+            submissions: lastItem.submissions
+          };
+        }
+      }
+      
+      // Use our utility function to extract browser and location stats
+      const { browserStats, locationStats } = extractAnalyticsFromSubmissions(
+        submissions as unknown as Submission[]
+      );
+      
+      // Empty user insights array (we're not using this anymore)
+      const userInsights: unknown[] = [];
       
       return c.superjson({
         totalSubmissions: submissions.length,
@@ -474,139 +658,116 @@ export const formRouter = j.router({
         completionRate,
         averageResponseTime: avgResponseTimeInMinutes,
         timeSeriesData,
-      });
-    }),
-
-  // Get public form
-  getPublicForm: j.procedure
-    .input(z.object({
-      id: z.string(),
-    }))
-    .query(async ({ c, input }) => {
-      const { id } = input;
-      
-      const form = await db.form.findUnique({
-        where: { id },
-      });
-      
-      if (!form) {
-        throw new Error('Form not found');
-      }
-      
-      // Parse the schema to get form fields
-      const schemaObj = JSON.parse(form.schema);
-      const fields = Object.entries(schemaObj).map(([name, fieldSchema]: [string, any]) => {
-        return {
-          name,
-          label: name.charAt(0).toUpperCase() + name.slice(1).replace(/([A-Z])/g, ' $1'),
-          type: fieldSchema.type === 'string' && fieldSchema.format === 'email' ? 'email' : 
-                fieldSchema.type === 'string' ? 'text' : 
-                'textarea',
-          required: !fieldSchema.optional
-        };
-      });
-      
-      return c.superjson({
-        id: form.id,
-        name: form.name,
-        description: form.description,
-        fields
+        latestDataPoint,
+        timeRange,
+        userPlan,
+        userInsights,
+        browserStats,
+        locationStats,
       });
     }),
 
   // Submit form
-  submit: privateProcedure
+  submitForm: privateProcedure
     .input(z.object({
       formId: z.string(),
-      data: z.record(z.any())
+      data: z.record(z.any()),
     }))
     .mutation(async ({ c, input, ctx }) => {
-      const { formId, data } = input;
-      
-      // Get the form to validate the submission
+      const { user } = ctx;
+      if (!user) throw new HTTPException(401, { message: "Unauthorized" });
+
       const form = await db.form.findUnique({
-        where: { id: formId },
-        include: {
-          user: {
-            select: {
-              id: true,
-              plan: true,
-              email: true
-            }
-          },
+        where: { id: input.formId },
+        include: { 
+          user: true,
           emailSettings: true
         }
       });
-      
-      if (!form) {
-        throw new HTTPException(404, { message: 'Form not found' });
-      }
 
-      // Check if user has reached their monthly submission limit
-      const currentDate = startOfMonth(new Date());
+      if (!form) throw new HTTPException(404, { message: "Form not found" });
+
+      // Check quota before submitting
+      await QuotaService.canSubmitForm(form.user.id);
       
-      // Count the submissions for the current month for all user forms
-      const monthlySubmissionsCount = await db.submission.count({
-        where: {
-          form: {
-            userId: form.user.id
-          },
-          createdAt: {
-            gte: currentDate
-          }
-        }
+      // Use our utility function to enhance data with analytics info
+      const enhancedData = enhanceDataWithAnalytics(input.data, {
+        userAgent: c.req.header('user-agent'),
+        cfCountry: c.req.header('cf-ipcountry'),
+        acceptLanguage: c.req.header('accept-language'),
+        ip: c.req.header('x-forwarded-for')
       });
-      
-      // Get the quota for the user's plan
-      const quota = getQuotaByPlan(form.user.plan);
-      
-      if (monthlySubmissionsCount >= quota.maxSubmissionsPerMonth) {
-        throw new HTTPException(403, { 
-          message: `Monthly submission limit reached (${monthlySubmissionsCount}/${quota.maxSubmissionsPerMonth}) for this plan`
-        });
-      }
-      
-      // Create the submission
+
       const submission = await db.submission.create({
         data: {
-          formId,
-          data: data,
-          email: data.email, // Store email if provided in form
+          formId: input.formId,
+          data: enhancedData as unknown as Prisma.InputJsonValue,
+          email: input.data.email, 
         },
       });
 
       // Send confirmation email for STANDARD and PRO users
       if (
         (form.user.plan === 'STANDARD' || form.user.plan === 'PRO') && 
-        (form.emailSettings as unknown as EmailSettings)?.enabled &&
-        data.email && 
-        typeof data.email === 'string'
+        form.emailSettings?.enabled &&
+        input.data.email && 
+        typeof input.data.email === 'string'
       ) {
         try {
           const htmlContent = await render(
             FormSubmissionEmail({
               formName: form.name,
-              submissionData: data,
+              submissionData: input.data,
             })
           );
 
           await resend.emails.send({
-            from: (form.emailSettings as unknown as EmailSettings)?.fromEmail || 'contact@mantlz.app',
-            to: data.email,
-            subject: (form.emailSettings as unknown as EmailSettings)?.subject || `Confirmation: ${form.name} Submission`,
+            from: form.emailSettings?.fromEmail || 'contact@mantlz.app',
+            to: input.data.email,
+            subject: form.emailSettings?.subject || `Confirmation: ${form.name} Submission`,
             replyTo: 'contact@mantlz.app',
-            html: htmlContent,
+            html: htmlContent
+          });
+
+          // Create notification log for successful email
+          await db.notificationLog.create({
+            data: {
+              type: 'SUBMISSION_CONFIRMATION',
+              status: 'SENT',
+              submissionId: submission.id,
+              formId: form.id,
+            },
           });
         } catch (error) {
-          // Log error but don't fail the submission
+          // Log error and create notification log for failed email
           console.error('Failed to send confirmation email:', error);
+          await db.notificationLog.create({
+            data: {
+              type: 'SUBMISSION_CONFIRMATION',
+              status: 'FAILED',
+              error: error instanceof Error ? error.message : 'Unknown error',
+              submissionId: submission.id,
+              formId: form.id,
+            },
+          });
         }
+      } else {
+        // Create a SKIPPED notification log if email was not sent
+        await db.notificationLog.create({
+          data: {
+            type: 'SUBMISSION_CONFIRMATION',
+            status: 'SKIPPED',
+            error: 'Email not sent - plan or settings not configured',
+            submissionId: submission.id,
+            formId: form.id,
+          },
+        });
       }
 
-      return c.superjson({
-        id: submission.id,
-        message: 'Form submitted successfully'
-      });
+      // Update quota after successful submission
+      await updateFormQuotaMetrics(form.user.id, { incrementSubmissions: true });
+
+      return c.superjson({ success: true });
     }),
 
   // Add this new procedure
@@ -630,7 +791,7 @@ export const formRouter = j.router({
     .mutation(async ({ c, input, ctx }) => {
       const { formId, enabled } = input;
       
-      const form = await db.form.update({
+      await db.form.update({
         where: {
           id: formId,
           userId: ctx.user.id, // Ensure user owns the form
@@ -942,22 +1103,498 @@ export const formRouter = j.router({
       return c.superjson(settings);
     }),
 
-  // Get user's current plan
-  getUserPlan: privateProcedure
-    .query(async ({ c, ctx }) => {
-      const userId = ctx.user.id;
-      
-      const user = await db.user.findUnique({
-        where: { id: userId },
+  getSubmissionLogs: privateProcedure
+    .input(z.object({
+      formId: z.string().optional(),
+      page: z.number().default(1),
+      limit: z.number().default(10),
+      status: z.string().optional(),
+      type: z.string().optional(),
+      search: z.string().optional(),
+      startDate: z.string().optional(),
+      endDate: z.string().optional(),
+    }))
+    .query(async ({ ctx, c, input }) => {
+      const { user } = ctx;
+      if (!user) {
+        throw new HTTPException(401, { message: "User not authenticated" });
+      }
+
+      const { formId, page, limit, status, type, search, startDate, endDate } = input;
+      const skip = (page - 1) * limit;
+
+      try {
+
+        // Get user's plan
+        const userWithPlan = await db.user.findUnique({
+          where: { id: user.id },
+          select: { plan: true }
+        });
+
+        if (!userWithPlan) {
+          throw new HTTPException(404, { message: "User not found" });
+        }
+
+        // Check if date filtering is requested but user isn't on PRO plan
+        if ((startDate || endDate) && userWithPlan.plan !== 'PRO') {
+          throw new HTTPException(403, { 
+            message: "Date filtering is only available with the PRO plan" 
+          });
+        }
+
+        // Build the where clause for submissions
+        const where: Prisma.SubmissionWhereInput = {
+          form: {
+            userId: user.id,
+          },
+          ...(formId ? { formId } : {}),
+          ...(search ? {
+            OR: [
+              { id: { contains: search, mode: 'insensitive' as const } },
+              { email: { contains: search, mode: 'insensitive' as const } },
+              { data: { path: ['$.email'], string_contains: search, mode: 'insensitive' as const } },
+            ]
+          } : {}),
+        };
+
+        // Add date range filtering only for PRO users
+        if ((startDate || endDate) && userWithPlan.plan === 'PRO') {
+          where.createdAt = {};
+          
+          if (startDate) {
+            where.createdAt.gte = new Date(startDate);
+          }
+          
+          if (endDate) {
+            // Add one day to endDate to include the full day
+            const endDateObj = new Date(endDate);
+            endDateObj.setDate(endDateObj.getDate() + 1);
+            where.createdAt.lt = endDateObj;
+          }
+        }
+
+        // Build the where clause for notification logs
+        const notificationLogsWhere: Prisma.NotificationLogWhereInput = {
+          ...(status ? { status: status as NotificationStatus } : {}),
+          ...(type ? { type: type as NotificationType } : {}),
+        };
+
+
+        const [submissions, total] = await Promise.all([
+          db.submission.findMany({
+            where,
+            orderBy: { createdAt: 'desc' },
+            take: limit,
+            skip,
+            select: {
+              id: true,
+              createdAt: true,
+              email: true,
+              data: true,
+              form: {
+                select: {
+                  id: true,
+                  name: true,
+                  emailSettings: {
+                    select: {
+                      enabled: true,
+                      developerNotificationsEnabled: true,
+                    }
+                  }
+                }
+              },
+              notificationLogs: {
+                where: notificationLogsWhere,
+                select: {
+                  id: true,
+                  type: true,
+                  status: true,
+                  error: true,
+                  createdAt: true,
+                },
+                orderBy: { createdAt: 'desc' }
+              }
+            }
+          }),
+          db.submission.count({ where })
+        ]);
+
+        // Enhance submissions with analytics data and format notification logs
+        const enhancedSubmissions = submissions.map(submission => {
+          const data = submission.data as Record<string, unknown>;
+          interface MetaData {
+            browser?: string;
+            country?: string;
+            [key: string]: unknown;
+          }
+          const meta = (data?._meta || {}) as MetaData;
+          
+          // Format notification logs to ensure consistent structure
+          const formattedLogs = submission.notificationLogs.map(log => ({
+            ...log,
+            createdAt: log.createdAt.toISOString(),
+            type: log.type as NotificationType,
+            status: log.status as NotificationStatus,
+            error: log.error || null
+          }));
+
+          // Add default notification logs if they don't exist
+          const hasUserEmailLog = formattedLogs.some(log => log.type === 'SUBMISSION_CONFIRMATION');
+          const hasDevEmailLog = formattedLogs.some(log => log.type === 'DEVELOPER_NOTIFICATION');
+
+          // Only add default logs if there are no logs of that type
+          if (!hasUserEmailLog && submission.email) {
+            formattedLogs.push({
+              id: `temp-${submission.id}-user-email`,
+              type: 'SUBMISSION_CONFIRMATION' as NotificationType,
+              status: 'SKIPPED' as NotificationStatus,
+              error: 'Email not sent - plan or settings not configured',
+              createdAt: submission.createdAt.toISOString()
+            });
+          }
+
+          // Add developer email log if it doesn't exist and developer notifications are enabled
+          if (!hasDevEmailLog) {
+            formattedLogs.push({
+              id: `temp-${submission.id}-dev-email`,
+              type: 'DEVELOPER_NOTIFICATION' as NotificationType,
+              status: submission.form.emailSettings?.developerNotificationsEnabled ? 'SKIPPED' as NotificationStatus : 'FAILED' as NotificationStatus,
+              error: submission.form.emailSettings?.developerNotificationsEnabled 
+                ? 'Developer notification not sent' 
+                : 'Developer notifications are disabled',
+              createdAt: submission.createdAt.toISOString()
+            });
+          }
+
+          // Sort logs by type and creation date
+          formattedLogs.sort((a, b) => {
+            if (a.type === b.type) {
+              return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+            }
+            return a.type.localeCompare(b.type);
+          });
+          
+          return {
+            ...submission,
+            analytics: {
+              browser: meta.browser || 'Unknown',
+              location: meta.country || 'Unknown',
+            },
+            notificationLogs: formattedLogs
+          };
+        });
+
+
+
+        return c.superjson({
+          submissions: enhancedSubmissions,
+          pagination: {
+            total,
+            pages: Math.ceil(total / limit),
+            currentPage: page,
+          }
+        });
+      } catch (error) {
+        console.error('❌ Error in getSubmissionLogs:', error);
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          console.error('Prisma error details:', {
+            code: error.code,
+            meta: error.meta,
+            message: error.message
+          });
+        }
+        throw new HTTPException(500, { 
+          message: error instanceof Error ? error.message : 'Failed to fetch submission logs'
+        });
+      }
+    }),
+
+  export: privateProcedure
+    .input(z.object({
+      formId: z.string(),
+      startDate: z.string().optional(),
+      endDate: z.string().optional(),
+    }))
+    .mutation(async ({ c, input, ctx }) => {
+      const { formId, startDate, endDate } = input;
+
+      // Verify form ownership
+      const form = await db.form.findFirst({
+        where: {
+          id: formId,
+          userId: ctx.user.id,
+        },
+      });
+
+      if (!form) {
+        throw new HTTPException(404, { message: "Form not found" });
+      }
+
+      const result = await exportFormSubmissions({
+        formId,
+        startDate: startDate ? new Date(startDate) : undefined,
+        endDate: endDate ? new Date(endDate) : undefined,
+      });
+
+      return c.json(result);
+    }),
+
+  // New endpoint for searching submissions
+  searchSubmissions: privateProcedure
+    .input(z.object({
+      query: z.string(),
+      formId: z.string().optional()
+    }))
+    .query(async ({ c, ctx, input }) => {
+      const { user } = ctx;
+      if (!user) {
+        throw new HTTPException(401, { message: "User not authenticated" });
+      }
+
+      // Verify user is premium
+      const userWithPlan = await db.user.findUnique({
+        where: { id: user.id },
         select: { plan: true }
       });
 
-      if (!user) {
-        throw new HTTPException(404, { message: 'User not found' });
+      if (!userWithPlan || (userWithPlan.plan !== 'PRO' && userWithPlan.plan !== 'STANDARD')) {
+        throw new HTTPException(403, { message: "Premium feature" });
       }
 
-      return c.superjson({ plan: user.plan });
-    }),
-});
+      const { query, formId } = input;
+      
+      // Check if query follows the @id format
+      const isIdSearch = query.startsWith('@');
+      const searchValue = isIdSearch ? query.substring(1) : query;
 
+      // Build the where clause based on search type and optional formId
+      const whereClause: Prisma.SubmissionWhereInput = {
+        form: {
+          userId: user.id
+        }
+      };
+      
+      // Add formId to the query if specified
+      if (formId) {
+        whereClause.formId = formId;
+      }
+      
+      // Add search conditions based on search type
+      if (isIdSearch) {
+        whereClause.id = { contains: searchValue };
+      } else {
+        whereClause.OR = [
+          { email: { contains: searchValue, mode: 'insensitive' } },
+          { data: { path: ['$.email'], string_contains: searchValue, mode: 'insensitive' } }
+        ];
+      }
+
+      // Build the search query with complete submission data
+      const submissions = await db.submission.findMany({
+        where: whereClause,
+        orderBy: { createdAt: 'desc' },
+        take: 50, // Increased from 10 to provide more results
+        select: {
+          id: true,
+          createdAt: true,
+          email: true,
+          data: true, // Include the actual submission data
+          formId: true,
+          form: {
+            select: {
+              id: true,
+              name: true,
+              description: true,
+              emailSettings: {
+                select: {
+                  enabled: true,
+                  developerNotificationsEnabled: true
+                }
+              }
+            }
+          },
+          notificationLogs: {
+            select: {
+              id: true,
+              type: true,
+              status: true,
+              error: true,
+              createdAt: true,
+            },
+            orderBy: { createdAt: 'desc' }
+          }
+        }
+      });
+
+      // Enhance submissions with analytics data and format notification logs
+      const enhancedSubmissions = submissions.map(submission => {
+        const data = submission.data as Record<string, unknown>;
+        interface MetaData {
+          browser?: string;
+          country?: string;
+          [key: string]: unknown;
+        }
+        const meta = (data?._meta || {}) as MetaData;
+        
+        // Format notification logs to ensure consistent structure
+        const formattedLogs = submission.notificationLogs.map(log => ({
+          ...log,
+          createdAt: log.createdAt.toISOString(),
+          type: log.type,
+          status: log.status,
+          error: log.error || null
+        }));
+
+        // Add default logs if they don't exist
+        const hasUserEmailLog = formattedLogs.some(log => log.type === 'SUBMISSION_CONFIRMATION');
+        const hasDevEmailLog = formattedLogs.some(log => log.type === 'DEVELOPER_NOTIFICATION');
+
+        if (!hasUserEmailLog && submission.email) {
+          formattedLogs.push({
+            id: `temp-${submission.id}-user-email`,
+            type: 'SUBMISSION_CONFIRMATION',
+            status: 'SKIPPED',
+            error: 'Email not sent - plan or settings not configured',
+            createdAt: submission.createdAt.toISOString()
+          });
+        }
+
+        if (!hasDevEmailLog) {
+          formattedLogs.push({
+            id: `temp-${submission.id}-dev-email`,
+            type: 'DEVELOPER_NOTIFICATION',
+            status: submission.form.emailSettings?.developerNotificationsEnabled ? 'SKIPPED' : 'FAILED',
+            error: submission.form.emailSettings?.developerNotificationsEnabled 
+              ? 'Developer notification not sent' 
+              : 'Developer notifications are disabled',
+            createdAt: submission.createdAt.toISOString()
+          });
+        }
+
+        return {
+          id: submission.id,
+          createdAt: submission.createdAt,
+          email: submission.email,
+          formId: submission.formId,
+          formName: submission.form?.name || "Unknown Form",
+          formDescription: submission.form?.description || "",
+          data: submission.data,
+          notificationLogs: formattedLogs,
+          analytics: {
+            browser: meta.browser || 'Unknown',
+            location: meta.country || 'Unknown',
+          }
+        };
+      });
+
+      return c.superjson({
+        submissions: enhancedSubmissions
+      });
+    }),
+
+  // Toggle users joined settings for a form
+  toggleUsersJoinedSettings: privateProcedure
+    .input(z.object({
+      formId: z.string(),
+      enabled: z.boolean(),
+    }))
+    .mutation(async ({ c, input, ctx }) => {
+      const { formId, enabled } = input;
+      const userId = ctx.user.id;
+      
+      try {
+        // First, check that the user owns this form
+        const form = await db.form.findFirst({
+          where: {
+            id: formId,
+            userId,
+          },
+        });
+
+        if (!form) {
+          throw new Error('Form not found or you do not have permission to update it');
+        }
+
+        // Check if the user's plan allows this feature
+        const user = await db.user.findUnique({
+          where: { id: userId },
+          select: { plan: true }
+        });
+
+        if (enabled && user?.plan === 'FREE') {
+          throw new Error('This feature is only available on STANDARD and PRO plans');
+        }
+
+        // Update the form settings to enable/disable users joined counter
+        await db.form.update({
+          where: { id: formId },
+          data: {
+            settings: {
+              ...(form.settings as Record<string, unknown> || {}),
+              usersJoined: {
+                enabled,
+              }
+            }
+          },
+        });
+
+        return c.superjson({ 
+          success: true, 
+          data: {
+            enabled,
+          }
+        });
+      } catch (error) {
+        console.error('Error updating users joined settings:', error);
+        
+        if (error instanceof Error) {
+          throw new Error(error.message);
+        }
+        
+        throw new Error('Failed to update users joined settings');
+      }
+    }),
+
+  // Get users joined count for a form
+  getFormUsersJoinedCount: j.procedure
+    .input(z.object({
+      formId: z.string(),
+    }))
+    .query(async ({ c, input }) => {
+      const { formId } = input;
+      
+      // Find the form by ID
+      const form = await db.form.findUnique({
+        where: { id: formId },
+        select: {
+          id: true,
+          formType: true,
+          settings: true,
+          _count: {
+            select: {
+              submissions: true
+            }
+          }
+        },
+      });
+
+      if (!form) {
+        throw new HTTPException(404, { message: 'Form not found' });
+      }
+
+      // Get users joined settings
+      interface UsersJoinedSettings {
+        enabled: boolean;
+      }
+      const usersJoined = ((form.settings as Record<string, unknown>)?.usersJoined || { enabled: false }) as UsersJoinedSettings;
+      const submissionCount = form._count.submissions;
+      
+      // Only return the count if the feature is enabled
+      return c.json({
+        formId: form.id,
+        count: usersJoined.enabled ? submissionCount : 0
+      });
+    }),
+
+});
 

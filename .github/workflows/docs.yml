@@ -1,0 +1,41 @@
+name: Docs Site CI/CD
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'docs-site/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'docs-site/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: cd docs-site && npm ci
+
+    - name: Build docs site
+      run: cd docs-site && npm run build
+      env:
+        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+
+    - name: Deploy docs site
+      uses: amondnet/vercel-action@v25
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+        vercel-project-id: ${{ secrets.VERCEL_DOCS_PROJECT_ID }}
+        working-directory: ./docs-site
+        vercel-args: '--prod' 

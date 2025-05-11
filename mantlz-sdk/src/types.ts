@@ -1,9 +1,16 @@
 import { ToastHandler } from './utils/toast';
+import { FormSchema } from './components/shared/DynamicForm';
 
 // Client configuration
 export interface MantlzClientConfig {
   toastHandler?: ToastHandler;
   notifications?: boolean;  // Enable/disable toast notifications
+  showApiKeyErrorToasts?: boolean;  // Control API key error toasts separately
+  apiUrl?: string;  // Custom API URL
+  logger?: (message: string, ...args: any[]) => void;  // Optional logger function
+  developmentMode?: boolean;  // Enable development mode for local testing
+  credentials?: RequestCredentials;  // Control credentials mode for fetch requests ('include' recommended for cross-origin)
+  corsMode?: RequestMode;  // Control CORS mode ('cors' recommended for cross-origin)
 }
 
 export interface MantlzError {
@@ -11,43 +18,34 @@ export interface MantlzError {
   code: number;
   userMessage?: string;
   details?: any;
+  alreadyHandled?: boolean;
 }
 
 export interface FormSubmitOptions {
   formId: string;
   data: any;
   apiKey?: string;  // Optional override for the API key
-}
-
-export interface EmailSettings {
-  enabled: boolean;
-  fromEmail?: string;
-  subject?: string;
-  template?: string;
-  replyTo?: string;
-}
-
-export interface FormConfig {
-  name: string;
-  description?: string;
-  schema: any;
-  emailSettings?: EmailSettings;
+  recaptchaToken?: string;  // Optional reCAPTCHA token for spam protection
+  redirectUrl?: string;  // For STANDARD/PRO plans: URL to redirect to after form submission. Free users always go to Mantlz's hosted thank-you page.
 }
 
 export interface FormSubmitResponse {
   success: boolean;
   data?: any;
   error?: MantlzError;
+  submissionId?: string;
+  message?: string;
+  redirect?: {
+    url: string;
+    allowed: boolean;
+    reason?: string;
+  };
 }
 
 export interface MantlzClient {
+  apiUrl?: string;  // API URL for making requests
   submitForm: (type: string, options: FormSubmitOptions) => Promise<FormSubmitResponse>;
-  createForm: (config: FormConfig) => Promise<any>;
-  getTemplates: () => Promise<any>;
-  createFromTemplate: (config: any) => Promise<any>;
+  getUsersJoinedCount: (formId: string) => Promise<number>;
+  getFormSchema: (formId: string) => Promise<FormSchema>;
   configureNotifications: (enabled: boolean, handler?: ToastHandler) => { notifications: boolean };
-  updateResendApiKey: (apiKey: string) => Promise<void>;
-  getResendApiKey: () => Promise<string | null>;
-  updateFormEmailSettings: (formId: string, settings: EmailSettings) => Promise<void>;
-  getFormEmailSettings: (formId: string) => Promise<EmailSettings | null>;
 }

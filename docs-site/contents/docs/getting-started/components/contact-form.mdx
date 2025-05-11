@@ -1,0 +1,160 @@
+---
+title: ContactForm Component
+description: Collect contact information and messages from users
+---
+
+# ContactForm Component
+
+The `ContactForm` component provides a pre-styled contact form for collecting messages from users.
+
+## Basic Usage
+
+```tsx
+import { ContactForm } from 'mantlz-sdk';
+
+export default function ContactPage() {
+  return (
+    <div className="container mx-auto p-4">
+      <ContactForm 
+        formId="your-form-id"
+        title="Get in Touch"
+        description="Have questions? We'd love to hear from you."
+        customSubmitText="Send"
+      />
+    </div>
+  );
+}
+```
+
+## Preset Themes
+
+ContactForm comes with several built-in themes:
+
+```tsx
+import { ContactForm, CONTACT_THEMES } from 'mantlz-sdk';
+
+// Default light theme
+<ContactForm formId="your-form-id" theme={CONTACT_THEMES.DEFAULT} />
+
+// Dark theme
+<ContactForm formId="your-form-id" theme={CONTACT_THEMES.DARK} />
+
+// Shades of Purple theme
+<ContactForm formId="your-form-id" theme={CONTACT_THEMES.PURPLE} />
+
+// Neobrutalism theme
+<ContactForm formId="your-form-id" theme={CONTACT_THEMES.NEOBRUTALISM} />
+```
+
+## Customizing Appearance
+
+Customize the form's appearance using the `appearance` prop:
+
+```tsx
+<ContactForm
+  formId="your-form-id"
+  appearance={{
+    elements: {
+      // Customize button style
+      formButtonPrimary: 'bg-slate-500 hover:bg-slate-400 text-sm',
+      // Customize input style
+      input: 'bg-zinc-100 border-zinc-300',
+      // Customize card style
+      card: 'shadow-lg rounded-lg',
+    },
+  }}
+/>
+```
+
+## Simplified Appearance API
+
+The ContactForm also supports a flatter, more intuitive appearance API:
+
+```tsx
+<ContactForm
+  formId="your-form-id"
+  appearance={{
+    // Direct container styling
+    background: '#f8f9fa',
+    border: '1px solid #dee2e6',
+    
+    // Button styling
+    submitButton: 'bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg',
+    
+    // Input styling
+    formInput: 'bg-white border border-zinc-300 rounded px-3 py-2 focus:ring-2 focus:ring-indigo-500',
+    
+    // Card styling
+    card: 'shadow-lg rounded-xl p-6',
+    cardTitle: 'text-xl font-bold text-gray-800',
+    
+    // Style mapping - you can use any of these aliases
+    button: 'bg-indigo-600', // Aliases to submitButton/formButtonPrimary
+    input: 'border-zinc-300', // Generic input styling
+    label: 'text-gray-700 font-medium', // Label styling
+  }}
+/>
+```
+
+## Customizing Field Labels
+
+You can customize all field labels and placeholders:
+
+```tsx
+<ContactForm
+  formId="your-form-id"
+  nameLabel="Full Name"
+  namePlaceholder="John Doe"
+  emailLabel="Email Address"
+  emailPlaceholder="john@example.com"
+  subjectLabel="Message Topic"
+  subjectPlaceholder="Support Request"
+  messageLabel="Your Message"
+  messagePlaceholder="Tell us how we can help you..."
+/>
+```
+
+## Post-Submission Redirects
+
+After form submission, you can specify a redirect URL (STANDARD and PRO plans only):
+
+```tsx
+<ContactForm
+  formId="your-form-id"
+  redirectUrl="/thank-you" // Custom redirect URL (premium feature)
+/>
+```
+
+> Note: Free plan users will always be redirected to Mantlz's hosted thank-you page.
+
+## Event Handlers
+
+```tsx
+<ContactForm
+  formId="your-form-id"
+/>
+```
+
+## Available Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `formId` | `string` | **Required**. The ID of the form in your Mantlz dashboard. |
+| `theme` | `string` | The theme to use. Default: `'default'` |
+| `appearance` | `object \| function` | Custom styles to apply to the form. |
+| `customSubmitText` | `string` | Text for the submit button. Default: `'Send Message'` |
+| `title` | `string` | Form title text. Default: `'Contact Us'` |
+| `description` | `string` | Form description text. Default: `'Fill out the form below...'` |
+| `className` | `string` | Additional CSS classes to apply to the form container. |
+| `variant` | `'default' \| 'glass'` | Visual variant of the form. Default: `'default'` |
+| `redirectUrl` | `string` | URL to redirect to after successful submission (premium). |
+| `nameLabel` | `string` | Label for name field. Default: `'Name'` |
+| `namePlaceholder` | `string` | Placeholder for name field. |
+| `emailLabel` | `string` | Label for email field. Default: `'Email'` |
+| `emailPlaceholder` | `string` | Placeholder for email field. |
+| `subjectLabel` | `string` | Label for subject field. Default: `'Subject'` |
+| `subjectPlaceholder` | `string` | Placeholder for subject field. |
+| `messageLabel` | `string` | Label for message field. Default: `'Message'` |
+| `messagePlaceholder` | `string` | Placeholder for message field. |
+| `onSubmitSuccess` | `function` | Callback fired on successful submission. |
+| `onSubmitError` | `function` | Callback fired on submission error. | 

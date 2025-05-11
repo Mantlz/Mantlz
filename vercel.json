@@ -1,0 +1,16 @@
+{
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- ':!docs-site/' ':!mantlz-sdk/'",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "installCommand": "npm install --force",
+  "crons": [
+    {
+      "path": "/api/cron/scheduled-campaigns",
+      "schedule": "0 * * * *"
+    }
+  ]
+} 

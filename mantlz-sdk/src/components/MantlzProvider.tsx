@@ -2,13 +2,13 @@ import React, { createContext } from 'react';
 import { MantlzClientProvider } from './MantlzClientProvider';
 
 interface MantlzContextType {
-  apiKey: string;
+  apiKey?: string;
 }
 
 export const MantlzContext = createContext<MantlzContextType | null>(null);
 
 interface MantlzProviderProps {
-  apiKey: string;
+  apiKey?: string;
   children: React.ReactNode;
 }
 

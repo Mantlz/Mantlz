@@ -1,0 +1,95 @@
+---
+title: Components
+description: Overview of the form components available in the Mantlz SDK
+---
+
+# Mantlz Form Components
+
+The Mantlz SDK provides several React components for creating different types of forms. Each component is designed for a specific use case.
+
+## Available Components
+
+### [WaitlistForm](/docs/getting-started/components/waitlist-form)
+
+Collect email addresses from users interested in your product or service. Ideal for pre-launch or early access waitlists.
+
+```tsx
+import { WaitlistForm } from '@mantlz/nextjs';
+
+<WaitlistForm 
+  formId="your-waitlist-id"
+  title="Join Our Waitlist"
+  description="Be the first to know when we launch"
+  showUsersJoined={true}
+/>
+```
+
+[View WaitlistForm documentation →](/docs/getting-started/components/waitlist-form)
+
+### [FeedbackForm](/docs/getting-started/components/feedback-form)
+
+Collect user feedback with star ratings and optional comments. Perfect for gathering customer satisfaction data.
+
+```tsx
+import { FeedbackForm } from '@mantlz/nextjs';
+
+<FeedbackForm 
+  formId="your-feedback-id"
+  title="Rate Your Experience"
+  description="We value your feedback"
+/>
+```
+
+[View FeedbackForm documentation →](/docs/getting-started/components/feedback-form)
+
+### [ContactForm](/docs/getting-started/components/contact-form)
+
+Create a comprehensive contact form with name, email, subject, and message fields. Ideal for contact pages.
+
+```tsx
+import { ContactForm } from '@mantlz/nextjs';
+
+<ContactForm 
+  formId="your-contact-id"
+  title="Get in Touch"
+  description="We'd love to hear from you"
+/>
+```
+
+[View ContactForm documentation →](/docs/getting-started/components/contact-form)
+
+## Key Features
+
+All form components provide the following key features:
+
+### Event Handlers
+
+Handle form submissions and errors with callback functions:
+
+```tsx
+<WaitlistForm
+  formId="your-waitlist-id"
+
+
+/>
+```
+
+### Post-Submission Redirects
+
+Redirect users to a custom page after successful form submission (available on STANDARD and PRO plans):
+
+```tsx
+<ContactForm
+  formId="your-contact-id"
+  redirectUrl="/thank-you"
+/>
+```
+
+## Getting Started
+
+To get started with any of these components:
+
+1. [Install the SDK](/docs/getting-started/installation)
+2. Choose the appropriate form component for your needs
+3. Implement form submission handlers
+4. Deploy your form! 

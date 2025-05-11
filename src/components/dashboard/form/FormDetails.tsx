@@ -1,49 +1,18 @@
 import React, { useState, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import clsx from 'clsx';
 import { client } from '@/lib/client';
-import { format, subDays, subHours, startOfDay, endOfDay } from 'date-fns';
+import { format } from 'date-fns';
 import { FormHeader } from './FormHeader';
-import { FormSettings } from './FormSettings';
-import { FormResponsesList } from './FormResponsesList';
-import { SdkDocs } from './SdkDocs';
+import { FormResponsesList, FormData as FormResponseData } from './FormResponsesList';
 import { FormAnalyticsChart } from './FormAnalyticsChart';
 import { toast } from 'sonner';
-import { 
-  Users, 
-  FileSpreadsheet, 
-  Activity, 
-  Zap,
-  Settings,
-  Code,
-  MessageSquare,
-  BarChart3,
-  Clock,
-  Mail,
-  Share2,
-  Eye,
-  Download,
-  Trash2,
-  Copy,
-  CheckCircle2,
-  AlertCircle
-} from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 
-// Import existing UI components
-import { 
-  Card, 
-  CardHeader, 
-  CardTitle, 
-  CardContent
-} from '@/components/ui/card';
-
-// Accept formId as a prop
 interface FormDetailsProps {
   formId?: string;
 }
 
-// Add this interface before the getFormattedChartData function
 interface FormData {
   id: string;
   name: string;
@@ -52,26 +21,14 @@ interface FormData {
   updatedAt: Date;
   submissionCount: number;
   emailSettings: {
-    id: string;
-    formId: string;
     enabled: boolean;
-    fromEmail: string | null;
-    subject: string | null;
-    template: string | null;
-    replyTo: string | null;
-    createdAt: Date;
-    updatedAt: Date;
+    fromEmail?: string;
+    subject?: string;
+    template?: string;
+    replyTo?: string;
   } | null;
 }
 
-interface TimeSeriesPoint {
-  time: string;
-  submissions: number;
-  uniqueEmails: number;
-  fullDate?: string;
-}
-
-// Add this interface before the FormDetails function
 interface FormAnalytics {
   totalSubmissions: number;
   dailySubmissionRate: number;
@@ -84,6 +41,23 @@ interface FormAnalytics {
   timeSeriesData: TimeSeriesPoint[];
 }
 
+interface TimeSeriesPoint {
+  time: string;
+  submissions: number;
+  uniqueEmails: number;
+  fullDate?: string;
+}
+
+
+
+// Define a basic submission type that matches what comes from the API
+interface ApiSubmission {
+  id: string;
+  createdAt: Date;
+  data: unknown;
+  [key: string]: unknown;
+}
+
 function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
   const router = useRouter();
   const params = useParams();
@@ -93,7 +67,6 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
   const paramId = params?.id || '';
   const formId = propFormId || (typeof paramId === 'string' ? paramId : Array.isArray(paramId) ? paramId[0] : '');
   
-  const [activeTab, setActiveTab] = useState<'responses' | 'settings' | 'integration'>('responses');
   const [timeRange, setTimeRange] = useState<'day' | 'week' | 'month'>('day');
 
   // Fetch form details
@@ -166,7 +139,7 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
         ];
 
         return {
-          submissions: data.submissions.map((sub: any, index: number) => ({
+          submissions: data.submissions.map((sub: ApiSubmission) => ({
             ...sub,
             submittedAt: sub.createdAt,
             // Assign a random location from the mock data
@@ -178,14 +151,13 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
         throw err;
       }
     },
-    enabled: !!formId && activeTab === "responses"
+    enabled: !!formId
   });
 
   // Fetch form analytics data with time range
   const { 
     data: analytics, 
-    isLoading: isLoadingAnalytics,
-    refetch: refetchAnalytics
+    isLoading: isLoadingAnalytics
   } = useQuery<FormAnalytics>({
     queryKey: ["formAnalytics", formId, timeRange],
     queryFn: async () => {
@@ -194,8 +166,13 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
           throw new Error('Form ID is required for analytics');
         }
         
-        // Type assertion to work around missing type until next build
-        const formsClient = client.forms as any;
+        // Type assertion with a more specific type
+        interface FormsClient {
+          getFormAnalytics: {
+            $get: (params: { formId: string; timeRange: string }) => Promise<Response>;
+          };
+        }
+        const formsClient = client.forms as FormsClient;
         const response = await formsClient.getFormAnalytics.$get({
           formId: formId,
           timeRange: timeRange
@@ -365,139 +342,11 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
     }
   };
 
-  const handleTabClick = (tab: 'responses' | 'settings' | 'integration') => {
-    setActiveTab(tab);
-  };
-  
-  const handleTimeRangeChange = useCallback((range: 'day' | 'week' | 'month') => {
-    setTimeRange(range);
-  }, []);
-  
-  // Generate appropriate sample data if real data is missing
-  const getFormattedChartData = useCallback(() => {
-    if (!analytics?.timeSeriesData || analytics.timeSeriesData.length === 0) {
-      // Generate placeholder data based on the selected time range
-      if (timeRange === 'day') {
-        return Array.from({ length: 24 }, (_, i) => {
-          const hour = i.toString().padStart(2, '0');
-          return {
-            time: `${hour}:00`,
-            submissions: 0,
-            uniqueEmails: 0
-          };
-        });
-      } else if (timeRange === 'week') {
-        // For week view, use day names only - much clearer spacing
-        return Array.from({ length: 7 }, (_, i) => {
-          const date = subDays(startOfDay(new Date()), 6 - i);
-          return {
-            // Just show the day name (Mon, Tue, etc.)
-            time: format(date, 'EEE'), // Three-letter day name
-            // Include the full date for tooltip
-            fullDate: format(date, 'MMM d'),
-            submissions: 0,
-            uniqueEmails: 0
-          };
-        });
-      } else { // month
-        return Array.from({ length: 30 }, (_, i) => {
-          const date = subDays(startOfDay(new Date()), 29 - i);
-          return {
-            // For month view, just show day of month to save space
-            time: format(date, 'd'),
-            // Include month info for tooltip
-            fullDate: format(date, 'MMM d'),
-            submissions: 0,
-            uniqueEmails: 0
-          };
-        });
-      }
-    }
-    
-    // If we have real data, format it appropriately based on timeRange
-    return analytics.timeSeriesData.map((item: TimeSeriesPoint) => {
-      if (timeRange === 'week') {
-        // Try to parse the date and format it as day name
-        try {
-          const date = new Date(item.time);
-          return {
-            ...item,
-            time: format(date, 'EEE'),
-            fullDate: format(date, 'MMM d')
-          };
-        } catch (e) {
-          return item;
-        }
-      } else if (timeRange === 'month') {
-        // Try to parse the date and format it as day of month
-        try {
-          const date = new Date(item.time);
-          return {
-            ...item,
-            time: format(date, 'd'),
-            fullDate: format(date, 'MMM d')
-          };
-        } catch (e) {
-          return item;
-        }
-      }
-      return item;
-    });
-  }, [analytics, timeRange]);
-  
-  // Format chart data - memoize based on analytics
-  const chartData = React.useMemo(() => getFormattedChartData(), [getFormattedChartData]);
-
-  // Get the most recent data point for the tooltip
-  const latestDataPoint: TimeSeriesPoint = React.useMemo(() => {
-    if (analytics?.timeSeriesData && analytics.timeSeriesData.length > 0) {
-      // We know this is safe because we've checked length > 0
-      return analytics.timeSeriesData[analytics.timeSeriesData.length - 1] as TimeSeriesPoint;
-    }
-    return {
-      time: "12:00", 
-      submissions: 0, 
-      uniqueEmails: 0
-    };
-  }, [analytics]);
-
-  // Custom tooltip to show full date information
-  const CustomTooltipContent = ({ active, payload, label }: any) => {
-    if (!active || !payload || !payload.length) {
-      return null;
-    }
-
-    // Get full date from payload if it exists (for week/month view)
-    const fullDate = payload[0]?.payload?.fullDate;
-    const displayLabel = (timeRange === 'week' || timeRange === 'month') && fullDate ? fullDate : label;
-    
-    return (
-      <div className="bg-zinc-100 dark:bg-zinc-800 p-3 border border-slate-200 dark:border-zinc-500 rounded-md shadow-lg">
-        <p className="font-mono text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
-          {displayLabel}
-        </p>
-        <div className="space-y-1.5">
-          {payload.map((entry: any, index: number) => (
-            <div key={`item-${index}`} className="flex items-center">
-              <div
-                className="w-3 h-3 mr-2"
-                style={{ backgroundColor: entry.color }}
-              />
-              <span className="text-xs font-medium text-slate-900 dark:text-slate-50">
-                {entry.name}: {entry.value}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px] w-full bg-zinc-100 dark:bg-zinc-900 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-md">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-3 border-slate-200 dark:border-zinc-800 border-t-slate-500 dark:border-t-zinc-600 rounded-full animate-spin"></div>
+          <div className="w-10 h-10 border-3 border-slate-200 dark:border-zinc-800 border-t-slate-500 dark:border-t-zinc-600 rounded-lg animate-spin"></div>
           <p className="text-slate-600 dark:text-zinc-400 font-medium text-sm">Loading form data...</p>
         </div>
       </div>
@@ -508,10 +357,10 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
     return (
       <div className="min-h-[400px] w-full flex items-center justify-center bg-zinc-100 dark:bg-zinc-900 rounded-xl border border-red-200 dark:border-red-800/50 shadow-md p-6">
         <div className="flex flex-col items-center gap-4 max-w-md text-center">
-          <div className="w-14 h-14 flex items-center justify-center bg-red-100 dark:bg-red-900/30 text-red-500 dark:text-red-400 rounded-full">
+          <div className="w-14 h-14 flex items-center justify-center bg-red-100 dark:bg-red-900/30 text-red-500 dark:text-red-400 rounded-lg">
             <AlertCircle className="w-7 h-7" />
           </div>
-          <h2 className="text-lg font-mono font-bold text-red-600 dark:text-red-400">Error Loading Form</h2>
+          <h2 className="text-lg font-bold text-red-600 dark:text-red-400">Error Loading Form</h2>
           <p className="text-slate-700 dark:text-zinc-300 mb-2 text-sm">{(error as Error)?.message || "An unknown error occurred"}</p>
           <button 
             className="px-4 py-2 bg-slate-800 hover:bg-slate-700 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white text-sm font-medium rounded-lg shadow-md transition-colors"
@@ -525,91 +374,46 @@ function FormDetails({ formId: propFormId }: FormDetailsProps = {}) {
   }
 
   return (
-    <div className="flex flex-col gap-4 md:gap-6 w-full max-w-[1400px] mx-auto p-2 sm:p-4 lg:p-6">
-      {/* Form Header */}
-      {form && (
-        <div className="bg-zinc-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-lg shadow-md mb-6">
-          <FormHeader 
-            id={formId as string} 
-            name={form.name} 
-            createdAt={form.createdAt} 
-            responsesCount={form.submissionCount} 
-            emailSettings={form.emailSettings ? {
-              enabled: form.emailSettings.enabled,
-              fromEmail: form.emailSettings.fromEmail || undefined,
-              subject: form.emailSettings.subject || undefined,
-              template: form.emailSettings.template || undefined,
-              replyTo: form.emailSettings.replyTo || undefined
-            } : undefined}
-            onRefresh={() => refetchForm()}
-          />
-        </div>
-      )}
+    <div className="space-y-6 sm:space-y-8">
+      <FormHeader
+        id={form.id}
+        name={form.name}
+        createdAt={form.createdAt}
+        responsesCount={form.submissionCount}
+        form={form}
+        analytics={{
+          last24HoursSubmissions: analytics?.last24HoursSubmissions || 0,
+          completionRate: analytics?.completionRate || 0,
+          averageResponseTime: analytics?.averageResponseTime || 0
+        }}
+        onRefresh={refetchForm}
+        onDelete={async (id) => {
+          await client.forms.delete.$post({ formId: id });
+          router.push('/dashboard');
+        }}
+      />
 
-      {/* Chart section */}
-      <div className="col-span-1 sm:col-span-2 lg:col-span-3">
-        <FormAnalyticsChart 
-          chartData={chartData}
-          latestDataPoint={latestDataPoint}
-          analytics={analytics}
-          isLoading={isLoadingAnalytics}
-          formCreatedAt={form?.createdAt}
-          timeRange={timeRange}
-          onTimeRangeChange={handleTimeRangeChange}
-        />
-      </div>
+      <FormAnalyticsChart
+        chartData={analytics?.timeSeriesData || []}
+        latestDataPoint={analytics?.timeSeriesData?.[analytics.timeSeriesData.length - 1] || { time: '', submissions: 0, uniqueEmails: 0 }}
+        timeRange={timeRange}
+        onTimeRangeChange={setTimeRange}
+        isLoading={isLoadingAnalytics}
+        analytics={analytics}
+      />
 
-      {/* Tabs section */}
-      <div className="col-span-1 sm:col-span-2 lg:col-span-3 flex flex-col bg-zinc-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-lg shadow-md overflow-hidden">
-        <nav className="flex flex-wrap sm:flex-nowrap border-b border-slate-200 dark:border-zinc-800 bg-slate-100 dark:bg-zinc-800/50 p-1">
-          {[
-            { id: 'responses', label: 'Responses', icon: MessageSquare },
-            { id: 'settings', label: 'Settings', icon: Settings },
-            { id: 'integration', label: 'Integration', icon: Code }
-          ].map(tab => (
-            <button
-              key={tab.id}
-              className={clsx(
-                "flex-1 sm:flex-none px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-medium rounded-lg transition-all duration-200 flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2",
-                activeTab === tab.id 
-                  ? "bg-zinc-100 dark:bg-zinc-800 text-slate-900 dark:text-zinc-50 shadow-sm" 
-                  : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-50 hover:bg-slate-100/50 dark:hover:bg-zinc-800"
-              )}
-              onClick={() => handleTabClick(tab.id as any)}
-            >
-              <tab.icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span className="truncate">{tab.label}</span>
-            </button>
-          ))}
-        </nav>
-
-        <div className="p-3 sm:p-4 lg:p-6">
-          {activeTab === 'responses' && (
-            <FormResponsesList 
-              isLoading={isLoadingSubmissions}
-              isError={isSubmissionsError}
-              submissions={submissions} 
-              onRetry={() => refetchSubmissions()}
-              onSubmissionDelete={handleSubmissionDelete}
-            />
-          )}
-          {activeTab === 'settings' && (
-            <FormSettings 
-              formId={formId as string}
-              name={form?.name || ''}
-              description={form?.description ?? undefined}
-              emailSettings={form?.emailSettings as any}
-              onUpdate={(data) => console.log('Update form:', data)}
-            />
-          )}
-          {activeTab === 'integration' && (
-            <SdkDocs 
-              formId={formId as string}
-              formType="Form"
-            />
-          )}
-        </div>
-      </div>
+      <FormResponsesList
+        submissions={{ 
+          submissions: submissions?.submissions.map(sub => ({
+            ...sub,
+            data: sub.data as FormResponseData
+          })) || [] 
+        }}
+        isLoading={isLoadingSubmissions}
+        isError={isSubmissionsError}
+        onRetry={refetchSubmissions}
+        onSubmissionDelete={handleSubmissionDelete}
+      />
     </div>
   );
 }

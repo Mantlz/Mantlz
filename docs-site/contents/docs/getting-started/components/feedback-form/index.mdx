@@ -1,0 +1,82 @@
+---
+title: FeedbackForm Component
+description: Collect user feedback with customizable star ratings and comments
+---
+
+# FeedbackForm Component
+
+The `FeedbackForm` component provides a way to collect user feedback with star ratings and comments.
+
+## Basic Usage
+
+```tsx
+import { FeedbackForm } from '@mantlz/nextjs';
+
+function MyFeedbackPage() {
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">We value your feedback</h1>
+      
+      <FeedbackForm 
+        formId="my-feedback-form"
+        onSubmitSuccess={(data) => ('Feedback submitted:', data)}
+      />
+    </div>
+  );
+}
+```
+
+## Text Customization
+
+```tsx
+<FeedbackForm
+  formId="my-feedback-form"
+  submitButtonText="Send Your Feedback"
+  feedbackPlaceholder="Tell us what you think about our product..."
+  successMessage="Thanks for your valuable feedback!"
+/>
+```
+
+## Event Handlers
+
+```tsx
+<FeedbackForm
+  formId="my-form"
+  onSubmitSuccess={(data) => {
+    // Handle successful submission
+    ('Rating:', data.rating);
+    ('Feedback:', data.feedback);
+  }}
+  onSubmitError={(error) => {
+    // Handle submission error
+    console.error('Submission failed:', error);
+  }}
+/>
+```
+
+## Post-Submission Redirects
+
+After form submission, you can specify a redirect URL (available on STANDARD and PRO plans):
+
+```tsx
+<FeedbackForm
+  formId="my-form"
+  redirectUrl="/thank-you" // Custom redirect URL (premium feature)
+/>
+```
+
+> Note: Free plan users will always be redirected to Mantlz's hosted thank-you page.
+
+## Available Core Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `formId` | `string` | **Required**. The ID of the form in your Mantlz dashboard. |
+| `submitButtonText` | `string` | Text for submit button. Default: `'Submit Feedback'` |
+| `feedbackPlaceholder` | `string` | Placeholder for feedback text area. |
+| `successMessage` | `string` | Message shown after successful submission. |
+| `onSubmitSuccess` | `function` | Callback fired on successful submission. |
+| `onSubmitError` | `function` | Callback fired on submission error. |
+| `redirectUrl` | `string` | URL to redirect to after submission (premium). |
+
+For appearance customization options, see the [Appearance](/docs/appearance/feedback) section. 

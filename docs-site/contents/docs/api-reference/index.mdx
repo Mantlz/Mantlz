@@ -1,0 +1,358 @@
+---
+title: API Reference
+description: Comprehensive documentation for the Mantlz API
+---
+
+# Mantlz API Reference
+
+The Mantlz API allows you to programmatically interact with your forms, submissions, and analytics. This guide provides details on authentication, endpoints, and example usage.
+
+## Base URL
+
+All API requests should be made to the following base URL:
+
+```
+https://app.mantlz.com/api/v1
+```
+
+## Authentication
+
+Authentication is required for all API endpoints. You can authenticate using your API key in one of two ways:
+
+### 1. API Key Header (Recommended)
+
+Include your API key in the `X-API-Key` header:
+
+```
+X-API-Key: mk_your_api_key_here
+```
+
+### 2. Query Parameter
+
+Alternatively, you can pass your API key as a query parameter:
+
+```
+?apiKey=mk_your_api_key_here
+```
+
+## Rate Limiting
+
+API requests are subject to rate limiting. When a rate limit is exceeded, the API will return a `429 Too Many Requests` status code.
+
+Rate limit information is included in the response headers:
+
+```
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 99
+X-RateLimit-Reset: 1620000000
+```
+
+## Endpoints
+
+### Forms
+
+#### List Forms
+
+Retrieves a list of your forms with pagination.
+
+```
+GET /forms/list
+```
+
+**Query Parameters:**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `limit` | integer | Maximum number of forms to return (1-100, default: 50) |
+| `cursor` | string | Pagination cursor for fetching the next page |
+
+**Example Request:**
+
+```bash
+curl -X GET "https://app.mantlz.com/api/v1/forms/list?limit=10" \
+  -H "X-API-Key: mk_your_api_key_here"
+```
+
+**Example Response:**
+
+```json
+{
+  "forms": [
+    {
+      "id": "form_123abc",
+      "name": "Customer Feedback",
+      "description": "Collect feedback from customers",
+      "submissionCount": 42,
+      "createdAt": "2023-01-15T12:00:00Z",
+      "updatedAt": "2023-01-16T09:30:00Z"
+    },
+    // ...more forms
+  ],
+  "nextCursor": "form_456def"
+}
+```
+
+#### Get Form Details
+
+Retrieves details about a specific form.
+
+```
+GET /forms/{formId}
+```
+
+**Example Request:**
+
+```bash
+curl -X GET "https://app.mantlz.com/api/v1/forms/form_123abc" \
+  -H "X-API-Key: mk_your_api_key_here"
+```
+
+**Example Response:**
+
+```json
+{
+  "id": "form_123abc",
+  "name": "Customer Feedback",
+  "description": "Collect feedback from customers",
+  "formType": "feedback",
+  "createdAt": "2023-01-15T12:00:00Z",
+  "updatedAt": "2023-01-16T09:30:00Z",
+  "submissionCount": 42,
+  "emailSettings": {
+    "enabled": true,
+    "developerNotificationsEnabled": true
+  },
+  "usersJoinedSettings": {
+    "enabled": true,
+    "count": 245
+  }
+}
+```
+
+#### Get Users Joined Count
+
+For waitlist forms, retrieves the number of users who have joined.
+
+```
+GET /forms/{formId}/users-joined
+```
+
+**Example Request:**
+
+```bash
+curl -X GET "https://app.mantlz.com/api/v1/forms/form_123abc/users-joined" \
+  -H "X-API-Key: mk_your_api_key_here"
+```
+
+**Example Response:**
+
+```json
+{
+  "usersJoined": 245
+}
+```
+
+### Form Submissions
+
+#### Submit Form
+
+Submits data to a form.
+
+```
+POST /forms/submit
+```
+
+**Request Body:**
+
+```json
+{
+  "formId": "form_123abc",
+  "redirectUrl": "https://example.com/thank-you",
+  "data": {
+    "email": "user@example.com",
+    "name": "John Doe",
+    "message": "This is my feedback",
+    "rating": 5
+  }
+}
+```
+
+**Example Request:**
+
+```bash
+curl -X POST "https://app.mantlz.com/api/v1/forms/submit" \
+  -H "X-API-Key: mk_your_api_key_here" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "formId": "form_123abc",
+    "redirectUrl": "https://example.com/thank-you",
+    "data": {
+      "email": "user@example.com",
+      "name": "John Doe",
+      "message": "This is my feedback",
+      "rating": 5
+    }
+  }'
+```
+
+**Example Response:**
+
+```json
+{
+  "success": true,
+  "submissionId": "sub_789ghi",
+  "redirect": "https://example.com/thank-you"
+}
+```
+
+#### List Form Submissions
+
+Retrieves a list of submissions for a specific form.
+
+```
+GET /forms/{formId}/submissions
+```
+
+**Query Parameters:**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `limit` | integer | Maximum number of submissions to return (1-100, default: 50) |
+| `cursor` | string | Pagination cursor for fetching the next page |
+
+**Example Request:**
+
+```bash
+curl -X GET "https://app.mantlz.com/api/v1/forms/form_123abc/submissions?limit=10" \
+  -H "X-API-Key: mk_your_api_key_here"
+```
+
+**Example Response:**
+
+```json
+{
+  "submissions": [
+    {
+      "id": "sub_789ghi",
+      "formId": "form_123abc",
+      "data": {
+        "email": "user@example.com",
+        "name": "John Doe",
+        "message": "This is my feedback",
+        "rating": 5,
+        "_meta": {
+          "browser": "Chrome",
+          "os": "macOS",
+          "country": "US"
+        }
+      },
+      "createdAt": "2023-01-20T15:30:00Z"
+    },
+    // ...more submissions
+  ],
+  "nextCursor": "sub_012jkl"
+}
+```
+
+### Analytics
+
+#### Get Form Analytics
+
+Retrieves analytics data for a specific form.
+
+```
+GET /forms/{formId}/analytics
+```
+
+**Query Parameters:**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `period` | string | Time period for analytics (options: "day", "week", "month", "year", default: "month") |
+
+**Example Request:**
+
+```bash
+curl -X GET "https://app.mantlz.com/api/v1/forms/form_123abc/analytics?period=week" \
+  -H "X-API-Key: mk_your_api_key_here"
+```
+
+**Example Response:**
+
+```json
+{
+  "period": "week",
+  "totalSubmissions": 42,
+  "submissionsOverTime": [
+    { "date": "2023-01-14", "count": 5 },
+    { "date": "2023-01-15", "count": 12 },
+    // ...
+  ],
+  "topCountries": [
+    { "country": "US", "count": 20 },
+    { "country": "GB", "count": 8 },
+    // ...
+  ],
+  "topBrowsers": [
+    { "browser": "Chrome", "count": 25 },
+    { "browser": "Safari", "count": 12 },
+    // ...
+  ]
+}
+```
+
+## Error Handling
+
+The API uses HTTP status codes to indicate the success or failure of a request:
+
+- `200 OK`: The request was successful
+- `400 Bad Request`: Invalid request parameters
+- `401 Unauthorized`: Missing or invalid API key
+- `403 Forbidden`: Insufficient permissions
+- `404 Not Found`: Resource not found
+- `429 Too Many Requests`: Rate limit exceeded
+- `500 Internal Server Error`: Server error
+
+Error responses include a JSON object with an error message:
+
+```json
+{
+  "error": "Invalid or inactive API key"
+}
+```
+
+## Using the API with Your SDK
+
+If you're using the Mantlz SDK, the API is automatically used behind the scenes. However, for custom integrations or advanced use cases, you can make direct API calls.
+
+### Example: Submitting a Form from a Custom Frontend
+
+```javascript
+// Example using fetch API
+async function submitFeedback(formData) {
+  try {
+    const response = await fetch('https://app.mantlz.com/api/v1/forms/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': 'mk_your_api_key_here'
+      },
+      body: JSON.stringify({
+        formId: 'your_form_id',
+        data: formData
+      })
+    });
+    
+    const result = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(result.error || 'Form submission failed');
+    }
+    
+    return result;
+  } catch (error) {
+    console.error('Error submitting form:', error);
+    throw error;
+  }
+}
+``` 

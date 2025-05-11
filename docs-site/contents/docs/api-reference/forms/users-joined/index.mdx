@@ -1,0 +1,114 @@
+---
+title: Users Joined
+description: API endpoint to retrieve the number of users who have joined a waitlist
+---
+
+# Users Joined
+
+This endpoint retrieves the number of users who have joined a waitlist form.
+
+## Endpoint
+
+```
+GET /forms/{formId}/users-joined
+```
+
+## Authentication
+
+Requires an [API key](/docs/api-reference/authentication).
+
+## Path Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `formId` | string | The ID of the waitlist form |
+
+## Response
+
+### 200: OK
+
+Returns an object containing the number of users who have joined the waitlist.
+
+**Response Fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `usersJoined` | integer | Number of users who have joined the waitlist |
+
+**Example Response:**
+
+```json
+{
+  "usersJoined": 245
+}
+```
+
+### 400: Bad Request
+
+Returned when the request parameters are invalid.
+
+### 401: Unauthorized
+
+Returned when the API key is missing or invalid.
+
+### 403: Forbidden
+
+Returned when the API key does not have access to the specified form.
+
+### 404: Not Found
+
+Returned when the form with the specified ID does not exist or is not a waitlist form.
+
+### 429: Too Many Requests
+
+Returned when the rate limit is exceeded.
+
+## Example Request
+
+```bash
+curl -X GET "https://app.mantlz.com/api/v1/forms/form_123abc/users-joined" \
+  -H "X-API-Key: mk_your_api_key_here"
+```
+
+## Example in JavaScript
+
+```javascript
+async function getUsersJoined(formId) {
+  try {
+    const response = await fetch(`https://app.mantlz.com/api/v1/forms/${formId}/users-joined`, {
+      method: 'GET',
+      headers: {
+        'X-API-Key': 'mk_your_api_key_here'
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data.usersJoined;
+  } catch (error) {
+    console.error('Error getting users joined count:', error);
+    throw error;
+  }
+}
+```
+
+## Usage Example
+
+The users joined count is commonly used on landing pages to display social proof for waitlists:
+
+```javascript
+// Display the users joined count on your landing page
+async function displayWaitlistCount() {
+  try {
+    const count = await getUsersJoined('your_waitlist_form_id');
+    document.getElementById('waitlist-count').textContent = count;
+  } catch (error) {
+    console.error('Failed to load waitlist count:', error);
+    // Fallback to a default message
+    document.getElementById('waitlist-count-container').textContent = 'Join our growing waitlist';
+  }
+}
+``` 

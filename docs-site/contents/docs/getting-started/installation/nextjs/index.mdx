@@ -1,0 +1,89 @@
+---
+title: Next.js Integration
+description: Installing and setting up Mantlz SDK in a Next.js application
+---
+
+# Using Mantlz SDK with Next.js
+
+Mantlz SDK provides specialized support for Next.js applications through our dedicated `@mantlz/nextjs` package, making integration seamless with the App Router.
+
+## Prerequisites
+
+Before integrating Mantlz with your Next.js project, ensure you have:
+
+- Next.js 13+ project with App Router
+- Node.js (v14 or newer)
+- npm, yarn, or pnpm package manager
+
+## Installation
+
+Install the Next.js-specific package:
+
+```bash
+# Using npm
+npm install @mantlz/nextjs
+
+# Using yarn
+yarn add @mantlz/nextjs
+
+# Using pnpm
+pnpm add @mantlz/nextjs
+```
+
+## Setting Up with App Router
+
+For Next.js projects using the App Router, add the MantlzProvider to your root layout:
+
+```tsx
+// In app/layout.tsx
+import { MantlzProvider } from "@mantlz/nextjs";
+import { Providers } from "../components/global/providers";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <Providers>
+          <MantlzProvider apiKey={process.env.MANTLZ_KEY}>{children}</MantlzProvider>
+        </Providers>
+      </body>
+    </html>
+  );
+}
+```
+
+<Note title="Environment Variables" type="warning">
+  Add your Mantlz API key to your environment variables.
+  Create a `.env.local` file in your project root with: `MANTLZ_KEY=mk_xxxxxxxxxx`
+</Note>
+
+## Basic Usage
+
+Once the provider is set up, you can import and use any of our form components in your pages:
+
+```tsx
+// In app/feedback/page.tsx
+import { FeedbackForm } from '@mantlz/nextjs';
+
+export default function FeedbackPage() {
+  return (
+    <div className="container mx-auto py-8">
+      <FeedbackForm formId="your-form-id" />
+    </div>
+  );
+}
+```
+
+## Available Form Components
+
+Mantlz provides three main form components that you can use in your Next.js application:
+
+- **FeedbackForm** - For collecting user feedback with ratings
+- **ContactForm** - For contact forms with name, email, and message fields
+- **WaitlistForm** - For creating waitlist signup forms
+
+Refer to the component documentation sections for detailed usage examples, theming options, and customization.

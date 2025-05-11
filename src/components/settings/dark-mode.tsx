@@ -31,7 +31,7 @@ const ThemeOption: React.FC<ThemeOptionProps> = React.memo(({ type, isSelected, 
         'border-zinc-200 dark:border-zinc-800',
         // Selected state
         isSelected && [
-          'border-zinc-400 dark:border-zinc-600',
+          'border-zinc-200 dark:border-zinc-600',
           'shadow-md dark:shadow-lg/10',
           '-translate-y-0.5',
           'bg-white dark:bg-zinc-900'
@@ -59,7 +59,7 @@ const ThemeOption: React.FC<ThemeOptionProps> = React.memo(({ type, isSelected, 
         <div className={cn(
           "mt-2 flex items-center justify-between",
           "border-t border-zinc-200 dark:border-zinc-800",
-          "pt-2"
+          "pt-4"
         )}>
           <div className="flex items-center gap-2">
             {type === 'System' && (
@@ -77,11 +77,11 @@ const ThemeOption: React.FC<ThemeOptionProps> = React.memo(({ type, isSelected, 
           {/* Selected indicator */}
           <div className={cn(
             "flex items-center justify-center",
-            "size-5 rounded-full",
+            "size-5 rounded-lg",
             "transition-colors duration-150",
             "border",
             isSelected ? "bg-zinc-900 border-zinc-800 dark:bg-white dark:border-zinc-200" : "bg-zinc-200 border-zinc-300 dark:bg-zinc-800 dark:border-zinc-700",
-            "group-hover:bg-zinc-800 group-hover:border-zinc-700 dark:group-hover:bg-zinc-300 dark:group-hover:border-zinc-400"
+            "group-hover:bg-zinc-800 group-hover:border-zinc-700 dark:group-hover:bg-zinc-300 dark:group-hover:border-zinc-200"
           )}>
             <Check className={cn(
               "size-3",

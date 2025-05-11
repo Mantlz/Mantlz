@@ -2,14 +2,13 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { AtSign, Check, Info, Key, Lock, RefreshCw, Loader2, AlertCircle, Mail } from "lucide-react";
+import { AtSign, Check, Info, RefreshCw, Loader2, AlertCircle, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -24,11 +23,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { useUser } from "@clerk/nextjs";
 import { Badge } from "@/components/ui/badge";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
 import { client } from "@/lib/client";
 
 // Form schema for Resend API key
@@ -43,7 +39,6 @@ const resendKeySchema = z.object({
 type ResendKeyFormValues = z.infer<typeof resendKeySchema>;
 
 export default function EmailSettings() {
-  const { user } = useUser();
   const [isSuccess, setIsSuccess] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isDeveloperNotificationsEnabled, setIsDeveloperNotificationsEnabled] = useState(false);
@@ -208,7 +203,7 @@ export default function EmailSettings() {
           
           <CardContent className="px-5 pb-4">
             {!isPro ? (
-              <div className="rounded-md bg-amber-50 border border-amber-200 p-3 sm:p-4 dark:bg-amber-900/20 dark:border-amber-800/30">
+              <div className="rounded-lg bg-amber-50 border border-amber-200 p-3 sm:p-4 dark:bg-amber-900/20 dark:border-amber-800/30">
                 <div className="flex gap-2 sm:gap-3">
                   <AlertCircle className="h-4 w-4 text-amber-500 dark:text-amber-400 flex-shrink-0 mt-0.5" />
                   <div className="space-y-1">
@@ -234,10 +229,10 @@ export default function EmailSettings() {
                   <FormField
                     control={form.control}
                     name="developerNotificationsEnabled"
-                    render={({ field }) => (
+                    render={() => (
                       <FormItem className="flex flex-col sm:flex-row sm:items-center gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
                         <div className="flex items-center gap-4 flex-1">
-                          <div className="bg-white dark:bg-zinc-900 rounded-full p-2 border border-zinc-200 dark:border-zinc-800">
+                          <div className="bg-white dark:bg-zinc-900 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
                             <Mail className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
                           </div>
                           <div className="flex flex-col gap-0.5">
@@ -269,7 +264,7 @@ export default function EmailSettings() {
                     )}
                   />
 
-                  <div className="rounded-md bg-blue-50 border border-blue-200 p-3 sm:p-4 dark:bg-blue-900/20 dark:border-blue-800/30">
+                  <div className="rounded-lg bg-zinc-50 border border-blue-200 p-3 sm:p-4 dark:bg-zinc-900/20 dark:border-blue-800/30">
                     <div className="flex gap-2 sm:gap-3">
                       <Info className="h-4 w-4 text-blue-500 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                       <div>

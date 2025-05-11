@@ -7,8 +7,8 @@ const FormDetailPage = () => {
   const params = useParams();
   const formId = params?.id as string;
   
-  console.log('FormDetailPage - formId:', formId);
-  console.log('FormDetailPage - params:', params);
+  // ('FormDetailPage - formId:', formId);
+  // ('FormDetailPage - params:', params);
 
   return (
     <FormDetails formId={formId} />

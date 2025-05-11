@@ -1,0 +1,220 @@
+---
+title: ContactForm Appearance
+description: Customize the appearance of your Mantlz contact forms
+---
+
+# ContactForm Appearance
+
+The `ContactForm` component provides rich customization options to help you create beautiful contact forms that match your brand's aesthetics. This guide shows all the available styling options.
+
+## Preset Themes
+
+Mantlz includes several built-in themes for your contact forms:
+
+```tsx
+import { ContactForm } from '@mantlz/nextjs';
+
+// Default light theme
+<ContactForm formId="your-form-id" theme="default" />
+
+// Dark theme
+<ContactForm formId="your-form-id" theme="dark" />
+
+// Purple theme
+<ContactForm formId="your-form-id" theme="purple" />
+
+// Neobrutalism theme
+<ContactForm formId="your-form-id" theme="neobrutalism" />
+```
+
+You can also import theme constants:
+
+```tsx
+import { ContactForm, BASE_THEMES } from '@mantlz/nextjs';
+
+<ContactForm formId="your-form-id" theme={BASE_THEMES.DARK} />
+```
+
+## Content Customization
+
+Easily customize the form content with these props:
+
+```tsx
+<ContactForm
+  formId="your-form-id"
+  // Form content
+  title="Get in Touch"
+  description="We'd love to hear from you. Send us a message and we'll respond as soon as possible."
+  nameLabel="Full Name"
+  namePlaceholder="John Doe"
+  emailLabel="Email Address"
+  emailPlaceholder="john@example.com"
+  subjectLabel="Message Subject"
+  subjectPlaceholder="Support Request"
+  messageLabel="Your Message"
+  messagePlaceholder="Tell us how we can help you..."
+  customSubmitText="Send Message"
+  
+  // Redirection after submission
+  redirectUrl="/thank-you"
+/>
+```
+
+## Advanced Styling with Appearance API
+
+### Simple Appearance Customization
+
+The flat appearance API provides an intuitive way to style your form:
+
+```tsx
+<ContactForm
+  formId="your-form-id"
+  theme="default"
+  appearance={{
+    // Container styling
+    container: 'bg-white p-6 rounded-lg',
+    form: 'space-y-6',
+    background: 'bg-zinc-50',
+    border: 'border border-zinc-200',
+    
+    // Card styling
+    card: 'shadow-md rounded-xl',
+    cardTitle: 'text-2xl font-bold text-gray-800',
+    cardDescription: 'text-gray-600',
+    cardHeader: 'mb-4',
+    cardContent: 'pt-2',
+    
+    // Form elements styling
+    input: 'border-zinc-300 focus:ring-blue-500 focus:border-blue-500',
+    textarea: 'border-zinc-300 focus:ring-blue-500 focus:border-blue-500 min-h-[120px]',
+    inputLabel: 'text-gray-700 font-medium',
+    inputError: 'text-red-500 text-sm',
+    
+    // Button styling
+    submitButton: 'bg-zinc-600 hover:bg-zinc-700 text-white font-medium rounded-lg px-4 py-2',
+    
+    // Text customizations
+    submitText: 'Submit',
+    placeholderText: 'Type your message here...'
+  }}
+/>
+```
+
+### Themed Styling Function
+
+You can dynamically style your form based on the current theme:
+
+```tsx
+<ContactForm
+  formId="your-form-id"
+  theme="purple"
+  appearance={(theme) => ({
+    // Dynamic styling based on theme
+    container: theme === 'purple' 
+      ? 'bg-purple-50' 
+      : theme === 'dark' 
+        ? 'bg-zinc-900' 
+        : 'bg-white',
+    
+    submitButton: theme === 'purple'
+      ? 'bg-purple-600 hover:bg-purple-700 text-white'
+      : theme === 'dark'
+        ? 'bg-zinc-800 hover:bg-zinc-700 text-white'
+        : 'bg-zinc-600 hover:bg-zinc-700 text-white',
+        
+    cardTitle: theme === 'purple'
+      ? 'text-purple-800 font-bold'
+      : 'text-gray-800 font-bold'
+  })}
+/>
+```
+
+### Neobrutalism Example
+
+Create a contact form with a striking neobrutalism design:
+
+```tsx
+<ContactForm
+  formId="your-form-id"
+  appearance={{
+    baseStyle: {
+      container: 'bg-pink-100',
+      form: 'space-y-6',
+    },
+    elements: {
+      card: 'border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-pink-100',
+      cardHeader: 'space-y-2 p-6 pb-2',
+      cardTitle: 'text-2xl font-black uppercase tracking-wider',
+      cardDescription: 'text-base font-medium text-black',
+      cardContent: 'p-6',
+      submitButton: 'bg-pink-500 hover:bg-pink-400 active:bg-pink-600 text-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all font-bold uppercase',
+      inputLabel: 'text-sm font-black uppercase',
+      input: 'bg-white border-2 border-black placeholder:text-gray-500 focus:ring-black focus:border-black',
+      textarea: 'bg-white border-2 border-black placeholder:text-gray-500 focus:ring-black focus:border-black min-h-[120px]',
+      inputError: 'text-sm font-bold text-red-500 mt-1',
+    }
+  }}
+/>
+```
+
+## Complete Styling Reference
+
+Here's a comprehensive reference of all styling properties available for the `ContactForm` component:
+
+### Base Style Properties
+
+| Property | Description |
+|----------|-------------|
+| `container` | The outer container of the form |
+| `form` | The form element itself |
+| `background` | Background styling for the form |
+| `border` | Border styling for the form |
+
+### Element Properties
+
+| Property | Description |
+|----------|-------------|
+| `card` | The card component containing the form |
+| `cardHeader` | The header section of the card |
+| `cardTitle` | The title text of the form |
+| `cardDescription` | The description text of the form |
+| `cardContent` | The content section of the card |
+| `input` | Input field styling (name, email, subject) |
+| `textarea` | Textarea field styling (message) |
+| `inputLabel` | Label styling for form fields |
+| `inputError` | Error message styling |
+| `submitButton` | The submit button styling |
+
+### Typography Properties
+
+| Property | Description |
+|----------|-------------|
+| `submitText` | Text for the submit button |
+| `placeholderText` | Generic placeholder text |
+| `errorText` | Text for error messages |
+
+## Responsive Design
+
+Create responsive contact forms using Tailwind's responsive modifiers:
+
+```tsx
+<ContactForm
+  formId="your-form-id"
+  appearance={{
+    // Responsive container
+    container: 'p-4 sm:p-6 md:p-8',
+    
+    // Responsive text sizing
+    cardTitle: 'text-xl sm:text-2xl md:text-3xl font-bold',
+    cardDescription: 'text-sm sm:text-base text-gray-600',
+    
+    // Responsive form layout
+    form: 'space-y-4 sm:space-y-6',
+    
+    // Responsive button
+    submitButton: 'w-full sm:w-auto bg-zinc-600 hover:bg-zinc-700 text-white rounded-lg px-4 py-2 sm:px-6 sm:py-3',
+  }}
+/>
+```
+
+By leveraging these customization options, you can create contact forms that perfectly match your website's design language while maintaining a great user experience.

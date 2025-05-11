@@ -4,6 +4,7 @@ import React, { createContext, useContext, type PropsWithChildren } from 'react'
 import { createMantlzClient } from '../client';
 import { MantlzClient } from '../types';
 import { toast } from '../utils/toast';
+import { injectStyles } from '../utils/styles';
 
 interface MantlzContextType {
   apiKey: string | undefined;
@@ -25,8 +26,19 @@ interface MantlzProviderProps extends PropsWithChildren {
 }
 
 export function MantlzProvider({ apiKey, children }: MantlzProviderProps) {
+  const [hasShownApiKeyError, setHasShownApiKeyError] = React.useState(false);
+  
+  // Inject styles on mount - works in both dev and prod
+  React.useEffect(() => {
+    injectStyles();
+  }, []);
+  
   // Show a warning toast if apiKey is missing
   React.useEffect(() => {
+    if (hasShownApiKeyError) {
+      return; // Prevent showing the error toast multiple times
+    }
+    
     if (!apiKey) {
       console.warn('MANTLZ_KEY is not set. Forms will not work correctly.');
       if (typeof window !== 'undefined') {
@@ -35,6 +47,7 @@ export function MantlzProvider({ apiKey, children }: MantlzProviderProps) {
             description: 'Add your API key to your .env.local file: MANTLZ_KEY=mk_xxxxxxxxxx',
             duration: 10000,
           });
+          setHasShownApiKeyError(true);
         }, 1000);
       }
     } else if (apiKey.trim() === '') {
@@ -45,10 +58,11 @@ export function MantlzProvider({ apiKey, children }: MantlzProviderProps) {
             description: 'Your API key cannot be empty. Get your key from the Mantlz dashboard.',
             duration: 10000,
           });
+          setHasShownApiKeyError(true);
         }, 1000);
       }
     }
-  }, [apiKey]);
+  }, [apiKey, hasShownApiKeyError]);
 
   // Create client inside the provider using useMemo for performance
   const client = React.useMemo(() => 
@@ -60,7 +74,7 @@ export function MantlzProvider({ apiKey, children }: MantlzProviderProps) {
   React.useEffect(() => {
     if (typeof window !== 'undefined' && client) {
       window.mantlz = client;
-      console.log('Mantlz client initialized with API key:', apiKey);
+     // ('Mantlz client initialized with API key:', apiKey);
     }
   }, [apiKey, client]);
 

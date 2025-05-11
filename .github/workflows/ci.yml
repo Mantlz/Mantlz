@@ -1,0 +1,121 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'docs-site/**'
+      - 'mantlz-sdk/**'
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - 'docs-site/**'
+      - 'mantlz-sdk/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run linting
+      run: npm run lint
+
+    - name: Build application
+      run: |
+        # Remove docs-site and mantlz-sdk from the build
+        rm -rf docs-site mantlz-sdk
+        npm run build
+      env:
+        # Database
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        
+        # Authentication
+        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+        CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+        
+        # Sentry
+        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        
+        # Redis
+        REDIS_URL: ${{ secrets.REDIS_URL }}
+        
+        # API Keys
+        API_KEY: ${{ secrets.API_KEY }}
+        
+        # Environment
+        NODE_ENV: production
+        NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+        
+        # Rate Limiting
+        RATE_LIMIT_DISABLED: true  # Disable rate limiting in CI
+
+    - name: Run database migrations
+      run: npx prisma migrate deploy
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build application
+      run: |
+        # Remove docs-site and mantlz-sdk from the build
+        rm -rf docs-site mantlz-sdk
+        npm run build
+      env:
+        # Database
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        
+        # Authentication
+        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+        CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+        
+        # Sentry
+        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        
+        # Redis
+        REDIS_URL: ${{ secrets.REDIS_URL }}
+        
+        # API Keys
+        API_KEY: ${{ secrets.API_KEY }}
+        
+        # Environment
+        NODE_ENV: production
+        NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+        
+        # Rate Limiting
+        RATE_LIMIT_DISABLED: true  # Disable rate limiting in CI
+
+    - name: Deploy to Vercel
+      uses: amondnet/vercel-action@v25
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        working-directory: ./
+        vercel-args: '--prod' 

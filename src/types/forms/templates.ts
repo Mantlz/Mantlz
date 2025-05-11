@@ -1,5 +1,4 @@
 import { z } from "zod"
-import { Icon } from "@tabler/icons-react"
 import { 
   IconMessageCircle2, 
   IconUserPlus, 
@@ -26,7 +25,6 @@ export const formTemplates = {
     schema: z.object({
       email: z.string().email(),
       name: z.string().min(2),
-      referralSource: z.string().optional(),
     }),
   },
   contact: {

@@ -3,7 +3,9 @@ export const navigationData = [
   { name: "Appearance", icon: "Paintbrush" },
   { name: "Usage", icon: "BarChart" },
   { name: "API Keys", icon: "Key" },
+  { name: "Billing", icon: "CreditCard" },
   { name: "Email Settings", icon: "AtSign" },
+  // { name: "Email Domain", icon: "Mail" },
   { name: "Advanced", icon: "Settings" },
   { name: "Accessibility", icon: "Keyboard" },
 

@@ -1,0 +1,10 @@
+{
+  "name": "Mantlz - Build Custom Forms with Ease",
+  "short_name": "Mantlz",
+  "description": "Create powerful, customizable forms with Mantlz. The ultimate form builder platform for businesses and developers.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff"
+  
+} 

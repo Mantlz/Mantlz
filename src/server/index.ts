@@ -1,35 +1,36 @@
 import { j } from "./jstack"
-import { postRouter } from "./routers/post-router"
-import { formRouter } from "./routers/form-router"
-import { authRouter } from "./routers/auth-route"
-import { apiKeyRouter } from "./routers/api-key-router"
-import { usageRouter } from "./routers/usage-router"
-import { userRouter } from "./routers/user-router"
 
-/**
- * This is your base API.
- * Here, you can handle errors, not-found responses, cors and more.
- *
- * @see https://jstack.app/docs/backend/app-router
- */
+// Dynamic imports for better performance
+const routerImports = {
+  formRouter: () => import("./routers/form-router").then(m => m.formRouter),
+  authRouter: () => import("./routers/auth-route").then(m => m.authRouter),
+  apiKeyRouter: () => import("./routers/api-key-router").then(m => m.apiKeyRouter),
+  usageRouter: () => import("./routers/usage-router").then(m => m.usageRouter),
+  userRouter: () => import("./routers/user-router").then(m => m.userRouter),
+  paymentRouter: () => import("./routers/payment-router").then(m => m.paymentRouter),
+  campaignRouter: () => import("./routers/campaign-router").then(m => m.campaignRouter),
+  trackingRouter: () => import("./routers/tracking-router").then(m => m.trackingRouter),
+
+}
+
 const api = j
   .router()
   .basePath("/api")
   .use(j.defaults.cors)
   .onError(j.defaults.errorHandler)
 
-/**
- * This is the main router for your server.
- * All routers in /server/routers should be added here manually.
- */
+// Create router with lazy loading
 const appRouter = j.mergeRouters(api, {
-  forms: formRouter,
-  apiKey: apiKeyRouter,
-  auth: authRouter,
-  usage: usageRouter,
-  user: userRouter,
+  forms: routerImports.formRouter,
+  apiKey: routerImports.apiKeyRouter,
+  auth: routerImports.authRouter,
+  usage: routerImports.usageRouter,
+  user: routerImports.userRouter,
+  payment: routerImports.paymentRouter,
+  campaign: routerImports.campaignRouter,
+  tracking: routerImports.trackingRouter,
+
 })
 
 export type AppRouter = typeof appRouter
-
 export default appRouter

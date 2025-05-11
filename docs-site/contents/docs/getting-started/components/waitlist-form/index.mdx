@@ -1,0 +1,99 @@
+---
+title: WaitlistForm Component
+description: Create waitlist forms for user email collection
+---
+
+# WaitlistForm Component
+
+The `WaitlistForm` component creates forms for collecting email addresses from users interested in your product or service.
+
+## Basic Usage
+
+```tsx
+import { WaitlistForm } from '@mantlz/nextjs';
+
+export default function WaitlistPage() {
+  return (
+    <div className="container mx-auto p-4">
+      <WaitlistForm 
+        formId="your-waitlist-id"
+        title="Join Our Waitlist"
+        description="Sign up to get early access to our new product."
+      />
+    </div>
+  );
+}
+```
+
+## Users Joined Counter
+
+WaitlistForm can display a counter showing how many users have already joined:
+
+```tsx
+<WaitlistForm
+  formId="your-waitlist-id"
+  title="Join Our Waitlist"
+  description="Be among the first to try our platform"
+  showUsersJoined={true}
+  usersJoinedLabel="people have already joined"
+/>
+```
+
+## Text Customization
+
+```tsx
+<WaitlistForm
+  formId="your-waitlist-id"
+  title="Join Our Private Beta"
+  description="Get early access to our AI-powered platform"
+  submitButtonText="Join Waitlist"
+  emailPlaceholder="Enter your email address"
+  successMessage="You're on the list! We'll be in touch soon."
+/>
+```
+
+## Event Handlers
+
+```tsx
+<WaitlistForm
+  formId="your-waitlist-id"
+  onSubmitSuccess={(data) => {
+    // Handle successful submission
+    ('Email:', data.email);
+    analytics.track('Waitlist Joined', { email: data.email });
+  }}
+  onSubmitError={(error) => {
+    // Handle submission error
+    console.error('Submission failed:', error);
+  }}
+/>
+```
+
+## Post-Submission Redirects
+
+After form submission, you can specify a custom redirect URL (STANDARD and PRO plans only):
+
+```tsx
+<WaitlistForm
+  formId="your-waitlist-id"
+  redirectUrl="/thank-you" // Custom redirect URL (premium feature)
+/>
+```
+
+> Note: Free plan users will always be redirected to Mantlz's hosted thank-you page.
+
+## Available Core Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `formId` | `string` | **Required**. The ID of the form in your Mantlz dashboard. |
+| `title` | `string` | Form title text. Default: `'Join our waitlist'` |
+| `description` | `string` | Form description text. |
+| `submitButtonText` | `string` | Text for submit button. Default: `'Join Waitlist'` |
+| `emailPlaceholder` | `string` | Placeholder for email field. |
+| `successMessage` | `string` | Message shown after successful submission. |
+| `showUsersJoined` | `boolean` | Show the number of users who have joined. Default: `false` |
+| `usersJoinedLabel` | `string` | Text shown next to the users joined count. |
+| `onSubmitSuccess` | `function` | Callback fired on successful submission. |
+| `onSubmitError` | `function` | Callback fired on submission error. |
+| `redirectUrl` | `string` | URL to redirect to after submission (premium). |

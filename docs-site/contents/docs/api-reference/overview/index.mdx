@@ -1,0 +1,51 @@
+---
+title: API Overview
+description: Overview of the Mantlz API
+---
+
+# Mantlz API Overview
+
+The Mantlz API allows you to programmatically interact with your forms, submissions, and analytics. This guide provides details on authentication, endpoints, and example usage.
+
+## Base URL
+
+All API requests should be made to the following base URL:
+
+```
+https://app.mantlz.com/api/v1
+```
+
+## Available Endpoints
+
+The Mantlz API provides the following main categories of endpoints:
+
+### Forms
+
+Endpoints for managing and retrieving information about your forms:
+
+- **[List Forms](/docs/api-reference/forms/list)** - Get a list of all your forms
+- **[Get Form](/docs/api-reference/forms/get)** - Get details about a specific form
+- **[Users Joined](/docs/api-reference/forms/users-joined)** - Get the number of users who joined a waitlist
+
+### Submissions
+
+Endpoints for submitting and retrieving form submissions:
+
+- **[Submit Form](/docs/api-reference/submissions/submit)** - Submit data to a form
+- **[List Submissions](/docs/api-reference/submissions/list)** - Get submissions for a form
+
+### Analytics
+
+Endpoints for retrieving analytics data:
+
+- **[Form Analytics](/docs/api-reference/analytics)** - Get analytics data for a form
+
+## Getting Started
+
+1. [Obtain your API key](/docs/api-reference/authentication) from your Mantlz dashboard
+2. Authenticate your requests using the API key
+3. Make requests to the appropriate endpoints
+
+## SDK Integration
+
+If you're using the Mantlz SDK, the API is automatically used behind the scenes. You don't need to make API calls directly unless you're building a custom integration. 

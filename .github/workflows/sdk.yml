@@ -1,0 +1,39 @@
+name: SDK Build
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'mantlz-sdk/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'mantlz-sdk/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install SDK dependencies
+      run: cd mantlz-sdk && npm ci
+
+    - name: Build SDK
+      run: cd mantlz-sdk && npm run build
+
+    - name: Publish to npm
+      if: github.ref == 'refs/heads/main'
+      run: |
+        cd mantlz-sdk
+        echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+        npm publish --access public
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }} 

@@ -59,7 +59,7 @@ function SheetContent({
         data-slot="sheet-content"
         className={cn(
           "fixed z-50 flex flex-col gap-4 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
-          "bg-white dark:bg-zinc-900 border-2 border-gray-200 dark:border-zinc-700",
+          "bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700",
           "data-[state=open]:animate-in data-[state=closed]:animate-out",
           side === "right" &&
             "data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-3/4 sm:max-w-md",
@@ -87,7 +87,7 @@ function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="sheet-header"
-      className={cn("flex flex-col gap-1.5 p-6 border-b-2 border-gray-200 dark:border-zinc-700", className)}
+      className={cn("flex flex-col gap-1.5 p-6 border-b-2 border-zinc-200 dark:border-zinc-700", className)}
       {...props}
     />
   )
@@ -97,7 +97,7 @@ function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="sheet-footer"
-      className={cn("mt-auto flex flex-col gap-2 p-6 border-t-2 border-gray-200 dark:border-zinc-700", className)}
+      className={cn("mt-auto flex flex-col gap-2 p-6 border-t-2 border-zinc-200 dark:border-zinc-700", className)}
       {...props}
     />
   )
@@ -110,7 +110,7 @@ function SheetTitle({
   return (
     <SheetPrimitive.Title
       data-slot="sheet-title"
-      className={cn("text-xl font-mono font-bold text-black dark:text-white", className)}
+      className={cn("text-xl  font-bold text-black dark:text-white", className)}
       {...props}
     />
   )
@@ -123,7 +123,7 @@ function SheetDescription({
   return (
     <SheetPrimitive.Description
       data-slot="sheet-description"
-      className={cn("text-sm text-gray-500 dark:text-gray-400 font-mono", className)}
+      className={cn("text-sm text-gray-500 dark:text-gray-400 ", className)}
       {...props}
     />
   )
