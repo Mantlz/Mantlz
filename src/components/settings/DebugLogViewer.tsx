@@ -6,7 +6,7 @@ interface LogEntry {
   timestamp: string;
   level: 'info' | 'error' | 'success';
   message: string;
-  details?: Record<string, any>;
+  details?: Record<string, unknown>;
 }
 
 interface DebugLogViewerProps {

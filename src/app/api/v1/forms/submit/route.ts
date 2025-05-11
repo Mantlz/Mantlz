@@ -105,7 +105,8 @@ export async function POST(req: Request) {
     });
 
     if (!apiKeyRecord || !apiKeyRecord.isActive) {
-      await debugService.log('api_key_invalid', { apiKey }, {
+      await debugService.log('api_key_invalid', { 
+        apiKey,
         formId,
         userId: apiKeyRecord?.userId || 'unknown',
         userPlan: apiKeyRecord?.user?.plan || 'unknown',
@@ -148,7 +149,7 @@ export async function POST(req: Request) {
     });
 
     if (!form) {
-      await debugService.log('form_not_found', { formId }, {
+      await debugService.log('form_not_found', { 
         formId,
         userId: apiKeyRecord.userId,
         userPlan: apiKeyRecord.user.plan,
@@ -164,8 +165,8 @@ export async function POST(req: Request) {
 
     // Validate form ownership
     if (form.userId !== apiKeyRecord.userId) {
-      await debugService.log('form_unauthorized', { formId, userId: apiKeyRecord.userId }, {
-        formId,
+      await debugService.log('form_unauthorized', { 
+        formId, 
         userId: apiKeyRecord.userId,
         userPlan: apiKeyRecord.user.plan,
         timestamp: new Date().toISOString(),
@@ -206,7 +207,8 @@ export async function POST(req: Request) {
       });
 
       // Log successful submission
-      await debugService.logFormSubmission(formId, submission.id, data, {
+      await debugService.logFormSubmission(formId, submission.id, {
+        data,
         userId: apiKeyRecord.userId,
         userPlan: apiKeyRecord.user.plan,
         timestamp: new Date().toISOString(),
@@ -253,7 +255,6 @@ export async function POST(req: Request) {
             to: data.email,
             subject,
             from: fromEmail,
-          }, {
             userId: apiKeyRecord.userId,
             userPlan: apiKeyRecord.user.plan,
             timestamp: new Date().toISOString(),
@@ -262,13 +263,7 @@ export async function POST(req: Request) {
           });
         } catch (error) {
           // Log email error
-          await debugService.logEmailError(formId, submission.id, error as Error, {
-            userId: apiKeyRecord.userId,
-            userPlan: apiKeyRecord.user.plan,
-            timestamp: new Date().toISOString(),
-            userAgent,
-            ip,
-          });
+          await debugService.logEmailError(formId, submission.id, error as Error);
           console.error('Failed to send confirmation email:', error);
         }
       }
@@ -281,8 +276,6 @@ export async function POST(req: Request) {
             formId,
             submissionId: submission.id,
             result: notificationResult,
-          }, {
-            formId,
             userId: apiKeyRecord.userId,
             userPlan: apiKeyRecord.user.plan,
             timestamp: new Date().toISOString(),
@@ -294,8 +287,6 @@ export async function POST(req: Request) {
             formId,
             submissionId: submission.id,
             error: error instanceof Error ? error.message : 'Unknown error',
-          }, {
-            formId,
             userId: apiKeyRecord.userId,
             userPlan: apiKeyRecord.user.plan,
             timestamp: new Date().toISOString(),

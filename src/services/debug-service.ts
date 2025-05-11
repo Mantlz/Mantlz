@@ -1,5 +1,3 @@
-import { z } from 'zod';
-
 export type LogLevel = 'basic' | 'detailed' | 'verbose';
 
 export interface DebugConfig {
@@ -11,7 +9,7 @@ export interface DebugConfig {
   apiKey?: string;
   testData?: {
     formId: string;
-    data: Record<string, any>;
+    data: Record<string, unknown>;
   };
 }
 
@@ -19,17 +17,17 @@ interface DebugLog {
   timestamp: string;
   level: LogLevel;
   event: string;
-  data: any;
+  data: Record<string, unknown>;
   request: {
     url: string;
     method: string;
     headers: Record<string, string>;
-    body: any;
+    body: Record<string, unknown>;
   };
   response?: {
     status: number;
     headers: Record<string, string>;
-    body: any;
+    body: Record<string, unknown>;
   };
   error?: {
     message: string;
@@ -132,7 +130,7 @@ class DebugService {
     this.config.testData = { ...this.config.testData, data: originalData };
   }
 
-  async log(event: string, data: any, metadata?: any) {
+  async log(event: string, data: Record<string, unknown>) {
     if (!this.shouldLog('basic')) return;
     
     const log: DebugLog = {
@@ -151,16 +149,16 @@ class DebugService {
     this.logToConsole(log);
   }
 
-  async logFormSubmission(formId: string, submissionId: string, data: any, metadata?: any) {
-    await this.log('form_submission', { formId, submissionId, data }, metadata);
+  async logFormSubmission(formId: string, submissionId: string, data: Record<string, unknown>) {
+    await this.log('form_submission', { formId, submissionId, data });
   }
 
-  async logEmailSent(formId: string, submissionId: string, data: any, metadata?: any) {
-    await this.log('email_sent', { formId, submissionId, data }, metadata);
+  async logEmailSent(formId: string, submissionId: string, data: Record<string, unknown>) {
+    await this.log('email_sent', { formId, submissionId, data });
   }
 
-  async logEmailError(formId: string, submissionId: string, error: Error, metadata?: any) {
-    await this.log('email_error', { formId, submissionId, error: error.message }, metadata);
+  async logEmailError(formId: string, submissionId: string, error: Error) {
+    await this.log('email_error', { formId, submissionId, error: error.message });
   }
 }
 
