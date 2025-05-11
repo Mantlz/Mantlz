@@ -22,6 +22,19 @@ interface AdvancedSettings {
   developerNotificationsEnabled: boolean;
 }
 
+interface GlobalSettingsResponse {
+  maxNotificationsPerHour: number;
+  developerNotificationsEnabled: boolean;
+  id: string;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface ErrorResponse {
+  message: string;
+}
+
 export function AdvancedSettings() {
   const queryClient = useQueryClient();
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -57,20 +70,21 @@ export function AdvancedSettings() {
       const response = await client.forms.updateGlobalSettings.$post({
         maxNotificationsPerHour: newSettings.maxNotificationsPerHour,
         developerNotificationsEnabled: newSettings.developerNotificationsEnabled,
-        debugMode: {
-          enabled: false,
-          webhookUrl: null,
-          logLevel: 'basic',
-          includeMetadata: false
-        }
       });
+      
+      const data = await response.json();
+      
       if (!response.ok) {
         if (response.status === 403) {
           throw new Error('You need to upgrade to PRO to modify notification settings');
         }
-        throw new Error('Failed to update settings');
+        const errorMessage = typeof data === 'object' && data !== null && 'message' in data && typeof data.message === 'string' 
+          ? data.message 
+          : 'Failed to update settings';
+        throw new Error(errorMessage);
       }
-      return await response.json();
+      
+      return data;
     },
     onSuccess: () => {
       toast.success('Settings updated successfully');
@@ -250,38 +264,6 @@ export function AdvancedSettings() {
                   </div>
                 </div>
               )}
-            </CardContent>
-          </Card>
-
-          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
-            <CardHeader className="pb-2 pt-3 px-4 flex flex-row items-start justify-between space-y-0">
-              <div>
-                <CardTitle className="text-zinc-900 dark:text-white text-xs flex items-center">
-                  <Code className="h-4 w-4 mr-1.5 text-zinc-500" />
-                  Debug Mode
-                </CardTitle>
-                <CardDescription className="text-zinc-600 dark:text-zinc-400 text-[11px]">
-                  Test and debug your form submissions
-                </CardDescription>
-              </div>
-              <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-200 text-[10px] px-1.5 py-0.5">
-                PRO
-              </Badge>
-            </CardHeader>
-            
-            <CardContent className="px-4 pb-3">
-              <div className="rounded-lg bg-zinc-50 border border-blue-200 p-2 dark:bg-zinc-900/20 dark:border-blue-800/30">
-                <div className="flex gap-2">
-                  <div className="space-y-0.5">
-                    <p className="text-[11px] font-medium text-blue-800 dark:text-blue-300">
-                      Coming Soon
-                    </p>
-                    <p className="text-[10px] text-blue-700 dark:text-blue-400">
-                      We&apos;re working on bringing you powerful debugging tools. Stay tuned!
-                    </p>
-                  </div>
-                </div>
-              </div>
             </CardContent>
           </Card>
         </div>

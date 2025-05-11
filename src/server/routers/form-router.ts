@@ -1025,12 +1025,6 @@ export const formRouter = j.router({
     .input(z.object({
       maxNotificationsPerHour: z.number().min(1).max(100),
       developerNotificationsEnabled: z.boolean(),
-      debugMode: z.object({
-        enabled: z.boolean(),
-        webhookUrl: z.string().nullable(),
-        logLevel: z.enum(['basic', 'detailed', 'verbose']),
-        includeMetadata: z.boolean(),
-      }),
     }))
     .mutation(async ({ c, input, ctx }) => {
       const { user } = ctx;
@@ -1047,13 +1041,6 @@ export const formRouter = j.router({
 
       if (!userWithPlan) throw new HTTPException(404, { message: "User not found" });
 
-      // Only PRO users can modify debug settings
-      if (userWithPlan.plan !== 'PRO') {
-        throw new HTTPException(403, { 
-          message: 'Debug mode settings are only available for PRO users'
-        });
-      }
-
       // Update settings
       const settings = await db.globalSettings.upsert({
         where: { userId: user.id },
@@ -1061,18 +1048,12 @@ export const formRouter = j.router({
           userId: user.id,
           maxNotificationsPerHour: input.maxNotificationsPerHour,
           developerNotificationsEnabled: input.developerNotificationsEnabled,
-          debugMode: input.debugMode,
         },
         update: {
           maxNotificationsPerHour: input.maxNotificationsPerHour,
           developerNotificationsEnabled: input.developerNotificationsEnabled,
-          debugMode: input.debugMode,
         },
       });
-
-      // Update debug service configuration
-      const debugService = (await import('@/services/debug-service')).debugService;
-      debugService.setConfig(input.debugMode);
 
       return c.superjson(settings);
     }),
@@ -1091,12 +1072,6 @@ export const formRouter = j.router({
         return c.superjson({
           maxNotificationsPerHour: 10,
           developerNotificationsEnabled: false,
-          debugMode: {
-            enabled: false,
-            webhookUrl: null,
-            logLevel: 'basic',
-            includeMetadata: false,
-          },
         });
       }
 
