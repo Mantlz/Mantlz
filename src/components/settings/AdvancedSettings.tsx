@@ -22,18 +22,7 @@ interface AdvancedSettings {
   developerNotificationsEnabled: boolean;
 }
 
-interface GlobalSettingsResponse {
-  maxNotificationsPerHour: number;
-  developerNotificationsEnabled: boolean;
-  id: string;
-  userId: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
 
-interface ErrorResponse {
-  message: string;
-}
 
 export function AdvancedSettings() {
   const queryClient = useQueryClient();
