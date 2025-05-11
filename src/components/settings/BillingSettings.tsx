@@ -16,7 +16,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -350,9 +349,6 @@ export default function BillingSettings() {
                 </svg>
                 Current Plan
               </CardTitle>
-              <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
-                {subscription?.plan ? `${subscription.plan.toUpperCase()} Plan` : "Free Plan"}
-              </CardDescription>
             </CardHeader>
             <CardContent className="px-5 pb-4">
               <div className="space-y-4">
@@ -491,16 +487,7 @@ export default function BillingSettings() {
                         <span className="text-sm font-medium text-zinc-900 dark:text-white">
                           {formatCurrency(invoice.amount, invoice.currency)}
                         </span>
-                        <Badge
-                          className={cn(
-                            "text-xs",
-                            invoice.status === "paid"
-                              ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                              : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-                          )}
-                        >
-                          {invoice.status.toUpperCase()}
-                        </Badge>
+                        <StatusBadge status={invoice.status} />
                         <div className="flex space-x-1">
                           {invoice.pdf && (
                             <Button
