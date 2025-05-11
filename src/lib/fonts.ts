@@ -1,6 +1,7 @@
 import { Space_Grotesk, Space_Mono } from "next/font/google";
+import type { NextFont } from 'next/dist/compiled/@next/font';
 
-// Font declarations at module scope
+// Font declarations at module scope - only load the default font initially
 const interFont = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-geist-sans",
@@ -11,17 +12,28 @@ const interFont = Space_Grotesk({
   fallback: ['system-ui', 'arial'],
 });
 
-const monoFont = Space_Mono({
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
-  display: "swap",
-  weight: "400",
-  preload: true,
-  adjustFontFallback: true,
-  fallback: ['monospace'],
-});
+// Lazy load the mono font only when needed
+const loadMonoFont = async () => {
+  const { Space_Mono } = await import('next/font/google');
+  return Space_Mono({
+    subsets: ["latin"],
+    variable: "--font-geist-mono",
+    display: "swap",
+    weight: "400",
+    preload: true,
+    adjustFontFallback: true,
+    fallback: ['monospace'],
+  });
+};
 
-export const FONT_FAMILIES = {
+type FontConfig = {
+  name: string;
+  className: string;
+  font: NextFont | null;
+  loadFont?: () => Promise<NextFont>;
+};
+
+export const FONT_FAMILIES: Record<string, FontConfig> = {
   inter: {
     name: 'Inter',
     className: 'font-sans',
@@ -35,17 +47,20 @@ export const FONT_FAMILIES = {
   mono: {
     name: 'Monospace',
     className: 'font-mono',
-    font: monoFont
+    font: null, // Will be loaded dynamically
+    loadFont: loadMonoFont
   }
-} as const;
+};
 
 export type FontFamily = keyof typeof FONT_FAMILIES;
 
 export const getFontClass = (fontFamily: FontFamily) => {
-  return FONT_FAMILIES[fontFamily].className;
+  const fontConfig = FONT_FAMILIES[fontFamily];
+  return fontConfig?.className ?? 'font-sans';
 };
 
 export const getFontVariable = (fontFamily: FontFamily) => {
-  const font = FONT_FAMILIES[fontFamily].font;
-  return font ? font.variable : '';
+  const fontConfig = FONT_FAMILIES[fontFamily];
+  const font = fontConfig?.font;
+  return font && 'variable' in font ? font.variable : '';
 }; 

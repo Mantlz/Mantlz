@@ -10,7 +10,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Space_Mono, Space_Grotesk } from "next/font/google"
 import { Suspense } from 'react'
 import ClientWrapper from "@/components/global/client-wrapper"
-import { FONT_FAMILIES } from "@/lib/fonts"
+import { FONT_FAMILIES, type FontFamily } from "@/lib/fonts"
 import { FontInitializer } from "@/components/global/font-initializer"
 
 const sansFont = Space_Grotesk({
@@ -104,7 +104,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   // Get the default font (inter)
-  const defaultFont = FONT_FAMILIES.inter.font;
+  const defaultFont = FONT_FAMILIES['inter' as FontFamily]?.font;
+  const fontVariable = defaultFont && 'variable' in defaultFont ? defaultFont.variable : '';
   
   return (
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
@@ -113,7 +114,7 @@ export default function RootLayout({
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         </head>
-        <body className={`${defaultFont.variable} font-regular antialiased tracking-wide`}>
+        <body className={`${fontVariable} font-regular antialiased tracking-wide`}>
           <main className="h-screen bg-background text-foreground transition-colors duration-300">
             <Providers>
               <MantlzProvider apiKey={process.env.MANTLZ_KEY}>
