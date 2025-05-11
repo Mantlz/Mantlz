@@ -10,6 +10,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Space_Mono, Space_Grotesk } from "next/font/google"
 import { Suspense } from 'react'
 import ClientWrapper from "@/components/global/client-wrapper"
+import { FONT_FAMILIES } from "@/lib/fonts"
+import { FontInitializer } from "@/components/global/font-initializer"
 
 const sansFont = Space_Grotesk({
   subsets: ["latin"],
@@ -101,6 +103,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // Get the default font (inter)
+  const defaultFont = FONT_FAMILIES.inter.font;
+  
   return (
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="en" suppressHydrationWarning>
@@ -108,12 +113,13 @@ export default function RootLayout({
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         </head>
-        <body className={`${sansFont.variable} ${monoFont.variable} font-regular antialiased tracking-wide`}>
+        <body className={`${defaultFont.variable} font-regular antialiased tracking-wide`}>
           <main className="h-screen bg-background text-foreground transition-colors duration-300">
             <Providers>
               <MantlzProvider apiKey={process.env.MANTLZ_KEY}>
                 <Suspense fallback={null}>
                   <ClientWrapper>
+                    <FontInitializer />
                     {children}
                     <Toaster richColors position="top-center" theme="system" />
                     {/* <Analytics /> */}
