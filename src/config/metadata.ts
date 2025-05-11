@@ -142,4 +142,8 @@ export const formMetadata: Metadata = {
   },
 }
 
-
+export const billingMetadata: Metadata = {
+  ...baseMetadata,
+  title: 'Billing | Mantlz',
+  description: 'Manage your billing and subscription',
+}
