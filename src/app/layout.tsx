@@ -113,6 +113,7 @@ export default function RootLayout({
         <head>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+          <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
         </head>
         <body className={`${fontVariable} font-regular antialiased tracking-wide`}>
           <main className="h-screen bg-background text-foreground transition-colors duration-300">

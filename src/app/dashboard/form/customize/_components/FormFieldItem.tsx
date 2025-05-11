@@ -10,6 +10,7 @@ import { XIcon, GripVertical } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { FileUpload } from '@/components/ui/file-upload';
 
 interface FormFieldItemProps {
   field: FormField;
@@ -21,14 +22,14 @@ interface FormFieldItemProps {
   onRemove: (field: FormField) => void;
 }
 
-export function FormFieldItem({ 
-  field, 
-
-
-  onUpdate, 
-
-  onToggleRequired, 
-  onRemove 
+export function FormFieldItem({
+  field,
+  index,
+  arrLength,
+  onUpdate,
+  onMove,
+  onToggleRequired,
+  onRemove,
 }: FormFieldItemProps) {
   const {
     attributes,
@@ -36,132 +37,105 @@ export function FormFieldItem({
     setNodeRef,
     transform,
     transition,
-    isDragging,
   } = useSortable({ id: field.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    zIndex: isDragging ? 10 : 1,
-    opacity: isDragging ? 0.9 : 1,
   };
-  
+
   return (
-    <div 
-      ref={setNodeRef} 
+    <div
+      ref={setNodeRef}
       style={style}
-      className={cn(
-        "bg-white dark:bg-zinc-950 rounded-lg transition-all duration-200",
-        "border border-neutral-200 dark:border-zinc-800",
-        "hover:border-primary/25 dark:hover:border-primary/25",
-        "group",
-        isDragging ? "shadow-md ring-1 ring-primary/30 scale-[1.01]" : "hover:shadow-sm"
-      )}
+      className="flex items-start gap-4 p-4 bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800"
     >
-      <div className="p-3 flex flex-col gap-3">
-        {/* Header row with drag handle */}
+      <div {...attributes} {...listeners} className="cursor-grab">
+        <GripVertical className="w-5 h-5 text-zinc-400" />
+      </div>
+
+      <div className="flex-1 space-y-4">
         <div className="flex items-center justify-between">
+          <Label className="text-sm font-medium">Field Label</Label>
           <div className="flex items-center gap-2">
-            <div className="relative">
-              <div 
-                className={cn(
-                  "text-neutral-400 dark:text-neutral-500 cursor-move touch-none",
-                  "hover:text-primary/80 dark:hover:text-primary/80",
-                  "transition-colors duration-200",
-                  "p-1 rounded-lg",
-                  "group-hover:bg-zinc-50 dark:group-hover:bg-zinc-900",
-                  !isDragging && "group-hover:animate-pulse"
-                )}
-                {...attributes}
-                {...listeners}
-              >
-                <GripVertical className="h-4 w-4" />
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-1.5">
-              <span className={cn(
-                "text-sm font-medium",
-                "text-neutral-800 dark:text-neutral-200",
-                "transition-colors duration-200"
-              )}>
-                {field.type.charAt(0).toUpperCase() + field.type.slice(1)}
-              </span>
-            </div>
-          </div>
-          
-          <Button 
-            size="sm" 
-            variant="ghost"
-            className={cn(
-              "h-7 w-7 p-0 rounded-lg cursor-pointer",
-              "text-neutral-400 hover:text-red-500 dark:text-neutral-500 dark:hover:text-red-500",
-              "opacity-60 hover:opacity-100",
-              "transition-all duration-200",
-              "hover:bg-red-50 dark:hover:bg-red-900/20"
-            )}
-            onClick={() => onRemove(field)}
-            aria-label="Remove field"
-          >
-            <XIcon className="h-3.5 w-3.5" />
-          </Button>
-        </div>
-        
-        {/* Label input */}
-        <div className="flex items-center gap-3">
-          <div className="flex-1">
-            <Input 
-              id={`field-${field.id}-label`}
-              value={field.label}
-              onChange={(e) => onUpdate(field.id, 'label', e.target.value)}
-              className={cn(
-                "h-9 py-1.5 px-3 text-sm cursor-text",
-                "bg-transparent text-neutral-800 dark:text-neutral-200",
-                "rounded-lg",
-                "border border-neutral-200 dark:border-zinc-800",
-                "focus:border-primary/30 focus:ring-1 focus:ring-primary/20",
-                "placeholder:text-neutral-400 dark:placeholder:text-neutral-600",
-                "transition-all duration-200"
-              )}
-              placeholder="Field label"
-            />
-          </div>
-          
-          <div className="flex items-center gap-1.5 min-w-[85px]">
-            <Switch
-              id={`required-switch-${field.id}`}
-              checked={field.required}
-              onCheckedChange={(checked) => onToggleRequired(field.id, checked)}
-              className={cn(
-                "data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-zinc-200 border border-zinc-200 dark:border-zinc-800",
-                "cursor-pointer h-4 w-7"
-              )}
-            />
-            <Label 
-              htmlFor={`required-switch-${field.id}`} 
-              className="text-xs text-neutral-500 dark:text-neutral-400 cursor-pointer whitespace-nowrap"
-            >
+            <Label htmlFor={`required-${field.id}`} className="text-sm text-zinc-500">
               Required
             </Label>
+            <Switch
+              id={`required-${field.id}`}
+              checked={field.required}
+              onCheckedChange={(checked) => onToggleRequired(field.id, checked)}
+            />
           </div>
         </div>
-        
-        {/* Placeholder input - simplified */}
-        <Input 
-          id={`field-${field.id}-placeholder`}
-          value={field.placeholder || ''}
-          onChange={(e) => onUpdate(field.id, 'placeholder', e.target.value)}
-          className={cn(
-            "h-9 py-1.5 px-3 text-sm cursor-text",
-            "bg-transparent text-neutral-800 dark:text-neutral-200",
-            "rounded-lg",
-            "border border-neutral-200 dark:border-zinc-800",
-            "focus:border-primary/30 focus:ring-1 focus:ring-primary/20",
-            "placeholder:text-neutral-400 dark:placeholder:text-neutral-600",
-            "transition-all duration-200"
-          )}
-          placeholder="Placeholder text"
+
+        <Input
+          value={field.label}
+          onChange={(e) => onUpdate(field.id, 'label', e.target.value)}
+          placeholder="Enter field label"
         />
+
+        {field.type === 'file' && (
+          <>
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Accepted File Types</Label>
+              <Input
+                value={field.accept || ''}
+                onChange={(e) => onUpdate(field.id, 'accept', e.target.value)}
+                placeholder=".pdf,.doc,.docx,.jpg,.png"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Max File Size (MB)</Label>
+              <Input
+                type="number"
+                value={field.maxSize ? field.maxSize / (1024 * 1024) : 10}
+                onChange={(e) => onUpdate(field.id, 'maxSize', Number(e.target.value) * 1024 * 1024)}
+                min={1}
+                max={100}
+              />
+            </div>
+          </>
+        )}
+
+        {field.type === 'select' && (
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Options (one per line)</Label>
+            <textarea
+              value={field.options?.join('\n') || ''}
+              onChange={(e) => onUpdate(field.id, 'options', e.target.value.split('\n'))}
+              className="w-full h-24 p-2 border rounded-md"
+              placeholder="Option 1&#10;Option 2&#10;Option 3"
+            />
+          </div>
+        )}
+
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onMove(field.id, 'up')}
+            disabled={index === 0}
+          >
+            Move Up
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onMove(field.id, 'down')}
+            disabled={index === arrLength - 1}
+          >
+            Move Down
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onRemove(field)}
+            className="ml-auto"
+          >
+            <XIcon className="w-4 h-4" />
+          </Button>
+        </div>
       </div>
     </div>
   );

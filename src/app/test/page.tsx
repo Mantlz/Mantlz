@@ -1,5 +1,5 @@
 "use client"
-import { WaitlistForm } from '@mantlz/nextjs';
+import { WaitlistForm, ContactForm } from '@mantlz/nextjs';
 
 export default function CustomerFeedbackPage() {
   return (
@@ -19,6 +19,12 @@ export default function CustomerFeedbackPage() {
         theme="neobrutalism"
         
       /> 
+
+      <ContactForm
+        formId="cmajx7gwe0001o78s3nurcepl"
+        theme="neobrutalism"
+        
+      />
 
       {/* <WaitlistForm
         formId="cm9yc2lge0001ie0480n9d87a"
