@@ -1,4 +1,11 @@
 {
+<<<<<<< HEAD
+    "folders": [
+        {
+            "path": "."
+        }
+    ]
+=======
 	"folders": [
 		{
 			"path": "."
@@ -10,4 +17,5 @@
 	"settings": {
 		"postman.settings.dotenv-detection-notification-visibility": false
 	}
+>>>>>>> origin/main
 }

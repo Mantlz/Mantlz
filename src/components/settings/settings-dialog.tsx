@@ -24,6 +24,10 @@ import {
 
 import { navigationData } from '@/config/settings';
 import { AppearanceSettings } from './AppearanceSettings';
+<<<<<<< HEAD
+import NotificationSettings from './NotificationSettings';
+=======
+>>>>>>> origin/main
 import UsageSettings from './usage';
 import { getIcon, iconMap } from '@/types/iconMap';
 import { cn } from '@/lib/utils';
