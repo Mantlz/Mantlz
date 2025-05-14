@@ -1,5 +1,5 @@
 "use client"
-import { DynamicForm , ContactForm, WaitlistForm} from '@mantlz/nextjs';
+import { DynamicForm , WaitlistForm} from '@mantlz/nextjs';
 
 export default function CustomerFeedbackPage() {
   return (
