@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react";
-import { Bell, Loader2, RefreshCw, AlertCircle, Code } from "lucide-react";
+import { Bell, Loader2, RefreshCw, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,

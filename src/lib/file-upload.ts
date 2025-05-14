@@ -6,7 +6,7 @@ export async function uploadFile(file: File): Promise<string> {
       publicKey: process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY || '',
     });
     return result.cdnUrl;
-  } catch (error) {
+  } catch {
     throw new Error('File upload failed');
   }
 } 

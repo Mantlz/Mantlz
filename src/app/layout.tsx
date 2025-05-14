@@ -12,6 +12,7 @@ import { Suspense } from 'react'
 import ClientWrapper from "@/components/global/client-wrapper"
 import { FONT_FAMILIES, type FontFamily } from "@/lib/fonts"
 import { FontInitializer } from "@/components/global/font-initializer"
+import Script from "next/script"
 
 const sansFont = Space_Grotesk({
   subsets: ["latin"],
@@ -109,11 +110,11 @@ export default function RootLayout({
   
   return (
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
-      <html lang="en" suppressHydrationWarning>
+      <html lang="en" suppressHydrationWarning className={`${sansFont.variable} ${monoFont.variable}`}>
         <head>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-          <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+          <Script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js" strategy="afterInteractive" />
         </head>
         <body className={`${fontVariable} font-regular antialiased tracking-wide`}>
           <main className="h-screen bg-background text-foreground transition-colors duration-300">

@@ -46,10 +46,10 @@ export const UPLOADCARE_CONFIG = {
 export function FileUpload({
   value,
   onChange,
-  name,
+  //name,
   accept,
   maxSize = 10 * 1024 * 1024, // 10MB default
-  required = false,
+  //required = false,
   disabled = false,
   className,
 }: FileUploadProps) {
