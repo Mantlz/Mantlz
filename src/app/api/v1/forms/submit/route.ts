@@ -87,7 +87,7 @@ export async function POST(req: Request) {
       const formData = await req.formData();
       console.log('Form data received:', {
         keys: Array.from(formData.keys()),
-        hasFiles: Array.from(formData.values()).some(v => v instanceof File)
+        hasFiles: Array.from(formData.values()).some(v => v instanceof Blob)
       });
       
       formId = formData.get('formId') as string;
@@ -95,10 +95,10 @@ export async function POST(req: Request) {
 
       // Process form data
       for (const [key, value] of formData.entries()) {
-        console.log(`Processing field: ${key}`, value instanceof File ? 'File' : 'Text');
-        if (value instanceof File) {
+        console.log(`Processing field: ${key}`, value instanceof Blob ? 'File' : 'Text');
+        if (value instanceof Blob) {
           try {
-            console.log(`Uploading file: ${value.name} (${value.size} bytes)`);
+            console.log(`Uploading file: ${value instanceof File ? value.name : 'blob'} (${value.size} bytes)`);
             const fileUrl = await uploadFile(value);
             console.log('File uploaded successfully:', fileUrl);
             submissionData[key] = fileUrl;
