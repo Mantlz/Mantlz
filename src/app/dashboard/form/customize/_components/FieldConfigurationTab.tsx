@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { FormFieldItem } from './FormFieldItem';
 import { FormField } from '../types';
-import { PlusCircleIcon, CheckCircleIcon, LayersIcon, ArrowDownIcon, GripHorizontal, InfoIcon } from 'lucide-react';
+import { PlusCircleIcon, CheckCircleIcon, LayersIcon, ArrowDownIcon, GripHorizontal, InfoIcon, LockIcon, CrownIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { 
   DndContext, 
@@ -20,6 +20,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis, restrictToParentElement } from '@dnd-kit/modifiers';
+import { useSubscription } from '@/hooks/useSubscription';
 
 interface FieldConfigurationTabProps {
   formFields: FormField[];
@@ -27,7 +28,6 @@ interface FieldConfigurationTabProps {
   formType: string;
   onUpdateField: (id: string, property: string, value: string | boolean | number | string[]) => void;
   onToggleField: (field: FormField) => void;
-  onMoveField: (id: string, direction: 'up' | 'down') => void;
   onToggleRequired: (id: string, required: boolean) => void;
   onReorderFields?: (startIndex: number, endIndex: number) => void;
 }
@@ -38,11 +38,10 @@ export function FieldConfigurationTab({
   formType, 
   onUpdateField, 
   onToggleField, 
-  onMoveField, 
   onToggleRequired,
   onReorderFields
 }: FieldConfigurationTabProps) {
-  // Client-side only rendering flag
+  const { isPremium } = useSubscription();
   const [isClient, setIsClient] = useState(false);
   
   useEffect(() => {
@@ -70,22 +69,8 @@ export function FieldConfigurationTab({
       const activeIndex = formFields.findIndex(field => field.id === active.id);
       const overIndex = formFields.findIndex(field => field.id === over.id);
       
-      if (activeIndex !== -1 && overIndex !== -1) {
-        // If we have the reorderFields function, use it for more efficient reordering
-        if (onReorderFields) {
-          onReorderFields(activeIndex, overIndex);
-        } else {
-          // Fallback to using the moveField function repeatedly
-          const direction = activeIndex < overIndex ? 'down' : 'up';
-          const steps = Math.abs(activeIndex - overIndex);
-          for (let i = 0; i < steps; i++) {
-            if (direction === 'down') {
-              onMoveField(active.id as string, 'down');
-            } else {
-              onMoveField(active.id as string, 'up');
-            }
-          }
-        }
+      if (activeIndex !== -1 && overIndex !== -1 && onReorderFields) {
+        onReorderFields(activeIndex, overIndex);
       }
     }
   };
@@ -140,7 +125,6 @@ export function FieldConfigurationTab({
                 index={index}
                 arrLength={formFields.length}
                 onUpdate={onUpdateField}
-                onMove={onMoveField} 
                 onToggleRequired={onToggleRequired}
                 onRemove={onToggleField}
               />
@@ -150,6 +134,11 @@ export function FieldConfigurationTab({
       </DndContext>
     );
   };
+
+  // Filter available fields - show all fields but mark premium ones
+  const filteredAvailableFields = availableFields.filter(field => {
+    return !formFields.some(f => f.id === field.id);
+  });
 
   return (
     <div className="space-y-5">
@@ -191,44 +180,54 @@ export function FieldConfigurationTab({
         <h3 className="text-sm font-medium mb-3 text-neutral-800 dark:text-neutral-200">
           <span className="flex items-center gap-2">
             <PlusCircleIcon className="h-4 w-4 text-primary/70" />
-            Add Components
+            Available Fields
           </span>
         </h3>
-        {availableFields.length === 0 ? (
-           <p className="text-sm text-neutral-500 dark:text-neutral-400 p-3 bg-zinc-50/80 dark:bg-zinc-800/30 rounded-lg border border-neutral-200 dark:border-zinc-800">
-             No additional fields available for this form type.
-           </p>
+        {filteredAvailableFields.length === 0 ? (
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 p-3 bg-zinc-50/80 dark:bg-zinc-800/30 rounded-lg border border-neutral-200 dark:border-zinc-800">
+            No additional fields available for this form type.
+          </p>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
-            {availableFields.map(field => {
-              const isAdded = formFields.some(f => f.id === field.id)
+            {filteredAvailableFields.map(field => {
+              const isAdded = formFields.some(f => f.id === field.id);
               return (
                 <div 
                   key={field.id} 
                   className={cn(
-                    "flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 cursor-pointer",
+                    "flex items-center gap-2 px-3 py-2.5 rounded-lg transition-all duration-200",
                     isAdded 
                       ? 'bg-zinc-100/80 text-neutral-400 dark:bg-zinc-800/60 dark:text-neutral-500 border border-neutral-200 dark:border-zinc-800 opacity-60 cursor-not-allowed' 
-                      : 'bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 hover:border-primary/20 dark:hover:border-primary/20 hover:shadow-sm'
+                      : field.premium && !isPremium
+                        ? 'bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 opacity-70 cursor-not-allowed'
+                        : 'bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 hover:border-primary/20 dark:hover:border-primary/20 hover:shadow-sm cursor-pointer'
                   )}
-                  onClick={() => !isAdded && onToggleField(field)}
+                  onClick={() => !isAdded && (!field.premium || isPremium) && onToggleField(field)}
                   role="button"
-                  aria-disabled={isAdded}
-                  tabIndex={isAdded ? -1 : 0}
+                  aria-disabled={isAdded || (field.premium && !isPremium)}
+                  tabIndex={isAdded || (field.premium && !isPremium) ? -1 : 0}
                 >
                   {isAdded ? (
                     <CheckCircleIcon className="h-4 w-4 text-green-500 dark:text-green-400 shrink-0" />
                   ) : (
                     <PlusCircleIcon className="h-4 w-4 text-primary shrink-0" />
                   )}
-                  <span className="text-sm whitespace-nowrap overflow-hidden text-ellipsis">
-                    {field.label}
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-sm font-medium text-neutral-800 dark:text-neutral-200 truncate">
+                      {field.label}
+                    </span>
                     {!isAdded && (
-                      <span className="text-xs text-neutral-400 dark:text-neutral-500 ml-1">
-                        ({getFieldTypeLabel(field.type)})
+                      <span className="text-xs text-neutral-500 dark:text-neutral-400 flex items-center gap-1">
+                        {getFieldTypeLabel(field.type)}
+                        {field.premium && !isPremium && (
+                          <span className="ml-1 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-amber-500 to-yellow-500 text-white">
+                            <CrownIcon className="h-3 w-3" />
+                            Pro
+                          </span>
+                        )}
                       </span>
                     )}
-                  </span>
+                  </div>
                 </div>
               )
             })}

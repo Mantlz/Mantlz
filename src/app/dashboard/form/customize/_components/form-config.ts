@@ -31,13 +31,31 @@ export const availableFieldsByType: Record<string, FormField[]> = {
     { id: 'phone', name: 'phone', label: 'Phone', type: 'text', required: false, placeholder: 'Your phone number' },
     { id: 'subject', name: 'subject', label: 'Subject', type: 'text', required: false, placeholder: 'Subject' },
     { id: 'subscribe', name: 'subscribe', label: 'Subscribe to newsletter', type: 'checkbox', required: false },
-    { id: 'attachment', name: 'attachment', label: 'Attachment', type: 'file', required: false, accept: ['.pdf', '.doc', '.docx', '.txt', '.jpg', '.jpeg', '.png'], maxSize: 10 * 1024 * 1024 }, // 10MB max
+    { 
+      id: 'attachment', 
+      name: 'attachment', 
+      label: 'Attachment', 
+      type: 'file', 
+      required: false, 
+      accept: ['.pdf', '.doc', '.docx', '.txt', '.jpg', '.jpeg', '.png'], 
+      maxSize: 10 * 1024 * 1024, // 10MB max
+      premium: true // Mark as premium feature
+    },
   ],
   feedback: [
     { id: 'improvement', name: 'improvement', label: 'Suggested improvement', type: 'textarea', required: false, placeholder: 'Your suggestions...' },
     { id: 'wouldRecommend', name: 'wouldRecommend', label: 'Would recommend', type: 'checkbox', required: false },
     { id: 'contactMe', name: 'contactMe', label: 'Contact me about my feedback', type: 'checkbox', required: false },
-    { id: 'screenshot', name: 'screenshot', label: 'Screenshot (optional)', type: 'file', required: false, accept: ['.jpg', '.jpeg', '.png'], maxSize: 5 * 1024 * 1024 }, // 5MB max
+    { 
+      id: 'screenshot', 
+      name: 'screenshot', 
+      label: 'Screenshot (optional)', 
+      type: 'file', 
+      required: false, 
+      accept: ['.jpg', '.jpeg', '.png'], 
+      maxSize: 5 * 1024 * 1024, // 5MB max
+      premium: true // Mark as premium feature
+    },
   ],
 };
 

@@ -9,6 +9,9 @@ import { Button } from '@/components/ui/button';
 import { PreviewStarRating } from './PreviewStarRating';
 import { FormField } from '../types';
 import { cn } from '@/lib/utils';
+import { useSubscription } from '@/hooks/useSubscription';
+import { FileUpload } from '@/components/ui/file-upload';
+import { CrownIcon } from 'lucide-react';
 
 interface FormPreviewProps {
   formTitle: string;
@@ -22,6 +25,8 @@ export function FormPreview({
   formDescription, 
   formFields,
 }: FormPreviewProps) {
+  const { isPremium } = useSubscription();
+
   return (
     <div className="py-6 px-4 rounded-lg bg-white dark:bg-zinc-950">
       <div className='pb-4 mb-4 border-b border-zinc-200 dark:border-zinc-800'>
@@ -44,10 +49,18 @@ export function FormPreview({
                     "text-neutral-800 dark:text-neutral-300",
                     field.required && "flex items-center gap-1"
                   )}>
-                    {field.label} 
-                    {field.required && (
-                      <span className="text-red-500 font-medium text-xs">*</span>
-                    )}
+                    <span className="flex items-center gap-2">
+                      {field.label} 
+                      {field.required && (
+                        <span className="text-red-500 font-medium text-xs">*</span>
+                      )}
+                      {field.premium && !isPremium && (
+                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-amber-500 to-yellow-500 text-white">
+                          <CrownIcon className="h-3 w-3" />
+                          Pro
+                        </span>
+                      )}
+                    </span>
                   </Label>
                 )}
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity">
@@ -56,10 +69,9 @@ export function FormPreview({
                   </div>
                 </div>
               </div>
-              
+
               {field.type === 'text' && (
                 <Input
-                  type="text"
                   className={cn(
                     "w-full p-2 rounded-lg",
                     "bg-zinc-50 dark:bg-zinc-900",
@@ -73,6 +85,7 @@ export function FormPreview({
                   disabled
                 />
               )}
+
               {field.type === 'email' && (
                 <Input
                   type="email"
@@ -89,6 +102,7 @@ export function FormPreview({
                   disabled
                 />
               )}
+
               {field.type === 'textarea' && (
                 <Textarea
                   className={cn(
@@ -105,6 +119,7 @@ export function FormPreview({
                   disabled
                 />
               )}
+
               {field.type === 'number' && field.name !== 'rating' && (
                 <Input
                   type="number"
@@ -121,34 +136,25 @@ export function FormPreview({
                   disabled
                 />
               )}
+
               {field.type === 'checkbox' && (
                 <div className="flex items-center gap-2 opacity-70 py-1">
                   <Checkbox disabled className="rounded-lg border-neutral-400 dark:border-zinc-600 h-4 w-4" />
                   <span className="text-sm text-neutral-600 dark:text-neutral-400">{field.placeholder || 'Check this option'}</span>
                 </div>
               )}
-              {field.type === 'select' && (
-                <div className="relative">
-                  <select 
-                    className={cn(
-                      "w-full p-2 rounded-lg appearance-none pr-8",
-                      "bg-zinc-50 dark:bg-zinc-900",
-                      "border border-neutral-200 dark:border-zinc-800",
-                      "text-neutral-500 dark:text-neutral-400",
-                      "placeholder:text-neutral-400 dark:placeholder:text-neutral-500",
-                      "cursor-not-allowed transition-colors group-hover:border-primary/30",
-                      "focus:ring-2 focus:ring-primary/20"
-                    )}
-                    disabled
-                  >
-                    <option value="">{field.placeholder || 'Select an option'}</option>
-                    {field.options?.map((opt, i) => <option key={i} value={opt}>{opt}</option>)}
-                  </select>
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
+
+              {field.type === 'file' && (
+                <div className={cn(
+                  "opacity-70",
+                  field.premium && !isPremium && "opacity-70"
+                )}>
+                  <FileUpload
+                    disabled={true}
+                    accept={field.accept}
+                    maxSize={field.maxSize}
+                    className="w-full"
+                  />
                 </div>
               )}
             </div>
