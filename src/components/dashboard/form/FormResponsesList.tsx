@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { format } from "date-fns"
-import { Eye, FileText, AlertCircle, Mail, Calendar } from "lucide-react"
+import { Eye, FileText, AlertCircle, Mail, Calendar, Download, FileIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
@@ -35,6 +35,23 @@ interface FormResponsesListProps {
   submissions?: { submissions: Submission[] }
   onRetry: () => void
   onSubmissionDelete?: (id: string) => void
+}
+
+// Add helper function to check if a value is a file URL
+const isFileUrl = (value: string | null | undefined): boolean => {
+  if (!value) return false;
+  return value.startsWith('https://ucarecdn.com/') || value.startsWith('http');
+}
+
+// Add helper function to get file name from URL
+const getFileNameFromUrl = (url: string): string => {
+  try {
+    const urlObj = new URL(url);
+    const pathParts = urlObj.pathname.split('/');
+    return pathParts[pathParts.length - 1] || 'Download';
+  } catch {
+    return 'Download';
+  }
 }
 
 export function FormResponsesList({
@@ -190,15 +207,47 @@ export function FormResponsesList({
                   <Calendar className="h-3.5 w-3.5 mr-2 text-zinc-400 sm:hidden" />
                   {submission.createdAt ? format(new Date(submission.createdAt), "MMM d, yyyy h:mm a") : "—"}
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center gap-2">
                   <Badge
                     variant="secondary"
                     className="text-[10px] px-2 py-0.5 rounded-lg bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
                   >
                     Complete
                   </Badge>
+                  {Object.entries(submission.data).map(([key, value]) => {
+                    if (typeof value === 'string' && isFileUrl(value)) {
+                      return (
+                        <Badge
+                          key={key}
+                          variant="outline"
+                          className="text-[10px] px-2 py-0.5 rounded-lg bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 flex items-center gap-1"
+                        >
+                          <FileIcon className="h-3 w-3" />
+                          {key}
+                        </Badge>
+                      );
+                    }
+                    return null;
+                  })}
                 </div>
-                <div className="flex justify-end">
+                <div className="flex justify-end gap-2">
+                  {Object.entries(submission.data).map(([key, value]) => {
+                    if (typeof value === 'string' && isFileUrl(value)) {
+                      return (
+                        <Button
+                          key={key}
+                          variant="outline"
+                          size="sm"
+                          className="h-8 text-xs cursor-pointer bg-white hover:bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                          onClick={() => window.open(value, '_blank')}
+                        >
+                          <Download className="h-3.5 w-3.5 mr-1.5 text-zinc-500" />
+                          {getFileNameFromUrl(value)}
+                        </Button>
+                      );
+                    }
+                    return null;
+                  })}
                   <Sheet
                     open={sheetOpen && selectedSubmission?.id === submission.id}
                     onOpenChange={(open) => {

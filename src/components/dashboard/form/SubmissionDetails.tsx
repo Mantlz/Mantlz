@@ -1,6 +1,6 @@
 "use client"
 
-import { Copy, CheckCheck, Calendar, File, Trash2, MapPin, Loader2 } from "lucide-react"
+import { Copy, CheckCheck, Calendar, File, Trash2, MapPin, Loader2, Download, FileIcon } from "lucide-react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -35,6 +35,23 @@ interface SubmissionDetailsProps {
   isLoading?: boolean
   onBack?: () => void
   onDelete?: (id: string) => void
+}
+
+// Add helper function to check if a value is a file URL
+const isFileUrl = (value: string | null | undefined): boolean => {
+  if (!value) return false;
+  return value.startsWith('https://ucarecdn.com/') || value.startsWith('http');
+}
+
+// Add helper function to get file name from URL
+const getFileNameFromUrl = (url: string): string => {
+  try {
+    const urlObj = new URL(url);
+    const pathParts = urlObj.pathname.split('/');
+    return pathParts[pathParts.length - 1] || 'Download';
+  } catch {
+    return 'Download';
+  }
 }
 
 export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: SubmissionDetailsProps) {
@@ -125,10 +142,11 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
 
   return (
     <>
-      
-        <div className="bg-zinc-100 dark:bg-zinc-900 p-4 sm:p-6  ">
-          <div className="bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800  rounded-2xl flex flex-col p-2 sm:flex-row sm:items-center justify-between gap-4">
-            <div className="space-y-2  p-2">
+      <div className="flex flex-col h-full">
+        {/* Header Section */}
+        <div className="bg-gradient-to-br from-zinc-50 to-white dark:from-zinc-900 dark:to-zinc-800 p-4 sm:p-6 border-b border-zinc-200 dark:border-zinc-800">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-2">
               <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 tracking-tight flex flex-wrap items-center gap-2">
                 <span>Submission Details</span>
                 <Badge
@@ -143,7 +161,7 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
                 <span>Received {formatDistanceToNow(new Date(submission.submittedAt), { addSuffix: true })}</span>
               </div>
             </div>
-            <div className="flex items-center gap-2  self-start sm:self-auto mt-2 sm:mt-0">
+            <div className="flex items-center gap-2 self-start sm:self-auto mt-2 sm:mt-0">
               <Button
                 variant="outline"
                 size="sm"
@@ -185,67 +203,97 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
                   ? `${submission.location.city}, ${submission.location.country}`
                   : submission.location.country || "Location recorded"}
               </span>
-              <Badge variant="outline" className="ml-auto text-[10px] bg-red-500">
+              <Badge variant="outline" className="ml-auto text-[10px] bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200">
                 Lat: {submission.location.lat.toFixed(4)}, Lng: {submission.location.lng.toFixed(4)}
               </Badge>
-              
             </div>
           </div>
         )}
 
         {/* Content section */}
-        <CardContent className="p-4 sm:p-6 space-y-6">
-          <div className="flex items-center mb-2">
-            <File className="h-3.5 w-3.5 mr-2 text-zinc-500" />
-            <h3 className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Form Data</h3>
-          </div>
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+          <div className="space-y-6">
+            <div className="flex items-center mb-2">
+              <File className="h-3.5 w-3.5 mr-2 text-zinc-500" />
+              <h3 className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Form Data</h3>
+            </div>
 
-          <div className="space-y-4">
-            {Object.entries(submission.data)
-            .filter(([key]) => key !== '_meta')
-            .map(([key, value]) => (
-              <div
-                key={key}
-                className="p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-zinc-300 dark:bg-zinc-600 rounded-lg mr-2"></div>
-                    <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
-                      {key}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-7 px-2 text-zinc-500 cursor-pointer dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
-                      onClick={() => copyToClipboard(key, value)}
-                    >
-                      {copiedField === key ? (
-                        <CheckCheck className="h-3.5 w-3.5 mr-1 text-green-500" />
+            <div className="grid gap-4">
+              {Object.entries(submission.data)
+                .filter(([key]) => key !== '_meta')
+                .map(([key, value]) => (
+                  <div
+                    key={key}
+                    className="group relative overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm transition-all duration-200 hover:shadow-md"
+                  >
+                    <div className="p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-blue-500 dark:bg-blue-400 rounded-full"></div>
+                          <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                            {key}
+                          </p>
+                        </div>
+                        {typeof value === 'string' && isFileUrl(value) ? (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-8 text-xs cursor-pointer bg-white hover:bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                            onClick={() => window.open(value, '_blank')}
+                          >
+                            <Download className="h-3.5 w-3.5 mr-1.5 text-zinc-500" />
+                            {getFileNameFromUrl(value)}
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-8 text-xs cursor-pointer bg-white hover:bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                            onClick={() => copyToClipboard(key, value)}
+                          >
+                            {copiedField === key ? (
+                              <CheckCheck className="h-3.5 w-3.5 mr-1.5 text-green-500" />
+                            ) : (
+                              <Copy className="h-3.5 w-3.5 mr-1.5" />
+                            )}
+                            <span className="text-xs">{copiedField === key ? "Copied!" : "Copy"}</span>
+                          </Button>
+                        )}
+                      </div>
+                      {typeof value === 'string' && isFileUrl(value) ? (
+                        <div className="flex items-center gap-2 p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg border border-zinc-200 dark:border-zinc-700">
+                          <FileIcon className="h-5 w-5 text-zinc-500" />
+                          <a
+                            href={value}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-blue-600 dark:text-blue-400 hover:underline flex-1 truncate"
+                          >
+                            {getFileNameFromUrl(value)}
+                          </a>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 w-7 p-0 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                            onClick={() => window.open(value, '_blank')}
+                          >
+                            <Download className="h-4 w-4 text-zinc-500" />
+                          </Button>
+                        </div>
                       ) : (
-                        <Copy className="h-3.5 w-3.5 mr-1" />
+                        <div className="p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg border border-zinc-200 dark:border-zinc-700">
+                          <p className="text-sm text-zinc-900 dark:text-zinc-100 break-words whitespace-pre-wrap">
+                            {typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value)}
+                          </p>
+                        </div>
                       )}
-                      <span className="text-xs font-medium">{copiedField === key ? "Copied!" : "Copy"}</span>
-                    </Button>
-                    <Badge
-                      variant="secondary"
-                      className="text-[10px] bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200"
-                    >
-                      {typeof value === "string" ? `${value.length} chars` : typeof value}
-                    </Badge>
+                    </div>
                   </div>
-                </div>
-                <div className="h-px w-full bg-zinc-100 dark:bg-zinc-800 mb-3"></div>
-                <div className="overflow-x-auto">
-                  <p className="text-zinc-900 dark:text-zinc-100 text-sm break-words">{String(value)}</p>
-                </div>
-              </div>
-            ))}
+                ))}
+            </div>
           </div>
-        </CardContent>
-      {/* </Card> */}
+        </div>
+      </div>
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={(open) => !isDeleting && setDeleteDialogOpen(open)}>
