@@ -19,8 +19,7 @@ interface FormSubmissionData {
 
 const submitSchema = z.object({
   formId: z.string(),
-  apiKey: z.string(),
-  //recaptchaToken: z.string(),
+  //apiKey: z.string(),
   redirectUrl: z.string().optional(),
   data: z.record(z.unknown()).refine((data) => {
     return typeof data.email === 'string' || data.email === undefined;
@@ -64,17 +63,85 @@ export async function POST(req: Request) {
       console.log('Rate limiting is disabled or not configured');
     }
 
-    const body = await req.json() as { apiKey?: string; [key: string]: unknown };
-    
-    // Accept API key from body or header
+    // Get API key from header or body
     const apiKeyHeader = req.headers.get('X-API-Key');
-    const apiKeyBody = body.apiKey;
+    const apiKeyBody = req.headers.get('Authorization')?.replace('Bearer ', '');
     const apiKey = apiKeyHeader || apiKeyBody;
     
-    // Replace body.apiKey with our apiKey variable in the parse call
-    body.apiKey = apiKey;
-    
-    const { formId, redirectUrl, data } = submitSchema.parse(body) as SubmitSchemaType;
+    if (!apiKey) {
+      console.log('API key validation failed');
+      return NextResponse.json(
+        { message: 'API key is required' },
+        { status: 401 }
+      );
+    }
+
+    // Check content type to determine how to parse the body
+    const contentType = req.headers.get('content-type') || '';
+    let formId: string;
+    let redirectUrl: string | undefined;
+    let submissionData: FormSubmissionData = {};
+
+    if (contentType.includes('multipart/form-data')) {
+      // Handle form-data
+      const formData = await req.formData();
+      console.log('Form data received:', {
+        keys: Array.from(formData.keys()),
+        hasFiles: Array.from(formData.values()).some(v => v instanceof File)
+      });
+      
+      formId = formData.get('formId') as string;
+      redirectUrl = formData.get('redirectUrl') as string | undefined;
+
+      // Process form data
+      for (const [key, value] of formData.entries()) {
+        console.log(`Processing field: ${key}`, value instanceof File ? 'File' : 'Text');
+        if (value instanceof File) {
+          try {
+            console.log(`Uploading file: ${value.name} (${value.size} bytes)`);
+            const fileUrl = await uploadFile(value);
+            console.log('File uploaded successfully:', fileUrl);
+            submissionData[key] = fileUrl;
+          } catch (error) {
+            console.error('File upload error:', error);
+            return NextResponse.json(
+              { message: 'Failed to upload file' },
+              { status: 500 }
+            );
+          }
+        } else {
+          submissionData[key] = value;
+        }
+      }
+
+      // Validate form data
+      const validatedData = submitSchema.parse({
+        formId,
+        apiKey,
+        redirectUrl,
+        data: submissionData
+      });
+      formId = validatedData.formId;
+      redirectUrl = validatedData.redirectUrl;
+      submissionData = validatedData.data as FormSubmissionData;
+    } else {
+      // Handle JSON
+      const body = await req.json() as SubmitSchemaType;
+      const validatedData = submitSchema.parse(body);
+      formId = validatedData.formId;
+      redirectUrl = validatedData.redirectUrl;
+      submissionData = validatedData.data as FormSubmissionData;
+    }
+
+    console.log('Form ID:', formId, 'Redirect URL:', redirectUrl);
+
+    if (!formId) {
+      console.log('Form ID validation failed');
+      return NextResponse.json(
+        { message: 'Form ID is required' },
+        { status: 400 }
+      );
+    }
 
     // Get request metadata for debugging
     const headers = req.headers;
@@ -162,28 +229,9 @@ export async function POST(req: Request) {
       );
     }
 
-    // Process form data and handle file uploads
-    const submissionData: FormSubmissionData = { ...data as Record<string, string | number | boolean | File | undefined> };
-    console.log('Processing form fields...');
-    
-    // Handle file uploads if present in formData
-    const formData = await req.formData();
-    for (const [key, value] of formData.entries()) {
-      if (value instanceof File) {
-        try {
-          console.log(`Uploading file: ${value.name} (${value.size} bytes)`);
-          const fileUrl = await uploadFile(value);
-          console.log('File uploaded successfully:', fileUrl);
-          submissionData[key] = fileUrl;
-        } catch (error) {
-          console.error('File upload error:', error);
-          return NextResponse.json(
-            { message: 'Failed to upload file' },
-            { status: 500 }
-          );
-        }
-      }
-    }
+    // Remove formId and redirectUrl from submission data
+    delete submissionData.formId;
+    delete submissionData.redirectUrl;
 
     // Capture user agent and location information
     const analyticsHeaders = {
@@ -203,7 +251,7 @@ export async function POST(req: Request) {
       data: {
         formId,
         data: enhancedData as Prisma.InputJsonValue,
-        email: typeof data.email === 'string' ? data.email : undefined,
+        email: typeof submissionData.email === 'string' ? submissionData.email : undefined,
       },
     });
     console.log('Submission created:', submission.id);
@@ -225,7 +273,7 @@ export async function POST(req: Request) {
     if (
       (form.user.plan === Plan.STANDARD || form.user.plan === Plan.PRO) && 
       form.emailSettings?.enabled && 
-      typeof data.email === 'string'
+      typeof submissionData.email === 'string'
     ) {
       try {
         const resendApiKey = process.env.RESEND_API_KEY;
@@ -246,7 +294,7 @@ export async function POST(req: Request) {
 
         await resendClient.emails.send({
           from: fromEmail,
-          to: data.email,
+          to: submissionData.email,
           subject,
           replyTo: form.emailSettings.replyTo || 'contact@mantlz.app',
           html: htmlContent,
@@ -254,7 +302,7 @@ export async function POST(req: Request) {
 
         // Log successful email
         await debugService.logEmailSent(formId, submission.id, {
-          to: data.email,
+          to: submissionData.email,
           subject,
           from: fromEmail,
           userId: apiKeyRecord.userId,

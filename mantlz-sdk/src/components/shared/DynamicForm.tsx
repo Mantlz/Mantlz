@@ -294,13 +294,13 @@ export default function DynamicForm({
   }, [defaultValues, formMethods]);
 
   // Helper to remove empty fields from submission
-  const removeEmptyFields = (data: Record<string, any>) => {
-    return Object.fromEntries(
-      Object.entries(data).filter(([_, value]) => 
-        value !== undefined && value !== null && value !== ''
-      )
-    );
-  };
+  // const removeEmptyFields = (data: Record<string, any>) => {
+  //   return Object.fromEntries(
+  //     Object.entries(data).filter(([_, value]) => 
+  //       value !== undefined && value !== null && value !== ''
+  //     )
+  //   );
+  // };
 
   // Form submission handler
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
@@ -319,10 +319,40 @@ export default function DynamicForm({
       if (!client) {
         throw new Error('Client is not initialized');
       }
+
+      // Check if we have any file uploads in the current submission
+      const hasFileUploads = Object.values(data).some(value => value instanceof File);
+      
+      let submissionData;
+      
+      if (hasFileUploads) {
+        // Only use FormData if we actually have files to upload
+        const formDataToSend = new FormData();
+        formDataToSend.append('formId', formId);
+        
+        // Add all form fields
+        for (const [key, value] of Object.entries(data)) {
+          if (value instanceof File) {
+            formDataToSend.append(key, value);
+          } else if (value !== undefined && value !== null) {
+            formDataToSend.append(key, String(value));
+          }
+        }
+        
+        submissionData = formDataToSend;
+      } else {
+        // If no files in this submission, use regular JSON
+        // Remove any undefined or null values
+        submissionData = Object.fromEntries(
+          Object.entries(data).filter(([_, value]) => 
+            value !== undefined && value !== null
+          )
+        );
+      }
       
       await client.submitForm(formData.formType || 'contact', {
         formId,
-        data: removeEmptyFields(data),
+        data: submissionData,
       });
       
       setSubmitted(true);

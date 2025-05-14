@@ -1,6 +1,6 @@
 {
   "name": "@mantlz/nextjs",
-  "version": "0.3.5",
+  "version": "0.3.7",
   "description": "TypeScript-native form backend service for NextJS",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
