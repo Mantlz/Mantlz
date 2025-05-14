@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Upload } from 'lucide-react'
 import { cn } from '../../utils/cn'
 
@@ -26,12 +26,30 @@ export function FileUpload({
   disabled = false,
   className,
 }: FileUploadProps) {
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      onChange?.(file)
+      // Validate file size
+      if (maxSize && file.size > maxSize) {
+        alert(`File size must be less than ${maxSize / (1024 * 1024)}MB`);
+        return;
+      }
+      
+      // Validate file type
+      if (accept && accept.length > 0) {
+        const fileType = file.type.split('/')[1];
+        const isValidType = accept.some(type => 
+          type.startsWith('.') ? file.name.toLowerCase().endsWith(type.toLowerCase()) : file.type.includes(type)
+        );
+        if (!isValidType) {
+          alert(`File type must be one of: ${accept.join(', ')}`);
+          return;
+        }
+      }
+      
+      onChange?.(file);
     }
-  }
+  }, [onChange, maxSize, accept]);
 
   return (
     <div className={cn('relative', className)}>
