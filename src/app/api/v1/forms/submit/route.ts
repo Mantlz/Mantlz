@@ -11,6 +11,12 @@ import { ratelimitConfig } from '@/lib/ratelimiter';
 import { enhanceDataWithAnalytics } from '@/lib/analytics-utils';
 import { uploadFile } from '@/lib/file-upload';
 
+// Define types for form submission data
+interface FormSubmissionData {
+  [key: string]: string | number | boolean | File | undefined;
+  email?: string;
+}
+
 const submitSchema = z.object({
   formId: z.string(),
   apiKey: z.string(),
@@ -23,15 +29,7 @@ const submitSchema = z.object({
   }),
 });
 
-// type SubmitSchemaType = z.infer<typeof submitSchema>;
-
-// interface RecaptchaResponse {
-//   success: boolean;
-//   score: number;
-//   challenge_ts?: string;
-//   hostname?: string;
-//   'error-codes'?: string[];
-// }
+type SubmitSchemaType = z.infer<typeof submitSchema>;
 
 export async function POST(req: Request) {
   try {
@@ -184,7 +182,7 @@ export async function POST(req: Request) {
     }
 
     // Process form data
-    const submissionData: Record<string, any> = {};
+    const submissionData: FormSubmissionData = {};
     console.log('Processing form fields...');
     
     for (const [key, value] of formData.entries()) {
