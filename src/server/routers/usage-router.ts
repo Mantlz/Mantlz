@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { HTTPException } from "hono/http-exception";
 import { addMonths, startOfMonth } from "date-fns";
 import { getQuotaByPlan } from "@/config/usage";
+import { QuotaService } from "@/services/quota-service";
 
 /**
  * Router for handling user usage information
@@ -127,4 +128,25 @@ export const usageRouter = j.router({
     }
   }),
   
+  simulateEndOfMonth: privateProcedure
+    .mutation(async ({ c, ctx }) => {
+      try {
+        const result = await QuotaService.simulateEndOfMonth(ctx.user.id);
+        return c.superjson(result);
+      } catch (error) {
+        console.error('Error simulating end of month:', error);
+        throw new Error('Failed to simulate end of month');
+      }
+    }),
+
+  getQuotaHistory: privateProcedure
+    .query(async ({ c, ctx }) => {
+      try {
+        const history = await QuotaService.getQuotaHistory(ctx.user.id);
+        return c.superjson(history);
+      } catch (error) {
+        console.error('Error getting quota history:', error);
+        throw new Error('Failed to get quota history');
+      }
+    }),
 }); 

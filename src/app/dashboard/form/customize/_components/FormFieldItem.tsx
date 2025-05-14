@@ -23,8 +23,6 @@ interface FormFieldItemProps {
 
 export function FormFieldItem({
   field,
-  index,
-  arrLength,
   onUpdate,
   onToggleRequired,
   onRemove,

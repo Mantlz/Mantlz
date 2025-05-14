@@ -242,4 +242,77 @@ export class QuotaService {
       }
     });
   }
+
+  /**
+   * Simulate end of month quota reset
+   * This is for testing purposes only
+   */
+  static async simulateEndOfMonth(userId: string) {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1;
+
+    // Get current quota
+    const currentQuota = await this.getCurrentQuota(userId);
+    
+    // Create a new quota for next month
+    const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
+    const nextYear = currentMonth === 12 ? currentYear + 1 : currentYear;
+
+    // Get user's plan
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { plan: true }
+    });
+
+    if (!user) throw new HTTPException(404, { message: "User not found" });
+
+    // Create new quota for next month
+    const nextMonthQuota = await db.quota.create({
+      data: {
+        userId,
+        year: nextYear,
+        month: nextMonth,
+        // Reset submission count
+        submissionCount: 0,
+        // Carry over form and campaign counts
+        formCount: currentQuota.formCount,
+        campaignCount: currentQuota.campaignCount,
+        // Reset email metrics
+        emailsSent: 0,
+        emailsOpened: 0,
+        emailsClicked: 0
+      }
+    });
+
+    return {
+      currentQuota,
+      nextMonthQuota,
+      message: `Simulated end of month. New quota created for ${nextMonth}/${nextYear}`
+    };
+  }
+
+  /**
+   * Get quota history for a user
+   * This is for testing purposes only
+   */
+  static async getQuotaHistory(userId: string) {
+    const quotas = await db.quota.findMany({
+      where: { userId },
+      orderBy: [
+        { year: 'desc' },
+        { month: 'desc' }
+      ]
+    });
+
+    return quotas.map(quota => ({
+      period: `${quota.month}/${quota.year}`,
+      formCount: quota.formCount,
+      submissionCount: quota.submissionCount,
+      campaignCount: quota.campaignCount,
+      emailsSent: quota.emailsSent,
+      emailsOpened: quota.emailsOpened,
+      emailsClicked: quota.emailsClicked
+    }));
+  }
 } 

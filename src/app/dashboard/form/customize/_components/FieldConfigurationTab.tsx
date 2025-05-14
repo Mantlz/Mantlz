@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { FormFieldItem } from './FormFieldItem';
 import { FormField } from '../types';
-import { PlusCircleIcon, CheckCircleIcon, LayersIcon, ArrowDownIcon, GripHorizontal, InfoIcon, LockIcon, CrownIcon } from 'lucide-react';
+import { PlusCircleIcon, CheckCircleIcon, LayersIcon, ArrowDownIcon, GripHorizontal, InfoIcon, CrownIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { 
   DndContext, 

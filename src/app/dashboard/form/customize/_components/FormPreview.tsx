@@ -151,7 +151,7 @@ export function FormPreview({
                 )}>
                   <FileUpload
                     disabled={true}
-                    accept={field.accept}
+                    accept={field.accept?.join(',')}
                     maxSize={field.maxSize}
                     className="w-full"
                   />
