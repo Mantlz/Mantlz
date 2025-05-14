@@ -20,7 +20,7 @@ interface FormSubmissionData {
 const submitSchema = z.object({
   formId: z.string(),
   //apiKey: z.string(),
-  redirectUrl: z.string().optional(),
+  redirectUrl: z.string().nullable().optional(),
   data: z.record(z.unknown()).refine((data) => {
     return typeof data.email === 'string' || data.email === undefined;
   }, {
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
     // Check content type to determine how to parse the body
     const contentType = req.headers.get('content-type') || '';
     let formId: string;
-    let redirectUrl: string | undefined;
+    let redirectUrl: string | null | undefined;
     let submissionData: FormSubmissionData = {};
 
     if (contentType.includes('multipart/form-data')) {
@@ -91,7 +91,7 @@ export async function POST(req: Request) {
       });
       
       formId = formData.get('formId') as string;
-      redirectUrl = formData.get('redirectUrl') as string | undefined;
+      redirectUrl = formData.get('redirectUrl') as string | null | undefined;
 
       // Process form data
       for (const [key, value] of formData.entries()) {
@@ -118,7 +118,7 @@ export async function POST(req: Request) {
       const validatedData = submitSchema.parse({
         formId,
         apiKey,
-        redirectUrl,
+        redirectUrl: redirectUrl || undefined,
         data: submissionData
       });
       formId = validatedData.formId;
