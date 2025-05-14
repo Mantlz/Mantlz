@@ -180,7 +180,7 @@ export function FormResponsesList({
 
       <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
         <CardContent className="p-0">
-          <div className="bg-zinc-50 dark:bg-zinc-800/50 p-3 border-b border-zinc-200 dark:border-zinc-800 grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <div className="bg-zinc-50 dark:bg-zinc-900 p-3 border-b border-zinc-200 dark:border-zinc-800 grid grid-cols-1 sm:grid-cols-4 gap-4">
             <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Email</div>
             <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider hidden sm:block">
               Date

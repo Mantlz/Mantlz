@@ -871,6 +871,9 @@ export const formRouter = j.router({
           })
         ]);
 
+        // Decrement quota formCount after successful deletion
+        await QuotaService.updateQuota(ctx.user.id, { decrementForms: true });
+
         return c.superjson({ success: true });
       } catch (error) {
         console.error('Error deleting form:', error);
@@ -1586,6 +1589,18 @@ export const formRouter = j.router({
         formId: form.id,
         count: usersJoined.enabled ? submissionCount : 0
       });
+    }),
+
+  // Reset form count to match actual forms
+  resetFormCount: privateProcedure
+    .mutation(async ({ c, ctx }) => {
+      try {
+        await QuotaService.resetFormCount(ctx.user.id);
+        return c.superjson({ success: true });
+      } catch (error) {
+        console.error('Error resetting form count:', error);
+        throw new Error('Failed to reset form count');
+      }
     }),
 
 });

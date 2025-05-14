@@ -91,33 +91,6 @@ export function FormFieldItem({
           className="bg-zinc-50 dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700 focus:border-primary/50 focus:ring-primary/20"
         />
 
-        {field.type === 'file' && (
-          <>
-            <div className="space-y-2">
-              <Label className="text-sm font-medium text-neutral-800 dark:text-neutral-200">Accepted File Types</Label>
-              <p className="text-xs text-neutral-500 dark:text-neutral-400">Comma-separated list of file extensions</p>
-              <Input
-                value={Array.isArray(field.accept) ? field.accept.join(',') : field.accept || ''}
-                onChange={(e) => onUpdate(field.id, 'accept', e.target.value.split(','))}
-                placeholder=".pdf,.doc,.docx,.jpg,.png"
-                className="bg-zinc-50 dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700 focus:border-primary/50 focus:ring-primary/20"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label className="text-sm font-medium text-neutral-800 dark:text-neutral-200">Max File Size (MB)</Label>
-              <p className="text-xs text-neutral-500 dark:text-neutral-400">Maximum allowed file size in megabytes</p>
-              <Input
-                type="number"
-                value={field.maxSize ? field.maxSize / (1024 * 1024) : 10}
-                onChange={(e) => onUpdate(field.id, 'maxSize', Number(e.target.value) * 1024 * 1024)}
-                min={1}
-                max={100}
-                className="bg-zinc-50 dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700 focus:border-primary/50 focus:ring-primary/20"
-              />
-            </div>
-          </>
-        )}
-
         {field.type === 'select' && (
           <div className="space-y-2">
             <Label className="text-sm font-medium text-neutral-800 dark:text-neutral-200">Options (one per line)</Label>

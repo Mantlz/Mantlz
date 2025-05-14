@@ -63,12 +63,42 @@ export class QuotaService {
 
     if (!user) throw new HTTPException(404, { message: "User not found" });
 
+    // Count actual forms
+    const actualFormCount = await db.form.count({
+      where: { userId }
+    });
+
+    // Get current quota as backup check
     const quota = await this.getCurrentQuota(userId);
+    
+    // Check rate limiting (max 5 forms per hour)
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+    const recentForms = await db.form.count({
+      where: {
+        userId,
+        createdAt: {
+          gte: oneHourAgo
+        }
+      }
+    });
+
+    if (recentForms >= 5) {
+      throw new HTTPException(429, {
+        message: "Rate limit exceeded. Please wait before creating more forms."
+      });
+    }
+
     const planQuota = getQuotaByPlan(user.plan);
 
-    if (quota.formCount >= planQuota.maxForms) {
+    // Double check both actual count and quota
+    if (actualFormCount >= planQuota.maxForms || quota.formCount >= planQuota.maxForms) {
+      // If there's a mismatch, update the quota to match reality
+      if (actualFormCount !== quota.formCount) {
+        await this.resetFormCount(userId);
+      }
+      
       throw new HTTPException(403, {
-        message: `Form limit reached (${quota.formCount}/${planQuota.maxForms}) for your plan`
+        message: `Form limit reached (${actualFormCount}/${planQuota.maxForms}) for your plan`
       });
     }
 
@@ -136,6 +166,7 @@ export class QuotaService {
    */
   static async updateQuota(userId: string, updates: {
     incrementForms?: boolean;
+    decrementForms?: boolean;
     incrementSubmissions?: boolean;
     incrementCampaigns?: boolean;
     incrementEmails?: number;
@@ -149,7 +180,9 @@ export class QuotaService {
       data: {
         formCount: updates.incrementForms
           ? { increment: 1 }
-          : undefined,
+          : updates.decrementForms
+            ? { decrement: 1 }
+            : undefined,
         submissionCount: updates.incrementSubmissions
           ? { increment: 1 }
           : undefined,
@@ -187,5 +220,26 @@ export class QuotaService {
     }
 
     return true;
+  }
+
+  /**
+   * Reset form count to match actual forms in database
+   */
+  static async resetFormCount(userId: string) {
+    // Count actual forms
+    const actualFormCount = await db.form.count({
+      where: { userId }
+    });
+
+    // Get current quota
+    const quota = await this.getCurrentQuota(userId);
+
+    // Update quota with actual form count
+    return db.quota.update({
+      where: { id: quota.id },
+      data: {
+        formCount: actualFormCount
+      }
+    });
   }
 } 

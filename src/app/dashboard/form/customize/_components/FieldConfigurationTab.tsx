@@ -188,49 +188,92 @@ export function FieldConfigurationTab({
             No additional fields available for this form type.
           </p>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
-            {filteredAvailableFields.map(field => {
-              const isAdded = formFields.some(f => f.id === field.id);
-              return (
-                <div 
-                  key={field.id} 
-                  className={cn(
-                    "flex items-center gap-2 px-3 py-2.5 rounded-lg transition-all duration-200",
-                    isAdded 
-                      ? 'bg-zinc-100/80 text-neutral-400 dark:bg-zinc-800/60 dark:text-neutral-500 border border-neutral-200 dark:border-zinc-800 opacity-60 cursor-not-allowed' 
-                      : field.premium && !isPremium
-                        ? 'bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 opacity-70 cursor-not-allowed'
-                        : 'bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 hover:border-primary/20 dark:hover:border-primary/20 hover:shadow-sm cursor-pointer'
-                  )}
-                  onClick={() => !isAdded && (!field.premium || isPremium) && onToggleField(field)}
-                  role="button"
-                  aria-disabled={isAdded || (field.premium && !isPremium)}
-                  tabIndex={isAdded || (field.premium && !isPremium) ? -1 : 0}
-                >
-                  {isAdded ? (
-                    <CheckCircleIcon className="h-4 w-4 text-green-500 dark:text-green-400 shrink-0" />
-                  ) : (
-                    <PlusCircleIcon className="h-4 w-4 text-primary shrink-0" />
-                  )}
-                  <div className="flex flex-col min-w-0">
-                    <span className="text-sm font-medium text-neutral-800 dark:text-neutral-200 truncate">
-                      {field.label}
-                    </span>
-                    {!isAdded && (
-                      <span className="text-xs text-neutral-500 dark:text-neutral-400 flex items-center gap-1">
-                        {getFieldTypeLabel(field.type)}
-                        {field.premium && !isPremium && (
-                          <span className="ml-1 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-amber-500 to-yellow-500 text-white">
-                            <CrownIcon className="h-3 w-3" />
-                            Pro
-                          </span>
-                        )}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              )
-            })}
+          <div className="space-y-4">
+            {/* Standard Fields */}
+            <div>
+              <h4 className="text-xs font-medium text-neutral-500 dark:text-neutral-400 mb-2 px-1">
+                Standard Fields
+              </h4>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {filteredAvailableFields
+                  .filter(field => !field.premium)
+                  .map(field => (
+                    <div 
+                      key={field.id} 
+                      className={cn(
+                        "flex items-center gap-2 px-3 py-2.5 rounded-lg transition-all duration-200",
+                        formFields.some(f => f.id === field.id)
+                          ? 'bg-zinc-100/80 text-neutral-400 dark:bg-zinc-800/60 dark:text-neutral-500 border border-neutral-200 dark:border-zinc-800 opacity-60 cursor-not-allowed' 
+                          : 'bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 hover:border-primary/20 dark:hover:border-primary/20 hover:shadow-sm cursor-pointer'
+                      )}
+                      onClick={() => !formFields.some(f => f.id === field.id) && onToggleField(field)}
+                      role="button"
+                      aria-disabled={formFields.some(f => f.id === field.id)}
+                      tabIndex={formFields.some(f => f.id === field.id) ? -1 : 0}
+                    >
+                      {formFields.some(f => f.id === field.id) ? (
+                        <CheckCircleIcon className="h-4 w-4 text-green-500 dark:text-green-400 shrink-0" />
+                      ) : (
+                        <PlusCircleIcon className="h-4 w-4 text-primary shrink-0" />
+                      )}
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-sm font-medium text-neutral-800 dark:text-neutral-200 truncate">
+                          {field.label}
+                        </span>
+                        <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                          {getFieldTypeLabel(field.type)}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+
+            {/* Pro Fields */}
+            <div>
+              <h4 className="text-xs font-medium text-neutral-500 dark:text-neutral-400 mb-2 px-1 flex items-center gap-2">
+                Pro Fields
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-amber-500 to-yellow-500 text-white">
+                  <CrownIcon className="h-3 w-3" />
+                  Pro
+                </span>
+              </h4>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {filteredAvailableFields
+                  .filter(field => field.premium)
+                  .map(field => (
+                    <div 
+                      key={field.id} 
+                      className={cn(
+                        "flex items-center gap-2 px-3 py-2.5 rounded-lg transition-all duration-200",
+                        formFields.some(f => f.id === field.id)
+                          ? 'bg-zinc-100/80 text-neutral-400 dark:bg-zinc-800/60 dark:text-neutral-500 border border-neutral-200 dark:border-zinc-800 opacity-60 cursor-not-allowed' 
+                          : !isPremium
+                            ? 'bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 opacity-70 cursor-not-allowed'
+                            : 'bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 hover:border-primary/20 dark:hover:border-primary/20 hover:shadow-sm cursor-pointer'
+                      )}
+                      onClick={() => !formFields.some(f => f.id === field.id) && isPremium && onToggleField(field)}
+                      role="button"
+                      aria-disabled={formFields.some(f => f.id === field.id) || !isPremium}
+                      tabIndex={formFields.some(f => f.id === field.id) || !isPremium ? -1 : 0}
+                    >
+                      {formFields.some(f => f.id === field.id) ? (
+                        <CheckCircleIcon className="h-4 w-4 text-green-500 dark:text-green-400 shrink-0" />
+                      ) : (
+                        <PlusCircleIcon className="h-4 w-4 text-primary shrink-0" />
+                      )}
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-sm font-medium text-neutral-800 dark:text-neutral-200 truncate">
+                          {field.label}
+                        </span>
+                        <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                          {getFieldTypeLabel(field.type)}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
           </div>
         )}
       </div>

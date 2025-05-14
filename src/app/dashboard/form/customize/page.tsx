@@ -248,7 +248,6 @@ function CustomizeFormContent() {
                       formType={formType}
                       onUpdateField={updateField}
                       onToggleField={toggleField}
-                      onMoveField={moveField}
                       onToggleRequired={toggleRequired}
                       onReorderFields={reorderFields}
                     />
