@@ -7,10 +7,10 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { FormField } from '../types';
 import { XIcon, GripVertical } from 'lucide-react';
-import { cn } from '@/lib/utils';
+// import { cn } from '@/lib/utils';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { FileUpload } from '@/components/ui/file-upload';
+// import { FileUpload } from '@/components/ui/file-upload';
 
 interface FormFieldItemProps {
   field: FormField;
