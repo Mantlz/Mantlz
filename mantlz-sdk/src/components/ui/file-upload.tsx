@@ -2,13 +2,11 @@
 
 import React from 'react'
 import { Upload } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { FileUploaderMinimal } from '@uploadcare/react-uploader/next'
-import '@uploadcare/react-uploader/core.css'
+import { cn } from '../../utils/cn'
 
 interface FileUploadProps {
   value?: File | string
-  onChange?: (value: File | string) => void
+  onChange?: (file: File) => void
   onBlur?: () => void
   name?: string
   accept?: string[]
@@ -16,31 +14,6 @@ interface FileUploadProps {
   required?: boolean
   disabled?: boolean
   className?: string
-}
-
-// You can keep this config outside the component if it's static
-export const UPLOADCARE_CONFIG = {
-  publicKey: process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY || '',
-  maxFileSize: 10 * 1024 * 1024, // 10MB
-  allowedFileTypes: [
-    'image/*',
-    'application/pdf',
-    'application/msword',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'text/plain',
-  ],
-  locale: 'en',
-  localePluralize: true,
-  previewStep: true,
-  multiple: false,
-  tabs: 'file url gdrive dropbox',
-  preferredTypes: 'image/*',
-  imagePreviewMaxSize: 5 * 1024 * 1024, // 5MB
-  imageShrink: {
-    quality: 0.8,
-    maxWidth: 1920,
-    maxHeight: 1920,
-  },
 }
 
 export function FileUpload({
@@ -53,10 +26,10 @@ export function FileUpload({
   disabled = false,
   className,
 }: FileUploadProps) {
-  const handleFileChange = (fileInfo: { cdnUrl: string }) => {
-    if (fileInfo?.cdnUrl) {
-      // Convert the URL to a string for form submission
-      onChange?.(fileInfo.cdnUrl)
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      onChange?.(file)
     }
   }
 
@@ -72,12 +45,14 @@ export function FileUpload({
           disabled && 'opacity-50 cursor-not-allowed'
         )}
       >
-        <FileUploaderMinimal
-          pubkey={process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY || ''}
-          onFileUploadSuccess={handleFileChange}
-          useCloudImageEditor={false}
-          sourceList="local, camera"
-          classNameUploader="uc-light"
+        <input
+          type="file"
+          onChange={handleFileChange}
+          accept={accept?.join(',')}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          disabled={disabled}
+          required={required}
+          name={name}
         />
         <Upload className="w-8 h-8 mb-2 text-zinc-400" />
         <p className="text-sm text-zinc-500 dark:text-zinc-400">
@@ -102,4 +77,4 @@ export function FileUpload({
       )}
     </div>
   )
-}
+} 

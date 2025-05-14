@@ -122,7 +122,7 @@ export function processAppearance(
     : appearance;
   
   // Special handling for neobrutalism theme in dark mode
-  if (theme === 'neobrutalism' && document.documentElement.classList.contains('dark')) {
+  if (theme === 'neobrutalism' && typeof document !== 'undefined' && document.documentElement.classList.contains('dark')) {
     return {
       ...defaultThemeAppearance,
       elements: {

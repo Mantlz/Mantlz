@@ -363,89 +363,63 @@ export function createMantlzClient(
       }
 
       const { formId, data, redirectUrl } = options;
+      console.log('Submitting form:', { type, formId, data, redirectUrl });
 
       try {
         // Ensure the URL is absolute by making sure baseUrl has protocol and domain
         const url = new URL('/api/v1/forms/submit', baseUrl).toString();
-        log('Submitting form to:', url, { type, formId });
+        console.log('Submitting to URL:', url);
+
+        const formData = new FormData();
+        
+        // Add all form fields to FormData
+        for (const [key, value] of Object.entries(data)) {
+          console.log(`Adding field to FormData: ${key}`, value instanceof File ? 'File' : 'Text');
+          if (value instanceof File) {
+            formData.append(key, value);
+          } else {
+            formData.append(key, String(value));
+          }
+        }
+
+        // Add form metadata
+        formData.append('formId', formId);
+        if (redirectUrl) {
+          formData.append('redirectUrl', redirectUrl);
+        }
+
+        console.log('FormData contents:', {
+          keys: Array.from(formData.keys()),
+          hasFiles: Array.from(formData.values()).some(v => v instanceof File)
+        });
 
         const response = await fetch(url, {
           method: 'POST',
+          body: formData,
           headers: {
-            'Content-Type': 'application/json',
-            'X-API-Key': key,
+            'Authorization': `Bearer ${key}`,
           },
-          body: JSON.stringify({
-            type,
-            formId,
-            apiKey: key,
-            data,
-            redirectUrl,
-          }),
           credentials: developmentMode ? 'omit' : credentialsMode,
           mode: developmentMode ? 'no-cors' : 'cors',
         });
         
-        // Handle opaque responses in development mode
-        if (developmentMode && response.type === 'opaque') {
-          log('Development mode: Simulating successful form submission');
-          
-          // Return simulated success response
-          const mockResponse: FormSubmitResponse = {
-            success: true,
-            submissionId: 'dev-' + Math.random().toString(36).substring(2, 11),
-            message: 'Form submitted successfully in development mode',
-          };
-          
-          if (notificationsEnabled) {
-            toast.success('Form submitted successfully (Dev Mode)', {
-              duration: 3000,
-            });
-          }
-          
-          return mockResponse;
-        }
-
+        console.log('Response status:', response.status);
+        
         if (!response.ok) {
           const error = await handleApiError(response, formId);
-          log('Form submission error:', error);
+          console.error('Form submission error:', error);
           if (notificationsEnabled) {
             showErrorNotification(error, formId);
           }
           throw error;
         }
 
-        const result = (await response.json()) as FormSubmitResponse;
-
-        if (notificationsEnabled && (!result.redirect || !result.redirect.url)) {
-          toast.success('Form submitted successfully', {
-            duration: 3000,
-          });
-        }
-
-        handleRedirect(result, redirectUrl);
-
+        const result = await response.json();
+        console.log('Form submission result:', result);
         return result;
-      } catch (error: unknown) {
-        if (isMantlzError(error)) {
-          throw error;
-        }
-
-        const formattedError: MantlzError = {
-          message:
-            error instanceof Error ? error.message : 'Unknown error occurred',
-          code: 500,
-          userMessage:
-            'Failed to submit form. Please check your connection and try again.',
-          details: error,
-        };
-
-        if (notificationsEnabled) {
-          showErrorNotification(formattedError, formId);
-        }
-
-        log('Error submitting form:', formattedError);
-        throw formattedError;
+      } catch (error) {
+        console.error('Form submission failed:', error);
+        throw error;
       }
     },
 

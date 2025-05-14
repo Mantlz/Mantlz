@@ -16,7 +16,7 @@ interface FormFieldItemProps {
   field: FormField;
   index: number;
   arrLength: number;
-  onUpdate: (id: string, property: string, value: string | number | boolean) => void;
+  onUpdate: (id: string, property: string, value: string | number | boolean | string[]) => void;
   onMove: (id: string, direction: 'up' | 'down') => void;
   onToggleRequired: (id: string, required: boolean) => void;
   onRemove: (field: FormField) => void;
@@ -80,8 +80,8 @@ export function FormFieldItem({
             <div className="space-y-2">
               <Label className="text-sm font-medium">Accepted File Types</Label>
               <Input
-                value={field.accept || ''}
-                onChange={(e) => onUpdate(field.id, 'accept', e.target.value)}
+                value={Array.isArray(field.accept) ? field.accept.join(',') : field.accept || ''}
+                onChange={(e) => onUpdate(field.id, 'accept', e.target.value.split(','))}
                 placeholder=".pdf,.doc,.docx,.jpg,.png"
               />
             </div>

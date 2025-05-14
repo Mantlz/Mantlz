@@ -14,6 +14,7 @@ import { useMantlz } from '../../context/mantlzContext';
 import { ApiKeyErrorCard } from '../ui/ApiKeyErrorCard';
 import { toast } from '../../utils/toast';
 import { SDK_CONFIG } from '../../config';
+import { FileUpload } from '../ui/file-upload';
 
 // Animation styles
 const fadeInAnimation = "opacity-0 animate-[fadeIn_0.5s_ease-in-out_forwards]";
@@ -34,6 +35,8 @@ export interface FormFieldConfig {
   label?: string;
   options?: string[];
   defaultValue?: any;
+  accept?: string;
+  maxSize?: number;
 }
 
 export interface FormSchema {
@@ -129,9 +132,15 @@ export default function DynamicForm({
   const [submitting, setSubmitting] = useState(false);
   const [starRating, setStarRating] = useState(0);
   const [submitted, setSubmitted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Handle client-side mounting
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Theme classes
-  const themeClasses = {
+  const themeClasses = useMemo(() => ({
     text: colorMode === 'dark' ? 'text-white' : 'text-gray-900',
     bg: colorMode === 'dark' ? 'bg-zinc-800' : 'bg-white',
     border: colorMode === 'dark' ? 'border-zinc-700' : 'border-zinc-200',
@@ -139,11 +148,11 @@ export default function DynamicForm({
     inputText: colorMode === 'dark' ? 'text-white' : 'text-gray-900',
     inputBorder: colorMode === 'dark' ? 'border-zinc-600' : 'border-zinc-300',
     description: colorMode === 'dark' ? 'text-gray-300' : 'text-gray-500',
-  };
+  }), [colorMode]);
 
   // Fetch form data
   useEffect(() => {
-    if (!apiKey) return;
+    if (!apiKey || !isMounted) return;
     
     const fetchFormData = async () => {
       try {
@@ -201,7 +210,7 @@ export default function DynamicForm({
     };
     
     fetchFormData();
-  }, [formId, apiKey, client, onError]);
+  }, [formId, apiKey, client, onError, isMounted]);
 
   // Process fields from form data
   const fields = useMemo(() => {
@@ -235,6 +244,7 @@ export default function DynamicForm({
         case 'number': validator = z.coerce.number(); break;
         case 'checkbox': validator = z.boolean(); break;
         case 'email': validator = z.string().email(); break;
+        case 'file': validator = z.instanceof(File).optional(); break;
         default: validator = z.string(); break;
       }
 
@@ -244,6 +254,8 @@ export default function DynamicForm({
           validator = z.boolean().refine(val => val === true, { message: `${field.label} is required` });
         } else if (field.type === 'number') {
           validator = validator.min(1, { message: `${field.label} is required` });
+        } else if (field.type === 'file') {
+          validator = z.instanceof(File, { message: 'Please upload a file' });
         } else {
           validator = validator.min(1, { message: `${field.label} is required` });
         }
@@ -332,7 +344,7 @@ export default function DynamicForm({
   };
 
   // Render loading state
-  if (loading) {
+  if (!isMounted || loading) {
     return (
       <div className="flex justify-center items-center p-8">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -419,6 +431,25 @@ export default function DynamicForm({
               <option key={index} value={option}>{option}</option>
             ))}
           </select>
+        );
+      case 'file':
+        return (
+          <div className="space-y-2">
+            <FileUpload
+              accept={field.accept ? field.accept.split(',') : undefined}
+              maxSize={field.maxSize}
+              onChange={(file) => {
+                // Just store the File object in form data
+                // The main app will handle the actual upload
+                formMethods.setValue(field.id, file);
+              }}
+              className={cn(
+                themeClasses.inputBg, 
+                themeClasses.inputText, 
+                themeClasses.inputBorder
+              )}
+            />
+          </div>
         );
       default:
         return (

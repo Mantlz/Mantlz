@@ -16,8 +16,9 @@ export interface ToastHandler {
 
 // Fallback DOM toast implementation for when no handler is set
 const createDOMToast = (message: string, type: ToastType, options?: ToastOptions) => {
+  // Early return if not in browser environment
   if (typeof window === 'undefined' || typeof document === 'undefined') {
-    (`[${type.toUpperCase()}] ${message}${options?.description ? `: ${options.description}` : ''}`);
+    console.log(`[${type.toUpperCase()}] ${message}${options?.description ? `: ${options.description}` : ''}`);
     return;
   }
   
@@ -152,8 +153,11 @@ const createDOMToast = (message: string, type: ToastType, options?: ToastOptions
 // Default implementation that uses DOM fallback
 export const defaultToastHandler: ToastHandler = {
   show: (message, type, options) => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      console.log(`[${type.toUpperCase()}] ${message}${options?.description ? `: ${options.description}` : ''}`);
+      return;
+    }
     createDOMToast(message, type, options);
-    (`[${type.toUpperCase()}] ${message}${options?.description ? `: ${options.description}` : ''}`);
   }
 };
 

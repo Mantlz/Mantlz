@@ -690,8 +690,25 @@ export const formRouter = j.router({
       // Check quota before submitting
       await QuotaService.canSubmitForm(form.user.id);
       
+      // Validate file uploads if present
+      const data = input.data;
+      console.log('Form submission data:', data);
+      
+      // Process the data to ensure file fields are strings
+      const processedData = { ...data };
+      for (const [key, value] of Object.entries(data)) {
+        if (value instanceof File) {
+          console.log('Converting File object to URL for field:', key);
+          // If it's a File object, we should have already uploaded it and have a URL
+          processedData[key] = value.name; // Store the filename as a fallback
+        } else if (typeof value === 'string' && value.startsWith('https://ucarecdn.com/')) {
+          console.log('Found file URL for field:', key);
+          processedData[key] = value; // Keep the URL as is
+        }
+      }
+      
       // Use our utility function to enhance data with analytics info
-      const enhancedData = enhanceDataWithAnalytics(input.data, {
+      const enhancedData = enhanceDataWithAnalytics(processedData, {
         userAgent: c.req.header('user-agent'),
         cfCountry: c.req.header('cf-ipcountry'),
         acceptLanguage: c.req.header('accept-language'),
@@ -702,7 +719,7 @@ export const formRouter = j.router({
         data: {
           formId: input.formId,
           data: enhancedData as unknown as Prisma.InputJsonValue,
-          email: input.data.email, 
+          email: processedData.email, 
         },
       });
 
@@ -710,20 +727,20 @@ export const formRouter = j.router({
       if (
         (form.user.plan === 'STANDARD' || form.user.plan === 'PRO') && 
         form.emailSettings?.enabled &&
-        input.data.email && 
-        typeof input.data.email === 'string'
+        processedData.email && 
+        typeof processedData.email === 'string'
       ) {
         try {
           const htmlContent = await render(
             FormSubmissionEmail({
               formName: form.name,
-              submissionData: input.data,
+              submissionData: processedData,
             })
           );
 
           await resend.emails.send({
             from: form.emailSettings?.fromEmail || 'contact@mantlz.app',
-            to: input.data.email,
+            to: processedData.email,
             subject: form.emailSettings?.subject || `Confirmation: ${form.name} Submission`,
             replyTo: 'contact@mantlz.app',
             html: htmlContent

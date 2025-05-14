@@ -42,6 +42,19 @@ export interface FormSubmitResponse {
   };
 }
 
+export interface FormFieldConfig {
+  id: string;
+  name: string;
+  type: string;
+  required: boolean;
+  placeholder?: string;
+  label?: string;
+  options?: string[];
+  defaultValue?: any;
+  accept?: string[]; // For file fields
+  maxSize?: number; // For file fields
+}
+
 export interface MantlzClient {
   apiUrl?: string;  // API URL for making requests
   submitForm: (type: string, options: FormSubmitOptions) => Promise<FormSubmitResponse>;
