@@ -116,25 +116,6 @@ function CustomizeFormContent() {
     }
   }
   
-  const moveField = (id: string, direction: 'up' | 'down') => {
-    const index = formFields.findIndex(field => field.id === id);
-    if (index === -1) return;
-
-    const targetIndex = direction === 'up' ? index - 1 : index + 1;
-
-    if (targetIndex >= 0 && targetIndex < formFields.length) {
-      // Create a new array with swapped elements
-      const newFields = [...formFields];
-      
-      // Both elements should exist if we've made it this far
-      const itemA = newFields[index]!;
-      const itemB = newFields[targetIndex]!;
-      
-      newFields[index] = itemB;
-      newFields[targetIndex] = itemA;
-      setFormFields(newFields);
-    }
-  };
 
   // New function for direct reordering - helpful for drag and drop
   const reorderFields = (startIndex: number, endIndex: number) => {
