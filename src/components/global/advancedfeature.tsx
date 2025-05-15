@@ -1,4 +1,4 @@
-import { Shield, Zap, Database, Code2, Webhook, LineChart, Layers, Settings, ArrowUpRight, Mail, History, Globe } from "lucide-react"
+import { Zap, ArrowUpRight, Mail, History, Globe, AtSign, Bell, Info } from "lucide-react"
 
 export function AdvancedFeatureGrid() {
   return (
@@ -51,43 +51,8 @@ export function AdvancedFeatureGrid() {
           </div>
         </div>
 
-        {/* Advanced Security - Medium Card */}
-        <div className="group bg-white dark:bg-zinc-800 backdrop-blur rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-zinc-100 dark:border-zinc-700 p-6 md:col-span-2 md:row-span-2 flex flex-col relative overflow-hidden">
-          <div className="absolute -top-16 -right-16 h-32 w-32 bg-zinc-500/10 rounded-lg blur-2xl group-hover:bg-zinc-500/20 transition-all duration-500" />
-          
-          <div className="flex items-center mb-4">
-            <Shield className="h-8 w-8 text-zinc-700 dark:text-zinc-300 mr-3" />
-            <h3 className="text-xl font-bold text-zinc-800 dark:text-white">Advanced Security</h3>
-          </div>
-          
-          <div className="flex flex-wrap gap-2 mb-4">
-            <span className="flex items-center px-3 py-1 bg-zinc-100 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-300 text-xs font-medium rounded-lg">
-              <span className="w-2 h-2 bg-zinc-600 dark:bg-zinc-400 rounded-full mr-1"></span>
-              GDPR Compliant
-            </span>
-            <span className="flex items-center px-3 py-1 bg-zinc-100 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-300 text-xs font-medium rounded-lg">
-              <span className="w-2 h-2 bg-zinc-600 dark:bg-zinc-400 rounded-full mr-1"></span>
-              End-to-end Encryption
-            </span>
-            <span className="flex items-center px-3 py-1 bg-zinc-100 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-300 text-xs font-medium rounded-lg">
-              <span className="w-2 h-2 bg-zinc-600 dark:bg-zinc-400 rounded-full mr-1"></span>
-              Data Retention
-            </span>
-          </div>
-          
-          <p className="text-zinc-600 dark:text-zinc-300">
-            Enterprise-grade security with automated GDPR compliance, end-to-end encryption, and advanced spam protection. Ensure your forms meet the highest security standards and regulatory requirements.
-          </p>
-          
-          <div className="mt-auto pt-4">
-            <div className="h-24 bg-zinc-100 dark:bg-zinc-700 rounded-lg flex items-center justify-center">
-              <Shield className="h-12 w-12 text-zinc-400 dark:text-zinc-500" />
-            </div>
-          </div>
-        </div>
-
         {/* Global Edge Network - Medium Card */}
-        <div className="group bg-white dark:bg-zinc-800 backdrop-blur rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-zinc-100 dark:border-zinc-700 p-6 md:col-span-3 flex flex-col relative overflow-hidden">
+        <div className="group bg-white dark:bg-zinc-800 backdrop-blur rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-zinc-100 dark:border-zinc-700 p-6 md:col-span-2 md:row-span-2 flex flex-col relative overflow-hidden">
           <div className="absolute -top-16 -right-16 h-32 w-32 bg-zinc-500/10 rounded-lg blur-2xl group-hover:bg-zinc-500/20 transition-all duration-500" />
           
           <div className="flex items-center mb-4">
@@ -105,29 +70,66 @@ export function AdvancedFeatureGrid() {
           <p className="text-zinc-600 dark:text-zinc-300">
             Forms served from our global edge network with 99.9% uptime and ultra-low latency, regardless of user location. Experience lightning-fast form loads and submissions worldwide.
           </p>
+          
+          <div className="mt-auto pt-6">
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <div className="w-4 h-4 rounded-full bg-zinc-300 dark:bg-zinc-600"></div>
+                <div className="text-sm text-zinc-700 dark:text-zinc-300">Multiple regions</div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-4 h-4 rounded-full bg-zinc-300 dark:bg-zinc-600"></div>
+                <div className="text-sm text-zinc-700 dark:text-zinc-300">Low latency</div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-4 h-4 rounded-full bg-zinc-300 dark:bg-zinc-600"></div>
+                <div className="text-sm text-zinc-700 dark:text-zinc-300">99.9% uptime</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Email Notifications - Medium Card */}
         <div className="group bg-white dark:bg-zinc-800 backdrop-blur rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-zinc-100 dark:border-zinc-700 p-6 md:col-span-3 flex flex-col relative overflow-hidden">
           <div className="absolute -top-16 -right-16 h-32 w-32 bg-zinc-500/10 rounded-lg blur-2xl group-hover:bg-zinc-500/20 transition-all duration-500" />
           
-          <div className="flex items-center mb-4">
-            <Mail className="h-8 w-8 text-zinc-700 dark:text-zinc-300 mr-3" />
-            <h3 className="text-xl font-bold text-zinc-800 dark:text-white">Email Notifications</h3>
+          <div className="flex items-center mb-4 justify-between">
+            <div className="flex items-center">
+              <AtSign className="h-8 w-8 text-zinc-700 dark:text-zinc-300 mr-3" />
+              <h3 className="text-xl font-bold text-zinc-800 dark:text-white">Email Notifications</h3>
+            </div>
+            <span className="text-xs font-medium px-2 py-1 rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-200">PRO</span>
+          </div>
+          
+          <div className="bg-zinc-50 dark:bg-zinc-900/20 border border-blue-200 dark:border-blue-800/30 p-3 rounded-lg mb-4">
+            <div className="flex gap-2">
+              <Info className="h-4 w-4 text-blue-500 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-xs font-medium text-blue-800 dark:text-blue-300">
+                  Resend API Integration
+                </p>
+                <p className="text-xs text-blue-700 dark:text-blue-400 mt-1">
+                  Connect with Resend to enable custom email notifications
+                </p>
+              </div>
+            </div>
           </div>
           
           <p className="text-zinc-600 dark:text-zinc-300 mb-4">
-            Receive instant notifications when users submit forms. Configure custom templates, recipients, and conditional rules based on submission content.
+            Receive instant notifications when users submit forms. Configure custom templates, recipients, and conditional rules.
           </p>
           
-          <div className="mt-auto space-y-2">
-            <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 rounded-full bg-zinc-300 dark:bg-zinc-600"></div>
-              <div className="text-sm text-zinc-700 dark:text-zinc-300">Instant alerts</div>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 rounded-full bg-zinc-300 dark:bg-zinc-600"></div>
-              <div className="text-sm text-zinc-700 dark:text-zinc-300">Customizable templates</div>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-zinc-100 dark:bg-zinc-900 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm mt-auto">
+            <div className="flex items-center gap-3 flex-1">
+              <Mail className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                  Developer Notifications
+                </span>
+                <span className="text-xs text-emerald-600 dark:text-emerald-500">
+                  Customizable frequency
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -145,9 +147,25 @@ export function AdvancedFeatureGrid() {
             Search, filter and analyze all form submissions with advanced log management. Export data in various formats and track user interactions.
           </p>
           
-          <div className="mt-auto">
-            <div className="h-6 bg-zinc-100 dark:bg-zinc-700 rounded-lg w-full mb-1"></div>
-            <div className="h-6 bg-zinc-100 dark:bg-zinc-700 rounded-lg w-3/4"></div>
+          <div className="mt-auto space-y-2">
+            <div className="bg-zinc-50 dark:bg-zinc-950 rounded-lg border border-zinc-200 dark:border-zinc-800 p-3">
+              <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center">
+                  <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+                  <span className="text-zinc-700 dark:text-zinc-300">contact@example.com</span>
+                </div>
+                <span className="text-zinc-500 dark:text-zinc-400">2 minutes ago</span>
+              </div>
+            </div>
+            <div className="bg-zinc-50 dark:bg-zinc-950 rounded-lg border border-zinc-200 dark:border-zinc-800 p-3">
+              <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center">
+                  <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+                  <span className="text-zinc-700 dark:text-zinc-300">support@domain.co</span>
+                </div>
+                <span className="text-zinc-500 dark:text-zinc-400">15 minutes ago</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
