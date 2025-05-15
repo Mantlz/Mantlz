@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 
 export default function BottomCTA() {
   return (
-    <section className="bg-white dark:bg-zinc-950 relative ">
+    <section className="bg-[#FFF8F0] dark:bg-[#0F0F0F] relative border-t border-b border-neutral-200 dark:border-neutral-800">
       <div className="relative mx-auto max-w-7xl px-4 py-24 text-center md:py-32">
         <div className="mx-auto flex w-full max-w-3xl flex-col items-center justify-center text-center">
           <h2 className="mb-6 text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50  md:text-4xl lg:text-5xl">

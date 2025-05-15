@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  turbopack: {
+    // Turbopack configuration options
+    resolveAlias: {
+      // You can add aliases if needed
+    },
+    // Add additional config as needed:
+    // resolveExtensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
+  },
   async headers() {
     return [
       {

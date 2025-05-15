@@ -21,24 +21,26 @@ export default function LandingPage() {
 
         <main>
           <div className="mt-24 text-center">
+
             <div className="flex justify-center mb-10">
               <VersionBadge version="0.3.2" text="Introducing: Mantlz" />
             </div>
             <HeroSection />
 
 
-            <div className="mt-20 pb-20 relative">
-              {/* Square grid background with reduced visibility */}
-              <div className="absolute inset-0 -top-10 -bottom-20 -left-10 -right-10 bg-[linear-gradient(to_right,#d1d5db_1px,transparent_1px),linear-gradient(to_bottom,#d1d5db_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#666_1px,transparent_1px),linear-gradient(to_bottom,#666_1px,transparent_1px)] [background-size:40px_40px] opacity-30 blur-[1px] rounded-3xl"></div>
-              {/* Colored gradient with enhanced colors */}
-              <div className="absolute inset-0 -top-10 -bottom-20 -left-10 -right-10 bg-gradient-to-r from-blue-200/60 via-indigo-300/50 to-purple-200/60 dark:from-blue-800/30 dark:via-indigo-700/30 dark:to-purple-800/30 rounded-3xl blur-3xl opacity-70"></div>
-              {/* Additional subtle color accent */}
-              <div className="absolute inset-0 -top-10 -bottom-20 -left-10 -right-10 bg-gradient-to-br from-cyan-100/40 to-transparent dark:from-cyan-900/20 rounded-3xl blur-2xl opacity-60"></div>
-              {/* Preview with enhanced floating effect */}
+            <div className="mt-20 pb-20  relative">
+            
+              {/* <div className="absolute inset-0 -top-10 -bottom-20 -left-10 -right-10 bg-gradient-to-r from-blue-200/60 via-indigo-300/50 to-purple-200/60 dark:from-blue-800/30 dark:via-indigo-700/30 dark:to-purple-800/30  blur-3xl opacity-50"></div> */}
+              {/* <div className="absolute inset-0 -top-10 -bottom-20 -left-10 -right-10 bg-gradient-to-r from-purple-200/60 via-indigo-300/50 to-blue-200/60 dark:from-blue-800/30 dark:via-indigo-700/30 dark:to-purple-800/30  blur-3xl opacity-50"></div> */}
+              {/* <div className="absolute inset-0 -top-10 -bottom-20 -left-10 -right-10 bg-gradient-to-r from-purple-200/60 via-indigo-300/50 to-blue-200/60 dark:from-blue-800/30 dark:via-indigo-700/30 dark:to-purple-800/30  blur-3xl opacity-50"></div> */}
+
+
 
                 <DashboardPreview />
+                
 
             </div>
+            
           </div>
       <TrustedCompanies />
 

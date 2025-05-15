@@ -2,6 +2,9 @@ import React from "react";
 
 type Props = {children: React.ReactNode}
 
+// export const metadata = constructMetadata();
+
+
 const Layout = ({children}: Props) => {
   return (
 

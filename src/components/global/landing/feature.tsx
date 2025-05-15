@@ -1,102 +1,166 @@
-import { FileText, Moon, BarChart, Code } from "lucide-react"
+import { FileText, Moon, BarChart, Code, Sparkles, Settings, Palette, Zap, Shield, Sliders, Users, CheckCircle } from "lucide-react"
 
 export function FeatureGrid() {
   return (
-    <section className="py-20">
-      <div className="text-center mb-16">
-        <h2 className="text-3xl font-bold mb-4">Everything you need for form management</h2>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+    <section className="py-24 relative">
+      {/* Background pattern/gradient */}
+      <div className="absolute inset-0  pointer-events-none" />
+      
+      <div className="relative z-10 text-center mb-20">
+        <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-4">
+          <Sparkles className="h-4 w-4 mr-2" />
+          <span>Form Management Simplified</span>
+        </div>
+        <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">Everything you need for form management</h2>
+        <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
           Mantlz provides a complete form management platform with beautiful, customizable forms in minutes
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {/* Large card - Multiple Form Types */}
-        <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-md hover:shadow-lg transition-all border border-zinc-100 dark:border-zinc-800 p-8 lg:col-span-2 flex flex-col">
-          <div className="h-48 mb-6 flex items-center justify-center bg-zinc-50 dark:bg-zinc-900/20 rounded-xl">
-            <div className="relative w-64 h-32">
-              <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-                <div className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md flex items-center space-x-3">
-                  <FileText className="h-6 w-6 text-blue-500" />
-                  <div className="h-4 w-32 bg-zinc-200 dark:bg-zinc-700 rounded"></div>
+      {/* Bento Grid Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
+        {/* Multiple Form Types - Large Card */}
+        <div className="group bg-white dark:bg-zinc-800 backdrop-blur rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-zinc-100 dark:border-zinc-700 p-8 md:col-span-2 md:row-span-2 flex flex-col h-full relative overflow-hidden">
+          <div className="absolute -top-16 -right-16 h-32 w-32 bg-zinc-500/10 rounded-lg blur-2xl group-hover:bg-zinc-500/20 transition-all duration-500" />
+          
+          <div className="h-44 mb-6 flex items-center justify-center">
+            <div className="relative w-full h-full flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+              <div className="absolute top-4 left-4 bg-white dark:bg-zinc-700 p-5 rounded-lg shadow-lg flex items-center space-x-3 group-hover:-translate-y-1 transition-transform">
+                <FileText className="h-6 w-6 text-zinc-700 dark:text-zinc-300" />
+                <div className="space-y-2">
+                  <div className="h-3 w-32 bg-zinc-200 dark:bg-zinc-600 rounded-lg"></div>
+                  <div className="h-3 w-24 bg-zinc-200 dark:bg-zinc-600 rounded-lg"></div>
                 </div>
               </div>
-              <div className="absolute bottom-0 right-0 w-full h-full flex items-center justify-center">
-                <div className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md -mt-6 -ml-6">
-                  <div className="h-4 w-48 bg-zinc-200 dark:bg-zinc-700 rounded mb-2"></div>
-                  <div className="h-4 w-32 bg-zinc-200 dark:bg-zinc-700 rounded"></div>
+              <div className="absolute bottom-0 right-0 bg-white dark:bg-zinc-700 p-5 rounded-lg shadow-lg group-hover:-translate-y-2 transition-transform duration-300 delay-100">
+                <div className="space-y-3">
+                  <div className="h-3 w-48 bg-zinc-200 dark:bg-zinc-600 rounded-lg"></div>
+                  <div className="h-3 w-32 bg-zinc-200 dark:bg-zinc-600 rounded-lg"></div>
+                  <div className="h-3 w-40 bg-zinc-200 dark:bg-zinc-600 rounded-lg"></div>
                 </div>
+              </div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-zinc-800 dark:bg-white text-white dark:text-zinc-800 p-3 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200 font-medium">
+                Create forms quickly
               </div>
             </div>
           </div>
-          <h3 className="text-2xl font-bold mb-2">Multiple Form Types</h3>
-          <p className="text-gray-600 dark:text-gray-300">
-            Create feedback forms, contact forms, waitlist forms and more with our simple and intuitive interface. All form types are fully customizable to match your brand.
-          </p>
+          
+          <div className="mt-auto">
+            <div className="flex items-center mb-3">
+              <Palette className="h-5 w-5 text-zinc-700 dark:text-zinc-300 mr-2" />
+              <h3 className="text-2xl font-bold text-zinc-800 dark:text-white">Multiple Form Types</h3>
+            </div>
+            <p className="text-zinc-600 dark:text-zinc-300">
+              Create feedback forms, contact forms, waitlist forms and more with our simple and intuitive interface. All form types are fully customizable to match your brand.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <span className="px-3 py-1 bg-zinc-100 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-300 text-xs font-medium rounded-lg">Feedback Forms</span>
+              <span className="px-3 py-1 bg-zinc-100 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-300 text-xs font-medium rounded-lg">Contact Forms</span>
+              <span className="px-3 py-1 bg-zinc-100 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-300 text-xs font-medium rounded-lg">Waitlist Forms</span>
+            </div>
+          </div>
         </div>
- {/* Developer-Friendly */}
- <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-md hover:shadow-lg transition-all border border-zinc-100 dark:border-zinc-800 p-8 flex flex-col">
-          <div className="h-48 mb-6 flex items-center justify-center bg-zinc-50 dark:bg-zinc-900/20 rounded-xl">
-            <div className="flex flex-col items-center">
-              <Code className="h-16 w-16 text-blue-500 mb-4" />
-              <div className="bg-zinc-800 text-gray-300 p-3 rounded-lg text-xs font-mono shadow-inner">
-                <div>import {"{"} Mantlz {"}"} from &quot;@mantlz/nextjs&quot;;</div>
-              </div>
-            </div>
+
+        {/* Developer-Friendly - Medium Card */}
+        <div className="group bg-white dark:bg-zinc-800 backdrop-blur rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-zinc-100 dark:border-zinc-700 p-6 md:col-span-2 flex flex-col relative overflow-hidden">
+          <div className="absolute -top-16 -right-16 h-32 w-32 bg-zinc-500/10 rounded-lg blur-2xl group-hover:bg-zinc-500/20 transition-all duration-500" />
+          
+          <div className="mb-4 flex items-center justify-start">
+            <Code className="h-10 w-10 text-zinc-700 dark:text-zinc-300 mr-3" />
+            <h3 className="text-xl font-bold text-zinc-800 dark:text-white">Developer-Friendly</h3>
           </div>
-          <h3 className="text-2xl font-bold mb-2">Developer-Friendly</h3>
-          <p className="text-gray-600 dark:text-gray-300">
+          
+          <div className="bg-zinc-800 text-gray-300 p-3 rounded-lg text-sm font-mono shadow-lg transform group-hover:-rotate-1 transition-transform duration-300 mt-2 mb-4 dark:bg-zinc-700 dark:border dark:border-zinc-600">
+            <div className="text-zinc-400 dark:text-zinc-300">import</div>
+            <div>{" {"} <span className="text-zinc-300 dark:text-white">Mantlz</span> {"} "}<span className="text-zinc-400 dark:text-zinc-300">from</span> <span className="text-zinc-300 dark:text-white">&quot;@mantlz/nextjs&quot;</span>;</div>
+          </div>
+          
+          <p className="text-zinc-600 dark:text-zinc-300 text-sm">
             TypeScript native with React Hook Form and Zod validation for a seamless development experience.
           </p>
         </div>
-       
 
-      
-
-        {/* Regular card - Dark Mode */}
-        <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-md hover:shadow-lg transition-all border border-zinc-100 dark:border-zinc-800 p-8 flex flex-col">
-          <div className="h-48 mb-6 flex items-center justify-center bg-zinc-50 dark:bg-zinc-900/20 rounded-xl">
-            <div className="grid grid-cols-2 gap-4 w-48 h-48 p-4">
-              <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-md flex items-center justify-center">
-                <div className="h-16 w-16 bg-zinc-100 dark:bg-zinc-700 rounded-lg flex items-center justify-center">
-                  <div className="h-8 w-8 bg-zinc-300 dark:bg-zinc-600 rounded"></div>
-                </div>
-              </div>
-              <div className="bg-zinc-800 rounded-lg shadow-md flex items-center justify-center">
-                <div className="h-16 w-16 bg-zinc-700 rounded-lg flex items-center justify-center">
-                  <Moon className="h-8 w-8 text-blue-400" />
-                </div>
-              </div>
-            </div>
+        {/* Analytics - Medium Card */}
+        <div className="group bg-white dark:bg-zinc-800 backdrop-blur rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-zinc-100 dark:border-zinc-700 p-6 md:col-span-2 flex flex-col relative overflow-hidden">
+          <div className="absolute -top-16 -right-16 h-32 w-32 bg-zinc-500/10 rounded-lg blur-2xl group-hover:bg-zinc-500/20 transition-all duration-500" />
+          
+          <div className="mb-4 flex items-center justify-start">
+            <BarChart className="h-10 w-10 text-zinc-700 dark:text-zinc-300 mr-3" />
+            <h3 className="text-xl font-bold text-zinc-800 dark:text-white">Form Analytics</h3>
           </div>
-          <h3 className="text-2xl font-bold mb-2">Dark Mode Support</h3>
-          <p className="text-gray-600 dark:text-gray-300">
-            Automatic dark mode detection with manual override options for a perfect user experience in any lighting condition.
-          </p>
+          
+          <div className="relative h-32 flex items-center justify-center">
+            <svg className="w-full h-full" viewBox="0 0 250 100" xmlns="http://www.w3.org/2000/svg">
+              <g className="transform group-hover:translate-y-1 transition-transform duration-700">
+                <rect x="20" y="60" width="16" height="30" fill="#e4e4e7" className="dark:fill-zinc-600" rx="3" />
+                <text x="28" y="95" textAnchor="middle" fontSize="8" fill="#44403c" className="dark:fill-zinc-300">Mon</text>
+              </g>
+              <g className="transform group-hover:translate-y-3 transition-transform duration-700 delay-100">
+                <rect x="46" y="40" width="16" height="50" fill="#d4d4d8" className="dark:fill-zinc-500" rx="3" />
+                <text x="54" y="95" textAnchor="middle" fontSize="8" fill="#44403c" className="dark:fill-zinc-300">Tue</text>
+              </g>
+              <g className="transform group-hover:translate-y-6 transition-transform duration-700 delay-200">
+                <rect x="72" y="20" width="16" height="70" fill="#a1a1aa" className="dark:fill-zinc-400" rx="3" />
+                <text x="80" y="95" textAnchor="middle" fontSize="8" fill="#44403c" className="dark:fill-zinc-300">Wed</text>
+              </g>
+              <g className="transform group-hover:translate-y-4 transition-transform duration-700 delay-300">
+                <rect x="98" y="30" width="16" height="60" fill="#71717a" className="dark:fill-zinc-300" rx="3" />
+                <text x="106" y="95" textAnchor="middle" fontSize="8" fill="#44403c" className="dark:fill-zinc-300">Thu</text>
+              </g>
+              <g className="transform group-hover:translate-y-2 transition-transform duration-700 delay-400">
+                <rect x="124" y="10" width="16" height="80" fill="#52525b" className="dark:fill-zinc-200" rx="3" />
+                <text x="132" y="95" textAnchor="middle" fontSize="8" fill="#44403c" className="dark:fill-zinc-300">Fri</text>
+              </g>
+              <g className="transform group-hover:translate-y-5 transition-transform duration-700 delay-500">
+                <rect x="150" y="25" width="16" height="65" fill="#27272a" className="dark:fill-white" rx="3" />
+                <text x="158" y="95" textAnchor="middle" fontSize="8" fill="#44403c" className="dark:fill-zinc-300">Sat</text>
+              </g>
+            </svg>
+          </div>
         </div>
 
-        {/* Large card - Analytics */}
-        <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-md hover:shadow-lg transition-all border border-zinc-100 dark:border-zinc-800 p-8 lg:col-span-2 flex flex-col">
-          <div className="h-48 mb-6 flex items-center justify-center bg-zinc-50 dark:bg-zinc-900/20 rounded-xl">
-            <div className="relative w-64 h-32">
-              <svg className="absolute inset-0" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
-                <rect x="20" y="60" width="20" height="40" fill="#dbeafe" rx="2" />
-                <rect x="50" y="40" width="20" height="60" fill="#93c5fd" rx="2" />
-                <rect x="80" y="20" width="20" height="80" fill="#60a5fa" rx="2" />
-                <rect x="110" y="30" width="20" height="70" fill="#3b82f6" rx="2" />
-                <rect x="140" y="10" width="20" height="90" fill="#2563eb" rx="2" />
-              </svg>
-              <div className="absolute top-0 right-0 bg-white dark:bg-zinc-800 p-2 rounded-lg shadow-md m-2">
-                <BarChart className="h-6 w-6 text-blue-500" />
-              </div>
-            </div>
+        {/* Dark Mode - Small Card */}
+        <div className="group bg-white dark:bg-zinc-800 backdrop-blur rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-zinc-100 dark:border-zinc-700 p-6 flex flex-col relative overflow-hidden">
+          <div className="absolute -top-16 -right-16 h-32 w-32 bg-zinc-500/10 rounded-lg blur-2xl group-hover:bg-zinc-500/20 transition-all duration-500" />
+          
+          <div className="flex items-center h-full">
+            <Moon className="h-10 w-10 text-zinc-700 dark:text-zinc-300 mr-3 flex-shrink-0" />
+            <h3 className="text-xl font-bold text-zinc-800 dark:text-white">Dark Mode</h3>
           </div>
-          <h3 className="text-2xl font-bold mb-2">Form Analytics</h3>
-          <p className="text-gray-600 dark:text-gray-300">
-            Track form submissions and analyze responses with built-in analytics. Understand your users better and optimize your forms for higher conversion rates.
-          </p>
+        </div>
+
+        {/* Customizable - Small Card */}
+        <div className="group bg-white dark:bg-zinc-800 backdrop-blur rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-zinc-100 dark:border-zinc-700 p-6 flex flex-col relative overflow-hidden">
+          <div className="absolute -top-16 -right-16 h-32 w-32 bg-zinc-500/10 rounded-lg blur-2xl group-hover:bg-zinc-500/20 transition-all duration-500" />
+          
+          <div className="flex items-center h-full">
+            <Sliders className="h-10 w-10 text-zinc-700 dark:text-zinc-300 mr-3 flex-shrink-0" />
+            <h3 className="text-xl font-bold text-zinc-800 dark:text-white">Customizable</h3>
+          </div>
+        </div>
+
+        {/* User-friendly - Small Card */}
+        <div className="group bg-white dark:bg-zinc-800 backdrop-blur rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-zinc-100 dark:border-zinc-700 p-6 flex flex-col relative overflow-hidden">
+          <div className="absolute -top-16 -right-16 h-32 w-32 bg-zinc-500/10 rounded-lg blur-2xl group-hover:bg-zinc-500/20 transition-all duration-500" />
+          
+          <div className="flex items-center h-full">
+            <Users className="h-10 w-10 text-zinc-700 dark:text-zinc-300 mr-3 flex-shrink-0" />
+            <h3 className="text-xl font-bold text-zinc-800 dark:text-white">User-friendly</h3>
+          </div>
+        </div>
+
+        {/* Reliable - Small Card */}
+        <div className="group bg-white dark:bg-zinc-800 backdrop-blur rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-zinc-100 dark:border-zinc-700 p-6 flex flex-col relative overflow-hidden">
+          <div className="absolute -top-16 -right-16 h-32 w-32 bg-zinc-500/10 rounded-lg blur-2xl group-hover:bg-zinc-500/20 transition-all duration-500" />
+          
+          <div className="flex items-center h-full">
+            <CheckCircle className="h-10 w-10 text-zinc-700 dark:text-zinc-300 mr-3 flex-shrink-0" />
+            <h3 className="text-xl font-bold text-zinc-800 dark:text-white">Reliable</h3>
+          </div>
         </div>
       </div>
     </section>
   )
 }
+
+
