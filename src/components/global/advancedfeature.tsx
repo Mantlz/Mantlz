@@ -1,4 +1,4 @@
-import { Zap, ArrowUpRight, Mail, History, Globe, AtSign, Bell, Info } from "lucide-react"
+import { ArrowUpRight, Mail, History, Globe, AtSign, Info, Shield, Ban, Fingerprint } from "lucide-react"
 
 export function AdvancedFeatureGrid() {
   return (
@@ -51,39 +51,52 @@ export function AdvancedFeatureGrid() {
           </div>
         </div>
 
-        {/* Global Edge Network - Medium Card */}
+        {/* Protection & Security - Medium Card */}
         <div className="group bg-white dark:bg-zinc-800 backdrop-blur rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-zinc-100 dark:border-zinc-700 p-6 md:col-span-2 md:row-span-2 flex flex-col relative overflow-hidden">
           <div className="absolute -top-16 -right-16 h-32 w-32 bg-zinc-500/10 rounded-lg blur-2xl group-hover:bg-zinc-500/20 transition-all duration-500" />
           
           <div className="flex items-center mb-4">
-            <Zap className="h-8 w-8 text-zinc-700 dark:text-zinc-300 mr-3" />
-            <h3 className="text-xl font-bold text-zinc-800 dark:text-white">Global Edge Network</h3>
+            <Shield className="h-8 w-8 text-zinc-700 dark:text-zinc-300 mr-3" />
+            <h3 className="text-xl font-bold text-zinc-800 dark:text-white">Protection & Security</h3>
           </div>
           
-          <div className="mb-4 flex space-x-2">
-            <div className="w-full h-2 rounded-full overflow-hidden bg-zinc-100 dark:bg-zinc-700">
-              <div className="h-full bg-zinc-600 dark:bg-zinc-300 rounded-full animate-pulse" style={{width: '93%'}}></div>
+          <div className="space-y-5 flex-grow">
+            {/* Rate Limiting */}
+            <div className="bg-zinc-50 dark:bg-zinc-900 rounded-lg p-4 border border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-start">
+                <Ban className="h-5 w-5 text-zinc-700 dark:text-zinc-300 mr-3 mt-0.5 flex-shrink-0" />
+                <div>
+                  <h4 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 mb-1">Rate Limiting</h4>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400">
+                    Configurable rate limits to prevent abuse and protect your forms from spam attacks
+                  </p>
+                </div>
+              </div>
             </div>
-            <span className="text-xs font-medium text-zinc-600 dark:text-zinc-300 whitespace-nowrap">93% faster</span>
-          </div>
-          
-          <p className="text-zinc-600 dark:text-zinc-300">
-            Forms served from our global edge network with 99.9% uptime and ultra-low latency, regardless of user location. Experience lightning-fast form loads and submissions worldwide.
-          </p>
-          
-          <div className="mt-auto pt-6">
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <div className="w-4 h-4 rounded-full bg-zinc-300 dark:bg-zinc-600"></div>
-                <div className="text-sm text-zinc-700 dark:text-zinc-300">Multiple regions</div>
+            
+            {/* Spam Protection */}
+            <div className="bg-zinc-50 dark:bg-zinc-900 rounded-lg p-4 border border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-start">
+                <Shield className="h-5 w-5 text-zinc-700 dark:text-zinc-300 mr-3 mt-0.5 flex-shrink-0" />
+                <div>
+                  <h4 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 mb-1">Spam Protection</h4>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400">
+                    Advanced filters to detect and block spam submissions before they reach your inbox
+                  </p>
+                </div>
               </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-4 h-4 rounded-full bg-zinc-300 dark:bg-zinc-600"></div>
-                <div className="text-sm text-zinc-700 dark:text-zinc-300">Low latency</div>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-4 h-4 rounded-full bg-zinc-300 dark:bg-zinc-600"></div>
-                <div className="text-sm text-zinc-700 dark:text-zinc-300">99.9% uptime</div>
+            </div>
+            
+            {/* Unique Email Identifier */}
+            <div className="bg-zinc-50 dark:bg-zinc-900 rounded-lg p-4 border border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-start">
+                <Fingerprint className="h-5 w-5 text-zinc-700 dark:text-zinc-300 mr-3 mt-0.5 flex-shrink-0" />
+                <div>
+                  <h4 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 mb-1">Unique Email ID</h4>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-400">
+                    Track and identify unique users with our email fingerprinting technology
+                  </p>
+                </div>
               </div>
             </div>
           </div>
