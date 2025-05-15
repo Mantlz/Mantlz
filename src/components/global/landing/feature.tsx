@@ -1,10 +1,10 @@
-import { FileText, Moon, BarChart, Code, Sparkles, Settings, Palette, Zap, Shield, Sliders, Users, CheckCircle } from "lucide-react"
+import { FileText, Moon, BarChart, Code, Sparkles, Settings, Palette, Zap, Shield, Sliders, Users, CheckCircle, TrendingUp } from "lucide-react"
 
 export function FeatureGrid() {
   return (
     <section className="py-24 relative">
       {/* Background pattern/gradient */}
-      <div className="absolute inset-0  pointer-events-none" />
+      <div className="absolute inset-0 pointer-events-none" />
       
       <div className="relative z-10 text-center mb-20">
         <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-4">
@@ -84,38 +84,62 @@ export function FeatureGrid() {
         <div className="group bg-white dark:bg-zinc-800 backdrop-blur rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-zinc-100 dark:border-zinc-700 p-6 md:col-span-2 flex flex-col relative overflow-hidden">
           <div className="absolute -top-16 -right-16 h-32 w-32 bg-zinc-500/10 rounded-lg blur-2xl group-hover:bg-zinc-500/20 transition-all duration-500" />
           
-          <div className="mb-4 flex items-center justify-start">
-            <BarChart className="h-10 w-10 text-zinc-700 dark:text-zinc-300 mr-3" />
-            <h3 className="text-xl font-bold text-zinc-800 dark:text-white">Form Analytics</h3>
+          <div className="mb-3 flex items-center justify-between">
+            <div className="flex items-center">
+              <BarChart className="h-10 w-10 text-zinc-700 dark:text-zinc-300 mr-3" />
+              <h3 className="text-xl font-bold text-zinc-800 dark:text-white">Form Analytics</h3>
+            </div>
+            <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-700 py-1 px-2 rounded-lg">
+              2023
+            </div>
           </div>
           
-          <div className="relative h-32 flex items-center justify-center">
-            <svg className="w-full h-full" viewBox="0 0 250 100" xmlns="http://www.w3.org/2000/svg">
-              <g className="transform group-hover:translate-y-1 transition-transform duration-700">
-                <rect x="20" y="60" width="16" height="30" fill="#e4e4e7" className="dark:fill-zinc-600" rx="3" />
-                <text x="28" y="95" textAnchor="middle" fontSize="8" fill="#44403c" className="dark:fill-zinc-300">Mon</text>
-              </g>
-              <g className="transform group-hover:translate-y-3 transition-transform duration-700 delay-100">
-                <rect x="46" y="40" width="16" height="50" fill="#d4d4d8" className="dark:fill-zinc-500" rx="3" />
-                <text x="54" y="95" textAnchor="middle" fontSize="8" fill="#44403c" className="dark:fill-zinc-300">Tue</text>
-              </g>
-              <g className="transform group-hover:translate-y-6 transition-transform duration-700 delay-200">
-                <rect x="72" y="20" width="16" height="70" fill="#a1a1aa" className="dark:fill-zinc-400" rx="3" />
-                <text x="80" y="95" textAnchor="middle" fontSize="8" fill="#44403c" className="dark:fill-zinc-300">Wed</text>
-              </g>
-              <g className="transform group-hover:translate-y-4 transition-transform duration-700 delay-300">
-                <rect x="98" y="30" width="16" height="60" fill="#71717a" className="dark:fill-zinc-300" rx="3" />
-                <text x="106" y="95" textAnchor="middle" fontSize="8" fill="#44403c" className="dark:fill-zinc-300">Thu</text>
-              </g>
-              <g className="transform group-hover:translate-y-2 transition-transform duration-700 delay-400">
-                <rect x="124" y="10" width="16" height="80" fill="#52525b" className="dark:fill-zinc-200" rx="3" />
-                <text x="132" y="95" textAnchor="middle" fontSize="8" fill="#44403c" className="dark:fill-zinc-300">Fri</text>
-              </g>
-              <g className="transform group-hover:translate-y-5 transition-transform duration-700 delay-500">
-                <rect x="150" y="25" width="16" height="65" fill="#27272a" className="dark:fill-white" rx="3" />
-                <text x="158" y="95" textAnchor="middle" fontSize="8" fill="#44403c" className="dark:fill-zinc-300">Sat</text>
-              </g>
-            </svg>
+          <div className="relative h-40 flex flex-col">
+            <div className="flex justify-between items-center mb-1">
+              <div className="text-xs font-medium text-zinc-600 dark:text-zinc-400">Monthly submissions</div>
+              <div className="flex items-center text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                <TrendingUp className="h-3 w-3 mr-1 text-zinc-600 dark:text-zinc-400" />
+                <span>+24%</span>
+              </div>
+            </div>
+            
+            <div className="flex-1 flex items-end space-x-2 pt-2 px-1">
+              <div className="group-hover:-translate-y-1 transition-transform duration-300 w-full h-full flex flex-col items-center justify-end">
+                <div className="bg-zinc-200 dark:bg-zinc-700 w-full rounded-t-lg" style={{height: '30%'}}></div>
+                <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Jan</div>
+              </div>
+              <div className="group-hover:-translate-y-2 transition-transform duration-300 delay-75 w-full h-full flex flex-col items-center justify-end">
+                <div className="bg-zinc-300 dark:bg-zinc-600 w-full rounded-t-lg" style={{height: '45%'}}></div>
+                <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Feb</div>
+              </div>
+              <div className="group-hover:-translate-y-3 transition-transform duration-300 delay-150 w-full h-full flex flex-col items-center justify-end">
+                <div className="bg-zinc-400 dark:bg-zinc-500 w-full rounded-t-lg" style={{height: '60%'}}></div>
+                <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Mar</div>
+              </div>
+              <div className="group-hover:-translate-y-4 transition-transform duration-300 delay-200 w-full h-full flex flex-col items-center justify-end">
+                <div className="bg-zinc-500 dark:bg-zinc-400 w-full rounded-t-lg" style={{height: '40%'}}></div>
+                <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Apr</div>
+              </div>
+              <div className="group-hover:-translate-y-3 transition-transform duration-300 delay-100 w-full h-full flex flex-col items-center justify-end">
+                <div className="bg-zinc-600 dark:bg-zinc-300 w-full rounded-t-lg" style={{height: '55%'}}></div>
+                <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">May</div>
+              </div>
+              <div className="group-hover:-translate-y-5 transition-transform duration-300 delay-300 w-full h-full flex flex-col items-center justify-end">
+                <div className="bg-zinc-700 dark:bg-zinc-200 w-full rounded-t-lg" style={{height: '70%'}}></div>
+                <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Jun</div>
+              </div>
+              <div className="group-hover:-translate-y-5 transition-transform duration-300 delay-300 w-full h-full flex flex-col items-center justify-end">
+                <div className="bg-zinc-800 dark:bg-white w-full rounded-t-lg" style={{height: '80%'}}></div>
+                <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Jul</div>
+              </div>
+            </div>
+            
+            <div className="mt-2">
+              <div className="flex justify-between text-sm">
+                <div className="font-medium text-zinc-800 dark:text-white">12,540</div>
+                <div className="text-zinc-500 dark:text-zinc-400">Total submissions</div>
+              </div>
+            </div>
           </div>
         </div>
 
