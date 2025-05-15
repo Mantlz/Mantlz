@@ -1,5 +1,6 @@
 "use client"
 import { FeatureGrid } from "@/components/global/landing/feature";
+import { AdvancedFeatureGrid } from "@/components/global/advancedfeature";
 import Footer from "@/components/global/landing/footer";
 import { HeroSection } from "@/components/global/landing/hero-section";
 import {Navbar} from "@/components/global/landing/navbar";
@@ -45,6 +46,7 @@ export default function LandingPage() {
       <TrustedCompanies />
 
           <FeatureGrid /> 
+          <AdvancedFeatureGrid />
         </main>
 
       </Container>
