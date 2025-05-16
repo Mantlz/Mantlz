@@ -133,7 +133,7 @@ export async function POST(req: Request) {
       submissionData = validatedData.data as FormSubmissionData;
     }
 
-    console.log('Form ID:', formId, 'Redirect URL:', redirectUrl);
+    console.log('Form ID:', formId, 'Redirect URL:', redirectUrl ? redirectUrl : 'undefined/not provided');
 
     if (!formId) {
       console.log('Form ID validation failed');
@@ -199,10 +199,12 @@ export async function POST(req: Request) {
     });
 
     if (!form) {
+      console.error(`Form not found: ${formId}`);
       await debugService.log('form_not_found', { 
         formId,
         userId: apiKeyRecord.userId,
         userPlan: apiKeyRecord.user.plan,
+        redirectUrlProvided: redirectUrl ? true : false,
         timestamp: new Date().toISOString(),
         userAgent,
         ip,
@@ -347,15 +349,19 @@ export async function POST(req: Request) {
       }
     }
 
+    // Define default redirect URL
+    const defaultRedirectUrl = process.env.MANTLZ_THANK_YOU_URL || 
+                              `${process.env.NEXT_PUBLIC_APP_URL || 'https://mantlz.app'}/thank-you`;
+    
     // Handle redirect URLs based on the user's plan
-    if (redirectUrl) {
+    if (redirectUrl && redirectUrl.trim() !== '') {
       console.log('Redirect URL requested:', redirectUrl);
       
       // Only users on STANDARD or PRO plans can use custom redirect URLs
       if (form.user.plan === Plan.STANDARD || form.user.plan === Plan.PRO) {
         console.log('User is on a paid plan, allowing custom redirect to:', redirectUrl);
         
-        // Return response with redirect URL
+        // Return response with custom redirect URL
         return NextResponse.json({ 
           success: true,
           message: 'Form submitted successfully',
@@ -369,10 +375,6 @@ export async function POST(req: Request) {
         console.log('User is on a FREE plan, custom redirects not allowed. Using default Mantlz thank-you page.');
         
         // For free users, ignore the custom redirect and use the default Mantlz thank-you page
-        // Use environment variable with fallback
-        const defaultRedirectUrl = process.env.MANTLZ_THANK_YOU_URL || 
-                                  `${process.env.NEXT_PUBLIC_APP_URL || 'https://mantlz.app'}/thank-you`;
-        
         return NextResponse.json({ 
           success: true,
           message: 'Form submitted successfully',
@@ -386,10 +388,8 @@ export async function POST(req: Request) {
       }
     }
 
-    // No custom redirect requested, use the default Mantlz thank-you page
-    // Use environment variable with fallback
-    const defaultRedirectUrl = process.env.MANTLZ_THANK_YOU_URL || 
-                              `${process.env.NEXT_PUBLIC_APP_URL || 'https://mantlz.app'}/thank-you`;
+    // No custom redirect requested or redirect URL is undefined, use the default Mantlz thank-you page
+    console.log('No valid redirect URL specified or URL is undefined. Using default Mantlz thank-you page:', defaultRedirectUrl);
     
     return NextResponse.json({ 
       success: true,

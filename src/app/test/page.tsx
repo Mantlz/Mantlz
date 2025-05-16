@@ -21,7 +21,9 @@ export default function CustomerFeedbackPage() {
       /> 
      
       <WaitlistForm
+
         formId="cma9tu80t0004o7r0iuisldzg"
+        redirectUrl='/feedback'
       /> 
 
         
