@@ -15,6 +15,7 @@ export default function CustomerFeedbackPage() {
         
       <Mantlz
         formId="cmao2vgrf0007o7lfm6r82jif"
+        theme='modern'
        
         //theme="neobrutalism"
         
@@ -23,6 +24,7 @@ export default function CustomerFeedbackPage() {
       <Mantlz
 
         formId="cma9tu80t0004o7r0iuisldzg"
+        theme='default'
         usersJoinedCount={1}
         usersJoinedLabel="people have already joined"
         showUsersJoined={true}
@@ -32,7 +34,10 @@ export default function CustomerFeedbackPage() {
         
      
         
-      <Mantlz formId="cman7j8ub0003o7jpmg2bjr6n" />
+      <Mantlz formId="cman7j8ub0003o7jpmg2bjr6n"
+      theme='minimal'
+      
+      />
 
      
 

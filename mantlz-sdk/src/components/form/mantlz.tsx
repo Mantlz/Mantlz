@@ -504,6 +504,7 @@ export default function Mantlz({
         return (
           <div className="space-y-2">
             <FileUpload
+              value={formMethods.watch(field.id)}
               accept={typeof field.accept === 'string' ? field.accept.split(',') : field.accept}
               maxSize={field.maxSize}
               onChange={(file) => {
