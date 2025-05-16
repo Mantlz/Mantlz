@@ -1,111 +1,162 @@
 import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
-import { Input } from '../../ui/input';
-import { Textarea } from '../../ui/textarea';
-import { FileUpload } from '../../ui/file-upload';
-import { Checkbox } from './Checkbox';
-import { cn } from '../../../utils/cn';
-import { FormFieldConfig } from '../types';
-import { ThemeClasses } from '../themes';
+import * as Form from '@radix-ui/react-form';
+import * as Checkbox from '@radix-ui/react-checkbox';
+import * as Select from '@radix-ui/react-select';
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
+import { FormField as FormFieldType } from '../types';
+import { themes } from '../themes';
+import { useTheme } from '../hooks/useTheme';
 
 interface FormFieldProps {
-  field: FormFieldConfig;
+  field: FormFieldType;
   formMethods: UseFormReturn<any>;
-  themeClasses: ThemeClasses;
 }
 
 export const FormField = ({
   field,
   formMethods,
-  themeClasses,
 }: FormFieldProps) => {
+  const { theme: selectedTheme } = useTheme();
+  const styles = themes[selectedTheme || 'default'];
+
   const renderField = () => {
     switch (field.type) {
       case 'textarea':
         return (
-          <Textarea
-            id={field.id}
-            placeholder={field.placeholder}
-            className={cn(themeClasses.input)}
-            {...formMethods.register(field.id)}
-          />
+          <Form.Field name={field.id}>
+            <Form.Label style={styles.field.label}>
+              {field.label}
+              {field.required && <span style={{ color: 'var(--red-9)' }}>*</span>}
+            </Form.Label>
+            <Form.Control asChild>
+              <textarea
+                id={field.id}
+                placeholder={field.placeholder}
+                {...formMethods.register(field.id)}
+                style={{
+                  ...styles.field.input,
+                  minHeight: '100px',
+                }}
+              />
+            </Form.Control>
+            {formMethods.formState.errors[field.id] && (
+              <Form.Message style={styles.field.error}>
+                {formMethods.formState.errors[field.id]?.message as string}
+              </Form.Message>
+            )}
+          </Form.Field>
         );
+
       case 'checkbox':
         return (
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id={field.id}
-              {...formMethods.register(field.id)}
-            />
-            <label
-              htmlFor={field.id}
-              className={cn('text-sm', themeClasses.text)}
-            >
-              {field.placeholder || field.label}
-            </label>
-          </div>
+          <Form.Field name={field.id}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Checkbox.Root
+                id={field.id}
+                {...formMethods.register(field.id)}
+                style={{
+                  ...styles.field.input,
+                  width: '20px',
+                  height: '20px',
+                }}
+              >
+                <Checkbox.Indicator>
+                  <CheckIcon />
+                </Checkbox.Indicator>
+              </Checkbox.Root>
+              <Form.Label style={{ ...styles.field.label, cursor: 'pointer' }}>
+                {field.placeholder || field.label}
+                {field.required && <span style={{ color: 'var(--red-9)', marginLeft: '4px' }}>*</span>}
+              </Form.Label>
+            </div>
+            {formMethods.formState.errors[field.id] && (
+              <Form.Message style={styles.field.error}>
+                {formMethods.formState.errors[field.id]?.message as string}
+              </Form.Message>
+            )}
+          </Form.Field>
         );
+
       case 'select':
         if (!Array.isArray(field.options)) return null;
         return (
-          <select
-            id={field.id}
-            className={cn(
-              "w-full rounded-lg p-2",
-              themeClasses.input
+          <Form.Field name={field.id}>
+            <Form.Label style={styles.field.label}>
+              {field.label}
+              {field.required && <span style={{ color: 'var(--red-9)' }}>*</span>}
+            </Form.Label>
+            <Select.Root onValueChange={(value) => formMethods.setValue(field.id, value)}>
+              <Select.Trigger style={styles.field.input}>
+                <Select.Value placeholder="Select an option" />
+                <Select.Icon>
+                  <ChevronDownIcon />
+                </Select.Icon>
+              </Select.Trigger>
+
+              <Select.Portal>
+                <Select.Content>
+                  <Select.ScrollUpButton>
+                    <ChevronUpIcon />
+                  </Select.ScrollUpButton>
+                  <Select.Viewport>
+                    {field.options.map((option, index) => (
+                      <Select.Item
+                        key={index}
+                        value={option.value}
+                        style={{
+                          padding: '8px',
+                          cursor: 'pointer',
+                          outline: 'none',
+                        }}
+                      >
+                        <Select.ItemText>{option.label}</Select.ItemText>
+                      </Select.Item>
+                    ))}
+                  </Select.Viewport>
+                  <Select.ScrollDownButton>
+                    <ChevronDownIcon />
+                  </Select.ScrollDownButton>
+                </Select.Content>
+              </Select.Portal>
+            </Select.Root>
+            {formMethods.formState.errors[field.id] && (
+              <Form.Message style={styles.field.error}>
+                {formMethods.formState.errors[field.id]?.message as string}
+              </Form.Message>
             )}
-            {...formMethods.register(field.id)}
-          >
-            <option value="">Select an option</option>
-            {field.options.map((option: string, index: number) => (
-              <option key={index} value={option}>{option}</option>
-            ))}
-          </select>
+          </Form.Field>
         );
-      case 'file':
-        return (
-          <div className="space-y-2">
-            <FileUpload
-              value={formMethods.watch(field.id)}
-              accept={typeof field.accept === 'string' ? field.accept.split(',') : field.accept}
-              maxSize={field.maxSize}
-              onChange={(file) => {
-                formMethods.setValue(field.id, file);
-              }}
-              className={cn(themeClasses.input)}
-            />
-          </div>
-        );
+
       default:
         return (
-          <Input
-            id={field.id}
-            type={field.type || 'text'}
-            placeholder={field.placeholder}
-            className={cn(themeClasses.input)}
-            {...formMethods.register(field.id)}
-          />
+          <Form.Field name={field.id}>
+            <Form.Label style={styles.field.label}>
+              {field.label}
+              {field.required && <span style={{ color: 'var(--red-9)' }}>*</span>}
+            </Form.Label>
+            <Form.Control asChild>
+              <input
+                id={field.id}
+                type={field.type || 'text'}
+                placeholder={field.placeholder}
+                {...formMethods.register(field.id)}
+                style={styles.field.input}
+              />
+            </Form.Control>
+            {formMethods.formState.errors[field.id] && (
+              <Form.Message style={styles.field.error}>
+                {formMethods.formState.errors[field.id]?.message as string}
+              </Form.Message>
+            )}
+          </Form.Field>
         );
     }
   };
 
   return (
-    <div key={field.id}>
-      <label
-        htmlFor={field.id}
-        className={cn('block text-sm font-medium mb-1', themeClasses.label)}
-      >
-        {field.label}
-        {field.required && <span className="text-red-500">*</span>}
-      </label>
-      
+    <div style={styles.field.container}>
       {renderField()}
-      
-      {formMethods.formState.errors[field.id] && (
-        <p className={cn("text-sm mt-1", themeClasses.error)}>
-          {formMethods.formState.errors[field.id]?.message as string}
-        </p>
-      )}
     </div>
   );
 }; 

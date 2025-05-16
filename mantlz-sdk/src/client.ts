@@ -292,19 +292,37 @@ export function createMantlzClient(
             name: 'Development Form',
             description: 'This is a mock form generated in development mode',
             formType: 'custom',
+            fields: [
+              {
+                id: 'email',
+                name: 'email',
+                type: 'email',
+                required: true,
+                label: 'Email',
+                placeholder: 'your@email.com'
+              },
+              {
+                id: 'name',
+                name: 'name',
+                type: 'text',
+                required: true,
+                label: 'Name',
+                placeholder: 'Your Name'
+              }
+            ],
             schema: {
               email: {
                 type: 'email',
                 required: true,
                 label: 'Email',
-                placeholder: 'your@email.com',
+                placeholder: 'your@email.com'
               },
               name: {
                 type: 'text',
                 required: true,
                 label: 'Name',
-                placeholder: 'Your Name',
-              },
+                placeholder: 'Your Name'
+              }
             }
           };
         }
@@ -320,31 +338,59 @@ export function createMantlzClient(
 
         const formData = await response.json();
 
-        const formSchema: FormSchema = {
+        const formSchema: FormSchema & { schema: Record<string, any> } = {
           id: formData.id,
           name: formData.name || formData.title || 'Form',
           description: formData.description || '',
           formType: formData.formType || 'custom',
-          schema: {},
+          fields: [],
+          schema: {}
         };
 
         if (Array.isArray(formData.fields)) {
-          formData.fields.forEach((field: any) => {
-            const key = field.id || field.name;
-            if (key) {
-              formSchema.schema[key] = {
-                type: field.type || 'text',
-                required: Boolean(field.required),
-                placeholder: field.placeholder || '',
-                label: field.label || field.name || '',
-              };
-            }
+          formSchema.fields = formData.fields.map((field: any) => ({
+            id: field.id || field.name,
+            name: field.name,
+            type: field.type || 'text',
+            required: Boolean(field.required),
+            label: field.label || field.name || '',
+            placeholder: field.placeholder || '',
+            options: field.options?.map((opt: any) => ({
+              value: typeof opt === 'string' ? opt : opt.value,
+              label: typeof opt === 'string' ? opt : opt.label
+            }))
+          }));
+
+          // Also update schema for backward compatibility
+          formSchema.fields.forEach(field => {
+            formSchema.schema[field.id] = {
+              type: field.type,
+              required: field.required,
+              label: field.label,
+              placeholder: field.placeholder,
+              options: field.options
+            };
           });
         } else if (formData.schema) {
-          formSchema.schema =
-            typeof formData.schema === 'string'
-              ? JSON.parse(formData.schema)
-              : formData.schema;
+          const parsedSchema = typeof formData.schema === 'string'
+            ? JSON.parse(formData.schema)
+            : formData.schema;
+          
+          formSchema.schema = parsedSchema;
+            
+          // Generate fields from schema for consistency
+          formSchema.fields = Object.entries(parsedSchema).map(([key, value]: [string, any]) => ({
+            id: key,
+            name: key,
+            type: value.type || 'text',
+            required: Boolean(value.required),
+            label: value.label || key,
+            placeholder: value.placeholder || '',
+            options: value.options?.map((opt: any) => ({
+              value: typeof opt === 'string' ? opt : opt.value,
+              label: typeof opt === 'string' ? opt : opt.label
+            }))
+          }));
         }
 
         return formSchema;

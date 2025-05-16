@@ -1,27 +1,19 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Loader2 } from 'lucide-react';
-import { Button } from '../ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { cn } from '../../utils/cn';
+import { Theme } from '@radix-ui/themes';
+import * as Form from '@radix-ui/react-form';
+// import * as Progress from '@radix-ui/react-progress';
+import { ReloadIcon } from '@radix-ui/react-icons';
+
 import { useMantlz } from '../../context/mantlzContext';
 import { ApiKeyErrorCard } from '../ui/ApiKeyErrorCard';
-// import { toast } from '../../utils/toast';
 import { MantlzProps } from './types';
 import { StarRating } from './components/StarRating';
 import { FormField } from './components/FormField';
 import { useFormLogic } from './hooks/useFormLogic';
-import { getThemeClasses } from './themes';
-
-// Animation styles
-const fadeInAnimation = "opacity-0 animate-[fadeIn_0.5s_ease-in-out_forwards]";
-const fadeInKeyframes = `
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-`;
+import { ThemeProvider } from './context/ThemeContext';
+import { themes } from './themes';
 
 export default function Mantlz({
   formId,
@@ -36,32 +28,7 @@ export default function Mantlz({
   const [starRating, setStarRating] = useState(0);
   const [usersJoined, setUsersJoined] = useState(initialUsersJoinedCount);
   const [canShowUsersJoined, setCanShowUsersJoined] = useState(false);
-
-  if (!formId) {
-    return (
-      <Card className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
-        <CardHeader>
-          <CardTitle className="text-red-500">Form Error</CardTitle>
-          <CardDescription>Form ID is required</CardDescription>
-        </CardHeader>
-      </Card>
-    );
-  }
-
-  // Get theme classes
-  const themeClasses = getThemeClasses(theme);
-
-  // Use form logic hook
-  const {
-    formData,
-    loading,
-    submitting,
-    submitted,
-    fields,
-    formMethods,
-    onSubmit,
-    isMounted,
-  } = useFormLogic(formId, client, apiKey, redirectUrl);
+  const styles = themes[theme];
 
   // Fetch users joined count
   React.useEffect(() => {
@@ -85,12 +52,57 @@ export default function Mantlz({
     return () => clearInterval(intervalId);
   }, [showUsersJoined, formId, client]);
 
+  if (!formId) {
+    return (
+      <Theme appearance="light" accentColor="blue" radius="medium">
+        <div style={{ 
+          padding: '16px', 
+          borderRadius: '8px', 
+          border: '1px solid var(--red-6)',
+          backgroundColor: 'var(--red-2)'
+        }}>
+          <h2 style={{ 
+            color: 'var(--red-11)',
+            fontSize: '18px',
+            fontWeight: 600,
+            marginBottom: '8px'
+          }}>Form Error</h2>
+          <p style={{ color: 'var(--red-11)' }}>Form ID is required</p>
+        </div>
+      </Theme>
+    );
+  }
+
+  // Use form logic hook
+  const {
+    formData,
+    loading,
+    submitting,
+    submitted,
+    fields,
+    formMethods,
+    onSubmit,
+    isMounted,
+  } = useFormLogic(formId, client, apiKey, redirectUrl);
+
   // Render loading state
   if (!isMounted || loading) {
     return (
-      <div className="flex justify-center items-center p-8">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <ThemeProvider theme={theme}>
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          padding: '32px' 
+        }}>
+          <ReloadIcon style={{ 
+            animation: 'spin 1s linear infinite',
+            width: '24px',
+            height: '24px',
+            color: 'var(--blue-9)'
+          }} />
+        </div>
+      </ThemeProvider>
     );
   }
 
@@ -102,104 +114,135 @@ export default function Mantlz({
   // Render form error
   if (!formData || fields.length === 0) {
     return (
-      <Card className={cn(themeClasses.bg, themeClasses.border, className)}>
-        <CardHeader>
-          <CardTitle className={themeClasses.text}>Form Error</CardTitle>
-          <CardDescription className={themeClasses.description}>
+      <ThemeProvider theme={theme}>
+        <div style={{ 
+          padding: '16px', 
+          borderRadius: '8px', 
+          border: '1px solid var(--red-6)',
+          backgroundColor: 'var(--red-2)'
+        }}>
+          <h2 style={{ 
+            color: 'var(--red-11)',
+            fontSize: '18px',
+            fontWeight: 600,
+            marginBottom: '8px'
+          }}>Form Error</h2>
+          <p style={{ color: 'var(--red-11)' }}>
             {loading ? 'Loading form...' : 'Form configuration is missing or empty.'}
-          </CardDescription>
-        </CardHeader>
-      </Card>
+          </p>
+        </div>
+      </ThemeProvider>
     );
   }
 
   // Render success message after submission
   if (submitted) {
     return (
-      <Card className={cn("mantlz-form", themeClasses.bg, themeClasses.border, className)}>
-        <CardHeader>
-          <CardTitle className={themeClasses.text}>Thank You!</CardTitle>
-          <CardDescription className={themeClasses.description}>
+      <ThemeProvider theme={theme}>
+        <div style={{ 
+          padding: '16px', 
+          borderRadius: '8px', 
+          border: '1px solid var(--green-6)',
+          backgroundColor: 'var(--green-2)'
+        }}>
+          <h2 style={{ 
+            color: 'var(--green-11)',
+            fontSize: '18px',
+            fontWeight: 600,
+            marginBottom: '8px'
+          }}>Thank You!</h2>
+          <p style={{ color: 'var(--green-11)' }}>
             Your submission has been received.
-          </CardDescription>
-        </CardHeader>
-      </Card>
+          </p>
+        </div>
+      </ThemeProvider>
     );
   }
 
   // Main form render
   return (
-    <Card className={cn(
-      "mantlz-form",
-      themeClasses.bg,
-      themeClasses.border,
-      className
-    )}>
-      <style dangerouslySetInnerHTML={{ __html: fadeInKeyframes }} />
-      
-      <CardHeader>
-        <CardTitle className={themeClasses.text}>{formData?.title || formData?.name}</CardTitle>
-        {formData?.description && (
-          <CardDescription className={themeClasses.description}>
-            {formData.description}
-          </CardDescription>
-        )}
-        
-        {showUsersJoined && canShowUsersJoined && usersJoined > 0 && (
-          <div className={cn(
-            "inline-flex items-center justify-center mt-2 font-medium",
-            "transition-all duration-300 ease-in-out",
-            fadeInAnimation,
-          )}>
-            <span className="font-bold mr-1">{usersJoined}</span> {usersJoinedLabel}
-          </div>
-        )}
-      </CardHeader>
-      
-      <CardContent>
-        <form onSubmit={formMethods.handleSubmit(onSubmit)} className="space-y-2">
-          {fields.map((field) => (
-            <FormField
-              key={field.id}
-              field={field}
-              formMethods={formMethods}
-              themeClasses={themeClasses}
-            />
-          ))}
-          
-          {formData.formType === 'feedback' && (
-            <div>
-              <label className={cn('block text-sm font-medium mb-1', themeClasses.label)}>
-                Rating<span className="text-red-500">*</span>
-              </label>
-              <StarRating 
-                rating={starRating} 
-                setRating={setStarRating}
-              />
-              {formMethods.formState.errors.rating && (
-                <p className={cn("text-sm mt-1", themeClasses.error)}>
-                  {formMethods.formState.errors.rating?.message as string}
-                </p>
-              )}
-            </div>
+    <ThemeProvider theme={theme}>
+      <div 
+        className={className}
+        style={styles.form.container}
+      >
+        <div style={{ marginBottom: '32px' }}>
+          <h2 style={styles.form.title}>
+            {formData?.title || formData?.name}
+          </h2>
+          {formData?.description && (
+            <p style={styles.form.description}>
+              {formData.description}
+            </p>
           )}
           
-          <Button
-            type="submit"
-            className={cn("w-full", themeClasses.button)}
-            disabled={submitting}
-          >
-            {submitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Submitting...
-              </>
-            ) : (
-              'Submit'
+          {showUsersJoined && canShowUsersJoined && usersJoined > 0 && (
+            <div style={{ 
+              marginTop: '16px',
+              fontSize: '14px',
+              color: 'var(--gray-11)'
+            }}>
+              <span style={{ 
+                fontWeight: 600,
+                color: 'var(--gray-12)'
+              }}>{usersJoined}</span> {usersJoinedLabel}
+            </div>
+          )}
+        </div>
+        
+        <Form.Root onSubmit={formMethods.handleSubmit(onSubmit)}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            {fields.map((field) => (
+              <FormField
+                key={field.id}
+                field={field}
+                formMethods={formMethods}
+              />
+            ))}
+            
+            {formData.formType === 'feedback' && (
+              <Form.Field name="rating">
+                <Form.Label style={styles.field.label}>
+                  Rating<span style={{ color: 'var(--red-9)' }}>*</span>
+                </Form.Label>
+                <StarRating 
+                  rating={starRating} 
+                  setRating={setStarRating} 
+                />
+                {formMethods.formState.errors.rating && (
+                  <Form.Message style={styles.field.error}>
+                    {formMethods.formState.errors.rating?.message as string}
+                  </Form.Message>
+                )}
+              </Form.Field>
             )}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+            
+            <Form.Submit asChild>
+              <button
+                type="submit"
+                disabled={submitting}
+                style={{
+                  ...styles.button,
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px'
+                }}
+              >
+                {submitting ? (
+                  <>
+                    <ReloadIcon style={{ animation: 'spin 1s linear infinite' }} />
+                    Submitting...
+                  </>
+                ) : (
+                  'Submit'
+                )}
+              </button>
+            </Form.Submit>
+          </div>
+        </Form.Root>
+      </div>
+    </ThemeProvider>
   );
 }

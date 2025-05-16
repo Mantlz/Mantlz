@@ -1,45 +1,47 @@
-import React, { useState } from 'react';
-import { Star } from 'lucide-react';
-import { cn } from '../../../utils/cn';
+import React from 'react';
+import * as RadioGroup from '@radix-ui/react-radio-group';
+import { StarFilledIcon, StarIcon } from '@radix-ui/react-icons';
 
 interface StarRatingProps {
   rating: number;
   setRating: (rating: number) => void;
-  count?: number;
-  colorMode?: 'light' | 'dark';
 }
 
-export const StarRating = ({ 
-  rating, 
-  setRating, 
-  count = 5,
-  colorMode = 'light'
-}: StarRatingProps) => {
-  const [hover, setHover] = useState(0);
-  
+export const StarRating = ({ rating, setRating }: StarRatingProps) => {
   return (
-    <div className="flex gap-1">
-      {[...Array(count)].map((_, index) => {
-        const starValue = index + 1;
-        const effectiveRating = Math.max(hover, rating);
-        const isHighlighted = starValue <= effectiveRating;
-        const fillColor = colorMode === 'dark' ? "fill-yellow-400 stroke-yellow-400" : "fill-yellow-500 stroke-yellow-500";
-        const emptyColor = colorMode === 'dark' ? "stroke-gray-400" : "stroke-gray-300";
-        
-        return (
-          <Star
-            key={index}
-            size={24}
-            className={cn(
-              "cursor-pointer transition-all",
-              isHighlighted ? fillColor : emptyColor
-            )}
-            onClick={() => setRating(starValue)}
-            onMouseEnter={() => setHover(starValue)}
-            onMouseLeave={() => setHover(0)}
-          />
-        );
-      })}
-    </div>
+    <RadioGroup.Root
+      value={rating.toString()}
+      onValueChange={(value) => setRating(parseInt(value))}
+      style={{
+        display: 'flex',
+        gap: '8px'
+      }}
+    >
+      {[1, 2, 3, 4, 5].map((value) => (
+        <RadioGroup.Item
+          key={value}
+          value={value.toString()}
+          style={{
+            all: 'unset',
+            cursor: 'pointer',
+            padding: '4px',
+            borderRadius: '4px',
+            transition: 'background-color 0.2s',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = 'var(--gray-3)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+          }}
+        >
+          {value <= rating ? (
+            <StarFilledIcon style={{ color: 'var(--yellow-9)', width: '20px', height: '20px' }} />
+          ) : (
+            <StarIcon style={{ color: 'var(--gray-8)', width: '20px', height: '20px' }} />
+          )}
+        </RadioGroup.Item>
+      ))}
+    </RadioGroup.Root>
   );
 }; 

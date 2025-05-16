@@ -1,38 +1,43 @@
-import * as React from "react"
-import { cn } from "../../utils/cn"
-import { textareaVariants } from "../../styles/theme"
+import React from 'react';
+import { Theme } from '@radix-ui/themes';
 
-export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  variant?: "default" | "error";
-  error?: string;
-  colorMode?: "light" | "dark";
-}
+interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, variant = "default", error, colorMode = "light", ...props }, ref) => {
+  (props, ref) => {
     return (
-      <div className="space-y-1">
+      <Theme>
         <textarea
-          className={cn(
-            textareaVariants({ variant, colorMode }),
-            className
-          )}
           ref={ref}
+          style={{
+            width: '100%',
+            minHeight: '100px',
+            padding: '8px 12px',
+            borderRadius: '6px',
+            border: '1px solid var(--gray-6)',
+            backgroundColor: 'var(--gray-1)',
+            color: 'var(--gray-12)',
+            fontSize: '14px',
+            lineHeight: '1.5',
+            transition: 'all 150ms ease',
+            outline: 'none',
+            resize: 'vertical',
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.borderColor = 'var(--blue-8)';
+            e.currentTarget.style.boxShadow = '0 0 0 2px var(--blue-6)';
+          }}
+          onBlur={(e) => {
+            e.currentTarget.style.borderColor = 'var(--gray-6)';
+            e.currentTarget.style.boxShadow = 'none';
+          }}
           {...props}
         />
-        {error && (
-          <p className={cn(
-            "text-sm", 
-            colorMode === 'light' ? "text-red-500" : "text-red-400"
-          )}>
-            {error}
-          </p>
-        )}
-      </div>
-    )
+      </Theme>
+    );
   }
-)
-Textarea.displayName = "Textarea"
+);
 
-export { Textarea } 
+Textarea.displayName = 'Textarea';
+
+export { Textarea }; 

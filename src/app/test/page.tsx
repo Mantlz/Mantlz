@@ -30,30 +30,21 @@ export default function CustomerFeedbackPage() {
       />  */}
       <Mantlz
   formId="cmao2vgrf0007o7lfm6r82jif"
-  className="
-    bg-gradient-to-r from-zinc-100 to-zinc-200 dark:from-zinc-900 dark:to-zinc-800 
-    border-2 border-zinc-300 dark:border-zinc-700 backdrop-blur-3xl shadow-2xl
-    [&_button]:bg-purple-500 [&_button]:hover:bg-purple-600 [&_button]:text-white
-    [&_label]:text-purple-700 [&_label]:font-medium [&_label]:text-sm
-    [&_input]:border-purple-200 [&_input]:focus:ring-purple-500
-    [&_textarea]:border-purple-200 [&_textarea]:focus:ring-purple-500
-    [&_checkbox]:border-purple-200 [&_checkbox]:focus:ring-purple-500
-    [&_file-upload]:border-purple-200 [&_file-upload]:focus:ring-purple-500
-  "
+  theme='default'
+  
 />
      
       <Mantlz
 
         formId="cma9tu80t0004o7r0iuisldzg"
-        theme='default'
-        usersJoinedCount={1}
-        usersJoinedLabel="people have already joined"
-        showUsersJoined={true}
-        className="bg-gradient-to-r from-zinc-200 via-zinc-400 to-zinc-600 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-800 border-2 border-zinc-300 dark:border-zinc-700 mx-auto my-8 p-8 space-y-6"
+        theme='modern'
+        
 
 
 
-       //redirectUrl='/feedback/thank-you'
+
+
+
       /> 
 
         
@@ -61,16 +52,15 @@ export default function CustomerFeedbackPage() {
         
       <Mantlz formId="cman7j8ub0003o7jpmg2bjr6n"
       theme='neobrutalism'
+      // className="bg-gradient-to-r from-zinc-100 to-zinc-200 dark:from-zinc-900 dark:to-zinc-800 border-2 border-zinc-300 dark:border-zinc-700
+      
+      //"
+
 
 
       
       />
 
-      <Mantlz formId="cmaqyion30003ie048dva1ebd"
-      theme='default'
-      className="bg-purple-50 dark:bg-purple-950 shadow-purple-200 dark:shadow-purple-800 shadow-lg"
-
-      />
 
      
 
