@@ -8,7 +8,7 @@ export { default as Mantlz } from './components/form/mantlz';
 export { createMantlzClient } from './client';
 
 // Base themes and styling
-export { BASE_THEMES } from './components/form/baseThemes';
+
 export type { SimpleAppearance } from './components/form/types';
 
 // Toast system exports
@@ -42,5 +42,4 @@ export { SDK_CONFIG } from './config';
 // Constants
 export { FORM_THEMES } from './components/form/types';
 
-// Utils
-export { processAppearance } from './components/form/themeUtils';
+

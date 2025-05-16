@@ -3,6 +3,7 @@
  */
 
 import { z } from 'zod';
+import { ThemeVariant } from './themes';
 
 // Base theme types
 export type BaseTheme = 'default' | 'dark' | 'purple' | 'neobrutalism';
@@ -187,7 +188,7 @@ export interface FormSchema {
   description?: string;
   schema: Record<string, any>;
   fields?: FormFieldConfig[];
-  formType?: FormType;
+  formType?: 'waitlist' | 'contact' | 'feedback' | 'custom';
 }
 
 // Validation schemas
@@ -212,7 +213,7 @@ export const formSchema = z.object({
   description: z.string().optional(),
   schema: z.record(z.any()),
   fields: z.array(formFieldSchema).optional(),
-  formType: z.enum(['waitlist', 'contact', 'feedback']).optional(),
+  formType: z.enum(['waitlist', 'contact', 'feedback', 'custom']).optional(),
 });
 
 export interface MantlzProps {
@@ -222,10 +223,9 @@ export interface MantlzProps {
   onError?: (error: Error) => void;
   className?: string;
   showUsersJoined?: boolean;
-  usersJoinedLabel?: string;
   usersJoinedCount?: number;
+  usersJoinedLabel?: string;
   redirectUrl?: string;
-  theme?: 'default' | 'minimal' | 'modern' | 'classic';
-  appearance?: FormAppearance | ((theme: 'default' | 'minimal' | 'modern' | 'classic') => FormAppearance);
-  variant?: "default" | "glass";
+  theme?: ThemeVariant;
+  variant?: 'default' | 'glass';
 } 
