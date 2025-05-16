@@ -17,14 +17,10 @@ export default function CustomerFeedbackPage() {
         formId="cmao2vgrf0007o7lfm6r82jif"
         //colorMode='dark'
         theme='purple'
+
         //theme=''
-        onSuccess={() => {
-          console.log('success');
-        }}
-        onError={() => {
-          console.log('error');
-        }}
-        key={Math.random()}
+       
+    className='bg-red-500'
        
         //theme="neobrutalism"
         
@@ -37,7 +33,7 @@ export default function CustomerFeedbackPage() {
         usersJoinedCount={1}
         usersJoinedLabel="people have already joined"
         showUsersJoined={true}
-        colorMode='dark'
+
        //redirectUrl='/feedback/thank-you'
       /> 
 
@@ -46,8 +42,8 @@ export default function CustomerFeedbackPage() {
         
       <Mantlz formId="cman7j8ub0003o7jpmg2bjr6n"
       theme='neobrutalism'
-      variant='glass'
-      colorMode='dark'
+
+
       
       />
 

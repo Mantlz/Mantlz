@@ -25,7 +25,6 @@ const fadeInKeyframes = `
 
 export default function Mantlz({
   formId,
-  colorMode = 'light',
   className,
   showUsersJoined = false,
   usersJoinedCount: initialUsersJoinedCount = 0,
@@ -50,7 +49,7 @@ export default function Mantlz({
   }
 
   // Get theme classes
-  const themeClasses = getThemeClasses(theme, colorMode);
+  const themeClasses = getThemeClasses(theme);
 
   // Use form logic hook
   const {
@@ -161,10 +160,10 @@ export default function Mantlz({
         <form onSubmit={formMethods.handleSubmit(onSubmit)} className="space-y-2">
           {fields.map((field) => (
             <FormField
+              key={field.id}
               field={field}
               formMethods={formMethods}
               themeClasses={themeClasses}
-              colorMode={colorMode}
             />
           ))}
           
@@ -175,8 +174,7 @@ export default function Mantlz({
               </label>
               <StarRating 
                 rating={starRating} 
-                setRating={setStarRating} 
-                colorMode={colorMode}
+                setRating={setStarRating}
               />
               {formMethods.formState.errors.rating && (
                 <p className={cn("text-sm mt-1", themeClasses.error)}>

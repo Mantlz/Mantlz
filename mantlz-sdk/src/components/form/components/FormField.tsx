@@ -12,14 +12,12 @@ interface FormFieldProps {
   field: FormFieldConfig;
   formMethods: UseFormReturn<any>;
   themeClasses: ThemeClasses;
-  colorMode?: 'light' | 'dark';
 }
 
 export const FormField = ({
   field,
   formMethods,
   themeClasses,
-  colorMode = 'light'
 }: FormFieldProps) => {
   const renderField = () => {
     switch (field.type) {
@@ -37,7 +35,6 @@ export const FormField = ({
           <div className="flex items-center gap-2">
             <Checkbox
               id={field.id}
-              colorMode={colorMode}
               {...formMethods.register(field.id)}
             />
             <label

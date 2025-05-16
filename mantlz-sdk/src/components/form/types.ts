@@ -218,7 +218,6 @@ export const formSchema = z.object({
 
 export interface MantlzProps {
   formId: string;
-  colorMode?: 'light' | 'dark';
   className?: string;
   showUsersJoined?: boolean;
   usersJoinedCount?: number;

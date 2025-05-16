@@ -37,7 +37,6 @@ export function FileUpload({
       
       // Validate file type
       if (accept && accept.length > 0) {
-        const fileType = file.type.split('/')[1];
         const isValidType = accept.some(type => 
           type.startsWith('.') ? file.name.toLowerCase().endsWith(type.toLowerCase()) : file.type.includes(type)
         );
