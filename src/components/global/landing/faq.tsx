@@ -1,5 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Container } from "./container"
+import { Sparkles } from "lucide-react"
 
 export default function Faq() {
   const faqData = [
@@ -36,32 +37,43 @@ export default function Faq() {
   ]
 
   return (
-    <div
-      className="w-full bg-white dark:bg-zinc-950 py-20 mt-10"
+    <section 
+      className="py-24 relative bg-gradient-to-b from-white to-zinc-50 dark:from-zinc-950 dark:to-zinc-900"
       id="faq"
     >
-      <Container>
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute bottom-0 right-0 w-1/3 h-1/2 bg-zinc-200/30 dark:bg-zinc-800/20 rounded-full blur-3xl transform translate-y-1/4 translate-x-1/4"></div>
+        <div className="absolute top-0 left-0 w-1/3 h-1/2 bg-zinc-200/30 dark:bg-zinc-800/20 rounded-full blur-3xl transform -translate-y-1/4 -translate-x-1/4"></div>
+      </div>
+      
+      <Container className="relative z-10">
         <div className="flex flex-col items-center text-center lg:flex-row lg:items-start lg:text-left gap-8">
           <div className="lg:w-1/3">
-            <h2 className="text-3xl font-bold mb-2 text-neutral-900 dark:text-neutral-50 max-w-7xl">
+            <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-4">
+              <Sparkles className="h-4 w-4 mr-2" />
+              <span>FAQ</span>
+            </div>
+            <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">
               Frequently Asked Questions
             </h2>
-            <p className="text-neutral-600 dark:text-neutral-300 ">
+            <p className="text-zinc-600 dark:text-zinc-400">
               Everything you need to know about Mantlz and our form management platform
             </p>
           </div>
           <div className="lg:w-2/3 w-full">
-            <Accordion type="single" collapsible className="space-y-4">
+            <Accordion type="single" collapsible className="space-y-3">
               {faqData.map((item, index) => (
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="border-2 border-neutral-200 dark:border-zinc-800 rounded-sm overflow-hidden "
+                  className="border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden shadow-sm backdrop-blur-sm"
                 >
-                  <AccordionTrigger className="px-4 py-3 text-left font-medium text-neutral-900 dark:text-neutral-50 transition-colors bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800">
-                    {item.question}
+                  <AccordionTrigger className="px-5 py-4 text-left font-medium text-zinc-800 dark:text-zinc-200 transition-colors bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-50 dark:hover:bg-zinc-800 group">
+                    <span className="group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">
+                      {item.question}
+                    </span>
                   </AccordionTrigger>
-                  <AccordionContent className="px-4 py-3 text-neutral-700 dark:text-neutral-300 bg-white dark:bg-zinc-900 border-t border-neutral-200 dark:border-zinc-800">
+                  <AccordionContent className="px-5 py-4 text-zinc-600 dark:text-zinc-400 bg-white/50 dark:bg-zinc-900/50 border-t border-zinc-100 dark:border-zinc-800/50">
                     {item.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -70,7 +82,7 @@ export default function Faq() {
           </div>
         </div>
       </Container>
-    </div>
+    </section>
   )
 }
 

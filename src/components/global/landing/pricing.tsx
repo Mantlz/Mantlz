@@ -11,11 +11,11 @@ import { useMutation } from "@tanstack/react-query"
 import Canceled from "./canceled"
 import { useSubscription } from "@/hooks/useSubscription"
 import { Badge } from "@/components/ui/badge"
+import { Check, Sparkles, ArrowRight, FileText, Users, Building, ZapIcon } from "lucide-react"
 
 // Define subscription type
 type Subscription = {
   plan: "FREE" | "STANDARD" | "PRO" | null;
-  
 }
 
 type Plan = {
@@ -192,29 +192,36 @@ function PricingContent({
   }
 
   return (
-    <section className="overflow-hidden bg-white dark:bg-zinc-950" id="pricing">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 lg:py-24">
-        <div className="text-center mb-8 sm:mb-12 md:mb-16">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Choose <span className="font-extrabold">The Plan</span> That&apos;s Right For
+    <section className="py-24 relative bg-gradient-to-b from-white to-zinc-50 dark:from-zinc-950 dark:to-zinc-950" id="pricing">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 right-0 w-1/2 h-1/2 bg-zinc-200/30 dark:bg-zinc-800/20 rounded-full blur-3xl transform -translate-y-1/4 translate-x-1/4"></div>
+        <div className="absolute bottom-0 left-0 w-1/3 h-1/2 bg-zinc-200/30 dark:bg-zinc-800/20 rounded-full blur-3xl transform translate-y-1/4 -translate-x-1/3"></div>
+      </div>
+      
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-4">
+            <Sparkles className="h-4 w-4 mr-2" />
+            <span>Simple Pricing</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">
+            Choose the plan that fits your needs
           </h2>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Your Form Management Needs
-          </h2>
+          <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
+            Start for free, upgrade as you grow
+          </p>
         </div>
 
-        <div className=" rounded-3xl p-4 sm:p-6">
-          <div className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {plans.map((plan) => (
-              <PricingCard
-                key={plan.title}
-                plan={plan}
-                onCheckout={() => handleCheckout(plan)}
-                isLoading={processingPlan === plan.title}
-                isCurrentPlan={isCurrentUserPlan(plan.title)}
-              />
-            ))}
-          </div>
+        <div className="grid gap-8 grid-cols-1 md:grid-cols-3">
+          {plans.map((plan) => (
+            <PricingCard
+              key={plan.title}
+              plan={plan}
+              onCheckout={() => handleCheckout(plan)}
+              isLoading={processingPlan === plan.title}
+              isCurrentPlan={isCurrentUserPlan(plan.title)}
+            />
+          ))}
         </div>
       </div>
     </section>
@@ -233,163 +240,104 @@ function PricingCard({
   isCurrentPlan: boolean
 }) {
   const price = plan.monthlyPrice
-  const period = "/Month"
+  const period = "/month"
 
   return (
-    <div
-      className={`relative w-full rounded-2xl border ${
-        plan.isPopular 
-          ? "border-2 border-blue-500 dark:border-blue-400 shadow-2xl bg-gradient-to-b from-white to-blue-50 dark:from-zinc-900 dark:to-blue-950/20" 
-          : "border-zinc-200 dark:border-zinc-700"
-      } shadow-lg overflow-hidden ${
-        plan.isFeatured ? "ring-1 ring-blue-500 dark:ring-blue-400" : ""
-      } ${isCurrentPlan ? "ring-2 ring-green-500 dark:ring-green-400" : ""}`}
-    >
+    <div className={`relative group backdrop-blur-sm rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border ${
+      plan.isPopular 
+        ? "border-zinc-200 dark:border-zinc-700" 
+        : "border-zinc-200 dark:border-zinc-800"
+    } ${isCurrentPlan ? "ring-2 ring-zinc-700 dark:ring-zinc-300" : ""}`}>
+      
+      {/* Subtle gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-zinc-50 dark:to-zinc-900/50 opacity-50"></div>
+      
+      {/* Popular badge */}
       {plan.isPopular && (
-        <div className="absolute -right-12 top-6 transform rotate-45 bg-blue-500 text-white px-12 py-1 text-sm font-medium">
-          Popular
+        <div className="absolute top-3 right-3">
+          <Badge className="bg-zinc-700 hover:bg-zinc-700 text-white dark:bg-zinc-300 dark:text-zinc-900 dark:hover:bg-zinc-300 font-medium px-2 py-1">
+            <ZapIcon className="h-3.5 w-3.5 mr-1" />
+            Popular
+          </Badge>
         </div>
       )}
-      <div className="p-6 sm:p-8 flex flex-col h-full">
-        <div className="flex items-center justify-between mb-4 sm:mb-6">
-          <div className="flex items-center gap-2 sm:gap-3">
-            {plan.title === "Starter" && (
-              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border border-zinc-200 dark:border-zinc-700">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-gray-700 dark:text-gray-300"
-                >
-                  <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-                  <line x1="9" y1="9" x2="15" y2="9" />
-                  <line x1="9" y1="12" x2="15" y2="12" />
-                  <line x1="9" y1="15" x2="13" y2="15" />
-                </svg>
-              </div>
-            )}
-            {plan.title === "Standard" && (
-              <div className="w-7 h-7 sm:w-8 sm:h-8  rounded-full flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-gray-700 dark:text-gray-300"
-                >
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                  <rect width="4" height="12" x="2" y="9" />
-                  <circle cx="4" cy="4" r="2" />
-                </svg>
-              </div>
-            )}
-            {plan.title === "Professional" && (
-              <div className="w-7 h-7 sm:w-8 sm:h-8  rounded-full flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-gray-700 dark:text-gray-300"
-                >
-                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-                </svg>
-              </div>
-            )}
-            <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">{plan.title}</h3>
-          </div>
+
+      <div className="p-6 flex flex-col h-full relative">
+        {/* Plan icon and title */}
+        <div className="mb-6">
+          {plan.title === "Starter" && (
+            <div className="w-10 h-10 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-4">
+              <FileText className="h-5 w-5 text-zinc-700 dark:text-zinc-300" />
+            </div>
+          )}
+          {plan.title === "Standard" && (
+            <div className="w-10 h-10 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-4">
+              <Users className="h-5 w-5 text-zinc-700 dark:text-zinc-300" />
+            </div>
+          )}
+          {plan.title === "Professional" && (
+            <div className="w-10 h-10 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-4">
+              <Building className="h-5 w-5 text-zinc-700 dark:text-zinc-300" />
+            </div>
+          )}
+          <h3 className="text-xl font-bold text-zinc-800 dark:text-white">{plan.title}</h3>
           {isCurrentPlan && (
-            <Badge variant="secondary" className={`${
-              plan.isPopular 
-                ? "bg-gradient-to-r from-green-500 to-blue-500 text-white dark:from-green-600 dark:to-blue-600"
-                : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 border-green-200 dark:border-green-800"
-            } text-xs sm:text-sm`}>
+            <Badge variant="outline" className="mt-2 bg-green-500 text-white">
               Current Plan
             </Badge>
           )}
         </div>
 
-        <div className="mb-4 sm:mb-6">
-          <span className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">${price}</span>
-          <span className="ml-1 text-gray-500 dark:text-gray-400">{period}</span>
+        {/* Price */}
+        <div className="mb-6">
+          <div className="flex items-baseline">
+            <span className="text-3xl font-bold text-zinc-800 dark:text-white">${price}</span>
+            <span className="ml-1 text-sm text-zinc-500 dark:text-zinc-400">{period}</span>
+          </div>
+          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+            {plan.title === "Starter" && "Perfect for individuals just getting started"}
+            {plan.title === "Standard" && "Great for growing businesses"}
+            {plan.title === "Professional" && "Built for professional teams"}
+          </p>
         </div>
 
-        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-4 sm:mb-6">
-          {plan.title === "Starter" &&
-            "Perfect for individuals or small projects needing a simple form solution with essential features."}
-          {plan.title === "Standard" &&
-            "Ideal for growing businesses that need multiple forms and advanced features to engage with their audience."}
-          {plan.title === "Professional" &&
-            "Enterprise-grade solution for organizations with high-volume form needs and advanced customization requirements."}
-        </p>
+        {/* Features list */}
+        <div className="flex-grow mb-6">
+          <div className="space-y-3">
+            {plan.features.map((feature, index) => (
+              <div key={index} className="flex items-start">
+                <div className="mr-3 mt-1">
+                  <div className="w-4 h-4 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+                    <Check className="h-3 w-3 text-zinc-700 dark:text-zinc-300" />
+                  </div>
+                </div>
+                <span className="text-sm text-zinc-600 dark:text-zinc-400">{feature}</span>
+              </div>
+            ))}
+          </div>
+        </div>
 
-        <ul className="space-y-3 sm:space-y-4 text-xs sm:text-sm mb-6 sm:mb-8 flex-grow">
-          {plan.features.map((feature, index) => (
-            <li key={index} className="flex items-start gap-2 sm:gap-3 text-gray-700 dark:text-gray-300">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="text-blue-500 dark:text-blue-400 mt-0.5 min-w-[16px]"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M8 12l2 2 4-4" />
-              </svg>
-              <span>{feature}</span>
-            </li>
-          ))}
-        </ul>
-
+        {/* CTA Button */}
         <Button
           onClick={onCheckout}
           disabled={isLoading || isCurrentPlan}
-          className={`w-full rounded-lg py-4 sm:py-6 text-center font-medium text-base sm:text-lg transition-colors duration-200 mt-auto ${
-            plan.title === "Starter"
-              ? "bg-gradient-to-bl from-zinc-800 via-zinc-600 to-zinc-950 hover:from-zinc-700 hover:to-zinc-900 text-white border border-zinc-200 dark:border-zinc-800"
-              : "bg-gradient-to-bl from-zinc-800 via-zinc-600 to-zinc-950 hover:from-zinc-700 hover:to-zinc-900 text-white border border-zinc-200 dark:border-zinc-800"
-          } ${isCurrentPlan ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`w-full ${
+            plan.isPopular
+              ? "bg-zinc-800 hover:bg-zinc-700 text-white dark:bg-zinc-200 dark:text-zinc-800 dark:hover:bg-zinc-300"
+              : "bg-white hover:bg-zinc-100 text-zinc-800 border border-zinc-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700 dark:border-zinc-700"
+          } rounded-lg py-5 font-medium transition-colors duration-200`}
         >
           {isLoading ? "Processing..." : isCurrentPlan ? "Current Plan" : plan.buttonText}
-          {plan.title !== "Starter" && !isCurrentPlan && (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="ml-2 inline"
-            >
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
+          {!isCurrentPlan && !isLoading && (
+            <ArrowRight className="ml-2 h-4 w-4" />
           )}
         </Button>
       </div>
+      
+      {/* Bottom accent for popular plan */}
+      {plan.isPopular && (
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-zinc-400 to-zinc-600 dark:from-zinc-300 dark:to-zinc-500"></div>
+      )}
     </div>
   )
 }

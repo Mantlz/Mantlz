@@ -1,10 +1,9 @@
 "use client"
 import React from 'react';
-import { AlertCircle, Lock, Shield, UserCheck, Mail } from 'lucide-react';
+import { AlertCircle, Lock, Shield, UserCheck, Mail, FileText } from 'lucide-react';
 import Footer from '@/components/global/landing/footer';
 import { Navbar } from '@/components/global/landing/navbar';
 import { Container } from '@/components/global/landing/container';
-
 
 interface TermsSectionProps {
   title: string;
@@ -13,42 +12,53 @@ interface TermsSectionProps {
 }
 
 const TermsSection: React.FC<TermsSectionProps> = ({ title, children, icon: Icon }) => (
-  <div className="p-6 rounded-xl bg-white dark:bg-zinc-900 shadow-sm mb-6 border border-neutral-200 dark:border-zinc-800">
-    <div className="flex items-center gap-3 mb-3">
-      <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800">
-        <Icon className="text-neutral-800 dark:text-neutral-200" size={20} />
+  <div className="p-6 rounded-xl bg-white/80 dark:bg-zinc-900/80 shadow-md mb-6 border border-zinc-200/50 dark:border-zinc-800/50 backdrop-blur-sm transition-all duration-300 hover:shadow-lg">
+    <div className="flex items-center gap-3 mb-4">
+      <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+        <Icon className="h-5 w-5" />
       </div>
-      <h2 className="text-lg font-medium text-neutral-900 dark:text-neutral-50">{title}</h2>
+      <h2 className="text-lg font-medium text-zinc-800 dark:text-zinc-200">{title}</h2>
     </div>
-    <div className="text-neutral-600 dark:text-neutral-400 text-sm leading-relaxed">
+    <div className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
       {children}
     </div>
   </div>
 );
 
 const TermsOfService: React.FC = () => (
-  <div className="min-h-screen bg-white dark:bg-zinc-950">
-    <div className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-zinc-950">
+  <div className="min-h-screen bg-gradient-to-b from-white to-zinc-50 dark:from-zinc-950 dark:to-zinc-900 relative overflow-hidden">
+    {/* Background elements */}
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-zinc-200/30 dark:bg-zinc-800/20 rounded-full blur-3xl transform -translate-y-1/4 translate-x-1/4"></div>
+      <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-zinc-200/30 dark:bg-zinc-800/20 rounded-full blur-3xl transform translate-y-1/4 -translate-x-1/4"></div>
+    </div>
+    
+    <div className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-sm border-b border-zinc-200/50 dark:border-zinc-800/50">
       <Container>
         <Navbar />
       </Container>
     </div>
-    <main className="pt-32 pb-16">
+    
+    <main className="pt-32 pb-16 relative z-10">
       <Container>
         <div className="max-w-3xl mx-auto">
           <header className="text-center mb-10">
-            <h1 className="text-5xl font-semibold text-neutral-900 dark:text-neutral-50 mb-3">
+            <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-4">
+              <FileText className="h-4 w-4 mr-2" />
+              <span>Legal Documents</span>
+            </div>
+            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">
               Terms of Service
             </h1>
-            <p className="text-neutral-500 dark:text-neutral-400 text-sm max-w-xl mx-auto">
+            <p className="text-zinc-600 dark:text-zinc-400 text-md">
               Last updated: April 2025
             </p>
           </header>
 
           <div className="space-y-6">
-            <div className="p-4 rounded-xl bg-zinc-100 dark:bg-zinc-800/50 text-neutral-600 dark:text-neutral-300 text-sm">
+            <div className="p-4 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-300 text-sm border border-zinc-200/50 dark:border-zinc-700/50 backdrop-blur-sm">
               <div className="flex items-start gap-3">
-                <AlertCircle className="h-5 w-5 text-neutral-500 dark:text-neutral-400 mt-0.5 flex-shrink-0" />
+                <AlertCircle className="h-5 w-5 text-zinc-500 dark:text-zinc-400 mt-0.5 flex-shrink-0" />
                 <p>
                   Please read these terms carefully. By using Mantlz, you agree to these conditions.
                   We may update these terms periodically to reflect changes in our services.
@@ -88,10 +98,10 @@ const TermsOfService: React.FC = () => (
               </p>
             </TermsSection>
 
-            <div className="p-6 rounded-xl bg-white dark:bg-zinc-900 shadow-sm text-center border border-neutral-200 dark:border-zinc-800">
-              <h3 className="text-neutral-800 dark:text-neutral-200 font-medium mb-3">Contact Us</h3>
+            <div className="p-6 rounded-xl bg-white/80 dark:bg-zinc-900/80 shadow-md text-center border border-zinc-200/50 dark:border-zinc-800/50 backdrop-blur-sm">
+              <h3 className="text-zinc-800 dark:text-zinc-200 font-medium mb-3">Contact Us</h3>
               <a href="mailto:contact@mantlz.app" 
-                className="inline-flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors">
+                className="inline-flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
                 <Mail className="w-4 h-4" />
                 contact@mantlz.app
               </a>

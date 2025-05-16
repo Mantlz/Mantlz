@@ -3,36 +3,59 @@ import Link from "next/link"
 import "@/styles/animations.css"
 import { InstallCommand } from "./install-command"
 import { WaitlistExample } from "./waitlist-example"
+import { ArrowRight, Sparkles } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 export function HeroSection() {
   return (
-    
-    <div className="max-w-3xl mx-auto px-2 sm:px-4 md:px-6 py-8 sm:py-10 md:py-12 relative bg-white dark:bg-zinc-950 ">
-
+    <section className="relative py-6 overflow-hidden">
+      {/* Background elements */}
+      {/* <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-zinc-200/30 dark:bg-zinc-800/20 rounded-full blur-3xl transform -translate-y-1/4 translate-x-1/4"></div>
+        <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-zinc-200/30 dark:bg-zinc-800/20 rounded-full blur-3xl transform translate-y-1/4 -translate-x-1/4"></div>
+      </div> */}
       
-      <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-2 sm:mb-4 dark:text-white">Forms for developers</h1>
-      
-      <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 md:mb-10">
-        A modern form management platform that enables you to build customizable feedback, contact, and waitlist forms with multiple themes and analytics.
-      </p>
-      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center">
-        <Link
-          href="/sign-up"
-          className="px-2 sm:px-3 py-1.5 sm:py-2 bg-black text-white dark:bg-white dark:text-black rounded-lg font-medium w-auto max-w-[200px] text-center pulse dark:hover:bg-zinc-100 hover:bg-zinc-900 hover:border-2 hover:border-white dark:hover:border-zinc-900 relative overflow-hidden transition-all duration-300 border-2 border-transparent ring-2 ring-black dark:ring-white ring-offset-2 ring-offset-white dark:ring-offset-black"
-        >
-          Try Now. Free!
-        </Link>
-      </div>
-      
-      {/* Floating components within hero section */}
-      <div className="hidden lg:block">
-        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-[120%]">
-          {/* <WaitlistExample /> */}
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 md:px-8 text-center">
+        {/* Top badge */}
+        {/* <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-6">
+          <Sparkles className="h-4 w-4 mr-2" />
+          <span>Form Management Simplified</span>
+        </div> */}
+        
+        {/* Main heading */}
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent mb-6">
+          Forms for developers
+        </h1>
+        
+        {/* Description */}
+        <p className="text-lg sm:text-xl text-zinc-600 dark:text-zinc-400 mb-10 max-w-2xl mx-auto">
+          A modern form management platform that enables you to build customizable feedback, contact, and waitlist forms with multiple themes and analytics.
+        </p>
+        
+        {/* CTA buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
+          <Button
+            asChild
+            className="h-12 px-6 bg-zinc-800 hover:bg-zinc-700 text-white dark:bg-white dark:hover:bg-zinc-200 dark:text-zinc-800 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+            size="lg"
+          >
+            <Link href="/sign-up">
+              Try Now. Free! <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+          
+          <Button
+            asChild
+            variant="outline"
+            className="h-12 px-6 border-zinc-300 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800 rounded-lg"
+            size="lg"
+          >
+            <Link href="/pricing">
+              View Plans
+            </Link>
+          </Button>
         </div>
-        <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-[120%]">
-          {/* <InstallCommand /> */}
-        </div>
       </div>
-    </div>
+    </section>
   )
 }
