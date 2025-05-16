@@ -15,6 +15,8 @@ import { ApiKeyErrorCard } from '../ui/ApiKeyErrorCard';
 import { toast } from '../../utils/toast';
 import { SDK_CONFIG } from '../../config';
 import { FileUpload } from '../ui/file-upload';
+import { FormFieldConfig, FormSchema, MantlzProps } from './types';
+import { processAppearance } from './themeUtils';
 
 // Animation styles
 const fadeInAnimation = "opacity-0 animate-[fadeIn_0.5s_ease-in-out_forwards]";
@@ -24,41 +26,6 @@ const fadeInKeyframes = `
   to { opacity: 1; transform: translateY(0); }
 }
 `;
-
-// Types
-export interface FormFieldConfig {
-  id: string;
-  name: string;
-  type: string;
-  required: boolean;
-  placeholder?: string;
-  label?: string;
-  options?: string[];
-  defaultValue?: any;
-  accept?: string;
-  maxSize?: number;
-}
-
-export interface FormSchema {
-  id: string;
-  name: string;
-  title?: string;
-  description?: string;
-  schema: Record<string, any>;
-  fields?: FormFieldConfig[];
-  formType?: string;
-}
-
-export interface DynamicFormProps {
-  formId: string;
-  colorMode?: 'light' | 'dark';
-  onSuccess?: () => void;
-  onError?: (error: Error) => void;
-  className?: string;
-  showUsersJoined?: boolean;
-  usersJoinedCount?: number;
-  usersJoinedLabel?: string;
-}
 
 // Component for checkbox input
 const Checkbox = ({ 
@@ -116,16 +83,20 @@ const StarRating = ({
   );
 };
 
-export default function DynamicForm({
+export default function Mantlz({
   formId,
   colorMode = 'light',
   onSuccess,
   onError,
   className,
   showUsersJoined = false,
-  usersJoinedCount = 0,
-  usersJoinedLabel = 'Joined',
-}: DynamicFormProps) {
+  usersJoinedCount: initialUsersJoinedCount = 0,
+  usersJoinedLabel = 'people have joined',
+  redirectUrl,
+  theme = 'default',
+  appearance,
+  variant = 'default',
+}: MantlzProps) {
   const { client, apiKey } = useMantlz();
   const [formData, setFormData] = useState<FormSchema | null>(null);
   const [loading, setLoading] = useState(true);
@@ -133,22 +104,79 @@ export default function DynamicForm({
   const [starRating, setStarRating] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [usersJoined, setUsersJoined] = useState(initialUsersJoinedCount);
+  const [canShowUsersJoined, setCanShowUsersJoined] = useState(false);
 
   // Handle client-side mounting
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
+  // Fetch users joined count
+  useEffect(() => {
+    if (!showUsersJoined || !client || !formId) return;
+    
+    const fetchUsersCount = async () => {
+      try {
+        const count = await client.getUsersJoinedCount(formId);
+        if (count > 0) {
+          setUsersJoined(count);
+          setCanShowUsersJoined(true);
+        }
+      } catch (error) {
+        console.error('Failed to fetch users joined count:', error);
+      }
+    };
+    
+    fetchUsersCount();
+    const intervalId = setInterval(fetchUsersCount, 60000); // Refresh every minute
+    
+    return () => clearInterval(intervalId);
+  }, [showUsersJoined, formId, client]);
+
+  // Process styles
+  const styles = useMemo(() => {
+    const processedAppearance = appearance && typeof appearance === 'function'
+      ? appearance(theme)
+      : appearance || {};
+    return processAppearance(processedAppearance, theme);
+  }, [appearance, theme]);
+
   // Theme classes
-  const themeClasses = useMemo(() => ({
-    text: colorMode === 'dark' ? 'text-white' : 'text-gray-900',
-    bg: colorMode === 'dark' ? 'bg-zinc-800' : 'bg-white',
-    border: colorMode === 'dark' ? 'border-zinc-700' : 'border-zinc-200',
-    inputBg: colorMode === 'dark' ? 'bg-zinc-700' : 'bg-white',
-    inputText: colorMode === 'dark' ? 'text-white' : 'text-gray-900',
-    inputBorder: colorMode === 'dark' ? 'border-zinc-600' : 'border-zinc-300',
-    description: colorMode === 'dark' ? 'text-gray-300' : 'text-gray-500',
-  }), [colorMode]);
+  const themeClasses = useMemo(() => {
+    const baseThemeClasses = {
+      text: colorMode === 'dark' ? 'text-white' : 'text-gray-900',
+      bg: colorMode === 'dark' ? 'bg-zinc-800' : 'bg-white',
+      border: colorMode === 'dark' ? 'border-zinc-700' : 'border-zinc-200',
+      inputBg: colorMode === 'dark' ? 'bg-zinc-700' : 'bg-white',
+      inputText: colorMode === 'dark' ? 'text-white' : 'text-gray-900',
+      inputBorder: colorMode === 'dark' ? 'border-zinc-600' : 'border-zinc-300',
+      description: colorMode === 'dark' ? 'text-gray-300' : 'text-gray-500',
+    };
+
+    // Add theme-specific classes
+    const themeSpecificClasses = {
+      default: {},
+      minimal: {
+        border: 'border-0',
+        bg: 'bg-transparent',
+      },
+      modern: {
+        border: 'border-2',
+        bg: colorMode === 'dark' ? 'bg-zinc-900' : 'bg-gray-50',
+      },
+      classic: {
+        border: 'border-2 rounded-sm',
+        bg: colorMode === 'dark' ? 'bg-zinc-800' : 'bg-white',
+      },
+    }[theme];
+
+    return {
+      ...baseThemeClasses,
+      ...themeSpecificClasses,
+      ...styles.baseStyle,
+    };
+  }, [colorMode, theme, styles]);
 
   // Fetch form data
   useEffect(() => {
@@ -304,31 +332,28 @@ export default function DynamicForm({
 
   // Form submission handler
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    if (!formData) {
-      toast.error("Form data not loaded yet.");
+    if (!client || !apiKey) {
+      console.error('Mantlz client or API key not available');
       return;
     }
-    
+
     try {
       setSubmitting(true);
       
-      if (formData.formType === 'feedback') {
-        data.rating = starRating;
-      }
-      
-      if (!client) {
-        throw new Error('Client is not initialized');
-      }
-
       // Check if we have any file uploads in the current submission
       const hasFileUploads = Object.values(data).some(value => value instanceof File);
       
       let submissionData;
       
       if (hasFileUploads) {
-        // Only use FormData if we actually have files to upload
+        // Use FormData if we have files to upload
         const formDataToSend = new FormData();
         formDataToSend.append('formId', formId);
+        
+        // Add redirect URL if provided
+        if (redirectUrl) {
+          formDataToSend.append('redirectUrl', redirectUrl);
+        }
         
         // Add all form fields
         for (const [key, value] of Object.entries(data)) {
@@ -339,35 +364,48 @@ export default function DynamicForm({
           }
         }
         
-        submissionData = formDataToSend;
+        submissionData = {
+          formId,
+          data: formDataToSend
+        };
       } else {
-        // If no files in this submission, use regular JSON
-        // Remove any undefined or null values
-        submissionData = Object.fromEntries(
-          Object.entries(data).filter(([_, value]) => 
-            value !== undefined && value !== null
-          )
-        );
+        // If no files, use regular JSON
+        submissionData = {
+          formId,
+          data: Object.fromEntries(
+            Object.entries(data).filter(([_, value]) => 
+              value !== undefined && value !== null
+            )
+          ),
+          redirectUrl
+        };
       }
       
-      await client.submitForm(formData.formType || 'contact', {
-        formId,
-        data: submissionData,
-      });
+      const response = await client.submitForm(formId, submissionData);
       
-      setSubmitted(true);
-      toast.success("Your form has been submitted successfully.");
-      
-      if (onSuccess) {
-        onSuccess();
+      if (response.success) {
+        setSubmitted(true);
+        if (onSuccess) onSuccess();
+        
+        // Handle redirect if URL is provided
+        if (redirectUrl) {
+          if (typeof window !== 'undefined') {
+            // Check if it's an absolute URL
+            if (redirectUrl.startsWith('http')) {
+              window.location.href = redirectUrl;
+            } else {
+              // For relative URLs, use window.location.origin
+              window.location.href = `${window.location.origin}${redirectUrl.startsWith('/') ? '' : '/'}${redirectUrl}`;
+            }
+          }
+        }
+      } else {
+        throw new Error(response.message || 'Form submission failed');
       }
     } catch (error) {
       console.error('Form submission error:', error);
-      toast.error("There was a problem submitting your form. Please try again.");
-      
-      if (onError) {
-        onError(error as Error);
-      }
+      if (onError) onError(error as Error);
+      toast.error('Failed to submit form. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -466,11 +504,9 @@ export default function DynamicForm({
         return (
           <div className="space-y-2">
             <FileUpload
-              accept={field.accept ? field.accept.split(',') : undefined}
+              accept={typeof field.accept === 'string' ? field.accept.split(',') : field.accept}
               maxSize={field.maxSize}
               onChange={(file) => {
-                // Just store the File object in form data
-                // The main app will handle the actual upload
                 formMethods.setValue(field.id, file);
               }}
               className={cn(
@@ -496,15 +532,32 @@ export default function DynamicForm({
 
   // Main form render
   return (
-    <Card className={cn("mantlz-form", themeClasses.bg, themeClasses.border, className)}>
+    <Card className={cn(
+      "mantlz-form",
+      themeClasses.bg,
+      themeClasses.border,
+      styles.elements?.card,
+      variant === 'glass' && 'bg-opacity-50 backdrop-blur-sm',
+      className
+    )}>
       <style dangerouslySetInnerHTML={{ __html: fadeInKeyframes }} />
       
       <CardHeader>
-        <CardTitle className={themeClasses.text}>{formData.title || formData.name}</CardTitle>
-        {formData.description && (
+        <CardTitle className={themeClasses.text}>{formData?.title || formData?.name}</CardTitle>
+        {formData?.description && (
           <CardDescription className={themeClasses.description}>
             {formData.description}
           </CardDescription>
+        )}
+        
+        {showUsersJoined && canShowUsersJoined && usersJoined > 0 && (
+          <div className={cn(
+            "inline-flex items-center justify-center mt-2 font-medium",
+            "transition-all duration-300 ease-in-out",
+            fadeInAnimation,
+          )}>
+            <span className="font-bold mr-1">{usersJoined}</span> {usersJoinedLabel}
+          </div>
         )}
       </CardHeader>
       
@@ -545,18 +598,6 @@ export default function DynamicForm({
                   {formMethods.formState.errors.rating?.message as string}
                 </p>
               )}
-            </div>
-          )}
-          
-          {showUsersJoined && usersJoinedCount > 0 && (
-            <div className="flex justify-center items-center mb-2">
-              <div className={cn(
-                "inline-flex items-center justify-center mb-1 font-medium",
-                "transition-all duration-300 ease-in-out ",
-                fadeInAnimation,
-              )}>
-                <span className="font-bold mr-1">{usersJoinedCount}</span> {usersJoinedLabel}
-              </div>
             </div>
           )}
           

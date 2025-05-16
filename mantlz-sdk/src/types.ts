@@ -1,5 +1,5 @@
 import { ToastHandler } from './utils/toast';
-import { FormSchema } from './components/shared/DynamicForm';
+import { FormSchema } from './components/form/types';
 
 // Client configuration
 export interface MantlzClientConfig {

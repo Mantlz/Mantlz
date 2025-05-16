@@ -6,7 +6,7 @@ import {
   FormSubmitOptions,
 } from './types';
 import { toast, ToastHandler } from './utils/toast';
-import { FormSchema } from './components/shared/DynamicForm';
+import { FormSchema } from './components/form/types';
 import { getApiUrl } from './config';
 
 // Global error tracking to prevent duplicate toasts across different client instances
@@ -24,19 +24,19 @@ function isMantlzError(error: any): error is MantlzError {
 /**
  * Sanitizes strings to prevent injection in UI (basic)
  */
-function sanitizeString(input: string): string {
-  return input.replace(/[<>&"'`]/g, (char) => {
-    const map: Record<string, string> = {
-      '<': '&lt;',
-      '>': '&gt;',
-      '&': '&amp;',
-      '"': '&quot;',
-      "'": '&#39;',
-      '`': '&#96;',
-    };
-    return map[char] || char;
-  });
-}
+// function sanitizeString(input: string): string {
+//   return input.replace(/[<>&"'`]/g, (char) => {
+//     const map: Record<string, string> = {
+//       '<': '&lt;',
+//       '>': '&gt;',
+//       '&': '&amp;',
+//       '"': '&quot;',
+//       "'": '&#39;',
+//       '`': '&#96;',
+//     };
+//     return map[char] || char;
+//   });
+// }
 
 /**
  * Creates a new Mantlz SDK client instance
@@ -138,10 +138,10 @@ export function createMantlzClient(
 
     // Sanitize error message to avoid injection
     const rawMessage = errorData.error || 'Form submission failed';
-    const safeMessage = sanitizeString(rawMessage);
+    // const safeMessage = sanitizeString(rawMessage);
 
     const error: MantlzError = {
-      message: safeMessage,
+      message: rawMessage,
       code: status,
       details: errorData,
     };
@@ -159,7 +159,7 @@ export function createMantlzClient(
     } else if (status === 404) {
       error.userMessage = 'The requested form could not be found.';
       if (formId) {
-        error.userMessage = `Form ID '${sanitizeString(formId)}' could not be found.`;
+        error.userMessage = `Form ID ${formId} could not be found.`;
       }
     } else if (status === 400) {
       error.userMessage = 'Invalid form data. Please check your submission.';
@@ -204,11 +204,11 @@ export function createMantlzClient(
       globalErrorState.form404Errors.add(errorKey);
     }
 
-    const title = sanitizeString(error.userMessage || error.message || 'An error occurred');
+    const title = (error.userMessage || error.message || 'An error occurred');
     let description = error.code ? `Error ${error.code}` : undefined;
 
     if (error.code === 404 && formId) {
-      description = `Form ID ${sanitizeString(formId)} not found. Please check your formId.`;
+      description = `Form ${formId} not found. Please check your formId.`;
     }
 
     toast.error(title, {
