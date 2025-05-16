@@ -219,13 +219,10 @@ export const formSchema = z.object({
 export interface MantlzProps {
   formId: string;
   colorMode?: 'light' | 'dark';
-  onSuccess?: () => void;
-  onError?: (error: Error) => void;
   className?: string;
   showUsersJoined?: boolean;
   usersJoinedCount?: number;
   usersJoinedLabel?: string;
   redirectUrl?: string;
   theme?: ThemeVariant;
-  variant?: 'default' | 'glass';
 } 

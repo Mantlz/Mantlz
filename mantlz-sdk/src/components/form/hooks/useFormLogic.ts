@@ -9,8 +9,6 @@ export const useFormLogic = (
   formId: string,
   client: any,
   apiKey?: string,
-  onSuccess?: () => void,
-  onError?: (error: Error) => void,
   redirectUrl?: string
 ) => {
   const [formData, setFormData] = useState<FormSchema | null>(null);
@@ -152,14 +150,13 @@ export const useFormLogic = (
         setFormData(formData as FormSchema);
       } catch (error) {
         console.error('Error fetching form data:', error);
-        if (onError) onError(error as Error);
       } finally {
         setLoading(false);
       }
     };
     
     fetchFormData();
-  }, [formId, apiKey, client, onError, isMounted]);
+  }, [formId, apiKey, client, isMounted]);
 
   // Form submission handler
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
@@ -210,7 +207,6 @@ export const useFormLogic = (
       
       if (response.success) {
         setSubmitted(true);
-        if (onSuccess) onSuccess();
         
         if (redirectUrl && typeof window !== 'undefined') {
           if (redirectUrl.startsWith('http')) {
@@ -224,7 +220,6 @@ export const useFormLogic = (
       }
     } catch (error) {
       console.error('Form submission error:', error);
-      if (onError) onError(error as Error);
     } finally {
       setSubmitting(false);
     }

@@ -24,6 +24,7 @@ export default function CustomerFeedbackPage() {
         onError={() => {
           console.log('error');
         }}
+        key={Math.random()}
        
         //theme="neobrutalism"
         

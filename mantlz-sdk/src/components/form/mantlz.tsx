@@ -26,15 +26,12 @@ const fadeInKeyframes = `
 export default function Mantlz({
   formId,
   colorMode = 'light',
-  onSuccess,
-  onError,
   className,
   showUsersJoined = false,
   usersJoinedCount: initialUsersJoinedCount = 0,
   usersJoinedLabel = 'people have joined',
   redirectUrl,
   theme = 'default',
-  variant = 'default',
 }: MantlzProps) {
   const { client, apiKey } = useMantlz();
   const [starRating, setStarRating] = useState(0);
@@ -65,7 +62,7 @@ export default function Mantlz({
     formMethods,
     onSubmit,
     isMounted,
-  } = useFormLogic(formId, client, apiKey, onSuccess, onError, redirectUrl);
+  } = useFormLogic(formId, client, apiKey, redirectUrl);
 
   // Fetch users joined count
   React.useEffect(() => {
@@ -137,7 +134,6 @@ export default function Mantlz({
       "mantlz-form",
       themeClasses.bg,
       themeClasses.border,
-      variant === 'glass' && 'bg-opacity-50 backdrop-blur-sm',
       className
     )}>
       <style dangerouslySetInnerHTML={{ __html: fadeInKeyframes }} />
@@ -165,7 +161,6 @@ export default function Mantlz({
         <form onSubmit={formMethods.handleSubmit(onSubmit)} className="space-y-2">
           {fields.map((field) => (
             <FormField
-              key={field.id}
               field={field}
               formMethods={formMethods}
               themeClasses={themeClasses}
@@ -175,7 +170,7 @@ export default function Mantlz({
           
           {formData.formType === 'feedback' && (
             <div>
-              <label className={cn('block text-sm font-medium mb-1', themeClasses.text)}>
+              <label className={cn('block text-sm font-medium mb-1', themeClasses.label)}>
                 Rating<span className="text-red-500">*</span>
               </label>
               <StarRating 
@@ -184,7 +179,7 @@ export default function Mantlz({
                 colorMode={colorMode}
               />
               {formMethods.formState.errors.rating && (
-                <p className={themeClasses.error}>
+                <p className={cn("text-sm mt-1", themeClasses.error)}>
                   {formMethods.formState.errors.rating?.message as string}
                 </p>
               )}
