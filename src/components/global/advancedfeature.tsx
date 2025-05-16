@@ -23,11 +23,11 @@ export function AdvancedFeatureGrid() {
           </div>
           
           <div className="bg-zinc-800 text-gray-300 p-4 rounded-lg text-sm font-mono shadow-lg mt-2 mb-6 dark:bg-zinc-700 dark:border dark:border-zinc-600 max-w-full overflow-x-auto">
-            <div className="opacity-70">// Example API request to fetch form submissions</div>
-            <div><span className="text-zinc-400 dark:text-zinc-300">const</span> <span className="text-zinc-300 dark:text-white">response</span> = <span className="text-zinc-400 dark:text-zinc-300">await</span> <span className="text-zinc-300 dark:text-white">fetch</span>(<span className="text-green-400 dark:text-green-300">'https://api.mantlz.app/v1/forms/submissions'</span>, {`{`}</div>
-            <div>&nbsp;&nbsp;<span className="text-zinc-300 dark:text-white">method</span>: <span className="text-green-400 dark:text-green-300">'GET'</span>,</div>
+            <div className="opacity-70">{/* Example API request to fetch form submissions */}</div>
+            <div><span className="text-zinc-400 dark:text-zinc-300">const</span> <span className="text-zinc-300 dark:text-white">response</span> = <span className="text-zinc-400 dark:text-zinc-300">await</span> <span className="text-zinc-300 dark:text-white">fetch</span>(<span className="text-green-400 dark:text-green-300">&apos;https://api.mantlz.app/v1/forms/submissions&apos;</span>, {`{`}</div>
+            <div>&nbsp;&nbsp;<span className="text-zinc-300 dark:text-white">method</span>: <span className="text-green-400 dark:text-green-300">&apos;GET&apos;</span>,</div>
             <div>&nbsp;&nbsp;<span className="text-zinc-300 dark:text-white">headers</span>: {`{`}</div>
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-zinc-300 dark:text-white">'Authorization'</span>: <span className="text-green-400 dark:text-green-300">'Bearer YOUR_API_KEY'</span></div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-zinc-300 dark:text-white">&apos;Authorization&apos;</span>: <span className="text-green-400 dark:text-green-300">&apos;Bearer YOUR_API_KEY&apos;</span></div>
             <div>&nbsp;&nbsp;{`}`}</div>
             <div>{`}`});</div>
           </div>

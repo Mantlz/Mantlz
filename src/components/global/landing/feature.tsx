@@ -1,4 +1,4 @@
-import { FileText, Moon, BarChart, Code, Sparkles, Settings, Palette, Zap, Shield, Sliders, Users, CheckCircle, TrendingUp } from "lucide-react"
+import { FileText, Moon, BarChart, Code, Sparkles,  Palette, Sliders, Users, CheckCircle, TrendingUp } from "lucide-react"
 
 export function FeatureGrid() {
   return (

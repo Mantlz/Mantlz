@@ -1,9 +1,9 @@
 "use client"
 import Link from "next/link"
 import "@/styles/animations.css"
-import { InstallCommand } from "./install-command"
-import { WaitlistExample } from "./waitlist-example"
-import { ArrowRight, Sparkles } from "lucide-react"
+// import { InstallCommand } from "./install-command"
+// import { WaitlistExample } from "./waitlist-example"
+import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function HeroSection() {

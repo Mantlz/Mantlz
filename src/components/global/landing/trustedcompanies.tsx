@@ -1,5 +1,5 @@
 import { Container } from "./container"
-import { Sparkles } from "lucide-react"
+// import { Sparkles } from "lucide-react"
 
 const TrustedCompanies = () => {
   const companies = [
