@@ -340,6 +340,11 @@ enum FormType {
   FEEDBACK
   CONTACT
   CUSTOM
+  SURVEY
+  APPLICATION
+  ORDER
+  ANALYTICS_OPT_IN
+  RSVP
 }
 
 enum SubscriptionStatus {

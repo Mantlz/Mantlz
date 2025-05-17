@@ -11,6 +11,7 @@ import {
   IconLayoutGrid
 } from "@tabler/icons-react"
 import { FormCategory, FormTemplate } from "@/types/form-builder"
+import { formTemplates as templateDefinitions } from "../form-templates"
 
 export const categories: FormCategory[] = [
   { id: "all", name: "All Forms", icon: IconLayoutGrid },
@@ -20,75 +21,77 @@ export const categories: FormCategory[] = [
   { id: "events", name: "Events & RSVP", icon: IconUsers }
 ]
 
+// Convert the form templates from the template files to FormTemplate type
 export const formTemplates: FormTemplate[] = [
   {
     id: 'waitlist',
-    name: "Waitlist Form",
-    description: "Collect waitlist signups for your product",
-    icon: IconUserPlus,
+    name: templateDefinitions.waitlist.name,
+    description: templateDefinitions.waitlist.description,
+    icon: templateDefinitions.waitlist.icon,
     category: "lead",
     popular: true
   },
   {
     id: 'contact',
-    name: "Contact Form",
-    description: "Simple contact form for inquiries",
-    icon: IconMail,
+    name: templateDefinitions.contact.name,
+    description: templateDefinitions.contact.description,
+    icon: templateDefinitions.contact.icon,
     category: "feedback"
   },
   {
     id: 'feedback',
-    name: "Feedback Form",
-    description: "Collect user feedback and ratings",
-    icon: IconMessageCircle2,
+    name: templateDefinitions.feedback.name,
+    description: templateDefinitions.feedback.description,
+    icon: templateDefinitions.feedback.icon,
     category: "feedback"
   },
   {
     id: 'survey',
-    name: "Survey Form",
-    description: "Multiple question survey with various field types",
-    icon: IconForms,
+    name: templateDefinitions.survey.name,
+    description: templateDefinitions.survey.description,
+    icon: templateDefinitions.survey.icon,
     category: "feedback",
-    comingSoon: true
+    requiredPlan: 'STANDARD'
   },
   {
     id: 'application',
-    name: "Application Form",
-    description: "Detailed application form with multiple sections",
-    icon: IconClipboardList,
+    name: templateDefinitions.application.name,
+    description: templateDefinitions.application.description,
+    icon: templateDefinitions.application.icon,
     category: "lead",
-    comingSoon: true
+    requiredPlan: 'STANDARD'
   },
   {
     id: 'order',
-    name: "Order Form",
-    description: "Simple product order form with payment integration",
-    icon: IconBuildingStore,
+    name: templateDefinitions.order.name,
+    description: templateDefinitions.order.description,
+    icon: templateDefinitions.order.icon,
     category: "commerce",
-    comingSoon: true
+    requiredPlan: 'STANDARD'
   },
   {
     id: 'analytics',
-    name: "Analytics Opt-in",
-    description: "Get user consent for analytics tracking",
-    icon: IconDeviceAnalytics,
+    name: templateDefinitions.analytics.name,
+    description: templateDefinitions.analytics.description,
+    icon: templateDefinitions.analytics.icon,
     category: "lead",
-    comingSoon: true
+    requiredPlan: 'PRO'
   },
   {
     id: 'rsvp',
-    name: "RSVP Form",
-    description: "Event registration with attendance confirmation",
-    icon: IconUsers,
+    name: templateDefinitions.rsvp.name,
+    description: templateDefinitions.rsvp.description,
+    icon: templateDefinitions.rsvp.icon,
     category: "events",
-    comingSoon: true
+    requiredPlan: 'PRO'
   },
   {
     id: 'custom',
-    name: "Custom Form",
-    description: "Build a completely custom form from scratch",
-    icon: IconPlus,
+    name: templateDefinitions.custom.name,
+    description: templateDefinitions.custom.description,
+    icon: templateDefinitions.custom.icon,
     category: "all",
-    comingSoon: true
+    requiredPlan: 'PRO',
+    popular: true
   }
 ] 

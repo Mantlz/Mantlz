@@ -8,7 +8,7 @@ import { z } from 'zod';
 export type FieldType = 'text' | 'email' | 'number' | 'textarea' | 'select' | 'checkbox' | 'file';
 
 // Form types
-export type FormType = 'waitlist' | 'contact' | 'feedback' | 'custom';
+export type FormType = 'waitlist' | 'contact' | 'feedback' | 'custom' | 'survey' | 'application' | 'order' | 'analytics-opt-in' | 'rsvp';
 
 export interface FormField {
   id: string;
@@ -60,7 +60,7 @@ export const formSchema = z.object({
   title: z.string().optional(),
   description: z.string().optional(),
   fields: z.array(formFieldSchema),
-  formType: z.enum(['waitlist', 'contact', 'feedback', 'custom']).optional(),
+  formType: z.enum(['waitlist', 'contact', 'feedback', 'custom', 'survey', 'application', 'order', 'analytics-opt-in', 'rsvp']).optional(),
   schema: z.record(z.any()).optional(),
 });
 
@@ -95,4 +95,24 @@ export interface MantlzProps {
   usersJoinedLabel?: string;
   redirectUrl?: string;
   theme?: 'default' | 'modern' | 'neobrutalism' | 'simple';
+}
+
+export interface SurveyFormProps extends BaseFormProps {
+  // Survey specific props can be added here
+}
+
+export interface ApplicationFormProps extends BaseFormProps {
+  // Application specific props can be added here
+}
+
+export interface OrderFormProps extends BaseFormProps {
+  // Order specific props can be added here
+}
+
+export interface AnalyticsOptInFormProps extends BaseFormProps {
+  // Analytics opt-in specific props can be added here
+}
+
+export interface RsvpFormProps extends BaseFormProps {
+  // RSVP specific props can be added here
 } 

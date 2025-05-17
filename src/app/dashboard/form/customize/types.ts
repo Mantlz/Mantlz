@@ -1,6 +1,9 @@
 // Form field types
 export type FieldType = 'text' | 'email' | 'textarea' | 'number' | 'checkbox' | 'select' | 'file'
 
+// Form types
+export type FormType = 'waitlist' | 'contact' | 'feedback' | 'custom' | 'survey' | 'application' | 'order' | 'analytics-opt-in' | 'rsvp'
+
 // Form field interface
 export interface FormField {
   id: string

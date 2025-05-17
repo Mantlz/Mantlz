@@ -44,7 +44,7 @@ function CustomizeFormContent() {
   const availableFields = availableFieldsByType[formType as keyof typeof availableFieldsByType] || []
   
   useEffect(() => {
-    if (formType && !['waitlist', 'contact', 'feedback'].includes(formType)) {
+    if (formType && !['waitlist', 'contact', 'feedback', 'custom', 'survey', 'application', 'order', 'analytics-opt-in', 'rsvp'].includes(formType)) {
       toast.error('Invalid form type')
       router.push('/dashboard/form')
     }

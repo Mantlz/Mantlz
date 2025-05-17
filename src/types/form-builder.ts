@@ -6,6 +6,8 @@ export interface FormCategory {
   icon: Icon
 }
 
+export type PlanRequirement = 'FREE' | 'STANDARD' | 'PRO'
+
 export interface FormTemplate {
   id: string
   name: string
@@ -14,6 +16,7 @@ export interface FormTemplate {
   category: string
   popular?: boolean
   comingSoon?: boolean
+  requiredPlan?: PlanRequirement // Minimum plan required to use this template
 }
 
 export type ViewMode = 'grid' | 'list' 
