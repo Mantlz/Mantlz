@@ -209,10 +209,14 @@ export async function searchAcrossAllForms(
     
     // Ensure query parameter is always set
     const params: {
-      query: string,
+      search: string,
+      page: number,
+      limit: number,
       [key: string]: unknown
     } = { 
-      query: searchTerm 
+      search: searchTerm,
+      page: 1,
+      limit: 10
     };
     
     // Add advanced filters if they exist
@@ -273,7 +277,7 @@ export async function searchAcrossAllForms(
     }
     
     // Make the API request with proper type casting
-    const response = await client.forms.searchSubmissions.$get(params);
+    const response = await client.forms.getSubmissionLogs.$get(params);
     const rawData = await response.json() as Record<string, unknown>;
     
     const submissions: Submission[] = [];
