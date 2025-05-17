@@ -2,7 +2,6 @@
 
 import React, { useCallback } from 'react'
 import { Upload, File as FileIcon, X } from 'lucide-react'
-import * as AspectRatio from '@radix-ui/react-aspect-ratio'
 import * as Tooltip from '@radix-ui/react-tooltip'
 
 interface FileUploadProps {

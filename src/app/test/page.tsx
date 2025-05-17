@@ -29,12 +29,12 @@ export default function CustomerFeedbackPage() {
         
       />  */}
       <Mantlz
-  formId="cmao2vgrf0007o7lfm6r82jif"
+  formId="cma9tu80t0004o7r0iuisldzg"
   theme='simple'
   
 />
 <Mantlz
-  formId="cmao2vgrf0007o7lfm6r82jif"
+  formId="cma9tu80t0004o7r0iuisldzg"
   theme='default'
   
 />
@@ -42,10 +42,10 @@ export default function CustomerFeedbackPage() {
       <Mantlz
 
         formId="cma9tu80t0004o7r0iuisldzg"
-        theme='modern'
+        theme='neobrutalism'
         showUsersJoined={true}
-        usersJoinedCount={10}
-        // usersJoinedLabel='Users joined'
+        usersJoinedCount={100000}
+        usersJoinedLabel='Users already joined'
 
         
 
@@ -59,11 +59,11 @@ export default function CustomerFeedbackPage() {
         
      
         
-      <Mantlz formId="cman7j8ub0003o7jpmg2bjr6n"
-      theme='neobrutalism'
-      // className="bg-gradient-to-r from-zinc-100 to-zinc-200 dark:from-zinc-900 dark:to-zinc-800 border-2 border-zinc-300 dark:border-zinc-700
+      <Mantlz formId="cma9tu80t0004o7r0iuisldzg"
+      //theme='modern'
+      className="bg-gradient-to-r from-red-400 to-zinc-900 dark:from-zinc-900 dark:to-zinc-800 border-2 border-zinc-300 dark:border-zinc-700
       
-      //"
+      "
 
 
 

@@ -181,7 +181,7 @@ export default function Mantlz({
         </div>
         
         <Form.Root onSubmit={formMethods.handleSubmit(onSubmit)}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {fields.map((field) => (
               <FormField
                 key={field.id}
@@ -209,13 +209,14 @@ export default function Mantlz({
             
             {showUsersJoined && canShowUsersJoined && usersJoined > 0 && (
               <div style={{ 
-                fontSize: '14px',
+                fontSize: '13px',
                 color: 'var(--gray-11)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '4px',
-                marginBottom: '8px'
+                marginBottom: '2px',
+                marginTop: '-2px'
               }}>
                 <span style={{ 
                   fontWeight: 600,
