@@ -641,6 +641,32 @@ export const formRouter = j.router({
       return c.superjson(settings);
     }),
 
+  // Get global settings
+  getGlobalSettings: privateProcedure
+    .query(async ({ c, ctx }) => {
+      const { user } = ctx;
+      if (!user) throw new HTTPException(401, { message: "Unauthorized" });
+
+      const settings = await db.globalSettings.findUnique({
+        where: { userId: user.id },
+      });
+
+      if (!settings) {
+        return c.superjson({
+          maxNotificationsPerHour: 10,
+          developerNotificationsEnabled: false,
+          debugMode: {
+            enabled: false,
+            webhookUrl: null,
+            logLevel: 'basic',
+            includeMetadata: false,
+          },
+        });
+      }
+
+      return c.superjson(settings);
+    }),
+
   getSubmissionLogs: privateProcedure
     .input(z.object({
       formId: z.string().optional(),
