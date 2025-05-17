@@ -1,6 +1,6 @@
 "use client"
 
-import { WaitlistForm } from '@mantlz/nextjs';
+import { Mantlz } from '@mantlz/nextjs';
 export function WaitlistExample() {
   // const [email, setEmail] = useState('');
   // const [submitted, setSubmitted] = useState(false);
@@ -56,7 +56,7 @@ export function WaitlistExample() {
           </div>
         </div> */}
 
-        <WaitlistForm
+        <Mantlz
         formId="cma9tu80t0004o7r0iuisldzg"
         showUsersJoined={true}
         theme="neobrutalism"
