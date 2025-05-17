@@ -1,5 +1,5 @@
 "use client"
-import { Mantlz } from '@mantlz/nextjs';
+import { Mantlz } from '@mantlz/sdk';
 
 export default function CustomerFeedbackPage() {
   return (
@@ -28,7 +28,7 @@ export default function CustomerFeedbackPage() {
        
         
       />  */}
-      <Mantlz
+      {/* <Mantlz
   formId="cma9tu80t0004o7r0iuisldzg"
   theme='simple'
   
@@ -37,7 +37,7 @@ export default function CustomerFeedbackPage() {
   formId="cma9tu80t0004o7r0iuisldzg"
   theme='default'
   
-/>
+/> */}
      
       <Mantlz
 
@@ -46,6 +46,7 @@ export default function CustomerFeedbackPage() {
         showUsersJoined={true}
         usersJoinedCount={100000}
         usersJoinedLabel='Users already joined'
+        redirectUrl='/feedback/thank-you'
 
         
 

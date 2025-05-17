@@ -282,36 +282,108 @@ export function createMantlzClient(
     result: FormSubmitResponse,
     userRedirectUrl?: string
   ): void => {
-    if (
-      !result?.redirect ||
-      !result.redirect?.url ||
-      typeof window === 'undefined'
-    ) {
+    if (typeof window === 'undefined') {
       return;
     }
 
-    log('Server provided redirect:', result.redirect);
+    // Debug logging
+    console.log('MANTLZ REDIRECT DEBUG - Handling redirect with result:', {
+      hasRedirectObject: !!result?.redirect,
+      serverProvidedUrl: result?.redirect?.url,
+      customUrlRequested: userRedirectUrl,
+      isRedirectAllowed: result?.redirect?.allowed
+    });
 
-    if (userRedirectUrl && result.redirect.allowed === false && notificationsEnabled) {
-      toast.info('Using Mantlz thank-you page', {
-        description: 'Custom redirects require a STANDARD or PRO plan',
-        duration: 3000,
-      });
+    // Check if redirect info exists and make sure we have a URL to redirect to
+    if (!result?.redirect) {
+      console.log('MANTLZ REDIRECT DEBUG - No redirect information in response');
+      return;
+    }
+
+    // Determine which URL to use
+    let redirectTarget;
+    let redirectReason = '';
+
+    // Case 1: For PAID plans with allowed=true
+    if (result.redirect.allowed === true && result.redirect.url) {
+      redirectTarget = result.redirect.url;
+      redirectReason = 'PAID_PLAN_CUSTOM_URL';
+      console.log('MANTLZ REDIRECT DEBUG - Using custom redirect URL (paid plan):', redirectTarget);
+    }
+    // Case 2: For FREE plans with allowed=false
+    else if (result.redirect.allowed === false && result.redirect.url) {
+      // Show toast for free users about using default page
+      if (userRedirectUrl && notificationsEnabled) {
+        toast.info('Using Mantlz thank-you page', {
+          description: 'Custom redirects require a STANDARD or PRO plan',
+          duration: 3000,
+        });
+      }
+      redirectTarget = result.redirect.url;
+      redirectReason = 'FREE_PLAN_DEFAULT_URL';
+      console.log('MANTLZ REDIRECT DEBUG - Using default redirect URL (free plan):', redirectTarget);
+    }
+    // Case 3: If for some reason 'allowed' is missing but we have a URL
+    else if (result.redirect.url) {
+      redirectTarget = result.redirect.url;
+      redirectReason = 'FALLBACK_URL';
+      console.log('MANTLZ REDIRECT DEBUG - Using fallback redirect URL:', redirectTarget);
+    } 
+    // Case 4: No URL at all
+    else {
+      console.log('MANTLZ REDIRECT DEBUG - No valid redirect URL found, skipping redirect');
+      return;
+    }
+
+    // IMPORTANT - Let's try a more direct approach for urgent troubleshooting
+    // This should work regardless of plan type
+    if (userRedirectUrl && redirectReason === 'PAID_PLAN_CUSTOM_URL') {
+      console.log('MANTLZ REDIRECT DEBUG - DIRECT FIX: Using user-provided redirect URL for paid plan:', userRedirectUrl);
+      redirectTarget = userRedirectUrl;
     }
 
     // Use a short timeout to allow toast to show before redirect
     setTimeout(() => {
-      // Sanitize URL before redirecting to prevent open redirect attacks
       try {
-        const redirectUrl = new URL(result.redirect!.url!);
-        // Optionally, restrict redirect to your domain or trusted domains here
-        // For example:
-        // if (!redirectUrl.hostname.endsWith('yourdomain.com')) {
-        //   throw new Error('Redirect URL not allowed');
-        // }
-        window.location.href = redirectUrl.toString();
-      } catch {
-        log('Invalid redirect URL, skipping redirect.');
+        let finalUrl = redirectTarget;
+        
+        // Check if it's a relative URL (starting with / or not having a protocol)
+        if (redirectTarget.startsWith('/') || !redirectTarget.includes('://')) {
+          console.log('MANTLZ REDIRECT DEBUG - Handling relative URL:', redirectTarget);
+          
+          // For relative URLs, we need to construct the full URL using the current origin
+          finalUrl = `${window.location.origin}${redirectTarget.startsWith('/') ? '' : '/'}${redirectTarget}`;
+          console.log('MANTLZ REDIRECT DEBUG - Converted to absolute URL:', finalUrl);
+        }
+        
+        // Now we can safely construct the URL object
+        const sanitizedUrl = new URL(finalUrl);
+        
+        console.log('MANTLZ REDIRECT DEBUG - ABOUT TO REDIRECT TO:', {
+          url: sanitizedUrl.toString(),
+          reason: redirectReason,
+          originalUserUrl: userRedirectUrl,
+          timestamp: new Date().toISOString()
+        });
+        
+        // Actually perform the redirect
+        window.location.href = sanitizedUrl.toString();
+      } catch (error) {
+        console.error('MANTLZ REDIRECT DEBUG - Invalid redirect URL error:', error);
+        
+        // Fallback for any URL construction errors - redirect directly
+        try {
+          console.log('MANTLZ REDIRECT DEBUG - Using fallback direct redirect to:', redirectTarget);
+          
+          // Handle relative URLs directly if URL construction failed
+          if (redirectTarget.startsWith('/')) {
+            window.location.href = `${window.location.origin}${redirectTarget}`;
+          } else {
+            window.location.href = redirectTarget;
+          }
+        } catch (fallbackError) {
+          console.error('MANTLZ REDIRECT DEBUG - Fallback redirect also failed:', fallbackError);
+        }
       }
     }, 1000);
   };
@@ -526,6 +598,16 @@ export function createMantlzClient(
         }
 
         const result = (await response.json()) as FormSubmitResponse;
+        
+        // Enhanced logging of the server response
+        log('FORM SUBMISSION RESPONSE:', JSON.stringify(result, null, 2));
+        console.log('MANTLZ REDIRECT DEBUG - Server Response:', {
+          success: result.success,
+          submissionId: result.submissionId,
+          redirectInfo: result.redirect,
+          userPlanType: 'See server logs',
+          customRedirectRequested: !!redirectUrl
+        });
 
         if (notificationsEnabled && (!result.redirect || !result.redirect.url)) {
           toast.success('Form submitted successfully', {
@@ -533,6 +615,11 @@ export function createMantlzClient(
           });
         }
 
+        // Handle redirection based on server response
+        if (redirectUrl) {
+          console.log('MANTLZ REDIRECT DEBUG - Requested redirect:', redirectUrl);
+        }
+        
         handleRedirect(result, redirectUrl);
 
         return result;

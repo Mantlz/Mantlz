@@ -1,6 +1,6 @@
 "use client"
 
-import { Mantlz } from '@mantlz/nextjs';
+import { Mantlz } from '@mantlz/sdk';
 export function WaitlistExample() {
   // const [email, setEmail] = useState('');
   // const [submitted, setSubmitted] = useState(false);

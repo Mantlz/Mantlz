@@ -208,13 +208,8 @@ export const useFormLogic = (
       if (response.success) {
         setSubmitted(true);
         
-        if (redirectUrl && typeof window !== 'undefined') {
-          if (redirectUrl.startsWith('http')) {
-            window.location.href = redirectUrl;
-          } else {
-            window.location.href = `${window.location.origin}${redirectUrl.startsWith('/') ? '' : '/'}${redirectUrl}`;
-          }
-        }
+        // No need to handle redirect here - the SDK's handleRedirect will take care of it
+        // based on the server's response which enforces plan restrictions
       } else {
         throw new Error(response.message || 'Form submission failed');
       }
