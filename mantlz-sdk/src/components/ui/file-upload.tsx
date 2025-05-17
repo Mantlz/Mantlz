@@ -71,6 +71,24 @@ export function FileUpload({
     return extension ? `${truncatedName}.${extension}` : truncatedName;
   };
 
+  const containerStyle: React.CSSProperties = {
+    border: '2px dashed var(--gray-6)',
+    borderRadius: '2px',
+    padding: '8px',
+    textAlign: 'center',
+    cursor: disabled ? 'not-allowed' : 'pointer',
+    backgroundColor: disabled ? 'var(--gray-3)' : 'var(--gray-1)',
+    opacity: disabled ? 0.7 : 1,
+    transition: 'all 0.2s',
+    position: 'relative',
+    overflow: 'hidden',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: '42px'
+  };
+
   return (
     <Tooltip.Provider>
       <div 
@@ -82,22 +100,7 @@ export function FileUpload({
       >
         <div 
           className={`${disabled ? 'mantlz-disabled' : ''}`}
-          style={{
-            border: '2px dashed var(--gray-6)',
-            borderRadius: '2px',
-            padding: '8px',
-            textAlign: 'center',
-            cursor: disabled ? 'not-allowed' : 'pointer',
-            backgroundColor: disabled ? 'var(--gray-3)' : 'var(--gray-1)',
-            opacity: disabled ? 0.7 : 1,
-            transition: 'all 0.2s',
-            position: 'relative',
-            overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
+          style={containerStyle}
         >
           {!value ? (
             <>
@@ -113,6 +116,7 @@ export function FileUpload({
                   height: '100%',
                   opacity: 0,
                   cursor: disabled ? 'not-allowed' : 'pointer',
+                  zIndex: 2
                 }}
                 disabled={disabled}
                 required={required}
@@ -164,134 +168,7 @@ export function FileUpload({
               </div>
             </>
           ) : (
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '100%'
-            }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                overflow: 'hidden'
-              }}>
-                <AspectRatio.Root ratio={1} style={{
-                  width: '16px',
-                  height: '16px',
-                  backgroundColor: 'var(--blue-3)',
-                  borderRadius: '2px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0
-                }}>
-                  <FileIcon style={{
-                    color: 'var(--blue-9)',
-                    width: '10px',
-                    height: '10px'
-                  }} />
-                </AspectRatio.Root>
-                <div style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap'
-                }}>
-                  <Tooltip.Root>
-                    <Tooltip.Trigger asChild>
-                      <span style={{
-                        fontWeight: 500,
-                        fontSize: '12px',
-                        color: 'var(--gray-12)',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        maxWidth: '100px',
-                        display: 'inline-block'
-                      }}>
-                        {typeof value === 'string' 
-                          ? truncateFileName(value.split('/').pop() || value) 
-                          : truncateFileName(value.name)}
-                      </span>
-                    </Tooltip.Trigger>
-                    <Tooltip.Portal>
-                      <Tooltip.Content 
-                        style={{
-                          backgroundColor: 'var(--gray-12)',
-                          color: 'white',
-                          borderRadius: '2px',
-                          padding: '4px 6px',
-                          fontSize: '12px',
-                          maxWidth: '100px'
-                        }}
-                        side="top"
-                      >
-                        {typeof value === 'string' ? value : value.name}
-                        <Tooltip.Arrow style={{ fill: 'var(--gray-12)' }} />
-                      </Tooltip.Content>
-                    </Tooltip.Portal>
-                  </Tooltip.Root>
-                  {typeof value !== 'string' && (
-                    <span style={{
-                      color: 'var(--gray-10)',
-                      fontSize: '12px'
-                    }}>
-                      {formatFileSize(value.size)}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <Tooltip.Root>
-                <Tooltip.Trigger asChild>
-                  <button
-                    type="button"
-                    onClick={handleRemoveFile}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '16px',
-                      height: '16px',
-                      borderRadius: '2px',
-                      border: 'none',
-                      backgroundColor: 'var(--gray-4)',
-                      color: 'var(--gray-11)',
-                      cursor: disabled ? 'not-allowed' : 'pointer',
-                      transition: 'all 0.2s',
-                      flexShrink: 0
-                    }}
-                    onMouseOver={(e) => {
-                      (e.target as HTMLButtonElement).style.backgroundColor = 'var(--gray-5)';
-                    }}
-                    onMouseOut={(e) => {
-                      (e.target as HTMLButtonElement).style.backgroundColor = 'var(--gray-4)';
-                    }}
-                    disabled={disabled}
-                  >
-                    <X size={10} />
-                  </button>
-                </Tooltip.Trigger>
-                <Tooltip.Portal>
-                  <Tooltip.Content 
-                    style={{
-                      backgroundColor: 'var(--gray-12)',
-                      color: 'white',
-                      borderRadius: '2px',
-                      padding: '4px 6px',
-                      fontSize: '12px'
-                    }}
-                    side="top"
-                  >
-                    Remove file
-                    <Tooltip.Arrow style={{ fill: 'var(--gray-12)' }} />
-                  </Tooltip.Content>
-                </Tooltip.Portal>
-              </Tooltip.Root>
-
+            <>
               <input
                 type="file"
                 onChange={handleFileChange}
@@ -310,7 +187,87 @@ export function FileUpload({
                 required={required}
                 name={name}
               />
-            </div>
+              
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                width: '100%',
+                padding: '4px 4px',
+                gap: '8px',
+                height: '24px'
+              }}>
+                {/* File Icon */}
+                <div style={{
+                  width: '16px',
+                  height: '16px',
+                  backgroundColor: 'var(--blue-3)',
+                  borderRadius: '2px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }}>
+                  <FileIcon style={{
+                    color: 'var(--blue-9)',
+                    width: '10px',
+                    height: '10px'
+                  }} />
+                </div>
+
+                {/* Filename */}
+                <span style={{
+                  fontWeight: 500,
+                  fontSize: '12px',
+                  color: 'var(--gray-12)',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  flexGrow: 1
+                }}>
+                  {typeof value === 'string' 
+                    ? truncateFileName(value.split('/').pop() || value) 
+                    : truncateFileName(value.name)}
+                  {typeof value !== 'string' && (
+                    <span style={{
+                      color: 'var(--gray-10)',
+                      fontSize: '10px',
+                      marginLeft: '6px'
+                    }}>
+                      ({formatFileSize(value.size)})
+                    </span>
+                  )}
+                </span>
+                
+                {/* X Button */}
+                <button
+                  type="button"
+                  onClick={handleRemoveFile}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '16px',
+                    height: '16px',
+                    borderRadius: '2px',
+                    border: 'none',
+                    backgroundColor: 'var(--gray-4)',
+                    color: 'var(--gray-11)',
+                    cursor: disabled ? 'not-allowed' : 'pointer',
+                    transition: 'all 0.2s',
+                    flexShrink: 0
+                  }}
+                  onMouseOver={(e) => {
+                    (e.target as HTMLButtonElement).style.backgroundColor = 'var(--gray-5)';
+                  }}
+                  onMouseOut={(e) => {
+                    (e.target as HTMLButtonElement).style.backgroundColor = 'var(--gray-4)';
+                  }}
+                  disabled={disabled}
+                >
+                  <X size={10} />
+                </button>
+              </div>
+            </>
           )}
         </div>
       </div>
