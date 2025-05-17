@@ -24,7 +24,7 @@ export function FormTemplateListItem({ template, isSelected, onSelect, onContinu
   const userPlanLevel = planLevel[userPlan as keyof typeof planLevel]
   const requiredPlanLevel = planLevel[requiredPlan]
   
-  const isStandardPlan = requiredPlan === 'STANDARD'
+  // const isStandardPlan = requiredPlan === 'STANDARD'
   const isProPlan = requiredPlan === 'PRO'
   const hasAccess = userPlanLevel >= requiredPlanLevel
   const isLocked = !hasAccess && requiredPlan !== 'FREE'

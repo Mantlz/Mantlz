@@ -1,5 +1,5 @@
 "use client"
-import { Mantlz } from '@mantlz/sdk';
+import { Mantlz } from '@mantlz/nextjs';
 
 export default function CustomerFeedbackPage() {
   return (
@@ -59,7 +59,7 @@ export default function CustomerFeedbackPage() {
         
      
         
-      <Mantlz formId="cma9tu80t0004o7r0iuisldzg"
+      <Mantlz formId="cmas7oldb0001o70rn1injfyb"
       theme='modern'
       // className="bg-gradient-to-r from-red-400 to-zinc-900 dark:from-zinc-900 dark:to-zinc-800 border-2 border-zinc-300 dark:border-zinc-700
       

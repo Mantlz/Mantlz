@@ -7,13 +7,54 @@ import { render } from '@react-email/components';
 import { HTTPException } from "hono/http-exception";
 import { QuotaService } from "@/services/quota-service";
 
+
+// Define types based on the Prisma schema
+type FormWithUser = {
+  id: string;
+  name: string;
+  userId: string;
+  user: {
+    id: string;
+    plan: string;
+    [key: string]: unknown; // Replace any with unknown
+  };
+  emailSettings?: {
+    id: string;
+    formId: string;
+    enabled: boolean;
+    fromEmail: string | null;
+    subject: string | null;
+    template: string | null;
+    replyTo: string | null;
+    developerNotificationsEnabled: boolean;
+    developerEmail: string | null;
+    maxNotificationsPerHour: number;
+    notificationConditions: unknown | null;
+    lastNotificationSentAt: Date | null;
+    createdAt: Date;
+    updatedAt: Date;
+  } | null;
+  [key: string]: unknown; // Replace any with unknown
+};
+
+// Define a submission type that matches what the Prisma client returns
+type SubmissionWithDate = {
+  id: string;
+  formId: string;
+  data: Prisma.JsonValue;
+  email: string | null;
+  createdAt: Date;
+  unsubscribed: boolean;
+  [key: string]: unknown; // Replace any with unknown
+};
+
 // Initialize Resend
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export class SubmissionService {
   
   // Submit a form
-  static async submitForm(formId: string, data: Record<string, any>, requestDetails: {
+  static async submitForm(formId: string, data: Record<string, unknown>, requestDetails: {
     userAgent?: string;
     cfCountry?: string;
     acceptLanguage?: string;
@@ -59,12 +100,12 @@ export class SubmissionService {
       data: {
         formId: formId,
         data: enhancedData as unknown as Prisma.InputJsonValue,
-        email: processedData.email, 
+        email: processedData.email as string | undefined, 
       },
     });
 
     // Handle email notifications
-    await this.handleEmailNotifications(form, submission, processedData);
+    await this.handleEmailNotifications(form, submission as SubmissionWithDate, processedData);
     
     // Update quota after successful submission
     await QuotaService.updateQuota(form.user.id, { incrementSubmissions: true });
@@ -74,9 +115,9 @@ export class SubmissionService {
   
   // Handle email notifications for form submissions
   private static async handleEmailNotifications(
-    form: any, 
-    submission: any, 
-    processedData: Record<string, any>
+    form: FormWithUser, 
+    submission: SubmissionWithDate, 
+    processedData: Record<string, unknown>
   ) {
     // Send confirmation email for STANDARD and PRO users
     if (

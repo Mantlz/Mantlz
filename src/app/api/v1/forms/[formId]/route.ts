@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { db } from "@/lib/db";
+import { FormType } from "@prisma/client";
 import { ratelimitConfig } from '@/lib/ratelimiter';
 
 const requestSchema = z.object({
@@ -146,8 +147,9 @@ export async function GET(
       );
     }
     
-    // Use the formType directly from the database
-    const formType = form.formType.toLowerCase();
+    // Get the form type enum and create a lowercase string version
+    const formTypeEnum = form.formType as FormType;
+    const formType = formTypeEnum.toLowerCase();
     
     // Parse the schema to extract fields (restore this logic)
     const fields = [];
@@ -182,12 +184,16 @@ export async function GET(
       count: await db.submission.count({ where: { formId } })
     } : null;
     
+    // Get form type specific configuration
+    const formTypeConfig = getFormTypeConfig(formTypeEnum);
+    
     return NextResponse.json({
       id: form.id,
       name: form.name,
       title: form.name,
       description: form.description,
       formType,
+      formTypeDisplay: formTypeConfig.displayName,
       createdAt: form.createdAt,
       updatedAt: form.updatedAt,
       submissionCount: form._count.submissions,
@@ -197,6 +203,7 @@ export async function GET(
         developerNotificationsEnabled: form.emailSettings?.developerNotificationsEnabled || false,
       },
       usersJoinedSettings,
+      formTypeSpecific: formTypeConfig.specificConfig
     });
   } catch (error) {
     console.error('Error in form details endpoint:', error);
@@ -205,4 +212,70 @@ export async function GET(
       { status: 500 }
     );
   }
+}
+
+// Helper function to get form type specific configuration
+function getFormTypeConfig(formType: FormType) {
+  const config = {
+    displayName: formType.toString(),
+    specificConfig: {}
+  };
+  
+  switch (formType) {
+    case FormType.SURVEY:
+      config.displayName = 'Survey';
+      config.specificConfig = {
+        surveyVersion: '1.0',
+        supportsAnalytics: true
+      };
+      break;
+      
+    case FormType.FEEDBACK:
+      config.displayName = 'Feedback';
+      config.specificConfig = {
+        supportsRating: true
+      };
+      break;
+      
+    case FormType.ANALYTICS_OPT_IN:
+      config.displayName = 'Analytics Opt-In';
+      config.specificConfig = {
+        cookieConsent: true,
+        dataPrivacy: true
+      };
+      break;
+      
+    case FormType.ORDER:
+      config.displayName = 'Order Form';
+      config.specificConfig = {
+        supportsPayment: false, // Future feature
+        shippingRequired: true
+      };
+      break;
+      
+    case FormType.RSVP:
+      config.displayName = 'RSVP';
+      config.specificConfig = {
+        attendanceTracking: true
+      };
+      break;
+      
+    case FormType.WAITLIST:
+      config.displayName = 'Waitlist';
+      break;
+      
+    case FormType.CONTACT:
+      config.displayName = 'Contact';
+      break;
+      
+    case FormType.APPLICATION:
+      config.displayName = 'Application';
+      break;
+      
+    case FormType.CUSTOM:
+      config.displayName = 'Custom Form';
+      break;
+  }
+  
+  return config;
 } 

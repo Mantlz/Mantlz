@@ -8,7 +8,7 @@ import { ReloadIcon } from '@radix-ui/react-icons';
 
 import { useMantlz } from '../../context/mantlzContext';
 import { ApiKeyErrorCard } from '../ui/ApiKeyErrorCard';
-import { MantlzProps } from './types';
+import { MantlzProps, FormType } from './types';
 import { StarRating } from './components/StarRating';
 import { FormField } from './components/FormField';
 import { useFormLogic } from './hooks/useFormLogic';
@@ -159,6 +159,9 @@ export default function Mantlz({
     );
   }
 
+  // Extract form type safely
+  const formType = formData.formType as FormType;
+
   // Main form render
   return (
     <ThemeProvider theme={theme}>
@@ -190,7 +193,7 @@ export default function Mantlz({
               />
             ))}
             
-            {formData.formType === 'feedback' && (
+            {formType === 'feedback' && (
               <Form.Field name="rating">
                 <Form.Label style={styles.field.label}>
                   Rating<span style={{ color: 'var(--red-9)' }}>*</span>
@@ -205,6 +208,33 @@ export default function Mantlz({
                   </Form.Message>
                 )}
               </Form.Field>
+            )}
+            
+            {/* Conditional UI for survey form type */}
+            {formType === 'survey' && formMethods.getValues('satisfaction') && (
+              <div style={{ 
+                padding: '8px',
+                backgroundColor: 'var(--blue-2)',
+                borderRadius: '6px',
+                fontSize: '14px',
+                color: 'var(--blue-11)'
+              }}>
+                Thank you for rating your satisfaction!
+              </div>
+            )}
+            
+            {/* Show analytics consent info for analytics-opt-in forms */}
+            {formType === 'analytics-opt-in' && (
+              <div style={{ 
+                padding: '8px',
+                backgroundColor: 'var(--gray-2)',
+                borderRadius: '6px',
+                fontSize: '14px',
+                color: 'var(--gray-11)',
+                marginBottom: '8px'
+              }}>
+                Your privacy choices matter to us. You can change these preferences at any time.
+              </div>
             )}
             
             {showUsersJoined && canShowUsersJoined && usersJoined > 0 && (
