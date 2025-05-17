@@ -16,5 +16,6 @@ export interface Theme {
   button: React.CSSProperties & {
     '&:hover'?: React.CSSProperties;
     '&:disabled'?: React.CSSProperties;
+    '&:active'?: React.CSSProperties;
   };
 } 

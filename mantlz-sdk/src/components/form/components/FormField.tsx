@@ -7,6 +7,7 @@ import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons
 import { FormField as FormFieldType } from '../types';
 import { themes } from '../themes';
 import { useTheme } from '../hooks/useTheme';
+import { FileUpload } from '../../ui/file-upload';
 
 interface FormFieldProps {
   field: FormFieldType;
@@ -120,6 +121,30 @@ export const FormField = ({
                 </Select.Content>
               </Select.Portal>
             </Select.Root>
+            {formMethods.formState.errors[field.id] && (
+              <Form.Message style={styles.field.error}>
+                {formMethods.formState.errors[field.id]?.message as string}
+              </Form.Message>
+            )}
+          </Form.Field>
+        );
+
+      case 'file':
+        return (
+          <Form.Field name={field.id}>
+            <Form.Label style={styles.field.label}>
+              {field.label}
+              {field.required && <span style={{ color: 'var(--red-9)' }}>*</span>}
+            </Form.Label>
+            <FileUpload
+              name={field.id}
+              accept={field.accept}
+              maxSize={field.maxSize}
+              required={field.required}
+              value={formMethods.watch(field.id)}
+              onChange={(file) => formMethods.setValue(field.id, file, { shouldValidate: true })}
+              onBlur={() => formMethods.trigger(field.id)}
+            />
             {formMethods.formState.errors[field.id] && (
               <Form.Message style={styles.field.error}>
                 {formMethods.formState.errors[field.id]?.message as string}

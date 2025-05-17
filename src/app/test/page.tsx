@@ -30,6 +30,11 @@ export default function CustomerFeedbackPage() {
       />  */}
       <Mantlz
   formId="cmao2vgrf0007o7lfm6r82jif"
+  theme='simple'
+  
+/>
+<Mantlz
+  formId="cmao2vgrf0007o7lfm6r82jif"
   theme='default'
   
 />
@@ -38,6 +43,10 @@ export default function CustomerFeedbackPage() {
 
         formId="cma9tu80t0004o7r0iuisldzg"
         theme='modern'
+        showUsersJoined={true}
+        usersJoinedCount={10}
+        // usersJoinedLabel='Users joined'
+
         
 
 

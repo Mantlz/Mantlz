@@ -164,9 +164,12 @@ export default function Mantlz({
     <ThemeProvider theme={theme}>
       <div 
         className={className}
-        style={styles.form.container}
+        style={{
+          ...styles.form.container,
+          backgroundColor: 'transparent',
+        }}
       >
-        <div style={{ marginBottom: '32px' }}>
+        <div style={{ marginBottom: '24px' }}>
           <h2 style={styles.form.title}>
             {formData?.title || formData?.name}
           </h2>
@@ -174,19 +177,6 @@ export default function Mantlz({
             <p style={styles.form.description}>
               {formData.description}
             </p>
-          )}
-          
-          {showUsersJoined && canShowUsersJoined && usersJoined > 0 && (
-            <div style={{ 
-              marginTop: '16px',
-              fontSize: '14px',
-              color: 'var(--gray-11)'
-            }}>
-              <span style={{ 
-                fontWeight: 600,
-                color: 'var(--gray-12)'
-              }}>{usersJoined}</span> {usersJoinedLabel}
-            </div>
           )}
         </div>
         
@@ -215,6 +205,23 @@ export default function Mantlz({
                   </Form.Message>
                 )}
               </Form.Field>
+            )}
+            
+            {showUsersJoined && canShowUsersJoined && usersJoined > 0 && (
+              <div style={{ 
+                fontSize: '14px',
+                color: 'var(--gray-11)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '4px',
+                marginBottom: '8px'
+              }}>
+                <span style={{ 
+                  fontWeight: 600,
+                  color: 'var(--gray-12)'
+                }}>{usersJoined}</span> {usersJoinedLabel}
+              </div>
             )}
             
             <Form.Submit asChild>
