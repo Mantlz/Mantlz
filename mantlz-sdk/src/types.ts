@@ -11,6 +11,10 @@ export interface MantlzClientConfig {
   developmentMode?: boolean;  // Enable development mode for local testing
   credentials?: RequestCredentials;  // Control credentials mode for fetch requests ('include' recommended for cross-origin)
   corsMode?: RequestMode;  // Control CORS mode ('cors' recommended for cross-origin)
+  cache?: {
+    enabled?: boolean;  // Enable/disable caching (default: true)
+    ttl?: number;       // Time-to-live in milliseconds (default: 5 minutes)
+  };
 }
 
 export interface MantlzError {

@@ -1,30 +1,23 @@
 'use client';
 
-// Import and inject CSS
-
-// Import Radix UI Theme styles
+// Import only essential styles instead of the entire Radix UI Theme
 import '@radix-ui/themes/styles.css';
 
-// CSS is now automatically injected - no need for manual imports
-
+// Core functionality exports - always loaded
 export { MantlzProvider, useMantlz } from './context/mantlzContext';
-
-export { default as Mantlz } from './components/form/mantlz';
 export { createMantlzClient } from './client';
 
-// UI Components
-export { Input } from './components/ui/input';
-export { Button } from './components/ui/button';
-export { Select } from './components/ui/select';
-export { Textarea } from './components/ui/textarea';
-export { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from './components/ui/card';
-export { ApiKeyErrorCard } from './components/ui/ApiKeyErrorCard';
+// Main form component
+export { default as Mantlz } from './components/form/mantlz';
 
-// Toast system exports
+// Core utilities
 export { toast } from './utils/toast';
 export { createSonnerToastAdapter } from './adapters/sonner-toast';
+export { SDK_CONFIG } from './config';
+export { ThemeProvider } from './components/form/context/ThemeContext';
+export { themes } from './components/form/themes';
 
-// Export types
+// Re-export types for better tree-shaking
 export type { 
   MantlzClient, 
   MantlzClientConfig, 
@@ -45,17 +38,16 @@ export type {
 } from './components/form/types';
 
 export type { ToastHandler, ToastOptions, ToastType } from './utils/toast';
-
-// Export Config
-export { SDK_CONFIG } from './config';
-
-// Constants
-// export { FORM_THEMES } from './components/form/types';
-
-export { ThemeProvider } from './components/form/context/ThemeContext';
-export { themes } from './components/form/themes';
 export type { Theme } from './components/form/themes/types';
 export type { ThemeContextType } from './components/form/context/ThemeContext';
+
+// UI Components - these will be code-split by bundler when using tree-shaking
+export { Input } from './components/ui/input';
+export { Button } from './components/ui/button';
+export { Select } from './components/ui/select';
+export { Textarea } from './components/ui/textarea';
+export { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from './components/ui/card';
+export { ApiKeyErrorCard } from './components/ui/ApiKeyErrorCard';
 
 
 

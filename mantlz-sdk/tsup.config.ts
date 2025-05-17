@@ -31,6 +31,7 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   treeshake: true,
+  minify: true,
   external: [
     'react',
     'next',
@@ -46,6 +47,9 @@ export default defineConfig({
   ],
   esbuildOptions(options) {
     options.legalComments = 'inline';
+    options.minifyIdentifiers = true;
+    options.minifySyntax = true;
+    options.minifyWhitespace = true;
     options.define = {
       ...options.define,
       'process.env.NODE_ENV': '"production"'

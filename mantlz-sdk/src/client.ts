@@ -14,6 +14,15 @@ const globalErrorState = {
   form404Errors: new Set<string>(),
 };
 
+// Cache for form schemas and responses to improve performance
+const requestCache = new Map<string, {
+  data: any, 
+  timestamp: number
+}>();
+
+// Default cache TTL (5 minutes)
+const DEFAULT_CACHE_TTL = 5 * 60 * 1000;
+
 /**
  * Type guard to check if an error is a MantlzError
  */
@@ -77,19 +86,51 @@ export function createMantlzClient(
   // Credentials mode for fetch requests (default to 'include' for cross-origin requests)
   const credentialsMode = config?.credentials || 'include';
 
+  // Cache configuration with default values
+  const cacheEnabled = config?.cache?.enabled !== false;
+  const cacheTTL = config?.cache?.ttl || DEFAULT_CACHE_TTL;
+
   // Default headers for all requests
   const defaultHeaders = {
     'X-API-Key': key,
     'Content-Type': 'application/json',
   };
 
-  // Helper function to make API requests with proper CORS handling
+  // Generate cache key from url and options
+  const generateCacheKey = (url: string, options: RequestInit) => {
+    const methodKey = options.method || 'GET';
+    const bodyKey = options.body ? JSON.stringify(options.body) : '';
+    return `${methodKey}:${url}:${bodyKey}`;
+  };
+
+  // Helper function to make API requests with proper CORS handling and caching
   const makeRequest = async (endpoint: string, options: RequestInit = {}) => {
     const url = `${baseUrl}/api/v1${endpoint}`;
     const headers = {
       ...defaultHeaders,
       ...options.headers,
     };
+
+    // Only cache GET requests
+    const isGetRequest = !options.method || options.method === 'GET';
+    const shouldCache = cacheEnabled && isGetRequest;
+    
+    const cacheKey = shouldCache ? generateCacheKey(url, options) : '';
+    
+    // Check cache for valid entry
+    if (shouldCache) {
+      const cachedItem = requestCache.get(cacheKey);
+      
+      if (cachedItem && Date.now() - cachedItem.timestamp < cacheTTL) {
+        log('Cache hit for', url);
+        return {
+          ok: true,
+          json: async () => cachedItem.data,
+          status: 200,
+          headers: new Headers(),
+        } as Response;
+      }
+    }
 
     try {
       const response = await fetch(url, {
@@ -101,6 +142,21 @@ export function createMantlzClient(
 
       if (!response.ok) {
         throw await handleApiError(response);
+      }
+
+      // Cache the successful response if it's cacheable
+      if (shouldCache) {
+        const clonedResponse = response.clone();
+        try {
+          const data = await clonedResponse.json();
+          requestCache.set(cacheKey, { 
+            data, 
+            timestamp: Date.now() 
+          });
+          log('Cached response for', url);
+        } catch (e) {
+          log('Failed to cache response:', e);
+        }
       }
 
       return response;
