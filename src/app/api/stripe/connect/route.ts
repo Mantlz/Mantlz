@@ -58,11 +58,11 @@ export async function GET(req: NextRequest) {
     
     // Redirect to Stripe OAuth page
     return NextResponse.redirect(result.link);
-  } catch (error: any) {
+  } catch (error: Error | unknown) {
     console.error("Error in Stripe connect API route:", error);
     
     return NextResponse.json(
-      { error: error.message || "Failed to generate Stripe connect link" },
+      { error: error instanceof Error ? error.message : "Failed to generate Stripe connect link" },
       { status: 500 }
     );
   }

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 // import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 // import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { LoaderCircle, CheckCircle2, XCircle, ExternalLink, RefreshCcw, InfoIcon } from "lucide-react";
+import { LoaderCircle, XCircle, ExternalLink, RefreshCcw, InfoIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 // import Image from "next/image";
 import { toast } from "sonner";
@@ -224,7 +224,7 @@ export default function StripeSettings() {
               </span>
             </div>
             <p className="text-sm text-amber-700 dark:text-amber-300">
-              We're currently working on integrating Stripe payments into our platform. This feature will allow you to:
+              We&apos;re currently working on integrating Stripe payments into our platform. This feature will allow you to:
             </p>
             <ul className="mt-2 space-y-1 text-sm text-amber-600 dark:text-amber-400 list-disc list-inside">
               <li>Accept payments through your forms</li>
@@ -259,7 +259,7 @@ export default function StripeSettings() {
             </span>
           </div>
           <p className="text-sm text-amber-700 dark:text-amber-300">
-            We're currently working on integrating Stripe payments into our platform. This feature will allow you to:
+            We&apos;re currently working on integrating Stripe payments into our platform. This feature will allow you to:
           </p>
           <ul className="mt-2 space-y-1 text-sm text-amber-600 dark:text-amber-400 list-disc list-inside">
             <li>Accept payments through your forms</li>

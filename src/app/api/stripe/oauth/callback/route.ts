@@ -29,11 +29,11 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(
       `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/forms/settings?tab=stripe&success=true`
     );
-  } catch (error: any) {
+  } catch (error: Error | unknown) {
     console.error('Error in Stripe OAuth callback:', error);
     
     // Redirect with error parameter
-    const errorMessage = encodeURIComponent(error.message || 'Unknown error');
+    const errorMessage = encodeURIComponent(error instanceof Error ? error.message : 'Unknown error');
     return NextResponse.redirect(
       `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/forms/settings?tab=stripe&error=${errorMessage}`
     );

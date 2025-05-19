@@ -55,9 +55,9 @@ export class StripeService {
       console.log('Generated OAuth link:', link);
       
       return { link };
-    } catch (error: any) {
+    } catch (error: Error | unknown) {
       console.error("Error generating Stripe OAuth link:", error);
-      throw new Error(error.message || "Failed to generate Stripe connect link");
+      throw new Error(error instanceof Error ? error.message : "Failed to generate Stripe connect link");
     }
   }
 
@@ -370,7 +370,7 @@ export class StripeService {
   /**
    * Handle webhook events from Stripe
    */
-  static async handleWebhook(payload: any, signature: string) {
+  static async handleWebhook(payload: string | Buffer, signature: string) {
     try {
       // Verify the webhook signature
       const event = stripe.webhooks.constructEvent(

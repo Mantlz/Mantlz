@@ -10,10 +10,10 @@ export async function POST(req: NextRequest) {
     const result = await StripeService.handleWebhook(body, signature);
     
     return NextResponse.json(result, { status: 200 });
-  } catch (error: any) {
+  } catch (error: Error | unknown) {
     console.error('Error handling Stripe webhook:', error);
     return NextResponse.json(
-      { error: error.message || 'Unknown error' },
+      { error: error instanceof Error ? error.message : 'Unknown error' },
       { status: 400 }
     );
   }

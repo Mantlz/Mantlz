@@ -322,7 +322,7 @@ export function FieldConfigurationTab({
                 <div className="p-4 text-center text-sm border border-dashed border-amber-200 dark:border-amber-800 rounded-lg bg-amber-50/50 dark:bg-amber-950/20">
                   <p className="font-medium text-amber-700 dark:text-amber-300">Stripe Integration Coming Soon</p>
                   <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
-                    We're currently working on integrating Stripe payments. Product fields will be available once development is complete.
+                    We&apos;re currently working on integrating Stripe payments. Product fields will be available once development is complete.
                   </p>
                 </div>
               )}

@@ -2,13 +2,14 @@ import { useState, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { FormSchema } from '../types';
+import { FormSchema, FormField } from '../types';
 import { SDK_CONFIG } from '../../../config';
 import { FormSubmitResponse } from '../../../types';
+import { MantlzClient } from '../../../types';
 
 export const useFormLogic = (
   formId: string,
-  client: any,
+  client: MantlzClient | null,
   apiKey?: string,
   redirectUrl?: string
 ) => {
@@ -17,6 +18,7 @@ export const useFormLogic = (
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [fields, setFields] = useState<FormField[]>([]);
 
   // Handle client-side mounting
   useEffect(() => {
@@ -24,7 +26,7 @@ export const useFormLogic = (
   }, []);
 
   // Process fields from form data
-  const fields = useMemo(() => {
+  const fieldsMemo = useMemo(() => {
     if (!formData) return [];
     
     if (Array.isArray(formData.fields)) {
@@ -62,28 +64,45 @@ export const useFormLogic = (
   const formSchema = useMemo(() => {
     const schemaFields: Record<string, any> = {};
     
-    fields.forEach(field => {
+    fieldsMemo.forEach(field => {
       let validator: any;
       
       switch (field.type) {
-        case 'number': validator = z.coerce.number(); break;
-        case 'checkbox': validator = z.boolean(); break;
-        case 'email': validator = z.string().email(); break;
-        case 'file': validator = z.instanceof(File).optional(); break;
-        default: validator = z.string(); break;
+        case 'checkbox': 
+          // For checkbox fields, we need special handling
+          validator = z.boolean();
+          if (field.required) {
+            // If the checkbox is required, it must be checked (true)
+            validator = z.literal(true, {
+              errorMap: () => ({ message: `${field.label} must be checked` })
+            });
+          } else {
+            validator = z.boolean().optional();
+          }
+          break;
+        case 'number': 
+          validator = z.coerce.number(); 
+          break;
+        case 'email': 
+          validator = z.string().email(); 
+          break;
+        case 'file': 
+          validator = z.instanceof(File).optional(); 
+          break;
+        default: 
+          validator = z.string(); 
+          break;
       }
 
-      if (field.required) {
-        if (field.type === 'checkbox') {
-          validator = z.boolean().refine(val => val === true, { message: `${field.label} is required` });
-        } else if (field.type === 'number') {
+      if (field.required && field.type !== 'checkbox') {
+        if (field.type === 'number') {
           validator = validator.min(1, { message: `${field.label} is required` });
         } else if (field.type === 'file') {
           validator = z.instanceof(File, { message: 'Please upload a file' });
         } else {
           validator = validator.min(1, { message: `${field.label} is required` });
         }
-      } else {
+      } else if (!field.required && field.type !== 'checkbox') {
         validator = validator.optional();
       }
       
@@ -95,20 +114,26 @@ export const useFormLogic = (
     }
 
     return z.object(schemaFields);
-  }, [fields, formData?.formType]);
+  }, [fieldsMemo, formData?.formType]);
 
   // Set up default values for form
   const defaultValues = useMemo(() => {
-    return fields.reduce((acc: Record<string, any>, field) => {
-      acc[field.id] = field.defaultValue || (field.type === 'checkbox' ? false : '');
+    return fieldsMemo.reduce((acc: Record<string, any>, field) => {
+      if (field.type === 'checkbox') {
+        // For checkboxes, explicitly set false as default value
+        acc[field.id] = field.defaultValue === true ? true : false;
+      } else {
+        acc[field.id] = field.defaultValue || '';
+      }
       return acc;
     }, {});
-  }, [fields]);
+  }, [fieldsMemo]);
 
   // Set up form with react-hook-form
   const formMethods = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues,
+    mode: 'onBlur'
   });
 
   // Reset form when default values change
@@ -164,6 +189,7 @@ export const useFormLogic = (
         }
         
         setFormData(formData as FormSchema);
+        setFields(formData.fields || []);
       } catch (error) {
         console.error('Error fetching form data:', error);
       } finally {
@@ -174,11 +200,41 @@ export const useFormLogic = (
     fetchFormData();
   }, [formId, apiKey, client, isMounted]);
 
+  const validateField = (field: FormField, value: any) => {
+    if (field.required) {
+      // Special handling for checkbox fields
+      if (field.type === 'checkbox') {
+        // Ensure we're working with a boolean value
+        const boolValue = value === true;
+        return field.required ? boolValue : true;
+      }
+      
+      // For other field types
+      if (value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0)) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   // Form submission handler
   const onSubmit = async (data: z.infer<typeof formSchema>): Promise<FormSubmitResponse> => {
     if (!client || !apiKey) {
       console.error('Mantlz client or API key not available');
       return { success: false, message: 'Client or API key not available' };
+    }
+
+    // Validate all fields before submission
+    const validationErrors = fields.reduce((errors: string[], field) => {
+      const value = data[field.name];
+      if (!validateField(field, value)) {
+        errors.push(`${field.label || field.name} is required`);
+      }
+      return errors;
+    }, []);
+
+    if (validationErrors.length > 0) {
+      throw new Error(validationErrors.join(', '));
     }
 
     try {

@@ -46,7 +46,7 @@ export default function CustomerFeedbackPage() {
         showUsersJoined={true}
         usersJoinedCount={100000}
         usersJoinedLabel='Users already joined'
-        //redirectUrl='/feedback/thank-you'
+        redirectUrl='/feedback/thank-you'
 
         
 
@@ -60,8 +60,8 @@ export default function CustomerFeedbackPage() {
         
      
         
-      <Mantlz formId="cmav70dqb00370jv3t49d9us8"
-      theme='modern'
+      <Mantlz formId="cmav82ejc00030juymuh65bsm"
+      theme='neobrutalism'
       // className="bg-gradient-to-r from-red-400 to-zinc-900 dark:from-zinc-900 dark:to-zinc-800 border-2 border-zinc-300 dark:border-zinc-700
       
       // "
@@ -71,8 +71,18 @@ export default function CustomerFeedbackPage() {
       
       />
 
-      <Mantlz formId="cmav82ejc00030juymuh65bsm"/>
+      <Mantlz formId="cmao2vgrf0007o7lfm6r82jif"
+      theme='neobrutalism'
 
+
+
+      />
+      <Mantlz formId="cmasd5mci0001o7hws12icdk0"
+      theme='neobrutalism'
+
+
+
+      />
 
      
 

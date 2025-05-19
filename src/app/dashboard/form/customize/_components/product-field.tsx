@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { UseQueryResult, useQuery } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
+import { 
+ // UseQueryResult,
+   useQuery } from "@tanstack/react-query";
+// import { Button } from "@/components/ui/button";
 import { LoaderCircle, Store, Image as ImageIcon, Loader2 } from "lucide-react";
 import {
   Select,
@@ -14,9 +16,9 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+  //CardDescription,
+  //CardHeader,
+  //CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -27,16 +29,56 @@ import Image from "next/image";
 import { client } from "@/lib/client";
 import { FormField, ProductDisplayMode } from "../types";
 import { useSubscription } from "@/hooks/useSubscription";
+import { JsonValue } from "@prisma/client/runtime/library";
 
 interface StripeProduct {
   id: string;
   name: string;
-  description?: string;
+  description: string | null;
   price: number;
   currency: string;
-  image?: string;
+  image: string | null;
   active: boolean;
+  stripeConnectionId: string;
+  stripeProductId: string;
+  stripePriceId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  metadata: JsonValue;
 }
+
+// Add a new interface for the raw API response
+interface StripeProductResponse {
+  id: string;
+  name: string;
+  description: string | null;
+  price: { toString(): string }; // This handles Decimal type
+  currency: string;
+  image: string | null;
+  active: boolean;
+  stripeConnectionId: string;
+  stripeProductId: string;
+  stripePriceId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  metadata: JsonValue;
+}
+
+type StripeConnectionResponse = {
+  connected: boolean;
+  proPlan: boolean;
+  message?: string;
+  connection?: {
+    id: string;
+    stripeAccountId: string;
+    createdAt: Date;
+    lastRefreshedAt: Date | null;
+  } | null;
+};
+
+type StripeProductsResponse = {
+  products: Array<StripeProduct>;
+};
 
 interface ProductFieldProps {
   field: FormField;
@@ -55,12 +97,13 @@ export default function ProductField({ field, onUpdate }: ProductFieldProps) {
   );
 
   // Get connection status
-  const connectionStatus = useQuery({
+  const connectionStatus = useQuery<StripeConnectionResponse, Error>({
     queryKey: ["stripeConnectionStatus"],
     queryFn: async () => {
       try {
         const response = await client.stripe.getConnectionStatus.$get();
-        return (response as any).json;
+        const data = await response.json();
+        return data as StripeConnectionResponse;
       } catch (error) {
         console.error("Failed to fetch connection status:", error);
         return { connected: false, proPlan: false };
@@ -70,12 +113,16 @@ export default function ProductField({ field, onUpdate }: ProductFieldProps) {
   });
 
   // Get products if connected
-  const products: UseQueryResult<{ products: StripeProduct[] }> = useQuery({
+  const products = useQuery<StripeProductsResponse, Error>({
     queryKey: ["stripeProducts"],
     queryFn: async () => {
       try {
         const response = await client.stripe.getProducts.$get();
-        return (response as any).json;
+        const data = await response.json();
+        return { products: data.products.map((p: StripeProductResponse) => ({
+          ...p,
+          price: Number(p.price.toString()), // Convert Decimal to number
+        })) } as StripeProductsResponse;
       } catch (error) {
         console.error("Failed to fetch products:", error);
         return { products: [] };
@@ -254,7 +301,7 @@ export default function ProductField({ field, onUpdate }: ProductFieldProps) {
           <Store className="h-4 w-4" />
           <AlertTitle>No Products Available</AlertTitle>
           <AlertDescription>
-            You don't have any products in your connected Stripe account. Add
+            You don&apos;t have any products in your connected Stripe account. Add
             products to your Stripe account first, then refresh the product list.
           </AlertDescription>
         </Alert>

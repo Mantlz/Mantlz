@@ -2,7 +2,7 @@ import { z } from "zod";
 import { j, privateProcedure } from "../jstack";
 import { StripeService } from "@/services/stripe-service";
 import { HTTPException } from "hono/http-exception";
-import { Plan } from "@prisma/client";
+import { Plan, StripeOrderStatus } from "@prisma/client";
 import { db } from "@/lib/db";
 
 export const stripeRouter = j.router({
@@ -177,7 +177,7 @@ export const stripeRouter = j.router({
       formId: z.string(),
       limit: z.number().min(1).max(100).default(10),
       cursor: z.string().optional(),
-      status: z.string().optional(),
+      status: z.nativeEnum(StripeOrderStatus).optional(),
     }))
     .query(async ({ c, input, ctx }) => {
       try {
@@ -196,7 +196,7 @@ export const stripeRouter = j.router({
         const orders = await db.stripeOrder.findMany({
           where: {
             formId,
-            ...(status ? { status: status as any } : {}),
+            ...(status ? { status } : {}),
           },
           take: limit + 1,
           cursor: cursor ? { id: cursor } : undefined,

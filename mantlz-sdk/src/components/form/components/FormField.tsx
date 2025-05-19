@@ -52,32 +52,43 @@ export const FormField = ({
 
       case 'checkbox':
         return (
-          <Form.Field name={field.id}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="form-field">
+            <div className="flex items-center gap-2">
               <Checkbox.Root
                 id={field.id}
-                {...formMethods.register(field.id)}
-                style={{
-                  ...styles.field.input,
-                  width: '20px',
-                  height: '20px',
+                checked={formMethods.watch(field.id)}
+                onCheckedChange={(checked) => {
+                  const boolValue = checked === true;
+                  formMethods.setValue(field.id, boolValue, {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                    shouldTouch: true
+                  });
                 }}
+                name={field.id}
+                className="h-4 w-4 rounded border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               >
-                <Checkbox.Indicator>
-                  <CheckIcon />
+                <Checkbox.Indicator className="flex items-center justify-center">
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M9 1L3.5 6.5L1 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
                 </Checkbox.Indicator>
               </Checkbox.Root>
-              <Form.Label style={{ ...styles.field.label, cursor: 'pointer' }}>
-                {field.placeholder || field.label}
-                {field.required && <span style={{ color: 'var(--red-9)', marginLeft: '4px' }}>*</span>}
-              </Form.Label>
+              <label 
+                htmlFor={field.id}
+                className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                  field.required ? 'after:content-["*"] after:ml-0.5 after:text-red-500' : ''
+                }`}
+              >
+                {field.label}
+              </label>
             </div>
             {formMethods.formState.errors[field.id] && (
               <Form.Message style={styles.field.error}>
                 {formMethods.formState.errors[field.id]?.message as string}
               </Form.Message>
             )}
-          </Form.Field>
+          </div>
         );
 
       case 'select':

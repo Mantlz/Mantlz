@@ -113,12 +113,6 @@ const NavigationSection = memo(function NavigationSection() {
             <span>Logs</span>
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild className="hover:bg-zinc-800 cursor-pointer">
-          <Link href="/dashboard/test" className="flex items-center gap-2 cursor-pointer">
-            <TestTube2 className="h-4 w-4" />
-            <span>Test</span>
-          </Link>
-        </DropdownMenuItem>
         <DropdownMenuItem 
           className="hover:bg-zinc-800 p-0 cursor-pointer"
           onSelect={(e) => e.preventDefault()}

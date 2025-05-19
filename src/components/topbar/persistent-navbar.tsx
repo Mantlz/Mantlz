@@ -357,13 +357,7 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
                   <span>Logs</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5">
-                <Link href="/dashboard/test" className="flex items-center gap-2.5 py-1.5 cursor-pointer">
-                  <TestTube2 className="h-4 w-4" />
-                  <span>Test</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 p-0 rounded-lg my-0.5">
+              <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 p-0 rounded-lg my-0.5 mt-1">
                 <Link 
                   href="/dashboard/form"
                   className="flex items-center gap-2.5 w-full px-2 py-1.5  bg-zinc-100/90 dark:bg-zinc-900/90 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/90 backdrop-blur-sm border justify-start  rounded-lg border-zinc-300 dark:border-zinc-700 cursor-pointer"
