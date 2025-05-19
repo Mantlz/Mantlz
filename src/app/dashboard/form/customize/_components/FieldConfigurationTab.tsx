@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { FormFieldItem } from './FormFieldItem';
-import { FormField, ProductDisplayMode } from '../types';
-import { PlusCircleIcon, CheckCircleIcon, LayersIcon, ArrowDownIcon, GripHorizontal, InfoIcon, CrownIcon, LoaderCircle } from 'lucide-react';
+import { FormField } from '../types';
+//ProductDisplayMode in type.ts
+import { PlusCircleIcon, CheckCircleIcon, ArrowDownIcon, GripHorizontal, InfoIcon, CrownIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { 
   DndContext, 
@@ -21,10 +22,11 @@ import {
 } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis, restrictToParentElement } from '@dnd-kit/modifiers';
 import { useSubscription } from '@/hooks/useSubscription';
-import ProductField from './product-field';
-import { useQuery } from "@tanstack/react-query";
-import { client } from "@/lib/client";
-import { Decimal } from '@prisma/client/runtime/library';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+// import ProductField from './product-field';
+// import { useQuery } from "@tanstack/react-query";
+// import { client } from "@/lib/client";
+// import { Decimal } from '@prisma/client/runtime/library';
 
 interface FieldConfigurationTabProps {
   formFields: FormField[];
@@ -37,21 +39,21 @@ interface FieldConfigurationTabProps {
 }
 
 // Add type for product data
-interface StripeProduct {
-  id: string;
-  name: string;
-  description: string | null;
-  price: Decimal;
-  currency: string;
-  image: string | null;
-  active: boolean;
-  metadata: any;
-  createdAt: Date;
-  updatedAt: Date;
-  stripeConnectionId: string;
-  stripeProductId: string;
-  stripePriceId: string;
-}
+// interface StripeProduct {
+//   id: string;
+//   name: string;
+//   description: string | null;
+//   price: Decimal;
+//   currency: string;
+//   image: string | null;
+//   active: boolean;
+//   metadata: any;
+//   createdAt: Date;
+//   updatedAt: Date;
+//   stripeConnectionId: string;
+//   stripeProductId: string;
+//   stripePriceId: string;
+// }
 
 export function FieldConfigurationTab({ 
   formFields, 
@@ -66,32 +68,32 @@ export function FieldConfigurationTab({
   const [isClient, setIsClient] = useState(false);
   
   // Fetch Stripe products if user is on PRO plan
-  const { data: stripeProducts, isLoading: isLoadingProducts } = useQuery({
-    queryKey: ["stripeProducts"],
-    queryFn: async () => {
-      console.log('Fetching Stripe products...');
-      try {
-        const response = await client.stripe.getProducts.$get();
-        const data = await response.json();
-        console.log('Stripe products response:', data);
-        return data;
-      } catch (error) {
-        console.error('Error fetching Stripe products:', error);
-        throw error;
-      }
-    },
-    enabled: isPremium && formType === 'order',
-  });
+  // const { data: stripeProducts, isLoading: isLoadingProducts } = useQuery({
+  //   queryKey: ["stripeProducts"],
+  //   queryFn: async () => {
+  //     console.log('Fetching Stripe products...');
+  //     try {
+  //       const response = await client.stripe.getProducts.$get();
+  //       const data = await response.json();
+  //       console.log('Stripe products response:', data);
+  //       return data;
+  //     } catch (error) {
+  //       console.error('Error fetching Stripe products:', error);
+  //       throw error;
+  //     }
+  //   },
+  //   enabled: isPremium && formType === 'order',
+  // });
 
   // Add debug logs for subscription and form type
-  useEffect(() => {
-    console.log('Current state:', {
-      isPremium,
-      formType,
-      isLoadingProducts,
-      stripeProducts,
-    });
-  }, [isPremium, formType, isLoadingProducts, stripeProducts]);
+  // useEffect(() => {
+  //   console.log('Current state:', {
+  //     isPremium,
+  //     formType,
+  //     isLoadingProducts,
+  //     stripeProducts,
+  //   });
+  // }, [isPremium, formType, isLoadingProducts, stripeProducts]);
 
   useEffect(() => {
     setIsClient(true);
@@ -133,6 +135,16 @@ export function FieldConfigurationTab({
         return "Create a feedback form with your preferred fields";
       case 'waitlist':
         return "Set up your waitlist signup form with these fields";
+      case 'order':
+        return "Create an order form (Stripe integration coming soon)";
+      case 'survey':
+        return "Build a survey form with custom questions";
+      case 'application':
+        return "Create an application form with required fields";
+      case 'analytics-opt-in':
+        return "Set up an analytics consent form";
+      case 'rsvp':
+        return "Create an RSVP form for your event";
       default:
         return "Customize your form by adding fields below";
     }
@@ -145,7 +157,7 @@ export function FieldConfigurationTab({
       return (
         <div className="space-y-3">
           {formFields.map((field) => (
-            <div key={field.id} className="bg-white dark:bg-zinc-950 rounded-lg border border-neutral-200 dark:border-zinc-800 p-3">
+            <div key={field.id} className="bg-white dark:bg-zinc-800 rounded-lg border border-neutral-200 dark:border-zinc-800 p-3">
               <div className="flex items-center justify-between">
                 <span>{field.label}</span>
               </div>
@@ -190,140 +202,39 @@ export function FieldConfigurationTab({
   });
 
   // Render Stripe products in Pro Fields section
-  const renderStripeProducts = () => {
-    console.log('Rendering Stripe products section:', {
-      isPremium,
-      formType,
-      isLoadingProducts,
-      hasProducts: Boolean(stripeProducts?.products?.length),
-      products: stripeProducts?.products,
-    });
-
-    if (!isPremium || formType !== 'order') {
-      console.log('Not showing products because:', {
-        isPremium,
-        formType,
-        shouldShow: isPremium && formType === 'order'
-      });
-      return null;
-    }
-
-    if (isLoadingProducts) {
-      console.log('Loading products...');
-      return (
-        <div className="flex items-center justify-center p-4">
-          <LoaderCircle className="h-4 w-4 animate-spin text-primary" />
-          <span className="ml-2 text-sm text-neutral-500">Loading products...</span>
-        </div>
-      );
-    }
-
-    if (!stripeProducts?.products?.length) {
-      console.log('No products found');
-      return (
-        <div className="p-4 text-center text-sm text-neutral-500">
-          <p>No products found in your Stripe account.</p>
-          <p className="mt-1">Add products in Stripe to display them here.</p>
-        </div>
-      );
-    }
-
-    console.log('Rendering products list:', stripeProducts.products);
-    return (
-      <div className="space-y-2">
-        {stripeProducts.products.map((product: StripeProduct) => {
-          console.log('Rendering product:', product);
-          return (
-            <div 
-              key={product.id}
-              className={cn(
-                "flex items-center gap-3 p-3 rounded-lg transition-all duration-200",
-                formFields.some(f => f.id === `product_${product.id}`)
-                  ? 'bg-zinc-100/80 text-neutral-400 dark:bg-zinc-800/60 dark:text-neutral-500 border border-neutral-200 dark:border-zinc-800 opacity-60 cursor-not-allowed' 
-                  : 'bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 hover:border-primary/20 dark:hover:border-primary/20 hover:shadow-sm cursor-pointer'
-              )}
-              onClick={() => {
-                console.log('Product clicked:', product);
-                if (!formFields.some(f => f.id === `product_${product.id}`)) {
-                  const newField: FormField = {
-                    id: `product_${product.id}`,
-                    name: `product_${product.id}`,
-                    label: product.name,
-                    type: 'product',
-                    required: true,
-                    displayMode: 'grid' as ProductDisplayMode,
-                    productIds: [product.id],
-                    products: [{
-                      id: product.id,
-                      name: product.name,
-                      description: product.description || undefined,
-                      price: Number(product.price),
-                      currency: product.currency,
-                      image: product.image || undefined
-                    }],
-                    premium: true
-                  };
-                  console.log('Adding new field:', newField);
-                  onToggleField(newField);
-                }
-              }}
-            >
-              {product.image && (
-                <div className="w-12 h-12 rounded-md overflow-hidden flex-shrink-0">
-                  <img 
-                    src={product.image} 
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-neutral-800 dark:text-neutral-200 truncate">
-                    {product.name}
-                  </span>
-                  <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
-                    {new Intl.NumberFormat('en-US', {
-                      style: 'currency',
-                      currency: product.currency
-                    }).format(Number(product.price))}
-                  </span>
-                </div>
-                {product.description && (
-                  <p className="text-xs text-neutral-500 dark:text-neutral-400 line-clamp-2 mt-1">
-                    {product.description}
-                  </p>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
+  //const renderStripeProducts = () => {
+    // Commented out Stripe product rendering logic
+    // Always return null for now
+    //return null;
+  //};
 
   return (
     <div className="space-y-5">
-      <div className="bg-zinc-50/50 dark:bg-zinc-950/20 p-3 rounded-lg border border-blue-100 dark:border-blue-900/30">
-        <div className="flex gap-2 text-sm text-blue-600 dark:text-blue-400">
-          <InfoIcon className="h-4 w-4 mt-0.5 shrink-0 text-blue-500 dark:text-blue-400" />
-          <div>
-            <p>{getGuideText()}</p>
-            <p className="text-xs text-blue-500/70 dark:text-blue-400/70 mt-1">
-              Drag and drop fields to reorder them
-            </p>
-          </div>
-        </div>
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm font-medium text-neutral-800 dark:text-neutral-200 flex items-center gap-2">
+          <span className="flex items-center gap-2">
+            Form Elements
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <InfoIcon className="h-4 w-4 text-neutral-400 hover:text-neutral-500 dark:text-neutral-500 dark:hover:text-neutral-400 cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent side="right" className="max-w-[300px]">
+                <div className="text-xs space-y-1">
+                  <p className="font-medium">{getGuideText()}</p>
+                  <p className="text-[10px] opacity-90">
+                    {formType === 'order' 
+                      ? "Order form functionality is currently under development"
+                      : "Drag and drop fields to reorder them"}
+                  </p>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </span>
+        </h3>
       </div>
       
       {/* Current Fields Section */}
       <div>
-        <h3 className="text-sm font-medium mb-3 text-neutral-800 dark:text-neutral-200">
-          <span className="flex items-center gap-2">
-            <LayersIcon className="h-4 w-4 text-primary/70" />
-            Form Elements
-          </span>
-        </h3>
         {formFields.length === 0 ? (
           <div className="text-center py-6 px-4 bg-zinc-50/80 dark:bg-zinc-800/30 rounded-lg border border-dashed border-neutral-200 dark:border-zinc-800 transition-all duration-300">
             <GripHorizontal className="h-8 w-8 mx-auto text-neutral-300 dark:text-neutral-600 mb-2" />
@@ -395,15 +306,28 @@ export function FieldConfigurationTab({
             <div>
               <h4 className="text-xs font-medium text-neutral-500 dark:text-neutral-400 mb-2 px-1 flex items-center gap-2">
                 Pro Fields
-                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-amber-500 to-yellow-500 text-white">
-                  <CrownIcon className="h-3 w-3" />
-                  Pro
-                </span>
+                {formType === 'order' ? (
+                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400">
+                    Coming Soon
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-amber-500 to-yellow-500 text-white">
+                    <CrownIcon className="h-3 w-3" />
+                    Pro
+                  </span>
+                )}
               </h4>
               {/* Render Stripe Products */}
-              {formType === 'order' && renderStripeProducts()}
+              {formType === 'order' && (
+                <div className="p-4 text-center text-sm border border-dashed border-amber-200 dark:border-amber-800 rounded-lg bg-amber-50/50 dark:bg-amber-950/20">
+                  <p className="font-medium text-amber-700 dark:text-amber-300">Stripe Integration Coming Soon</p>
+                  <p className="mt-1 text-xs text-amber-600 dark:text-amber-400">
+                    We're currently working on integrating Stripe payments. Product fields will be available once development is complete.
+                  </p>
+                </div>
+              )}
               {/* Regular Pro Fields */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
                 {filteredAvailableFields
                   .filter(field => field.premium)
                   .map(field => (
@@ -413,14 +337,20 @@ export function FieldConfigurationTab({
                         "flex items-center gap-2 px-3 py-2.5 rounded-lg transition-all duration-200",
                         formFields.some(f => f.id === field.id)
                           ? 'bg-zinc-100/80 text-neutral-400 dark:bg-zinc-800/60 dark:text-neutral-500 border border-neutral-200 dark:border-zinc-800 opacity-60 cursor-not-allowed' 
-                          : !isPremium
+                          : !isPremium || (field.type === 'product')
                             ? 'bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 opacity-70 cursor-not-allowed'
                             : 'bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 hover:border-primary/20 dark:hover:border-primary/20 hover:shadow-sm cursor-pointer'
                       )}
-                      onClick={() => !formFields.some(f => f.id === field.id) && isPremium && onToggleField(field)}
+                      onClick={() => {
+                        if (!formFields.some(f => f.id === field.id) && 
+                            isPremium && 
+                            field.type !== 'product') {
+                          onToggleField(field);
+                        }
+                      }}
                       role="button"
-                      aria-disabled={formFields.some(f => f.id === field.id) || !isPremium}
-                      tabIndex={formFields.some(f => f.id === field.id) || !isPremium ? -1 : 0}
+                      aria-disabled={formFields.some(f => f.id === field.id) || !isPremium || field.type === 'product'}
+                      tabIndex={formFields.some(f => f.id === field.id) || !isPremium || field.type === 'product' ? -1 : 0}
                     >
                       {formFields.some(f => f.id === field.id) ? (
                         <CheckCircleIcon className="h-4 w-4 text-green-500 dark:text-green-400 shrink-0" />
@@ -433,6 +363,9 @@ export function FieldConfigurationTab({
                         </span>
                         <span className="text-xs text-neutral-500 dark:text-neutral-400">
                           {getFieldTypeLabel(field.type)}
+                          {field.type === 'product' && (
+                            <span className="ml-1 text-amber-500 dark:text-amber-400">(Coming Soon)</span>
+                          )}
                         </span>
                       </div>
                     </div>

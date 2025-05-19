@@ -61,6 +61,17 @@ export const formFieldSchema = z.object({
   accept: z.array(z.string()).optional(),
   maxSize: z.number().optional(),
   premium: z.boolean().optional(),
+  products: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      description: z.string().optional(),
+      price: z.number(),
+      currency: z.string(),
+      image: z.string().optional()
+    })
+  ).optional(),
+  displayMode: z.enum(['grid', 'list']).optional()
 });
 
 export const formSchema = z.object({

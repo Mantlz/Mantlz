@@ -170,40 +170,12 @@ export default function Mantlz({
 
     try {
       if (formType === 'order') {
-        // For order forms, find all product fields and their selected quantities
-        const productFields = fields.filter(field => field.type === 'product');
-        const selectedProducts = productFields.flatMap(field => {
-          const fieldData = JSON.parse(data[field.name] || '[]');
-          return fieldData.map((product: any) => ({
-            productId: product.id,
-            quantity: product.quantity
-          }));
-        }).filter((product: any) => product.quantity > 0);
-
-        if (selectedProducts.length === 0) {
-          throw new Error('Please select at least one product');
-        }
-
-        if (!client) {
-          throw new Error('Client not initialized');
-        }
-
-        // Create Stripe checkout session
-        const response = await client.stripe.createCheckoutSession.$post({
-          formId,
-          products: selectedProducts,
-          customerEmail: data.email,
-          successUrl: redirectUrl,
+        toast.error('Order form functionality is currently under development. Please check back later.', {
+          duration: 5000,
+          position: 'top-right'
         });
-        
-        const result = await response.json();
-        
-        if (result.checkoutUrl) {
-          window.location.href = result.checkoutUrl;
-          return;
-        } else {
-          throw new Error('Failed to create checkout session');
-        }
+        setSubmitting(false);
+        return;
       }
 
       // For non-order forms, proceed with normal submission
@@ -235,6 +207,35 @@ export default function Mantlz({
           backgroundColor: 'transparent',
         }}
       >
+        {formType === 'order' && (
+          <div style={{ 
+            padding: '12px',
+            marginBottom: '16px',
+            borderRadius: '8px',
+            border: '1px solid var(--amber-6)',
+            backgroundColor: 'var(--amber-2)'
+          }}>
+            <div style={{ 
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              color: 'var(--amber-11)',
+              fontSize: '14px',
+              fontWeight: 500
+            }}>
+              <span>⚠️</span>
+              <span>Order Forms - Coming Soon</span>
+            </div>
+            <p style={{ 
+              marginTop: '4px',
+              fontSize: '13px',
+              color: 'var(--amber-11)',
+              opacity: 0.8
+            }}>
+              This feature is currently under development. Submissions are disabled.
+            </p>
+          </div>
+        )}
         <div style={{ marginBottom: '24px' }}>
           <h2 style={styles.form.title}>
             {formData?.title || formData?.name}

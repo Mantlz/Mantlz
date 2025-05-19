@@ -31,16 +31,31 @@ export const useFormLogic = (
       return formData.fields;
     }
     
-    return Object.entries(formData.schema || {}).map(([id, config]: [string, any]) => ({
-      id,
-      name: id,
-      label: config.label || id.charAt(0).toUpperCase() + id.slice(1),
-      type: config.type || 'text',
-      required: config.required || false,
-      placeholder: config.placeholder || '',
-      options: config.options || undefined,
-      defaultValue: config.defaultValue || '',
-    }));
+    return Object.entries(formData.schema || {}).map(([id, config]: [string, any]) => {
+      const field = {
+        id,
+        name: id,
+        label: config.label || id.charAt(0).toUpperCase() + id.slice(1),
+        type: config.type || 'text',
+        required: config.required || false,
+        placeholder: config.placeholder || '',
+        options: config.options || undefined,
+        defaultValue: config.defaultValue || '',
+        premium: config.premium || false
+      };
+
+      // Handle product fields
+      if (config.type === 'product') {
+        return {
+          ...field,
+          products: config.products || [],
+          displayMode: config.displayMode || 'grid',
+          productIds: config.productIds || []
+        };
+      }
+
+      return field;
+    });
   }, [formData]);
 
   // Build Zod schema from fields
@@ -208,14 +223,13 @@ export const useFormLogic = (
       
       if (response.success) {
         setSubmitted(true);
-        
-        // No need to handle redirect here - the SDK's handleRedirect will take care of it
-        // based on the server's response which enforces plan restrictions
+        return response;
       } else {
         throw new Error(response.message || 'Form submission failed');
       }
     } catch (error) {
       console.error('Form submission error:', error);
+      return { success: false, message: error instanceof Error ? error.message : 'Form submission failed' };
     } finally {
       setSubmitting(false);
     }

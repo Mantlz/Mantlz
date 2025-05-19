@@ -7,12 +7,21 @@ export type FormType = 'waitlist' | 'contact' | 'feedback' | 'custom' | 'survey'
 // Product display modes
 export type ProductDisplayMode = 'grid' | 'list' | 'single'
 
+export interface Product {
+  id: string;
+  name: string;
+  description?: string;
+  price: number;
+  currency: string;
+  image?: string;
+}
+
 // Form field interface
 export interface FormField {
   id: string
   name: string
   label: string
-  type: 'text' | 'email' | 'textarea' | 'checkbox' | 'select' | 'file' | 'number' | 'product'
+  type: FieldType
   required: boolean
   placeholder?: string
   options?: string[] // For select fields
@@ -21,12 +30,5 @@ export interface FormField {
   premium?: boolean // Whether this field is only available for premium users
   displayMode?: ProductDisplayMode // For product fields to specify display mode
   productIds?: string[] // For product fields to specify which products to display
-  products?: Array<{
-    id: string
-    name: string
-    description?: string
-    price: number
-    currency: string
-    image?: string
-  }> // The actual product data for rendering
+  products?: Product[]
 } 

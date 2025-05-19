@@ -15,6 +15,9 @@ interface FormFieldSchema {
   required?: boolean;
   placeholder?: string;
   options?: string[];
+  products?: string[];
+  displayMode?: string;
+  productIds?: string[];
 }
 
 interface FormSchema {
@@ -156,9 +159,8 @@ export async function GET(
     try {
       const schema = JSON.parse(form.schema) as FormSchema;
       for (const [key, value] of Object.entries(schema)) {
-        // Ensure value is an object and has expected properties before pushing
         if (typeof value === 'object' && value !== null && 'type' in value) {
-          fields.push({
+          const field = {
             id: key,
             name: key,
             label: value.label || key.charAt(0).toUpperCase() + key.slice(1),
@@ -166,15 +168,24 @@ export async function GET(
             required: value.required || false,
             placeholder: value.placeholder || '',
             options: value.options || undefined,
-          });
+          };
+
+          // Add product data for product fields
+          if (value.type === 'product' && value.products) {
+            Object.assign(field, {
+              products: value.products,
+              displayMode: value.displayMode || 'grid',
+              productIds: value.productIds || []
+            });
+          }
+
+          fields.push(field);
         } else {
-          // Handle cases where the schema item isn't structured as expected
           console.warn(`Skipping unexpected schema item: ${key}`);
         }
       }
     } catch (error) {
       console.error('Error parsing form schema:', error);
-       // Handle the error, e.g., return empty fields or an error state
     }
     
     // Check if users joined settings exists in form settings

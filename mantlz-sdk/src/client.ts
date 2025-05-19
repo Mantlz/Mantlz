@@ -486,7 +486,10 @@ export function createMantlzClient(
             options: field.options?.map((opt: any) => ({
               value: typeof opt === 'string' ? opt : opt.value,
               label: typeof opt === 'string' ? opt : opt.label
-            }))
+            })),
+            products: field.products || undefined,
+            displayMode: field.displayMode || undefined,
+            premium: field.premium || false
           }));
 
           // Also update schema for backward compatibility
@@ -517,7 +520,10 @@ export function createMantlzClient(
             options: value.options?.map((opt: any) => ({
               value: typeof opt === 'string' ? opt : opt.value,
               label: typeof opt === 'string' ? opt : opt.label
-            }))
+            })),
+            products: value.products || undefined,
+            displayMode: value.displayMode || undefined,
+            premium: value.premium || false
           }));
         }
 

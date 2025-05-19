@@ -104,7 +104,7 @@ export default function FormBuilderPage() {
 
           <div className="w-full overflow-x-auto pb-2 -mx-2 px-2">
             <Tabs defaultValue="all" value={activeCategory} onValueChange={setActiveCategory} className="w-full min-w-[480px]">
-              <TabsList className="bg-white dark:bg-zinc-900 p-1.5 h-auto flex space-x-2 overflow-x-auto border border-neutral-200 dark:border-zinc-800 rounded-lg">
+              <TabsList className="bg-white dark:bg-zinc-900 p-1 h-auto flex space-x-2 overflow-x-auto border border-neutral-200 dark:border-zinc-800 rounded-lg">
                 {categories.map(category => {
                   const Icon = category.icon;
                   return (
@@ -112,7 +112,7 @@ export default function FormBuilderPage() {
                       key={category.id} 
                       value={category.id}
                       className={cn(
-                        "flex items-center gap-2 px-4 py-2 text-base transition-all duration-150 cursor-pointer whitespace-nowrap",
+                        "flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-150 cursor-pointer whitespace-nowrap",
                         "data-[state=active]:bg-zinc-100 dark:data-[state=active]:bg-zinc-800",
                         "data-[state=active]:text-neutral-900 dark:data-[state=active]:text-white",
                         "data-[state=inactive]:text-neutral-500 dark:data-[state=inactive]:text-neutral-400",
@@ -120,7 +120,7 @@ export default function FormBuilderPage() {
                         "font-medium rounded-lg"
                       )}
                     >
-                      <Icon className="h-5 w-5" />
+                      <Icon className="h-4 w-4" />
                       {category.name}
                     </TabsTrigger>
                   );

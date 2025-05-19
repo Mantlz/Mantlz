@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { client } from '@/lib/client'
 import { FormType } from '@prisma/client'
-import { FormField, FieldType } from './types'
+import { FormField, FieldType, Product, ProductDisplayMode } from './types'
 import { FieldConfigurationTab } from './_components/FieldConfigurationTab'
 import { FormSettingsTab } from './_components/FormSettingsTab'
 import { FormPreview } from './_components/FormPreview'
@@ -79,10 +79,18 @@ function CustomizeFormContent() {
   }
   
   const createForm = async () => {
+    if (formType === 'order') {
+      toast.error('Order forms are currently under development and will be available to all users once completed.', {
+        duration: 5000
+      });
+      return;
+    }
+
     if (formFields.length === 0) {
       toast.error('Please add at least one field to your form')
       return
     }
+
     setIsCreating(true)
     try {
       const formSchema: Record<string, {
@@ -91,14 +99,24 @@ function CustomizeFormContent() {
         label: string;
         placeholder?: string;
         options?: string[];
+        products?: Product[];
+        displayMode?: ProductDisplayMode;
+        productIds?: string[];
       }> = {}
+      
       formFields.forEach(field => {
         formSchema[field.name] = {
           type: field.type,
           required: field.required,
           label: field.label,
           placeholder: field.placeholder,
-          options: field.options
+          options: field.options,
+          // Add product-specific data if it's a product field
+          ...(field.type === 'product' && {
+            products: field.products,
+            displayMode: field.displayMode || 'grid',
+            productIds: field.productIds
+          })
         }
       })
       
@@ -177,16 +195,17 @@ function CustomizeFormContent() {
               </Button>
               <Button 
                 onClick={createForm}
-                disabled={isCreating || formFields.length === 0}
+                disabled={isCreating || formFields.length === 0 || formType === 'order'}
                 className={cn(
                   "flex items-center gap-2 font-medium rounded-lg cursor-pointer",
-                  "bg-primary hover:bg-primary/90 text-white dark:text-black dark:bg-primary",
+                  formType === 'order' ? "bg-amber-500 hover:bg-amber-600" : "bg-primary hover:bg-primary/90",
+                  "text-white dark:text-black",
                   "disabled:opacity-60 disabled:pointer-events-none transition-all duration-200",
                   "text-sm px-4 h-9"
                 )}
               >
                 <Save className="h-4 w-4" />
-                {isCreating ? 'Creating...' : 'Create Form'}
+                {isCreating ? 'Creating...' : formType === 'order' ? 'Coming Soon' : 'Create Form'}
               </Button>
             </div>
           </div>
@@ -197,7 +216,7 @@ function CustomizeFormContent() {
       <div className="flex flex-1 overflow-hidden">
         <div className="w-full max-w-5xl mx-auto flex flex-col lg:flex-row">
           {/* Editor Panel */}
-          <div className="w-full lg:w-1/2 border-r border-neutral-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 overflow-y-auto">
+          <div className="w-full lg:w-1/2  overflow-y-auto">
             <div className="p-4">
               {isClient ? (
                 <Tabs defaultValue="fields" className="w-full">

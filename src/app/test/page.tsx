@@ -71,6 +71,8 @@ export default function CustomerFeedbackPage() {
       
       />
 
+      <Mantlz formId="cmav82ejc00030juymuh65bsm"/>
+
 
      
 

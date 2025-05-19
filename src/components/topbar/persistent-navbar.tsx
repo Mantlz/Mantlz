@@ -115,7 +115,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
         </SheetTrigger>
         <SheetContent
           side="left"
-          className="w-[250px] xs:w-[280px] sm:w-[320px] md:w-[350px] p-0 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800"
+          className="w-[250px] xs:w-[280px] sm:w-[320px] md:w-[350px] p-0 bg-white dark:bg-zinc-800 border-r border-zinc-200 dark:border-zinc-800"
         >
           <SheetTitle className="sr-only">Mantlz Navigation</SheetTitle>
           <div className="flex flex-col h-full">
@@ -310,7 +310,7 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 dark:bg-zinc-900 flex h-16 items-center justify-between backdrop-blur-sm border-b px-3 sm:px-4 md:px-6 lg:px-8 text-black dark:text-white transition-all duration-300",
+        "fixed top-0 left-0 right-0 z-50 dark:bg-zinc-800 flex h-16 items-center justify-between backdrop-blur-sm border-b px-3 sm:px-4 md:px-6 lg:px-8 text-black dark:text-white transition-all duration-300",
         scrolled
           ? "bg-white/90 dark:bg-zinc-950/90 border-zinc-200/70 dark:border-zinc-800/70 shadow-sm"
           : "bg-white/80 dark:bg-zinc-950/80 border-zinc-200/50 dark:border-zinc-800/50"

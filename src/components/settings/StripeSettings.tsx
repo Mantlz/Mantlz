@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { UseQueryResult, useQuery, useMutation } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+// import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+// import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { LoaderCircle, CheckCircle2, XCircle, ExternalLink, RefreshCcw } from "lucide-react";
+import { LoaderCircle, CheckCircle2, XCircle, ExternalLink, RefreshCcw, InfoIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+// import Image from "next/image";
 import { toast } from "sonner";
 import { useSubscription } from "@/hooks/useSubscription";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -41,7 +41,7 @@ interface StripeProduct {
 
 export default function StripeSettings() {
   const router = useRouter();
-  const [isConnecting, setIsConnecting] = useState(false);
+  // const [isConnecting, setIsConnecting] = useState(false);
   const { userPlan, isLoading: planLoading } = useSubscription();
   const isPro = userPlan === 'PRO';
 
@@ -94,83 +94,83 @@ export default function StripeSettings() {
   }, [products.data, products.isLoading, products.error]);
 
   // Connect Stripe account mutation
-  const connectMutation = useMutation({
-    mutationFn: async () => {
-      console.log('Starting Stripe connection...');
-      // Use direct API route for Stripe connection
-      const redirectUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/stripe/oauth/callback`;
-      console.log('Redirect URL:', redirectUrl);
+  // const connectMutation = useMutation({
+  //   mutationFn: async () => {
+  //     console.log('Starting Stripe connection...');
+  //     // Use direct API route for Stripe connection
+  //     const redirectUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/stripe/oauth/callback`;
+  //     console.log('Redirect URL:', redirectUrl);
       
-      const stripeOAuthLink = `${window.location.origin}/api/stripe/connect?redirectUrl=${encodeURIComponent(redirectUrl)}`;
-      console.log('Stripe OAuth Link:', stripeOAuthLink);
+  //     const stripeOAuthLink = `${window.location.origin}/api/stripe/connect?redirectUrl=${encodeURIComponent(redirectUrl)}`;
+  //     console.log('Stripe OAuth Link:', stripeOAuthLink);
       
-      return { link: stripeOAuthLink };
-    },
-    onSuccess: (data) => {
-      console.log('Connection success data:', data);
-      if (data?.link) {
-        console.log('Opening Stripe OAuth window...');
-        // Open the Stripe OAuth link in a new window
-        window.open(data.link, "_blank");
-        toast.success("Redirecting to Stripe...");
-      } else {
-        console.error('Missing link in response:', data);
-        toast.error("Failed to generate Stripe connect link");
-      }
-      setIsConnecting(false);
-    },
-    onError: (error) => {
-      console.error("Error generating connect link:", error);
-      toast.error("Failed to generate Stripe connect link");
-      setIsConnecting(false);
-    },
-  });
+  //     return { link: stripeOAuthLink };
+  //   },
+  //   onSuccess: (data) => {
+  //     console.log('Connection success data:', data);
+  //     if (data?.link) {
+  //       console.log('Opening Stripe OAuth window...');
+  //       // Open the Stripe OAuth link in a new window
+  //       window.open(data.link, "_blank");
+  //       toast.success("Redirecting to Stripe...");
+  //     } else {
+  //       console.error('Missing link in response:', data);
+  //       toast.error("Failed to generate Stripe connect link");
+  //     }
+  //     setIsConnecting(false);
+  //   },
+  //   onError: (error) => {
+  //     console.error("Error generating connect link:", error);
+  //     toast.error("Failed to generate Stripe connect link");
+  //     setIsConnecting(false);
+  //   },
+  // });
 
   // Disconnect Stripe account mutation
-  const disconnectMutation = useMutation({
-    mutationFn: async () => {
-      const response = await client.stripe.disconnectAccount.$post();
-      return response.json;
-    },
-    onSuccess: () => {
-      toast.success("Stripe account disconnected successfully");
-      connectionStatus.refetch();
-    },
-    onError: (error) => {
-      toast.error("Failed to disconnect Stripe account");
-      console.error("Error disconnecting account:", error);
-    },
-  });
+  // const disconnectMutation = useMutation({
+  //   mutationFn: async () => {
+  //     const response = await client.stripe.disconnectAccount.$post();
+  //     return response.json;
+  //   },
+  //   onSuccess: () => {
+  //     toast.success("Stripe account disconnected successfully");
+  //     connectionStatus.refetch();
+  //   },
+  //   onError: (error) => {
+  //     toast.error("Failed to disconnect Stripe account");
+  //     console.error("Error disconnecting account:", error);
+  //   },
+  // });
 
   // Refresh products mutation
-  const refreshProductsMutation = useMutation({
-    mutationFn: async () => {
-      const response = await client.stripe.getProducts.$get();
-      return response.json;
-    },
-    onSuccess: () => {
-      toast.success("Products refreshed successfully");
-      products.refetch();
-    },
-    onError: (error) => {
-      toast.error("Failed to refresh products");
-      console.error("Error refreshing products:", error);
-    },
-  });
+  // const refreshProductsMutation = useMutation({
+  //   mutationFn: async () => {
+  //     const response = await client.stripe.getProducts.$get();
+  //     return response.json;
+  //   },
+  //   onSuccess: () => {
+  //     toast.success("Products refreshed successfully");
+  //     products.refetch();
+  //   },
+  //   onError: (error) => {
+  //     toast.error("Failed to refresh products");
+  //     console.error("Error refreshing products:", error);
+  //   },
+  // });
 
   // Handle connect button click
-  const handleConnect = () => {
-    console.log('Connect button clicked');
-    setIsConnecting(true);
-    connectMutation.mutate();
-  };
+  // const handleConnect = () => {
+  //   console.log('Connect button clicked');
+  //   setIsConnecting(true);
+  //   connectMutation.mutate();
+  // };
 
   // Handle disconnect button click
-  const handleDisconnect = () => {
-    if (window.confirm("Are you sure you want to disconnect your Stripe account? This will prevent any forms using Stripe payments from working.")) {
-      disconnectMutation.mutate();
-    }
-  };
+  // const handleDisconnect = () => {
+  //   if (window.confirm("Are you sure you want to disconnect your Stripe account? This will prevent any forms using Stripe payments from working.")) {
+  //     disconnectMutation.mutate();
+  //   }
+  // };
 
   // Check URL for success/error params
   useEffect(() => {
@@ -190,12 +190,12 @@ export default function StripeSettings() {
   }, [router, connectionStatus]);
 
   // For displaying currency formatted prices
-  const formatPrice = (price: number, currency: string) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: currency,
-    }).format(price);
-  };
+  // const formatPrice = (price: number, currency: string) => {
+  //   return new Intl.NumberFormat("en-US", {
+  //     style: "currency",
+  //     currency: currency,
+  //   }).format(price);
+  // };
 
   // Loading states
   if (planLoading || connectionStatus.isLoading) {
@@ -214,33 +214,32 @@ export default function StripeSettings() {
     return (
       <div className="h-full flex flex-col">
         <ScrollArea className="h-[550px] w-full">
-          <div className="mb-6 p-5 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-            <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-1">
-              Stripe Connect
-            </h3>
-            <div className="w-16 h-0.5 bg-zinc-300 dark:bg-zinc-700 mb-3"></div>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">
-              Connect your Stripe account to add product checkouts to your forms.
+          <div className="mb-6 p-5 border-2 border-amber-200 dark:border-amber-800 rounded-lg bg-amber-50/50 dark:bg-amber-950/20">
+            <div className="flex items-center gap-2 mb-3">
+              <h3 className="text-lg font-semibold text-amber-800 dark:text-amber-200">
+                Stripe Integration
+              </h3>
+              <span className="px-2 py-0.5 text-xs font-semibold bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 rounded-full border border-amber-200 dark:border-amber-800">
+                Coming Soon
+              </span>
+            </div>
+            <p className="text-sm text-amber-700 dark:text-amber-300">
+              We're currently working on integrating Stripe payments into our platform. This feature will allow you to:
             </p>
-          </div>
-          
-          <div className="space-y-6">
-            <div className="p-5 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-              <Alert variant="destructive">
-                <AlertTitle>Pro Plan Required</AlertTitle>
-                <AlertDescription>
-                  Stripe Connect is only available on the PRO plan. Please upgrade to access this feature.
-                </AlertDescription>
-              </Alert>
-              
-              <Button 
-                className="mt-4" 
-                variant="default" 
-                onClick={() => router.push("/dashboard/forms/settings?tab=billing")}>
-                Upgrade to PRO
-              </Button>
+            <ul className="mt-2 space-y-1 text-sm text-amber-600 dark:text-amber-400 list-disc list-inside">
+              <li>Accept payments through your forms</li>
+              <li>Manage products and pricing</li>
+              <li>Track orders and transactions</li>
+            </ul>
+            <div className="mt-4 p-3 bg-amber-100/50 dark:bg-amber-900/20 rounded-md border border-amber-200 dark:border-amber-800">
+              <p className="text-sm text-amber-700 dark:text-amber-300 flex items-center gap-2">
+                <InfoIcon className="h-4 w-4 shrink-0" />
+                This feature is currently under development and will be available to all users once completed.
+              </p>
             </div>
           </div>
+          
+          
         </ScrollArea>
       </div>
     );
@@ -249,186 +248,80 @@ export default function StripeSettings() {
   return (
     <div className="h-full flex flex-col">
       <ScrollArea className="h-[550px] w-full">
-        <div className="mb-6 p-5 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-1">
-            Stripe Connect
-          </h3>
-          <div className="w-16 h-0.5 bg-zinc-300 dark:bg-zinc-700 mb-3"></div>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            Connect your Stripe account to add product checkouts to your forms.
+        {/* Work in Progress Banner */}
+        <div className="mb-6 p-5 border-2 border-amber-200 dark:border-amber-800 rounded-lg bg-amber-50/50 dark:bg-amber-950/20">
+          <div className="flex items-center gap-2 mb-3">
+            <h3 className="text-lg font-semibold text-amber-800 dark:text-amber-200">
+              Stripe Integration
+            </h3>
+            <span className="px-2 py-0.5 text-xs font-semibold bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 rounded-full border border-amber-200 dark:border-amber-800">
+              Coming Soon
+            </span>
+          </div>
+          <p className="text-sm text-amber-700 dark:text-amber-300">
+            We're currently working on integrating Stripe payments into our platform. This feature will allow you to:
           </p>
+          <ul className="mt-2 space-y-1 text-sm text-amber-600 dark:text-amber-400 list-disc list-inside">
+            <li>Accept payments through your forms</li>
+            <li>Manage products and pricing</li>
+            <li>Track orders and transactions</li>
+          </ul>
+          <div className="mt-4 p-3 bg-amber-100/50 dark:bg-amber-900/20 rounded-md border border-amber-200 dark:border-amber-800">
+            <p className="text-sm text-amber-700 dark:text-amber-300 flex items-center gap-2">
+              <InfoIcon className="h-4 w-4 shrink-0" />
+              This feature is currently under development. Check back soon for updates!
+            </p>
+          </div>
         </div>
 
-        <div className="space-y-6 pb-6">
-          {/* Connection Status Card */}
+        {/* Main Content - Disabled */}
+        <div className="space-y-6 opacity-50 pointer-events-none select-none">
           <div className="p-5 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
             <h3 className="text-base font-medium text-zinc-900 dark:text-white mb-4">Connection Status</h3>
-            
             <div className="flex items-center space-x-2 mb-4">
               <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Status:</span>
-              {isConnected ? (
-                <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800">
-                  <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> Connected
-                </Badge>
-              ) : (
-                <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800">
-                  <XCircle className="w-3.5 h-3.5 mr-1" /> Not Connected
-                </Badge>
-              )}
+              <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800">
+                <XCircle className="w-3.5 h-3.5 mr-1" /> Not Available
+              </Badge>
             </div>
-
-            {connectionStatus.data?.connected && connectionStatus.data.connection && (
-              <div className="space-y-2 text-sm bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-md mb-4">
-                <div className="flex justify-between">
-                  <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Account ID:</span>
-                  <code className="text-xs px-1 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800">
-                    {connectionStatus.data.connection.stripeAccountId}
-                  </code>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Connected Since:</span>
-                  <span className="text-xs text-zinc-600 dark:text-zinc-400">
-                    {new Date(connectionStatus.data.connection.createdAt).toLocaleDateString()}
-                  </span>
-                </div>
-                {connectionStatus.data.connection.lastRefreshedAt && (
-                  <div className="flex justify-between">
-                    <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Last Refreshed:</span>
-                    <span className="text-xs text-zinc-600 dark:text-zinc-400">
-                      {new Date(connectionStatus.data.connection.lastRefreshedAt).toLocaleString()}
-                    </span>
-                  </div>
-                )}
-              </div>
-            )}
-
             <div className="flex justify-end">
-              {!isConnected ? (
-                <Button 
-                  onClick={handleConnect} 
-                  disabled={isConnecting || connectMutation.isPending}
-                  size="sm"
-                >
-                  {connectMutation.isPending && <LoaderCircle className="animate-spin h-4 w-4 mr-2" />}
-                  Connect Stripe Account
-                </Button>
-              ) : (
-                <Button 
-                  variant="destructive" 
-                  onClick={handleDisconnect}
-                  disabled={disconnectMutation.isPending}
-                  size="sm"
-                >
-                  {disconnectMutation.isPending && <LoaderCircle className="animate-spin h-4 w-4 mr-2" />}
-                  Disconnect
-                </Button>
-              )}
+              <Button 
+                disabled
+                size="sm"
+                className="bg-zinc-100 text-zinc-400 cursor-not-allowed"
+              >
+                Connect Stripe Account
+              </Button>
             </div>
           </div>
 
-          {/* Products Section */}
-          {isConnected && (
-            <div className="p-5 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-base font-medium text-zinc-900 dark:text-white">Your Products</h3>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={() => refreshProductsMutation.mutate()}
-                  disabled={refreshProductsMutation.isPending}
-                >
-                  {refreshProductsMutation.isPending ? (
-                    <LoaderCircle className="animate-spin h-4 w-4 mr-2" />
-                  ) : (
-                    <RefreshCcw className="h-4 w-4 mr-2" />
-                  )}
-                  Refresh
-                </Button>
-              </div>
-              
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
-                Products from your Stripe account that can be used in forms
-              </p>
-              
-              {products.isLoading ? (
-                <div className="flex justify-center items-center h-32">
-                  <LoaderCircle className="animate-spin h-6 w-6 text-zinc-500" />
-                </div>
-              ) : products.data?.products && products.data.products.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {products.data.products.map((product) => (
-                    <div key={product.id} className="border border-zinc-200 dark:border-zinc-800 rounded-lg p-4 flex flex-col">
-                      <div className="flex items-start gap-3">
-                        {product.image ? (
-                          <div className="w-16 h-16 rounded-md overflow-hidden flex-shrink-0">
-                            <Image
-                              src={product.image}
-                              alt={product.name}
-                              width={64}
-                              height={64}
-                              className="object-cover"
-                            />
-                          </div>
-                        ) : (
-                          <div className="w-16 h-16 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0">
-                            <span className="text-zinc-400 text-xs">No image</span>
-                          </div>
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-medium text-sm text-zinc-900 dark:text-zinc-100 truncate">{product.name}</h4>
-                          {product.description && (
-                            <p className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2 mt-1">
-                              {product.description}
-                            </p>
-                          )}
-                          <div className="mt-2 flex justify-between items-center">
-                            <span className="font-medium text-sm text-zinc-900 dark:text-zinc-100">
-                              {formatPrice(product.price, product.currency)}
-                            </span>
-                            {!product.active && (
-                              <Badge variant="secondary" className="text-xs">
-                                Inactive
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-zinc-50 dark:bg-zinc-900/70">
-                  <h3 className="font-medium text-zinc-900 dark:text-zinc-100 mb-2">No products found</h3>
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4 max-w-md mx-auto">
-                    You don't have any products in your Stripe account yet. Add products in Stripe to display them here.
-                  </p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => window.open("https://dashboard.stripe.com/products", "_blank")}
-                  >
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    Add Products in Stripe
-                  </Button>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Help Guide */}
           <div className="p-5 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-            <h3 className="text-base font-medium text-zinc-900 dark:text-white mb-4">How It Works</h3>
-            <ol className="space-y-2 ml-5 list-decimal text-sm text-zinc-700 dark:text-zinc-300">
-              <li className="pl-1">Connect your Stripe account using the button above</li>
-              <li className="pl-1">Create a form with the "Order" type or add a product field to any form</li>
-              <li className="pl-1">Select products from your Stripe account to display in the form</li>
-              <li className="pl-1">When users submit the form, they'll be able to purchase the selected products</li>
-            </ol>
-            <div className="mt-4 p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-md">
-              <p className="text-xs text-zinc-600 dark:text-zinc-400 flex items-center">
-                <span className="inline-block w-4 h-4 rounded-full bg-purple-500 mr-2"></span>
-                <span>This feature is only available on the PRO plan</span>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-base font-medium text-zinc-900 dark:text-white">Your Products</h3>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                disabled
+                className="opacity-50 cursor-not-allowed"
+              >
+                <RefreshCcw className="h-4 w-4 mr-2" />
+                Refresh
+              </Button>
+            </div>
+            <div className="text-center py-8 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-zinc-50 dark:bg-zinc-900/70">
+              <h3 className="font-medium text-zinc-400 dark:text-zinc-500 mb-2">Feature Not Available</h3>
+              <p className="text-sm text-zinc-400 dark:text-zinc-500 mb-4 max-w-md mx-auto">
+                Product management will be available once Stripe integration is complete.
               </p>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled
+                className="opacity-50 cursor-not-allowed"
+              >
+                <ExternalLink className="h-4 w-4 mr-2" />
+                Manage Products
+              </Button>
             </div>
           </div>
         </div>
