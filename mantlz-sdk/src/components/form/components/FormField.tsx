@@ -8,6 +8,7 @@ import { FormField as FormFieldType } from '../types';
 import { themes } from '../themes';
 import { useTheme } from '../hooks/useTheme';
 import { FileUpload } from '../../ui/file-upload';
+import { ProductField } from './ProductField';
 
 interface FormFieldProps {
   field: FormFieldType;
@@ -151,6 +152,15 @@ export const FormField = ({
               </Form.Message>
             )}
           </Form.Field>
+        );
+
+      case 'product':
+        return (
+          <ProductField
+            field={field}
+            formMethods={formMethods}
+            className={selectedTheme}
+          />
         );
 
       default:

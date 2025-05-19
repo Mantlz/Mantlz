@@ -5,7 +5,7 @@
 import { z } from 'zod';
 
 // Form field types
-export type FieldType = 'text' | 'email' | 'number' | 'textarea' | 'select' | 'checkbox' | 'file';
+export type FieldType = 'text' | 'email' | 'number' | 'textarea' | 'select' | 'checkbox' | 'file' | 'product';
 
 // Form types
 export type FormType = 'waitlist' | 'contact' | 'feedback' | 'custom' | 'survey' | 'application' | 'order' | 'analytics-opt-in' | 'rsvp';
@@ -22,6 +22,15 @@ export interface FormField {
   accept?: string[];
   maxSize?: number;
   premium?: boolean;
+  products?: Array<{
+    id: string;
+    name: string;
+    description?: string;
+    price: number;
+    currency: string;
+    image?: string;
+  }>;
+  displayMode?: 'grid' | 'list';
 }
 
 export interface FormSchema {

@@ -39,11 +39,14 @@ export const stripeRouter = j.router({
   getConnectionStatus: privateProcedure
     .query(async ({ c, ctx }) => {
       try {
+        console.log('Checking connection status for user:', ctx.user.id);
+        
         // Check if user is on PRO plan
         const user = await db.user.findUnique({
           where: { id: ctx.user.id },
           select: { plan: true }
         });
+        console.log('User plan:', user?.plan);
 
         if (!user) {
           throw new HTTPException(404, { message: "User not found" });
@@ -51,6 +54,7 @@ export const stripeRouter = j.router({
 
         // If not PRO, return early with error
         if (user.plan !== Plan.PRO) {
+          console.log('User is not on PRO plan');
           return c.superjson({
             connected: false,
             proPlan: false,
@@ -60,8 +64,15 @@ export const stripeRouter = j.router({
 
         // Check connection status
         const connection = await StripeService.getStripeConnection(ctx.user.id);
+        console.log('Found connection:', {
+          id: connection?.id,
+          stripeAccountId: connection?.stripeAccountId,
+          isActive: connection?.isActive,
+          status: connection?.status,
+          createdAt: connection?.createdAt
+        });
         
-        return c.superjson({
+        const response = {
           connected: !!connection,
           proPlan: true,
           connection: connection ? {
@@ -70,7 +81,10 @@ export const stripeRouter = j.router({
             createdAt: connection.createdAt,
             lastRefreshedAt: connection.lastRefreshedAt,
           } : null,
-        });
+        };
+        console.log('Sending response:', response);
+        
+        return c.superjson(response);
       } catch (error) {
         console.error("Error checking Stripe connection status:", error);
         throw new HTTPException(500, { message: "Failed to check Stripe connection status" });

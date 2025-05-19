@@ -12,19 +12,16 @@ export const orderTemplate = {
     // Customer Information
     name: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Please enter a valid email"),
-    phone: z.string().min(10, "Phone number must be at least 10 characters").optional(),
+    phone: z.string().min(10, "Phone number must be at least 10 characters"),
     
     // Shipping Information
-    shippingAddress: z.string().min(5, "Address must be at least 5 characters"),
-    shippingCity: z.string().min(2, "City must be at least 2 characters"),
-    shippingState: z.string().min(2, "State must be at least 2 characters"),
-    shippingZip: z.string().min(5, "Zip code must be at least 5 characters"),
-    shippingCountry: z.string().min(2, "Country must be at least 2 characters"),
+    shipping: z.string().min(5, "Address must be at least 5 characters"),
     
-    // Order Details
-    productId: z.string(),
-    quantity: z.number().min(1, "Quantity must be at least 1"),
-    specialInstructions: z.string().optional(),
+    // Product Selection (optional since it's a pro feature)
+    products: z.array(z.object({
+      productId: z.string(),
+      quantity: z.number().min(1, "Quantity must be at least 1"),
+    })).optional(),
     
     // Payment Intent (populated on the server)
     paymentIntentId: z.string().optional(),

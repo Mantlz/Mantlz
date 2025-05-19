@@ -60,7 +60,7 @@ export default function CustomerFeedbackPage() {
         
      
         
-      <Mantlz formId="cmasd5mci0001o7hws12icdk0"
+      <Mantlz formId="cmav70dqb00370jv3t49d9us8"
       theme='modern'
       // className="bg-gradient-to-r from-red-400 to-zinc-900 dark:from-zinc-900 dark:to-zinc-800 border-2 border-zinc-300 dark:border-zinc-700
       

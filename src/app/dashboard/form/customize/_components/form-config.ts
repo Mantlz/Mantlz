@@ -34,8 +34,8 @@ export const defaultFieldsByType: Record<string, FormField[]> = {
   order: [
     { id: 'name', name: 'name', label: 'Full Name', type: 'text', required: true, placeholder: 'Your full name' },
     { id: 'email', name: 'email', label: 'Email', type: 'email', required: true, placeholder: 'your@email.com' },
-    { id: 'product', name: 'product', label: 'Product', type: 'text', required: true, placeholder: 'Product name' },
-    { id: 'quantity', name: 'quantity', label: 'Quantity', type: 'number', required: true, placeholder: '1' },
+    { id: 'shipping', name: 'shipping', label: 'Shipping Address', type: 'textarea', required: true, placeholder: 'Your shipping address' },
+    { id: 'phone', name: 'phone', label: 'Phone Number', type: 'text', required: true, placeholder: 'Your phone number' },
   ],
   'analytics-opt-in': [
     { id: 'name', name: 'name', label: 'Name', type: 'text', required: true, placeholder: 'Your name' },

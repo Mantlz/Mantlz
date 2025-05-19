@@ -438,6 +438,8 @@ model StripeConnection {
   updatedAt         DateTime @updatedAt
   isActive          Boolean  @default(true)
   lastRefreshedAt   DateTime?
+  state             String?  // Add state field for OAuth flow
+  status            String?  // Add status field for OAuth flow
   stripeProducts    StripeProduct[]
   stripeOrders      StripeOrder[]
 

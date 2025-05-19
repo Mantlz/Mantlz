@@ -12,30 +12,53 @@ export class StripeService {
   /**
    * Generate a Stripe OAuth link for connecting a user's Stripe account
    */
-  static async generateConnectOAuthLink(userId: string, redirectUrl?: string) {
-    // Check if user is on PRO plan
-    const user = await db.user.findUnique({
-      where: { id: userId },
-      select: { plan: true }
-    });
+  static async generateConnectOAuthLink(
+    userId: string,
+    redirectUrl?: string
+  ): Promise<{ link: string }> {
+    try {
+      console.log('Generating Stripe OAuth link for user:', userId);
+      console.log('Redirect URL:', redirectUrl);
+      
+      // Generate state parameter
+      const state = crypto.randomUUID();
+      console.log('Generated state:', state);
+      
+      // Store state in database
+      await db.stripeConnection.upsert({
+        where: { userId },
+        create: {
+          userId,
+          state,
+          status: "pending",
+          stripeAccountId: "pending", // Temporary value until OAuth completes
+          accessToken: "pending", // Temporary value until OAuth completes
+        },
+        update: {
+          state,
+          status: "pending",
+        },
+      });
+      console.log('Stored state in database');
 
-    if (!user || user.plan !== Plan.PRO) {
-      throw new HTTPException(403, { message: "Stripe connection is only available for PRO users" });
+      // Build OAuth URL
+      const params = new URLSearchParams({
+        response_type: "code",
+        client_id: process.env.STRIPE_CLIENT_ID!,
+        scope: "read_write",
+        state,
+        redirect_uri: redirectUrl || `${process.env.NEXT_PUBLIC_APP_URL}/api/stripe/oauth/callback`,
+      });
+      console.log('OAuth params:', params.toString());
+
+      const link = `https://connect.stripe.com/oauth/authorize?${params.toString()}`;
+      console.log('Generated OAuth link:', link);
+      
+      return { link };
+    } catch (error: any) {
+      console.error("Error generating Stripe OAuth link:", error);
+      throw new Error(error.message || "Failed to generate Stripe connect link");
     }
-
-    // Generate state parameter for security
-    const state = Buffer.from(JSON.stringify({ userId })).toString('base64');
-    
-    // Create OAuth link
-    const link = stripe.oauth.authorizeUrl({
-      client_id: process.env.STRIPE_CLIENT_ID || "",
-      state,
-      suggested_capabilities: ['transfers', 'card_payments'],
-      redirect_uri: redirectUrl || `${process.env.NEXT_PUBLIC_APP_URL}/api/stripe/oauth/callback`,
-      scope: 'read_write',
-    });
-
-    return { link };
   }
 
   /**
@@ -43,10 +66,12 @@ export class StripeService {
    */
   static async handleOAuthCallback(code: string, state: string) {
     try {
-      // Decode state to get user ID
-      const { userId } = JSON.parse(Buffer.from(state, 'base64').toString());
-      
-      if (!userId) {
+      // Find the connection by state
+      const connection = await db.stripeConnection.findFirst({
+        where: { state },
+      });
+
+      if (!connection) {
         throw new HTTPException(400, { message: "Invalid state parameter" });
       }
 
@@ -57,30 +82,20 @@ export class StripeService {
       });
 
       // Store the connection in the database
-      const stripeConnection = await db.stripeConnection.upsert({
+      const stripeConnection = await db.stripeConnection.update({
         where: {
-          userId,
+          id: connection.id,
         },
-        create: {
-          userId,
+        data: {
           stripeAccountId: response.stripe_user_id!,
           accessToken: response.access_token!,
           refreshToken: response.refresh_token!,
           scope: response.scope,
           tokenType: response.token_type,
-          expiresAt: response.expires_at ? new Date(response.expires_at * 1000) : undefined,
           isActive: true,
           lastRefreshedAt: new Date(),
-        },
-        update: {
-          stripeAccountId: response.stripe_user_id!,
-          accessToken: response.access_token!,
-          refreshToken: response.refresh_token!,
-          scope: response.scope,
-          tokenType: response.token_type,
-          expiresAt: response.expires_at ? new Date(response.expires_at * 1000) : undefined,
-          isActive: true,
-          lastRefreshedAt: new Date(),
+          state: null, // Clear the state after successful connection
+          status: "connected",
         },
       });
 
@@ -95,8 +110,12 @@ export class StripeService {
    * Get the connected Stripe account details for a user
    */
   static async getStripeConnection(userId: string) {
-    const connection = await db.stripeConnection.findUnique({
-      where: { userId, isActive: true },
+    const connection = await db.stripeConnection.findFirst({
+      where: { 
+        userId, 
+        isActive: true,
+        status: "connected"
+      },
     });
     
     return connection;
@@ -149,7 +168,7 @@ export class StripeService {
 
       // Create connected account Stripe instance
       const connectedStripe = new Stripe(connection.accessToken, {
-        apiVersion: "2023-10-16",
+        apiVersion: "2025-03-31.basil",
       });
 
       // Fetch products with associated prices
@@ -275,7 +294,7 @@ export class StripeService {
 
       // Create connected account Stripe instance
       const connectedStripe = new Stripe(connection.accessToken, {
-        apiVersion: "2023-10-16",
+        apiVersion: "2025-03-31.basil",
       });
 
       // Create line items for checkout

@@ -21,4 +21,12 @@ export interface FormField {
   premium?: boolean // Whether this field is only available for premium users
   displayMode?: ProductDisplayMode // For product fields to specify display mode
   productIds?: string[] // For product fields to specify which products to display
+  products?: Array<{
+    id: string
+    name: string
+    description?: string
+    price: number
+    currency: string
+    image?: string
+  }> // The actual product data for rendering
 } 
