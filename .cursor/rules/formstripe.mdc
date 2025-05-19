@@ -1,0 +1,69 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Stripe Product Integration Feature Implementation
+
+## Feature Overview and Architecture
+
+- Implement Stripe account connection for users to display and sell their products through forms
+- Create a PRO feature tier with OAuth connection to users' Stripe accounts
+- Fetch products/prices from connected Stripe accounts and display in forms
+- Enable checkout flow within forms for product purchases
+- Handle payment success/failure and order management
+
+## Database and Schema Extensions
+
+- Add Stripe connection tables to store user OAuth tokens and account information
+- Extend form schema to support product fields and configurations
+- Create order tracking tables to monitor purchase status
+- Implement webhook handling for Stripe events
+## Backend Implementation Steps
+
+1. Create Stripe connection service
+   - Implement OAuth flow endpoints for connection/disconnection
+   - Store and refresh Stripe access tokens securely
+   - Add user permission checks for PRO features
+
+2. Build product fetching services
+   - Retrieve products and prices from user's Stripe account
+   - Cache product data for performance
+   - Handle product filtering and sorting
+
+3. Implement order processing
+   - Create checkout session endpoints
+   - Handle Stripe webhooks for payment events
+   - Update order status based on webhook events
+
+## Frontend Implementation Steps
+
+1. Add Stripe connection UI
+   - Create connect/disconnect Stripe account flows
+   - Display connection status and account information
+   - Add PRO feature gating with upgrade prompts
+
+2. Extend form builder
+   - Add product field type to form schema
+   - Implement product selector component for adding products to forms
+   - Create product display configuration options (grid/list views)
+
+3. Build checkout experience
+   - Implement Stripe Checkout or Payment Elements integration
+   - Handle success/failure redirects
+   - Display order confirmation and receipt
+
+## Testing and Security
+
+- Implement test mode for development with Stripe test accounts
+- Ensure proper validation of Stripe webhook signatures
+- Secure all payment-related endpoints with authentication
+- Test checkout flows across different devices and browsers
+
+## Deployment and Monitoring
+
+- Set up production and test environment configurations
+- Implement logging for payment events and errors
+- Create monitoring for failed payments and connection issues
+- Document usage for end users with clear instructions
+

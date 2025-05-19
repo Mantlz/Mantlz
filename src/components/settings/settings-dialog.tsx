@@ -32,6 +32,7 @@ import EmailSettings from './EmailSettings';
 import { AccessibilitySettings } from "./AccessibilitySettings"
 import { AdvancedSettings } from "./AdvancedSettings"
 import BillingSettings from "./BillingSettings";
+import StripeSettings from "./StripeSettings";
 
 
 // Define a more specific type for navigation data items
@@ -177,7 +178,7 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
                 {selectedTab === 'Usage' && <UsageSettings />}
                 {selectedTab === 'API Keys' && <ApiKeySettings />}
                 {selectedTab === 'Email Settings' && <EmailSettings />}
-
+                {selectedTab === 'Stripe Connect' && <StripeSettings />}
                 {selectedTab === 'Advanced' && <AdvancedSettings />}
               </div>
             </div>

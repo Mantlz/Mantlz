@@ -32,6 +32,7 @@ model User {
   payments         Payment[]
   invoices         Invoice[]
   campaigns        Campaign[]
+  stripeConnection StripeConnection?
 
   @@index([clerkId])
   @@index([stripeCustomerId])
@@ -144,6 +145,7 @@ model Form {
   notificationLogs NotificationLog[]
   campaigns   Campaign[]
   testSubmissions TestEmailSubmission[]
+  stripeOrders StripeOrder[]
 
   @@index([userId, formType])
   @@index([userId])
@@ -179,6 +181,7 @@ model Submission {
   sentEmails SentEmail[]
   unsubscribed Boolean @default(false)
   campaignRecipients CampaignRecipient[]
+  stripeOrders StripeOrder[]
 
   @@unique([formId, email])
   @@index([email])
@@ -418,4 +421,104 @@ model PaymentFailure {
 
   @@index([subscriptionId])
   @@index([invoiceId])
+}
+
+// Stripe Connection Models
+model StripeConnection {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stripeAccountId   String   @unique
+  accessToken       String
+  refreshToken      String?
+  tokenType         String   @default("bearer")
+  scope             String?
+  expiresAt         DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  isActive          Boolean  @default(true)
+  lastRefreshedAt   DateTime?
+  stripeProducts    StripeProduct[]
+  stripeOrders      StripeOrder[]
+
+  @@index([userId])
+  @@index([stripeAccountId])
+}
+
+model StripeProduct {
+  id                String   @id @default(cuid())
+  stripeConnectionId String
+  stripeConnection  StripeConnection @relation(fields: [stripeConnectionId], references: [id], onDelete: Cascade)
+  stripeProductId   String
+  stripePriceId     String
+  name              String
+  description       String?
+  price             Decimal
+  currency          String
+  image             String?
+  active            Boolean  @default(true)
+  metadata          Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  stripeOrders      StripeOrderItem[]
+
+  @@unique([stripeConnectionId, stripeProductId, stripePriceId])
+  @@index([stripeConnectionId])
+  @@index([stripeProductId])
+  @@index([stripePriceId])
+}
+
+model StripeOrder {
+  id                String   @id @default(cuid())
+  formId            String
+  form              Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  submissionId      String?
+  submission        Submission? @relation(fields: [submissionId], references: [id])
+  stripeConnectionId String
+  stripeConnection  StripeConnection @relation(fields: [stripeConnectionId], references: [id], onDelete: Cascade)
+  stripeCheckoutSessionId String?
+  stripePaymentIntentId String?
+  status            StripeOrderStatus @default(PENDING)
+  amount            Decimal
+  currency          String
+  customerEmail     String?
+  customerName      String?
+  metadata          Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  items             StripeOrderItem[]
+
+  @@index([formId])
+  @@index([submissionId])
+  @@index([stripeConnectionId])
+  @@index([stripeCheckoutSessionId])
+  @@index([stripePaymentIntentId])
+  @@index([status])
+}
+
+model StripeOrderItem {
+  id                String   @id @default(cuid())
+  stripeOrderId     String
+  stripeOrder       StripeOrder @relation(fields: [stripeOrderId], references: [id], onDelete: Cascade)
+  stripeProductId   String
+  stripeProduct     StripeProduct @relation(fields: [stripeProductId], references: [id])
+  quantity          Int      @default(1)
+  price             Decimal
+  currency          String
+  metadata          Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([stripeOrderId])
+  @@index([stripeProductId])
+}
+
+// Add new enum for order status
+enum StripeOrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+  CANCELED
 }
