@@ -321,24 +321,24 @@ export function createMantlzClient(
       }
       redirectTarget = result.redirect.url;
       redirectReason = 'FREE_PLAN_DEFAULT_URL';
-      console.log('MANTLZ REDIRECT DEBUG - Using default redirect URL (free plan):', redirectTarget);
+      //console.log('MANTLZ REDIRECT DEBUG - Using default redirect URL (free plan):', redirectTarget);
     }
     // Case 3: If for some reason 'allowed' is missing but we have a URL
     else if (result.redirect.url) {
       redirectTarget = result.redirect.url;
       redirectReason = 'FALLBACK_URL';
-      console.log('MANTLZ REDIRECT DEBUG - Using fallback redirect URL:', redirectTarget);
+      //console.log('MANTLZ REDIRECT DEBUG - Using fallback redirect URL:', redirectTarget);
     } 
     // Case 4: No URL at all
     else {
-      console.log('MANTLZ REDIRECT DEBUG - No valid redirect URL found, skipping redirect');
+      //console.log('MANTLZ REDIRECT DEBUG - No valid redirect URL found, skipping redirect');
       return;
     }
 
     // IMPORTANT - Let's try a more direct approach for urgent troubleshooting
     // This should work regardless of plan type
     if (userRedirectUrl && redirectReason === 'PAID_PLAN_CUSTOM_URL') {
-      console.log('MANTLZ REDIRECT DEBUG - DIRECT FIX: Using user-provided redirect URL for paid plan:', userRedirectUrl);
+      //console.log('MANTLZ REDIRECT DEBUG - DIRECT FIX: Using user-provided redirect URL for paid plan:', userRedirectUrl);
       redirectTarget = userRedirectUrl;
     }
 
@@ -349,31 +349,31 @@ export function createMantlzClient(
         
         // Check if it's a relative URL (starting with / or not having a protocol)
         if (redirectTarget.startsWith('/') || !redirectTarget.includes('://')) {
-          console.log('MANTLZ REDIRECT DEBUG - Handling relative URL:', redirectTarget);
+          //console.log('MANTLZ REDIRECT DEBUG - Handling relative URL:', redirectTarget);
           
           // For relative URLs, we need to construct the full URL using the current origin
           finalUrl = `${window.location.origin}${redirectTarget.startsWith('/') ? '' : '/'}${redirectTarget}`;
-          console.log('MANTLZ REDIRECT DEBUG - Converted to absolute URL:', finalUrl);
+          //console.log('MANTLZ REDIRECT DEBUG - Converted to absolute URL:', finalUrl);
         }
         
         // Now we can safely construct the URL object
         const sanitizedUrl = new URL(finalUrl);
         
-        console.log('MANTLZ REDIRECT DEBUG - ABOUT TO REDIRECT TO:', {
-          url: sanitizedUrl.toString(),
-          reason: redirectReason,
-          originalUserUrl: userRedirectUrl,
-          timestamp: new Date().toISOString()
-        });
+        // console.log('MANTLZ REDIRECT DEBUG - ABOUT TO REDIRECT TO:', {
+        //   url: sanitizedUrl.toString(),
+        //   reason: redirectReason,
+        //   originalUserUrl: userRedirectUrl,
+        //   timestamp: new Date().toISOString()
+        // });
         
         // Actually perform the redirect
         window.location.href = sanitizedUrl.toString();
       } catch (error) {
-        console.error('MANTLZ REDIRECT DEBUG - Invalid redirect URL error:', error);
+       // console.error('MANTLZ REDIRECT DEBUG - Invalid redirect URL error:', error);
         
         // Fallback for any URL construction errors - redirect directly
         try {
-          console.log('MANTLZ REDIRECT DEBUG - Using fallback direct redirect to:', redirectTarget);
+          //console.log('MANTLZ REDIRECT DEBUG - Using fallback direct redirect to:', redirectTarget);
           
           // Handle relative URLs directly if URL construction failed
           if (redirectTarget.startsWith('/')) {
@@ -382,7 +382,7 @@ export function createMantlzClient(
             window.location.href = redirectTarget;
           }
         } catch (fallbackError) {
-          console.error('MANTLZ REDIRECT DEBUG - Fallback redirect also failed:', fallbackError);
+         // console.error('MANTLZ REDIRECT DEBUG - Fallback redirect also failed:', fallbackError);
         }
       }
     }, 1000);

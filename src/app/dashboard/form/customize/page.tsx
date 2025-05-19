@@ -27,7 +27,14 @@ export default function CustomizeFormPage() {
 function CustomizeFormContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const formType = searchParams.get('type') || 'waitlist'
+  // Get and normalize the form type from URL
+  const rawFormType = searchParams.get('type') || 'waitlist'
+  const formType = rawFormType.trim().toLowerCase()
+  
+  // Debug the exact form type value from URL parameter
+  console.log('Form type from URL (raw):', rawFormType)
+  console.log('Form type normalized:', formType)
+  console.log('Valid types check:', ['waitlist', 'contact', 'feedback', 'custom', 'survey', 'application', 'order', 'analytics-opt-in', 'rsvp'].includes(formType))
   
   // Add client-side rendering flag
   const [isClient, setIsClient] = useState(false)
@@ -96,7 +103,10 @@ function CustomizeFormContent() {
       })
       
       // Convert formType string to uppercase enum value
-      const formTypeEnum = formType.toUpperCase() as FormType;
+      // Handle special case for analytics-opt-in
+      const formTypeEnum = formType === 'analytics-opt-in' 
+        ? 'ANALYTICS_OPT_IN' as FormType 
+        : formType.toUpperCase() as FormType;
 
       const response = await client.forms.createForm.$post({
         name: formTitle,

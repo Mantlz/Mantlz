@@ -171,7 +171,7 @@ export class FormService {
       [FormType.SURVEY]: 'survey',
       [FormType.APPLICATION]: 'application',
       [FormType.ORDER]: 'order',
-      [FormType.ANALYTICS_OPT_IN]: 'analytics',
+      [FormType.ANALYTICS_OPT_IN]: 'analytics-opt-in',
       [FormType.RSVP]: 'rsvp'
     };
     

@@ -15,7 +15,7 @@ export const formTemplates = {
   survey: surveyTemplate,
   application: applicationTemplate,
   order: orderTemplate,
-  analytics: analyticsOptInTemplate,
+  'analytics-opt-in': analyticsOptInTemplate,
   rsvp: rsvpTemplate,
   custom: customTemplate,
 };

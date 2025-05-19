@@ -69,10 +69,10 @@ export const formTemplates: FormTemplate[] = [
     requiredPlan: 'STANDARD'
   },
   {
-    id: 'analytics',
-    name: templateDefinitions.analytics.name,
-    description: templateDefinitions.analytics.description,
-    icon: templateDefinitions.analytics.icon,
+    id: 'analytics-opt-in',
+    name: templateDefinitions['analytics-opt-in'].name,
+    description: templateDefinitions['analytics-opt-in'].description,
+    icon: templateDefinitions['analytics-opt-in'].icon,
     category: "lead",
     requiredPlan: 'PRO'
   },

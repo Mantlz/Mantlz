@@ -46,7 +46,7 @@ export default function CustomerFeedbackPage() {
         showUsersJoined={true}
         usersJoinedCount={100000}
         usersJoinedLabel='Users already joined'
-        redirectUrl='/feedback/thank-you'
+        //redirectUrl='/feedback/thank-you'
 
         
 
@@ -60,7 +60,7 @@ export default function CustomerFeedbackPage() {
         
      
         
-      <Mantlz formId="cmas7oldb0001o70rn1injfyb"
+      <Mantlz formId="cmasd5mci0001o7hws12icdk0"
       theme='modern'
       // className="bg-gradient-to-r from-red-400 to-zinc-900 dark:from-zinc-900 dark:to-zinc-800 border-2 border-zinc-300 dark:border-zinc-700
       
