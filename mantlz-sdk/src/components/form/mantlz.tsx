@@ -5,6 +5,7 @@ import { Theme } from '@radix-ui/themes';
 import * as Form from '@radix-ui/react-form';
 // import * as Progress from '@radix-ui/react-progress';
 import { ReloadIcon } from '@radix-ui/react-icons';
+import { toast } from '../../utils/toast';
 
 import { useMantlz } from '../../context/mantlzContext';
 import { ApiKeyErrorCard } from '../ui/ApiKeyErrorCard';
@@ -29,6 +30,8 @@ export default function Mantlz({
   const [usersJoined, setUsersJoined] = useState(initialUsersJoinedCount);
   const [canShowUsersJoined, setCanShowUsersJoined] = useState(false);
   const styles = themes[theme];
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   // Fetch users joined count
   React.useEffect(() => {
@@ -77,8 +80,6 @@ export default function Mantlz({
   const {
     formData,
     loading,
-    submitting,
-    submitted,
     fields,
     formMethods,
     onSubmit,
@@ -162,6 +163,68 @@ export default function Mantlz({
   // Extract form type safely
   const formType = formData.formType as FormType;
 
+  // Handle form submission
+  const onSubmitHandler = async (data: any) => {
+    if (submitting) return;
+    setSubmitting(true);
+
+    try {
+      if (formType === 'order') {
+        // For order forms, find all product fields and their selected quantities
+        const productFields = fields.filter(field => field.type === 'product');
+        const selectedProducts = productFields.flatMap(field => {
+          const fieldData = JSON.parse(data[field.name] || '[]');
+          return fieldData.map((product: any) => ({
+            productId: product.id,
+            quantity: product.quantity
+          }));
+        }).filter((product: any) => product.quantity > 0);
+
+        if (selectedProducts.length === 0) {
+          throw new Error('Please select at least one product');
+        }
+
+        if (!client) {
+          throw new Error('Client not initialized');
+        }
+
+        // Create Stripe checkout session
+        const response = await client.stripe.createCheckoutSession.$post({
+          formId,
+          products: selectedProducts,
+          customerEmail: data.email,
+          successUrl: redirectUrl,
+        });
+        
+        const result = await response.json();
+        
+        if (result.checkoutUrl) {
+          window.location.href = result.checkoutUrl;
+          return;
+        } else {
+          throw new Error('Failed to create checkout session');
+        }
+      }
+
+      // For non-order forms, proceed with normal submission
+      const result = await onSubmit(data);
+      
+      if (result?.success) {
+        setSubmitted(true);
+      } else {
+        throw new Error(result?.message || 'Form submission failed');
+      }
+    } catch (error: any) {
+      console.error('Form submission error:', error);
+      toast.error(error.message || 'Failed to submit form', {
+        duration: 5000,
+        position: 'top-right'
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   // Main form render
   return (
     <ThemeProvider theme={theme}>
@@ -183,7 +246,7 @@ export default function Mantlz({
           )}
         </div>
         
-        <Form.Root onSubmit={formMethods.handleSubmit(onSubmit)}>
+        <Form.Root onSubmit={formMethods.handleSubmit(onSubmitHandler)}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {fields.map((field) => (
               <FormField
@@ -265,16 +328,17 @@ export default function Mantlz({
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '8px'
+                  gap: '8px',
+                  backgroundColor: formType === 'order' ? 'var(--green-9)' : styles.button.backgroundColor
                 }}
               >
                 {submitting ? (
                   <>
                     <ReloadIcon style={{ animation: 'spin 1s linear infinite' }} />
-                    Submitting...
+                    {formType === 'order' ? 'Processing...' : 'Submitting...'}
                   </>
                 ) : (
-                  'Submit'
+                  formType === 'order' ? 'Proceed to Payment' : 'Submit'
                 )}
               </button>
             </Form.Submit>

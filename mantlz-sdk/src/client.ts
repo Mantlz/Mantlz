@@ -674,5 +674,30 @@ export function createMantlzClient(
 
       return { notifications: enabled };
     },
+
+    stripe: {
+      createCheckoutSession: {
+        $post: async (data: { formId: string; products: Array<{ productId: string; quantity: number }>; customerEmail?: string; successUrl?: string }) => {
+          const url = new URL('/api/stripe/checkout', baseUrl).toString();
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-API-Key': key,
+            },
+            body: JSON.stringify(data),
+            credentials: developmentMode ? 'omit' : credentialsMode,
+            mode: developmentMode ? 'no-cors' : 'cors',
+          });
+
+          if (!response.ok) {
+            const error = await handleApiError(response);
+            throw error;
+          }
+
+          return response;
+        }
+      }
+    }
   };
 }

@@ -124,4 +124,24 @@ export interface AnalyticsOptInFormProps extends BaseFormProps {
 
 export interface RsvpFormProps extends BaseFormProps {
   // RSVP specific props can be added here
+}
+
+// Stripe checkout response
+export interface StripeCheckoutResponse {
+  checkoutUrl: string;
+  sessionId: string;
+  orderId: string;
+}
+
+// Form submit response
+export interface FormSubmitResponse {
+  success: boolean;
+  data?: any;
+  error?: string;
+  message?: string;
+  redirect?: {
+    url: string;
+    allowed: boolean;
+    reason?: string;
+  };
 } 

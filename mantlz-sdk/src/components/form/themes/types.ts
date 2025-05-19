@@ -1,21 +1,24 @@
+import { CSSProperties } from 'react';
+
+type ExtendedCSSProperties = CSSProperties & {
+  '&:hover'?: CSSProperties;
+  '&:disabled'?: CSSProperties;
+  '&:active'?: CSSProperties;
+  '&:focus'?: CSSProperties;
+  '&.order'?: ExtendedCSSProperties;
+};
+
 export interface Theme {
   form: {
-    container: React.CSSProperties;
-    title: React.CSSProperties;
-    description: React.CSSProperties;
+    container: CSSProperties;
+    title: CSSProperties;
+    description: CSSProperties;
   };
   field: {
-    container: React.CSSProperties;
-    label: React.CSSProperties;
-    input: React.CSSProperties & {
-      '&:focus'?: React.CSSProperties;
-      '&:hover'?: React.CSSProperties;
-    };
-    error: React.CSSProperties;
+    container: CSSProperties;
+    label: CSSProperties;
+    input: ExtendedCSSProperties;
+    error: CSSProperties;
   };
-  button: React.CSSProperties & {
-    '&:hover'?: React.CSSProperties;
-    '&:disabled'?: React.CSSProperties;
-    '&:active'?: React.CSSProperties;
-  };
+  button: ExtendedCSSProperties;
 } 

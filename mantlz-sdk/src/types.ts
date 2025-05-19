@@ -65,4 +65,9 @@ export interface MantlzClient {
   getUsersJoinedCount: (formId: string) => Promise<number>;
   getFormSchema: (formId: string) => Promise<FormSchema>;
   configureNotifications: (enabled: boolean, handler?: ToastHandler) => { notifications: boolean };
+  stripe: {
+    createCheckoutSession: {
+      $post: (data: { formId: string; products: Array<{ productId: string; quantity: number }>; customerEmail?: string; successUrl?: string }) => Promise<Response>;
+    };
+  };
 }

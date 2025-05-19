@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { FormSchema } from '../types';
 import { SDK_CONFIG } from '../../../config';
+import { FormSubmitResponse } from '../../../types';
 
 export const useFormLogic = (
   formId: string,
@@ -159,10 +160,10 @@ export const useFormLogic = (
   }, [formId, apiKey, client, isMounted]);
 
   // Form submission handler
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: z.infer<typeof formSchema>): Promise<FormSubmitResponse> => {
     if (!client || !apiKey) {
       console.error('Mantlz client or API key not available');
-      return;
+      return { success: false, message: 'Client or API key not available' };
     }
 
     try {

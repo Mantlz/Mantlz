@@ -82,6 +82,17 @@ export const themes: Record<string, Theme> = {
         opacity: 0.9,
         transform: 'translateY(0)',
       },
+      '&:disabled': {
+        opacity: 0.6,
+        cursor: 'not-allowed',
+        transform: 'none',
+      },
+      '&.order': {
+        backgroundColor: 'var(--green-9)',
+        '&:hover': {
+          backgroundColor: 'var(--green-10)',
+        },
+      },
     },
   },
 
