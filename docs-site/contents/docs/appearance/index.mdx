@@ -1,0 +1,201 @@
+---
+title: Form Appearance
+description: Customize the appearance of your dynamic forms
+---
+
+# Form Appearance
+
+The mantlz component provides extensive customization options to match your brand's design. All styling options work across any form type, with additional options for type-specific features.
+
+## Basic Styling
+
+Apply basic styling using the appearance prop:
+
+```tsx
+import { mantlz } from '@mantlz/nextjs';
+
+<mantlz
+  formId="your-form-id"
+  appearance={{
+    elements: {
+      // Container styling
+      container: 'bg-white p-6 rounded-lg',
+      form: 'space-y-6',
+      
+      // Input styling
+      input: 'border-gray-300 focus:ring-blue-500 focus:border-blue-500',
+      textarea: 'border-gray-300 focus:ring-blue-500 focus:border-blue-500',
+      label: 'text-gray-700 font-medium',
+      
+      // Button styling
+      submitButton: 'bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded',
+      
+      // Error styling
+      error: 'text-red-600 text-sm mt-1',
+    }
+  }}
+/>
+```
+
+## Themed Styling
+
+Use the theme prop for predefined styles:
+
+```tsx
+<mantlz
+  formId="your-form-id"
+  theme="modern" // Options: default, modern, minimal, glass
+/>
+```
+
+Or create dynamic styles based on the theme:
+
+```tsx
+<mantlz
+  formId="your-form-id"
+  appearance={(theme) => ({
+    elements: {
+      container: theme === 'dark' 
+        ? 'bg-gray-900 text-white' 
+        : 'bg-white text-gray-900',
+      // ... other theme-based styles
+    }
+  })}
+/>
+```
+
+## Type-Specific Features
+
+### Waitlist Form Features
+
+Style the users joined counter for waitlist forms:
+
+```tsx
+<mantlz
+  formId="your-waitlist-form"
+  showUsersJoined={true}
+  appearance={{
+    elements: {
+      // Users joined counter styling
+      usersJoinedContainer: 'flex items-center gap-2 mb-4',
+      usersJoinedCount: 'text-2xl font-bold text-purple-600',
+      usersJoinedLabel: 'text-gray-600',
+    }
+  }}
+/>
+```
+
+### Feedback Form Features
+
+Style the rating component for feedback forms:
+
+```tsx
+<mantlz
+  formId="your-feedback-form"
+  showRating={true}
+  appearance={{
+    elements: {
+      // Rating component styling
+      ratingContainer: 'flex items-center gap-2 mb-4',
+      ratingLabel: 'text-gray-700 font-medium',
+      ratingStarActive: 'text-yellow-400 w-6 h-6',
+      ratingStarInactive: 'text-gray-300 w-6 h-6',
+    }
+  }}
+/>
+```
+
+## Available Style Properties
+
+### Base Elements
+
+| Property | Description |
+|----------|-------------|
+| `container` | The outer container of the form |
+| `form` | The form element itself |
+| `card` | Card container for form content |
+| `header` | Form header section |
+| `title` | Form title text |
+| `description` | Form description text |
+
+### Input Elements
+
+| Property | Description |
+|----------|-------------|
+| `input` | Text input fields |
+| `textarea` | Multiline text input |
+| `label` | Field labels |
+| `select` | Dropdown select fields |
+| `checkbox` | Checkbox inputs |
+| `radio` | Radio button inputs |
+| `error` | Error message styling |
+
+### Button Elements
+
+| Property | Description |
+|----------|-------------|
+| `submitButton` | Submit button |
+| `submitButtonLoading` | Submit button loading state |
+| `submitButtonDisabled` | Submit button disabled state |
+
+### Type-Specific Elements
+
+| Property | Description |
+|----------|-------------|
+| `usersJoinedContainer` | Container for users joined counter |
+| `usersJoinedCount` | Users joined number |
+| `usersJoinedLabel` | Users joined label text |
+| `ratingContainer` | Container for rating stars |
+| `ratingLabel` | Rating field label |
+| `ratingStarActive` | Active/filled rating star |
+| `ratingStarInactive` | Inactive/empty rating star |
+
+## Examples
+
+### Modern Glass Theme
+
+```tsx
+<mantlz
+  formId="your-form-id"
+  appearance={{
+    elements: {
+      container: 'backdrop-blur-lg bg-white/30 border border-white/20 rounded-xl p-8',
+      input: 'bg-white/20 border-white/30 backdrop-blur-sm',
+      submitButton: 'bg-white/20 hover:bg-white/30 backdrop-blur-sm',
+      // ... other glass theme styles
+    }
+  }}
+/>
+```
+
+### Neobrutalism Theme
+
+```tsx
+<mantlz
+  formId="your-form-id"
+  appearance={{
+    elements: {
+      container: 'bg-yellow-200 border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]',
+      input: 'border-4 border-black bg-white',
+      submitButton: 'bg-pink-500 border-4 border-black hover:translate-y-1 hover:translate-x-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]',
+      // ... other neobrutalism styles
+    }
+  }}
+/>
+```
+
+### Dark Theme
+
+```tsx
+<mantlz
+  formId="your-form-id"
+  appearance={{
+    elements: {
+      container: 'bg-gray-900 text-white',
+      input: 'bg-gray-800 border-gray-700 text-white',
+      submitButton: 'bg-blue-600 hover:bg-blue-700 text-white',
+      // ... other dark theme styles
+    }
+  }}
+/>
+``` 

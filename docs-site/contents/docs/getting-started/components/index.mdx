@@ -1,95 +1,137 @@
 ---
 title: Components
-description: Overview of the form components available in the Mantlz SDK
+description: Overview of the dynamic form components available in the Mantlz SDK
 ---
 
 # Mantlz Form Components
 
-The Mantlz SDK provides several React components for creating different types of forms. Each component is designed for a specific use case.
+The Mantlz SDK provides React components for creating dynamic forms. All form configurations are managed through the Mantlz dashboard and fetched automatically based on form IDs.
 
-## Available Components
+## Mantlz Component
 
-### [WaitlistForm](/docs/getting-started/components/waitlist-form)
-
-Collect email addresses from users interested in your product or service. Ideal for pre-launch or early access waitlists.
+The main component that dynamically renders any type of form based on its configuration:
 
 ```tsx
-import { WaitlistForm } from '@mantlz/nextjs';
+import { mantlz } from '@mantlz/nextjs';
 
-<WaitlistForm 
-  formId="your-waitlist-id"
-  title="Join Our Waitlist"
-  description="Be the first to know when we launch"
-  showUsersJoined={true}
+<mantlz 
+  formId="your-form-id"
+  title="Form Title"
+  description="Form description"
 />
 ```
-
-[View WaitlistForm documentation →](/docs/getting-started/components/waitlist-form)
-
-### [FeedbackForm](/docs/getting-started/components/feedback-form)
-
-Collect user feedback with star ratings and optional comments. Perfect for gathering customer satisfaction data.
-
-```tsx
-import { FeedbackForm } from '@mantlz/nextjs';
-
-<FeedbackForm 
-  formId="your-feedback-id"
-  title="Rate Your Experience"
-  description="We value your feedback"
-/>
-```
-
-[View FeedbackForm documentation →](/docs/getting-started/components/feedback-form)
-
-### [ContactForm](/docs/getting-started/components/contact-form)
-
-Create a comprehensive contact form with name, email, subject, and message fields. Ideal for contact pages.
-
-```tsx
-import { ContactForm } from '@mantlz/nextjs';
-
-<ContactForm 
-  formId="your-contact-id"
-  title="Get in Touch"
-  description="We'd love to hear from you"
-/>
-```
-
-[View ContactForm documentation →](/docs/getting-started/components/contact-form)
 
 ## Key Features
 
-All form components provide the following key features:
+### Dynamic Form Configuration
+
+All forms are dynamically configured through the Mantlz dashboard:
+- Form fields and validation rules are fetched automatically
+- Update form structure without code changes
+- Add, remove, or modify fields through the dashboard
+- Maintain consistent form behavior across implementations
+
+### Form Type Features
+
+Depending on the form type configured in the dashboard, additional features are available:
+
+#### Waitlist Forms
+For forms configured as waitlist type:
+```tsx
+<mantlz
+  formId="your-waitlist-form-id"
+  showUsersJoined={true} // Show number of users who joined
+  usersJoinedLabel="people on the waitlist" // Custom label
+  usersJoinedPosition="top" // Position of the counter: "top" | "bottom"
+/>
+```
+
+#### Feedback Forms
+For forms configured as feedback type:
+```tsx
+<mantlz
+  formId="your-feedback-form-id"
+  showRating={true} // Show star rating input
+  ratingLabel="Rate your experience" // Custom rating label
+/>
+```
 
 ### Event Handlers
 
 Handle form submissions and errors with callback functions:
 
 ```tsx
-<WaitlistForm
-  formId="your-waitlist-id"
+<mantlz
+  formId="your-form-id"
+  onSubmitSuccess={(data) => {
+    console.log('Form submitted successfully:', data);
+  }}
+  onSubmitError={(error) => {
+    console.error('Form submission failed:', error);
+  }}
+/>
+```
 
+### Appearance Customization
 
+While fields are dynamic, you can still customize the form's appearance:
+
+```tsx
+<mantlz
+  formId="your-form-id"
+  appearance={{
+    elements: {
+      // Customize button style
+      formButtonPrimary: 'bg-slate-500 hover:bg-slate-400 text-sm',
+      // Customize input style
+      input: 'bg-zinc-100 border-zinc-300',
+      // Customize card style
+      card: 'shadow-lg rounded-lg',
+      // Style users joined counter (for waitlist forms)
+      usersJoinedCounter: 'text-xl font-bold text-purple-600',
+      usersJoinedLabel: 'text-sm text-gray-600',
+    },
+  }}
 />
 ```
 
 ### Post-Submission Redirects
 
-Redirect users to a custom page after successful form submission (available on STANDARD and PRO plans):
+Redirect users after successful form submission (STANDARD and PRO plans):
 
 ```tsx
-<ContactForm
-  formId="your-contact-id"
+<mantlz
+  formId="your-form-id"
   redirectUrl="/thank-you"
 />
 ```
 
+## Available Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `formId` | `string` | **Required**. The ID of the form in your Mantlz dashboard. |
+| `theme` | `string` | The theme to use. Default: `'default'` |
+| `appearance` | `object \| function` | Custom styles to apply to the form. |
+| `title` | `string` | Form title text. |
+| `description` | `string` | Form description text. |
+| `className` | `string` | Additional CSS classes to apply to the form container. |
+| `variant` | `'default' \| 'glass'` | Visual variant of the form. Default: `'default'` |
+| `redirectUrl` | `string` | URL to redirect to after successful submission (premium). |
+| `onSubmitSuccess` | `function` | Callback fired on successful submission. |
+| `onSubmitError` | `function` | Callback fired on submission error. |
+| `showUsersJoined` | `boolean` | Show users joined counter (waitlist forms only). |
+| `usersJoinedLabel` | `string` | Label for users joined counter. |
+| `usersJoinedPosition` | `'top' \| 'bottom'` | Position of users joined counter. |
+| `showRating` | `boolean` | Show rating input (feedback forms only). |
+| `ratingLabel` | `string` | Label for rating input. |
+
 ## Getting Started
 
-To get started with any of these components:
+To get started with dynamic forms:
 
 1. [Install the SDK](/docs/getting-started/installation)
-2. Choose the appropriate form component for your needs
-3. Implement form submission handlers
-4. Deploy your form! 
+2. Create and configure your form in the Mantlz dashboard
+3. Copy your form ID and implement the mantlz component
+4. Add form submission handlers
+5. Deploy your form! 

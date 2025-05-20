@@ -5,44 +5,45 @@ description: A comprehensive guide to the Mantlz form solution platform
 
 # Welcome
 
-Mantlz is a powerful form solution platform that helps you create beautiful, customizable forms for your website or application. Whether you need feedback forms, contact forms, or waitlist forms, Mantlz provides the tools to collect and manage user submissions efficiently.
+Mantlz is a powerful form solution platform that helps you create beautiful, customizable forms for your website or application. With our dynamic form system, you can configure and manage all your forms through the dashboard while maintaining complete control over their appearance and behavior in your code.
 
 ## What is Mantlz?
 
 Mantlz is a complete form solution platform that enables developers and businesses to:
 
-- **Create customizable forms** with minimal code
-- **Collect user feedback** through star ratings and comments
-- **Build contact forms** to gather inquiries and questions
-- **Generate waitlists** for upcoming products or services
+- **Create dynamic forms** with minimal code
+- **Configure form fields** through the dashboard
+- **Customize appearance** with extensive styling options
+- **Collect and manage submissions** efficiently
 - **Analyze form data** with built-in analytics
 
 Our SDK offers extensive customization options, dark mode support, and seamless integration with Next.js and other frameworks.
 
 ## Key Features
 
-### Multiple Form Types
+### Dynamic Form Configuration
 
-Mantlz provides three main form components:
+All forms are configured through the Mantlz dashboard:
 
-- **FeedbackForm** - Collect user ratings and comments
-- **ContactForm** - Gather contact information and messages
-- **WaitlistForm** - Build an early access waitlist with counters
+- **Field configuration** - Add, remove, and modify form fields
+- **Validation rules** - Set up field validation requirements
+- **Form behavior** - Configure submission handling and redirects
+- **Type-specific features** - Enable features like user counters or ratings
 
 ### Extensive Customization
 
-All forms come with extensive styling options:
+Forms come with powerful styling options:
 
 - **Preset themes** including default, dark, purple, neobrutalism, and more
 - **Appearance API** for complete control over styling
 - **Tailwind CSS compatibility** for seamless integration
-- **Dark mode support** across all components
+- **Dark mode support** built-in
 
 ### Developer Experience
 
 Mantlz is built with developers in mind:
 
-- **Simple API** that's easy to implement
+- **Simple API** with a single component
 - **Comprehensive documentation** for all features
 - **Powerful SDK** for Next.js and React
 - **REST API** for custom integrations
@@ -56,6 +57,15 @@ Take control of your form submissions:
 - **Email notifications** for new submissions
 - **Export options** for your data
 
+## Form Types
+
+Through the dashboard, you can configure different types of forms:
+
+- **Feedback forms** with star ratings and comments
+- **Contact forms** for gathering user inquiries
+- **Waitlist forms** with user counters
+- **Custom forms** with your own field configuration
+
 ## Who Should Use Mantlz?
 
 Mantlz is perfect for:
@@ -63,7 +73,7 @@ Mantlz is perfect for:
 - **Developers** building websites and applications
 - **Startups** collecting early user feedback
 - **SaaS companies** creating waitlists for new features
-- **Businesses** looking for customizable contact forms
+- **Businesses** looking for customizable forms
 - **Product teams** gathering customer insights
 
 ## Getting Started
@@ -77,21 +87,27 @@ Ready to start using Mantlz? Our documentation will guide you through:
 
 ## Example Form
 
-Here's a simple example of how to add a feedback form to your Next.js application:
+Here's a simple example of how to add a form to your Next.js application:
 
 ```tsx
-import { FeedbackForm } from '@mantlz/nextjs';
+import { mantlz } from '@mantlz/nextjs';
 
-export default function FeedbackPage() {
+export default function FormPage() {
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-2xl font-bold mb-4">We'd Love Your Feedback</h1>
+      <h1 className="text-2xl font-bold mb-4">Get in Touch</h1>
       
-      <FeedbackForm 
+      <mantlz 
         formId="your-form-id"
-        title="How was your experience?"
-        description="Your feedback helps us improve"
-        theme="purple"
+        title="We'd love to hear from you"
+        description="Send us a message and we'll get back to you"
+        theme="modern"
+        appearance={{
+          elements: {
+            container: 'bg-white p-6 rounded-lg shadow-lg',
+            submitButton: 'bg-blue-600 hover:bg-blue-700 text-white'
+          }
+        }}
       />
     </div>
   );
@@ -100,4 +116,4 @@ export default function FeedbackPage() {
 
 ## Next Steps
 
-Start building forms with Mantlz today by [installing the SDK](/docs/getting-started/installation) and exploring our documentation.
+Start building dynamic forms with Mantlz today by [installing the SDK](/docs/getting-started/installation) and exploring our documentation.

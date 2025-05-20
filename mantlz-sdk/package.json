@@ -58,8 +58,8 @@
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.2.1",
     "express": "^5.1.0",
-    "tsup": "^8.4.0",
-    "typescript": "^5.3.3"
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3"
   },
   "peerDependencies": {
     "next": ">=15.0.0",

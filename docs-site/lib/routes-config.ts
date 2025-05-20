@@ -26,9 +26,7 @@ export const ROUTES: EachRoute[] = [
         href: "/components",
         items: [
           { title: "Overview", href: "" },
-          { title: "Waitlist Form", href: "/waitlist-form" },
-          { title: "Feedback Form", href: "/feedback-form" },
-          { title: "Contact Form", href: "/contact-form" },
+        
         ],
       },
     ],
@@ -37,12 +35,7 @@ export const ROUTES: EachRoute[] = [
     title: "Appearance",
     href: "/appearance",
     noLink: true,
-    items: [
-      { title: "Contact", href: "/contact" },
-      { title: "Feedback", href: "/feedback" },
-      { title: "Waitlist", href: "/waitlist" },
-      { title: "Simplified API", href: "/simplified-api" },
-    ],
+   
   },
   {
     title: "API Reference",

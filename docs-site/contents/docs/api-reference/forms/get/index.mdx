@@ -1,11 +1,11 @@
 ---
 title: Get Form
-description: API endpoint to retrieve details about a specific form
+description: API endpoint to retrieve form configuration and details
 ---
 
 # Get Form
 
-This endpoint retrieves detailed information about a specific form.
+This endpoint retrieves the complete configuration and details for a form, including its dynamic field structure and type-specific features.
 
 ## Endpoint
 
@@ -27,7 +27,7 @@ Requires an [API key](/docs/api-reference/authentication).
 
 ### 200: OK
 
-Returns an object containing detailed information about the form.
+Returns an object containing the form's configuration and details.
 
 **Response Fields:**
 
@@ -36,55 +36,89 @@ Returns an object containing detailed information about the form.
 | `id` | string | Unique identifier for the form |
 | `name` | string | Name of the form |
 | `description` | string | Description of the form |
-| `formType` | string | Type of form (e.g., "feedback", "contact", "waitlist") |
+| `formType` | string | Type of form ("standard", "waitlist", "feedback") |
 | `createdAt` | string | ISO 8601 timestamp when the form was created |
 | `updatedAt` | string | ISO 8601 timestamp when the form was last updated |
 | `submissionCount` | integer | Number of submissions received |
-| `emailSettings` | object | Email notification settings for the form |
-| `emailSettings.enabled` | boolean | Whether email notifications are enabled |
-| `emailSettings.developerNotificationsEnabled` | boolean | Whether developer notifications are enabled |
-| `usersJoinedSettings` | object | Users joined counter settings (for waitlist forms) |
-| `usersJoinedSettings.enabled` | boolean | Whether the users joined counter is enabled |
-| `usersJoinedSettings.count` | integer | Number of users who have joined the waitlist |
+| `fields` | array | Array of field configurations |
+| `fields[].id` | string | Unique identifier for the field |
+| `fields[].type` | string | Field type (e.g., "text", "email", "textarea", "select", "radio", "checkbox", "rating") |
+| `fields[].label` | string | Display label for the field |
+| `fields[].placeholder` | string | Placeholder text for the field |
+| `fields[].required` | boolean | Whether the field is required |
+| `fields[].validation` | object | Validation rules for the field |
+| `fields[].options` | array | Options for select, radio, or checkbox fields |
+| `settings` | object | Form settings |
+| `settings.emailNotifications` | boolean | Whether to send email notifications |
+| `settings.redirectUrl` | string | Default redirect URL after submission |
+| `settings.submitButtonText` | string | Custom submit button text |
+| `typeSettings` | object | Type-specific settings |
+| `typeSettings.waitlist` | object | Settings for waitlist forms |
+| `typeSettings.waitlist.showUsersJoined` | boolean | Whether to show users joined counter |
+| `typeSettings.waitlist.usersJoinedCount` | integer | Number of users who joined |
+| `typeSettings.waitlist.usersJoinedLabel` | string | Label for users joined counter |
+| `typeSettings.feedback` | object | Settings for feedback forms |
+| `typeSettings.feedback.showRating` | boolean | Whether to show rating input |
+| `typeSettings.feedback.ratingLabel` | string | Label for rating input |
 
 **Example Response:**
 
 ```json
 {
   "id": "form_123abc",
-  "name": "Customer Feedback",
-  "description": "Collect feedback from customers",
-  "formType": "feedback",
-  "createdAt": "2023-01-15T12:00:00Z",
-  "updatedAt": "2023-01-16T09:30:00Z",
+  "name": "Product Waitlist",
+  "description": "Join the waitlist for early access",
+  "formType": "waitlist",
+  "createdAt": "2024-01-15T12:00:00Z",
+  "updatedAt": "2024-01-16T09:30:00Z",
   "submissionCount": 42,
-  "emailSettings": {
-    "enabled": true,
-    "developerNotificationsEnabled": true
+  "fields": [
+    {
+      "id": "field_name",
+      "type": "text",
+      "label": "Full Name",
+      "placeholder": "Enter your name",
+      "required": true,
+      "validation": {
+        "minLength": 2,
+        "maxLength": 100
+      }
+    },
+    {
+      "id": "field_email",
+      "type": "email",
+      "label": "Email Address",
+      "placeholder": "you@example.com",
+      "required": true,
+      "validation": {
+        "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+      }
+    }
+  ],
+  "settings": {
+    "emailNotifications": true,
+    "redirectUrl": "/thank-you",
+    "submitButtonText": "Join Waitlist"
   },
-  "usersJoinedSettings": null
+  "typeSettings": {
+    "waitlist": {
+      "showUsersJoined": true,
+      "usersJoinedCount": 156,
+      "usersJoinedLabel": "people on the waitlist"
+    }
+  }
 }
 ```
 
-### 400: Bad Request
+### Error Responses
 
-Returned when the request parameters are invalid.
-
-### 401: Unauthorized
-
-Returned when the API key is missing or invalid.
-
-### 403: Forbidden
-
-Returned when the API key does not have access to the specified form.
-
-### 404: Not Found
-
-Returned when the form with the specified ID does not exist.
-
-### 429: Too Many Requests
-
-Returned when the rate limit is exceeded.
+| Status | Description |
+|--------|-------------|
+| 400 | Bad Request - Invalid parameters |
+| 401 | Unauthorized - Missing or invalid API key |
+| 403 | Forbidden - No access to this form |
+| 404 | Not Found - Form doesn't exist |
+| 429 | Too Many Requests - Rate limit exceeded |
 
 ## Example Request
 

@@ -5,7 +5,7 @@ description: Getting started with Mantlz SDK for your forms
 
 # Installing Mantlz SDK
 
-Mantlz SDK is a modern, customizable React component library for building beautiful forms including feedback, contact, and waitlist forms with dark mode support.
+Mantlz SDK is a modern, customizable React component library for building beautiful dynamic forms with automatic form configuration and dark mode support.
 
 ## Prerequisites
 
@@ -21,7 +21,7 @@ Before installing Mantlz SDK, make sure you have:
 
 ## Setup for Next.js
 
-For Next.js applications, we recommend using our specialized package:
+For Next.js applications, install our package:
 
 ```bash
 npm install @mantlz/nextjs
@@ -51,22 +51,24 @@ export default function RootLayout({ children }) {
 
 ## Basic Usage Example
 
-Once installed, you can import and use any of our form components:
+Once installed, you can import and use the mantlz component:
 
 ```tsx
-import { FeedbackForm } from 'mantlz-sdk';
+import { mantlz } from '@mantlz/nextjs';
 
-function MyFeedbackPage() {
+function MyFormPage() {
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">We value your feedback</h1>
+      <h1 className="text-2xl font-bold mb-4">Get in Touch</h1>
       
-      <FeedbackForm 
-        formId="my-feedback-form"
-        onSubmitSuccess={(data) => ('Feedback submitted:', data)}
+      <mantlz 
+        formId="your-form-id"
+        onSubmitSuccess={(data) => console.log('Form submitted:', data)}
       />
     </div>
   );
 }
 ```
+
+The form's fields and behavior will be automatically configured based on your form settings in the Mantlz dashboard. You can create and configure your forms through the dashboard, then use them in your code by simply providing the form ID.
 
