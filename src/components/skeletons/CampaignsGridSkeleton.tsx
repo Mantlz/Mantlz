@@ -1,5 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton"
-import { FileSpreadsheet, LayoutGrid, List, Users } from "lucide-react"
+import { FileSpreadsheet, LayoutGrid, List, Mail } from "lucide-react"
 
 export function CampaignsGridSkeleton() {
   return (
@@ -13,33 +13,24 @@ export function CampaignsGridSkeleton() {
             <div className="flex items-start justify-between gap-4">
               <div className="space-y-1">
                 <h1 className="text-2xl font-semibold text-gray-900 dark:text-white tracking-tight">
-                    Your Forms
-   
+                  Your Forms
                 </h1>
-                <div className="text-sm text-gray-500 dark:text-gray-400  p-1 pl-2 flex items-center">
-                  <Skeleton className="h-4 w-4 rounded-lg" />forms available
+                <div className="text-sm text-gray-500 dark:text-gray-400 p-1 pl-2 flex items-center">
+                  <Skeleton className="h-4 w-4 rounded-lg mr-1" /> forms available
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
-                  {/* View Toggle */}
-                  <div className="bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-800 rounded-lg p-1 flex items-center">
-                  
-                  <div className="h-6 w-8 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm ">
+                {/* View Toggle */}
+                <div className="bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-800 rounded-lg p-1 flex items-center">
+                  <div className="h-6 w-8 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm">
                     <LayoutGrid className="h-4 w-4" />
                   </div>
-
-                      <div className="h-6 w-8 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm">
-                      <List className="h-4 w-4" />
-
-                  </div>
+                  <div className="h-6 w-8 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm">
+                    <List className="h-4 w-4" />
                   </div>
                 </div>
-
-           
-
-
-
+              </div>
             </div>
 
             {/* Stats Grid */}
@@ -60,7 +51,7 @@ export function CampaignsGridSkeleton() {
               <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
-                    <Users className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+                    <Mail className="h-5 w-5 text-gray-400 dark:text-gray-500" />
                   </div>
                   <div>
                     <div className="text-sm font-medium text-gray-600 dark:text-gray-400">
@@ -80,15 +71,18 @@ export function CampaignsGridSkeleton() {
         {[1, 2, 3, 4, 5, 6].map((i) => (
           <div key={i} className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/50 rounded-xl shadow-sm overflow-hidden">
             <div className="p-4 sm:p-6">
-              <Skeleton className="h-6 w-3/4 mb-2 rounded-lg" />
+              <div className="space-y-2">
+                <Skeleton className="h-6 w-3/4 rounded-lg" />
+                <Skeleton className="h-4 w-full rounded-lg" />
+              </div>
               <div className="flex justify-between items-center mt-4">
                 <div className="flex items-center gap-1">
-                  <FileSpreadsheet className="h-4 w-4 text-gray-300 dark:text-gray-600" />
+                  <Mail className="h-4 w-4 text-gray-300 dark:text-gray-600" />
                   <div className="text-xs text-gray-400 dark:text-gray-500">
-                     Campaigns
+                    <Skeleton className="h-3 w-16 rounded-lg" />
                   </div>
                 </div>
-                <div className="h-8 w-28 rounded-lg flex items-center justify-center text-xs text-zinc-400 dark:text-zinc-500">
+                <div className="h-7 w-32  bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-xs text-zinc-400 dark:text-zinc-500">
                   View Campaigns
                 </div>
               </div>

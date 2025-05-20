@@ -23,6 +23,7 @@ export interface MantlzError {
   userMessage?: string;
   details?: any;
   alreadyHandled?: boolean;
+  isConflict?: boolean;
 }
 
 export interface FormSubmitOptions {
@@ -39,6 +40,7 @@ export interface FormSubmitResponse {
   error?: MantlzError;
   submissionId?: string;
   message?: string;
+  isConflict?: boolean;
   redirect?: {
     url: string;
     allowed: boolean;

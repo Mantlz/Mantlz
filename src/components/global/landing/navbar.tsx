@@ -97,7 +97,7 @@ export function Navbar() {
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 p-2 bg-zinc-200 dark:bg-zinc-800 border-zinc-800 dark:border-zinc-800">
+            <DropdownMenuContent align="end" className="w-56 mt-2 p-2 bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800">
               <div className="flex items-center justify-start gap-2 p-2">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
@@ -125,9 +125,9 @@ export function Navbar() {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => signOut()}
-                className="cursor-pointer text-red-500 hover:text-red-500 dark:text-red-500 dark:hover:text-red-500 bg-red-500/10 dark:bg-red-500/10 hover:bg-red-500/20 dark:hover:bg-red-500/20 focus:text-red-500"
+                className="cursor-pointer bg-red-600 text-white "
               >
-                <LogOut className="mr-2 h-4 w-4 text-red-500 dark:text-red-500" />
+                <LogOut className="mr-2 h-4 w-4 text-black " />
                 <span>Sign out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>

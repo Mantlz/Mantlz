@@ -5,6 +5,7 @@ type ExtendedCSSProperties = CSSProperties & {
   '&:disabled'?: CSSProperties;
   '&:active'?: CSSProperties;
   '&:focus'?: CSSProperties;
+  '&::placeholder'?: CSSProperties;
   '&.order'?: ExtendedCSSProperties;
 };
 

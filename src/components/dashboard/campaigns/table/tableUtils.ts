@@ -9,6 +9,8 @@ export async function fetchUserForms(page = 1, itemsPerPage = 8): Promise<FormsR
       cursor: page > 1 ? `${page}` : undefined
     })
     
+    console.log('API Response for forms:', response)
+    
     // Transform the response to match FormsResponse type
     const data = await response.json()
     return {
@@ -16,6 +18,7 @@ export async function fetchUserForms(page = 1, itemsPerPage = 8): Promise<FormsR
         id: form.id,
         name: form.name,
         slug: form.id, // Using ID as slug
+        description: form.description || null,
         createdAt: form.createdAt.toString(),
         _count: {
           submissions: form.submissionCount || 0,
@@ -26,12 +29,11 @@ export async function fetchUserForms(page = 1, itemsPerPage = 8): Promise<FormsR
       pagination: {
         totalItems: data.forms.length,
         totalPages: data.nextCursor ? page + 1 : page,
-        currentPage: page,
-        itemsPerPage
+        currentPage: page
       }
     }
   } catch (error) {
-    console.error('Error fetching forms:', error)
+    console.error('Error fetching user forms:', error)
     throw error
   }
 }

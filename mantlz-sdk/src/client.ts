@@ -194,7 +194,6 @@ export function createMantlzClient(
 
     // Sanitize error message to avoid injection
     const rawMessage = errorData.error || 'Form submission failed';
-    // const safeMessage = sanitizeString(rawMessage);
 
     const error: MantlzError = {
       message: rawMessage,
@@ -219,6 +218,9 @@ export function createMantlzClient(
       }
     } else if (status === 400) {
       error.userMessage = 'Invalid form data. Please check your submission.';
+    } else if (status === 409) {
+      error.userMessage = errorData.error || 'This value already exists. Please use a different one.';
+      error.isConflict = true;
     } else if (status >= 500) {
       error.userMessage = 'Server error. Please try again later.';
     } else {
@@ -232,27 +234,23 @@ export function createMantlzClient(
    * Shows error notifications with deduplication and sanitization
    */
   const showErrorNotification = (error: MantlzError, formId?: string): void => {
-    if (error.alreadyHandled) {
+    // Skip if error was already handled or if notifications are disabled
+    if (error.alreadyHandled || !notificationsEnabled) {
       return;
     }
 
-    if (error.code === 401) {
-      if (config?.showApiKeyErrorToasts) {
-        toast.error(error.userMessage || 'API Key Error', {
-          description: 'Check your MANTLZ_KEY in the environment variables.',
-          duration: 5000,
-        });
-      }
+    // Skip API key errors unless explicitly enabled
+    if (error.code === 401 && !config?.showApiKeyErrorToasts) {
       return;
     }
 
+    // Handle 404 form errors with deduplication
     if (error.code === 404 && formId) {
       const errorKey = `form_${formId}_404`;
       if (
         notificationState.hasShownFormError[formId] ||
         globalErrorState.form404Errors.has(errorKey)
       ) {
-        log(`Suppressing duplicate error toast for formId: ${formId}`);
         error.alreadyHandled = true;
         return;
       }
@@ -260,17 +258,25 @@ export function createMantlzClient(
       globalErrorState.form404Errors.add(errorKey);
     }
 
-    const title = (error.userMessage || error.message || 'An error occurred');
-    let description = error.code ? `Error ${error.code}` : undefined;
+    // For conflict errors (409), show a more specific message
+    if (error.code === 409) {
+      toast.error('Duplicate Entry', {
+        description: error.userMessage,
+        duration: 5000,
+      });
+    } else {
+      const title = (error.userMessage || error.message || 'An error occurred');
+      let description = error.code ? `Error ${error.code}` : undefined;
 
-    if (error.code === 404 && formId) {
-      description = `Form ${formId} not found. Please check your formId.`;
+      if (error.code === 404 && formId) {
+        description = `Form ${formId} not found. Please check your formId.`;
+      }
+
+      toast.error(title, {
+        description,
+        duration: 5000,
+      });
     }
-
-    toast.error(title, {
-      description,
-      duration: 5000,
-    });
 
     error.alreadyHandled = true;
   };
@@ -545,17 +551,14 @@ export function createMantlzClient(
       const { formId, data, redirectUrl } = options;
 
       try {
-        // Ensure the URL is absolute by making sure baseUrl has protocol and domain
         const url = new URL('/api/v1/forms/submit', baseUrl).toString();
         log('Submitting form to:', url, { type, formId });
 
-        // Determine if we're sending FormData or JSON
         const isFormData = data instanceof FormData;
         const headers: HeadersInit = {
           'X-API-Key': key,
         };
 
-        // Set appropriate content type
         if (!isFormData) {
           headers['Content-Type'] = 'application/json';
         }
@@ -574,11 +577,9 @@ export function createMantlzClient(
           mode: developmentMode ? 'no-cors' : 'cors',
         });
         
-        // Handle opaque responses in development mode
         if (developmentMode && response.type === 'opaque') {
           log('Development mode: Simulating successful form submission');
           
-          // Return simulated success response
           const mockResponse: FormSubmitResponse = {
             success: true,
             submissionId: 'dev-' + Math.random().toString(36).substring(2, 11),
@@ -597,35 +598,36 @@ export function createMantlzClient(
         if (!response.ok) {
           const error = await handleApiError(response, formId);
           log('Form submission error:', error);
+          
+          // Only show notification from client, not from form component
           if (notificationsEnabled) {
             showErrorNotification(error, formId);
           }
+          
+          // For conflict errors, we want to handle them differently in the form
+          if (error.code === 409) {
+            return {
+              success: false,
+              message: error.userMessage,
+              error: error,
+              isConflict: true
+            };
+          }
+          
           throw error;
         }
 
         const result = (await response.json()) as FormSubmitResponse;
         
-        // Enhanced logging of the server response
         log('FORM SUBMISSION RESPONSE:', JSON.stringify(result, null, 2));
-        console.log('MANTLZ REDIRECT DEBUG - Server Response:', {
-          success: result.success,
-          submissionId: result.submissionId,
-          redirectInfo: result.redirect,
-          userPlanType: 'See server logs',
-          customRedirectRequested: !!redirectUrl
-        });
 
+        // Only show success toast if there's no redirect
         if (notificationsEnabled && (!result.redirect || !result.redirect.url)) {
           toast.success('Form submitted successfully', {
             duration: 3000,
           });
         }
 
-        // Handle redirection based on server response
-        if (redirectUrl) {
-          console.log('MANTLZ REDIRECT DEBUG - Requested redirect:', redirectUrl);
-        }
-        
         handleRedirect(result, redirectUrl);
 
         return result;
@@ -635,14 +637,13 @@ export function createMantlzClient(
         }
 
         const formattedError: MantlzError = {
-          message:
-            error instanceof Error ? error.message : 'Unknown error occurred',
+          message: error instanceof Error ? error.message : 'Unknown error occurred',
           code: 500,
-          userMessage:
-            'Failed to submit form. Please check your connection and try again.',
+          userMessage: 'Failed to submit form. Please check your connection and try again.',
           details: error,
         };
 
+        // Only show notification from client, not from form component
         if (notificationsEnabled) {
           showErrorNotification(formattedError, formId);
         }

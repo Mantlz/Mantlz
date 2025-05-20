@@ -2,7 +2,7 @@
 
 import { memo, useState, useEffect } from "react"
 import Link from "next/link"
-import { ChevronDown, HelpCircle, Settings, Activity, TestTube2, Plus, Menu, User, LogOut, Home, Mail } from "lucide-react"
+import { ChevronDown, HelpCircle, Settings, Activity, Plus, Menu, User, LogOut, Home, Mail } from "lucide-react"
 import { useUser, useClerk } from "@clerk/nextjs"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -51,7 +51,7 @@ const UserDropdown = memo(function UserDropdown() {
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
-          className="w-[220px] p-2 m-1 bg-zinc-100/90 backdrop-blur-sm border border-zinc-200/70 dark:bg-zinc-800 dark:border-zinc-800/70 shadow-lg rounded-xl"
+          className="w-[220px] p-2 m-1 mt-2 bg-white dark:bg-zinc-900/50 backdrop-blur-sm border border-zinc-200/70 dark:border-zinc-800/70 shadow-lg rounded-xl"
         >
           <DropdownMenuItem className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5" onClick={() => openUserProfile()}>
             <User className="h-4 w-4 mr-2" />
@@ -69,8 +69,8 @@ const UserDropdown = memo(function UserDropdown() {
             </SettingsDialog>
           </DropdownMenuItem>
           <Separator className="my-1.5 bg-zinc-300 dark:bg-zinc-700" />
-          <DropdownMenuItem className="hover:bg-red-100/70 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 p-2 cursor-pointer rounded-lg transition-all duration-200 my-0.5" onClick={() => signOut()}>
-            <LogOut className="h-4 w-4 mr-2" />
+          <DropdownMenuItem className="hover:bg-red-100/70  bg-red-500 dark:hover:bg-red-900/40 text-white dark:text-white p-2 cursor-pointer rounded-lg transition-all duration-200 my-0.5" onClick={() => signOut()}>
+            <LogOut className="h-4 w-4 mr-2 text-white" />
             Sign out
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -115,7 +115,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
         </SheetTrigger>
         <SheetContent
           side="left"
-          className="w-[250px] xs:w-[280px] sm:w-[320px] md:w-[350px] p-0 bg-white dark:bg-zinc-800 border-r border-zinc-200 dark:border-zinc-800"
+          className="w-[250px] xs:w-[280px] sm:w-[320px] md:w-[350px] p-0 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800"
         >
           <SheetTitle className="sr-only">Mantlz Navigation</SheetTitle>
           <div className="flex flex-col h-full">
@@ -160,15 +160,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                         <span>Logs</span>
                       </Link>
                     </SheetClose>
-                    <SheetClose asChild>
-                      <Link
-                        href="/dashboard/test"
-                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-                      >
-                        <TestTube2 className="h-4 w-4" />
-                        <span>Test</span>
-                      </Link>
-                    </SheetClose>
+                  
 
                     <SheetClose asChild>
                       <Link
@@ -310,10 +302,10 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 dark:bg-zinc-800 flex h-16 items-center justify-between backdrop-blur-sm border-b px-3 sm:px-4 md:px-6 lg:px-8 text-black dark:text-white transition-all duration-300",
+        "fixed top-0 left-0 right-0 z-50  flex h-16 items-center justify-between backdrop-blur-sm border-b px-3 sm:px-4 md:px-6 lg:px-8 text-black dark:text-white transition-all duration-300",
         scrolled
-          ? "bg-white/90 dark:bg-zinc-950/90 border-zinc-200/70 dark:border-zinc-800/70 shadow-sm"
-          : "bg-white/80 dark:bg-zinc-950/80 border-zinc-200/50 dark:border-zinc-800/50"
+          ? "bg-white/90 dark:bg-zinc-950 border-zinc-200/70 dark:border-zinc-800/70 shadow-sm"
+          : "bg-white/80 dark:bg-zinc-950 border-zinc-200/50 dark:border-zinc-800/50"
       )}
     >
       <div className="flex items-center gap-2 md:gap-6">
@@ -337,7 +329,7 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="start"
-              className="w-[220px] p-2 m-1 bg-zinc-100/90 backdrop-blur-sm border border-zinc-200/70 dark:bg-zinc-900/90 dark:border-zinc-800/70 shadow-lg rounded-lg"
+              className="w-[220px] p-2 m-1  bg-white dark:bg-zinc-900/50 backdrop-blur-sm border border-zinc-200/70 dark:border-zinc-800/70 shadow-lg rounded-lg"
             >
               <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5">
                 <Link href="/dashboard" className="flex items-center gap-2.5 py-1.5 cursor-pointer">
@@ -357,7 +349,8 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
                   <span>Logs</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 p-0 rounded-lg my-0.5 mt-1">
+    
+              <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 p-0 rounded-lg my-0.5">
                 <Link 
                   href="/dashboard/form"
                   className="flex items-center gap-2.5 w-full px-2 py-1.5  bg-zinc-100/90 dark:bg-zinc-900/90 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/90 backdrop-blur-sm border justify-start  rounded-lg border-zinc-300 dark:border-zinc-700 cursor-pointer"

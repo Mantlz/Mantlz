@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect} from 'react'
 import { useRouter } from 'next/navigation'
 import { IconSearch, IconLayoutGrid, IconListDetails } from "@tabler/icons-react"
 import { Input } from "@/components/ui/input"

@@ -281,11 +281,33 @@ export const useFormLogic = (
         setSubmitted(true);
         return response;
       } else {
+        // Handle conflict errors specifically
+        if (response.isConflict || (response.error?.code === 409)) {
+          return {
+            success: false,
+            message: response.message || response.error?.userMessage || 'This value already exists',
+            isConflict: true,
+            error: response.error
+          };
+        }
         throw new Error(response.message || 'Form submission failed');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Form submission error:', error);
-      return { success: false, message: error instanceof Error ? error.message : 'Form submission failed' };
+      // Check if it's a conflict error from the API
+      if (error.code === 409 || error.isConflict) {
+        return {
+          success: false,
+          message: error.userMessage || error.message || 'This value already exists',
+          isConflict: true,
+          error: error
+        };
+      }
+      return { 
+        success: false, 
+        message: error instanceof Error ? error.message : 'Form submission failed',
+        error: error
+      };
     } finally {
       setSubmitting(false);
     }

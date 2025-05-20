@@ -14,39 +14,25 @@ export interface CampaignType {
   }
 }
 
-export interface FormType {
+export interface Form {
   id: string;
   name: string;
   slug: string;
+  description: string | null;
   createdAt: string;
-  description?: string;
-  campaignCount?: number;
   _count?: {
+    campaigns: number;
     submissions: number;
-    unsubscribed: number;
   };
 }
 
 export interface FormsResponse {
-  forms: Array<{
-    id: string
-    name: string
-    slug: string
-    createdAt: string
-    description?: string
-    campaignCount?: number
-    _count?: {
-      submissions: number
-      unsubscribed: number
-      campaigns: number
-    }
-  }>
+  forms: Form[];
   pagination?: {
-    totalItems: number
-    totalPages: number
-    currentPage: number
-    itemsPerPage: number
-  }
+    totalItems: number;
+    totalPages: number;
+    currentPage: number;
+  };
 }
 
 export interface CampaignResponse {

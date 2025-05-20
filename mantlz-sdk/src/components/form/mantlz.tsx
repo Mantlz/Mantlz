@@ -183,15 +183,25 @@ export default function Mantlz({
       
       if (result?.success) {
         setSubmitted(true);
+      } else if (result?.isConflict) {
+        // Handle conflict errors with a specific message
+        toast.error('Duplicate Entry', {
+          description: result.message,
+          duration: 5000,
+          position: 'top-right'
+        });
+      } else if (result?.error) {
+        // Let the client handle other errors
+        throw result.error;
       } else {
         throw new Error(result?.message || 'Form submission failed');
       }
     } catch (error: any) {
       console.error('Form submission error:', error);
-      toast.error(error.message || 'Failed to submit form', {
-        duration: 5000,
-        position: 'top-right'
-      });
+      // Only throw unhandled errors to the client
+      if (!error.alreadyHandled && !error.isConflict) {
+        throw error; // Let the client handle the error
+      }
     } finally {
       setSubmitting(false);
     }

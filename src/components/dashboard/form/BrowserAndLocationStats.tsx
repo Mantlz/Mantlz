@@ -293,21 +293,21 @@ export function BrowserAndLocationStats({
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
         {/* Map Card - Hidden on mobile if list view is selected */}
-        <Card className={`bg-white dark:bg-black shadow-sm border border-zinc-100 dark:border-zinc-900 rounded-xl lg:col-span-3 overflow-hidden transition-all duration-300 hover:shadow-md ${mobileView !== 'map' ? 'hidden lg:block' : ''}`}>
+        <Card className={`bg-white dark:bg-zinc-900/50 shadow-sm border border-zinc-100 dark:border-zinc-800 rounded-xl lg:col-span-3 overflow-hidden transition-all duration-300 hover:shadow-md ${mobileView !== 'map' ? 'hidden lg:block' : ''}`}>
           <CardHeader className="pb-3 px-6 pt-5">
             <div className="flex justify-between items-center w-full">
               <CardTitleWithIcon icon={MapPin} title="Geographic Distribution" />
               <button 
                 onClick={() => setMapExpanded(true)}
-                className="text-xs bg-zinc-50 dark:bg-zinc-900 rounded-lg py-1.5 px-3 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                className="text-xs bg-zinc-50 dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-lg py-1.5 px-3 transition-colors cursor-pointer"
               >
-                <span className="flex items-center gap-1.5 text-gray-500 hover:text-gray-900 dark:hover:text-white">
+                <span className="flex items-center gap-1.5 text-white hover:text-white dark:hover:text-white">
                   Full map <Maximize2 className="h-3 w-3" />
                 </span>
               </button>
             </div>
             {locations.length > 0 && (
-              <CardDescription className="text-gray-500 text-sm mt-1.5">
+              <CardDescription className="text-gray-500 dark:text-gray-200 text-sm mt-1.5">
                 {totalVisitors.toLocaleString()} visitors from {locations.length} countries
               </CardDescription>
             )}
@@ -421,7 +421,7 @@ export function BrowserAndLocationStats({
                       
                       {/* Top country callout at bottom */}
                       {sortedLocations.length > 0 && (
-                        <div className="absolute bottom-3 left-3 bg-white/90 dark:bg-black/90 backdrop-blur-sm rounded-lg py-2 px-3 shadow-sm border border-zinc-100 dark:border-zinc-800">
+                        <div className="absolute bottom-3 left-3 bg-white/90 dark:bg-zinc-800/90 backdrop-blur-sm rounded-lg py-2 px-3 shadow-sm border border-zinc-100 dark:border-zinc-800">
                           <div className="flex items-center gap-2">
                             <div className="w-3 h-3 rounded-lg bg-zinc-500"></div>
                             <span className="text-xs font-medium">{sortedLocations[0]?.name}</span>
@@ -484,7 +484,7 @@ export function BrowserAndLocationStats({
         </Card>
 
         {/* Browser Stats Card - Hidden on mobile if map view is selected */}
-        <Card className={`bg-white dark:bg-black shadow-sm border border-zinc-100 dark:border-zinc-900 rounded-xl lg:col-span-2 transition-all duration-300 hover:shadow-md ${mobileView !== 'list' ? 'hidden lg:block' : ''}`}>
+        <Card className={`bg-white dark:bg-zinc-900/50 shadow-sm border border-zinc-100 dark:border-zinc-800 rounded-xl lg:col-span-2 transition-all duration-300 hover:shadow-md ${mobileView !== 'list' ? 'hidden lg:block' : ''}`}>
           <CardHeader className="pb-3 px-6 pt-5">
             <div className="flex justify-between items-center w-full">
               <CardTitleWithIcon icon={Globe} title="Browsers" />
@@ -577,7 +577,7 @@ export function BrowserAndLocationStats({
       <Dialog open={mapExpanded} onOpenChange={setMapExpanded}>
         <DialogContent
           className="sm:max-w-[900px] p-0 overflow-hidden 
-            bg-white dark:bg-black rounded-xl shadow-lg border border-zinc-100 dark:border-zinc-900"
+            bg-white dark:bg-zinc-950/50 rounded-xl backdrop-blur-3xl shadow-2xl  border border-zinc-100 dark:border-zinc-900"
         >
           <DialogHeader className="px-8 pt-6 pb-4">
             <DialogTitle className="text-xl font-medium flex items-center">
@@ -585,7 +585,7 @@ export function BrowserAndLocationStats({
               Geographic Analytics
             </DialogTitle>
             <DialogDescription>
-              {totalVisitors.toLocaleString()} visitors from {locations.length} countries
+              {totalVisitors.toLocaleString()} Submissions from {locations.length} countries
             </DialogDescription>
           </DialogHeader>
 

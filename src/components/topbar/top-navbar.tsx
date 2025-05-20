@@ -2,7 +2,7 @@
 
 import { useState, useEffect, memo } from "react"
 import Link from "next/link"
-import { ChevronDown, HelpCircle, Settings, Activity, TestTube2 } from "lucide-react"
+import { ChevronDown, HelpCircle, Settings, Activity } from "lucide-react"
 import { useUser, useClerk } from "@clerk/nextjs"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -113,6 +113,7 @@ const NavigationSection = memo(function NavigationSection() {
             <span>Logs</span>
           </Link>
         </DropdownMenuItem>
+
         <DropdownMenuItem 
           className="hover:bg-zinc-800 p-0 cursor-pointer"
           onSelect={(e) => e.preventDefault()}
@@ -173,7 +174,7 @@ export const Navbar = memo(function Navbar() {
 
   if (!mounted) {
     return (
-      <nav className="fixed top-0 left-0 right-0 z-50 flex h-14 items-center justify-between bg-black px-4 text-white">
+      <nav className="fixed top-0 left-0 right-0 z-50 flex h-14 items-center justify-between  px-4 text-white">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2 font-semibold cursor-pointer">
             <Logo />
@@ -191,8 +192,8 @@ export const Navbar = memo(function Navbar() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 flex h-14 items-center justify-between backdrop-blur-md border-b px-4 text-black dark:text-white transition-all duration-200",
         scrolled 
-          ? "bg-white dark:bg-zinc-800/70 border-zinc-200/70 dark:border-zinc-800/70" 
-          : "bg-white dark:bg-zinc-800/95 border-zinc-200 dark:border-zinc-800"
+          ? "bg-white dark:bg-zinc-950/70 border-zinc-200/70 dark:border-zinc-800/70" 
+          : "bg-white dark:bg-zinc-950/95 border-zinc-200 dark:border-zinc-800"
       )}
     >
       <div className="flex items-center gap-6">

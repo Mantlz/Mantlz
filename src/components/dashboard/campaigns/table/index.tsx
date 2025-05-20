@@ -69,6 +69,19 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
     staleTime: 30000,
   })
 
+  // Add debug logs
+  console.log('Forms Data:', formsData);
+  if (formsData?.forms) {
+    formsData.forms.forEach((form, index) => {
+      console.log(`Form ${index + 1}:`, {
+        id: form.id,
+        name: form.name,
+        description: form.description,
+        campaignCount: form._count?.campaigns
+      });
+    });
+  }
+
   // Fetch campaigns for selected form
   const startDateParam = searchParams.get('startDate');
   const endDateParam = searchParams.get('endDate');
@@ -295,25 +308,36 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                 className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/50 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer"
                 onClick={() => handleFormClick(form.id)}
               >
-                <div className="p-4 sm:p-6">
-                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-2 truncate">{form.name}</h3>
-                  {form.description && (
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 line-clamp-2">{form.description}</p>
-                  )}
-                  <div className="flex justify-between items-center mt-4">
-                    <div className="flex items-center gap-1">
-                      <Mail className="h-4 w-4 text-gray-400" />
-                      <span className="text-xs text-gray-500 dark:text-gray-400">{form.campaignCount} campaign{form.campaignCount !== 1 ? 's' : ''}</span>
+                {(() => {
+                  console.log('Rendering form description:', form.description);
+                  return (
+                    <div className="p-4 sm:p-6">
+                      <div className="space-y-2">
+                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate">
+                          {form.name}
+                        </h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
+                          {form.description || "No description available"}
+                        </p>
+                      </div>
+                      <div className="flex justify-between items-center mt-4">
+                        <div className="flex items-center gap-1">
+                          <Mail className="h-4 w-4 text-gray-400" />
+                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                            {form._count?.campaigns || 0} campaign{(form._count?.campaigns || 0) !== 1 ? 's' : ''}
+                          </span>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 px-2 text-xs hover:bg-zinc-200 cursor-pointer dark:hover:bg-zinc-950 text-gray-600 dark:text-gray-300 rounded-lg"
+                        >
+                          View Campaigns
+                        </Button>
+                      </div>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-7 px-2 text-xs hover:bg-zinc-200 cursor-pointer dark:hover:bg-zinc-950 text-gray-600 dark:text-gray-300 rounded-lg"
-                    >
-                      View Campaigns
-                    </Button>
-                  </div>
-                </div>
+                  );
+                })()}
               </div>
             ))}
           </div>
@@ -331,13 +355,18 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                       <FileSpreadsheet className="h-5 w-5 text-gray-900 dark:text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
-                        {form.name}
-                      </h3>
-                      <div className="flex items-center gap-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                      <div className="space-y-1">
+                        <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
+                          {form.name}
+                        </h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
+                          {form.description || "No description available"}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-2">
                         <div className="flex items-center">
                           <Mail className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5" />
-                          <span>{form.campaignCount} campaign{form.campaignCount !== 1 ? 's' : ''}</span>
+                          <span>{form._count?.campaigns || 0} campaign{(form._count?.campaigns || 0) !== 1 ? 's' : ''}</span>
                         </div>
                       </div>
                     </div>
