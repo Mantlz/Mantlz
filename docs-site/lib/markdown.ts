@@ -9,10 +9,12 @@ import rehypeCodeTitles from "rehype-code-titles";
 
 // custom components imports
 import Note from "@/components/note";
+import { CodeBlock } from "@/components/CodeBlock";
 
 // add custom components
 const components = {
   Note,
+  pre: CodeBlock,
 };
 
 // can be used for other pages like blogs, Guides etc
