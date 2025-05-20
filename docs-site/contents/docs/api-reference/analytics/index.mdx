@@ -112,7 +112,7 @@ Returned when the rate limit is exceeded.
 ## Example Request
 
 ```bash
-curl -X GET "https://app.mantlz.com/api/v1/forms/form_123abc/analytics?period=week" \
+curl -X GET "https://api.mantlz.app/api/v1/forms/form_123abc/analytics?period=week" \
   -H "X-API-Key: mk_your_api_key_here"
 ```
 
@@ -121,7 +121,7 @@ curl -X GET "https://app.mantlz.com/api/v1/forms/form_123abc/analytics?period=we
 ```javascript
 async function getFormAnalytics(formId, period = 'month') {
   try {
-    const response = await fetch(`https://app.mantlz.com/api/v1/forms/${formId}/analytics?period=${period}`, {
+    const response = await fetch(`https://api.mantlz.app/api/v1/forms/${formId}/analytics?period=${period}`, {
       method: 'GET',
       headers: {
         'X-API-Key': 'mk_your_api_key_here'

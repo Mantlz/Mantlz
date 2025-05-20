@@ -78,7 +78,7 @@ Here's an example of how to handle API errors in JavaScript:
 ```javascript
 async function makeApiRequest(endpoint, options = {}) {
   try {
-    const response = await fetch(`https://app.mantlz.com/api/v1${endpoint}`, {
+    const response = await fetch(`https://api.mantlz.app/api/v1${endpoint}`, {
       ...options,
       headers: {
         'Content-Type': 'application/json',

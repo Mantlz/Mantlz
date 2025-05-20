@@ -89,11 +89,11 @@ For example:
 
 ```bash
 # Initial request
-curl -X GET "https://app.mantlz.com/api/v1/forms/list?limit=10" \
+curl -X GET "https://api.mantlz.app/api/v1/forms/list?limit=10" \
   -H "X-API-Key: mk_your_api_key_here"
 
 # Subsequent request using the nextCursor
-curl -X GET "https://app.mantlz.com/api/v1/forms/list?limit=10&cursor=form_789ghi" \
+curl -X GET "https://api.mantlz.app/api/v1/forms/list?limit=10&cursor=form_789ghi" \
   -H "X-API-Key: mk_your_api_key_here"
 ```
 
@@ -102,7 +102,7 @@ When there are no more results to fetch, the `nextCursor` field will be `null`.
 ## Example Request
 
 ```bash
-curl -X GET "https://app.mantlz.com/api/v1/forms/list?limit=10" \
+curl -X GET "https://api.mantlz.app/api/v1/forms/list?limit=10" \
   -H "X-API-Key: mk_your_api_key_here"
 ```
 
@@ -111,7 +111,7 @@ curl -X GET "https://app.mantlz.com/api/v1/forms/list?limit=10" \
 ```javascript
 async function listForms() {
   try {
-    const response = await fetch('https://app.mantlz.com/api/v1/forms/list?limit=10', {
+    const response = await fetch('https://api.mantlz.app/api/v1/forms/list?limit=10', {
       method: 'GET',
       headers: {
         'X-API-Key': 'mk_your_api_key_here'
