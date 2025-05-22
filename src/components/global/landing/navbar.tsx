@@ -82,7 +82,7 @@ export function Navbar() {
             href="/dashboard"
             className="flex items-center text-sm font-medium"
           >
-            <Button size="sm" className="flex items-center gap-1">
+            <Button size="sm" className="flex items-center gap-1 bg-orange-500 hover:bg-orange-600 text-white dark:bg-orange-500 dark:hover:bg-orange-600">
               Dashboard
             </Button>
           </Link>
@@ -90,7 +90,7 @@ export function Navbar() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               {/* Use user object from useUser(), which should be available if isSignedIn is true */}
-              <Avatar className="h-8 w-8 cursor-pointer bg-white rounded-full ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+              <Avatar className="h-8 w-8 cursor-pointer bg-white rounded-full ring-2 ring-orange-500 dark:ring-orange-500 ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2">
                 <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
                 <AvatarFallback>
                   {user?.firstName?.[0] || user?.lastName?.[0] || "U"}
@@ -125,9 +125,9 @@ export function Navbar() {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => signOut()}
-                className="cursor-pointer bg-red-600 text-white "
+                className="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white dark:bg-orange-500 dark:hover:bg-orange-600"
               >
-                <LogOut className="mr-2 h-4 w-4 text-black " />
+                <LogOut className="mr-2 h-4 w-4 text-white" />
                 <span>Sign out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -141,11 +141,11 @@ export function Navbar() {
     // if no session was found, or if the user explicitly signed out.
     return (
       <div className="flex items-center gap-4">
-        <Link href="/sign-in" className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+        <Link href="/sign-in" className="text-sm font-medium text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300">
           Sign in
         </Link>
         <Link href="/sign-up">
-          <Button size="sm" className="flex items-center gap-1 ">
+          <Button size="sm" className="flex items-center gap-1 bg-orange-500 hover:bg-orange-600 text-white dark:bg-orange-500 dark:hover:bg-orange-600">
             Sign up 
           </Button>
         </Link>
@@ -277,10 +277,12 @@ function NavLink({ href, children, active, target, ...props }: NavLinkProps) {
     <Link
       href={href}
       target={target}
-      {...props}
-      className={`text-sm ${
-        active ? "font-medium text-gray-900 dark:text-white" : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+      className={`text-sm font-medium transition-colors hover:text-orange-600 dark:hover:text-orange-400 ${
+        active
+          ? "text-orange-600 dark:text-orange-400"
+          : "text-zinc-600 dark:text-zinc-400"
       }`}
+      {...props}
     >
       {children}
     </Link>
@@ -306,10 +308,12 @@ function MobileNavLink({
       <Link
         href={href}
         target={target}
-        {...props}
-        className={`text-base py-2 ${
-          isActive ? "font-medium text-gray-900 dark:text-white" : "text-gray-600 dark:text-gray-400"
+        className={`block px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+          isActive
+            ? "bg-orange-100 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400"
+            : "text-zinc-600 hover:text-orange-600 dark:text-zinc-400 dark:hover:text-orange-400"
         }`}
+        {...props}
       >
         {children}
       </Link>

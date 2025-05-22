@@ -1,0 +1,2216 @@
+[
+  {
+    "title": "API Authentication",
+    "content": "\n# API Authentication\n\nAll requests to the Mantlz API require authentication using your API key. This guide explains how to obtain and use your API key.\n\n## Obtaining an API Key\n\nTo get an API key:\n\n1. Log in to your [Mantlz Dashboard](https://mantlz.app/dashboard)\n2. Navigate to **Settings** > **API Keys**\n3. Click **Create API Key**\n4. Name your API key and click **Generate**\n5. Copy and securely store your API key\n\n<Note type=\"warning\">\n  API keys are only displayed once at creation time. If you lose your key, you'll need to generate a new one.\n</Note>\n\n## Using Your API Key\n\nThere are two ways to authenticate your API requests:\n\n### 1. API Key Header (Recommended)\n\nInclude your API key in the `X-API-Key` header:\n\n```bash\ncurl -X GET \"https://app.mantlz/api/v1/forms/list\" \\\n  -H \"X-API-Key: mk_your_api_key_here\"\n```\n\n### 2. Query Parameter\n\nAlternatively, you can pass your API key as a query parameter:\n\n```bash\ncurl -X GET \"https://app.mantlz/api/v1/forms/list?apiKey=mk_your_api_key",
+    "url": "/docs/api-reference/authentication",
+    "category": "api-reference"
+  },
+  {
+    "title": "Obtaining an API Key",
+    "content": "",
+    "url": "/docs/api-reference/authentication#obtaining-an-api-key",
+    "category": "api-reference"
+  },
+  {
+    "title": "Using Your API Key",
+    "content": "",
+    "url": "/docs/api-reference/authentication#using-your-api-key",
+    "category": "api-reference"
+  },
+  {
+    "title": "1. API Key Header (Recommended)",
+    "content": "",
+    "url": "/docs/api-reference/authentication#1-api-key-header-recommended-",
+    "category": "api-reference"
+  },
+  {
+    "title": "2. Query Parameter",
+    "content": "",
+    "url": "/docs/api-reference/authentication#2-query-parameter",
+    "category": "api-reference"
+  },
+  {
+    "title": "API Key Security",
+    "content": "",
+    "url": "/docs/api-reference/authentication#api-key-security",
+    "category": "api-reference"
+  },
+  {
+    "title": "Rate Limiting",
+    "content": "",
+    "url": "/docs/api-reference/authentication#rate-limiting",
+    "category": "api-reference"
+  },
+  {
+    "title": "Client Configuration",
+    "content": "\n# Client Configuration\n\nThe Mantlz SDK comes with sensible defaults and automatic configuration. While most users won't need to modify any settings, the SDK provides configuration options for advanced use cases.\n\n## Quick Start\n\nFor most applications, you only need to provide your API key:\n\n```tsx\nimport { MantlzProvider } from \"@mantlz/sdk\";\n\nfunction App() {\n  return (\n    <MantlzProvider apiKey=\"your-api-key\">\n      {/* Your app content */}\n    </MantlzProvider>\n  );\n}\n```\n\nThat's it! The SDK automatically configures everything else with optimal defaults.\n\n\n## Configuration Options Explained\n\n\n\nThe SDK provides built-in toast notifications for:\n\n- Form submission success/failure\n- Validation errors\n- API key issues\n- Network errors\n\n\n```\n\nThe SDK automatically caches:\n\n- Form schemas\n- Validation rules\n- API responses\n\n## Best Practices\n\n1. **Start Simple**: Use the default configuration unless you have specific needs\n3. **Caching**: Keep caching enabled for better performance\n4. *",
+    "url": "/docs/api-reference/client-config",
+    "category": "api-reference"
+  },
+  {
+    "title": "Quick Start",
+    "content": "",
+    "url": "/docs/api-reference/client-config#quick-start",
+    "category": "api-reference"
+  },
+  {
+    "title": "Configuration Options Explained",
+    "content": "",
+    "url": "/docs/api-reference/client-config#configuration-options-explained",
+    "category": "api-reference"
+  },
+  {
+    "title": "Best Practices",
+    "content": "",
+    "url": "/docs/api-reference/client-config#best-practices",
+    "category": "api-reference"
+  },
+  {
+    "title": "Default Values",
+    "content": "",
+    "url": "/docs/api-reference/client-config#default-values",
+    "category": "api-reference"
+  },
+  {
+    "title": "Providers and Hooks",
+    "content": "\n# Providers and Hooks\n\nMantlz provides context providers and hooks to manage state and functionality across your application.\n\n## MantlzProvider\n\nThe `MantlzProvider` is the main context provider that should wrap your application to enable Mantlz features.\n\n### Basic Usage\n\n```tsx\n// In your _app.tsx or layout.tsx\nimport { MantlzProvider } from '@mantlz/nextjs';\n\nexport default function App({ Component, pageProps }) {\n  return (\n    <MantlzProvider apiKey=\"your_api_key_here\">\n      <Component {...pageProps} />\n    </MantlzProvider>\n  );\n}\n```\n\n### Provider Options\n\nThe `MantlzProvider` accepts the following props:\n\n```tsx\n<MantlzProvider\n  // Required: Your Mantlz API key\n  apiKey=\"your_api_key_here\"\n  \n  // Optional: Default toast handler\n  toastHandler={customToastHandler}\n  \n  // Optional: Default appearance settings for all forms\n  defaultAppearance={{\n    button: 'bg-zinc-600 hover:bg-zinc-700',\n    input: 'border-zinc-300 focus:ring-blue-500',\n  }}\n  \n  // Optional: Default mode",
+    "url": "/docs/api-reference/context",
+    "category": "api-reference"
+  },
+  {
+    "title": "MantlzProvider",
+    "content": "",
+    "url": "/docs/api-reference/context#mantlzprovider",
+    "category": "api-reference"
+  },
+  {
+    "title": "Basic Usage",
+    "content": "",
+    "url": "/docs/api-reference/context#basic-usage",
+    "category": "api-reference"
+  },
+  {
+    "title": "Provider Options",
+    "content": "",
+    "url": "/docs/api-reference/context#provider-options",
+    "category": "api-reference"
+  },
+  {
+    "title": "useMantlz Hook",
+    "content": "",
+    "url": "/docs/api-reference/context#usemantlz-hook",
+    "category": "api-reference"
+  },
+  {
+    "title": "Basic Usage",
+    "content": "",
+    "url": "/docs/api-reference/context#basic-usage",
+    "category": "api-reference"
+  },
+  {
+    "title": "Available Context Values",
+    "content": "",
+    "url": "/docs/api-reference/context#available-context-values",
+    "category": "api-reference"
+  },
+  {
+    "title": "MantlzClientProvider",
+    "content": "",
+    "url": "/docs/api-reference/context#mantlzclientprovider",
+    "category": "api-reference"
+  },
+  {
+    "title": "createMantlzClient",
+    "content": "",
+    "url": "/docs/api-reference/context#createmantlzclient",
+    "category": "api-reference"
+  },
+  {
+    "title": "Toast System Integration",
+    "content": "",
+    "url": "/docs/api-reference/context#toast-system-integration",
+    "category": "api-reference"
+  },
+  {
+    "title": "Error Handling",
+    "content": "\n# Error Handling\n\nThe Mantlz API uses standard HTTP status codes to indicate the success or failure of API requests. This guide explains how to handle errors from the API.\n\n## HTTP Status Codes\n\n| Status Code | Description |\n|-------------|-------------|\n| `200 OK` | The request was successful |\n| `400 Bad Request` | The request was invalid or cannot be served |\n| `401 Unauthorized` | Authentication credentials are missing or invalid |\n| `403 Forbidden` | The authenticated user doesn't have permission to access the requested resource |\n| `404 Not Found` | The requested resource doesn't exist |\n| `429 Too Many Requests` | The rate limit has been exceeded |\n| `500 Internal Server Error` | An error occurred on the server |\n\n## Error Response Format\n\nError responses include a JSON object with an error message:\n\n```json\n{\n  \"error\": \"Invalid or inactive API key\"\n}\n```\n\n## Common Errors and Solutions\n\n### Authentication Errors (401)\n\n```json\n{\n  \"error\": \"Invalid or inactive API key\"\n}\n```\n",
+    "url": "/docs/api-reference/error-handling",
+    "category": "api-reference"
+  },
+  {
+    "title": "HTTP Status Codes",
+    "content": "",
+    "url": "/docs/api-reference/error-handling#http-status-codes",
+    "category": "api-reference"
+  },
+  {
+    "title": "Error Response Format",
+    "content": "",
+    "url": "/docs/api-reference/error-handling#error-response-format",
+    "category": "api-reference"
+  },
+  {
+    "title": "Common Errors and Solutions",
+    "content": "",
+    "url": "/docs/api-reference/error-handling#common-errors-and-solutions",
+    "category": "api-reference"
+  },
+  {
+    "title": "Authentication Errors (401)",
+    "content": "",
+    "url": "/docs/api-reference/error-handling#authentication-errors-401-",
+    "category": "api-reference"
+  },
+  {
+    "title": "Rate Limiting Errors (429)",
+    "content": "",
+    "url": "/docs/api-reference/error-handling#rate-limiting-errors-429-",
+    "category": "api-reference"
+  },
+  {
+    "title": "Invalid Request Errors (400)",
+    "content": "",
+    "url": "/docs/api-reference/error-handling#invalid-request-errors-400-",
+    "category": "api-reference"
+  },
+  {
+    "title": "Resource Not Found Errors (404)",
+    "content": "",
+    "url": "/docs/api-reference/error-handling#resource-not-found-errors-404-",
+    "category": "api-reference"
+  },
+  {
+    "title": "Handling Errors in Your Code",
+    "content": "",
+    "url": "/docs/api-reference/error-handling#handling-errors-in-your-code",
+    "category": "api-reference"
+  },
+  {
+    "title": "Rate Limit Headers",
+    "content": "",
+    "url": "/docs/api-reference/error-handling#rate-limit-headers",
+    "category": "api-reference"
+  },
+  {
+    "title": "API Reference",
+    "content": "\n# Mantlz API Reference\n\nThe Mantlz API allows you to programmatically interact with your forms, submissions, and analytics. This guide provides details on authentication, endpoints, and example usage.\n\n## Base URL\n\nAll API requests should be made to the following base URL:\n\n```\nhttps://api.mantlz.app/api/v1\n```\n\n## Authentication\n\nAuthentication is required for all API endpoints. You can authenticate using your API key in one of two ways:\n\n### 1. API Key Header (Recommended)\n\nInclude your API key in the `X-API-Key` header:\n\n```\nX-API-Key: mk_your_api_key_here\n```\n\n### 2. Query Parameter\n\nAlternatively, you can pass your API key as a query parameter:\n\n```\n?apiKey=mk_your_api_key_here\n```\n\n## Rate Limiting\n\nAPI requests are subject to rate limiting. When a rate limit is exceeded, the API will return a `429 Too Many Requests` status code.\n\nRate limit information is included in the response headers:\n\n```\nX-RateLimit-Limit: 100\nX-RateLimit-Remaining: 99\nX-RateLimit-Reset: 1620000000\n```\n\n#",
+    "url": "/docs/api-reference",
+    "category": "api-reference"
+  },
+  {
+    "title": "Base URL",
+    "content": "",
+    "url": "/docs/api-reference#base-url",
+    "category": "api-reference"
+  },
+  {
+    "title": "Authentication",
+    "content": "",
+    "url": "/docs/api-reference#authentication",
+    "category": "api-reference"
+  },
+  {
+    "title": "1. API Key Header (Recommended)",
+    "content": "",
+    "url": "/docs/api-reference#1-api-key-header-recommended-",
+    "category": "api-reference"
+  },
+  {
+    "title": "2. Query Parameter",
+    "content": "",
+    "url": "/docs/api-reference#2-query-parameter",
+    "category": "api-reference"
+  },
+  {
+    "title": "Rate Limiting",
+    "content": "",
+    "url": "/docs/api-reference#rate-limiting",
+    "category": "api-reference"
+  },
+  {
+    "title": "Endpoints",
+    "content": "",
+    "url": "/docs/api-reference#endpoints",
+    "category": "api-reference"
+  },
+  {
+    "title": "Forms",
+    "content": "",
+    "url": "/docs/api-reference#forms",
+    "category": "api-reference"
+  },
+  {
+    "title": "List Forms",
+    "content": "",
+    "url": "/docs/api-reference#list-forms",
+    "category": "api-reference"
+  },
+  {
+    "title": "Get Form Details",
+    "content": "",
+    "url": "/docs/api-reference#get-form-details",
+    "category": "api-reference"
+  },
+  {
+    "title": "Get Users Joined Count",
+    "content": "",
+    "url": "/docs/api-reference#get-users-joined-count",
+    "category": "api-reference"
+  },
+  {
+    "title": "Form Submissions",
+    "content": "",
+    "url": "/docs/api-reference#form-submissions",
+    "category": "api-reference"
+  },
+  {
+    "title": "Submit Form",
+    "content": "",
+    "url": "/docs/api-reference#submit-form",
+    "category": "api-reference"
+  },
+  {
+    "title": "List Form Submissions",
+    "content": "",
+    "url": "/docs/api-reference#list-form-submissions",
+    "category": "api-reference"
+  },
+  {
+    "title": "Analytics",
+    "content": "",
+    "url": "/docs/api-reference#analytics",
+    "category": "api-reference"
+  },
+  {
+    "title": "Get Form Analytics",
+    "content": "",
+    "url": "/docs/api-reference#get-form-analytics",
+    "category": "api-reference"
+  },
+  {
+    "title": "Error Handling",
+    "content": "",
+    "url": "/docs/api-reference#error-handling",
+    "category": "api-reference"
+  },
+  {
+    "title": "Using the API with Your SDK",
+    "content": "",
+    "url": "/docs/api-reference#using-the-api-with-your-sdk",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example: Submitting a Form from a Custom Frontend",
+    "content": "",
+    "url": "/docs/api-reference#example-submitting-a-form-from-a-custom-frontend",
+    "category": "api-reference"
+  },
+  {
+    "title": "API Overview",
+    "content": "\n# Mantlz API Overview\n\nThe Mantlz API allows you to programmatically interact with your forms, submissions, and analytics. This guide provides details on authentication, endpoints, and example usage.\n\n## Base URL\n\nAll API requests should be made to the following base URL:\n\n```\nhttps://api.mantlz.app/api/v1\n```\n\n## Available Endpoints\n\nThe Mantlz API provides the following main categories of endpoints:\n\n### Forms\n\nEndpoints for managing and retrieving information about your forms:\n\n- **[List Forms](/docs/api-reference/forms/list)** - Get a list of all your forms\n- **[Get Form](/docs/api-reference/forms/get)** - Get details about a specific form\n- **[Users Joined](/docs/api-reference/forms/users-joined)** - Get the number of users who joined a waitlist\n\n### Submissions\n\nEndpoints for submitting and retrieving form submissions:\n\n- **[Submit Form](/docs/api-reference/submissions/submit)** - Submit data to a form\n- **[List Submissions](/docs/api-reference/submissions/list)** - Get submissi",
+    "url": "/docs/api-reference/overview",
+    "category": "api-reference"
+  },
+  {
+    "title": "Base URL",
+    "content": "",
+    "url": "/docs/api-reference/overview#base-url",
+    "category": "api-reference"
+  },
+  {
+    "title": "Available Endpoints",
+    "content": "",
+    "url": "/docs/api-reference/overview#available-endpoints",
+    "category": "api-reference"
+  },
+  {
+    "title": "Forms",
+    "content": "",
+    "url": "/docs/api-reference/overview#forms",
+    "category": "api-reference"
+  },
+  {
+    "title": "Submissions",
+    "content": "",
+    "url": "/docs/api-reference/overview#submissions",
+    "category": "api-reference"
+  },
+  {
+    "title": "Analytics",
+    "content": "",
+    "url": "/docs/api-reference/overview#analytics",
+    "category": "api-reference"
+  },
+  {
+    "title": "Getting Started",
+    "content": "",
+    "url": "/docs/api-reference/overview#getting-started",
+    "category": "api-reference"
+  },
+  {
+    "title": "SDK Integration",
+    "content": "",
+    "url": "/docs/api-reference/overview#sdk-integration",
+    "category": "api-reference"
+  },
+  {
+    "title": "Post-Submission Redirects",
+    "content": "\n# Post-Submission Redirects\n\nAfter a user submits a form, they can be redirected to a thank-you page. How this redirection works depends on your Mantlz subscription plan.\n\n## Plan-Based Redirection\n\nMantlz offers different redirect behavior based on your subscription plan:\n\n- **Free Users**: Always redirected to Mantlz's hosted thank-you page\n- **Paid Users** (STANDARD/PRO): Can specify custom redirect URLs or use the default Mantlz thank-you page\n\n## Implementation\n\n### Basic Usage (Free Plan)\n\nFree users' forms are automatically redirected to Mantlz's hosted thank-you page:\n\n```jsx\n// Free user form (uses Mantlz's hosted thank-you page)\n<FeedbackForm \n  formId=\"customer-feedback\"\n/>\n```\n\n### Custom Redirect (STANDARD/PRO plans only)\n\nPaid users can specify a custom redirect URL to their own thank-you page:\n\n```jsx\n// Paid user form with custom redirect\n<FeedbackForm \n  formId=\"customer-feedback\"\n  redirectUrl=\"/thank-you\"  // Redirects to your custom page\n/>\n```\n\n## How It Works\n\n1.",
+    "url": "/docs/api-reference/redirects",
+    "category": "api-reference"
+  },
+  {
+    "title": "Plan-Based Redirection",
+    "content": "",
+    "url": "/docs/api-reference/redirects#plan-based-redirection",
+    "category": "api-reference"
+  },
+  {
+    "title": "Implementation",
+    "content": "",
+    "url": "/docs/api-reference/redirects#implementation",
+    "category": "api-reference"
+  },
+  {
+    "title": "Basic Usage (Free Plan)",
+    "content": "",
+    "url": "/docs/api-reference/redirects#basic-usage-free-plan-",
+    "category": "api-reference"
+  },
+  {
+    "title": "Custom Redirect (STANDARD/PRO plans only)",
+    "content": "",
+    "url": "/docs/api-reference/redirects#custom-redirect-standard-pro-plans-only-",
+    "category": "api-reference"
+  },
+  {
+    "title": "How It Works",
+    "content": "",
+    "url": "/docs/api-reference/redirects#how-it-works",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example Custom Thank-You Page",
+    "content": "",
+    "url": "/docs/api-reference/redirects#example-custom-thank-you-page",
+    "category": "api-reference"
+  },
+  {
+    "title": "API Reference",
+    "content": "",
+    "url": "/docs/api-reference/redirects#api-reference",
+    "category": "api-reference"
+  },
+  {
+    "title": "Technical Notes",
+    "content": "",
+    "url": "/docs/api-reference/redirects#technical-notes",
+    "category": "api-reference"
+  },
+  {
+    "title": "Submissions API",
+    "content": "\n# Submissions API\n\nThe Mantlz Submissions API provides endpoints for submitting form data and retrieving form submissions. These endpoints allow you to programmatically submit data to your forms and access the submissions that users have made.\n\n## Available Endpoints\n\n### [Submit Form](/docs/api-reference/submissions/submit)\n\n```\nPOST /forms/submit\n```\n\nSubmit data to a form, such as user feedback, contact information, or waitlist sign-ups.\n\n[View documentation →](/docs/api-reference/submissions/submit)\n\n### [List Submissions](/docs/api-reference/submissions/list)\n\n```\nGET /forms/{formId}/submissions\n```\n\nRetrieve a paginated list of submissions for a specific form.\n\n[View documentation →](/docs/api-reference/submissions/list)\n\n## Common Use Cases\n\n- **Custom Forms**: Submit data from custom-built forms on your website\n- **Data Export**: Export form submissions for analysis in external tools\n- **Integration**: Connect Mantlz forms with other systems in your workflow\n\n## Example: Submi",
+    "url": "/docs/api-reference/submissions",
+    "category": "api-reference"
+  },
+  {
+    "title": "Available Endpoints",
+    "content": "",
+    "url": "/docs/api-reference/submissions#available-endpoints",
+    "category": "api-reference"
+  },
+  {
+    "title": "[Submit Form](/docs/api-reference/submissions/submit)",
+    "content": "",
+    "url": "/docs/api-reference/submissions#-submit-form-docs-api-reference-submissions-submit-",
+    "category": "api-reference"
+  },
+  {
+    "title": "[List Submissions](/docs/api-reference/submissions/list)",
+    "content": "",
+    "url": "/docs/api-reference/submissions#-list-submissions-docs-api-reference-submissions-list-",
+    "category": "api-reference"
+  },
+  {
+    "title": "Common Use Cases",
+    "content": "",
+    "url": "/docs/api-reference/submissions#common-use-cases",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example: Submitting Form Data",
+    "content": "",
+    "url": "/docs/api-reference/submissions#example-submitting-form-data",
+    "category": "api-reference"
+  },
+  {
+    "title": "List Submissions",
+    "content": "\n# List Submissions\n\nThis endpoint retrieves a paginated list of submissions for a specific form.\n\n## Endpoint\n\n```\nGET /forms/{formId}/submissions\n```\n\n## Authentication\n\nRequires an [API key](/docs/api-reference/authentication).\n\n## Path Parameters\n\n| Parameter | Type | Description |\n|-----------|------|-------------|\n| `formId` | string | The ID of the form to retrieve submissions for |\n\n## Query Parameters\n\n| Parameter | Type | Description |\n|-----------|------|-------------|\n| `limit` | integer | Maximum number of submissions to return (1-100, default: 50) |\n| `cursor` | string | Pagination cursor for fetching the next page |\n\n## Response\n\n### 200: OK\n\nReturns an object containing an array of submissions and a pagination cursor.\n\n**Response Fields:**\n\n| Field | Type | Description |\n|-------|------|-------------|\n| `submissions` | array | List of submission objects |\n| `submissions[].id` | string | Unique identifier for the submission |\n| `submissions[].formId` | string | ID of the",
+    "url": "/docs/api-reference/submissions/list",
+    "category": "api-reference"
+  },
+  {
+    "title": "Endpoint",
+    "content": "",
+    "url": "/docs/api-reference/submissions/list#endpoint",
+    "category": "api-reference"
+  },
+  {
+    "title": "Authentication",
+    "content": "",
+    "url": "/docs/api-reference/submissions/list#authentication",
+    "category": "api-reference"
+  },
+  {
+    "title": "Path Parameters",
+    "content": "",
+    "url": "/docs/api-reference/submissions/list#path-parameters",
+    "category": "api-reference"
+  },
+  {
+    "title": "Query Parameters",
+    "content": "",
+    "url": "/docs/api-reference/submissions/list#query-parameters",
+    "category": "api-reference"
+  },
+  {
+    "title": "Response",
+    "content": "",
+    "url": "/docs/api-reference/submissions/list#response",
+    "category": "api-reference"
+  },
+  {
+    "title": "200: OK",
+    "content": "",
+    "url": "/docs/api-reference/submissions/list#200-ok",
+    "category": "api-reference"
+  },
+  {
+    "title": "400: Bad Request",
+    "content": "",
+    "url": "/docs/api-reference/submissions/list#400-bad-request",
+    "category": "api-reference"
+  },
+  {
+    "title": "401: Unauthorized",
+    "content": "",
+    "url": "/docs/api-reference/submissions/list#401-unauthorized",
+    "category": "api-reference"
+  },
+  {
+    "title": "403: Forbidden",
+    "content": "",
+    "url": "/docs/api-reference/submissions/list#403-forbidden",
+    "category": "api-reference"
+  },
+  {
+    "title": "404: Not Found",
+    "content": "",
+    "url": "/docs/api-reference/submissions/list#404-not-found",
+    "category": "api-reference"
+  },
+  {
+    "title": "429: Too Many Requests",
+    "content": "",
+    "url": "/docs/api-reference/submissions/list#429-too-many-requests",
+    "category": "api-reference"
+  },
+  {
+    "title": "Pagination",
+    "content": "",
+    "url": "/docs/api-reference/submissions/list#pagination",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example Request",
+    "content": "",
+    "url": "/docs/api-reference/submissions/list#example-request",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example in JavaScript",
+    "content": "",
+    "url": "/docs/api-reference/submissions/list#example-in-javascript",
+    "category": "api-reference"
+  },
+  {
+    "title": "Submit Form",
+    "content": "\n# Submit Form\n\nThis endpoint allows you to programmatically submit data to a form.\n\n## Endpoint\n\n```\nPOST /forms/submit\n```\n\n## Authentication\n\nRequires an [API key](/docs/api-reference/authentication).\n\n## Request Body\n\n| Parameter | Type | Description |\n|-----------|------|-------------|\n| `formId` | string | **Required.** The ID of the form to submit data to |\n| `redirectUrl` | string | Optional. URL to redirect to after successful submission (for server-rendered forms) |\n| `data` | object | **Required.** Form data to submit |\n\nThe `data` object should contain key-value pairs corresponding to the form fields. The structure depends on the form type:\n\n### Feedback Form Data\n\n```json\n{\n  \"email\": \"user@example.com\",\n  \"rating\": 5,\n  \"message\": \"This is my feedback\"\n}\n```\n\n### Contact Form Data\n\n```json\n{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"subject\": \"Product inquiry\",\n  \"message\": \"I'd like to learn more about your product\"\n}\n```\n\n### Waitlist Form Data\n\n```json\n{\n",
+    "url": "/docs/api-reference/submissions/submit",
+    "category": "api-reference"
+  },
+  {
+    "title": "Endpoint",
+    "content": "",
+    "url": "/docs/api-reference/submissions/submit#endpoint",
+    "category": "api-reference"
+  },
+  {
+    "title": "Authentication",
+    "content": "",
+    "url": "/docs/api-reference/submissions/submit#authentication",
+    "category": "api-reference"
+  },
+  {
+    "title": "Request Body",
+    "content": "",
+    "url": "/docs/api-reference/submissions/submit#request-body",
+    "category": "api-reference"
+  },
+  {
+    "title": "Feedback Form Data",
+    "content": "",
+    "url": "/docs/api-reference/submissions/submit#feedback-form-data",
+    "category": "api-reference"
+  },
+  {
+    "title": "Contact Form Data",
+    "content": "",
+    "url": "/docs/api-reference/submissions/submit#contact-form-data",
+    "category": "api-reference"
+  },
+  {
+    "title": "Waitlist Form Data",
+    "content": "",
+    "url": "/docs/api-reference/submissions/submit#waitlist-form-data",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example Request",
+    "content": "",
+    "url": "/docs/api-reference/submissions/submit#example-request",
+    "category": "api-reference"
+  },
+  {
+    "title": "Response",
+    "content": "",
+    "url": "/docs/api-reference/submissions/submit#response",
+    "category": "api-reference"
+  },
+  {
+    "title": "200: OK",
+    "content": "",
+    "url": "/docs/api-reference/submissions/submit#200-ok",
+    "category": "api-reference"
+  },
+  {
+    "title": "400: Bad Request",
+    "content": "",
+    "url": "/docs/api-reference/submissions/submit#400-bad-request",
+    "category": "api-reference"
+  },
+  {
+    "title": "401: Unauthorized",
+    "content": "",
+    "url": "/docs/api-reference/submissions/submit#401-unauthorized",
+    "category": "api-reference"
+  },
+  {
+    "title": "403: Forbidden",
+    "content": "",
+    "url": "/docs/api-reference/submissions/submit#403-forbidden",
+    "category": "api-reference"
+  },
+  {
+    "title": "404: Not Found",
+    "content": "",
+    "url": "/docs/api-reference/submissions/submit#404-not-found",
+    "category": "api-reference"
+  },
+  {
+    "title": "429: Too Many Requests",
+    "content": "",
+    "url": "/docs/api-reference/submissions/submit#429-too-many-requests",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example in JavaScript",
+    "content": "",
+    "url": "/docs/api-reference/submissions/submit#example-in-javascript",
+    "category": "api-reference"
+  },
+  {
+    "title": "Notes",
+    "content": "",
+    "url": "/docs/api-reference/submissions/submit#notes",
+    "category": "api-reference"
+  },
+  {
+    "title": "Form Schema",
+    "content": "\n# Form Schema\n\nThe Mantlz SDK handles all form schema management internally. You don't need to implement or manage any schema yourself - just use our components and the SDK takes care of everything else.\n\n## Overview\n\nWhen you use the Mantlz SDK, forms are automatically configured and managed based on your form ID. The SDK:\n\n- Fetches the form schema automatically\n- Handles field validation\n- Manages form state\n- Processes form submissions\n- Handles error states\n- Manages loading states\n\n## Usage\n\nUsing a form is as simple as:\n\n```tsx\nimport { MantlzForm } from '@mantlz/sdk';\n\nfunction MyForm() {\n  return (\n    <MantlzForm \n      formId=\"your-form-id\"\n      onSuccess={(data) => {\n        console.log('Form submitted successfully!', data);\n      }}\n    />\n  );\n}\n```\n\nThat's it! The SDK handles everything else internally.\n\n## Behind the Scenes\n\nWhile you don't need to implement these yourself, here's what the SDK manages for you:\n\n### Form Configuration\n\nThe SDK automatically handles:\n\n`",
+    "url": "/docs/api-reference/types/form-schema",
+    "category": "api-reference"
+  },
+  {
+    "title": "Overview",
+    "content": "",
+    "url": "/docs/api-reference/types/form-schema#overview",
+    "category": "api-reference"
+  },
+  {
+    "title": "Usage",
+    "content": "",
+    "url": "/docs/api-reference/types/form-schema#usage",
+    "category": "api-reference"
+  },
+  {
+    "title": "Behind the Scenes",
+    "content": "",
+    "url": "/docs/api-reference/types/form-schema#behind-the-scenes",
+    "category": "api-reference"
+  },
+  {
+    "title": "Form Configuration",
+    "content": "",
+    "url": "/docs/api-reference/types/form-schema#form-configuration",
+    "category": "api-reference"
+  },
+  {
+    "title": "Field Management",
+    "content": "",
+    "url": "/docs/api-reference/types/form-schema#field-management",
+    "category": "api-reference"
+  },
+  {
+    "title": "What You Don't Need to Worry About",
+    "content": "",
+    "url": "/docs/api-reference/types/form-schema#what-you-don-t-need-to-worry-about",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example: Complete Form Implementation",
+    "content": "",
+    "url": "/docs/api-reference/types/form-schema#example-complete-form-implementation",
+    "category": "api-reference"
+  },
+  {
+    "title": "Best Practices",
+    "content": "",
+    "url": "/docs/api-reference/types/form-schema#best-practices",
+    "category": "api-reference"
+  },
+  {
+    "title": "Response Types",
+    "content": "\n# Response Types\n\nThis page documents the response types returned by various Mantlz SDK operations.\n\n## Form Submit Response\n\nThe `FormSubmitResponse` interface represents the response received after submitting a form:\n\n```typescript\ninterface FormSubmitResponse {\n  success: boolean;          // Whether the submission was successful\n  data?: any;               // Optional response data\n  error?: MantlzError;      // Error information if submission failed\n  submissionId?: string;    // Unique ID for the submission\n  message?: string;         // Optional response message\n  isConflict?: boolean;     // Whether there was a conflict\n  redirect?: {              // Redirect information\n    url: string;            // URL to redirect to\n    allowed: boolean;       // Whether redirect is allowed\n    reason?: string;        // Reason if redirect not allowed\n  };\n}\n```\n\n## Error Type\n\nThe `MantlzError` interface represents error information:\n\n```typescript\ninterface MantlzError {\n  message: strin",
+    "url": "/docs/api-reference/types/response-types",
+    "category": "api-reference"
+  },
+  {
+    "title": "Form Submit Response",
+    "content": "",
+    "url": "/docs/api-reference/types/response-types#form-submit-response",
+    "category": "api-reference"
+  },
+  {
+    "title": "Error Type",
+    "content": "",
+    "url": "/docs/api-reference/types/response-types#error-type",
+    "category": "api-reference"
+  },
+  {
+    "title": "Notification Response",
+    "content": "",
+    "url": "/docs/api-reference/types/response-types#notification-response",
+    "category": "api-reference"
+  },
+  {
+    "title": "Users Count Response",
+    "content": "",
+    "url": "/docs/api-reference/types/response-types#users-count-response",
+    "category": "api-reference"
+  },
+  {
+    "title": "Stripe Checkout Response",
+    "content": "",
+    "url": "/docs/api-reference/types/response-types#stripe-checkout-response",
+    "category": "api-reference"
+  },
+  {
+    "title": "Usage Examples",
+    "content": "",
+    "url": "/docs/api-reference/types/response-types#usage-examples",
+    "category": "api-reference"
+  },
+  {
+    "title": "Handling Form Submission Response",
+    "content": "",
+    "url": "/docs/api-reference/types/response-types#handling-form-submission-response",
+    "category": "api-reference"
+  },
+  {
+    "title": "Handling Error Responses",
+    "content": "",
+    "url": "/docs/api-reference/types/response-types#handling-error-responses",
+    "category": "api-reference"
+  },
+  {
+    "title": "Analytics API",
+    "content": "\n# Form Analytics\n\nThis endpoint retrieves analytics data for a specific form, including submission trends, user demographics, and more.\n\n## Endpoint\n\n```\nGET /forms/{formId}/analytics\n```\n\n## Authentication\n\nRequires an [API key](/docs/api-reference/authentication).\n\n## Path Parameters\n\n| Parameter | Type | Description |\n|-----------|------|-------------|\n| `formId` | string | The ID of the form to retrieve analytics for |\n\n## Query Parameters\n\n| Parameter | Type | Description |\n|-----------|------|-------------|\n| `period` | string | Time period for analytics (options: \"day\", \"week\", \"month\", \"year\", default: \"month\") |\n| `startDate` | string | Optional. Start date for custom period (format: YYYY-MM-DD) |\n| `endDate` | string | Optional. End date for custom period (format: YYYY-MM-DD) |\n\n## Response\n\n### 200: OK\n\nReturns an object containing analytics data for the specified form.\n\n**Response Fields:**\n\n| Field | Type | Description |\n|-------|------|-------------|\n| `period` | string ",
+    "url": "/docs/api-reference/v1/analytics",
+    "category": "api-reference"
+  },
+  {
+    "title": "Endpoint",
+    "content": "",
+    "url": "/docs/api-reference/v1/analytics#endpoint",
+    "category": "api-reference"
+  },
+  {
+    "title": "Authentication",
+    "content": "",
+    "url": "/docs/api-reference/v1/analytics#authentication",
+    "category": "api-reference"
+  },
+  {
+    "title": "Path Parameters",
+    "content": "",
+    "url": "/docs/api-reference/v1/analytics#path-parameters",
+    "category": "api-reference"
+  },
+  {
+    "title": "Query Parameters",
+    "content": "",
+    "url": "/docs/api-reference/v1/analytics#query-parameters",
+    "category": "api-reference"
+  },
+  {
+    "title": "Response",
+    "content": "",
+    "url": "/docs/api-reference/v1/analytics#response",
+    "category": "api-reference"
+  },
+  {
+    "title": "200: OK",
+    "content": "",
+    "url": "/docs/api-reference/v1/analytics#200-ok",
+    "category": "api-reference"
+  },
+  {
+    "title": "400: Bad Request",
+    "content": "",
+    "url": "/docs/api-reference/v1/analytics#400-bad-request",
+    "category": "api-reference"
+  },
+  {
+    "title": "401: Unauthorized",
+    "content": "",
+    "url": "/docs/api-reference/v1/analytics#401-unauthorized",
+    "category": "api-reference"
+  },
+  {
+    "title": "403: Forbidden",
+    "content": "",
+    "url": "/docs/api-reference/v1/analytics#403-forbidden",
+    "category": "api-reference"
+  },
+  {
+    "title": "404: Not Found",
+    "content": "",
+    "url": "/docs/api-reference/v1/analytics#404-not-found",
+    "category": "api-reference"
+  },
+  {
+    "title": "429: Too Many Requests",
+    "content": "",
+    "url": "/docs/api-reference/v1/analytics#429-too-many-requests",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example Request",
+    "content": "",
+    "url": "/docs/api-reference/v1/analytics#example-request",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example in JavaScript",
+    "content": "",
+    "url": "/docs/api-reference/v1/analytics#example-in-javascript",
+    "category": "api-reference"
+  },
+  {
+    "title": "Visualizing Analytics Data",
+    "content": "",
+    "url": "/docs/api-reference/v1/analytics#visualizing-analytics-data",
+    "category": "api-reference"
+  },
+  {
+    "title": "index",
+    "content": " ",
+    "url": "/docs/api-reference/v1/forms/get",
+    "category": "api-reference"
+  },
+  {
+    "title": "index",
+    "content": " ",
+    "url": "/docs/api-reference/v1/forms/list",
+    "category": "api-reference"
+  },
+  {
+    "title": "Get Form",
+    "content": "\n# Get Form\n\nThis endpoint retrieves the complete configuration and details for a form, including its dynamic field structure and type-specific features.\n\n## Endpoint\n\n```\nGET /forms/{formId}\n```\n\n## Authentication\n\nRequires an [API key](/docs/api-reference/authentication).\n\n## Path Parameters\n\n| Parameter | Type | Description |\n|-----------|------|-------------|\n| `formId` | string | The ID of the form to retrieve |\n\n## Response\n\n### 200: OK\n\nReturns an object containing the form's configuration and details.\n\n**Response Fields:**\n\n| Field | Type | Description |\n|-------|------|-------------|\n| `id` | string | Unique identifier for the form |\n| `name` | string | Name of the form |\n| `description` | string | Description of the form |\n| `formType` | string | Type of form (\"standard\", \"waitlist\", \"feedback\") |\n| `createdAt` | string | ISO 8601 timestamp when the form was created |\n| `updatedAt` | string | ISO 8601 timestamp when the form was last updated |\n| `submissionCount` | integer | ",
+    "url": "/docs/api-reference/v1/get",
+    "category": "api-reference"
+  },
+  {
+    "title": "Endpoint",
+    "content": "",
+    "url": "/docs/api-reference/v1/get#endpoint",
+    "category": "api-reference"
+  },
+  {
+    "title": "Authentication",
+    "content": "",
+    "url": "/docs/api-reference/v1/get#authentication",
+    "category": "api-reference"
+  },
+  {
+    "title": "Path Parameters",
+    "content": "",
+    "url": "/docs/api-reference/v1/get#path-parameters",
+    "category": "api-reference"
+  },
+  {
+    "title": "Response",
+    "content": "",
+    "url": "/docs/api-reference/v1/get#response",
+    "category": "api-reference"
+  },
+  {
+    "title": "200: OK",
+    "content": "",
+    "url": "/docs/api-reference/v1/get#200-ok",
+    "category": "api-reference"
+  },
+  {
+    "title": "Error Responses",
+    "content": "",
+    "url": "/docs/api-reference/v1/get#error-responses",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example Request",
+    "content": "",
+    "url": "/docs/api-reference/v1/get#example-request",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example in JavaScript",
+    "content": "",
+    "url": "/docs/api-reference/v1/get#example-in-javascript",
+    "category": "api-reference"
+  },
+  {
+    "title": "Forms API",
+    "content": "\n# Forms API\n\nThe Mantlz Forms API provides endpoints for accessing and managing your forms. These endpoints allow you to retrieve form information, get the number of users who have joined a waitlist, and more.\n\n## Available Endpoints\n\n### [List Forms](/docs/api-reference/forms/list)\n\n```\nGET /forms/list\n```\n\nRetrieve a paginated list of all your forms, including their names, descriptions, and submission counts.\n\n[View documentation →](/docs/api-reference/forms/list)\n\n### [Get Form](/docs/api-reference/forms/get)\n\n```\nGET /forms/{formId}\n```\n\nGet detailed information about a specific form, including its type, submission count, and settings.\n\n[View documentation →](/docs/api-reference/forms/get)\n\n### [Users Joined](/docs/api-reference/forms/users-joined)\n\n```\nGET /forms/{formId}/users-joined\n```\n\nFor waitlist forms, retrieve the number of users who have joined the waitlist.\n\n[View documentation →](/docs/api-reference/forms/users-joined)\n\n## Common Use Cases\n\n- **Form Dashboard**: Retrie",
+    "url": "/docs/api-reference/v1",
+    "category": "api-reference"
+  },
+  {
+    "title": "Available Endpoints",
+    "content": "",
+    "url": "/docs/api-reference/v1#available-endpoints",
+    "category": "api-reference"
+  },
+  {
+    "title": "[List Forms](/docs/api-reference/forms/list)",
+    "content": "",
+    "url": "/docs/api-reference/v1#-list-forms-docs-api-reference-forms-list-",
+    "category": "api-reference"
+  },
+  {
+    "title": "[Get Form](/docs/api-reference/forms/get)",
+    "content": "",
+    "url": "/docs/api-reference/v1#-get-form-docs-api-reference-forms-get-",
+    "category": "api-reference"
+  },
+  {
+    "title": "[Users Joined](/docs/api-reference/forms/users-joined)",
+    "content": "",
+    "url": "/docs/api-reference/v1#-users-joined-docs-api-reference-forms-users-joined-",
+    "category": "api-reference"
+  },
+  {
+    "title": "Common Use Cases",
+    "content": "",
+    "url": "/docs/api-reference/v1#common-use-cases",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example: Listing Forms",
+    "content": "",
+    "url": "/docs/api-reference/v1#example-listing-forms",
+    "category": "api-reference"
+  },
+  {
+    "title": "List Forms",
+    "content": "\n# List Forms\n\nThis endpoint retrieves a paginated list of all your forms.\n\n## Endpoint\n\n```\nGET /forms/list\n```\n\n## Authentication\n\nRequires an [API key](/docs/api-reference/authentication).\n\n## Query Parameters\n\n| Parameter | Type | Description |\n|-----------|------|-------------|\n| `limit` | integer | Maximum number of forms to return (1-100, default: 50) |\n| `cursor` | string | Pagination cursor for fetching the next page |\n\n## Response\n\n### 200: OK\n\nReturns an object containing an array of forms and a pagination cursor.\n\n**Response Fields:**\n\n| Field | Type | Description |\n|-------|------|-------------|\n| `forms` | array | List of form objects |\n| `forms[].id` | string | Unique identifier for the form |\n| `forms[].name` | string | Name of the form |\n| `forms[].description` | string | Description of the form |\n| `forms[].submissionCount` | integer | Number of submissions received |\n| `forms[].createdAt` | string | ISO 8601 timestamp when the form was created |\n| `forms[].updatedAt`",
+    "url": "/docs/api-reference/v1/list",
+    "category": "api-reference"
+  },
+  {
+    "title": "Endpoint",
+    "content": "",
+    "url": "/docs/api-reference/v1/list#endpoint",
+    "category": "api-reference"
+  },
+  {
+    "title": "Authentication",
+    "content": "",
+    "url": "/docs/api-reference/v1/list#authentication",
+    "category": "api-reference"
+  },
+  {
+    "title": "Query Parameters",
+    "content": "",
+    "url": "/docs/api-reference/v1/list#query-parameters",
+    "category": "api-reference"
+  },
+  {
+    "title": "Response",
+    "content": "",
+    "url": "/docs/api-reference/v1/list#response",
+    "category": "api-reference"
+  },
+  {
+    "title": "200: OK",
+    "content": "",
+    "url": "/docs/api-reference/v1/list#200-ok",
+    "category": "api-reference"
+  },
+  {
+    "title": "400: Bad Request",
+    "content": "",
+    "url": "/docs/api-reference/v1/list#400-bad-request",
+    "category": "api-reference"
+  },
+  {
+    "title": "401: Unauthorized",
+    "content": "",
+    "url": "/docs/api-reference/v1/list#401-unauthorized",
+    "category": "api-reference"
+  },
+  {
+    "title": "429: Too Many Requests",
+    "content": "",
+    "url": "/docs/api-reference/v1/list#429-too-many-requests",
+    "category": "api-reference"
+  },
+  {
+    "title": "Pagination",
+    "content": "",
+    "url": "/docs/api-reference/v1/list#pagination",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example Request",
+    "content": "",
+    "url": "/docs/api-reference/v1/list#example-request",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example in JavaScript",
+    "content": "",
+    "url": "/docs/api-reference/v1/list#example-in-javascript",
+    "category": "api-reference"
+  },
+  {
+    "title": "Form Submission",
+    "content": "\n# Form Submission\n\nThe Mantlz SDK handles form submissions automatically. You don't need to implement the submission logic yourself - the SDK takes care of everything including validation, file uploads, and response handling.\n\n## Basic Usage\n\nThe simplest way to submit a form is to use the `MantlzForm` component:\n\n```tsx\nimport { MantlzForm } from '@mantlz/sdk';\n\nfunction ContactForm() {\n  return (\n    <MantlzForm\n      formId=\"your-form-id\"\n      onSuccess={(response) => {\n        console.log('Form submitted successfully!', response);\n      }}\n    />\n  );\n}\n```\n\nThat's it! The SDK handles everything else automatically.\n\n## Features Handled by the SDK\n\nThe SDK automatically manages:\n\n- **Data Validation**: Validates all form fields before submission\n- **File Uploads**: Handles file uploads with automatic processing\n- **Rate Limiting**: Manages submission rates to prevent abuse\n- **Error Handling**: Provides comprehensive error management\n- **Success Responses**: Formats and processes ",
+    "url": "/docs/api-reference/v1/submit",
+    "category": "api-reference"
+  },
+  {
+    "title": "Basic Usage",
+    "content": "",
+    "url": "/docs/api-reference/v1/submit#basic-usage",
+    "category": "api-reference"
+  },
+  {
+    "title": "Features Handled by the SDK",
+    "content": "",
+    "url": "/docs/api-reference/v1/submit#features-handled-by-the-sdk",
+    "category": "api-reference"
+  },
+  {
+    "title": "Response Types",
+    "content": "",
+    "url": "/docs/api-reference/v1/submit#response-types",
+    "category": "api-reference"
+  },
+  {
+    "title": "Advanced Usage",
+    "content": "",
+    "url": "/docs/api-reference/v1/submit#advanced-usage",
+    "category": "api-reference"
+  },
+  {
+    "title": "File Uploads",
+    "content": "",
+    "url": "/docs/api-reference/v1/submit#file-uploads",
+    "category": "api-reference"
+  },
+  {
+    "title": "Error Handling",
+    "content": "",
+    "url": "/docs/api-reference/v1/submit#error-handling",
+    "category": "api-reference"
+  },
+  {
+    "title": "Best Practices",
+    "content": "",
+    "url": "/docs/api-reference/v1/submit#best-practices",
+    "category": "api-reference"
+  },
+  {
+    "title": "Rate Limiting",
+    "content": "",
+    "url": "/docs/api-reference/v1/submit#rate-limiting",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example: Complete Implementation",
+    "content": "",
+    "url": "/docs/api-reference/v1/submit#example-complete-implementation",
+    "category": "api-reference"
+  },
+  {
+    "title": "index",
+    "content": " ",
+    "url": "/docs/api-reference/v1/tracking/click",
+    "category": "api-reference"
+  },
+  {
+    "title": "index",
+    "content": " ",
+    "url": "/docs/api-reference/v1/tracking/open",
+    "category": "api-reference"
+  },
+  {
+    "title": "Users Joined",
+    "content": "\n# Users Joined\n\nThis endpoint retrieves the number of users who have joined a waitlist form.\n\n## Endpoint\n\n```\nGET /forms/{formId}/users-joined\n```\n\n## Authentication\n\nRequires an [API key](/docs/api-reference/authentication).\n\n## Path Parameters\n\n| Parameter | Type | Description |\n|-----------|------|-------------|\n| `formId` | string | The ID of the waitlist form |\n\n## Response\n\n### 200: OK\n\nReturns an object containing the number of users who have joined the waitlist.\n\n**Response Fields:**\n\n| Field | Type | Description |\n|-------|------|-------------|\n| `usersJoined` | integer | Number of users who have joined the waitlist |\n\n**Example Response:**\n\n```json\n{\n  \"usersJoined\": 245\n}\n```\n\n### 400: Bad Request\n\nReturned when the request parameters are invalid.\n\n### 401: Unauthorized\n\nReturned when the API key is missing or invalid.\n\n### 403: Forbidden\n\nReturned when the API key does not have access to the specified form.\n\n### 404: Not Found\n\nReturned when the form with the specified ID",
+    "url": "/docs/api-reference/v1/users-joined",
+    "category": "api-reference"
+  },
+  {
+    "title": "Endpoint",
+    "content": "",
+    "url": "/docs/api-reference/v1/users-joined#endpoint",
+    "category": "api-reference"
+  },
+  {
+    "title": "Authentication",
+    "content": "",
+    "url": "/docs/api-reference/v1/users-joined#authentication",
+    "category": "api-reference"
+  },
+  {
+    "title": "Path Parameters",
+    "content": "",
+    "url": "/docs/api-reference/v1/users-joined#path-parameters",
+    "category": "api-reference"
+  },
+  {
+    "title": "Response",
+    "content": "",
+    "url": "/docs/api-reference/v1/users-joined#response",
+    "category": "api-reference"
+  },
+  {
+    "title": "200: OK",
+    "content": "",
+    "url": "/docs/api-reference/v1/users-joined#200-ok",
+    "category": "api-reference"
+  },
+  {
+    "title": "400: Bad Request",
+    "content": "",
+    "url": "/docs/api-reference/v1/users-joined#400-bad-request",
+    "category": "api-reference"
+  },
+  {
+    "title": "401: Unauthorized",
+    "content": "",
+    "url": "/docs/api-reference/v1/users-joined#401-unauthorized",
+    "category": "api-reference"
+  },
+  {
+    "title": "403: Forbidden",
+    "content": "",
+    "url": "/docs/api-reference/v1/users-joined#403-forbidden",
+    "category": "api-reference"
+  },
+  {
+    "title": "404: Not Found",
+    "content": "",
+    "url": "/docs/api-reference/v1/users-joined#404-not-found",
+    "category": "api-reference"
+  },
+  {
+    "title": "429: Too Many Requests",
+    "content": "",
+    "url": "/docs/api-reference/v1/users-joined#429-too-many-requests",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example Request",
+    "content": "",
+    "url": "/docs/api-reference/v1/users-joined#example-request",
+    "category": "api-reference"
+  },
+  {
+    "title": "Example in JavaScript",
+    "content": "",
+    "url": "/docs/api-reference/v1/users-joined#example-in-javascript",
+    "category": "api-reference"
+  },
+  {
+    "title": "Usage Example",
+    "content": "",
+    "url": "/docs/api-reference/v1/users-joined#usage-example",
+    "category": "api-reference"
+  },
+  {
+    "title": "Form Appearance",
+    "content": "\n# Form Appearance\n\nThe mantlz component provides extensive customization options to match your brand's design. All styling options work across any form type, with additional options for type-specific features.\n\n## Basic Styling\n\nApply basic styling using the appearance prop:\n\n```tsx\nimport { mantlz } from '@mantlz/nextjs';\n\n<mantlz\n  formId=\"your-form-id\"\n  appearance={{\n    elements: {\n      // Container styling\n      container: 'bg-white p-6 rounded-lg',\n      form: 'space-y-6',\n      \n      // Input styling\n      input: 'border-gray-300 focus:ring-blue-500 focus:border-blue-500',\n      textarea: 'border-gray-300 focus:ring-blue-500 focus:border-blue-500',\n      label: 'text-gray-700 font-medium',\n      \n      // Button styling\n      submitButton: 'bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded',\n      \n      // Error styling\n      error: 'text-red-600 text-sm mt-1',\n    }\n  }}\n/>\n```\n\n## Themed Styling\n\nUse the theme prop for predefined styles:\n\n```tsx\n<mantlz\n  formId=",
+    "url": "/docs/appearance",
+    "category": "appearance"
+  },
+  {
+    "title": "Basic Styling",
+    "content": "",
+    "url": "/docs/appearance#basic-styling",
+    "category": "appearance"
+  },
+  {
+    "title": "Themed Styling",
+    "content": "",
+    "url": "/docs/appearance#themed-styling",
+    "category": "appearance"
+  },
+  {
+    "title": "Type-Specific Features",
+    "content": "",
+    "url": "/docs/appearance#type-specific-features",
+    "category": "appearance"
+  },
+  {
+    "title": "Waitlist Form Features",
+    "content": "",
+    "url": "/docs/appearance#waitlist-form-features",
+    "category": "appearance"
+  },
+  {
+    "title": "Feedback Form Features",
+    "content": "",
+    "url": "/docs/appearance#feedback-form-features",
+    "category": "appearance"
+  },
+  {
+    "title": "Available Style Properties",
+    "content": "",
+    "url": "/docs/appearance#available-style-properties",
+    "category": "appearance"
+  },
+  {
+    "title": "Base Elements",
+    "content": "",
+    "url": "/docs/appearance#base-elements",
+    "category": "appearance"
+  },
+  {
+    "title": "Input Elements",
+    "content": "",
+    "url": "/docs/appearance#input-elements",
+    "category": "appearance"
+  },
+  {
+    "title": "Button Elements",
+    "content": "",
+    "url": "/docs/appearance#button-elements",
+    "category": "appearance"
+  },
+  {
+    "title": "Type-Specific Elements",
+    "content": "",
+    "url": "/docs/appearance#type-specific-elements",
+    "category": "appearance"
+  },
+  {
+    "title": "Examples",
+    "content": "",
+    "url": "/docs/appearance#examples",
+    "category": "appearance"
+  },
+  {
+    "title": "Modern Glass Theme",
+    "content": "",
+    "url": "/docs/appearance#modern-glass-theme",
+    "category": "appearance"
+  },
+  {
+    "title": "Neobrutalism Theme",
+    "content": "",
+    "url": "/docs/appearance#neobrutalism-theme",
+    "category": "appearance"
+  },
+  {
+    "title": "Dark Theme",
+    "content": "",
+    "url": "/docs/appearance#dark-theme",
+    "category": "appearance"
+  },
+  {
+    "title": "index",
+    "content": "# Themes\n\nMantlz SDK comes with a powerful theme system that allows you to customize the appearance of your forms. The theme system is built on top of CSS variables and provides several built-in themes while allowing for complete customization.\n\n## Built-in Themes\n\n### Default Theme\nClean, professional design with subtle shadows and rounded corners.\n\n```tsx\n<Mantlz formId=\"your_form_id\" theme=\"default\" />\n```\n\n### Modern Theme\nContemporary design with bold colors and minimalist aesthetics.\n\n```tsx\n<Mantlz formId=\"your_form_id\" theme=\"modern\" />\n```\n\n### Neobrutalism Theme\nBold, playful design with strong colors and sharp edges.\n\n```tsx\n<Mantlz formId=\"your_form_id\" theme=\"neobrutalism\" />\n```\n\n### Simple Theme\nMinimalist design focusing on content and readability.\n\n```tsx\n<Mantlz formId=\"your_form_id\" theme=\"simple\" />\n```\n\n## Theme Structure\n\nEach theme defines styles for different form elements:\n\n```typescript\ninterface Theme {\n  form: {\n    container: CSSProperties;\n    title: CSSPr",
+    "url": "/docs/appearance/themes",
+    "category": "appearance"
+  },
+  {
+    "title": "Built-in Themes",
+    "content": "",
+    "url": "/docs/appearance/themes#built-in-themes",
+    "category": "appearance"
+  },
+  {
+    "title": "Default Theme",
+    "content": "",
+    "url": "/docs/appearance/themes#default-theme",
+    "category": "appearance"
+  },
+  {
+    "title": "Modern Theme",
+    "content": "",
+    "url": "/docs/appearance/themes#modern-theme",
+    "category": "appearance"
+  },
+  {
+    "title": "Neobrutalism Theme",
+    "content": "",
+    "url": "/docs/appearance/themes#neobrutalism-theme",
+    "category": "appearance"
+  },
+  {
+    "title": "Simple Theme",
+    "content": "",
+    "url": "/docs/appearance/themes#simple-theme",
+    "category": "appearance"
+  },
+  {
+    "title": "Theme Structure",
+    "content": "",
+    "url": "/docs/appearance/themes#theme-structure",
+    "category": "appearance"
+  },
+  {
+    "title": "Style Properties",
+    "content": "",
+    "url": "/docs/appearance/themes#style-properties",
+    "category": "appearance"
+  },
+  {
+    "title": "Form Container",
+    "content": "",
+    "url": "/docs/appearance/themes#form-container",
+    "category": "appearance"
+  },
+  {
+    "title": "Form Title",
+    "content": "",
+    "url": "/docs/appearance/themes#form-title",
+    "category": "appearance"
+  },
+  {
+    "title": "Form Fields",
+    "content": "",
+    "url": "/docs/appearance/themes#form-fields",
+    "category": "appearance"
+  },
+  {
+    "title": "Submit Button",
+    "content": "",
+    "url": "/docs/appearance/themes#submit-button",
+    "category": "appearance"
+  },
+  {
+    "title": "Customization Examples",
+    "content": "",
+    "url": "/docs/appearance/themes#customization-examples",
+    "category": "appearance"
+  },
+  {
+    "title": "Custom Container Styles",
+    "content": "",
+    "url": "/docs/appearance/themes#custom-container-styles",
+    "category": "appearance"
+  },
+  {
+    "title": "Custom Field Styles",
+    "content": "",
+    "url": "/docs/appearance/themes#custom-field-styles",
+    "category": "appearance"
+  },
+  {
+    "title": "Custom Button Styles",
+    "content": "",
+    "url": "/docs/appearance/themes#custom-button-styles",
+    "category": "appearance"
+  },
+  {
+    "title": "Best Practices",
+    "content": "",
+    "url": "/docs/appearance/themes#best-practices",
+    "category": "appearance"
+  },
+  {
+    "title": "Next Steps",
+    "content": "",
+    "url": "/docs/appearance/themes#next-steps",
+    "category": "appearance"
+  },
+  {
+    "title": "index",
+    "content": "# Error Handling\n\nMantlz SDK provides comprehensive error handling with built-in error types, toast notifications, and customizable error messages.\n\n## Basic Usage\n\n```tsx\n<Mantlz \n  formId=\"your_form_id\"\n/>\n```\n\n## Error Types\n\n### Built-in Error Types\n\n```typescript\ninterface MantlzError {\n  message: string;\n  code: number;\n  userMessage?: string;\n  details?: any;\n  alreadyHandled?: boolean;\n  isConflict?: boolean;\n}\n```\n\n### Common Error Codes\n\n```typescript\nconst ErrorCodes = {\n  VALIDATION_ERROR: 400,\n  UNAUTHORIZED: 401,\n  NOT_FOUND: 404,\n  CONFLICT: 409,\n  SERVER_ERROR: 500\n} as const;\n```\n\n## Error Handling\n\n### Basic Error Handling\n\n```typescript\ntry {\n  await form.submit();\n} catch (error) {\n  if (error instanceof MantlzError) {\n    switch (error.code) {\n      case 400:\n        // Handle validation error\n        break;\n      case 401:\n        // Handle unauthorized error\n        break;\n      case 404:\n        // Handle not found error\n        break;\n      default:\n        // ",
+    "url": "/docs/features/error-handling",
+    "category": "features"
+  },
+  {
+    "title": "Basic Usage",
+    "content": "",
+    "url": "/docs/features/error-handling#basic-usage",
+    "category": "features"
+  },
+  {
+    "title": "Error Types",
+    "content": "",
+    "url": "/docs/features/error-handling#error-types",
+    "category": "features"
+  },
+  {
+    "title": "Built-in Error Types",
+    "content": "",
+    "url": "/docs/features/error-handling#built-in-error-types",
+    "category": "features"
+  },
+  {
+    "title": "Common Error Codes",
+    "content": "",
+    "url": "/docs/features/error-handling#common-error-codes",
+    "category": "features"
+  },
+  {
+    "title": "Error Handling",
+    "content": "",
+    "url": "/docs/features/error-handling#error-handling",
+    "category": "features"
+  },
+  {
+    "title": "Basic Error Handling",
+    "content": "",
+    "url": "/docs/features/error-handling#basic-error-handling",
+    "category": "features"
+  },
+  {
+    "title": "Toast Notifications",
+    "content": "",
+    "url": "/docs/features/error-handling#toast-notifications",
+    "category": "features"
+  },
+  {
+    "title": "Examples",
+    "content": "",
+    "url": "/docs/features/error-handling#examples",
+    "category": "features"
+  },
+  {
+    "title": "Form Submission Error Handling",
+    "content": "",
+    "url": "/docs/features/error-handling#form-submission-error-handling",
+    "category": "features"
+  },
+  {
+    "title": "File Upload Error Handling",
+    "content": "",
+    "url": "/docs/features/error-handling#file-upload-error-handling",
+    "category": "features"
+  },
+  {
+    "title": "API Error Handling",
+    "content": "",
+    "url": "/docs/features/error-handling#api-error-handling",
+    "category": "features"
+  },
+  {
+    "title": "Error Configuration",
+    "content": "",
+    "url": "/docs/features/error-handling#error-configuration",
+    "category": "features"
+  },
+  {
+    "title": "Client Configuration",
+    "content": "",
+    "url": "/docs/features/error-handling#client-configuration",
+    "category": "features"
+  },
+  {
+    "title": "Form Configuration",
+    "content": "",
+    "url": "/docs/features/error-handling#form-configuration",
+    "category": "features"
+  },
+  {
+    "title": "Best Practices",
+    "content": "",
+    "url": "/docs/features/error-handling#best-practices",
+    "category": "features"
+  },
+  {
+    "title": "Error Types Reference",
+    "content": "",
+    "url": "/docs/features/error-handling#error-types-reference",
+    "category": "features"
+  },
+  {
+    "title": "Validation Errors",
+    "content": "",
+    "url": "/docs/features/error-handling#validation-errors",
+    "category": "features"
+  },
+  {
+    "title": "Authentication Errors",
+    "content": "",
+    "url": "/docs/features/error-handling#authentication-errors",
+    "category": "features"
+  },
+  {
+    "title": "API Errors",
+    "content": "",
+    "url": "/docs/features/error-handling#api-errors",
+    "category": "features"
+  },
+  {
+    "title": "Next Steps",
+    "content": "",
+    "url": "/docs/features/error-handling#next-steps",
+    "category": "features"
+  },
+  {
+    "title": "index",
+    "content": "# Field Types\n\nMantlz SDK supports a variety of field types to handle different input requirements. Each field type comes with built-in validation and customization options.\n\n## Available Field Types\n\n### Text Input\nBasic text input field for single-line text.\n\n```typescript\nconst field: FormField = {\n  id: 'name',\n  name: 'name',\n  label: 'Full Name',\n  type: 'text',\n  required: true,\n  placeholder: 'Enter your full name'\n};\n```\n\n### Email Input\nEmail input with built-in email validation.\n\n```typescript\nconst field: FormField = {\n  id: 'email',\n  name: 'email',\n  label: 'Email Address',\n  type: 'email',\n  required: true,\n  placeholder: 'your@email.com'\n};\n```\n\n### Number Input\nNumeric input with optional min/max validation.\n\n```typescript\nconst field: FormField = {\n  id: 'age',\n  name: 'age',\n  label: 'Age',\n  type: 'number',\n  required: true,\n  placeholder: 'Enter your age'\n};\n```\n\n### Textarea\nMulti-line text input for longer content.\n\n```typescript\nconst field: FormField = {\n  id: ",
+    "url": "/docs/features/field-types",
+    "category": "features"
+  },
+  {
+    "title": "Available Field Types",
+    "content": "",
+    "url": "/docs/features/field-types#available-field-types",
+    "category": "features"
+  },
+  {
+    "title": "Text Input",
+    "content": "",
+    "url": "/docs/features/field-types#text-input",
+    "category": "features"
+  },
+  {
+    "title": "Email Input",
+    "content": "",
+    "url": "/docs/features/field-types#email-input",
+    "category": "features"
+  },
+  {
+    "title": "Number Input",
+    "content": "",
+    "url": "/docs/features/field-types#number-input",
+    "category": "features"
+  },
+  {
+    "title": "Textarea",
+    "content": "",
+    "url": "/docs/features/field-types#textarea",
+    "category": "features"
+  },
+  {
+    "title": "Select",
+    "content": "",
+    "url": "/docs/features/field-types#select",
+    "category": "features"
+  },
+  {
+    "title": "Checkbox",
+    "content": "",
+    "url": "/docs/features/field-types#checkbox",
+    "category": "features"
+  },
+  {
+    "title": "File Upload",
+    "content": "",
+    "url": "/docs/features/field-types#file-upload",
+    "category": "features"
+  },
+  {
+    "title": "Product",
+    "content": "",
+    "url": "/docs/features/field-types#product",
+    "category": "features"
+  },
+  {
+    "title": "Field Configuration",
+    "content": "",
+    "url": "/docs/features/field-types#field-configuration",
+    "category": "features"
+  },
+  {
+    "title": "Field Validation",
+    "content": "",
+    "url": "/docs/features/field-types#field-validation",
+    "category": "features"
+  },
+  {
+    "title": "Best Practices",
+    "content": "",
+    "url": "/docs/features/field-types#best-practices",
+    "category": "features"
+  },
+  {
+    "title": "Next Steps",
+    "content": "",
+    "url": "/docs/features/field-types#next-steps",
+    "category": "features"
+  },
+  {
+    "title": "index",
+    "content": "# File Upload\n\nThe Mantlz SDK provides robust file upload capabilities with built-in validation, size restrictions, and type checking.\n\n## Basic Usage\n\n```tsx\n<Mantlz \n  formId=\"your_form_id\"\n  fields={[\n    {\n      id: 'document',\n      name: 'document',\n      type: 'file',\n      label: 'Upload Document',\n      required: true,\n      accept: ['.pdf', '.doc', '.docx'],\n      maxSize: 5 * 1024 * 1024 // 5MB\n    }\n  ]}\n/>\n```\n\n## Configuration Options\n\n### Field Properties\n\n```typescript\ninterface FileField extends FormField {\n  type: 'file';\n  accept?: string[];        // Allowed file types\n  maxSize?: number;         // Maximum file size in bytes\n  multiple?: boolean;       // Allow multiple file uploads\n  required?: boolean;       // Is the field required?\n}\n```\n\n### Accepted File Types\nYou can specify allowed file types using standard MIME types or file extensions:\n\n```typescript\nconst field: FileField = {\n  // ...\n  accept: [\n    '.pdf',                 // By extension\n    '.doc', '.",
+    "url": "/docs/features/file-upload",
+    "category": "features"
+  },
+  {
+    "title": "Basic Usage",
+    "content": "",
+    "url": "/docs/features/file-upload#basic-usage",
+    "category": "features"
+  },
+  {
+    "title": "Configuration Options",
+    "content": "",
+    "url": "/docs/features/file-upload#configuration-options",
+    "category": "features"
+  },
+  {
+    "title": "Field Properties",
+    "content": "",
+    "url": "/docs/features/file-upload#field-properties",
+    "category": "features"
+  },
+  {
+    "title": "Accepted File Types",
+    "content": "",
+    "url": "/docs/features/file-upload#accepted-file-types",
+    "category": "features"
+  },
+  {
+    "title": "Size Restrictions",
+    "content": "",
+    "url": "/docs/features/file-upload#size-restrictions",
+    "category": "features"
+  },
+  {
+    "title": "Validation",
+    "content": "",
+    "url": "/docs/features/file-upload#validation",
+    "category": "features"
+  },
+  {
+    "title": "Handling File Uploads",
+    "content": "",
+    "url": "/docs/features/file-upload#handling-file-uploads",
+    "category": "features"
+  },
+  {
+    "title": "Examples",
+    "content": "",
+    "url": "/docs/features/file-upload#examples",
+    "category": "features"
+  },
+  {
+    "title": "Basic Document Upload",
+    "content": "",
+    "url": "/docs/features/file-upload#basic-document-upload",
+    "category": "features"
+  },
+  {
+    "title": "Image Upload",
+    "content": "",
+    "url": "/docs/features/file-upload#image-upload",
+    "category": "features"
+  },
+  {
+    "title": "Multiple File Upload",
+    "content": "",
+    "url": "/docs/features/file-upload#multiple-file-upload",
+    "category": "features"
+  },
+  {
+    "title": "Best Practices",
+    "content": "",
+    "url": "/docs/features/file-upload#best-practices",
+    "category": "features"
+  },
+  {
+    "title": "Error Handling",
+    "content": "",
+    "url": "/docs/features/file-upload#error-handling",
+    "category": "features"
+  },
+  {
+    "title": "Next Steps",
+    "content": "",
+    "url": "/docs/features/file-upload#next-steps",
+    "category": "features"
+  },
+  {
+    "title": "index",
+    "content": "# Form Types\n\nMantlz SDK supports various form types, each designed for specific use cases and equipped with unique features.\n\n## Available Form Types\n\n### Waitlist Form\nIdeal for collecting early user interest and managing product launches.\n\n```tsx\n<Mantlz \n  formId=\"your_waitlist_form_id\"\n  showUsersJoined={true}\n  usersJoinedLabel=\"people on the waitlist\"\n/>\n```\n\nFeatures:\n- Built-in users counter\n- Optional email verification\n- Customizable success messages\n- Duplicate entry prevention\n\n### Contact Form\nPerfect for gathering user inquiries and messages.\n\n```tsx\n<Mantlz \n  formId=\"your_contact_form_id\"\n  redirectUrl=\"/thank-you\"\n/>\n```\n\nFeatures:\n- Email field validation\n- File attachment support\n- Custom field validation\n- Redirect after submission\n\n### Feedback Form\nCollect user feedback with ratings and comments.\n\n```tsx\n<Mantlz \n  formId=\"your_feedback_form_id\"\n  theme=\"modern\"\n/>\n```\n\nFeatures:\n- Star rating component\n- Optional comment field\n- Multiple rating criteria\n- Custom",
+    "url": "/docs/features/form-types",
+    "category": "features"
+  },
+  {
+    "title": "Available Form Types",
+    "content": "",
+    "url": "/docs/features/form-types#available-form-types",
+    "category": "features"
+  },
+  {
+    "title": "Waitlist Form",
+    "content": "",
+    "url": "/docs/features/form-types#waitlist-form",
+    "category": "features"
+  },
+  {
+    "title": "Contact Form",
+    "content": "",
+    "url": "/docs/features/form-types#contact-form",
+    "category": "features"
+  },
+  {
+    "title": "Feedback Form",
+    "content": "",
+    "url": "/docs/features/form-types#feedback-form",
+    "category": "features"
+  },
+  {
+    "title": "Survey Form",
+    "content": "",
+    "url": "/docs/features/form-types#survey-form",
+    "category": "features"
+  },
+  {
+    "title": "Application Form",
+    "content": "",
+    "url": "/docs/features/form-types#application-form",
+    "category": "features"
+  },
+  {
+    "title": "Order Form",
+    "content": "",
+    "url": "/docs/features/form-types#order-form",
+    "category": "features"
+  },
+  {
+    "title": "Analytics Opt-in Form",
+    "content": "",
+    "url": "/docs/features/form-types#analytics-opt-in-form",
+    "category": "features"
+  },
+  {
+    "title": "RSVP Form",
+    "content": "",
+    "url": "/docs/features/form-types#rsvp-form",
+    "category": "features"
+  },
+  {
+    "title": "Custom Form",
+    "content": "",
+    "url": "/docs/features/form-types#custom-form",
+    "category": "features"
+  },
+  {
+    "title": "Form Type Configuration",
+    "content": "",
+    "url": "/docs/features/form-types#form-type-configuration",
+    "category": "features"
+  },
+  {
+    "title": "Best Practices",
+    "content": "",
+    "url": "/docs/features/form-types#best-practices",
+    "category": "features"
+  },
+  {
+    "title": "Next Steps",
+    "content": "",
+    "url": "/docs/features/form-types#next-steps",
+    "category": "features"
+  },
+  {
+    "title": "index",
+    "content": "# Product Fields\n\nProduct fields in Mantlz SDK allow you to create product selection interfaces with pricing, descriptions, and images. This is particularly useful for order forms and product selection workflows.\n\n## Basic Usage\n\n```tsx\n<Mantlz \n  formId=\"your_form_id\"\n  fields={[\n    {\n      id: 'product',\n      name: 'product',\n      type: 'product',\n      label: 'Select Product',\n      required: true,\n      products: [\n        {\n          id: 'basic',\n          name: 'Basic Plan',\n          description: 'Perfect for starters',\n          price: 9.99,\n          currency: 'USD',\n          image: '/images/basic.png'\n        }\n      ],\n      displayMode: 'grid'\n    }\n  ]}\n/>\n```\n\n## Configuration\n\n### Field Properties\n\n```typescript\ninterface ProductField extends FormField {\n  type: 'product';\n  products: Product[];\n  displayMode?: 'grid' | 'list';\n  allowMultiple?: boolean;\n  showPrices?: boolean;\n}\n\ninterface Product {\n  id: string;\n  name: string;\n  description?: string;\n  price: numb",
+    "url": "/docs/features/product-fields",
+    "category": "features"
+  },
+  {
+    "title": "Basic Usage",
+    "content": "",
+    "url": "/docs/features/product-fields#basic-usage",
+    "category": "features"
+  },
+  {
+    "title": "Configuration",
+    "content": "",
+    "url": "/docs/features/product-fields#configuration",
+    "category": "features"
+  },
+  {
+    "title": "Field Properties",
+    "content": "",
+    "url": "/docs/features/product-fields#field-properties",
+    "category": "features"
+  },
+  {
+    "title": "Display Modes",
+    "content": "",
+    "url": "/docs/features/product-fields#display-modes",
+    "category": "features"
+  },
+  {
+    "title": "Product Configuration",
+    "content": "",
+    "url": "/docs/features/product-fields#product-configuration",
+    "category": "features"
+  },
+  {
+    "title": "Basic Product",
+    "content": "",
+    "url": "/docs/features/product-fields#basic-product",
+    "category": "features"
+  },
+  {
+    "title": "Product with Features",
+    "content": "",
+    "url": "/docs/features/product-fields#product-with-features",
+    "category": "features"
+  },
+  {
+    "title": "Product with Image and Stock",
+    "content": "",
+    "url": "/docs/features/product-fields#product-with-image-and-stock",
+    "category": "features"
+  },
+  {
+    "title": "Examples",
+    "content": "",
+    "url": "/docs/features/product-fields#examples",
+    "category": "features"
+  },
+  {
+    "title": "Single Product Selection",
+    "content": "",
+    "url": "/docs/features/product-fields#single-product-selection",
+    "category": "features"
+  },
+  {
+    "title": "Multiple Product Selection",
+    "content": "",
+    "url": "/docs/features/product-fields#multiple-product-selection",
+    "category": "features"
+  },
+  {
+    "title": "Product Comparison",
+    "content": "",
+    "url": "/docs/features/product-fields#product-comparison",
+    "category": "features"
+  },
+  {
+    "title": "Styling",
+    "content": "",
+    "url": "/docs/features/product-fields#styling",
+    "category": "features"
+  },
+  {
+    "title": "Best Practices",
+    "content": "",
+    "url": "/docs/features/product-fields#best-practices",
+    "category": "features"
+  },
+  {
+    "title": "Error Handling",
+    "content": "",
+    "url": "/docs/features/product-fields#error-handling",
+    "category": "features"
+  },
+  {
+    "title": "Next Steps",
+    "content": "",
+    "url": "/docs/features/product-fields#next-steps",
+    "category": "features"
+  },
+  {
+    "title": "index",
+    "content": "# Users Counter\n\nThe Users Counter feature in Mantlz SDK allows you to display the number of users who have submitted a form. This is particularly useful for waitlist forms, event RSVPs, and other scenarios where showing participation numbers can create social proof.\n\n## Basic Usage\n\n```tsx\n<Mantlz \n  formId=\"your_form_id\"\n  showUsersJoined={true}\n  usersJoinedLabel=\"people have joined\"\n/>\n```\n\n## Configuration\n\n### Component Props\n\n```typescript\ninterface UsersCounterProps {\n  showUsersJoined?: boolean;      // Enable/disable counter\n  usersJoinedCount?: number;      // Initial count\n  usersJoinedLabel?: string;      // Custom label\n  refreshInterval?: number;       // Auto-refresh interval in ms\n}\n```\n\n### Default Values\n\n```typescript\nconst defaultProps = {\n  showUsersJoined: false,\n  usersJoinedCount: 0,\n  usersJoinedLabel: 'people have joined',\n  refreshInterval: 60000  // 1 minute\n};\n```\n\n## Examples\n\n### Basic Counter\n\n```tsx\n<Mantlz \n  formId=\"waitlist_form\"\n  showUsersJoined={",
+    "url": "/docs/features/users-joined",
+    "category": "features"
+  },
+  {
+    "title": "Basic Usage",
+    "content": "",
+    "url": "/docs/features/users-joined#basic-usage",
+    "category": "features"
+  },
+  {
+    "title": "Configuration",
+    "content": "",
+    "url": "/docs/features/users-joined#configuration",
+    "category": "features"
+  },
+  {
+    "title": "Component Props",
+    "content": "",
+    "url": "/docs/features/users-joined#component-props",
+    "category": "features"
+  },
+  {
+    "title": "Default Values",
+    "content": "",
+    "url": "/docs/features/users-joined#default-values",
+    "category": "features"
+  },
+  {
+    "title": "Examples",
+    "content": "",
+    "url": "/docs/features/users-joined#examples",
+    "category": "features"
+  },
+  {
+    "title": "Basic Counter",
+    "content": "",
+    "url": "/docs/features/users-joined#basic-counter",
+    "category": "features"
+  },
+  {
+    "title": "Custom Label",
+    "content": "",
+    "url": "/docs/features/users-joined#custom-label",
+    "category": "features"
+  },
+  {
+    "title": "Initial Count",
+    "content": "",
+    "url": "/docs/features/users-joined#initial-count",
+    "category": "features"
+  },
+  {
+    "title": "Custom Refresh Interval",
+    "content": "",
+    "url": "/docs/features/users-joined#custom-refresh-interval",
+    "category": "features"
+  },
+  {
+    "title": "API Integration",
+    "content": "",
+    "url": "/docs/features/users-joined#api-integration",
+    "category": "features"
+  },
+  {
+    "title": "Styling",
+    "content": "",
+    "url": "/docs/features/users-joined#styling",
+    "category": "features"
+  },
+  {
+    "title": "Available Variables",
+    "content": "",
+    "url": "/docs/features/users-joined#available-variables",
+    "category": "features"
+  },
+  {
+    "title": "Animation",
+    "content": "",
+    "url": "/docs/features/users-joined#animation",
+    "category": "features"
+  },
+  {
+    "title": "Examples",
+    "content": "",
+    "url": "/docs/features/users-joined#examples",
+    "category": "features"
+  },
+  {
+    "title": "Waitlist Form",
+    "content": "",
+    "url": "/docs/features/users-joined#waitlist-form",
+    "category": "features"
+  },
+  {
+    "title": "Event Registration",
+    "content": "",
+    "url": "/docs/features/users-joined#event-registration",
+    "category": "features"
+  },
+  {
+    "title": "Survey with Counter",
+    "content": "",
+    "url": "/docs/features/users-joined#survey-with-counter",
+    "category": "features"
+  },
+  {
+    "title": "Best Practices",
+    "content": "",
+    "url": "/docs/features/users-joined#best-practices",
+    "category": "features"
+  },
+  {
+    "title": "Error Handling",
+    "content": "",
+    "url": "/docs/features/users-joined#error-handling",
+    "category": "features"
+  },
+  {
+    "title": "Next Steps",
+    "content": "",
+    "url": "/docs/features/users-joined#next-steps",
+    "category": "features"
+  },
+  {
+    "title": "Components",
+    "content": "\n# Mantlz Form Components\n\nThe Mantlz SDK provides React components for creating dynamic forms. All form configurations are managed through the Mantlz dashboard and fetched automatically based on form IDs.\n\n## Mantlz Component\n\nThe main component that dynamically renders any type of form based on its configuration:\n\n```tsx\nimport { mantlz } from '@mantlz/nextjs';\n\n<mantlz \n  formId=\"your-form-id\"\n  title=\"Form Title\"\n  description=\"Form description\"\n/>\n```\n\n## Key Features\n\n### Dynamic Form Configuration\n\nAll forms are dynamically configured through the Mantlz dashboard:\n- Form fields and validation rules are fetched automatically\n- Update form structure without code changes\n- Add, remove, or modify fields through the dashboard\n- Maintain consistent form behavior across implementations\n\n### Form Type Features\n\nDepending on the form type configured in the dashboard, additional features are available:\n\n#### Waitlist Forms\nFor forms configured as waitlist type:\n```tsx\n<mantlz\n  formId=\"yo",
+    "url": "/docs/getting-started/components",
+    "category": "getting-started"
+  },
+  {
+    "title": "Mantlz Component",
+    "content": "",
+    "url": "/docs/getting-started/components#mantlz-component",
+    "category": "getting-started"
+  },
+  {
+    "title": "Key Features",
+    "content": "",
+    "url": "/docs/getting-started/components#key-features",
+    "category": "getting-started"
+  },
+  {
+    "title": "Dynamic Form Configuration",
+    "content": "",
+    "url": "/docs/getting-started/components#dynamic-form-configuration",
+    "category": "getting-started"
+  },
+  {
+    "title": "Form Type Features",
+    "content": "",
+    "url": "/docs/getting-started/components#form-type-features",
+    "category": "getting-started"
+  },
+  {
+    "title": "Waitlist Forms",
+    "content": "",
+    "url": "/docs/getting-started/components#waitlist-forms",
+    "category": "getting-started"
+  },
+  {
+    "title": "Feedback Forms",
+    "content": "",
+    "url": "/docs/getting-started/components#feedback-forms",
+    "category": "getting-started"
+  },
+  {
+    "title": "Event Handlers",
+    "content": "",
+    "url": "/docs/getting-started/components#event-handlers",
+    "category": "getting-started"
+  },
+  {
+    "title": "Appearance Customization",
+    "content": "",
+    "url": "/docs/getting-started/components#appearance-customization",
+    "category": "getting-started"
+  },
+  {
+    "title": "Post-Submission Redirects",
+    "content": "",
+    "url": "/docs/getting-started/components#post-submission-redirects",
+    "category": "getting-started"
+  },
+  {
+    "title": "Available Props",
+    "content": "",
+    "url": "/docs/getting-started/components#available-props",
+    "category": "getting-started"
+  },
+  {
+    "title": "Getting Started",
+    "content": "",
+    "url": "/docs/getting-started/components#getting-started",
+    "category": "getting-started"
+  },
+  {
+    "title": "Getting Started",
+    "content": "\n# Getting Started with Mantlz\n\nWelcome to Mantlz! This section will help you get started with creating custom forms for your web application.\n\n## Quick Start\n\n1. [Install the SDK](/docs/getting-started/installation)\n2. Create your first form\n3. Customize your form's appearance\n4. Handle form submissions\n\n## Installation\n\nFollow our installation guides to add Mantlz to your project:\n\n- [General Installation](/docs/getting-started/installation)\n- [Next.js Installation](/docs/getting-started/installation/nextjs)\n\n## Main Components\n\nMantlz provides three primary form components:\n\n- [WaitlistForm](/docs/getting-started/components/waitlist-form) - Collect email addresses with a waitlist counter\n- [FeedbackForm](/docs/appearance/feedback) - Gather user feedback with star ratings\n- [ContactForm](/docs/appearance/contact) - Create beautiful contact forms\n\n## Key Features\n\n- **[Form Redirects](/docs/api-reference/redirects)** - Redirect users after form submission\n- **[Simplified Appearance AP",
+    "url": "/docs/getting-started",
+    "category": "getting-started"
+  },
+  {
+    "title": "Quick Start",
+    "content": "",
+    "url": "/docs/getting-started#quick-start",
+    "category": "getting-started"
+  },
+  {
+    "title": "Installation",
+    "content": "",
+    "url": "/docs/getting-started#installation",
+    "category": "getting-started"
+  },
+  {
+    "title": "Main Components",
+    "content": "",
+    "url": "/docs/getting-started#main-components",
+    "category": "getting-started"
+  },
+  {
+    "title": "Key Features",
+    "content": "",
+    "url": "/docs/getting-started#key-features",
+    "category": "getting-started"
+  },
+  {
+    "title": "API Reference",
+    "content": "",
+    "url": "/docs/getting-started#api-reference",
+    "category": "getting-started"
+  },
+  {
+    "title": "Next Steps",
+    "content": "",
+    "url": "/docs/getting-started#next-steps",
+    "category": "getting-started"
+  },
+  {
+    "title": "Installation",
+    "content": "\n# Installing Mantlz SDK\n\nMantlz SDK is a modern, customizable React component library for building beautiful dynamic forms with automatic form configuration and dark mode support.\n\n## Prerequisites\n\nBefore installing Mantlz SDK, make sure you have:\n\n- A React project (Next.js, More soon...)\n- Node.js (v14 or newer)\n- npm, yarn, or pnpm package manager\n\n<Note title=\"SDK Compatibility\" type=\"info\">\n  Mantlz SDK is compatible with React 18+ and supports both client-side and server-side rendering.\n</Note>\n\n## Setup for Next.js\n\nFor Next.js applications, install our package:\n\n```bash\nnpm install @mantlz/nextjs\n```\n\n## Adding the Provider\n\nWrap your application with the MantlzProvider to enable form functionality:\n\n```tsx\n// In your _app.tsx or layout.tsx file\nimport { MantlzProvider } from \"@mantlz/nextjs\";\n\nexport default function RootLayout({ children }) {\n  return (\n    <MantlzProvider apiKey={process.env.MANTLZ_KEY}>\n      {children}\n    </MantlzProvider>\n  );\n}\n```\n\n<Note title=\"API K",
+    "url": "/docs/getting-started/installation",
+    "category": "getting-started"
+  },
+  {
+    "title": "Prerequisites",
+    "content": "",
+    "url": "/docs/getting-started/installation#prerequisites",
+    "category": "getting-started"
+  },
+  {
+    "title": "Setup for Next.js",
+    "content": "",
+    "url": "/docs/getting-started/installation#setup-for-next-js",
+    "category": "getting-started"
+  },
+  {
+    "title": "Adding the Provider",
+    "content": "",
+    "url": "/docs/getting-started/installation#adding-the-provider",
+    "category": "getting-started"
+  },
+  {
+    "title": "Basic Usage Example",
+    "content": "",
+    "url": "/docs/getting-started/installation#basic-usage-example",
+    "category": "getting-started"
+  },
+  {
+    "title": "Next.js Integration",
+    "content": "\n# Using Mantlz SDK with Next.js\n\nMantlz SDK provides specialized support for Next.js applications through our dedicated `@mantlz/nextjs` package, making integration seamless with the App Router.\n\n## Prerequisites\n\nBefore integrating Mantlz with your Next.js project, ensure you have:\n\n- Next.js 13+ project with App Router\n- Node.js (v14 or newer)\n- npm, yarn, or pnpm package manager\n\n## Installation\n\nInstall the Next.js-specific package:\n\n```bash\n# Using npm\nnpm install @mantlz/nextjs\n\n# Using yarn\nyarn add @mantlz/nextjs\n\n# Using pnpm\npnpm add @mantlz/nextjs\n```\n\n## Setting Up with App Router\n\nFor Next.js projects using the App Router, add the MantlzProvider to your root layout:\n\n```tsx\n// In app/layout.tsx\nimport { MantlzProvider } from \"@mantlz/nextjs\";\nimport { Providers } from \"../components/global/providers\";\n\nexport default function RootLayout({\n  children,\n}: {\n  children: React.ReactNode;\n}) {\n  return (\n    <html lang=\"en\">\n      <body>\n        <Providers>\n          <MantlzPr",
+    "url": "/docs/getting-started/installation/nextjs",
+    "category": "getting-started"
+  },
+  {
+    "title": "Prerequisites",
+    "content": "",
+    "url": "/docs/getting-started/installation/nextjs#prerequisites",
+    "category": "getting-started"
+  },
+  {
+    "title": "Installation",
+    "content": "",
+    "url": "/docs/getting-started/installation/nextjs#installation",
+    "category": "getting-started"
+  },
+  {
+    "title": "Setting Up with App Router",
+    "content": "",
+    "url": "/docs/getting-started/installation/nextjs#setting-up-with-app-router",
+    "category": "getting-started"
+  },
+  {
+    "title": "Basic Usage",
+    "content": "",
+    "url": "/docs/getting-started/installation/nextjs#basic-usage",
+    "category": "getting-started"
+  },
+  {
+    "title": "Available Form Components",
+    "content": "",
+    "url": "/docs/getting-started/installation/nextjs#available-form-components",
+    "category": "getting-started"
+  },
+  {
+    "title": "Introduction",
+    "content": "\n# Introduction to Mantlz SDK\n\nMantlz is a powerful form management SDK for React applications that provides a complete solution for building and managing forms. It offers a structured form building system with predefined field types, extensive customization options, and a seamless developer experience.\n\n## Key Features\n\n### Form Management\n- **Predefined Field Types**: Build forms using our set of validated field types\n- **Form Validation**: Built-in validation support using Zod\n- **Error Handling**: Comprehensive error handling with toast notifications\n- **Theme System**: Multiple built-in themes with customization options\n- **TypeScript Support**: Full TypeScript support with type definitions\n\n## Getting Started\n\nTo start using Mantlz in your project:\n\n```bash\nnpm install @mantlz/sdk\n# or\nyarn add @mantlz/sdk\n# or\npnpm add @mantlz/sdk\n```\n\n### Basic Usage\n\n```tsx\nimport { MantlzProvider, Mantlz } from '@mantlz/sdk';\n\nfunction App() {\n  return (\n    <MantlzProvider apiKey=\"your_api_k",
+    "url": "/docs/getting-started/introduction",
+    "category": "getting-started"
+  },
+  {
+    "title": "Key Features",
+    "content": "",
+    "url": "/docs/getting-started/introduction#key-features",
+    "category": "getting-started"
+  },
+  {
+    "title": "Form Management",
+    "content": "",
+    "url": "/docs/getting-started/introduction#form-management",
+    "category": "getting-started"
+  },
+  {
+    "title": "Getting Started",
+    "content": "",
+    "url": "/docs/getting-started/introduction#getting-started",
+    "category": "getting-started"
+  },
+  {
+    "title": "Basic Usage",
+    "content": "",
+    "url": "/docs/getting-started/introduction#basic-usage",
+    "category": "getting-started"
+  },
+  {
+    "title": "Form Validation",
+    "content": "",
+    "url": "/docs/getting-started/introduction#form-validation",
+    "category": "getting-started"
+  },
+  {
+    "title": "Error Handling",
+    "content": "",
+    "url": "/docs/getting-started/introduction#error-handling",
+    "category": "getting-started"
+  },
+  {
+    "title": "Theme Customization",
+    "content": "",
+    "url": "/docs/getting-started/introduction#theme-customization",
+    "category": "getting-started"
+  },
+  {
+    "title": "Next Steps",
+    "content": "",
+    "url": "/docs/getting-started/introduction#next-steps",
+    "category": "getting-started"
+  }
+]

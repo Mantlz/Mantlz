@@ -1,0 +1,242 @@
+# Error Handling
+
+Mantlz SDK provides comprehensive error handling with built-in error types, toast notifications, and customizable error messages.
+
+## Basic Usage
+
+```tsx
+<Mantlz 
+  formId="your_form_id"
+/>
+```
+
+## Error Types
+
+### Built-in Error Types
+
+```typescript
+interface MantlzError {
+  message: string;
+  code: number;
+  userMessage?: string;
+  details?: any;
+  alreadyHandled?: boolean;
+  isConflict?: boolean;
+}
+```
+
+### Common Error Codes
+
+```typescript
+const ErrorCodes = {
+  VALIDATION_ERROR: 400,
+  UNAUTHORIZED: 401,
+  NOT_FOUND: 404,
+  CONFLICT: 409,
+  SERVER_ERROR: 500
+} as const;
+```
+
+## Error Handling
+
+### Basic Error Handling
+
+```typescript
+try {
+  await form.submit();
+} catch (error) {
+  if (error instanceof MantlzError) {
+    switch (error.code) {
+      case 400:
+        // Handle validation error
+        break;
+      case 401:
+        // Handle unauthorized error
+        break;
+      case 404:
+        // Handle not found error
+        break;
+      default:
+        // Handle other errors
+    }
+  }
+}
+```
+
+### Toast Notifications
+
+```typescript
+const client = createMantlzClient({
+  apiKey: 'your_api_key',
+  toastHandler: {
+    success: (message) => toast.success(message),
+    error: (message) => toast.error(message),
+    warning: (message) => toast.warning(message)
+  }
+});
+```
+
+## Examples
+
+### Form Submission Error Handling
+
+```tsx
+const form = {
+  id: 'contact',
+  name: 'Contact Form',
+  onSubmit: async (data) => {
+    try {
+      await client.submitForm('contact', data);
+    } catch (error) {
+      if (error.code === 'VALIDATION_ERROR') {
+        // Handle validation errors
+        error.details.forEach(({ field, message }) => {
+          form.setError(field, { message });
+        });
+      } else if (error.isConflict) {
+        // Handle duplicate submission
+        toast.error('This form has already been submitted');
+      } else {
+        // Handle other errors
+        toast.error('An error occurred. Please try again.');
+      }
+    }
+  }
+};
+```
+
+### File Upload Error Handling
+
+```tsx
+const fileField = {
+  id: 'document',
+  type: 'file',
+  onError: (error) => {
+    if (error.code === 'FILE_TOO_LARGE') {
+      toast.error('File size exceeds the limit');
+    } else if (error.code === 'INVALID_FILE_TYPE') {
+      toast.error('Invalid file type');
+    } else {
+      toast.error('File upload failed');
+    }
+  }
+};
+```
+
+### API Error Handling
+
+```typescript
+const client = createMantlzClient({
+  apiKey: 'your_api_key',
+  onError: (error) => {
+    if (error.code === 401) {
+      // Handle unauthorized access
+      redirectToLogin();
+    } else if (error.code === 429) {
+      // Handle rate limiting
+      toast.warning('Too many requests. Please try again later.');
+    } else {
+      // Handle other API errors
+      toast.error('API Error: ' + error.userMessage);
+    }
+  }
+});
+```
+
+## Error Configuration
+
+### Client Configuration
+
+```typescript
+const config = {
+  toastHandler: customToastHandler,
+  showApiKeyErrorToasts: true,
+  logger: console.error,
+  developmentMode: process.env.NODE_ENV === 'development'
+};
+```
+
+### Form Configuration
+
+```typescript
+const formConfig = {
+  onError: (error) => {
+    // Custom error handling
+  },
+  errorMessages: {
+    required: 'This field is required',
+    email: 'Please enter a valid email',
+    minLength: 'Must be at least {min} characters'
+  }
+};
+```
+
+## Best Practices
+
+1. **Error Messages**
+   - Use clear, friendly language
+   - Provide actionable feedback
+   - Maintain consistency
+   - Consider localization
+
+2. **User Experience**
+   - Show errors immediately
+   - Provide recovery options
+   - Maintain form state
+   - Clear error on fix
+
+3. **Error Logging**
+   - Log important errors
+   - Include context
+   - Monitor frequency
+   - Track resolution
+
+4. **Security**
+   - Sanitize error messages
+   - Hide sensitive data
+   - Rate limit retries
+   - Validate client-side
+
+## Error Types Reference
+
+### Validation Errors
+
+```typescript
+interface ValidationError extends MantlzError {
+  code: 400;
+  details: {
+    field: string;
+    message: string;
+    type: string;
+  }[];
+}
+```
+
+### Authentication Errors
+
+```typescript
+interface AuthError extends MantlzError {
+  code: 401;
+  userMessage: string;
+}
+```
+
+### API Errors
+
+```typescript
+interface ApiError extends MantlzError {
+  code: number;
+  userMessage: string;
+  details?: {
+    endpoint: string;
+    method: string;
+    params?: Record<string, any>;
+  };
+}
+```
+
+## Next Steps
+
+- Learn about [Validation](/docs/features/validation)
+- Explore [Form Types](/docs/features/form-types)
+- Check out [API Reference](/docs/api-reference) 

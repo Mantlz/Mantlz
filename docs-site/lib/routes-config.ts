@@ -18,7 +18,7 @@ export const ROUTES: EachRoute[] = [
         title: "Installation",
         href: "/installation",
         items: [
-          { title: "Nextjs", href: "/nextjs" },
+          { title: "Next.js", href: "/nextjs" },
         ],
       },
       {
@@ -26,16 +26,29 @@ export const ROUTES: EachRoute[] = [
         href: "/components",
         items: [
           { title: "Overview", href: "" },
-        
         ],
       },
+    ],
+  },
+  {
+    title: "Features",
+    href: "/features",
+    noLink: true,
+    items: [
+      { title: "Form Types", href: "/form-types" },
+      { title: "Error Handling", href: "/error-handling" },
+      { title: "File Upload", href: "/file-upload" },
+      { title: "Product Fields", href: "/product-fields" },
+      { title: "Users Joined", href: "/users-joined" },
     ],
   },
   {
     title: "Appearance",
     href: "/appearance",
     noLink: true,
-   
+    items: [
+      { title: "Themes", href: "/themes" },
+    ],
   },
   {
     title: "API Reference",
@@ -44,27 +57,19 @@ export const ROUTES: EachRoute[] = [
     items: [
       { title: "Overview", href: "/overview" },
       { title: "Authentication", href: "/authentication" },
-      { title: "Providers and Hooks", href: "/context" },
-      { title: "Redirects", href: "/redirects" },
+      { title: "Client Configuration", href: "/client-config" },
       { 
-        title: "Forms",
-        href: "/forms",
+        title: "v1 API",
+        href: "/v1",
         items: [
           { title: "List Forms", href: "/list" },
           { title: "Get Form", href: "/get" },
-          { title: "Users Joined", href: "/users-joined" },
-        ]
-      },
-      { 
-        title: "Submissions",
-        href: "/submissions",
-        items: [
           { title: "Submit Form", href: "/submit" },
-          { title: "List Submissions", href: "/list" },
+          { title: "Analytics", href: "/analytics" },
         ]
       },
-      { title: "Analytics", href: "/analytics" },
       { title: "Error Handling", href: "/error-handling" },
+      
     ],
   },
 ];

@@ -119,7 +119,9 @@ export default function RootLayout({
         <body className={`${fontVariable} font-regular antialiased tracking-wide`}>
           <main className="h-screen bg-background text-foreground transition-colors duration-300">
             <Providers>
-              <MantlzProvider apiKey={process.env.MANTLZ_KEY}>
+              <MantlzProvider apiKey={process.env.MANTLZ_KEY}
+                
+              >
                 <Suspense fallback={null}>
                   <ClientWrapper>
                     <FontInitializer />

@@ -1,0 +1,190 @@
+# Form Types
+
+Mantlz SDK supports various form types, each designed for specific use cases and equipped with unique features.
+
+## Available Form Types
+
+### Waitlist Form
+Ideal for collecting early user interest and managing product launches.
+
+```tsx
+<Mantlz 
+  formId="your_waitlist_form_id"
+  showUsersJoined={true}
+  usersJoinedLabel="people on the waitlist"
+/>
+```
+
+Features:
+- Built-in users counter
+- Optional email verification
+- Customizable success messages
+- Duplicate entry prevention
+
+### Contact Form
+Perfect for gathering user inquiries and messages.
+
+```tsx
+<Mantlz 
+  formId="your_contact_form_id"
+  redirectUrl="/thank-you"
+/>
+```
+
+Features:
+- Email field validation
+- File attachment support
+- Custom field validation
+- Redirect after submission
+
+### Feedback Form
+Collect user feedback with ratings and comments.
+
+```tsx
+<Mantlz 
+  formId="your_feedback_form_id"
+  theme="modern"
+/>
+```
+
+Features:
+- Star rating component
+- Optional comment field
+- Multiple rating criteria
+- Custom validation rules
+
+### Survey Form
+Create detailed user surveys with various question types.
+
+```tsx
+<Mantlz 
+  formId="your_survey_form_id"
+/>
+```
+
+Features:
+- Multiple question types
+- Conditional fields
+- Progress tracking
+- Response validation
+
+### Application Form
+Process user applications with file uploads and detailed information.
+
+```tsx
+<Mantlz 
+  formId="your_application_form_id"
+/>
+```
+
+Features:
+- File upload support
+- Multiple file types
+- Size limit controls
+- Required field validation
+
+### Order Form
+Handle product orders with integrated payment processing.
+
+```tsx
+<Mantlz 
+  formId="your_order_form_id"
+/>
+```
+
+Features:
+- Product selection
+- Quantity controls
+- Price calculation
+- Payment integration (coming soon)
+
+### Analytics Opt-in Form
+Manage user consent for analytics and tracking.
+
+```tsx
+<Mantlz 
+  formId="your_analytics_form_id"
+/>
+```
+
+Features:
+- Checkbox fields
+- Consent tracking
+- Custom messaging
+- GDPR compliance
+
+### RSVP Form
+Handle event responses and attendance tracking.
+
+```tsx
+<Mantlz 
+  formId="your_rsvp_form_id"
+  showUsersJoined={true}
+  usersJoinedLabel="people attending"
+/>
+```
+
+Features:
+- Attendance tracking
+- Guest information
+- Dietary preferences
+- Event details
+
+### Custom Form
+Build any custom form type with your specific requirements.
+
+```tsx
+<Mantlz 
+  formId="your_custom_form_id"
+  theme="neobrutalism"
+/>
+```
+
+Features:
+- Custom field types
+- Flexible validation
+- Custom styling
+- Advanced configuration
+
+## Form Type Configuration
+
+Form types are specified in the form schema:
+
+```typescript
+interface FormSchema {
+  id: string;
+  name: string;
+  title?: string;
+  description?: string;
+  formType?: 'waitlist' | 'contact' | 'feedback' | 'custom' | 'survey' | 'application' | 'order' | 'analytics-opt-in' | 'rsvp';
+  fields: FormField[];
+}
+```
+
+## Best Practices
+
+1. **Choose the Right Form Type**
+   - Select a form type that matches your use case
+   - Consider the built-in features each type provides
+
+2. **Validation**
+   - Use appropriate validation for each field type
+   - Implement custom validation when needed
+   - Handle error messages appropriately
+
+3. **User Experience**
+   - Keep forms concise and focused
+   - Use clear labels and helpful placeholder text
+   - Provide feedback on submission
+   - Consider mobile responsiveness
+
+4. **Performance**
+   - Enable client-side caching for better performance
+   - Use appropriate field types to minimize validation overhead
+   - Consider form size and complexity
+
+## Next Steps
+
+- Learn about [Field Types](/docs/features/field-types)
+- Explore [Validation](/docs/features/validation) options
+- Check out [Theme Customization](/docs/appearance/themes) 

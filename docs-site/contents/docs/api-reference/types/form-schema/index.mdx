@@ -1,0 +1,130 @@
+---
+title: Form Schema
+description: Understanding the Mantlz SDK Form Schema (handled automatically)
+---
+
+# Form Schema
+
+The Mantlz SDK handles all form schema management internally. You don't need to implement or manage any schema yourself - just use our components and the SDK takes care of everything else.
+
+## Overview
+
+When you use the Mantlz SDK, forms are automatically configured and managed based on your form ID. The SDK:
+
+- Fetches the form schema automatically
+- Handles field validation
+- Manages form state
+- Processes form submissions
+- Handles error states
+- Manages loading states
+
+## Usage
+
+Using a form is as simple as:
+
+```tsx
+import { MantlzForm } from '@mantlz/sdk';
+
+function MyForm() {
+  return (
+    <MantlzForm 
+      formId="your-form-id"
+      onSuccess={(data) => {
+        console.log('Form submitted successfully!', data);
+      }}
+    />
+  );
+}
+```
+
+That's it! The SDK handles everything else internally.
+
+## Behind the Scenes
+
+While you don't need to implement these yourself, here's what the SDK manages for you:
+
+### Form Configuration
+
+The SDK automatically handles:
+
+```typescript
+interface FormConfig {
+  id: string;              // Your form ID
+  name: string;            // Form name
+  fields: FormField[];     // Form fields
+  validation: object;      // Validation rules
+  theme?: string;          // Theme configuration
+  submitButton?: {         // Submit button customization
+    text: string;
+    style?: object;
+  };
+}
+```
+
+### Field Management
+
+Each field is automatically configured with:
+
+```typescript
+interface FormField {
+  id: string;              // Field ID
+  name: string;            // Field name
+  type: string;            // Field type
+  required: boolean;       // Required status
+  placeholder?: string;    // Placeholder text
+  label?: string;         // Field label
+  options?: string[];     // For select/radio/checkbox
+  defaultValue?: any;     // Default value
+  accept?: string[];      // For file uploads
+  maxSize?: number;       // For file uploads
+}
+```
+
+## What You Don't Need to Worry About
+
+The SDK automatically handles:
+
+1. **Schema Fetching**: Forms are automatically fetched and configured
+2. **Validation**: Built-in validation based on field types
+3. **Error Handling**: Automatic error state management
+4. **Loading States**: Loading indicators during form operations
+5. **Field Rendering**: Appropriate field components based on type
+6. **State Management**: Form state is managed internally
+7. **Submission Logic**: Form submission and response handling
+8. **Type Safety**: TypeScript types are handled automatically
+
+## Example: Complete Form Implementation
+
+Here's all you need to implement a complete form:
+
+```tsx
+import { MantlzForm } from '@mantlz/sdk';
+
+function ContactForm() {
+  return (
+    <MantlzForm
+      formId="contact-form"
+      }}
+    />
+  );
+}
+```
+
+The SDK handles everything else:
+- Fetches the form configuration
+- Renders the appropriate fields
+- Manages form state
+- Handles validation
+- Processes submission
+- Manages error states
+- Provides loading indicators
+- Handles success/error responses
+
+## Best Practices
+
+1. **Use Form IDs**: Always use the correct form ID from your Mantlz dashboard
+2. **Handle Success**: Implement the onSuccess callback for post-submission actions
+3. **Trust the SDK**: Let the SDK handle validation and error states
+4. **Use TypeScript**: The SDK provides full type safety automatically
+
+Remember: The Mantlz SDK is designed to handle all the complex form management for you. You don't need to worry about schema implementation, validation logic, or state management - just use our components and let the SDK do the heavy lifting! 

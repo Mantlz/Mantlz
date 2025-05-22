@@ -1,0 +1,188 @@
+# Field Types
+
+Mantlz SDK supports a variety of field types to handle different input requirements. Each field type comes with built-in validation and customization options.
+
+## Available Field Types
+
+### Text Input
+Basic text input field for single-line text.
+
+```typescript
+const field: FormField = {
+  id: 'name',
+  name: 'name',
+  label: 'Full Name',
+  type: 'text',
+  required: true,
+  placeholder: 'Enter your full name'
+};
+```
+
+### Email Input
+Email input with built-in email validation.
+
+```typescript
+const field: FormField = {
+  id: 'email',
+  name: 'email',
+  label: 'Email Address',
+  type: 'email',
+  required: true,
+  placeholder: 'your@email.com'
+};
+```
+
+### Number Input
+Numeric input with optional min/max validation.
+
+```typescript
+const field: FormField = {
+  id: 'age',
+  name: 'age',
+  label: 'Age',
+  type: 'number',
+  required: true,
+  placeholder: 'Enter your age'
+};
+```
+
+### Textarea
+Multi-line text input for longer content.
+
+```typescript
+const field: FormField = {
+  id: 'message',
+  name: 'message',
+  label: 'Your Message',
+  type: 'textarea',
+  required: true,
+  placeholder: 'Type your message here'
+};
+```
+
+### Select
+Dropdown selection with predefined options.
+
+```typescript
+const field: FormField = {
+  id: 'country',
+  name: 'country',
+  label: 'Country',
+  type: 'select',
+  required: true,
+  options: [
+    { value: 'us', label: 'United States' },
+    { value: 'uk', label: 'United Kingdom' },
+    { value: 'ca', label: 'Canada' }
+  ]
+};
+```
+
+### Checkbox
+Single checkbox for boolean values.
+
+```typescript
+const field: FormField = {
+  id: 'terms',
+  name: 'terms',
+  label: 'I agree to the terms',
+  type: 'checkbox',
+  required: true
+};
+```
+
+### File Upload
+File input with type and size restrictions.
+
+```typescript
+const field: FormField = {
+  id: 'resume',
+  name: 'resume',
+  label: 'Upload Resume',
+  type: 'file',
+  required: true,
+  accept: ['.pdf', '.doc', '.docx'],
+  maxSize: 5 * 1024 * 1024 // 5MB
+};
+```
+
+### Product
+Product selection field with pricing information.
+
+```typescript
+const field: FormField = {
+  id: 'product',
+  name: 'product',
+  label: 'Select Product',
+  type: 'product',
+  required: true,
+  products: [
+    {
+      id: 'prod_1',
+      name: 'Basic Plan',
+      description: 'Perfect for starters',
+      price: 9.99,
+      currency: 'USD',
+      image: '/images/basic.png'
+    }
+  ],
+  displayMode: 'grid'
+};
+```
+
+## Field Configuration
+
+All field types share these common properties:
+
+```typescript
+interface FormField {
+  id: string;
+  name: string;
+  label: string;
+  type: FieldType;
+  required?: boolean;
+  placeholder?: string;
+  defaultValue?: any;
+  premium?: boolean;
+}
+```
+
+## Field Validation
+
+Each field type comes with built-in validation:
+
+- **Text**: Optional minimum length
+- **Email**: Valid email format
+- **Number**: Optional min/max values
+- **File**: File type and size restrictions
+- **Checkbox**: Boolean value validation
+- **Select**: Valid option selection
+- **Product**: Valid product selection
+
+## Best Practices
+
+1. **Field Labels**
+   - Use clear, descriptive labels
+   - Include help text for complex fields
+   - Mark required fields consistently
+
+2. **Validation**
+   - Set appropriate validation rules
+   - Provide helpful error messages
+   - Consider field dependencies
+
+3. **User Experience**
+   - Use appropriate field types
+   - Set meaningful placeholders
+   - Consider mobile input methods
+
+4. **Performance**
+   - Optimize file upload fields
+   - Use appropriate field types
+   - Consider form loading time
+
+## Next Steps
+
+- Learn about [Form Types](/docs/features/form-types)
+- Explore [Validation](/docs/features/validation)
+- Check out [File Upload](/docs/features/file-upload) handling 

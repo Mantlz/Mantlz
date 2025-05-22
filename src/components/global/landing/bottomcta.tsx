@@ -3,7 +3,7 @@ import { ArrowRight, Sparkles } from "lucide-react"
 
 export default function BottomCTA() {
   return (
-    <section className="py-24 relative bg-zinc-50 dark:bg-zinc-900 overflow-hidden">
+    <section className="py-24 relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-zinc-200/50 dark:bg-zinc-800/20 rounded-full blur-3xl"></div>

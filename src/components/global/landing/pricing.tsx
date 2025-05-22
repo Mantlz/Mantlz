@@ -192,19 +192,19 @@ function PricingContent({
   }
 
   return (
-    <section className="py-24 relative bg-gradient-to-b from-white to-zinc-50 dark:from-zinc-950 dark:to-zinc-950" id="pricing">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 right-0 w-1/2 h-1/2 bg-zinc-200/30 dark:bg-zinc-800/20 rounded-full blur-3xl transform -translate-y-1/4 translate-x-1/4"></div>
-        <div className="absolute bottom-0 left-0 w-1/3 h-1/2 bg-zinc-200/30 dark:bg-zinc-800/20 rounded-full blur-3xl transform translate-y-1/4 -translate-x-1/3"></div>
-      </div>
+    <section className="py-24 relative " id="pricing">
+
+        <div className="absolute top-1/4 right-0 w-1/2 h-1/2 bg-orange-100/30 dark:bg-orange-900/20 rounded-full blur-3xl transform -translate-y-1/4 translate-x-1/4"></div>
+        <div className="absolute bottom-0 left-0 w-1/3 h-1/2 bg-orange-100/30 dark:bg-orange-900/20 rounded-full blur-3xl transform translate-y-1/4 -translate-x-1/3"></div>
+
       
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-4">
+          <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300 mb-4">
             <Sparkles className="h-4 w-4 mr-2" />
             <span>Simple Pricing</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-400 dark:to-orange-500 bg-clip-text text-transparent">
             Choose the plan that fits your needs
           </h2>
           <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
@@ -239,105 +239,61 @@ function PricingCard({
   isLoading: boolean
   isCurrentPlan: boolean
 }) {
-  const price = plan.monthlyPrice
-  const period = "/month"
-
   return (
-    <div className={`relative group backdrop-blur-sm rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border ${
-      plan.isPopular 
-        ? "border-zinc-200 dark:border-zinc-700" 
-        : "border-zinc-200 dark:border-zinc-800"
-    } ${isCurrentPlan ? "ring-2 ring-zinc-700 dark:ring-zinc-300" : ""}`}>
-      
-      {/* Subtle gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-zinc-50 dark:to-zinc-900/50 opacity-50"></div>
-      
-      {/* Popular badge */}
+    <div
+      className={`relative flex flex-col p-6 rounded-2xl shadow-sm transition-all duration-200 ${
+        plan.isPopular
+          ? "ring-2 ring-orange-500 dark:ring-orange-400"
+          : "ring-1 ring-orange-200 dark:ring-orange-800/30"
+      }`}
+    >
       {plan.isPopular && (
-        <div className="absolute top-3 right-3">
-          <Badge className="bg-zinc-700 hover:bg-zinc-700 text-white dark:bg-zinc-300 dark:text-zinc-900 dark:hover:bg-zinc-300 font-medium px-2 py-1">
-            <ZapIcon className="h-3.5 w-3.5 mr-1" />
-            Popular
-          </Badge>
+        <div className="absolute -top-5 left-0 right-0 mx-auto w-32">
+          <div className="text-center py-1 px-3 rounded-full bg-orange-500 text-white text-sm font-medium">
+            Most Popular
+          </div>
         </div>
       )}
 
-      <div className="p-6 flex flex-col h-full relative">
-        {/* Plan icon and title */}
-        <div className="mb-6">
-          {plan.title === "Starter" && (
-            <div className="w-10 h-10 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-4">
-              <FileText className="h-5 w-5 text-zinc-700 dark:text-zinc-300" />
-            </div>
-          )}
-          {plan.title === "Standard" && (
-            <div className="w-10 h-10 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-4">
-              <Users className="h-5 w-5 text-zinc-700 dark:text-zinc-300" />
-            </div>
-          )}
-          {plan.title === "Professional" && (
-            <div className="w-10 h-10 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-4">
-              <Building className="h-5 w-5 text-zinc-700 dark:text-zinc-300" />
-            </div>
-          )}
-          <h3 className="text-xl font-bold text-zinc-800 dark:text-white">{plan.title}</h3>
-          {isCurrentPlan && (
-            <Badge variant="outline" className="mt-2 bg-green-500 text-white">
-              Current Plan
-            </Badge>
-          )}
+      <div className="mb-5">
+        <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-2">
+          {plan.title}
+        </h3>
+        <div className="flex items-baseline text-zinc-900 dark:text-white">
+          <span className="text-4xl font-bold tracking-tight">${plan.monthlyPrice}</span>
+          <span className="ml-1 text-sm font-semibold">/month</span>
         </div>
-
-        {/* Price */}
-        <div className="mb-6">
-          <div className="flex items-baseline">
-            <span className="text-3xl font-bold text-zinc-800 dark:text-white">${price}</span>
-            <span className="ml-1 text-sm text-zinc-500 dark:text-zinc-400">{period}</span>
-          </div>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-            {plan.title === "Starter" && "Perfect for individuals just getting started"}
-            {plan.title === "Standard" && "Great for growing businesses"}
-            {plan.title === "Professional" && "Built for professional teams"}
-          </p>
-        </div>
-
-        {/* Features list */}
-        <div className="flex-grow mb-6">
-          <div className="space-y-3">
-            {plan.features.map((feature, index) => (
-              <div key={index} className="flex items-start">
-                <div className="mr-3 mt-1">
-                  <div className="w-4 h-4 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-                    <Check className="h-3 w-3 text-zinc-700 dark:text-zinc-300" />
-                  </div>
-                </div>
-                <span className="text-sm text-zinc-600 dark:text-zinc-400">{feature}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* CTA Button */}
-        <Button
-          onClick={onCheckout}
-          disabled={isLoading || isCurrentPlan}
-          className={`w-full ${
-            plan.isPopular
-              ? "bg-zinc-800 hover:bg-zinc-700 text-white dark:bg-zinc-200 dark:text-zinc-800 dark:hover:bg-zinc-300"
-              : "bg-white hover:bg-zinc-100 text-zinc-800 border border-zinc-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700 dark:border-zinc-700"
-          } rounded-lg py-5 font-medium transition-colors duration-200`}
-        >
-          {isLoading ? "Processing..." : isCurrentPlan ? "Current Plan" : plan.buttonText}
-          {!isCurrentPlan && !isLoading && (
-            <ArrowRight className="ml-2 h-4 w-4" />
-          )}
-        </Button>
       </div>
-      
-      {/* Bottom accent for popular plan */}
-      {plan.isPopular && (
-        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-zinc-400 to-zinc-600 dark:from-zinc-300 dark:to-zinc-500"></div>
-      )}
+
+      <ul className="space-y-3 flex-1 mb-6">
+        {plan.features.map((feature, i) => (
+          <li key={i} className="flex items-center gap-3 text-zinc-700 dark:text-zinc-300">
+            <Check className="h-5 w-5 flex-shrink-0 text-orange-500 dark:text-orange-400" />
+            <span>{feature}</span>
+          </li>
+        ))}
+      </ul>
+
+      <Button
+        onClick={onCheckout}
+        disabled={isLoading || isCurrentPlan}
+        className={`w-full ${
+          plan.isPopular
+            ? "bg-orange-500 hover:bg-orange-600 text-white dark:bg-orange-500 dark:hover:bg-orange-600"
+            : "bg-orange-500 hover:bg-orange-600 text-white dark:bg-orange-500 dark:hover:bg-orange-600"
+        }`}
+      >
+        {isCurrentPlan ? (
+          "Current Plan"
+        ) : isLoading ? (
+          <div className="flex items-center gap-2">
+            <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+            <span>Processing...</span>
+          </div>
+        ) : (
+          plan.buttonText
+        )}
+      </Button>
     </div>
   )
 }

@@ -1,0 +1,152 @@
+# Themes
+
+Mantlz SDK comes with a powerful theme system that allows you to customize the appearance of your forms. The theme system is built on top of CSS variables and provides several built-in themes while allowing for complete customization.
+
+## Built-in Themes
+
+### Default Theme
+Clean, professional design with subtle shadows and rounded corners.
+
+```tsx
+<Mantlz formId="your_form_id" theme="default" />
+```
+
+### Modern Theme
+Contemporary design with bold colors and minimalist aesthetics.
+
+```tsx
+<Mantlz formId="your_form_id" theme="modern" />
+```
+
+### Neobrutalism Theme
+Bold, playful design with strong colors and sharp edges.
+
+```tsx
+<Mantlz formId="your_form_id" theme="neobrutalism" />
+```
+
+### Simple Theme
+Minimalist design focusing on content and readability.
+
+```tsx
+<Mantlz formId="your_form_id" theme="simple" />
+```
+
+## Theme Structure
+
+Each theme defines styles for different form elements:
+
+```typescript
+interface Theme {
+  form: {
+    container: CSSProperties;
+    title: CSSProperties;
+    description: CSSProperties;
+  };
+  field: {
+    container: CSSProperties;
+    label: CSSProperties;
+    input: ExtendedCSSProperties;
+    error: CSSProperties;
+  };
+  button: ExtendedCSSProperties;
+}
+```
+
+## Style Properties
+
+### Form Container
+- `maxWidth`
+- `width`
+- `margin`
+- `padding`
+- `borderRadius`
+- `border`
+- `boxShadow`
+- `backgroundColor`
+
+### Form Title
+- `fontSize`
+- `fontWeight`
+- `color`
+- `marginBottom`
+- `lineHeight`
+- `letterSpacing`
+
+### Form Fields
+- `marginBottom`
+- `fontSize`
+- `fontWeight`
+- `color`
+- `borderRadius`
+- `border`
+- `padding`
+
+### Submit Button
+- `backgroundColor`
+- `color`
+- `padding`
+- `borderRadius`
+- `border`
+- `fontSize`
+- `fontWeight`
+- `transition`
+
+## Customization Examples
+
+### Custom Container Styles
+
+```tsx
+<Mantlz 
+  formId="your_form_id"
+  theme="modern"
+/>
+
+```
+
+### Custom Field Styles
+
+```tsx
+<Mantlz 
+  formId="your_form_id"
+  theme="default"
+
+/>
+```
+
+### Custom Button Styles
+
+```tsx
+<Mantlz 
+  formId="your_form_id"
+  theme="simple"
+/>
+```
+
+## Best Practices
+
+1. **Theme Selection**
+   - Choose a theme that matches your brand
+   - Consider user experience and readability
+   - Test themes across different devices
+
+2. **Customization**
+   - Use CSS variables for consistent styling
+   - Maintain accessibility standards
+   - Test custom styles across browsers
+
+3. **Responsive Design**
+   - Ensure forms look good on all devices
+   - Use relative units (rem, em) for sizing
+   - Test different screen sizes
+
+4. **Performance**
+   - Minimize custom CSS
+   - Use efficient selectors
+   - Consider loading times
+
+## Next Steps
+
+- Explore [Style Properties](/docs/appearance/style-properties)
+- Check out [Examples](/docs/appearance/examples)
+- Learn about [Form Types](/docs/features/form-types) 

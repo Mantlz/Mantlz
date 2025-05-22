@@ -1,0 +1,271 @@
+# Product Fields
+
+Product fields in Mantlz SDK allow you to create product selection interfaces with pricing, descriptions, and images. This is particularly useful for order forms and product selection workflows.
+
+## Basic Usage
+
+```tsx
+<Mantlz 
+  formId="your_form_id"
+  fields={[
+    {
+      id: 'product',
+      name: 'product',
+      type: 'product',
+      label: 'Select Product',
+      required: true,
+      products: [
+        {
+          id: 'basic',
+          name: 'Basic Plan',
+          description: 'Perfect for starters',
+          price: 9.99,
+          currency: 'USD',
+          image: '/images/basic.png'
+        }
+      ],
+      displayMode: 'grid'
+    }
+  ]}
+/>
+```
+
+## Configuration
+
+### Field Properties
+
+```typescript
+interface ProductField extends FormField {
+  type: 'product';
+  products: Product[];
+  displayMode?: 'grid' | 'list';
+  allowMultiple?: boolean;
+  showPrices?: boolean;
+}
+
+interface Product {
+  id: string;
+  name: string;
+  description?: string;
+  price: number;
+  currency: string;
+  image?: string;
+  features?: string[];
+  compareUrl?: string;
+  stock?: number;
+}
+```
+
+### Display Modes
+
+1. **Grid Mode**
+   ```tsx
+   const field: ProductField = {
+     // ...
+     displayMode: 'grid'  // Default
+   };
+   ```
+
+2. **List Mode**
+   ```tsx
+   const field: ProductField = {
+     // ...
+     displayMode: 'list'
+   };
+   ```
+
+## Product Configuration
+
+### Basic Product
+
+```typescript
+const product: Product = {
+  id: 'basic',
+  name: 'Basic Plan',
+  description: 'Perfect for starters',
+  price: 9.99,
+  currency: 'USD'
+};
+```
+
+### Product with Features
+
+```typescript
+const product: Product = {
+  id: 'pro',
+  name: 'Pro Plan',
+  description: 'For growing businesses',
+  price: 29.99,
+  currency: 'USD',
+  features: [
+    '24/7 Support',
+    'Advanced Analytics',
+    'Custom Domain',
+    'API Access'
+  ]
+};
+```
+
+### Product with Image and Stock
+
+```typescript
+const product: Product = {
+  id: 'premium',
+  name: 'Premium Plan',
+  description: 'Enterprise-grade solution',
+  price: 99.99,
+  currency: 'USD',
+  image: '/images/premium.png',
+  stock: 50
+};
+```
+
+## Examples
+
+### Single Product Selection
+
+```tsx
+const productField: ProductField = {
+  id: 'plan',
+  name: 'plan',
+  type: 'product',
+  label: 'Choose Your Plan',
+  required: true,
+  products: [
+    {
+      id: 'basic',
+      name: 'Basic',
+      price: 9.99,
+      currency: 'USD'
+    },
+    {
+      id: 'pro',
+      name: 'Pro',
+      price: 29.99,
+      currency: 'USD'
+    }
+  ],
+  displayMode: 'grid'
+};
+```
+
+### Multiple Product Selection
+
+```tsx
+const productField: ProductField = {
+  id: 'addons',
+  name: 'addons',
+  type: 'product',
+  label: 'Select Add-ons',
+  required: false,
+  allowMultiple: true,
+  products: [
+    {
+      id: 'storage',
+      name: 'Extra Storage',
+      price: 5.99,
+      currency: 'USD'
+    },
+    {
+      id: 'support',
+      name: 'Priority Support',
+      price: 19.99,
+      currency: 'USD'
+    }
+  ],
+  displayMode: 'list'
+};
+```
+
+### Product Comparison
+
+```tsx
+const productField: ProductField = {
+  id: 'enterprise',
+  name: 'enterprise',
+  type: 'product',
+  label: 'Enterprise Solutions',
+  required: true,
+  products: [
+    {
+      id: 'team',
+      name: 'Team',
+      price: 99.99,
+      currency: 'USD',
+      features: ['Up to 10 users', 'Basic support'],
+      compareUrl: '/compare/team'
+    },
+    {
+      id: 'business',
+      name: 'Business',
+      price: 199.99,
+      currency: 'USD',
+      features: ['Unlimited users', '24/7 support'],
+      compareUrl: '/compare/business'
+    }
+  ]
+};
+```
+
+## Styling
+
+Product fields can be styled using CSS variables:
+
+```css
+.product-field {
+  --product-grid-columns: 3;
+  --product-card-width: 280px;
+  --product-card-gap: 20px;
+  --product-image-height: 200px;
+  --product-price-color: var(--blue-9);
+  --product-selected-border: 2px solid var(--blue-6);
+}
+```
+
+## Best Practices
+
+1. **Product Information**
+   - Use clear, descriptive names
+   - Provide helpful descriptions
+   - Include high-quality images
+   - List key features
+
+2. **Pricing**
+   - Display prices clearly
+   - Show currency
+   - Include any discounts
+   - Explain billing terms
+
+3. **User Experience**
+   - Use appropriate display mode
+   - Show stock information
+   - Provide comparison links
+   - Include feature lists
+
+4. **Performance**
+   - Optimize images
+   - Lazy load content
+   - Cache product data
+   - Handle loading states
+
+## Error Handling
+
+The SDK provides error handling for product fields:
+
+```typescript
+try {
+  await form.submit();
+} catch (error) {
+  if (error.code === 'PRODUCT_NOT_AVAILABLE') {
+    // Handle product availability error
+  } else if (error.code === 'INVALID_PRODUCT_SELECTION') {
+    // Handle invalid selection
+  }
+}
+```
+
+## Next Steps
+
+- Learn about [Form Types](/docs/features/form-types)
+- Explore [Validation](/docs/features/validation)
+- Check out [Error Handling](/docs/features/error-handling) 

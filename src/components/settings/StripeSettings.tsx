@@ -1,20 +1,22 @@
 "use client";
 
-import { useEffect } from "react";
-import { UseQueryResult, useQuery } from "@tanstack/react-query";
+// import { useEffect } from "react";
+// import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 // import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 // import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { LoaderCircle, XCircle, ExternalLink, RefreshCcw, InfoIcon } from "lucide-react";
+import { 
+  //LoaderCircle,
+   XCircle, ExternalLink, RefreshCcw, InfoIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 // import Image from "next/image";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import { useSubscription } from "@/hooks/useSubscription";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 // Add client from your trpc setup
-import { client } from "@/lib/client";
+// import { client } from "@/lib/client";
 
 // Type definitions
 interface StripeConnectionStatus {
@@ -46,52 +48,52 @@ export default function StripeSettings() {
   const isPro = userPlan === 'PRO';
 
   // Query connection status
-  const connectionStatus: UseQueryResult<StripeConnectionStatus> = useQuery({
-    queryKey: ["stripeConnectionStatus"],
-    queryFn: async () => {
-      console.log('Fetching connection status...');
-      const response = await client.stripe.getConnectionStatus.$get();
-      console.log('Raw response:', response);
-      const data = await response.json();
-      console.log('Parsed data:', data);
-      return data;
-    },
-    enabled: isPro,
-  });
+  // const connectionStatus: UseQueryResult<StripeConnectionStatus> = useQuery({
+  //   queryKey: ["stripeConnectionStatus"],
+  //   queryFn: async () => {
+  //     console.log('Fetching connection status...');
+  //     const response = await client.stripe.getConnectionStatus.$get();
+  //     console.log('Raw response:', response);
+  //     const data = await response.json();
+  //     console.log('Parsed data:', data);
+  //     return data;
+  //   },
+  //   enabled: isPro,
+  // });
 
   // Query Stripe products (only if connected)
-  const products: UseQueryResult<{ products: StripeProduct[] }> = useQuery({
-    queryKey: ["stripeProducts"],
-    queryFn: async () => {
-      console.log('Fetching Stripe products...');
-      console.log('Connection status:', connectionStatus.data);
+  // const products: UseQueryResult<{ products: StripeProduct[] }> = useQuery({
+  //   queryKey: ["stripeProducts"],
+  //   queryFn: async () => {
+  //     console.log('Fetching Stripe products...');
+  //     console.log('Connection status:', connectionStatus.data);
       
-      const response = await client.stripe.getProducts.$get();
-      console.log('Raw products response:', response);
+  //     const response = await client.stripe.getProducts.$get();
+  //     console.log('Raw products response:', response);
       
-      const data = await response.json();
-      console.log('Parsed products data:', data);
+  //     const data = await response.json();
+  //     console.log('Parsed products data:', data);
       
-      return data;
-    },
-    enabled: connectionStatus.data?.connected === true,
-  });
+  //     return data;
+  //   },
+  //   enabled: connectionStatus.data?.connected === true,
+  // });
 
   // Add debug log for connection status
-  useEffect(() => {
-    console.log('Current connection status:', connectionStatus.data);
-  }, [connectionStatus.data]);
+  // useEffect(() => {
+  //   console.log('Current connection status:', connectionStatus.data);
+  // }, [connectionStatus.data]);
 
-  // Handle connection status display
-  const isConnected = connectionStatus.data?.connected === true;
-  console.log('Is connected:', isConnected);
+  // // Handle connection status display
+  // const isConnected = connectionStatus.data?.connected === true;
+  // console.log('Is connected:', isConnected);
 
-  // Add debug log for products
-  useEffect(() => {
-    console.log('Current products data:', products.data);
-    console.log('Products loading state:', products.isLoading);
-    console.log('Products error:', products.error);
-  }, [products.data, products.isLoading, products.error]);
+  // // Add debug log for products
+  // useEffect(() => {
+  //   console.log('Current products data:', products.data);
+  //   console.log('Products loading state:', products.isLoading);
+  //   console.log('Products error:', products.error);
+  // }, [products.data, products.isLoading, products.error]);
 
   // Connect Stripe account mutation
   // const connectMutation = useMutation({
@@ -173,21 +175,21 @@ export default function StripeSettings() {
   // };
 
   // Check URL for success/error params
-  useEffect(() => {
-    const url = new URL(window.location.href);
-    const success = url.searchParams.get("success");
-    const error = url.searchParams.get("error");
+  // useEffect(() => {
+  //   const url = new URL(window.location.href);
+  //   const success = url.searchParams.get("success");
+  //   const error = url.searchParams.get("error");
 
-    if (success) {
-      toast.success("Stripe account connected successfully!");
-      // Remove the query params from URL
-      router.replace(window.location.pathname);
-      connectionStatus.refetch();
-    } else if (error) {
-      toast.error(`Failed to connect Stripe account: ${error}`);
-      router.replace(window.location.pathname);
-    }
-  }, [router, connectionStatus]);
+  //   if (success) {
+  //     toast.success("Stripe account connected successfully!");
+  //     // Remove the query params from URL
+  //     router.replace(window.location.pathname);
+  //     connectionStatus.refetch();
+  //   } else if (error) {
+  //     toast.error(`Failed to connect Stripe account: ${error}`);
+  //     router.replace(window.location.pathname);
+  //   }
+  // }, [router, connectionStatus]);
 
   // For displaying currency formatted prices
   // const formatPrice = (price: number, currency: string) => {
@@ -198,16 +200,16 @@ export default function StripeSettings() {
   // };
 
   // Loading states
-  if (planLoading || connectionStatus.isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[40vh] w-full">
-        <LoaderCircle className="h-6 w-6 text-zinc-400 animate-spin" />
-        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-          Loading Stripe connection information...
-        </p>
-      </div>
-    );
-  }
+  // if (planLoading || connectionStatus.isLoading) {
+  //   return (
+  //     <div className="flex flex-col items-center justify-center min-h-[40vh] w-full">
+  //       <LoaderCircle className="h-6 w-6 text-zinc-400 animate-spin" />
+  //       <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+  //         Loading Stripe connection information...
+  //       </p>
+  //     </div>
+  //   );
+  // }
 
   // Not PRO plan
   if (!isPro) {

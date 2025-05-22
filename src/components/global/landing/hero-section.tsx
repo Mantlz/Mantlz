@@ -16,11 +16,7 @@ export function HeroSection() {
       </div> */}
       
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 md:px-8 text-center">
-        {/* Top badge */}
-        {/* <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-6">
-          <Sparkles className="h-4 w-4 mr-2" />
-          <span>Form Management Simplified</span>
-        </div> */}
+
         
         {/* Main heading */}
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent mb-6">
@@ -36,7 +32,7 @@ export function HeroSection() {
         <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
           <Button
             asChild
-            className="h-12 px-6 bg-zinc-800 hover:bg-zinc-700 text-white dark:bg-white dark:hover:bg-zinc-200 dark:text-zinc-800 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+            className="h-12 px-6 bg-orange-500 hover:bg-orange-600 text-white dark:bg-orange-500 dark:hover:bg-orange-600 dark:text-white rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
             size="lg"
           >
             <Link href="/sign-up">
@@ -47,7 +43,7 @@ export function HeroSection() {
           <Button
             asChild
             variant="outline"
-            className="h-12 px-6 border-zinc-300 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800 rounded-lg"
+            className="h-12 px-6 border-orange-500 text-orange-600 hover:bg-orange-50 dark:border-orange-500 dark:text-orange-400 dark:hover:bg-orange-950/30 rounded-lg"
             size="lg"
           >
             <Link href="/pricing">

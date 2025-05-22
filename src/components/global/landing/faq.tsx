@@ -38,7 +38,7 @@ export default function Faq() {
 
   return (
     <section 
-      className="py-24 relative bg-gradient-to-b from-white to-zinc-50 dark:from-zinc-950 dark:to-zinc-900"
+      className="py-24 relative "
       id="faq"
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -49,11 +49,11 @@ export default function Faq() {
       <Container className="relative z-10">
         <div className="flex flex-col items-center text-center lg:flex-row lg:items-start lg:text-left gap-8">
           <div className="lg:w-1/3">
-            <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-4">
+            <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300 mb-4">
               <Sparkles className="h-4 w-4 mr-2" />
               <span>FAQ</span>
             </div>
-            <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">
+            <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-400 dark:to-orange-500 bg-clip-text text-transparent">
               Frequently Asked Questions
             </h2>
             <p className="text-zinc-600 dark:text-zinc-400">
@@ -66,14 +66,14 @@ export default function Faq() {
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden shadow-sm backdrop-blur-sm"
+                  className="border border-orange-200 dark:border-orange-800/30 rounded-lg overflow-hidden shadow-sm backdrop-blur-sm"
                 >
-                  <AccordionTrigger className="px-5 py-4 text-left font-medium text-zinc-800 dark:text-zinc-200 transition-colors bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-50 dark:hover:bg-zinc-800 group">
-                    <span className="group-hover:text-zinc-900 dark:group-hover:text-white transition-colors">
+                  <AccordionTrigger className="px-5 py-4 text-left font-medium text-zinc-800 dark:text-zinc-200 transition-colors bg-white/80 dark:bg-zinc-900/80 hover:bg-orange-50 dark:hover:bg-orange-900/20 group">
+                    <span className="group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
                       {item.question}
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="px-5 py-4 text-zinc-600 dark:text-zinc-400 bg-white/50 dark:bg-zinc-900/50 border-t border-zinc-100 dark:border-zinc-800/50">
+                  <AccordionContent className="px-5 py-4 text-zinc-600 dark:text-zinc-400 bg-white/50 dark:bg-zinc-900/50 border-t border-orange-100 dark:border-orange-800/20">
                     {item.answer}
                   </AccordionContent>
                 </AccordionItem>

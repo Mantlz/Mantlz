@@ -63,12 +63,7 @@ Handle form submissions and errors with callback functions:
 ```tsx
 <mantlz
   formId="your-form-id"
-  onSubmitSuccess={(data) => {
-    console.log('Form submitted successfully:', data);
-  }}
-  onSubmitError={(error) => {
-    console.error('Form submission failed:', error);
-  }}
+
 />
 ```
 
@@ -116,10 +111,7 @@ Redirect users after successful form submission (STANDARD and PRO plans):
 | `title` | `string` | Form title text. |
 | `description` | `string` | Form description text. |
 | `className` | `string` | Additional CSS classes to apply to the form container. |
-| `variant` | `'default' \| 'glass'` | Visual variant of the form. Default: `'default'` |
 | `redirectUrl` | `string` | URL to redirect to after successful submission (premium). |
-| `onSubmitSuccess` | `function` | Callback fired on successful submission. |
-| `onSubmitError` | `function` | Callback fired on submission error. |
 | `showUsersJoined` | `boolean` | Show users joined counter (waitlist forms only). |
 | `usersJoinedLabel` | `string` | Label for users joined counter. |
 | `usersJoinedPosition` | `'top' \| 'bottom'` | Position of users joined counter. |

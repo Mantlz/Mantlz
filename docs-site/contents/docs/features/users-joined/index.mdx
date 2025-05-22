@@ -1,0 +1,249 @@
+# Users Counter
+
+The Users Counter feature in Mantlz SDK allows you to display the number of users who have submitted a form. This is particularly useful for waitlist forms, event RSVPs, and other scenarios where showing participation numbers can create social proof.
+
+## Basic Usage
+
+```tsx
+<Mantlz 
+  formId="your_form_id"
+  showUsersJoined={true}
+  usersJoinedLabel="people have joined"
+/>
+```
+
+## Configuration
+
+### Component Props
+
+```typescript
+interface UsersCounterProps {
+  showUsersJoined?: boolean;      // Enable/disable counter
+  usersJoinedCount?: number;      // Initial count
+  usersJoinedLabel?: string;      // Custom label
+  refreshInterval?: number;       // Auto-refresh interval in ms
+}
+```
+
+### Default Values
+
+```typescript
+const defaultProps = {
+  showUsersJoined: false,
+  usersJoinedCount: 0,
+  usersJoinedLabel: 'people have joined',
+  refreshInterval: 60000  // 1 minute
+};
+```
+
+## Examples
+
+### Basic Counter
+
+```tsx
+<Mantlz 
+  formId="waitlist_form"
+  showUsersJoined={true}
+/>
+```
+
+### Custom Label
+
+```tsx
+<Mantlz 
+  formId="event_form"
+  showUsersJoined={true}
+  usersJoinedLabel="attendees registered"
+/>
+```
+
+### Initial Count
+
+```tsx
+<Mantlz 
+  formId="survey_form"
+  showUsersJoined={true}
+  usersJoinedCount={150}
+  usersJoinedLabel="responses received"
+/>
+```
+
+### Custom Refresh Interval
+
+```tsx
+<Mantlz 
+  formId="live_form"
+  showUsersJoined={true}
+
+/>
+```
+
+## API Integration
+
+The users counter integrates with the Mantlz API:
+
+```typescript
+// Get users count
+const count = await client.getUsersJoinedCount(formId);
+
+// Subscribe to count updates
+client.subscribeToUsersCount(formId, (count) => {
+  console.log(`New count: ${count}`);
+});
+```
+
+## Styling
+
+The users counter can be styled using CSS variables:
+
+```css
+.users-counter {
+  --counter-font-size: 14px;
+  --counter-color: var(--gray-11);
+  --counter-font-weight: 500;
+  --counter-number-color: var(--blue-9);
+  --counter-spacing: 8px;
+}
+```
+
+### Available Variables
+
+- `--counter-font-size`: Font size of the counter text
+- `--counter-color`: Color of the label text
+- `--counter-font-weight`: Font weight of the counter
+- `--counter-number-color`: Color of the number
+- `--counter-spacing`: Spacing between elements
+
+## Animation
+
+The counter includes smooth animations for updates:
+
+```css
+.users-counter-number {
+  transition: all 0.3s ease;
+}
+
+.users-counter-update {
+  animation: pulse 0.5s ease;
+}
+```
+
+## Examples
+
+### Waitlist Form
+
+```tsx
+const waitlistForm = {
+  id: 'waitlist',
+  name: 'Product Waitlist',
+  formType: 'waitlist',
+  showUsersJoined: true,
+  usersJoinedLabel: 'early adopters',
+  fields: [
+    {
+      id: 'email',
+      name: 'email',
+      type: 'email',
+      label: 'Email Address',
+      required: true
+    }
+  ]
+};
+```
+
+### Event Registration
+
+```tsx
+const eventForm = {
+  id: 'event',
+  name: 'Event Registration',
+  formType: 'rsvp',
+  showUsersJoined: true,
+  usersJoinedLabel: 'people attending',
+  fields: [
+    {
+      id: 'name',
+      name: 'name',
+      type: 'text',
+      label: 'Full Name',
+      required: true
+    },
+    {
+      id: 'email',
+      name: 'email',
+      type: 'email',
+      label: 'Email',
+      required: true
+    }
+  ]
+};
+```
+
+### Survey with Counter
+
+```tsx
+const surveyForm = {
+  id: 'survey',
+  name: 'Customer Survey',
+  formType: 'survey',
+  showUsersJoined: true,
+  usersJoinedLabel: 'customers responded',
+  fields: [
+    {
+      id: 'feedback',
+      name: 'feedback',
+      type: 'textarea',
+      label: 'Your Feedback',
+      required: true
+    }
+  ]
+};
+```
+
+## Best Practices
+
+1. **Counter Display**
+   - Use clear, concise labels
+   - Show meaningful numbers
+   - Consider threshold hiding
+   - Update in real-time
+
+2. **User Experience**
+   - Smooth animations
+   - Clear formatting
+   - Responsive design
+   - Accessible display
+
+3. **Performance**
+   - Optimize refresh intervals
+   - Cache counter values
+   - Handle loading states
+   - Manage updates efficiently
+
+4. **Integration**
+   - Combine with forms naturally
+   - Match form context
+   - Consider mobile display
+   - Test different scenarios
+
+## Error Handling
+
+The SDK provides error handling for the users counter:
+
+```typescript
+try {
+  const count = await client.getUsersJoinedCount(formId);
+} catch (error) {
+  if (error.code === 'COUNTER_UNAVAILABLE') {
+    // Handle counter unavailability
+  } else if (error.code === 'REFRESH_FAILED') {
+    // Handle refresh failure
+  }
+}
+```
+
+## Next Steps
+
+- Learn about [Form Types](/docs/features/form-types)
+- Explore [Validation](/docs/features/validation)
+- Check out [Error Handling](/docs/features/error-handling) 

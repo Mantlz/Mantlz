@@ -88,8 +88,6 @@ export const formSchema = z.object({
 export interface BaseFormProps {
   formId: string;
   className?: string;
-  onSuccess?: () => void;
-  onError?: (error: Error) => void;
   redirectUrl?: string;
 }
 

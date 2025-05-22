@@ -1,0 +1,74 @@
+---
+title: Client Configuration
+description: Mantlz SDK Client Configuration (with sensible defaults)
+---
+
+# Client Configuration
+
+The Mantlz SDK comes with sensible defaults and automatic configuration. While most users won't need to modify any settings, the SDK provides configuration options for advanced use cases.
+
+## Quick Start
+
+For most applications, you only need to provide your API key:
+
+```tsx
+import { MantlzProvider } from "@mantlz/sdk";
+
+function App() {
+  return (
+    <MantlzProvider apiKey="your-api-key">
+      {/* Your app content */}
+    </MantlzProvider>
+  );
+}
+```
+
+That's it! The SDK automatically configures everything else with optimal defaults.
+
+
+## Configuration Options Explained
+
+
+
+The SDK provides built-in toast notifications for:
+
+- Form submission success/failure
+- Validation errors
+- API key issues
+- Network errors
+
+
+```
+
+The SDK automatically caches:
+
+- Form schemas
+- Validation rules
+- API responses
+
+## Best Practices
+
+1. **Start Simple**: Use the default configuration unless you have specific needs
+3. **Caching**: Keep caching enabled for better performance
+4. **Error Handling**: Use built-in notifications for standard error handling
+
+
+## Default Values
+
+The SDK uses these sensible defaults:
+
+```typescript
+const defaultConfig = {
+  notifications: true,
+  showApiKeyErrorToasts: true,
+  developmentMode: false,
+  credentials: "include",
+  corsMode: "cors",
+  cache: {
+    enabled: true,
+    ttl: 300000, // 5 minutes
+  },
+};
+```
+
+Remember: The Mantlz SDK is designed to work optimally out of the box. Only customize the configuration if you have specific requirements that differ from the defaults.

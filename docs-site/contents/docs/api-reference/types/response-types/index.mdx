@@ -1,0 +1,116 @@
+---
+title: Response Types
+description: Documentation for Mantlz SDK response types
+---
+
+# Response Types
+
+This page documents the response types returned by various Mantlz SDK operations.
+
+## Form Submit Response
+
+The `FormSubmitResponse` interface represents the response received after submitting a form:
+
+```typescript
+interface FormSubmitResponse {
+  success: boolean;          // Whether the submission was successful
+  data?: any;               // Optional response data
+  error?: MantlzError;      // Error information if submission failed
+  submissionId?: string;    // Unique ID for the submission
+  message?: string;         // Optional response message
+  isConflict?: boolean;     // Whether there was a conflict
+  redirect?: {              // Redirect information
+    url: string;            // URL to redirect to
+    allowed: boolean;       // Whether redirect is allowed
+    reason?: string;        // Reason if redirect not allowed
+  };
+}
+```
+
+## Error Type
+
+The `MantlzError` interface represents error information:
+
+```typescript
+interface MantlzError {
+  message: string;           // Error message
+  code: number;             // Error code
+  userMessage?: string;     // User-friendly error message
+  details?: any;            // Additional error details
+  alreadyHandled?: boolean; // Whether error was already handled
+  isConflict?: boolean;     // Whether error represents a conflict
+}
+```
+
+## Notification Response
+
+The response type for configuring notifications:
+
+```typescript
+interface NotificationResponse {
+  notifications: boolean;    // Whether notifications are enabled
+}
+```
+
+## Users Count Response
+
+The `getUsersJoinedCount` method returns a Promise resolving to a number:
+
+```typescript
+type UsersCountResponse = number;  // Number of users joined
+```
+
+## Stripe Checkout Response
+
+The response type for creating a Stripe checkout session:
+
+```typescript
+type StripeCheckoutResponse = Response;  // Standard Fetch API Response
+```
+
+## Usage Examples
+
+### Handling Form Submission Response
+
+```typescript
+const handleSubmit = async (formData: any) => {
+  try {
+    const response = await mantlzClient.submitForm('contact', {
+      formId: 'your-form-id',
+      data: formData
+    });
+
+    if (response.success) {
+      console.log(`Form submitted successfully! ID: ${response.submissionId}`);
+      
+      // Handle redirect if present
+      if (response.redirect?.allowed) {
+        window.location.href = response.redirect.url;
+      }
+    } else if (response.error) {
+      console.error('Submission failed:', response.error.userMessage);
+    }
+  } catch (error) {
+    console.error('Error submitting form:', error);
+  }
+};
+```
+
+### Handling Error Responses
+
+```typescript
+const handleError = (error: MantlzError) => {
+  if (error.alreadyHandled) {
+    return; // Error already handled by SDK
+  }
+
+  if (error.isConflict) {
+    // Handle conflict error
+    console.warn('Conflict detected:', error.userMessage);
+    return;
+  }
+
+  // Display error to user
+  alert(error.userMessage || error.message);
+};
+``` 

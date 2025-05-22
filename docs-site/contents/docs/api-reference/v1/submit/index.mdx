@@ -1,0 +1,148 @@
+---
+title: Form Submission
+description: Submit form data using the Mantlz SDK
+---
+
+# Form Submission
+
+The Mantlz SDK handles form submissions automatically. You don't need to implement the submission logic yourself - the SDK takes care of everything including validation, file uploads, and response handling.
+
+## Basic Usage
+
+The simplest way to submit a form is to use the `MantlzForm` component:
+
+```tsx
+import { MantlzForm } from '@mantlz/sdk';
+
+function ContactForm() {
+  return (
+    <MantlzForm
+      formId="your-form-id"
+      onSuccess={(response) => {
+        console.log('Form submitted successfully!', response);
+      }}
+    />
+  );
+}
+```
+
+That's it! The SDK handles everything else automatically.
+
+## Features Handled by the SDK
+
+The SDK automatically manages:
+
+- **Data Validation**: Validates all form fields before submission
+- **File Uploads**: Handles file uploads with automatic processing
+- **Rate Limiting**: Manages submission rates to prevent abuse
+- **Error Handling**: Provides comprehensive error management
+- **Success Responses**: Formats and processes successful submissions
+- **Redirects**: Handles post-submission redirects
+- **Analytics**: Captures relevant analytics data
+
+## Response Types
+
+The submission response includes:
+
+```typescript
+interface FormSubmitResponse {
+  success: boolean;          // Whether the submission was successful
+  data?: any;               // Response data if successful
+  submissionId?: string;    // Unique submission identifier
+  message?: string;         // Response message
+  redirect?: {              // Optional redirect information
+    url: string;
+    allowed: boolean;
+    reason?: string;
+  };
+}
+```
+
+## Advanced Usage
+
+While the SDK handles everything automatically, you can customize the submission behavior if needed:
+
+```tsx
+import { MantlzForm } from '@mantlz/sdk';
+
+function CustomForm() {
+  return (
+    <MantlzForm
+      formId="your-form-id"
+    />
+  );
+}
+```
+
+## File Uploads
+
+The SDK automatically handles file uploads:
+
+```tsx
+<MantlzForm
+  formId="your-form-id"
+  onSuccess={(response) => {
+    // File URLs are included in the response
+    console.log('Uploaded files:', response.data.files);
+  }}
+/>
+```
+
+The SDK manages:
+- File size validation
+- Upload progress
+- File type validation
+- Secure URL generation
+
+## Error Handling
+
+The SDK provides comprehensive error handling:
+
+```typescript
+interface MantlzError {
+  message: string;           // Error message
+  code: number;             // Error code
+  userMessage?: string;     // User-friendly message
+  details?: any;            // Additional error details
+}
+```
+
+Common error scenarios handled automatically:
+- Invalid form ID
+- API key issues
+- Rate limiting
+- File upload failures
+- Validation errors
+- Network errors
+
+## Best Practices
+
+1. **Use the Built-in Component**: Let the `MantlzForm` component handle submissions
+2. **Implement Success Handlers**: Add `onSuccess` handlers for post-submission logic
+3. **Trust the SDK**: Allow the SDK to manage validation and error handling
+4. **Handle Redirects**: Use the provided redirect information for navigation
+5. **Monitor Responses**: Use the submission ID for tracking if needed
+
+## Rate Limiting
+
+The SDK automatically handles rate limiting:
+- Manages submission frequency
+- Provides clear error messages
+- Includes retry-after information
+- Prevents submission abuse
+
+## Example: Complete Implementation
+
+```tsx
+import { MantlzForm } from '@mantlz/sdk';
+
+function ContactForm() {
+  return (
+    <MantlzForm
+      formId="contact-form"
+    />
+  );
+}
+```
+
+Remember: The Mantlz SDK is designed to handle all form submission complexities automatically. You don't need to worry about the submission process, validation, or error handling - just use our components and let the SDK manage everything for you! 

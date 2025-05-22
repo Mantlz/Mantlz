@@ -31,11 +31,40 @@ export default function CustomerFeedbackPage() {
          <Mantlz 
           formId="cman7j8ub0003o7jpmg2bjr6n"
           theme='neobrutalism'
+          
+
         />
          <Mantlz 
           formId="cman7j8ub0003o7jpmg2bjr6n"
           theme='neobrutalism'
         />
+{/* 
+<Mantlz 
+  formId="cman7j8ub0003o7jpmg2bjr6n"
+  fields={[
+    {
+      id: 'product',
+      name: 'product',
+      type: 'product',
+      label: 'Select Product',
+      required: true,
+      products: [
+        {
+          id: 'basic',
+          name: 'Basic Plan',
+          description: 'Perfect for starters',
+          price: 9.99,
+          currency: 'USD',
+          image: '/images/basic.png'
+        }
+      ],
+      displayMode: 'grid'
+    }
+  ]}
+/> */}
+
+
+
         
 
       </div>

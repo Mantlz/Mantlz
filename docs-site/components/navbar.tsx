@@ -4,7 +4,8 @@ import Anchor from "./anchor";
 import { SheetLeftbar } from "./leftbar";
 import { page_routes } from "@/lib/routes-config";
 import { Logo as LogoIcon } from "../components/logo";
-
+import { CommandMenu } from "./CommandMenu";
+import { SearchButton } from "./search-button";
 
 export const NAVLINKS = [
   {
@@ -41,8 +42,12 @@ export function Navbar() {
           </div>
         </div>
 
-        <ModeToggle />
+        <div className="flex items-center gap-2">
+          <SearchButton />
+          <ModeToggle />
+        </div>
       </div>
+      <CommandMenu />
     </nav>
   );
 }

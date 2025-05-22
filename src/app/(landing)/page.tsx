@@ -8,15 +8,16 @@ import { DashboardPreview } from "@/components/global/landing/preview";
 import TrustedCompanies from "@/components/global/landing/trustedcompanies";
 import { VersionBadge } from "@/components/global/landing/version-badge";
 import { Container } from "@/components/global/landing/container";
-import SoftwareComparison from "@/components/global/landing/software-comparison";
+import PricingComparison from "@/components/global/landing/pricing-comparison";
 import Pricing from "@/components/global/landing/pricing";
 import Faq from "@/components/global/landing/faq";
 import BottomCTA from "@/components/global/landing/bottomcta";
+import { OurServices } from "@/components/global/landing/OurServices";
 import { Suspense } from "react";
 
 export default function LandingPage() {
   return (
-     <div className="min-h-screen bg-white dark:bg-zinc-950">
+     <div className="min-h-screen ">
       <Container>
         <Navbar />
 
@@ -44,6 +45,7 @@ export default function LandingPage() {
             
           </div>
       <TrustedCompanies />
+      <OurServices />
 
           <FeatureGrid /> 
           <AdvancedFeatureGrid />
@@ -51,10 +53,10 @@ export default function LandingPage() {
 
       </Container>
       
-      <SoftwareComparison />
       <Suspense>
         <Pricing />
       </Suspense>
+      <PricingComparison />
       <Faq />
       <BottomCTA />
       <Footer />

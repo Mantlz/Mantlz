@@ -3,117 +3,86 @@ title: Introduction
 description: A comprehensive guide to the Mantlz form solution platform
 ---
 
-# Welcome
+# Introduction to Mantlz SDK
 
-Mantlz is a powerful form solution platform that helps you create beautiful, customizable forms for your website or application. With our dynamic form system, you can configure and manage all your forms through the dashboard while maintaining complete control over their appearance and behavior in your code.
-
-## What is Mantlz?
-
-Mantlz is a complete form solution platform that enables developers and businesses to:
-
-- **Create dynamic forms** with minimal code
-- **Configure form fields** through the dashboard
-- **Customize appearance** with extensive styling options
-- **Collect and manage submissions** efficiently
-- **Analyze form data** with built-in analytics
-
-Our SDK offers extensive customization options, dark mode support, and seamless integration with Next.js and other frameworks.
+Mantlz is a powerful form management SDK for React applications that provides a complete solution for building and managing forms. It offers a structured form building system with predefined field types, extensive customization options, and a seamless developer experience.
 
 ## Key Features
 
-### Dynamic Form Configuration
-
-All forms are configured through the Mantlz dashboard:
-
-- **Field configuration** - Add, remove, and modify form fields
-- **Validation rules** - Set up field validation requirements
-- **Form behavior** - Configure submission handling and redirects
-- **Type-specific features** - Enable features like user counters or ratings
-
-### Extensive Customization
-
-Forms come with powerful styling options:
-
-- **Preset themes** including default, dark, purple, neobrutalism, and more
-- **Appearance API** for complete control over styling
-- **Tailwind CSS compatibility** for seamless integration
-- **Dark mode support** built-in
-
-### Developer Experience
-
-Mantlz is built with developers in mind:
-
-- **Simple API** with a single component
-- **Comprehensive documentation** for all features
-- **Powerful SDK** for Next.js and React
-- **REST API** for custom integrations
-
-### Data Management
-
-Take control of your form submissions:
-
-- **Submission tracking** in the Mantlz dashboard
-- **Analytics** to understand user behavior
-- **Email notifications** for new submissions
-- **Export options** for your data
-
-## Form Types
-
-Through the dashboard, you can configure different types of forms:
-
-- **Feedback forms** with star ratings and comments
-- **Contact forms** for gathering user inquiries
-- **Waitlist forms** with user counters
-- **Custom forms** with your own field configuration
-
-## Who Should Use Mantlz?
-
-Mantlz is perfect for:
-
-- **Developers** building websites and applications
-- **Startups** collecting early user feedback
-- **SaaS companies** creating waitlists for new features
-- **Businesses** looking for customizable forms
-- **Product teams** gathering customer insights
+### Form Management
+- **Predefined Field Types**: Build forms using our set of validated field types
+- **Form Validation**: Built-in validation support using Zod
+- **Error Handling**: Comprehensive error handling with toast notifications
+- **Theme System**: Multiple built-in themes with customization options
+- **TypeScript Support**: Full TypeScript support with type definitions
 
 ## Getting Started
 
-Ready to start using Mantlz? Our documentation will guide you through:
+To start using Mantlz in your project:
 
-1. [Installing the SDK](/docs/getting-started/installation)
-2. [Setting up with Next.js](/docs/getting-started/installation/nextjs)
-3. [Customizing form appearance](/docs/appearance)
-4. [Using the API](/docs/api-reference)
+```bash
+npm install @mantlz/sdk
+# or
+yarn add @mantlz/sdk
+# or
+pnpm add @mantlz/sdk
+```
 
-## Example Form
-
-Here's a simple example of how to add a form to your Next.js application:
+### Basic Usage
 
 ```tsx
-import { mantlz } from '@mantlz/nextjs';
+import { MantlzProvider, Mantlz } from '@mantlz/sdk';
 
-export default function FormPage() {
+function App() {
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-2xl font-bold mb-4">Get in Touch</h1>
-      
-      <mantlz 
-        formId="your-form-id"
-        title="We'd love to hear from you"
-        description="Send us a message and we'll get back to you"
+    <MantlzProvider apiKey="your_api_key">
+      <Mantlz 
+        formId="your_form_id"
         theme="modern"
-        appearance={{
-          elements: {
-            container: 'bg-white p-6 rounded-lg shadow-lg',
-            submitButton: 'bg-blue-600 hover:bg-blue-700 text-white'
-          }
-        }}
       />
-    </div>
+    </MantlzProvider>
   );
 }
 ```
 
+
+## Form Validation
+
+Mantlz uses Zod for form validation with predefined validation rules for each field type:
+
+```tsx
+const validation = {
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().email('Invalid email address'),
+  message: z.string().min(10, 'Message must be at least 10 characters')
+};
+```
+
+## Error Handling
+
+The SDK provides comprehensive error handling:
+
+```tsx
+<Mantlz 
+  formId="your_form_id"
+/>
+```
+
+## Theme Customization
+
+Choose from built-in themes or customize the appearance:
+
+```tsx
+<Mantlz 
+  formId="your_form_id"
+  theme="modern"
+/>
+
+```
+
 ## Next Steps
 
-Start building dynamic forms with Mantlz today by [installing the SDK](/docs/getting-started/installation) and exploring our documentation.
+- Check out the [Installation Guide](/docs/getting-started/installation/nextjs) for detailed setup instructions
+- Learn about [Form Configuration](/docs/getting-started/components/form-config)
+- Explore [Validation](/docs/features/validation) options
+- Customize appearance with [Themes](/docs/appearance/themes)

@@ -1,0 +1,200 @@
+# File Upload
+
+The Mantlz SDK provides robust file upload capabilities with built-in validation, size restrictions, and type checking.
+
+## Basic Usage
+
+```tsx
+<Mantlz 
+  formId="your_form_id"
+  fields={[
+    {
+      id: 'document',
+      name: 'document',
+      type: 'file',
+      label: 'Upload Document',
+      required: true,
+      accept: ['.pdf', '.doc', '.docx'],
+      maxSize: 5 * 1024 * 1024 // 5MB
+    }
+  ]}
+/>
+```
+
+## Configuration Options
+
+### Field Properties
+
+```typescript
+interface FileField extends FormField {
+  type: 'file';
+  accept?: string[];        // Allowed file types
+  maxSize?: number;         // Maximum file size in bytes
+  multiple?: boolean;       // Allow multiple file uploads
+  required?: boolean;       // Is the field required?
+}
+```
+
+### Accepted File Types
+You can specify allowed file types using standard MIME types or file extensions:
+
+```typescript
+const field: FileField = {
+  // ...
+  accept: [
+    '.pdf',                 // By extension
+    '.doc', '.docx',        // Multiple extensions
+    'image/*',             // All image types
+    'application/pdf',      // By MIME type
+  ]
+};
+```
+
+### Size Restrictions
+Set maximum file size in bytes:
+
+```typescript
+const field: FileField = {
+  // ...
+  maxSize: 5 * 1024 * 1024  // 5MB
+};
+```
+
+## Validation
+
+File uploads include built-in validation:
+
+```typescript
+const fileValidation = {
+  // Size validation
+  maxSize: (file: File, maxSize: number) => {
+    if (file.size > maxSize) {
+      throw new Error(`File size must be less than ${maxSize / 1024 / 1024}MB`);
+    }
+  },
+  
+  // Type validation
+  fileType: (file: File, accept: string[]) => {
+    const isValid = accept.some(type => {
+      if (type.startsWith('.')) {
+        return file.name.toLowerCase().endsWith(type.toLowerCase());
+      }
+      return file.type.match(new RegExp(type.replace('*', '.*')));
+    });
+    
+    if (!isValid) {
+      throw new Error(`File type must be: ${accept.join(', ')}`);
+    }
+  }
+};
+```
+
+## Handling File Uploads
+
+The SDK handles file uploads automatically:
+
+1. **Client-side Validation**
+   - File type checking
+   - Size validation
+   - Required field validation
+
+2. **Upload Process**
+   - Automatic multipart/form-data handling
+   - Progress tracking
+   - Error handling
+
+3. **Server Integration**
+   - Secure upload endpoints
+   - File processing
+   - Storage management
+
+## Examples
+
+### Basic Document Upload
+
+```tsx
+const documentField: FileField = {
+  id: 'document',
+  name: 'document',
+  type: 'file',
+  label: 'Upload Document',
+  required: true,
+  accept: ['.pdf', '.doc', '.docx'],
+  maxSize: 5 * 1024 * 1024
+};
+```
+
+### Image Upload
+
+```tsx
+const imageField: FileField = {
+  id: 'profile',
+  name: 'profile',
+  type: 'file',
+  label: 'Profile Picture',
+  required: true,
+  accept: ['image/*'],
+  maxSize: 2 * 1024 * 1024
+};
+```
+
+### Multiple File Upload
+
+```tsx
+const attachmentsField: FileField = {
+  id: 'attachments',
+  name: 'attachments',
+  type: 'file',
+  label: 'Additional Documents',
+  required: false,
+  multiple: true,
+  accept: ['.pdf', '.doc', '.docx', '.txt'],
+  maxSize: 10 * 1024 * 1024
+};
+```
+
+## Best Practices
+
+1. **File Size**
+   - Set appropriate size limits
+   - Consider bandwidth and storage
+   - Provide clear size guidelines
+
+2. **File Types**
+   - Restrict to necessary file types
+   - Use both extensions and MIME types
+   - Consider security implications
+
+3. **User Experience**
+   - Show upload progress
+   - Provide clear error messages
+   - Allow retry on failure
+
+4. **Performance**
+   - Optimize file handling
+   - Consider chunked uploads
+   - Implement proper error handling
+
+## Error Handling
+
+The SDK provides comprehensive error handling for file uploads:
+
+```typescript
+try {
+  await form.submit();
+} catch (error) {
+  if (error.code === 'FILE_TOO_LARGE') {
+    // Handle file size error
+  } else if (error.code === 'INVALID_FILE_TYPE') {
+    // Handle file type error
+  } else if (error.code === 'UPLOAD_FAILED') {
+    // Handle upload failure
+  }
+}
+```
+
+## Next Steps
+
+- Learn about [Form Types](/docs/features/form-types)
+- Explore [Validation](/docs/features/validation)
+- Check out [Error Handling](/docs/features/error-handling) 
