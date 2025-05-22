@@ -28,4 +28,12 @@
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+.clip-path-rough {
+  clip-path: polygon(0 15%, 5% 0, 100% 5%, 95% 90%, 100% 100%, 5% 95%, 0 100%);
+}
+
+.clip-path-rough-2 {
+  clip-path: polygon(3% 0, 97% 3%, 100% 97%, 95% 100%, 5% 98%, 0 95%);
 } 

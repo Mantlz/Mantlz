@@ -19,8 +19,12 @@ export function HeroSection() {
 
         
         {/* Main heading */}
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent mb-6">
-          Forms for developers
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
+                     Forms for <span className="relative inline-block">
+                        <span className="absolute inset-0 bg-orange-500 transform -rotate-1 skew-x-3 origin-bottom-right clip-path-rough"></span>
+                        <span className="absolute inset-0 bg-orange-600 transform rotate-1 skew-y-1 origin-top-left clip-path-rough-2"></span>
+                        <span className="relative text-white text-6xl sm:text-6xl md:text-7xl px-6 py-3">Developers</span>
+                     </span>
         </h1>
         
         {/* Description */}
@@ -37,17 +41,6 @@ export function HeroSection() {
           >
             <Link href="/sign-up">
               Try Now. Free! <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
-          
-          <Button
-            asChild
-            variant="outline"
-            className="h-12 px-6 border-orange-500 text-orange-600 hover:bg-orange-50 dark:border-orange-500 dark:text-orange-400 dark:hover:bg-orange-950/30 rounded-lg"
-            size="lg"
-          >
-            <Link href="/pricing">
-              View Plans
             </Link>
           </Button>
         </div>

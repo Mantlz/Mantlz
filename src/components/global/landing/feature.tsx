@@ -141,45 +141,7 @@ export function FeatureGrid() {
           </div>
         </div>
 
-        {/* Dark Mode - Small Card */}
-        <div className="group bg-white dark:bg-zinc-800 backdrop-blur rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-orange-200 dark:border-orange-800/30 p-6 flex flex-col relative overflow-hidden">
-          <div className="absolute -top-16 -right-16 h-32 w-32 bg-orange-500/10 rounded-lg blur-2xl group-hover:bg-orange-500/20 transition-all duration-500" />
-          
-          <div className="flex items-center h-full">
-            <Moon className="h-10 w-10 text-orange-500 dark:text-orange-400 mr-3 flex-shrink-0" />
-            <h3 className="text-xl font-bold text-zinc-800 dark:text-white">Dark Mode</h3>
-          </div>
-        </div>
-
-        {/* Customizable - Small Card */}
-        <div className="group bg-white dark:bg-zinc-800 backdrop-blur rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-orange-200 dark:border-orange-800/30 p-6 flex flex-col relative overflow-hidden">
-          <div className="absolute -top-16 -right-16 h-32 w-32 bg-orange-500/10 rounded-lg blur-2xl group-hover:bg-orange-500/20 transition-all duration-500" />
-          
-          <div className="flex items-center h-full">
-            <Sliders className="h-10 w-10 text-orange-500 dark:text-orange-400 mr-3 flex-shrink-0" />
-            <h3 className="text-xl font-bold text-zinc-800 dark:text-white">Customizable</h3>
-          </div>
-        </div>
-
-        {/* User-friendly - Small Card */}
-        <div className="group bg-white dark:bg-zinc-800 backdrop-blur rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-orange-200 dark:border-orange-800/30 p-6 flex flex-col relative overflow-hidden">
-          <div className="absolute -top-16 -right-16 h-32 w-32 bg-orange-500/10 rounded-lg blur-2xl group-hover:bg-orange-500/20 transition-all duration-500" />
-          
-          <div className="flex items-center h-full">
-            <Users className="h-10 w-10 text-orange-500 dark:text-orange-400 mr-3 flex-shrink-0" />
-            <h3 className="text-xl font-bold text-zinc-800 dark:text-white">Dev friendly</h3>
-          </div>
-        </div>
-
-        {/* Reliable - Small Card */}
-        <div className="group bg-white dark:bg-zinc-800 backdrop-blur rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-orange-200 dark:border-orange-800/30 p-6 flex flex-col relative overflow-hidden">
-          <div className="absolute -top-16 -right-16 h-32 w-32 bg-orange-500/10 rounded-lg blur-2xl group-hover:bg-orange-500/20 transition-all duration-500" />
-          
-          <div className="flex items-center h-full">
-            <CheckCircle className="h-10 w-10 text-orange-500 dark:text-orange-400 mr-3 flex-shrink-0" />
-            <h3 className="text-xl font-bold text-zinc-800 dark:text-white">Reliable</h3>
-          </div>
-        </div>
+      
       </div>
     </section>
   )

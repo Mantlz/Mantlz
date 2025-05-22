@@ -4,23 +4,18 @@ import { ArrowRight, Sparkles } from "lucide-react"
 export default function BottomCTA() {
   return (
     <section className="py-24 relative overflow-hidden">
-      {/* Decorative elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-zinc-200/50 dark:bg-zinc-800/20 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-zinc-200/50 dark:bg-zinc-800/20 rounded-full blur-3xl"></div>
-      </div>
-      
+     
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-8 text-center">
         <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-center text-center backdrop-blur-sm p-8 ">
           {/* Badge */}
-          <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-4">
+          <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300 mb-4">
             <Sparkles className="h-4 w-4 mr-2" />
             <span>Get Started Today</span>
           </div>
           
           {/* Heading */}
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-zinc-800 to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-400 dark:to-orange-500 bg-clip-text text-transparent">
             Create Powerful Forms with Ease
           </h2>
           
@@ -31,7 +26,7 @@ export default function BottomCTA() {
           
           {/* CTA Button */}
           <Button
-            className="h-12 px-8 text-md bg-zinc-800 hover:bg-zinc-700 text-white dark:bg-white dark:hover:bg-zinc-200 dark:text-zinc-800 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+            className="h-12 px-8 text-md bg-orange-500 hover:bg-orange-600 text-white dark:bg-orange-500 dark:hover:bg-orange-600 dark:text-white rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
             size="lg"
           >
             Start Building Forms

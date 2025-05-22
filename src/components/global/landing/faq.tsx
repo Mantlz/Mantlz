@@ -41,10 +41,7 @@ export default function Faq() {
       className="py-24 relative "
       id="faq"
     >
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute bottom-0 right-0 w-1/3 h-1/2 bg-zinc-200/30 dark:bg-zinc-800/20 rounded-full blur-3xl transform translate-y-1/4 translate-x-1/4"></div>
-        <div className="absolute top-0 left-0 w-1/3 h-1/2 bg-zinc-200/30 dark:bg-zinc-800/20 rounded-full blur-3xl transform -translate-y-1/4 -translate-x-1/4"></div>
-      </div>
+
       
       <Container className="relative z-10">
         <div className="flex flex-col items-center text-center lg:flex-row lg:items-start lg:text-left gap-8">
