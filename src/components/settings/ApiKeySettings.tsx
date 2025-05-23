@@ -123,9 +123,9 @@ export default function ApiKeySettings() {
           </p>
         </header>
 
-        <Alert variant="destructive" className="bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800">
+        <Alert variant="destructive" className="bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-900">
           <AlertCircle className="h-4 w-4 text-red-500" />
-          <AlertDescription className="text-red-700 dark:text-red-300">
+          <AlertDescription className="text-red-700 dark:text-red-500">
             API keys provide full access to your account. Keep them secure and never share them with anyone.
           </AlertDescription>
         </Alert>

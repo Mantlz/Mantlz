@@ -177,7 +177,7 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
                 {selectedTab === 'Billing' && <BillingSettings />}
                 {selectedTab === 'Usage' && <UsageSettings />}
                 {selectedTab === 'API Keys' && <ApiKeySettings />}
-                {selectedTab === 'Email Settings' && <EmailSettings />}
+                {selectedTab === 'Email' && <EmailSettings />}
                 {selectedTab === 'Stripe Connect' && <StripeSettings />}
                 {selectedTab === 'Advanced' && <AdvancedSettings />}
               </div>

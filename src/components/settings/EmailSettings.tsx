@@ -151,7 +151,7 @@ export default function EmailSettings() {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full max-w-5xl mx-auto">
       <div className="w-full space-y-4">
         <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
           <div className="flex items-center justify-between mb-2">
@@ -185,7 +185,7 @@ export default function EmailSettings() {
           </p>
         </header>
 
-        <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+        <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 shadow-sm">
           <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
             <div>
               <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
@@ -264,7 +264,7 @@ export default function EmailSettings() {
                     )}
                   />
 
-                  <div className="rounded-lg bg-zinc-50 border border-blue-200 p-3 sm:p-4 dark:bg-zinc-900/20 dark:border-blue-800/30">
+                  <div className="rounded-lg bg-zinc-50 border border-blue-200 p-3 sm:p-4 dark:bg-zinc-900 dark:border-blue-100">
                     <div className="flex gap-2 sm:gap-3">
                       <Info className="h-4 w-4 text-blue-500 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                       <div>

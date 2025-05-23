@@ -22,7 +22,8 @@ import {
   File,
   Lock,
   Sparkles,
- 
+  Download,
+  FileIcon
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Submission } from "./types"
@@ -121,6 +122,22 @@ export function TableSubmissionSheet({
   const developerEmailStatus = getDeveloperEmailStatus();
   const userEmailError = getUserEmailError();
   const developerEmailError = getDeveloperEmailError();
+
+  // Add helper functions for file handling
+  const isFileUrl = (value: string | null | undefined): boolean => {
+    if (!value) return false;
+    return value.startsWith('https://ucarecdn.com/') || value.startsWith('http');
+  }
+
+  const getFileNameFromUrl = (url: string): string => {
+    try {
+      const urlObj = new URL(url);
+      const pathParts = urlObj.pathname.split('/');
+      return pathParts[pathParts.length - 1] || 'Download';
+    } catch {
+      return 'Download';
+    }
+  }
 
   return (
     <>
@@ -333,31 +350,53 @@ export function TableSubmissionSheet({
                           className="p-3 sm:p-4 border border-zinc-100 dark:border-zinc-800/50 rounded-lg bg-white dark:bg-zinc-900"
                         >
                           <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center">
-                              <div className="w-2 h-2 bg-zinc-300 dark:bg-zinc-600 rounded-lg mr-2"></div>
+                            <div className="flex items-center gap-2">
+                              {typeof value === 'string' && isFileUrl(value) ? (
+                                <FileIcon className="h-3.5 w-3.5 text-gray-500" />
+                              ) : (
+                                <div className="w-2 h-2 bg-zinc-300 dark:bg-zinc-600 rounded-lg"></div>
+                              )}
                               <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                 {key}
                               </p>
                             </div>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-7 px-2 text-gray-500 cursor-pointer dark:text-gray-400 hover:text-zinc-700 dark:hover:text-gray-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
-                              onClick={() => copyToClipboard(key, value)}
-                            >
-                              {copiedField === key ? (
-                                <CheckCheck className="h-3.5 w-3.5 mr-1 text-green-500" />
+                            <div className="flex gap-2">
+                              {typeof value === 'string' && isFileUrl(value) ? (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="h-7 px-2 text-gray-500 cursor-pointer dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
+                                  onClick={() => window.open(value, '_blank')}
+                                >
+                                  <Download className="h-3.5 w-3.5 mr-1.5" />
+                                  <span className="text-xs font-medium">Download</span>
+                                </Button>
                               ) : (
-                                <Copy className="h-3.5 w-3.5 mr-1" />
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-7 px-2 text-gray-500 cursor-pointer dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
+                                  onClick={() => copyToClipboard(key, value)}
+                                >
+                                  {copiedField === key ? (
+                                    <CheckCheck className="h-3.5 w-3.5 mr-1 text-green-500" />
+                                  ) : (
+                                    <Copy className="h-3.5 w-3.5 mr-1" />
+                                  )}
+                                  <span className="text-xs font-medium">
+                                    {copiedField === key ? "Copied!" : "Copy"}
+                                  </span>
+                                </Button>
                               )}
-                              <span className="text-xs font-medium">
-                                {copiedField === key ? "Copied!" : "Copy"}
-                              </span>
-                            </Button>
+                            </div>
                           </div>
                           <div className="h-px w-full bg-zinc-100 dark:bg-zinc-800 mb-3"></div>
                           <p className="text-xs sm:text-sm text-gray-900 dark:text-white break-words">
-                            {typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value)}
+                            {typeof value === 'string' && isFileUrl(value) ? (
+                              <span className="text-blue-500 dark:text-blue-400">{getFileNameFromUrl(value)}</span>
+                            ) : (
+                              typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value)
+                            )}
                           </p>
                         </div>
                       ))}

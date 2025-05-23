@@ -85,7 +85,7 @@ export function FormsList({
   
   if (isLoading) {
     // Get the count from the query data if available, otherwise use default
-    const formCount = forms?.length || 1;
+    const formCount = forms?.length || 8;
     return <FormCardSkeleton count={formCount} />
   }
   
@@ -245,7 +245,7 @@ export function FormsList({
               <div className="p-4 sm:p-6">
                 <div className="flex items-center justify-between mb-3 sm:mb-4">
                   <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
-                    {form.name}
+                    {form.name.length > 8 ? `${form.name.slice(0, 8)}...` : form.name}
                   </h3>
                   <span className="text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-800/50 text-gray-900 dark:text-white px-2 sm:px-3 py-1 rounded-lg">
                     {form.responsesCount} responses
@@ -281,7 +281,7 @@ export function FormsList({
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
-                      {form.name}
+                      {form.name.length > 8 ? `${form.name.slice(0, 8)}...` : form.name}
                     </h3>
                     <div className="flex items-center gap-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                       <div className="flex items-center">
