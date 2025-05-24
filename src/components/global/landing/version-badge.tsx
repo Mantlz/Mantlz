@@ -7,12 +7,12 @@ interface VersionBadgeProps {
 
 export function VersionBadge({ version, text }: VersionBadgeProps) {
   return (
-    <div className="group inline-flex items-center px-3 py-1 rounded-full bg-black/90 dark:bg-white/90 text-white dark:text-black text-sm transition-all duration-200 hover:bg-black dark:hover:bg-white shadow-sm hover:shadow-md">
-      <span className="inline-flex items-center mr-2 bg-gradient-to-bl from-zinc-100 via-zinc-200 to-zinc-400 hover:from-zinc-700 hover:to-zinc-900 rounded-lg px-1 py-0.5 text-black font-medium transition-all duration-200 group-hover:scale-105">
+    <div className="group inline-flex items-center px-2 py-1 rounded-lg bg-black dark:bg-white border-2 border-black dark:border-zinc-600 transform-gpu translate-y-[-1px] translate-x-[-1px] hover:translate-y-[-2px] hover:translate-x-[-2px] transition-all duration-300 shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] dark:shadow-[1px_1px_0px_0px_rgba(255,255,255,0.5)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)] text-sm">
+      <span className="inline-flex items-center mr-2 bg-white dark:bg-black px-1.5 py-0.5 rounded-md border border-black dark:border-zinc-600 text-black dark:text-white font-bold transform-gpu group-hover:translate-y-[-0.5px] group-hover:translate-x-[-0.5px] transition-all duration-300">
         {version}
-        <Tag className="w-3 h-3 ml-1 text-black/80" />
+        <Tag className="w-2.5 h-2.5 ml-1" />
       </span>
-      <span className="font-medium">{text}</span>
+      <span className="font-bold text-white dark:text-black text-sm">{text}</span>
     </div>
   )
 }

@@ -11,28 +11,10 @@ const ServiceCard = ({
   description: string;
   icon: React.ComponentType<{ className?: string }>
 }) => (
-  <div className="relative group p-8 rounded-xl border border-orange-200 dark:border-orange-800/30 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300">
-    {/* Gradient corners */}
-    <div className="absolute -top-px -left-px w-8 h-8">
-      <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-orange-500 to-transparent dark:from-orange-400"></div>
-      <div className="absolute top-0 left-0 h-full w-[2px] bg-gradient-to-b from-orange-500 to-transparent dark:from-orange-400"></div>
-    </div>
-    <div className="absolute -top-px -right-px w-8 h-8">
-      <div className="absolute top-0 right-0 w-full h-[2px] bg-gradient-to-l from-orange-500 to-transparent dark:from-orange-400"></div>
-      <div className="absolute top-0 right-0 h-full w-[2px] bg-gradient-to-b from-orange-500 to-transparent dark:from-orange-400"></div>
-    </div>
-    <div className="absolute -bottom-px -left-px w-8 h-8">
-      <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-orange-500 to-transparent dark:from-orange-400"></div>
-      <div className="absolute bottom-0 left-0 h-full w-[2px] bg-gradient-to-t from-orange-500 to-transparent dark:from-orange-400"></div>
-    </div>
-    <div className="absolute -bottom-px -right-px w-8 h-8">
-      <div className="absolute bottom-0 right-0 w-full h-[2px] bg-gradient-to-l from-orange-500 to-transparent dark:from-orange-400"></div>
-      <div className="absolute bottom-0 right-0 h-full w-[2px] bg-gradient-to-t from-orange-500 to-transparent dark:from-orange-400"></div>
-    </div>
-
+  <div className="relative group p-8 rounded-lg bg-white dark:bg-zinc-900 border-2 border-black dark:border-zinc-600 transform-gpu translate-y-[-4px] translate-x-[-4px] hover:translate-y-[-8px] hover:translate-x-[-8px] transition-all duration-300 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.5)]">
     <div className="relative z-10">
-      <div className="inline-flex items-center justify-center w-12 h-12 mb-6 rounded-lg bg-orange-100 dark:bg-orange-900/20">
-        <Icon className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+      <div className="inline-flex items-center justify-center w-12 h-12 mb-6 rounded-lg bg-zinc-100 dark:bg-zinc-800 border-2 border-black dark:border-zinc-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)]">
+        <Icon className="w-6 h-6 text-zinc-600 dark:text-zinc-400" />
       </div>
       <h3 className="text-xl font-bold text-zinc-800 dark:text-white mb-3">{title}</h3>
       <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">{description}</p>
@@ -48,11 +30,11 @@ export function OurServices() {
       
       <Container className="relative z-10">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300 mb-4">
+          <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-4">
             <Sparkles className="h-4 w-4 mr-2" />
             <span>Our Services</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-400 dark:to-orange-500 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-zinc-700 to-zinc-900 dark:from-zinc-200 dark:to-zinc-400 bg-clip-text text-transparent">
             Everything you need
           </h2>
           <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">

@@ -12,6 +12,7 @@ import Canceled from "./canceled"
 import { useSubscription } from "@/hooks/useSubscription"
 import { Badge } from "@/components/ui/badge"
 import { Check, Sparkles, ArrowRight, FileText, Users, Building, ZapIcon } from "lucide-react"
+import "@/styles/animations.css"
 
 // Define subscription type
 type Subscription = {
@@ -199,11 +200,11 @@ function PricingContent({
    
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300 mb-4">
+          <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-4">
             <Sparkles className="h-4 w-4 mr-2" />
             <span>Simple Pricing</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-400 dark:to-orange-500 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-zinc-700 to-zinc-900 dark:from-zinc-200 dark:to-zinc-400 bg-clip-text text-transparent">
             Choose the plan that fits your needs
           </h2>
           <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
@@ -240,22 +241,22 @@ function PricingCard({
 }) {
   return (
     <div
-      className={`relative flex flex-col p-6 rounded-2xl shadow-sm transition-all duration-200 bg-white dark:bg-zinc-900 ${
+      className={`relative flex flex-col p-6 rounded-lg bg-white dark:bg-zinc-900 transform-gpu translate-y-[-4px] translate-x-[-4px] hover:translate-y-[-8px] hover:translate-x-[-8px] transition-all duration-300 ${
         plan.isPopular
-          ? "ring-2 ring-orange-500 dark:ring-orange-400"
-          : "ring-1 ring-orange-200 dark:ring-orange-800/30"
+          ? "border-2 border-black dark:border-zinc-600 shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] dark:shadow-[4px_4px_0px_0px_rgba(249,115,22,0.5)] hover:shadow-[8px_8px_0px_0px_rgba(249,115,22,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(249,115,22,0.5)]"
+          : "border-2 border-black dark:border-zinc-600 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.5)]"
       }`}
     >
       {plan.isPopular && (
         <div className="absolute -top-5 left-0 right-0 mx-auto w-32">
-          <div className="text-center py-1 px-3 rounded-full bg-orange-500 text-white text-sm font-medium">
+          <div className="text-center py-1 px-3 rounded-lg bg-orange-500 text-white text-sm font-medium border-2 border-black dark:border-orange-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             Most Popular
           </div>
         </div>
       )}
 
       <div className="mb-5">
-        <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-2">
+        <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-2">
           {plan.title}
         </h3>
         <div className="flex items-baseline text-zinc-900 dark:text-white">
@@ -276,10 +277,10 @@ function PricingCard({
       <Button
         onClick={onCheckout}
         disabled={isLoading || isCurrentPlan}
-        className={`w-full ${
+        className={`w-full border-2 transform-gpu hover:-translate-y-1 transition-transform ${
           plan.isPopular
-            ? "bg-orange-500 hover:bg-orange-600 text-white dark:bg-orange-500 dark:hover:bg-orange-600"
-            : "bg-orange-500 hover:bg-orange-600 text-white dark:bg-orange-500 dark:hover:bg-orange-600"
+            ? "bg-orange-500 hover:bg-orange-600 text-white border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            : "bg-zinc-800 hover:bg-zinc-900 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)]"
         }`}
       >
         {isCurrentPlan ? (

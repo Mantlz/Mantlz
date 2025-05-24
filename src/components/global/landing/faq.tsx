@@ -38,19 +38,17 @@ export default function Faq() {
 
   return (
     <section 
-      className="py-24 relative "
+      className="py-24 relative"
       id="faq"
     >
-
-      
       <Container className="relative z-10">
         <div className="flex flex-col items-center text-center lg:flex-row lg:items-start lg:text-left gap-8">
           <div className="lg:w-1/3">
-            <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300 mb-4">
+            <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-4">
               <Sparkles className="h-4 w-4 mr-2" />
               <span>FAQ</span>
             </div>
-            <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-orange-500 to-orange-600 dark:from-orange-400 dark:to-orange-500 bg-clip-text text-transparent">
+            <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-zinc-700 to-zinc-900 dark:from-zinc-200 dark:to-zinc-400 bg-clip-text text-transparent">
               Frequently Asked Questions
             </h2>
             <p className="text-zinc-600 dark:text-zinc-400">
@@ -58,19 +56,21 @@ export default function Faq() {
             </p>
           </div>
           <div className="lg:w-2/3 w-full">
-            <Accordion type="single" collapsible className="space-y-3">
+            <Accordion type="single" collapsible className="space-y-4">
               {faqData.map((item, index) => (
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="border border-orange-200 dark:border-orange-800/30 rounded-lg overflow-hidden shadow-sm backdrop-blur-sm"
+                  className="border-2 border-black dark:border-zinc-600 rounded-lg overflow-hidden transform-gpu translate-y-[-2px] translate-x-[-2px] hover:translate-y-[-4px] hover:translate-x-[-4px] transition-all duration-300 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.5)]"
                 >
-                  <AccordionTrigger className="px-5 py-4 text-left font-medium text-zinc-800 dark:text-zinc-200 transition-colors bg-white/80 dark:bg-zinc-900/80 hover:bg-orange-50 dark:hover:bg-orange-900/20 group">
-                    <span className="group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+                  <AccordionTrigger 
+                    className="px-5 py-4 text-left font-bold text-zinc-800 dark:text-zinc-200 bg-white dark:bg-zinc-900 hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 dark:hover:text-white transition-all group"
+                  >
+                    <span className="group-hover:text-white dark:group-hover:text-white transition-colors">
                       {item.question}
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="px-5 py-4 text-zinc-600 dark:text-zinc-400 bg-white/50 dark:bg-zinc-900/50 border-t border-orange-100 dark:border-orange-800/20">
+                  <AccordionContent className="px-5 py-4 text-zinc-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 border-t-2 border-black dark:border-zinc-600">
                     {item.answer}
                   </AccordionContent>
                 </AccordionItem>

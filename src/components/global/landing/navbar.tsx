@@ -82,7 +82,10 @@ export function Navbar() {
             href="/dashboard"
             className="flex items-center text-sm font-medium"
           >
-            <Button size="sm" className="flex items-center gap-1 bg-orange-500 hover:bg-orange-600 text-white dark:bg-orange-500 dark:hover:bg-orange-600">
+            <Button 
+              size="sm" 
+              className="h-9 px-4 bg-orange-500 hover:bg-orange-600 text-white rounded-lg border-2 border-black dark:border-zinc-600 transform-gpu translate-y-[-2px] translate-x-[-2px] hover:translate-y-[-4px] hover:translate-x-[-4px] transition-all duration-300 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.5)]"
+            >
               Dashboard
             </Button>
           </Link>
@@ -90,7 +93,7 @@ export function Navbar() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               {/* Use user object from useUser(), which should be available if isSignedIn is true */}
-              <Avatar className="h-8 w-8 cursor-pointer bg-white rounded-full ring-2 ring-orange-500 dark:ring-orange-500 ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2">
+              <Avatar className="h-8 w-8 cursor-pointer bg-white rounded-full ring-2 ring-zinc-500 dark:ring-zinc-950 ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 focus-visible:ring-offset-2">
                 <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
                 <AvatarFallback>
                   {user?.firstName?.[0] || user?.lastName?.[0] || "U"}

@@ -104,41 +104,19 @@ export default function PricingComparison() {
           </p>
         </div>
 
-        <div className="w-full max-w-6xl mx-auto backdrop-blur-sm rounded-xl overflow-hidden border border-orange-200 dark:border-orange-800/30 shadow-xl relative">
-          {/* Top-left corner */}
-          <div className="absolute -top-px -left-px w-8 h-8">
-            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-orange-500 to-transparent dark:from-orange-400"></div>
-            <div className="absolute top-0 left-0 h-full w-[2px] bg-gradient-to-b from-orange-500 to-transparent dark:from-orange-400"></div>
-          </div>
-          {/* Top-right corner */}
-          <div className="absolute -top-px -right-px w-8 h-8">
-            <div className="absolute top-0 right-0 w-full h-[2px] bg-gradient-to-l from-orange-500 to-transparent dark:from-orange-400"></div>
-            <div className="absolute top-0 right-0 h-full w-[2px] bg-gradient-to-b from-orange-500 to-transparent dark:from-orange-400"></div>
-          </div>
-          {/* Bottom-left corner */}
-          <div className="absolute -bottom-px -left-px w-8 h-8">
-            <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-orange-500 to-transparent dark:from-orange-400"></div>
-            <div className="absolute bottom-0 left-0 h-full w-[2px] bg-gradient-to-t from-orange-500 to-transparent dark:from-orange-400"></div>
-          </div>
-          {/* Bottom-right corner */}
-          <div className="absolute -bottom-px -right-px w-8 h-8">
-            <div className="absolute bottom-0 right-0 w-full h-[2px] bg-gradient-to-l from-orange-500 to-transparent dark:from-orange-400"></div>
-            <div className="absolute bottom-0 right-0 h-full w-[2px] bg-gradient-to-t from-orange-500 to-transparent dark:from-orange-400"></div>
-          </div>
+        <div className="w-full max-w-6xl mx-auto bg-white dark:bg-zinc-900 rounded-lg border-2 border-black dark:border-zinc-600 transform-gpu translate-y-[-4px] translate-x-[-4px] hover:translate-y-[-8px] hover:translate-x-[-8px] transition-all duration-300 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.5)] overflow-hidden relative">
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
                 <tr className="bg-zinc-50 dark:bg-zinc-900">
-                  <th className="text-left py-6 px-8 bg-transparent font-semibold text-zinc-700 dark:text-zinc-300 border-b border-zinc-200 dark:border-zinc-800">
+                  <th className="text-left py-6 px-8 bg-transparent font-bold text-zinc-700 dark:text-zinc-300 border-b-2 border-black dark:border-zinc-600">
                     <span className="text-xl">Features</span>
                   </th>
                   {mantlzPlans.map((plan) => (
                     <th 
                       key={plan.name}
-                      className="py-6 px-6 text-center border-b border-zinc-200 dark:border-zinc-800 relative"
+                      className="py-6 px-6 text-center border-b-2 border-black dark:border-zinc-600 relative"
                     >
-                      {/* Top-left corner */}
-
                       <div className="flex flex-col items-center">
                         <span className="font-bold text-xl mb-2 text-zinc-800 dark:text-white">
                           {plan.name}
@@ -161,7 +139,7 @@ export default function PricingComparison() {
                     key={feature}
                     className={index % 2 === 0 ? 'bg-white dark:bg-zinc-950' : 'bg-zinc-50 dark:bg-zinc-900'}
                   >
-                    <td className="py-4 px-8 text-sm font-medium text-zinc-700 dark:text-zinc-300 border-b border-zinc-100 dark:border-zinc-800/50">
+                    <td className="py-4 px-8 text-sm font-medium text-zinc-700 dark:text-zinc-300 border-b border-zinc-200 dark:border-zinc-800">
                       {feature}
                     </td>
                     {mantlzPlans.map((plan) => {
@@ -169,32 +147,32 @@ export default function PricingComparison() {
                       return (
                         <td 
                           key={`${plan.name}-${feature}`}
-                          className="py-4 px-6 text-center border-b border-zinc-100 dark:border-zinc-800/50"
+                          className="py-4 px-6 text-center border-b border-zinc-200 dark:border-zinc-800"
                         >
                           <div className="flex flex-col items-center">
                             {typeof featureData.value === 'boolean' ? (
                               featureData.value ? (
-                                <div className={`p-1 rounded-full ${
+                                <div className={`p-1 rounded-lg border-2 border-black dark:border-zinc-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)] ${
                                   featureData.highlight 
-                                    ? 'bg-orange-100 dark:bg-orange-900/20' 
-                                    : 'bg-orange-100 dark:bg-orange-900/20'
+                                    ? 'bg-orange-500 dark:bg-orange-500' 
+                                    : 'bg-orange-500 dark:bg-orange-500'
                                 }`}>
                                   {featureData.highlight ? (
-                                    <Zap className="w-4 h-4 text-orange-600 dark:text-orange-400" />
+                                    <Zap className="w-4 h-4 text-white dark:text-white" />
                                   ) : (
-                                    <CheckIcon className="w-4 h-4 text-orange-600 dark:text-orange-400" />
+                                    <CheckIcon className="w-4 h-4 text-white dark:text-white" />
                                   )}
                                 </div>
                               ) : (
-                                <div className="p-1 rounded-full bg-zinc-100 dark:bg-zinc-800">
-                                  <X className="w-4 h-4 text-zinc-400 dark:text-zinc-600" />
+                                <div className="p-1 rounded-lg border-2 border-black dark:border-zinc-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)] bg-zinc-200 dark:bg-zinc-800">
+                                  <X className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
                                 </div>
                               )
                             ) : (
                               <div className="space-y-1">
                                 <span className={`text-sm ${
                                   featureData.highlight
-                                    ? 'text-zinc-800 dark:text-white font-medium'
+                                    ? 'text-zinc-800 dark:text-white font-bold'
                                     : 'text-zinc-600 dark:text-zinc-400'
                                 }`}>
                                   {featureData.value}
