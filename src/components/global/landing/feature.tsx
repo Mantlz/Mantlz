@@ -69,8 +69,8 @@ export function FeatureGrid() {
             <h3 className="text-xl font-bold text-zinc-800 dark:text-white">Developer-Friendly</h3>
           </div>
           
-          <div className="bg-zinc-800 text-zinc-300 p-3 rounded-lg text-sm font-mono shadow-lg transform group-hover:-rotate-1 transition-transform duration-300 mt-2 mb-4 dark:bg-zinc-700 dark:border dark:border-zinc-600">
-            <div> import{" {"} <span className="text-zinc-300 dark:text-zinc-300">Mantlz</span> {"} "}<span className="text-zinc-400 dark:text-zinc-300">from</span> <span className="text-zinc-300 dark:text-zinc-300">&quot;@mantlz/nextjs&quot;</span>;</div>
+          <div className="bg-orange-500 text-black p-3 rounded-lg text-sm font-bold shadow-lg transform group-hover:-rotate-1 transition-transform duration-300 mt-2 mb-4 dark:bg-zinc-700 dark:border dark:border-zinc-600">
+            <div> import{" {"} <span className="text-black dark:text-zinc-300">Mantlz</span> {"} "}<span className="text-black dark:text-zinc-300">from</span> <span className="text-black dark:text-zinc-300">&quot;@mantlz/nextjs&quot;</span>;</div>
           </div>
           
           <p className="text-zinc-600 dark:text-zinc-300 text-sm">

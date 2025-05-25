@@ -10,8 +10,7 @@ import { client } from "@/lib/client"
 import { useMutation } from "@tanstack/react-query"
 import Canceled from "./canceled"
 import { useSubscription } from "@/hooks/useSubscription"
-import { Badge } from "@/components/ui/badge"
-import { Check, Sparkles, ArrowRight, FileText, Users, Building, ZapIcon } from "lucide-react"
+import { Check } from "lucide-react"
 import "@/styles/animations.css"
 
 // Define subscription type
@@ -200,10 +199,6 @@ function PricingContent({
    
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-4">
-            <Sparkles className="h-4 w-4 mr-2" />
-            <span>Simple Pricing</span>
-          </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-zinc-700 to-zinc-900 dark:from-zinc-200 dark:to-zinc-400 bg-clip-text text-transparent">
             Choose the plan that fits your needs
           </h2>
@@ -249,7 +244,7 @@ function PricingCard({
     >
       {plan.isPopular && (
         <div className="absolute -top-5 left-0 right-0 mx-auto w-32">
-          <div className="text-center py-1 px-3 rounded-lg bg-orange-500 text-white text-sm font-medium border-2 border-black dark:border-orange-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          <div className="text-center font-extrabold py-1 px-2 rounded-lg bg-orange-500 text-white text-sm  border-1 border-black dark:border-orange-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
             Most Popular
           </div>
         </div>
@@ -277,7 +272,7 @@ function PricingCard({
       <Button
         onClick={onCheckout}
         disabled={isLoading || isCurrentPlan}
-        className={`w-full border-2 transform-gpu hover:-translate-y-1 transition-transform ${
+        className={`w-full border-2 font-extrabold transform-gpu hover:-translate-y-1 transition-transform ${
           plan.isPopular
             ? "bg-orange-500 hover:bg-orange-600 text-white border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             : "bg-zinc-800 hover:bg-zinc-900 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)]"

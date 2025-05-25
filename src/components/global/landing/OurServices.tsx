@@ -30,7 +30,7 @@ export function OurServices() {
       
       <Container className="relative z-10">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-4">
+          <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-extrabold bg-orange-500 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-4">
             <Sparkles className="h-4 w-4 mr-2" />
             <span>Our Services</span>
           </div>
