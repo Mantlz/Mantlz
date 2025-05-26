@@ -12,7 +12,7 @@ import { TableHeader } from "./TableHeader"
 import { TableContent } from "./TableContent"
 import { LogsTableHeaderSkeleton } from "@/components/skeletons"
 import { SubmissionSearch } from "../../logs/SubmissionSearch"
-import { SubmissionTableSkeleton } from "./SubmissionTableSkeleton"
+import { SubmissionTableSkeleton } from "../../../skeletons"
 import { useState, useEffect, Suspense } from "react"
 
 interface LogsTableProps {

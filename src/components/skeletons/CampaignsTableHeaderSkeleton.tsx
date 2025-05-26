@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
-import { ChevronLeft, Mail, Clock, Send, Users } from "lucide-react"
+import { ChevronLeft, Plus,Mail, Clock, Send, Users } from "lucide-react"
 
 export function CampaignsTableHeaderSkeleton() {
   return (
@@ -24,15 +24,12 @@ export function CampaignsTableHeaderSkeleton() {
                 <Skeleton className="h-8 w-48 sm:w-64 rounded-lg" />
               </h1>
             </div>
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-9 w-32 rounded-lg" />
+            {/* Create Campaign Button Skeleton */}
+            <div className="h-9 bg-black dark:bg-white hover:bg-zinc-900 dark:hover:bg-zinc-100 text-white dark:text-black rounded-lg flex items-center gap-2 px-4 cursor-pointer transition-all duration-200">
+              <Plus className="h-4 w-4" />
+              <span className="text-sm font-medium">Create Campaign</span>
             </div>
           </div>
-
-          {/* Description */}
-          {/* <div className="text-sm text-gray-600 dark:text-gray-300 max-w-2xl">
-            <Skeleton className="h-4 w-full max-w-md rounded-lg" />
-          </div> */}
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">

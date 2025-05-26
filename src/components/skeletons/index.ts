@@ -1,5 +1,8 @@
 export * from './LogsTableHeaderSkeleton'
 export * from './CampaignsTableHeaderSkeleton'
+export * from './CampaignTableSkeleton'
+export * from './SubmissionTableSkeleton'
+
 export * from './FormsGridSkeleton'
 export * from './StatsGridSkeleton'
 export * from './FormCardSkeleton'

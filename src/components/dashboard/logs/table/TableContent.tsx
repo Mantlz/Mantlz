@@ -11,7 +11,7 @@ import { LogsTableContentProps, Submission } from "./types"
 import { TableSubmissionSheet } from "./TableSubmissionSheet"
 import { enhanceSubmissions, safeSearchParamsToString } from "./tableUtils"
 import { NoSubmissionsView } from "./NoSubmissionsView"
-import { SubmissionTableSkeleton } from "./SubmissionTableSkeleton"
+import { SubmissionTableSkeleton } from "../../../skeletons"
 import { toast } from "sonner"
 import {
   Popover,

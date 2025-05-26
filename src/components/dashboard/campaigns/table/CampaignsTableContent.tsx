@@ -10,7 +10,7 @@ import { FormsResponse, CampaignResponse } from "./types"
 import { fetchUserForms, fetchCampaigns } from "./tableUtils"
 import { TableHeader } from "./TableHeader"
 import { TableContent } from "./TableContent"
-import { CampaignTableSkeleton } from "./CampaignTableSkeleton"
+import { CampaignTableSkeleton } from "../../../skeletons/CampaignTableSkeleton"
 
 interface CampaignsTableContentProps {
   itemsPerPage?: number
