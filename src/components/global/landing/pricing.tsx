@@ -12,7 +12,6 @@ import Canceled from "./canceled"
 import { useSubscription } from "@/hooks/useSubscription"
 import { Check, Shield, Zap, Users } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
-import { Container } from "@/components/global/container"
 import { Badge } from "@/components/ui/badge"
 import "@/styles/animations.css"
 

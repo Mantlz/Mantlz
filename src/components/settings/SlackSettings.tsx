@@ -123,7 +123,7 @@ export default function SlackSettings() {
         channel: slackConfig.channel || undefined
       });
       toast.success('Slack notifications ' + (checked ? 'enabled' : 'disabled'));
-    } catch (error) {
+    } catch {
       // Revert state if update fails
       setIsEnabled(!checked);
       toast.error('Failed to update Slack notifications');
@@ -138,7 +138,7 @@ export default function SlackSettings() {
         channel: channel || undefined
       });
       toast.success('Slack settings updated successfully');
-    } catch (error) {
+    } catch {
       toast.error('Failed to update Slack settings');
     }
   }
@@ -237,7 +237,7 @@ export default function SlackSettings() {
                   disabled={!isEnabled}
                 />
                 <p className="text-sm text-muted-foreground">
-                  You can create a webhook URL in your Slack workspace settings
+                  You&apos;ll need to create a webhook URL in your Slack workspace settings
                 </p>
               </div>
 

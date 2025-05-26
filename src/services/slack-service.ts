@@ -1,6 +1,8 @@
 import { HTTPException } from "hono/http-exception";
 
 // Types and interfaces
+export type FormFieldValue = string | number | boolean | null | undefined;
+
 export interface SlackWebhookConfig {
   webhookUrl: string;
   channel?: string;
@@ -12,7 +14,7 @@ export interface SlackNotificationOptions {
   formId: string;
   formName: string;
   submissionId: string;
-  submissionData: Record<string, any>;
+  submissionData: Record<string, FormFieldValue>;
   timestamp: Date;
   metadata?: {
     userAgent?: string;

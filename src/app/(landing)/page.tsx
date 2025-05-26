@@ -7,7 +7,6 @@ import {Navbar} from "@/components/global/landing/navbar";
 import { DashboardPreview } from "@/components/global/landing/preview";
 
 import { Container } from "@/components/global/landing/container";
-import PricingComparison from "@/components/global/landing/pricing-comparison";
 import Pricing from "@/components/global/landing/pricing";
 import Faq from "@/components/global/landing/faq";
 import BottomCTA from "@/components/global/landing/bottomcta";

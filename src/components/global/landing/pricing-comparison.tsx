@@ -120,7 +120,7 @@ export default function PricingComparison() {
                     </tr>
                   </thead>
                   <tbody>
-                    {pricingFeatures.map((feature, index) => (
+                    {pricingFeatures.map((feature) => (
                       <tr key={feature} className="border-b last:border-0">
                         <td className="p-6 text-sm">
                           {feature}
