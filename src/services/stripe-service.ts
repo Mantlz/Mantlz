@@ -5,7 +5,7 @@ import { HTTPException } from "hono/http-exception";
 
 // Initialize Stripe client
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
-  apiVersion: "2025-03-31.basil",
+  apiVersion: "2025-04-30.basil",
 });
 
 export class StripeService {
@@ -168,7 +168,7 @@ export class StripeService {
 
       // Create connected account Stripe instance
       const connectedStripe = new Stripe(connection.accessToken, {
-        apiVersion: "2025-03-31.basil",
+        apiVersion: "2025-04-30.basil",
       });
 
       // Fetch products with associated prices
@@ -294,7 +294,7 @@ export class StripeService {
 
       // Create connected account Stripe instance
       const connectedStripe = new Stripe(connection.accessToken, {
-        apiVersion: "2025-03-31.basil",
+        apiVersion: "2025-04-30.basil",
       });
 
       // Create line items for checkout
