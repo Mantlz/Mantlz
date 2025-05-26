@@ -4,10 +4,24 @@ import { db } from "@/lib/db";
 import { SlackService } from "@/services/slack-service";
 import { HTTPException } from "hono/http-exception";
 
+// Helper function to check if user has premium access
+const checkPremiumAccess = async (userId: string) => {
+  const user = await db.user.findUnique({
+    where: { id: userId },
+    select: { plan: true }
+  });
+
+  if (!user || (user.plan !== 'STANDARD' && user.plan !== 'PRO')) {
+    throw new HTTPException(403, { message: "This feature requires a Standard or Pro plan" });
+  }
+};
+
 export const slackRouter = j.router({
   // Get Slack configuration
   getConfig: privateProcedure.query(async ({ c, ctx }) => {
     try {
+      await checkPremiumAccess(ctx.user.id);
+
       const config = await db.slackConfig.findUnique({
         where: { userId: ctx.user.id },
       });
@@ -15,6 +29,7 @@ export const slackRouter = j.router({
       return c.superjson(config);
     } catch (error) {
       console.error("Error fetching Slack config:", error);
+      if (error instanceof HTTPException) throw error;
       throw new HTTPException(500, { message: "Failed to fetch Slack configuration" });
     }
   }),
@@ -30,6 +45,8 @@ export const slackRouter = j.router({
     )
     .mutation(async ({ c, input, ctx }) => {
       try {
+        await checkPremiumAccess(ctx.user.id);
+
         // Test webhook before saving if enabled
         if (input.enabled) {
           const slackService = SlackService.getInstance();
@@ -75,8 +92,10 @@ export const slackRouter = j.router({
         channel: z.string().optional(),
       })
     )
-    .mutation(async ({ c, input }) => {
+    .mutation(async ({ c, input, ctx }) => {
       try {
+        await checkPremiumAccess(ctx.user.id);
+
         const slackService = SlackService.getInstance();
         const success = await slackService.testWebhook({
           webhookUrl: input.webhookUrl,
@@ -86,6 +105,7 @@ export const slackRouter = j.router({
         return c.superjson({ success });
       } catch (error) {
         console.error("Error testing Slack webhook:", error);
+        if (error instanceof HTTPException) throw error;
         throw new HTTPException(500, { message: "Failed to test Slack webhook" });
       }
     }),

@@ -16,31 +16,21 @@ import { client } from "@/lib/client";
 import { Badge } from "@/components/ui/badge";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useSubscription } from "@/hooks/useSubscription";
 
 interface AdvancedSettings {
   maxNotificationsPerHour: number;
   developerNotificationsEnabled: boolean;
 }
 
-
-
 export function AdvancedSettings() {
   const queryClient = useQueryClient();
+  const { userPlan } = useSubscription();
+  const isProUser = userPlan === 'PRO';
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [settings, setSettings] = useState<AdvancedSettings>({
     maxNotificationsPerHour: 10,
     developerNotificationsEnabled: false,
-  });
-
-
-  // Get user's plan
-  const { data: userData, isLoading: isLoadingPlan } = useQuery({
-    queryKey: ["user-plan"],
-    queryFn: async () => {
-      const response = await client.user.getUserPlan.$get();
-      if (!response.ok) throw new Error('Failed to fetch user plan');
-      return await response.json();
-    },
   });
 
   // Get settings
@@ -111,7 +101,7 @@ export function AdvancedSettings() {
   };
 
   const handleSettingChange = (value: string) => {
-    if (!userData || userData.plan !== 'PRO') {
+    if (!isProUser) {
       toast.error('You need to upgrade to PRO to modify notification settings');
       return;
     }
@@ -125,10 +115,7 @@ export function AdvancedSettings() {
     setSettings(prev => ({ ...prev, maxNotificationsPerHour: boundedValue }));
   };
 
-  const isProUser = userData?.plan === 'PRO';
-  const isLoading = isLoadingPlan || isLoadingSettings;
-
-  if (isLoading) {
+  if (isLoadingSettings) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[40vh] w-full">
         <Loader2 className="h-6 w-6 text-zinc-400 animate-spin" />
@@ -154,7 +141,7 @@ export function AdvancedSettings() {
                 variant="outline" 
                 size="sm" 
                 onClick={handleRefresh}
-                disabled={isRefreshing}
+                disabled={isRefreshing || !isProUser}
                 className="h-8 text-xs"
               >
                 {isRefreshing ? (

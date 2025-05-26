@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Plug, Loader2, RefreshCw, AlertCircle } from "lucide-react";
+import { Plug, Loader2, RefreshCw, AlertCircle, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +12,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { client } from "@/lib/client";
+import { useSubscription } from "@/hooks/useSubscription";
+import { Badge } from "@/components/ui/badge";
 
 interface SlackConfig {
   id: string;
@@ -24,6 +26,7 @@ interface SlackConfig {
 }
 
 export default function SlackSettings() {
+  const { isPremium } = useSubscription();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isTesting, setIsTesting] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
@@ -41,7 +44,8 @@ export default function SlackSettings() {
       const response = await client.slack.getConfig.$get()
       const data = await response.json()
       return data as SlackConfig
-    }
+    },
+    enabled: isPremium // Only fetch if user is premium
   });
 
   // Initialize states from slackConfig
@@ -173,7 +177,7 @@ export default function SlackSettings() {
                 variant="outline" 
                 size="sm" 
                 onClick={handleRefresh}
-                disabled={isRefreshing}
+                disabled={isRefreshing || !isPremium}
                 className="h-8 text-xs"
               >
                 {isRefreshing ? (
@@ -194,98 +198,131 @@ export default function SlackSettings() {
             </p>
           </header>
 
-          <Alert className="bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-900">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>
-              You&apos;ll need to create a Slack webhook URL in your workspace settings to enable notifications.
-            </AlertDescription>
-          </Alert>
-
           <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
-            <CardHeader className="pb-3 pt-4 px-5">
-              <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center gap-2">
-                <Plug className="h-4 w-4 text-zinc-500" />
-                Slack Notifications
-              </CardTitle>
-              <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
-                Get notified in Slack when you receive new form submissions
-              </CardDescription>
+            <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
+              <div>
+                <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
+                  <Plug className="h-4 w-4 mr-2 text-zinc-500" />
+                  Slack Notifications
+                </CardTitle>
+                <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+                  Get notified in Slack when you receive new form submissions
+                </CardDescription>
+              </div>
+              <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-200 w-fit">
+                STANDARD+
+              </Badge>
             </CardHeader>
-            <CardContent className="space-y-6 px-5">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>Enable Slack Notifications</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Receive notifications for new form submissions
-                  </p>
+            
+            <CardContent className="px-5 pb-4">
+              {!isPremium ? (
+                <div className="rounded-lg bg-amber-50 border border-amber-200 p-3 sm:p-4 dark:bg-amber-900/20 dark:border-amber-800/30">
+                  <div className="flex gap-2 sm:gap-3">
+                    <AlertCircle className="h-4 w-4 text-amber-500 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-amber-800 dark:text-amber-300">
+                        Standard or Pro Plan Required
+                      </p>
+                      <p className="text-xs text-amber-700 dark:text-amber-400">
+                        Upgrade to Standard or Pro to enable Slack notifications for form submissions.
+                      </p>
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        className="h-7 px-2 py-1 text-xs border-amber-300 text-amber-700 bg-amber-50 cursor-pointer hover:bg-amber-100 dark:border-amber-700 dark:text-amber-400 dark:bg-amber-900/30 dark:hover:bg-amber-800/30 mt-2"
+                      >
+                        Upgrade Plan
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-                <Switch
-                  checked={isEnabled}
-                  onCheckedChange={handleSave}
-                  aria-label="Toggle Slack notifications"
-                  className="cursor-pointer"
-                />
-              </div>
+              ) : (
+                <>
+                  <Alert className="bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-900">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>
+                      You&apos;ll need to create a Slack webhook URL in your workspace settings to enable notifications.
+                    </AlertDescription>
+                  </Alert>
 
-              <div className="space-y-2">
-                <Label htmlFor="webhookUrl">Webhook URL</Label>
-                <Input
-                  id="webhookUrl"
-                  value={webhookUrl}
-                  onChange={(e) => setWebhookUrl(e.target.value)}
-                  placeholder="https://hooks.slack.com/services/..."
-                  disabled={!isEnabled}
-                />
-                <p className="text-sm text-muted-foreground">
-                  You&apos;ll need to create a webhook URL in your Slack workspace settings
-                </p>
-              </div>
+                  <div className="mt-6 space-y-6">
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>Enable Slack Notifications</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive notifications for new form submissions
+                        </p>
+                      </div>
+                      <Switch
+                        checked={isEnabled}
+                        onCheckedChange={handleSave}
+                        aria-label="Toggle Slack notifications"
+                        className="cursor-pointer"
+                      />
+                    </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="defaultChannel">Default Channel</Label>
-                <Input
-                  id="defaultChannel"
-                  value={channel}
-                  onChange={(e) => setChannel(e.target.value)}
-                  placeholder="#notifications"
-                  disabled={!isEnabled}
-                />
-                <p className="text-sm text-muted-foreground">
-                  Optional: Override the default channel set in your webhook
-                </p>
-              </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="webhookUrl">Webhook URL</Label>
+                      <Input
+                        id="webhookUrl"
+                        value={webhookUrl}
+                        onChange={(e) => setWebhookUrl(e.target.value)}
+                        placeholder="https://hooks.slack.com/services/..."
+                        disabled={!isEnabled}
+                      />
+                      <p className="text-sm text-muted-foreground">
+                        You&apos;ll need to create a webhook URL in your Slack workspace settings
+                      </p>
+                    </div>
 
-              <div className="flex space-x-2">
-                <Button
-                  variant="secondary"
-                  onClick={handleTestWebhook}
-                  disabled={!isEnabled || !webhookUrl || isTesting}
-                >
-                  {isTesting ? (
-                    <>
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Testing...
-                    </>
-                  ) : (
-                    'Test Webhook'
-                  )}
-                </Button>
-                {hasChanges && (
-                  <Button
-                    onClick={handleSaveConfig}
-                    disabled={updateConfigMutation.isPending}
-                  >
-                    {updateConfigMutation.isPending ? (
-                      <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Saving...
-                      </>
-                    ) : (
-                      'Save Changes'
-                    )}
-                  </Button>
-                )}
-              </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="defaultChannel">Default Channel</Label>
+                      <Input
+                        id="defaultChannel"
+                        value={channel}
+                        onChange={(e) => setChannel(e.target.value)}
+                        placeholder="#notifications"
+                        disabled={!isEnabled}
+                      />
+                      <p className="text-sm text-muted-foreground">
+                        Optional: Override the default channel set in your webhook
+                      </p>
+                    </div>
+
+                    <div className="flex space-x-2">
+                      <Button
+                        variant="secondary"
+                        onClick={handleTestWebhook}
+                        disabled={!isEnabled || !webhookUrl || isTesting}
+                      >
+                        {isTesting ? (
+                          <>
+                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                            Testing...
+                          </>
+                        ) : (
+                          'Test Webhook'
+                        )}
+                      </Button>
+                      {hasChanges && (
+                        <Button
+                          onClick={handleSaveConfig}
+                          disabled={updateConfigMutation.isPending}
+                        >
+                          {updateConfigMutation.isPending ? (
+                            <>
+                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                              Saving...
+                            </>
+                          ) : (
+                            'Save Changes'
+                          )}
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
         </div>
