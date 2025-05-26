@@ -5,6 +5,7 @@ import { Container } from "@/components/global/landing/container"
 import Faq from "@/components/global/landing/faq"
 import BottomCTA from "@/components/global/landing/bottomcta"
 import { Metadata } from 'next'
+import PricingComparison from "@/components/global/landing/pricing-comparison"
 
 export const metadata: Metadata = {
   title: 'Pricing | Mantle',
@@ -21,6 +22,7 @@ export default function PricingPage() {
       <Container>
         <Navbar />
         <Pricing />
+        <PricingComparison />
         <Faq />
         <BottomCTA />
       </Container>

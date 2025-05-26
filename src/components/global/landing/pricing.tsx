@@ -199,7 +199,7 @@ function PricingContent({
   }
 
   return (
-      <section className="py-16 md:py-32">
+      <section className="py-16 md:py-32" id="pricing">
         <div className="mx-auto max-w-6xl px-6">
           <div className="text-center mb-12">
             <h1 className="text-5xl md:text-6xl font-bold tracking-tight">Choose the plan that fits your needs</h1>

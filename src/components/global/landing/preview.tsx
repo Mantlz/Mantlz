@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export function DashboardPreview() {
   return (
-    <div className="relative p-4 max-w-8xl mx-auto  bg-orange-950 rounded-xl border-2 border-amber-900 transform hover:-translate-y-1 transition-all duration-300 group">
+    <div className="relative p-4 max-w-7xl mx-auto  bg-orange-950 rounded-xl border-2 border-amber-900 transform hover:-translate-y-1 transition-all duration-300 group">
 
 
 

@@ -350,10 +350,10 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
                 </Link>
               </DropdownMenuItem>
     
-              <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 p-0 rounded-lg my-0.5">
+              <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 p-0 rounded-lg my-1">
                 <Link 
                   href="/dashboard/form"
-                  className="flex items-center gap-2.5 w-full px-2 py-1.5  bg-zinc-100/90 dark:bg-zinc-900/90 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/90 backdrop-blur-sm border justify-start  rounded-lg border-zinc-300 dark:border-zinc-700 cursor-pointer"
+                  className="flex items-center gap-2.5 w-full px-2 py-1.5  bg-zinc-200/90 dark:bg-zinc-900/90 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/90 backdrop-blur-sm border justify-start  rounded-lg border-zinc-300 dark:border-zinc-700 cursor-pointer"
                 >
                   <Plus className="h-4 w-4" />
                   <span>Create Form</span>
@@ -364,7 +364,7 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
 
           <Separator
             orientation="vertical"
-            className={cn("mx-1 lg:mx-2", "bg-zinc-300 dark:bg-zinc-700 data-[orientation=vertical]:h-5 opacity-70")}
+            className={cn("mx-1 lg:mx-2", "bg-zinc-400 dark:bg-zinc-800 data-[orientation=vertical]:h-5 opacity-70")}
           />
 
           <div className="ml-0 lg:ml-1">
