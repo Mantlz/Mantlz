@@ -1,5 +1,5 @@
 "use client"
-import { Mantlz } from '@mantlz/sdk';
+import { Mantlz } from '@mantlz/nextjs';
 
 export default function CustomerFeedbackPage() {
   return (
