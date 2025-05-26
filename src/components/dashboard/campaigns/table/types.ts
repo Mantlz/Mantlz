@@ -23,6 +23,7 @@ export interface Form {
   _count?: {
     campaigns: number;
     submissions: number;
+    unsubscribed: number;
   };
 }
 

@@ -9,7 +9,7 @@ import { formatDistanceToNow } from "date-fns"
 import { UpgradeModal } from "@/components/modals/UpgradeModal"
 import { CreateCampaignDialog } from "../dialogs/CreateCampaignDialog"
 import { useState } from "react"
-import { FormsResponse, CampaignResponse } from "./types"
+import { FormsResponse, CampaignResponse, Form } from "./types"
 
 interface TableHeaderProps {
   formId: string | null
@@ -27,7 +27,7 @@ export function TableHeader({
 }: TableHeaderProps) {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const { isPremium } = useSubscription()
-  const selectedForm = formsData?.forms?.find((f) => f.id === formId)
+  const selectedForm = formsData?.forms?.find((f) => f.id === formId) as Form | undefined
   const campaignCount = campaignsData?.campaigns?.length || 0
 
   const handleBackClick = () => {
