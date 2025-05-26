@@ -1,5 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton"
-import { FileSpreadsheet, Users } from "lucide-react"
+import { FileSpreadsheet, Users, Search, LayoutGrid, List } from "lucide-react"
 
 export function StatsGridSkeleton() {
   return (
@@ -19,8 +19,24 @@ export function StatsGridSkeleton() {
                   <Skeleton className="h-4 w-32 rounded-lg" />
                 </div>
               </div>
-              <div className="h-9 w-48 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm">
-                Search submissions
+              <div className="flex items-center gap-3">
+                {/* Grid/List View Toggle */}
+                <div className="bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-800 rounded-lg p-1 flex items-center">
+                  <div className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white">
+                    <LayoutGrid className="h-4 w-4" />
+                  </div>
+                  <div className="p-1.5 rounded-lg text-gray-500 dark:text-gray-400">
+                    <List className="h-4 w-4" />
+                  </div>
+                </div>
+                {/* Search Button */}
+                <div className="h-9 gap-2 cursor-pointer rounded-lg bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 backdrop-blur shadow-sm flex items-center px-3">
+                  <Search className="h-4 w-4 text-gray-400" />
+                  <span className="text-sm font-normal hidden sm:inline-block text-gray-500">Search submissions...</span>
+                  <div className="hidden sm:flex items-center justify-center h-5 px-1.5 ml-1 rounded-lg bg-zinc-100 dark:bg-zinc-800">
+                    <kbd className="text-xs font-mono tracking-wider text-gray-500 dark:text-gray-400">⌘K</kbd>
+                  </div>
+                </div>
               </div>
             </div>
 

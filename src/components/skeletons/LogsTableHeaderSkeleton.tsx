@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
-import { ChevronLeft, Users, Clock, File } from "lucide-react"
+import { ChevronLeft, Users, Clock, File, Search } from "lucide-react"
 
 export function LogsTableHeaderSkeleton() {
   return (
@@ -24,8 +24,15 @@ export function LogsTableHeaderSkeleton() {
                 <Skeleton className="h-8 w-48 sm:w-64 rounded-lg" />
               </h1>
             </div>
-            <div className="h-9 w-48 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm">
-              Search submissions
+            <div className="flex items-center gap-3">
+              {/* Search Button */}
+              <div className="h-9 gap-2 cursor-pointer rounded-lg bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 backdrop-blur shadow-sm flex items-center px-3">
+                <Search className="h-4 w-4 text-gray-400" />
+                <span className="text-sm font-normal hidden sm:inline-block text-gray-500">Search submissions...</span>
+                <div className="hidden sm:flex items-center justify-center h-5 px-1.5 ml-1 rounded-lg bg-zinc-100 dark:bg-zinc-800">
+                  <kbd className="text-xs font-mono tracking-wider text-gray-500 dark:text-gray-400">⌘K</kbd>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -86,4 +93,4 @@ export function LogsTableHeaderSkeleton() {
       </div>
     </div>
   )
-} 
+}
