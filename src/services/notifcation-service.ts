@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { Resend } from 'resend';
 import { render } from '@react-email/components';
 import { DeveloperNotificationEmail } from '@/emails/developer-notification';
+import { SlackService } from './slack-service';
 
 // Define interfaces for type safety
 interface SubmissionData {
@@ -15,6 +16,57 @@ interface NotificationCondition {
 }
 
 // Don't initialize Resend yet - we'll do it with the user's key
+
+export async function sendSlackNotification(
+  formId: string,
+  submissionId: string,
+  submissionData: SubmissionData
+) {
+  console.log('🔍 Starting Slack notification process:', { formId, submissionId });
+  
+  // Get form with user and Slack settings
+  const form = await db.form.findUnique({
+    where: { id: formId },
+    include: {
+      user: {
+        include: {
+          slackConfig: true
+        }
+      }
+    }
+  });
+
+  if (!form || !form.user.slackConfig?.enabled || !form.user.slackConfig?.webhookUrl) {
+    const reason = !form ? 'form-not-found' :
+                  !form.user.slackConfig?.enabled ? 'slack-disabled' :
+                  'missing-webhook-url';
+    console.log('❌ Slack notification skipped:', { reason });
+    return { sent: false, reason };
+  }
+
+  try {
+    const slackService = SlackService.getInstance();
+    await slackService.sendNotification(
+      {
+        webhookUrl: form.user.slackConfig.webhookUrl,
+        channel: form.user.slackConfig.channel || undefined
+      },
+      {
+        formId,
+        formName: form.name,
+        submissionId,
+        submissionData,
+        timestamp: new Date()
+      }
+    );
+
+    console.log('✅ Slack notification sent');
+    return { sent: true };
+  } catch (error) {
+    console.error('❌ Failed to send Slack notification:', error);
+    return { sent: false, reason: 'error', error };
+  }
+}
 
 export async function sendDeveloperNotification(
   formId: string,

@@ -1,0 +1,295 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { Plug, Loader2, RefreshCw, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { toast } from "sonner";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { client } from "@/lib/client";
+
+interface SlackConfig {
+  id: string;
+  enabled: boolean;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  webhookUrl: string;
+  channel: string | null;
+}
+
+export default function SlackSettings() {
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isTesting, setIsTesting] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
+  const [webhookUrl, setWebhookUrl] = useState("");
+  const [channel, setChannel] = useState("");
+
+  // Fetch current Slack config
+  const { 
+    data: slackConfig, 
+    isLoading,
+    refetch 
+  } = useQuery({
+    queryKey: ['slackConfig'],
+    queryFn: async () => {
+      const response = await client.slack.getConfig.$get()
+      const data = await response.json()
+      return data as SlackConfig
+    }
+  });
+
+  // Initialize states from slackConfig
+  useEffect(() => {
+    if (slackConfig) {
+      setIsEnabled(slackConfig.enabled);
+      setWebhookUrl(slackConfig.webhookUrl);
+      setChannel(slackConfig.channel || "");
+    }
+  }, [slackConfig]);
+
+  // Update Slack config
+  const updateConfigMutation = useMutation({
+    mutationFn: async (config: {
+      enabled: boolean
+      webhookUrl: string
+      channel?: string
+    }) => {
+      const response = await client.slack.updateConfig.$post(config)
+      const data = await response.json()
+      return data as SlackConfig
+    },
+    onSuccess: () => {
+      refetch()
+    }
+  });
+
+  // Test webhook
+  const testWebhookMutation = useMutation({
+    mutationFn: async (config: { webhookUrl: string, channel?: string }) => {
+      await client.slack.testWebhook.$post(config)
+      return true
+    },
+    onSuccess: () => {
+      toast.success('Test message sent successfully')
+    },
+    onError: () => {
+      toast.error('Failed to send test message')
+    }
+  });
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true)
+    try {
+      await refetch()
+    } finally {
+      setTimeout(() => setIsRefreshing(false), 600)
+    }
+  }
+
+  const handleTestWebhook = async () => {
+    if (!webhookUrl) return
+    setIsTesting(true)
+    try {
+      await testWebhookMutation.mutateAsync({
+        webhookUrl,
+        channel: channel || undefined
+      })
+    } finally {
+      setIsTesting(false)
+    }
+  }
+
+  const handleSave = async (checked: boolean) => {
+    // Immediately update UI state for responsiveness
+    setIsEnabled(checked);
+    
+    if (!slackConfig) return;
+
+    // If enabling without a webhook URL, just update the enabled state
+    if (checked && !slackConfig.webhookUrl) {
+      return;
+    }
+    
+    try {
+      await updateConfigMutation.mutateAsync({
+        enabled: checked,
+        webhookUrl: slackConfig.webhookUrl || "",
+        channel: slackConfig.channel || undefined
+      });
+      toast.success('Slack notifications ' + (checked ? 'enabled' : 'disabled'));
+    } catch (error) {
+      // Revert state if update fails
+      setIsEnabled(!checked);
+      toast.error('Failed to update Slack notifications');
+    }
+  }
+
+  const handleSaveConfig = async () => {
+    try {
+      await updateConfigMutation.mutateAsync({
+        enabled: isEnabled,
+        webhookUrl,
+        channel: channel || undefined
+      });
+      toast.success('Slack settings updated successfully');
+    } catch (error) {
+      toast.error('Failed to update Slack settings');
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[40vh] w-full">
+        <Loader2 className="h-6 w-6 text-zinc-400 animate-spin" />
+        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+          Loading Slack settings...
+        </p>
+      </div>
+    )
+  }
+
+  const hasChanges = 
+    webhookUrl !== slackConfig?.webhookUrl || 
+    channel !== (slackConfig?.channel || "");
+
+  return (
+    <div className="w-full max-w-6xl mx-auto">
+      <ScrollArea className="h-[550px] w-full scrollbar-hide">
+        <div className="w-full space-y-4 pr-4">
+          <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center">
+                <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
+                  Slack Integration
+                </h2>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleRefresh}
+                disabled={isRefreshing}
+                className="h-8 text-xs"
+              >
+                {isRefreshing ? (
+                  <>
+                    <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                    Refreshing...
+                  </>
+                ) : (
+                  <>
+                    <RefreshCw className="h-3 w-3 mr-1" />
+                    Refresh
+                  </>
+                )}
+              </Button>
+            </div>
+            <p className="text-xs text-zinc-600 dark:text-zinc-400">
+              Receive form submission notifications in your Slack workspace
+            </p>
+          </header>
+
+          <Alert className="bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-900">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              You'll need to create a Slack webhook URL in your workspace settings to enable notifications.
+            </AlertDescription>
+          </Alert>
+
+          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+            <CardHeader className="pb-3 pt-4 px-5">
+              <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center gap-2">
+                <Plug className="h-4 w-4 text-zinc-500" />
+                Slack Notifications
+              </CardTitle>
+              <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+                Get notified in Slack when you receive new form submissions
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6 px-5">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label>Enable Slack Notifications</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Receive notifications for new form submissions
+                  </p>
+                </div>
+                <Switch
+                  checked={isEnabled}
+                  onCheckedChange={handleSave}
+                  aria-label="Toggle Slack notifications"
+                  className="cursor-pointer"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="webhookUrl">Webhook URL</Label>
+                <Input
+                  id="webhookUrl"
+                  value={webhookUrl}
+                  onChange={(e) => setWebhookUrl(e.target.value)}
+                  placeholder="https://hooks.slack.com/services/..."
+                  disabled={!isEnabled}
+                />
+                <p className="text-sm text-muted-foreground">
+                  You can create a webhook URL in your Slack workspace settings
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="defaultChannel">Default Channel</Label>
+                <Input
+                  id="defaultChannel"
+                  value={channel}
+                  onChange={(e) => setChannel(e.target.value)}
+                  placeholder="#notifications"
+                  disabled={!isEnabled}
+                />
+                <p className="text-sm text-muted-foreground">
+                  Optional: Override the default channel set in your webhook
+                </p>
+              </div>
+
+              <div className="flex space-x-2">
+                <Button
+                  variant="secondary"
+                  onClick={handleTestWebhook}
+                  disabled={!isEnabled || !webhookUrl || isTesting}
+                >
+                  {isTesting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Testing...
+                    </>
+                  ) : (
+                    'Test Webhook'
+                  )}
+                </Button>
+                {hasChanges && (
+                  <Button
+                    onClick={handleSaveConfig}
+                    disabled={updateConfigMutation.isPending}
+                  >
+                    {updateConfigMutation.isPending ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      'Save Changes'
+                    )}
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </ScrollArea>
+    </div>
+  )
+} 

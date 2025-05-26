@@ -6,6 +6,7 @@ export const navigationData = [
   { name: "Billing", icon: "CreditCard" },
   { name: "Email", icon: "AtSign" },
   { name: "Stripe Connect", icon: "CreditCard" },
+  { name: "Integrations", icon: "Plug" },
   // { name: "Email Domain", icon: "Mail" },
   { name: "Advanced", icon: "Settings" },
   { name: "Accessibility", icon: "Keyboard" },

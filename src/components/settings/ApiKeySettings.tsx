@@ -105,7 +105,7 @@ export default function ApiKeySettings() {
 
   return (
     <div className="w-full  mx-auto">
-      <div className="w-full space-y-4">
+      <div className="w-full space-y-4 pr-4">
         <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center">

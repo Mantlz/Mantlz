@@ -5,7 +5,7 @@ import { Resend } from 'resend';
 import { FormSubmissionEmail } from '@/emails/form-submission';
 import { render } from '@react-email/components';
 import { Plan, Prisma } from '@prisma/client';
-import { sendDeveloperNotification } from '@/services/notifcation-service';
+import { sendDeveloperNotification, sendSlackNotification } from '@/services/notifcation-service';
 import { debugService } from '@/services/debug-service';
 import { ratelimitConfig } from '@/lib/ratelimiter';
 import { enhanceDataWithAnalytics } from '@/lib/analytics-utils';
@@ -347,6 +347,35 @@ export async function POST(req: Request) {
         });
         console.error('Failed to send developer notification:', error);
       }
+    }
+
+    // Send Slack notification if enabled
+    try {
+      const slackResult = await sendSlackNotification(formId, submission.id, submissionData);
+      if (slackResult.sent) {
+        await debugService.log('slack_notification_sent', {
+          formId,
+          submissionId: submission.id,
+          result: slackResult,
+          userId: apiKeyRecord.userId,
+          userPlan: apiKeyRecord.user.plan,
+          timestamp: new Date().toISOString(),
+          userAgent,
+          ip,
+        });
+      }
+    } catch (error) {
+      await debugService.log('slack_notification_error', {
+        formId,
+        submissionId: submission.id,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        userId: apiKeyRecord.userId,
+        userPlan: apiKeyRecord.user.plan,
+        timestamp: new Date().toISOString(),
+        userAgent,
+        ip,
+      });
+      console.error('Failed to send Slack notification:', error);
     }
 
     // Define default redirect URL

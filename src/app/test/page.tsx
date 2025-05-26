@@ -5,7 +5,7 @@ export default function CustomerFeedbackPage() {
   return (
     <div className="min-h-screen w-full flex items-center justify-center py-8 px-4">
       <div className="flex flex-row items-center justify-center gap-4 flex-wrap">
-        {/* <Mantlz
+         <Mantlz
           formId="cma9tu80t0004o7r0iuisldzg"
           theme='neobrutalism'
           showUsersJoined={true}
@@ -14,7 +14,7 @@ export default function CustomerFeedbackPage() {
           redirectUrl='/feedback/thank-you'
         /> 
 
-        <Mantlz 
+        {/* <Mantlz 
           formId="cmao2vgrf0007o7lfm6r82jif"
           theme='neobrutalism'
         />
@@ -22,9 +22,9 @@ export default function CustomerFeedbackPage() {
         <Mantlz 
           formId="cmasd5mci0001o7hws12icdk0"
           theme='neobrutalism'
-        /> */}
+        />  */}
 
-        <Mantlz 
+        {/* <Mantlz 
           formId="cman7j8ub0003o7jpmg2bjr6n"
           theme='neobrutalism'
         />
@@ -33,11 +33,11 @@ export default function CustomerFeedbackPage() {
           theme='neobrutalism'
           
 
-        />
-         <Mantlz 
+        /> */}
+         {/* <Mantlz 
           formId="cman7j8ub0003o7jpmg2bjr6n"
           theme='neobrutalism'
-        />
+        /> */}
 {/* 
 <Mantlz 
   formId="cman7j8ub0003o7jpmg2bjr6n"
