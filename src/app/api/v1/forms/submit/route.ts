@@ -17,6 +17,17 @@ interface FormSubmissionData {
   email?: string;
 }
 
+// Transform FormSubmissionData to notification-compatible data
+const transformSubmissionData = (data: FormSubmissionData) => {
+  const transformed: Record<string, string | number | boolean | null | undefined> = {};
+  for (const [key, value] of Object.entries(data)) {
+    if (!(value instanceof File)) {
+      transformed[key] = value;
+    }
+  }
+  return transformed;
+};
+
 const submitSchema = z.object({
   formId: z.string(),
   //apiKey: z.string(),
@@ -323,7 +334,7 @@ export async function POST(req: Request) {
     // Send notification to developer if PRO plan and notifications enabled
     if (form.user.plan === Plan.PRO) {
       try {
-        const notificationResult = await sendDeveloperNotification(formId, submission.id, submissionData);
+        const notificationResult = await sendDeveloperNotification(formId, submission.id, transformSubmissionData(submissionData));
         await debugService.log('developer_notification_sent', {
           formId,
           submissionId: submission.id,
@@ -351,7 +362,7 @@ export async function POST(req: Request) {
 
     // Send Slack notification if enabled
     try {
-      const slackResult = await sendSlackNotification(formId, submission.id, submissionData);
+      const slackResult = await sendSlackNotification(formId, submission.id, transformSubmissionData(submissionData));
       if (slackResult.sent) {
         await debugService.log('slack_notification_sent', {
           formId,
