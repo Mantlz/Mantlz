@@ -2,11 +2,11 @@ import { db } from "@/lib/db";
 import { Resend } from 'resend';
 import { render } from '@react-email/components';
 import { DeveloperNotificationEmail } from '@/emails/developer-notification';
-import { SlackService } from './slack-service';
+import { SlackService, FormFieldValue } from './slack-service';
 
 // Define interfaces for type safety
 interface SubmissionData {
-  [key: string]: unknown;
+  [key: string]: FormFieldValue;
 }
 
 interface NotificationCondition {
