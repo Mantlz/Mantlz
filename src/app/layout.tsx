@@ -116,12 +116,10 @@ export default function RootLayout({
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
           <Script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js" strategy="afterInteractive" />
         </head>
-        <body className={`${fontVariable} font-regular antialiased tracking-wide`}>
-          <main className="h-screen bg-background text-foreground transition-colors duration-300">
+        <body className={`${fontVariable} font-sans  text-foreground antialiased tracking-wide min-h-screen`}>
+          <main className="min-h-screen w-full  text-foreground transition-colors duration-300">
             <Providers>
-              <MantlzProvider apiKey={process.env.MANTLZ_KEY}
-                
-              >
+              <MantlzProvider apiKey={process.env.MANTLZ_KEY}>
                 <Suspense fallback={null}>
                   <ClientWrapper>
                     <FontInitializer />

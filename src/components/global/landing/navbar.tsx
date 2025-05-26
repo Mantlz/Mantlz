@@ -84,7 +84,7 @@ export function Navbar() {
           >
             <Button 
               size="sm" 
-              className="h-9 px-4 bg-orange-500 hover:bg-orange-600 text-white rounded-lg border-2 border-black dark:border-zinc-600 transform-gpu translate-y-[-2px] translate-x-[-2px] hover:translate-y-[-4px] hover:translate-x-[-4px] transition-all duration-300 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.5)]"
+              className="bg-orange-900 hover:bg-orange-800 dark:bg-orange-950 dark:hover:bg-orange-900 text-white border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200 text-sm "
             >
               Dashboard
             </Button>
@@ -128,7 +128,8 @@ export function Navbar() {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => signOut()}
-                className="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white dark:bg-orange-500 dark:hover:bg-orange-600"
+                
+                className="cursor-pointer bg-orange-900 hover:bg-orange-800 text-white dark:bg-orange-950 dark:hover:bg-orange-900"
               >
                 <LogOut className="mr-2 h-4 w-4 text-white" />
                 <span>Sign out</span>
@@ -144,11 +145,12 @@ export function Navbar() {
     // if no session was found, or if the user explicitly signed out.
     return (
       <div className="flex items-center gap-4">
-        <Link href="/sign-in" className="text-sm font-medium text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300">
+        <Link href="/sign-in" className="text-sm font-medium text-zinc-950 hover:text-zinc-700 dark:text-white dark:hover:text-zinc-300">
           Sign in
         </Link>
         <Link href="/sign-up">
-          <Button size="sm" className="flex items-center gap-1 bg-orange-500 hover:bg-orange-600 text-white dark:bg-orange-500 dark:hover:bg-orange-600">
+          <Button size="sm" 
+          className="flex items-center gap-1 bg-orange-900 hover:bg-orange-800 dark:bg-orange-950 dark:hover:bg-orange-900 text-white border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200 text-sm ">
             Sign up 
           </Button>
         </Link>
@@ -161,7 +163,7 @@ export function Navbar() {
       <div className="flex items-center">
         <Link href="/" className="flex items-center">
           <Logo className="h-8 w-8" size={32} />
-          <span className="font-semibold text-lg">Mantlz</span>
+          <span className="font-light text-lg">Mantlz</span>
         </Link>
       </div>
 
@@ -236,7 +238,8 @@ export function Navbar() {
                    </DrawerClose>
                    <DrawerClose asChild>
                      <Link href="/sign-up">
-                       <Button size="sm" className="w-full flex items-center justify-center gap-1 dark:text-white">
+                       <Button size="sm" 
+                       className="w-full flex items-center justify-center gap-1 dark:text-white bg-orange-900 hover:bg-orange-800 dark:bg-orange-950 dark:hover:bg-orange-900 text-white border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200 text-sm ">
                          Sign up 
                        </Button>
                      </Link>
@@ -280,9 +283,9 @@ function NavLink({ href, children, active, target, ...props }: NavLinkProps) {
     <Link
       href={href}
       target={target}
-      className={`text-sm font-medium transition-colors hover:text-orange-600 dark:hover:text-orange-400 ${
+      className={`text-sm font-medium transition-colors hover:text-orange-900 dark:hover:text-orange-800 ${
         active
-          ? "text-orange-600 dark:text-orange-400"
+          ? "text-orange-900 dark:text-orange-900"
           : "text-zinc-600 dark:text-zinc-400"
       }`}
       {...props}

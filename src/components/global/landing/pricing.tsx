@@ -10,7 +10,10 @@ import { client } from "@/lib/client"
 import { useMutation } from "@tanstack/react-query"
 import Canceled from "./canceled"
 import { useSubscription } from "@/hooks/useSubscription"
-import { Check } from "lucide-react"
+import { Check, Shield, Zap, Users } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Container } from "@/components/global/container"
+import { Badge } from "@/components/ui/badge"
 import "@/styles/animations.css"
 
 // Define subscription type
@@ -28,6 +31,7 @@ type Plan = {
   includedPlans?: string[]
   quota: typeof FREE_QUOTA | typeof STANDARD_QUOTA | typeof PRO_QUOTA
   isPopular?: boolean
+  icon?: React.ReactNode
 }
 
 const plans: Plan[] = [
@@ -44,6 +48,7 @@ const plans: Plan[] = [
     buttonText: "Register For Free!",
     stripePriceIdMonthly: "",
     quota: FREE_QUOTA,
+    icon: <Shield className="m-auto size-5" strokeWidth={1} />
   },
   {
     title: "Standard",
@@ -61,6 +66,7 @@ const plans: Plan[] = [
     stripePriceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_STANDARD_PRICE_ID ?? "",
     includedPlans: [],
     quota: STANDARD_QUOTA,
+    icon: <Zap className="m-auto size-5" strokeWidth={1} />
   },
   {
     title: "Professional",
@@ -80,8 +86,9 @@ const plans: Plan[] = [
     stripePriceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID ?? "",
     includedPlans: [],
     quota: PRO_QUOTA,
-    isPopular: true,
+    icon: <Users className="m-auto size-5" strokeWidth={1} />,
     isFeatured: true,
+    isPopular: true
   },
 ]
 
@@ -192,103 +199,67 @@ function PricingContent({
   }
 
   return (
-    <section className="py-24 relative " id="pricing">
-      {/* Grid Background */}
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] dark:bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)]" />
-
-   
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-zinc-700 to-zinc-900 dark:from-zinc-200 dark:to-zinc-400 bg-clip-text text-transparent">
-            Choose the plan that fits your needs
-          </h2>
-          <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
-            Start for free, upgrade as you grow
-          </p>
-        </div>
-
-        <div className="grid gap-8 grid-cols-1 md:grid-cols-3">
-          {plans.map((plan) => (
-            <PricingCard
-              key={plan.title}
-              plan={plan}
-              onCheckout={() => handleCheckout(plan)}
-              isLoading={processingPlan === plan.title}
-              isCurrentPlan={isCurrentUserPlan(plan.title)}
-            />
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function PricingCard({
-  plan,
-  onCheckout,
-  isLoading,
-  isCurrentPlan,
-}: {
-  plan: Plan
-  onCheckout: () => void
-  isLoading: boolean
-  isCurrentPlan: boolean
-}) {
-  return (
-    <div
-      className={`relative flex flex-col p-6 rounded-lg bg-white dark:bg-zinc-900 transform-gpu translate-y-[-4px] translate-x-[-4px] hover:translate-y-[-8px] hover:translate-x-[-8px] transition-all duration-300 ${
-        plan.isPopular
-          ? "border-2 border-black dark:border-zinc-600 shadow-[4px_4px_0px_0px_rgba(249,115,22,1)] dark:shadow-[4px_4px_0px_0px_rgba(249,115,22,0.5)] hover:shadow-[8px_8px_0px_0px_rgba(249,115,22,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(249,115,22,0.5)]"
-          : "border-2 border-black dark:border-zinc-600 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.5)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.5)]"
-      }`}
-    >
-      {plan.isPopular && (
-        <div className="absolute -top-5 left-0 right-0 mx-auto w-32">
-          <div className="text-center font-extrabold py-1 px-2 rounded-lg bg-orange-500 text-white text-sm  border-1 border-black dark:border-orange-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-            Most Popular
+      <section className="py-16 md:py-32">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="text-center mb-12">
+            <h1 className="text-5xl md:text-6xl font-bold tracking-tight">Choose the plan that fits your needs</h1>
+            <p className="mt-4 text-xl md:text-2xl text-muted-foreground">Start for free, upgrade as you grow</p>
+          </div>
+          <div className="relative">
+            <div className="relative z-10 grid grid-cols-6 gap-3">
+              {plans.map((plan) => (
+                <Card key={plan.title} className={`relative col-span-full overflow-hidden sm:col-span-3 lg:col-span-2 ${
+                  plan.isPopular ? 'border-[3px] border-orange-900' : ''
+                }`}>
+                  <CardContent className="flex h-full flex-col pt-6">
+                    <div className="flex items-center justify-between">
+                      <div className="relative flex aspect-square size-12 rounded-full border before:absolute before:-inset-2 before:rounded-full before:border dark:border-white/10 dark:before:border-white/5">
+                        {plan.icon}
+                      </div>
+                      {plan.isPopular && (
+                        <Badge variant="default" className="absolute right-6 bg-orange-950/80 text-white">Popular</Badge>
+                      )}
+                    </div>
+                    <div className="mt-6 flex flex-1 flex-col">
+                      <div className="space-y-2">
+                        <h2 className="text-lg font-medium transition">{plan.title}</h2>
+                        <div className="flex items-baseline">
+                          <span className="text-4xl font-bold">${plan.monthlyPrice}</span>
+                          <span className="ml-1 text-sm font-medium text-muted-foreground">/month</span>
+                        </div>
+                      </div>
+                      <ul className="mt-6 flex-1 space-y-3">
+                        {plan.features.map((feature, i) => (
+                          <li key={i} className="flex items-center gap-3 text-muted-foreground">
+                            <Check className="h-5 w-5 flex-shrink-0 text-primary" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <Button
+                        onClick={() => handleCheckout(plan)}
+                        disabled={processingPlan === plan.title || isCurrentUserPlan(plan.title)}
+                        className="mt-6 w-full"
+                        variant={plan.isPopular ? "default" : "outline"}
+                      >
+                        {isCurrentUserPlan(plan.title) ? (
+                          "Current Plan"
+                        ) : processingPlan === plan.title ? (
+                          <div className="flex items-center gap-2">
+                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></div>
+                            <span>Processing...</span>
+                          </div>
+                        ) : (
+                          plan.buttonText
+                        )}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
-      )}
-
-      <div className="mb-5">
-        <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-2">
-          {plan.title}
-        </h3>
-        <div className="flex items-baseline text-zinc-900 dark:text-white">
-          <span className="text-4xl font-bold tracking-tight">${plan.monthlyPrice}</span>
-          <span className="ml-1 text-sm font-semibold">/month</span>
-        </div>
-      </div>
-
-      <ul className="space-y-3 flex-1 mb-6">
-        {plan.features.map((feature, i) => (
-          <li key={i} className="flex items-center gap-3 text-zinc-700 dark:text-zinc-300">
-            <Check className="h-5 w-5 flex-shrink-0 text-orange-500 dark:text-orange-400" />
-            <span>{feature}</span>
-          </li>
-        ))}
-      </ul>
-
-      <Button
-        onClick={onCheckout}
-        disabled={isLoading || isCurrentPlan}
-        className={`w-full border-2 font-extrabold transform-gpu hover:-translate-y-1 transition-transform ${
-          plan.isPopular
-            ? "bg-orange-500 hover:bg-orange-600 text-white border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-            : "bg-zinc-800 hover:bg-zinc-900 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)]"
-        }`}
-      >
-        {isCurrentPlan ? (
-          "Current Plan"
-        ) : isLoading ? (
-          <div className="flex items-center gap-2">
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-            <span>Processing...</span>
-          </div>
-        ) : (
-          plan.buttonText
-        )}
-      </Button>
-    </div>
+      </section>
   )
 }

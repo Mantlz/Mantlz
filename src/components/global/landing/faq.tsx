@@ -1,85 +1,73 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Container } from "./container"
-import { Sparkles } from "lucide-react"
+'use client'
+
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import Link from 'next/link'
 
 export default function Faq() {
-  const faqData = [
-    {
-      question: "What is Mantlz?",
-      answer:
-        "Mantlz is a powerful platform that helps you create, customize, and manage forms for your business or personal needs with ease and efficiency.",
-    },
-    {
-      question: "How can Mantlz help my business?",
-      answer:
-        "Mantlz simplifies the form creation process, helps you collect and organize data efficiently, integrate with your existing workflows, and gain valuable insights from form submissions.",
-    },
-    {
-      question: "Is there a free plan available?",
-      answer:
-        "Yes, Mantlz offers a free tier that includes essential form features. For advanced functionality, check our pricing page for premium plan options.",
-    },
-    {
-      question: "How secure is the data collected through Mantlz forms?",
-      answer:
-        "Mantlz employs industry-standard security measures to protect your data. All form submissions are encrypted, and we comply with data protection regulations to ensure your information remains safe.",
-    },
-    {
-      question: "Can I customize the look and feel of my forms?",
-      answer:
-        "Absolutely! Mantlz provides extensive customization options, allowing you to match forms to your brand identity with custom colors, logos, fonts, and layouts.",
-    },
-    {
-      question: "Can I integrate Mantlz forms with other tools I use?",
-      answer:
-        "Yes, Mantlz seamlessly integrates with popular tools like Google Sheets, Slack, Zapier, and many CRM systems to fit into your existing workflow.",
-    },
-  ]
+    const faqItems = [
+        {
+            id: 'item-1',
+            question: 'How long does shipping take?',
+            answer: 'Standard shipping takes 3-5 business days, depending on your location. Express shipping options are available at checkout for 1-2 business day delivery.',
+        },
+        {
+            id: 'item-2',
+            question: 'What payment methods do you accept?',
+            answer: 'We accept all major credit cards (Visa, Mastercard, American Express), PayPal, Apple Pay, and Google Pay. For enterprise customers, we also offer invoicing options.',
+        },
+        {
+            id: 'item-3',
+            question: 'Can I change or cancel my order?',
+            answer: 'You can modify or cancel your order within 1 hour of placing it. After this window, please contact our customer support team who will assist you with any changes.',
+        },
+        {
+            id: 'item-4',
+            question: 'Do you ship internationally?',
+            answer: "Yes, we ship to over 50 countries worldwide. International shipping typically takes 7-14 business days. Additional customs fees may apply depending on your country's import regulations.",
+        },
+        {
+            id: 'item-5',
+            question: 'What is your return policy?',
+            answer: 'We offer a 30-day return policy for most items. Products must be in original condition with tags attached. Some specialty items may have different return terms, which will be noted on the product page.',
+        },
+    ]
 
-  return (
-    <section 
-      className="py-24 relative"
-      id="faq"
-    >
-      <Container className="relative z-10">
-        <div className="flex flex-col items-center text-center lg:flex-row lg:items-start lg:text-left gap-8">
-          <div className="lg:w-1/3">
-            <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-4">
-              <Sparkles className="h-4 w-4 mr-2" />
-              <span>FAQ</span>
+    return (
+        <section className="py-16 md:py-24">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-2xl text-center">
+                    <h2 className="text-balance text-3xl font-bold md:text-4xl lg:text-5xl">Frequently Asked Questions</h2>
+                    <p className="text-muted-foreground mt-4 text-balance">Discover quick and comprehensive answers to common questions about our platform, services, and features.</p>
+                </div>
+
+                <div className="mx-auto mt-12 max-w-3xl">
+                    <Accordion
+                        type="single"
+                        collapsible
+                        className="bg-card ring-muted w-full rounded-2xl border px-8 py-3 shadow-sm ring-4 dark:ring-0">
+                        {faqItems.map((item) => (
+                            <AccordionItem
+                                key={item.id}
+                                value={item.id}
+                                className="border-dashed">
+                                <AccordionTrigger className="cursor-pointer text-base hover:no-underline">{item.question}</AccordionTrigger>
+                                <AccordionContent>
+                                    <p className="text-base">{item.answer}</p>
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
+                    </Accordion>
+
+                    <p className="text-muted-foreground mt-6 px-8">
+                        Can't find what you're looking for? Contact our{' '}
+                        <Link
+                            href="#"
+                            className="text-primary font-medium hover:underline">
+                            customer support team
+                        </Link>
+                    </p>
+                </div>
             </div>
-            <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-zinc-700 to-zinc-900 dark:from-zinc-200 dark:to-zinc-400 bg-clip-text text-transparent">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-zinc-600 dark:text-zinc-400">
-              Everything you need to know about Mantlz and our form management platform
-            </p>
-          </div>
-          <div className="lg:w-2/3 w-full">
-            <Accordion type="single" collapsible className="space-y-4">
-              {faqData.map((item, index) => (
-                <AccordionItem
-                  key={index}
-                  value={`item-${index}`}
-                  className="border-2 border-black dark:border-zinc-600 rounded-lg overflow-hidden transform-gpu translate-y-[-2px] translate-x-[-2px] hover:translate-y-[-4px] hover:translate-x-[-4px] transition-all duration-300 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.5)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.5)]"
-                >
-                  <AccordionTrigger 
-                    className="px-5 py-4 text-left font-bold text-zinc-800 dark:text-zinc-200 bg-white dark:bg-zinc-900 hover:bg-orange-500 hover:text-white dark:hover:bg-orange-500 dark:hover:text-white transition-all group"
-                  >
-                    <span className="group-hover:text-white dark:group-hover:text-white transition-colors">
-                      {item.question}
-                    </span>
-                  </AccordionTrigger>
-                  <AccordionContent className="px-5 py-4 text-zinc-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 border-t-2 border-black dark:border-zinc-600">
-                    {item.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
-        </div>
-      </Container>
-    </section>
-  )
+        </section>
+    )
 }
-
