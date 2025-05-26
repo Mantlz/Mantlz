@@ -5,7 +5,6 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { 
   Loader2, 
-  AlertCircle, 
   CheckCircle2, 
   ExternalLink,
   Download,
@@ -23,13 +22,12 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { client } from "@/lib/client";
-
+import { useSubscription } from "@/hooks/useSubscription";
 
 // Type definitions for subscription data
 interface SubscriptionData {
   id?: string;
   status?: string;
-  plan?: string;
   currentPeriodStart?: string;
   currentPeriodEnd?: string;
   cancelAtPeriodEnd?: boolean;
@@ -71,76 +69,11 @@ interface InvoiceResponse {
   error?: string;
 }
 
-// Create custom hook for subscription data
-const useSubscriptionData = () => {
-  return useQuery<SubscriptionData>({
-    queryKey: ["userSubscription"],
-    queryFn: async () => {
-      try {
-        // Get the user's actual plan from the user-router
-        const planResponse = await client.user.getUserPlan.$get();
-        const planData = await planResponse.json();
-        
-        // Get usage data which includes plan information
-        const usageResponse = await client.usage.getUsage.$get();
-        const usageData = await usageResponse.json();
-        
-        // Create a subscription data with the actual plan
-        return {
-          plan: planData.plan, // Use the actual plan from the user-router
-          status: "active", // Default value
-          currentPeriodStart: new Date().toISOString(),
-          currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-          cancelAtPeriodEnd: false,
-          cancelAt: null,
-          trialEnd: null,
-          price: {
-            amount: planData.plan === "PRO" ? 9900 : planData.plan === "STANDARD" ? 2900 : 0,
-            currency: "usd",
-            interval: "month"
-          },
-          usage: {
-            formsUsed: usageData.usage?.forms?.used || 0,
-            formsLimit: usageData.usage?.forms?.limit || 0,
-            submissionsUsed: usageData.usage?.submissions?.used || 0,
-            submissionsLimit: usageData.usage?.submissions?.limit || 0
-          }
-        };
-      } catch (error) {
-        console.error("Error fetching subscription data:", error);
-        // Return a default subscription data
-        return {
-          plan: "FREE",
-          status: "inactive",
-          currentPeriodStart: new Date().toISOString(),
-          currentPeriodEnd: new Date().toISOString(),
-          cancelAtPeriodEnd: false,
-          cancelAt: null,
-          trialEnd: null,
-          price: {
-            amount: 0,
-            currency: "usd",
-            interval: "month"
-          },
-          usage: {
-            formsUsed: 0,
-            formsLimit: 0,
-            submissionsUsed: 0,
-            submissionsLimit: 0
-          }
-        };
-      }
-    },
-    staleTime: 1000 * 60 * 5, // 5 minutes
-  });
-};
-
 // Create portal session mutation hook
 const useCreatePortalSession = () => {
   return useMutation<PortalSessionResponse>({
     mutationFn: async () => {
       try {
-        // Use the client function approach like in pricing.tsx
         const response = await client.payment.createPortalSession.$post();
         const data = await response.json() as PortalSessionResponse;
         
@@ -228,14 +161,38 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
 };
 
 export default function BillingSettings() {
-  const { data: subscription, isLoading, error, refetch } = useSubscriptionData();
+  const { userPlan } = useSubscription();
+  const { data: usageData, isLoading: isLoadingUsage } = useQuery({
+    queryKey: ["usage"],
+    queryFn: async () => {
+      const response = await client.usage.getUsage.$get();
+      return response.json();
+    }
+  });
+
+  const subscriptionData: SubscriptionData = {
+    status: "active",
+    currentPeriodStart: new Date().toISOString(),
+    currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+    cancelAtPeriodEnd: false,
+    cancelAt: null,
+    trialEnd: null,
+    price: {
+      amount: userPlan === "PRO" ? 9900 : userPlan === "STANDARD" ? 2900 : 0,
+      currency: "usd",
+      interval: "month"
+    },
+    usage: {
+      formsUsed: usageData?.usage?.forms?.used || 0,
+      formsLimit: usageData?.usage?.forms?.limit || 0,
+      submissionsUsed: usageData?.usage?.submissions?.used || 0,
+      submissionsLimit: usageData?.usage?.submissions?.limit || 0
+    }
+  };
+
   const { data: invoices, isLoading: isLoadingInvoices } = useInvoices();
   const createPortalSession = useCreatePortalSession();
   const [isRedirecting, setIsRedirecting] = useState(false);
-
-  const handleRefetch = () => {
-    refetch();
-  };
 
   const handleManageSubscription = async () => {
     try {
@@ -277,27 +234,13 @@ export default function BillingSettings() {
     }).format(amount / 100);
   };
 
-  if (isLoading) {
+  if (isLoadingUsage) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[40vh] w-full">
         <Loader2 className="h-6 w-6 text-zinc-400 animate-spin" />
         <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
           Loading subscription information...
         </p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center py-8 text-center">
-        <AlertCircle className="h-6 w-6 text-red-500" />
-        <p className="mt-2 text-sm text-zinc-800 dark:text-zinc-200">
-          Could not load your subscription information.
-        </p>
-        <Button variant="outline" className="mt-3" onClick={handleRefetch}>
-          Try Again
-        </Button>
       </div>
     );
   }
@@ -313,7 +256,7 @@ export default function BillingSettings() {
                 <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
                   Subscription Information
                 </h2>
-                <PlanBadge plan={subscription?.plan} />
+                <PlanBadge plan={userPlan} />
               </div>
               <Button 
                 onClick={handleManageSubscription} 
@@ -355,8 +298,8 @@ export default function BillingSettings() {
                 <div className="p-3 border border-zinc-200 dark:border-zinc-800 rounded-lg">
                   <p className="text-xs text-zinc-600 dark:text-zinc-400">Price</p>
                   <p className="text-sm font-medium text-zinc-900 dark:text-white">
-                    {subscription?.price 
-                      ? `${formatCurrency(subscription.price.amount, subscription.price.currency)}/${subscription.price.interval}`
+                    {subscriptionData?.price 
+                      ? `${formatCurrency(subscriptionData.price.amount, subscriptionData.price.currency)}/${subscriptionData.price.interval}`
                       : "Free"}
                   </p>
                 </div>
@@ -365,7 +308,7 @@ export default function BillingSettings() {
                 <div className="p-3 border border-zinc-200 dark:border-zinc-800 rounded-lg">
                   <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-2">Plan Features</p>
                   <ul className="space-y-1.5 text-xs text-zinc-700 dark:text-zinc-300">
-                    {subscription?.plan === "PRO" && (
+                    {userPlan === "PRO" && (
                       <>
                         <li className="flex items-center">
                           <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
@@ -389,7 +332,7 @@ export default function BillingSettings() {
                         </li>
                       </>
                     )}
-                    {subscription?.plan === "STANDARD" && (
+                    {userPlan === "STANDARD" && (
                       <>
                         <li className="flex items-center">
                           <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
@@ -413,7 +356,7 @@ export default function BillingSettings() {
                         </li>
                       </>
                     )}
-                    {(!subscription?.plan || subscription?.plan === "FREE") && (
+                    {(!userPlan || userPlan === "FREE") && (
                       <>
                         <li className="flex items-center">
                           <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
@@ -523,7 +466,7 @@ export default function BillingSettings() {
           </Card>
 
           {/* Free Plan Upgrade Message */}
-          {(!subscription?.plan || subscription?.plan === "FREE") && (
+          {(!userPlan || userPlan === "FREE") && (
             <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 dark:bg-amber-900/30 dark:border-amber-800/30 dark:text-amber-400 text-sm flex items-center justify-between">
               <div className="flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">

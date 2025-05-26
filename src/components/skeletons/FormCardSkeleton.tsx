@@ -17,9 +17,9 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
     >
       <div className="p-4 sm:p-6">
         <div className="flex items-center justify-between mb-3 sm:mb-4">
-          <Skeleton className="h-5 w-3/5 rounded-lg" />
+          <Skeleton className="h-5 w-1/2 rounded-lg" />
           <div className="text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-800/50 text-gray-400 dark:text-gray-500 px-2 sm:px-3 py-1 rounded-lg flex items-center justify-center">
-            <span><Skeleton className="h-4 w-5 rounded-lg inline-block mr-1" /></span> responses
+            <span><Skeleton className="h-4 w-5 rounded-lg inline-block mr-1 mt-2" /></span> responses
           </div>
         </div>
         
@@ -117,6 +117,27 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
               </svg>
               <span>New Form</span>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* View Toggle Skeleton */}
+      <div className="flex justify-end mb-2">
+        <div className="bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-800 rounded-lg p-1 flex items-center">
+          <div className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-700">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 dark:text-gray-500">
+              <rect width="7" height="7" x="3" y="3" rx="1" />
+              <rect width="7" height="7" x="14" y="3" rx="1" />
+              <rect width="7" height="7" x="14" y="14" rx="1" />
+              <rect width="7" height="7" x="3" y="14" rx="1" />
+            </svg>
+          </div>
+          <div className="p-1.5 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 dark:text-gray-500">
+              <line x1="3" x2="21" y1="6" y2="6" />
+              <line x1="3" x2="21" y1="12" y2="12" />
+              <line x1="3" x2="21" y1="18" y2="18" />
+            </svg>
           </div>
         </div>
       </div>

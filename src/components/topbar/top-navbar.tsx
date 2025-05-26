@@ -41,7 +41,7 @@ const UserProfileSection = memo(function UserProfileSection() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="flex items-center cursor-pointer gap-2 hover:bg-zinc-200 dark:hover:bg-zinc-800">
+        <Button variant="ghost" className="flex items-center cursor-pointer p-1 gap-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-800">
           <Avatar className="h-8 w-8">
             <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
             <AvatarFallback className="bg-zinc-700">
@@ -52,7 +52,7 @@ const UserProfileSection = memo(function UserProfileSection() {
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[220px] bg-zinc-200 border-zinc-800 dark:bg-zinc-800 dark:border-zinc-800">
+      <DropdownMenuContent align="end" className="w-[220px] bg-zinc-200 border-zinc-800 dark:bg-zinc-900 dark:border-zinc-800">
         <DropdownMenuItem 
           className="hover:bg-zinc-800 cursor-pointer"
           onClick={() => openUserProfile()}

@@ -2,6 +2,7 @@ import { Heading } from "@/components/global/heading"
 import { LoadingSpinner } from "@/components/global/loading-spinner"
 import { useEffect, useState } from "react"
 
+
 interface SyncMessageProps {
   title: string
   message: string
@@ -47,9 +48,9 @@ export function SyncMessage({ title, message, syncStatus, syncTime = 0 }: SyncMe
   
   return (
     <div className="flex justify-center items-center h-full">
-      <div className="flex flex-col items-center gap-7 max-w-md w-full p-8 rounded-lg bg-zinc-800">
+      <div className="flex flex-col items-center gap-7 max-w-md w-full p-8 rounded-lg  bg-zinc-800">
         {/* Simple title */}
-        <Heading className="text-2xl sm:text-3xl font-semibold text-white text-center">
+        <Heading className="text-3xl sm:text-4xl font-bold text-white text-center">
           {title}
         </Heading>
 
@@ -62,7 +63,7 @@ export function SyncMessage({ title, message, syncStatus, syncTime = 0 }: SyncMe
         <div className="w-full">
           <div className="h-1.5 w-full bg-white/10 rounded-lg overflow-hidden backdrop-blur-sm">
             <div 
-              className="h-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-lg transition-all duration-300 ease-out"
+              className="h-full bg-gradient-to-r from-orange-800 to-orange-900 rounded-lg transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -76,7 +77,7 @@ export function SyncMessage({ title, message, syncStatus, syncTime = 0 }: SyncMe
         {/* Status and spinner in one row */}
         <div className="flex items-center gap-3 mt-2 py-2.5 px-4 rounded-lg bg-white/5 backdrop-blur-sm">
           <div className={`w-2.5 h-2.5 rounded-lg ${
-            syncStatus ? 'bg-green-400' : 'bg-indigo-400 animate-pulse'
+            syncStatus ? 'bg-green-400' : 'bg-orange-500 animate-pulse'
           }`} />
           <span className="text-sm text-white">
             {syncStatus ? 'Sync complete' : 'Syncing your workspace'}
@@ -90,7 +91,7 @@ export function SyncMessage({ title, message, syncStatus, syncTime = 0 }: SyncMe
             ) : (
               <LoadingSpinner 
                 size="sm" 
-                className="w-5 h-5 text-indigo-400" 
+                className="w-5 h-5 text-orange-500" 
               />
             )}
           </div>

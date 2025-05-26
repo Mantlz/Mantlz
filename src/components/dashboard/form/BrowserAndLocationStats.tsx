@@ -56,7 +56,7 @@ const StatItem = ({
   name,
   count,
   percentage,
-  color = "blue",
+  color = "orange",
   rank = 0,
   isTop = false,
 }: {
@@ -77,7 +77,7 @@ const StatItem = ({
         <span className={cn(
           "text-xs font-medium min-w-[20px] text-center rounded-lg py-0.5 px-1",
           rank <= 3 
-            ? "bg-zinc-100 dark:bg-zinc-900/40 text-blue-700 dark:text-blue-300" 
+            ? "bg-zinc-100 dark:bg-zinc-900/40 text-orange-700 dark:text-orange-300" 
             : "bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400"
         )}>
           {rank}
@@ -272,7 +272,7 @@ export function BrowserAndLocationStats({
             onClick={() => setMobileView('map')}
             className={`px-4 py-2 text-xs font-medium ${
               mobileView === 'map' 
-                ? 'bg-zinc-50 dark:bg-zinc-900/30 text-blue-700 dark:text-blue-400' 
+                ? 'bg-zinc-50 dark:bg-zinc-900/30 text-orange-700 dark:text-orange-400' 
                 : 'bg-white dark:bg-black text-gray-700 dark:text-gray-300'
             }`}
           >
@@ -282,7 +282,7 @@ export function BrowserAndLocationStats({
             onClick={() => setMobileView('list')}
             className={`px-4 py-2 text-xs font-medium ${
               mobileView === 'list' 
-                ? 'bg-zinc-50 dark:bg-zinc-900/30 text-blue-700 dark:text-blue-400' 
+                ? 'bg-zinc-50 dark:bg-zinc-900/30 text-orange-700 dark:text-orange-400' 
                 : 'bg-white dark:bg-black text-gray-700 dark:text-gray-300'
             }`}
           >
@@ -369,7 +369,7 @@ export function BrowserAndLocationStats({
                                       geography={geo}
                                       fill="currentColor"
                                       className={isHighlighted ? 
-                                        "text-blue-50 dark:text-blue-950" : 
+                                        "text-orange-50 dark:text-orange-950" : 
                                         "text-gray-100 dark:text-gray-900"
                                       }
                                       stroke="#fff"
@@ -394,7 +394,7 @@ export function BrowserAndLocationStats({
                                   <g className="rsm-marker cursor-pointer transition-all duration-300 hover:scale-110">
                                      <circle
                                       r={radius}
-                                      className={isTop3 ? "fill-blue-600 dark:fill-blue-500" : "fill-blue-400 dark:fill-blue-700"}
+                                      className={isTop3 ? "fill-orange-600 dark:fill-orange-500" : "fill-orange-400 dark:fill-orange-700"}
                                       stroke="#fff"
                                       strokeWidth="1.5"
                                     />
@@ -415,7 +415,7 @@ export function BrowserAndLocationStats({
                         </ComposableMap>
                       ) : (
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-5 h-5 border border-zinc-300 dark:border-zinc-700 border-t-blue-500 rounded-lg animate-spin"></div>
+                          <div className="w-5 h-5 border border-zinc-300 dark:border-zinc-700 border-t-orange-500 rounded-full animate-spin"></div>
                         </div>
                       )}
                       
@@ -521,7 +521,7 @@ export function BrowserAndLocationStats({
                 {/* Progress bar with all browsers */}
                 <div className="flex h-2 mb-3 rounded-lg overflow-hidden bg-zinc-100 dark:bg-zinc-900">
                   {browsers.map((browser, idx) => {
-                    const colors = ["blue", "indigo", "violet", "purple", "cyan", "sky", "teal", "emerald", "green", "lime"];
+                    const colors = ["orange", "indigo", "violet", "purple", "cyan", "sky", "teal", "emerald", "green", "lime"];
                     return (
                       <div
                         key={browser.name}
@@ -538,7 +538,7 @@ export function BrowserAndLocationStats({
                 {/* Color legend - simplified and horizontal */}
                 <div className="mb-5 flex flex-wrap gap-x-4 gap-y-2">
                   {browsers.slice(0, 5).map((browser, idx) => {
-                    const colors = ["blue", "indigo", "violet", "purple", "cyan"];
+                    const colors = ["orange", "indigo", "violet", "purple", "cyan"];
                     return (
                       <div key={browser.name} className="flex items-center gap-1.5 text-xs">
                         <div className={`w-2 h-2 rounded-lg bg-${colors[idx % colors.length]}-500`}></div>
@@ -556,7 +556,7 @@ export function BrowserAndLocationStats({
                       name={browser.name}
                       count={browser.count}
                       percentage={browser.percentage}
-                      color={["blue", "indigo", "violet", "purple", "cyan"][idx % 5]}
+                      color={["orange", "indigo", "violet", "purple", "cyan"][idx % 5]}
                       isTop={(browsersPage === 1 && idx === 0)}
                     />
                   ))}
@@ -636,7 +636,7 @@ export function BrowserAndLocationStats({
                                 geography={geo}
                                 fill="currentColor"
                                 className={isHighlighted ? 
-                                  "text-blue-50 dark:text-blue-950" : 
+                                  "text-orange-50 dark:text-orange-950" : 
                                   "text-gray-100 dark:text-gray-900"
                                 }
                                 stroke="#ffffff"
@@ -660,7 +660,7 @@ export function BrowserAndLocationStats({
                             <g className="rsm-marker cursor-pointer transition-all duration-300 hover:scale-110">
                               <circle
                                 r={radius}
-                                className={isTop5 ? "fill-blue-600 dark:fill-blue-500" : "fill-blue-400 dark:fill-blue-700"}
+                                className={isTop5 ? "fill-orange-600 dark:fill-orange-500" : "fill-orange-400 dark:fill-orange-700"}
                                 stroke="#fff"
                                 strokeWidth="1.5"
                               />

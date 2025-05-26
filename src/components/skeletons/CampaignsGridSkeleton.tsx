@@ -78,8 +78,9 @@ export function CampaignsGridSkeleton() {
               <div className="flex justify-between items-center mt-4">
                 <div className="flex items-center gap-1">
                   <Mail className="h-4 w-4 text-gray-300 dark:text-gray-600" />
-                  <div className="text-xs text-gray-400 dark:text-gray-500">
-                    <Skeleton className="h-3 w-16 rounded-lg" />
+                  <div className="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1">
+                    <Skeleton className="h-3 w-3 rounded-lg" />
+                    <span>campaigns</span>
                   </div>
                 </div>
                 <div className="h-7 w-32  bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-xs text-zinc-400 dark:text-zinc-500">

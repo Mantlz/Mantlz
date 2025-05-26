@@ -37,7 +37,7 @@ const UserDropdown = memo(function UserDropdown() {
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
+            className="flex items-center gap-2 p-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
           >
             <Avatar className="h-7 w-7 xs:h-8 xs:w-8 ring-2 ring-zinc-100 dark:ring-zinc-800">
               <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />

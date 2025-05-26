@@ -178,9 +178,9 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
                   {selectedTab === 'Usage' && <UsageSettings />}
                   {selectedTab === 'API Keys' && <ApiKeySettings />}
                   {selectedTab === 'Email' && <EmailSettings />}
-                  {selectedTab === 'Stripe Connect' && <StripeSettings />}
+                  {selectedTab === 'Stripe' && <StripeSettings />}
                   {selectedTab === 'Advanced' && <AdvancedSettings />}
-                  {selectedTab === 'Integrations' && (
+                  {selectedTab === 'Slack' && (
                     <SlackSettings />
                   )}
                 </div>
