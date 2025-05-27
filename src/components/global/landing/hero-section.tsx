@@ -41,4 +41,3 @@ export function HeroSection() {
   )
 }
 
-"here here pelase "
