@@ -5,35 +5,35 @@ import { isProtectedRoute, isAuthRoute } from "./utils/routes";
 import { ratelimitConfig } from "./lib/ratelimiter";
 
 // Bot detection patterns - compiled regex for better performance
-const botPatterns = [
-  /bot/i,
-  /crawl/i,
-  /spider/i,
-  /semrush/i,
-  /ahrefs/i,
-  /scan/i,
-].map(pattern => new RegExp(pattern));
+// const botPatterns = [
+//   /bot/i,
+//   /crawl/i,
+//   /spider/i,
+//   /semrush/i,
+//   /ahrefs/i,
+//   /scan/i,
+// ].map(pattern => new RegExp(pattern));
 
 // Cache for bot detection results
-const botCache = new Map<string, boolean>();
-const BOT_CACHE_TTL = 3600000; // 1 hour
+// const botCache = new Map<string, boolean>();
+// const BOT_CACHE_TTL = 3600000; // 1 hour
 
-const isBot = (userAgent: string | null): boolean => {
-  if (!userAgent) return true;
+// const isBot = (userAgent: string | null): boolean => {
+//   if (!userAgent) return true;
   
-  // Check cache first
-  const cached = botCache.get(userAgent);
-  if (cached !== undefined) return cached;
+//   // Check cache first
+//   const cached = botCache.get(userAgent);
+//   if (cached !== undefined) return cached;
   
   // Perform check
-  const result = botPatterns.some(pattern => pattern.test(userAgent));
+  // const result = botPatterns.some(pattern => pattern.test(userAgent));
   
   // Cache result
-  botCache.set(userAgent, result);
-  setTimeout(() => botCache.delete(userAgent), BOT_CACHE_TTL);
+//   botCache.set(userAgent, result);
+//   setTimeout(() => botCache.delete(userAgent), BOT_CACHE_TTL);
   
-  return result;
-};
+//   return result;
+// };
 
 // Rate limit result type
 interface RateLimitResult {
@@ -50,13 +50,13 @@ const RATE_LIMIT_CACHE_TTL = 1000; // 1 second
 export default clerkMiddleware(async (auth, req) => {
   const url = req.nextUrl;
   const hostname = req.headers.get('host') || '';
-  const userAgent = req.headers.get('user-agent');
+  // const userAgent = req.headers.get('user-agent');
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0] || 'anonymous';
   
   // Block suspicious bots
-  if (isBot(userAgent)) {
-    return new NextResponse('Access Denied', { status: 403 });
-  }
+  // if (isBot(userAgent)) {
+  //   return new NextResponse('Access Denied', { status: 403 });
+  // }
 
   // Apply rate limiting if enabled
   if (ratelimitConfig.enabled && ratelimitConfig.ratelimit) {
