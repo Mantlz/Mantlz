@@ -7,6 +7,7 @@ export const navigationData = [
   { name: "Email", icon: "AtSign" },
   { name: "Stripe", icon: "CreditCard" },
   { name: "Slack", icon: "Slack" },
+  { name: "Discord", icon: "BotMessageSquare" },
   // { name: "Email Domain", icon: "Mail" },
   { name: "Advanced", icon: "Settings" },
   { name: "Accessibility", icon: "Keyboard" },

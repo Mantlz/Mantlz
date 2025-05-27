@@ -33,6 +33,7 @@ import { AdvancedSettings } from "./AdvancedSettings"
 import BillingSettings from "./BillingSettings";
 import StripeSettings from "./StripeSettings";
 import SlackSettings from "./SlackSettings";
+import DiscordSettings from "./DiscordSettings";
 
 // Define a more specific type for navigation data items
 type NavigationItem = {
@@ -180,9 +181,8 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
                   {selectedTab === 'Email' && <EmailSettings />}
                   {selectedTab === 'Stripe' && <StripeSettings />}
                   {selectedTab === 'Advanced' && <AdvancedSettings />}
-                  {selectedTab === 'Slack' && (
-                    <SlackSettings />
-                  )}
+                  {selectedTab === 'Slack' && <SlackSettings />}
+                  {selectedTab === 'Discord' && <DiscordSettings />}
                 </div>
               </div>
             </main>

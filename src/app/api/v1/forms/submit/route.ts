@@ -5,7 +5,7 @@ import { Resend } from 'resend';
 import { FormSubmissionEmail } from '@/emails/form-submission';
 import { render } from '@react-email/components';
 import { Plan, Prisma } from '@prisma/client';
-import { sendDeveloperNotification, sendSlackNotification } from '@/services/notifcation-service';
+import { sendDeveloperNotification, sendSlackNotification, sendDiscordNotification } from '@/services/notifcation-service';
 import { debugService } from '@/services/debug-service';
 import { ratelimitConfig } from '@/lib/ratelimiter';
 import { enhanceDataWithAnalytics } from '@/lib/analytics-utils';
@@ -387,6 +387,37 @@ export async function POST(req: Request) {
         ip,
       });
       console.error('Failed to send Slack notification:', error);
+      // Don't fail the submission if Slack notification fails
+    }
+
+    // Send Discord notification if enabled
+    try {
+      const discordResult = await sendDiscordNotification(formId, submission.id, transformSubmissionData(submissionData));
+      if (discordResult.sent) {
+        await debugService.log('discord_notification_sent', {
+          formId,
+          submissionId: submission.id,
+          result: discordResult,
+          userId: apiKeyRecord.userId,
+          userPlan: apiKeyRecord.user.plan,
+          timestamp: new Date().toISOString(),
+          userAgent,
+          ip,
+        });
+      }
+    } catch (error) {
+      await debugService.log('discord_notification_error', {
+        formId,
+        submissionId: submission.id,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        userId: apiKeyRecord.userId,
+        userPlan: apiKeyRecord.user.plan,
+        timestamp: new Date().toISOString(),
+        userAgent,
+        ip,
+      });
+      console.error('Failed to send Discord notification:', error);
+      // Don't fail the submission if Discord notification fails
     }
 
     // Define default redirect URL

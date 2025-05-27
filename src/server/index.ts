@@ -12,6 +12,7 @@ const routerImports = {
   trackingRouter: () => import("./routers/tracking-router").then(m => m.trackingRouter),
   stripeRouter: () => import("./routers/stripe-router").then(m => m.stripeRouter),
   slackRouter: () => import("./routers/slack-router").then(m => m.slackRouter),
+  discordRouter: () => import("./routers/discord-router").then(m => m.discordRouter),
 }
 
 const api = j
@@ -32,6 +33,7 @@ const appRouter = j.mergeRouters(api, {
   tracking: routerImports.trackingRouter,
   stripe: routerImports.stripeRouter,
   slack: routerImports.slackRouter,
+  discord: routerImports.discordRouter,
 })
 
 export type AppRouter = typeof appRouter

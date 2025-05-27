@@ -3,6 +3,7 @@ import { Resend } from 'resend';
 import { render } from '@react-email/components';
 import { DeveloperNotificationEmail } from '@/emails/developer-notification';
 import { SlackService, FormFieldValue } from './slack-service';
+import { DiscordService } from './discord-service';
 
 // Define interfaces for type safety
 interface SubmissionData {
@@ -16,6 +17,57 @@ interface NotificationCondition {
 }
 
 // Don't initialize Resend yet - we'll do it with the user's key
+
+export async function sendDiscordNotification(
+  formId: string,
+  submissionId: string,
+  submissionData: SubmissionData
+) {
+  console.log('🔍 Starting Discord notification process:', { formId, submissionId });
+  
+  // Get form with user and Discord settings
+  const form = await db.form.findUnique({
+    where: { id: formId },
+    include: {
+      user: {
+        include: {
+          discordConfig: true
+        }
+      }
+    }
+  });
+
+  if (!form || !form.user.discordConfig?.enabled || !form.user.discordConfig?.webhookUrl) {
+    const reason = !form ? 'form-not-found' :
+                  !form.user.discordConfig?.enabled ? 'discord-disabled' :
+                  'missing-webhook-url';
+    console.log('❌ Discord notification skipped:', { reason });
+    return { sent: false, reason };
+  }
+
+  try {
+    const discordService = DiscordService.getInstance();
+    await discordService.sendNotification(
+      {
+        webhookUrl: form.user.discordConfig.webhookUrl,
+        channel: form.user.discordConfig.channel || undefined
+      },
+      {
+        formId,
+        formName: form.name,
+        submissionId,
+        submissionData,
+        timestamp: new Date()
+      }
+    );
+
+    console.log('✅ Discord notification sent');
+    return { sent: true };
+  } catch (error) {
+    console.error('❌ Failed to send Discord notification:', error);
+    return { sent: false, reason: 'error', error };
+  }
+}
 
 export async function sendSlackNotification(
   formId: string,

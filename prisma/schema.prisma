@@ -34,6 +34,7 @@ model User {
   campaigns        Campaign[]
   stripeConnection StripeConnection?
   slackConfig      SlackConfig?
+  discordConfig    DiscordConfig?
 
   @@index([clerkId])
   @@index([stripeCustomerId])
@@ -527,6 +528,21 @@ enum StripeOrderStatus {
 }
 
 model SlackConfig {
+  id          String    @id @default(cuid())
+  userId      String    @unique
+  enabled     Boolean   @default(false)
+  webhookUrl  String
+  channel     String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model DiscordConfig {
   id          String    @id @default(cuid())
   userId      String    @unique
   enabled     Boolean   @default(false)
