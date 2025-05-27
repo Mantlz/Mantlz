@@ -1,5 +1,7 @@
 import { HTTPException } from "hono/http-exception";
-import { FormFieldValue } from "@/types/form";
+
+export type FormFieldValue = string | number | boolean | null | undefined;
+
 
 export interface DiscordWebhookConfig {
   webhookUrl: string;
