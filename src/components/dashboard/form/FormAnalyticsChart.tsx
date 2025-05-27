@@ -144,7 +144,7 @@ export function FormAnalyticsChart({
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative p-6 sm:p-8 lg:p-12">
           <div className="flex flex-col items-center justify-center h-[400px] gap-4">
-            <div className="w-8 h-8 animate-spin rounded-lg border-4 border-zinc-200 dark:border-zinc-800 border-t-black dark:border-t-white"></div>
+            <div className="w-8 h-8 animate-spin rounded-full border-4 border-black dark:border-white border-t-orange-300 dark:border-t-orange-600"></div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Loading analytics data...</p>
           </div>
         </div>
