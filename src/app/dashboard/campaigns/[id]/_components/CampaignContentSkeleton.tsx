@@ -1,6 +1,5 @@
 'use client';
 
-import { ChartBar, Inbox, Eye } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 // Fixed heights for the skeleton bars to avoid hydration mismatches
