@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Mail } from 'lucide-react';
 import { CampaignStats } from './types';
 import { CampaignChart } from './CampaignChart';
 
@@ -9,19 +8,13 @@ interface DetailedMetricsProps {
   stats: CampaignStats | null;
   isPremium: boolean;
   onUpgradeClick: () => void;
-  onRetryStats: () => void;
-  loadingStats: boolean;
 }
 
 export function DetailedMetrics({
   stats,
   isPremium,
   onUpgradeClick,
-  onRetryStats,
-  loadingStats
 }: DetailedMetricsProps) {
-  // console.log('DetailedMetrics render:', { stats, isPremium, loadingStats });
-
   if (!isPremium) {
     return (
       <div className="text-center py-8">
@@ -42,46 +35,15 @@ export function DetailedMetrics({
     );
   }
 
-  if (loadingStats) {
-    return (
-      <div className="space-y-8">
-        <div className="h-[300px] bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" />
-      </div>
-    );
+  // Only show chart if we have data
+  const hasData = stats?.timeSeriesData && stats.timeSeriesData.length > 0;
+  if (!hasData) {
+    return null;
   }
-
-  if (!stats) {
-    return (
-      <div className="text-center py-8">
-        <p className="text-gray-600 dark:text-gray-300 mb-4">
-          Failed to load campaign statistics
-        </p>
-        <Button
-          variant="outline"
-          onClick={onRetryStats}
-          className="inline-flex items-center gap-2"
-        >
-          <Mail className="h-4 w-4" />
-          Retry
-        </Button>
-      </div>
-    );
-  }
-
-  const hasTimeSeriesData = stats.timeSeriesData && stats.timeSeriesData.length > 0;
-  // console.log('Time series data:', { hasTimeSeriesData, data: stats.timeSeriesData });
-
+  
   return (
     <div className="space-y-8">
-      {hasTimeSeriesData ? (
-        <CampaignChart data={stats.timeSeriesData} />
-      ) : (
-        <div className="text-center py-8">
-          <p className="text-gray-600 dark:text-gray-300">
-            No analytics data available for this campaign yet.
-          </p>
-        </div>
-      )}
+      <CampaignChart data={stats.timeSeriesData} />
     </div>
   );
 } 

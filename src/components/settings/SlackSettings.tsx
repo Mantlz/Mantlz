@@ -238,7 +238,7 @@ export default function SlackSettings() {
                 </div>
               ) : (
                 <>
-                  <Alert className="bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-900">
+                  <Alert className="bg-zinc-100 dark:bg-zinc-950 border-zinc-300 dark:border-zinc-900">
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription>
                       You&apos;ll need to create a Slack webhook URL in your workspace settings to enable notifications.

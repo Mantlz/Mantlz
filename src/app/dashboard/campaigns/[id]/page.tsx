@@ -32,16 +32,13 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
   const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<CampaignStats | null>(null);
-  const [loadingStats, setLoadingStats] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const formId = searchParams.get('formId') ?? undefined;
 
   const loadStats = useCallback(async () => {
-    setLoadingStats(true);
     const statsData = await fetchCampaignStats(campaignId);
     setStats(statsData);
-    setLoadingStats(false);
   }, [campaignId]);
 
   useEffect(() => {
@@ -146,8 +143,7 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
               stats={stats}
               isPremium={isPremium}
               onUpgradeClick={() => setShowUpgradeModal(true)}
-              onRetryStats={loadStats}
-              loadingStats={loadingStats}
+
             />
           </div>
         </div>
