@@ -91,6 +91,7 @@
     "json2csv": "^6.0.0-alpha.2",
     "jstack": "^1.1.1",
     "leaflet": "^1.9.4",
+    "lru-cache": "^11.1.0",
     "lucide-react": "^0.479.0",
     "motion": "^12.12.2",
     "next": "^15.1.6",

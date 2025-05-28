@@ -3,6 +3,7 @@ import { jstack } from "jstack"
 import { db } from "../lib/db"
 import { currentUser } from "@clerk/nextjs/server"
 import { ratelimitConfig } from "@/lib/ratelimiter"
+import { cache, CACHE_KEYS } from "./cache"
 
 interface Env {
   Bindings: { DATABASE_URL: string }
@@ -15,19 +16,38 @@ const authMiddleware = j.middleware(async ({ c, next }) => {
 
   if (authHeader) {
     const apiKey = authHeader.split(" ")[1]
+    if (!apiKey) {
+      throw new HTTPException(401, { message: "Invalid API key format" })
+    }
+
+    // Try to get API key from cache first
+    const cachedKey = await cache.getApiKey(apiKey)
+    if (cachedKey?.isActive && cachedKey.user) {
+      return next({ user: cachedKey.user })
+    }
 
     const keyRecord = await db.apiKey.findUnique({
       where: { key: apiKey },
       include: { user: true }
     })
 
-    if (keyRecord?.isActive && keyRecord.user) return next({ user: keyRecord.user })
+    if (keyRecord?.isActive && keyRecord.user) {
+      // Cache the API key for future requests
+      await cache.set(`${CACHE_KEYS.API_KEY}${apiKey}`, keyRecord, 60 * 30) // Cache for 30 minutes
+      return next({ user: keyRecord.user })
+    }
   }
 
   const auth = await currentUser()
 
   if (!auth) {
     throw new HTTPException(401, { message: "Unauthorized" })
+  }
+
+  // Try to get user from cache first
+  const cachedUser = await cache.getUser(auth.id)
+  if (cachedUser) {
+    return next({ user: cachedUser })
   }
 
   const user = await db.user.findUnique({
@@ -37,6 +57,9 @@ const authMiddleware = j.middleware(async ({ c, next }) => {
   if (!user) {
     throw new HTTPException(401, { message: "Unauthorized" })
   }
+
+  // Cache the user for future requests
+  await cache.set(`${CACHE_KEYS.USER}${auth.id}`, user, 60 * 15) // Cache for 15 minutes
 
   return next({ user })
 })
@@ -81,9 +104,24 @@ const rateLimitMiddleware = j.middleware(async ({ c, next }) => {
   
   return next()
 })
+
 /**
  * Public (unauthenticated) procedures
  * This is the base part you use to create new procedures.
  */
 export const publicProcedure = j.procedure.use(rateLimitMiddleware)
 export const privateProcedure = publicProcedure.use(authMiddleware)
+
+// Add type declarations for context
+declare module 'jstack' {
+  interface Context {
+    user?: {
+      id: string;
+      clerkId: string;
+      email: string;
+      plan: string;
+      createdAt: Date;
+      updatedAt: Date;
+    }
+  }
+}
