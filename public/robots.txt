@@ -1,11 +1,21 @@
 # Allow all crawlers
 User-agent: *
 Allow: /
+Allow: /forms/
+Allow: /templates/
+Allow: /features/
+Allow: /blog/
+Allow: /pricing/
 
 # Disallow admin and private routes
-Disallow: /api/*
-Disallow: /dashboard/*
-Disallow: /(auth)/*
+Disallow: /dashboard/
+Disallow: /studio/
+Disallow: /api/
+Disallow: /(auth)/
+Disallow: /unsubscribe/
 
 # Sitemap location - Next.js automatically generates it at /sitemap.xml
-Sitemap: ${process.env.NEXT_PUBLIC_APP_URL}/sitemap.xml 
+Sitemap: https://mantlz.app/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1 
