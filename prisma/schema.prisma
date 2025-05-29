@@ -151,6 +151,7 @@ model Form {
 
   @@index([userId, formType])
   @@index([userId])
+  @@index([userId, createdAt])
 }
 
 model EmailSettings {
@@ -187,6 +188,9 @@ model Submission {
 
   @@unique([formId, email])
   @@index([email])
+  @@index([formId, createdAt])
+  @@index([email, formId])
+  @@index([createdAt])
 }
 
 model ApiKey {

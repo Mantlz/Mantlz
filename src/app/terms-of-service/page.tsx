@@ -1,4 +1,3 @@
-"use client"
 import React from 'react';
 import { AlertCircle, Lock, Shield, UserCheck, Mail, FileText } from 'lucide-react';
 import Footer from '@/components/global/landing/footer';
@@ -113,5 +112,7 @@ const TermsOfService: React.FC = () => (
     <Footer />
   </div>
 );
+
+export const dynamic = 'force-static'
 
 export default TermsOfService;

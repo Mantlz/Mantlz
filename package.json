@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "analyze": "ANALYZE=true next build",
+    "build:prod": "NODE_ENV=production next build"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.12.5",
@@ -128,6 +130,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240815.0",
+    "@next/bundle-analyzer": "^15.3.3",
     "@types/json2csv": "^5.0.7",
     "@types/node": "^22.10.6",
     "@types/react": "^19.0.0",

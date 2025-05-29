@@ -1,5 +1,70 @@
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Performance optimizations
+  experimental: {
+    optimizePackageImports: [
+      '@radix-ui/react-icons',
+      '@tabler/icons-react', 
+      'lucide-react',
+      'recharts',
+      '@clerk/nextjs'
+    ],
+    turbo: {
+      rules: {
+        '*.svg': ['@svgr/webpack'],
+      },
+    },
+  },
+  
+  // Bundle optimization
+  webpack: (config, { dev, isServer }) => {
+    // Optimize chunk splitting for production
+    if (!dev && !isServer) {
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 10,
+          },
+          editorjs: {
+            test: /[\\/]node_modules[\\/]@editorjs[\\/]/,
+            name: 'editorjs',
+            chunks: 'all',
+            priority: 20,
+          },
+          charts: {
+            test: /[\\/]node_modules[\\/](recharts|leaflet|react-leaflet)[\\/]/,
+            name: 'charts',
+            chunks: 'all',
+            priority: 20,
+          },
+          ui: {
+            test: /[\\/]node_modules[\\/](@radix-ui|@tabler|lucide-react)[\\/]/,
+            name: 'ui',
+            chunks: 'all',
+            priority: 15,
+          },
+        },
+      };
+    }
+    return config;
+  },
+  
+  // Static optimization
+  staticPageGenerationTimeout: 1000,
+  
+  // Performance settings
+  compress: true,
+  poweredByHeader: false,
+  generateEtags: false,
+  
   turbopack: {
     // Turbopack configuration options
     resolveAlias: {
@@ -47,14 +112,11 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig; 
-
 // Injected content via Sentry wizard below
-
 const { withSentryConfig } = require("@sentry/nextjs");
 
 module.exports = withSentryConfig(
-  module.exports,
+  withBundleAnalyzer(nextConfig),
   {
     // For all available options, see:
     // https://www.npmjs.com/package/@sentry/webpack-plugin#options

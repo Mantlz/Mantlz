@@ -13,10 +13,30 @@ export const Providers = ({ children }: PropsWithChildren) => {
   const [queryClient] = useState(
     () =>
       new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 5 * 60 * 1000, // 5 minutes
+            gcTime: 10 * 60 * 1000,   // 10 minutes (formerly cacheTime)
+            refetchOnWindowFocus: false,
+            refetchOnMount: false,
+            retry: 2,
+            retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+          },
+          mutations: {
+            retry: 1,
+            onError: (err) => {
+              if (err instanceof HTTPException) {
+                // Handle mutation errors
+                console.error('Mutation failed:', err);
+              }
+            },
+          },
+        },
         queryCache: new QueryCache({
           onError: (err) => {
             if (err instanceof HTTPException) {
               // global error handling, e.g. toast notification ...
+              console.error('Query failed:', err);
             }
           },
         }),

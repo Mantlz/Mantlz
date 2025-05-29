@@ -1,4 +1,3 @@
-"use client"
 import React from 'react';
 import { AlertCircle, Lock, Shield, Globe, Database, Mail } from 'lucide-react';
 import Footer from '@/components/global/landing/footer';
@@ -173,5 +172,7 @@ const PrivacyPage: React.FC = () => (
     <Footer />
   </div>
 );
+
+export const dynamic = 'force-static'
 
 export default PrivacyPage; 

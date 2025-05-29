@@ -34,6 +34,8 @@ interface Post {
   publishedAt: string;
 }
 
+export const revalidate = 3600 // 1 hour
+
 // Generate static params for all blog posts
 export async function generateStaticParams() {
   const query = groq`*[_type == "post"]{ 'slug': slug.current }`;

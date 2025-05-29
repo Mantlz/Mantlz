@@ -17,6 +17,9 @@ export const CACHE_KEYS = {
   NOTIFICATION: 'notification:',
   EXPORT: 'export:',
   PAYMENT: 'payment:',
+  ANALYTICS: 'analytics:',
+  FORM_STATS: 'form_stats:',
+  SUBMISSIONS: 'submissions:',
 } as const;
 
 /**
@@ -33,6 +36,9 @@ export const CACHE_TTL = {
   [CACHE_KEYS.NOTIFICATION]: 60 * 5, // 5 minutes
   [CACHE_KEYS.EXPORT]: 60 * 60 * 24, // 24 hours
   [CACHE_KEYS.PAYMENT]: 60 * 30, // 30 minutes
+  [CACHE_KEYS.ANALYTICS]: 60 * 15, // 15 minutes
+  [CACHE_KEYS.FORM_STATS]: 60 * 5, // 5 minutes
+  [CACHE_KEYS.SUBMISSIONS]: 60 * 2, // 2 minutes
 } as const;
 
 /**
@@ -301,6 +307,84 @@ export const cache = {
   },
 
   /**
+   * Cache form statistics (submission counts, etc.)
+   */
+  async getFormStats(formId: string): Promise<any | null> {
+    const cacheKey = `${CACHE_KEYS.FORM_STATS}${formId}`;
+    const cached = await this.get<any>(cacheKey);
+    if (cached) return cached;
+
+    const stats = await db.form.findUnique({
+      where: { id: formId },
+      include: {
+        _count: { 
+          select: { 
+            submissions: true, 
+            campaigns: true 
+          } 
+        }
+      }
+    });
+
+    if (stats) {
+      await this.set(cacheKey, stats, CACHE_TTL[CACHE_KEYS.FORM_STATS]);
+    }
+
+    return stats;
+  },
+
+  /**
+   * Cache analytics data for a form
+   */
+  async getFormAnalytics(formId: string, timeRange: string): Promise<any | null> {
+    const cacheKey = `${CACHE_KEYS.ANALYTICS}${formId}:${timeRange}`;
+    const cached = await this.get<any>(cacheKey);
+    if (cached) return cached;
+
+    // This would be called from the analytics service
+    // For now, return null to indicate cache miss
+    return null;
+  },
+
+  /**
+   * Set analytics data in cache
+   */
+  async setFormAnalytics(formId: string, timeRange: string, data: any): Promise<void> {
+    const cacheKey = `${CACHE_KEYS.ANALYTICS}${formId}:${timeRange}`;
+    await this.set(cacheKey, data, CACHE_TTL[CACHE_KEYS.ANALYTICS]);
+  },
+
+  /**
+   * Cache paginated submissions
+   */
+  async getSubmissions(formId: string, page: number = 1, limit: number = 50): Promise<any | null> {
+    const cacheKey = `${CACHE_KEYS.SUBMISSIONS}${formId}:page:${page}:limit:${limit}`;
+    const cached = await this.get<any>(cacheKey);
+    if (cached) return cached;
+
+    const offset = (page - 1) * limit;
+    const submissions = await db.submission.findMany({
+      where: { formId },
+      orderBy: { createdAt: 'desc' },
+      take: limit,
+      skip: offset,
+      select: {
+        id: true,
+        createdAt: true,
+        data: true,
+        email: true,
+        unsubscribed: true,
+      }
+    });
+
+    if (submissions) {
+      await this.set(cacheKey, submissions, CACHE_TTL[CACHE_KEYS.SUBMISSIONS]);
+    }
+
+    return submissions;
+  },
+
+  /**
    * Batch invalidation for related cache entries
    */
   async invalidateUserData(userId: string): Promise<void> {
@@ -309,6 +393,31 @@ export const cache = {
       `${CACHE_KEYS.QUOTA}${userId}`,
       `${CACHE_KEYS.PAYMENT}${userId}`,
     ];
+    
+    await Promise.all(keys.map(key => this.invalidate(key)));
+  },
+
+  /**
+   * Invalidate all cache entries for a specific form
+   */
+  async invalidateFormData(formId: string): Promise<void> {
+    // In a real implementation, you'd want to pattern match and delete all keys
+    // For now, we'll invalidate common patterns
+    const keys = [
+      `${CACHE_KEYS.FORM}${formId}`,
+      `${CACHE_KEYS.FORM_STATS}${formId}`,
+    ];
+    
+    // Also invalidate analytics for common time ranges
+    const timeRanges = ['day', 'week', 'month', 'year'];
+    timeRanges.forEach(range => {
+      keys.push(`${CACHE_KEYS.ANALYTICS}${formId}:${range}`);
+    });
+
+    // Invalidate submission cache pages (first 10 pages)
+    for (let i = 1; i <= 10; i++) {
+      keys.push(`${CACHE_KEYS.SUBMISSIONS}${formId}:page:${i}:limit:50`);
+    }
     
     await Promise.all(keys.map(key => this.invalidate(key)));
   }
