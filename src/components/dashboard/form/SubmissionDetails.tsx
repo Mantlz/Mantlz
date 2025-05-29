@@ -76,7 +76,7 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
 
     try {
       // Add a delay of 1 second before triggering the deletion
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      await new Promise((resolve) => setTimeout(resolve, 1000))
       
       // Instead of calling API directly, use the callback
       // which will trigger the mutation in the parent component
