@@ -33,8 +33,8 @@ export const userRouter = j.router({
     );
 
     return c.superjson({
-      resendApiKey: user.resendApiKey || "",
-      plan: user.plan,
+      resendApiKey: userWithSettings.resendApiKey || "",
+      plan: userWithSettings.plan,
       developerNotificationsEnabled: hasDeveloperNotifications,
     });
   }),

@@ -53,32 +53,58 @@ export const apiKeyRouter = j.router({
       });
     }),
 
+  // getCurrentKey: privateProcedure.query(async ({ c }) => {
+  //   const auth = await currentUser();
+  //   if (!auth) throw new HTTPException(401, { message: "Unauthorized" });
+
+  //   const user = await db.user.findUnique({
+  //     where: { clerkId: auth.id },
+  //   });
+
+  //   if (!user) throw new HTTPException(404, { message: "User not found" });
+
+  //   const apiKey = await db.apiKey.findFirst({
+  //     where: { 
+  //       userId: user.id,
+  //       isActive: true
+  //     },
+  //     select: {
+  //       id: true,
+  //       key: true,
+  //       name: true,
+  //       createdAt: true,
+  //       lastUsedAt: true,
+  //     },
+  //   });
+
+  //   return c.superjson({ data: apiKey });
+  // }),
   getCurrentKey: privateProcedure.query(async ({ c }) => {
     const auth = await currentUser();
     if (!auth) throw new HTTPException(401, { message: "Unauthorized" });
-
-    const user = await db.user.findUnique({
+  
+    const userWithApiKey = await db.user.findUnique({
       where: { clerkId: auth.id },
-    });
-
-    if (!user) throw new HTTPException(404, { message: "User not found" });
-
-    const apiKey = await db.apiKey.findFirst({
-      where: { 
-        userId: user.id,
-        isActive: true
-      },
-      select: {
-        id: true,
-        key: true,
-        name: true,
-        createdAt: true,
-        lastUsedAt: true,
+      include: {
+        apiKeys: {
+          where: { isActive: true },
+          select: {
+            id: true,
+            key: true,
+            name: true,
+            createdAt: true,
+            lastUsedAt: true,
+          },
+        },
       },
     });
-
+  
+    if (!userWithApiKey) throw new HTTPException(404, { message: "User not found" });
+  
+    const apiKey = userWithApiKey.apiKeys[0]; // Get the first active API key
     return c.superjson({ data: apiKey });
   }),
+  
 
   revoke: privateProcedure.mutation(async ({ c }) => {
     const auth = await currentUser();
