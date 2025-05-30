@@ -88,7 +88,7 @@ export default function AdvancedFeatureGrid() {
                             <div className="grid grid-cols-4 gap-2 md:grid-cols-6">
                                 <div className="rounded-(--radius) aspect-square border border-dashed"></div>
                                 <div className="rounded-(--radius) bg-muted/50 flex aspect-square items-center justify-center border p-4">
-                                    <img
+                                    <Image
                                         className="m-auto size-8 invert dark:invert-0"
                                         src="https://oxymor-ns.tailus.io/logos/linear.svg"
                                         alt="Linear logo"
@@ -98,7 +98,7 @@ export default function AdvancedFeatureGrid() {
                                 </div>
                                 <div className="rounded-(--radius) aspect-square border border-dashed"></div>
                                 <div className="rounded-(--radius) bg-muted/50 flex aspect-square items-center justify-center border p-4">
-                                    <img
+                                    <Image
                                         className="m-auto size-8 invert dark:invert-0"
                                         src="https://oxymor-ns.tailus.io/logos/netlify.svg"
                                         alt="Netlify logo"
@@ -108,7 +108,7 @@ export default function AdvancedFeatureGrid() {
                                 </div>
                                 <div className="rounded-(--radius) aspect-square border border-dashed"></div>
                                 <div className="rounded-(--radius) bg-muted/50 flex aspect-square items-center justify-center border p-4">
-                                    <img
+                                    <Image
                                         className="m-auto size-8 invert dark:invert-0"
                                         src="https://oxymor-ns.tailus.io/logos/github.svg"
                                         alt="github logo"

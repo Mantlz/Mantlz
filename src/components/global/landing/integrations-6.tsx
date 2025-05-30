@@ -1,4 +1,4 @@
-import { Gemini, Replit, GooglePaLM } from '@/components/logos'
+import { Slack, Discord, GooglePaLM } from '@/components/logos'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Plus } from 'lucide-react'
@@ -11,13 +11,13 @@ export default function IntegrationsSection() {
                     <div className="mx-auto max-w-md [mask-image:radial-gradient(ellipse_100%_100%_at_50%_0%,#000_70%,transparent_100%)]">
                         <div className="bg-background dark:bg-muted/50 rounded-xl border px-6 pb-12 pt-3 shadow-xl">
                             <Integration
-                                icon={<Gemini />}
-                                name="Gemini"
+                                icon={<Slack />}
+                                name="Slack"
                                 description="The AI model that powers Google's search engine."
                             />
                             <Integration
-                                icon={<Replit />}
-                                name="Replit"
+                                icon={<Discord />}
+                                name="Discord"
                                 description="The AI model that powers Google's search engine."
                             />
                             <Integration

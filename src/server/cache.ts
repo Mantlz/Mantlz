@@ -72,6 +72,34 @@ type CacheableValue =
   | PrimitiveWrapper;
 
 /**
+ * Define types for form stats and analytics data
+ */
+interface FormStats {
+  id: string;
+  _count: {
+    submissions: number;
+    campaigns: number;
+  };
+  [key: string]: unknown;
+}
+
+interface FormAnalytics {
+  views: number;
+  submissions: number;
+  conversionRate: number;
+  timeData: Record<string, number>;
+  [key: string]: unknown;
+}
+
+interface FormSubmission {
+  id: string;
+  createdAt: Date;
+  data: Record<string, unknown>;
+  email: string | null;
+  unsubscribed: boolean;
+}
+
+/**
  * Initialize Redis client if environment variables are available
  */
 const redis = process.env.UPSTASH_REDIS_URL && process.env.UPSTASH_REDIS_TOKEN
@@ -309,9 +337,9 @@ export const cache = {
   /**
    * Cache form statistics (submission counts, etc.)
    */
-  async getFormStats(formId: string): Promise<any | null> {
+  async getFormStats(formId: string): Promise<FormStats | null> {
     const cacheKey = `${CACHE_KEYS.FORM_STATS}${formId}`;
-    const cached = await this.get<any>(cacheKey);
+    const cached = await this.get<FormStats>(cacheKey);
     if (cached) return cached;
 
     const stats = await db.form.findUnique({
@@ -330,15 +358,15 @@ export const cache = {
       await this.set(cacheKey, stats, CACHE_TTL[CACHE_KEYS.FORM_STATS]);
     }
 
-    return stats;
+    return stats as FormStats | null;
   },
 
   /**
    * Cache analytics data for a form
    */
-  async getFormAnalytics(formId: string, timeRange: string): Promise<any | null> {
+  async getFormAnalytics(formId: string, timeRange: string): Promise<FormAnalytics | null> {
     const cacheKey = `${CACHE_KEYS.ANALYTICS}${formId}:${timeRange}`;
-    const cached = await this.get<any>(cacheKey);
+    const cached = await this.get<FormAnalytics>(cacheKey);
     if (cached) return cached;
 
     // This would be called from the analytics service
@@ -349,7 +377,7 @@ export const cache = {
   /**
    * Set analytics data in cache
    */
-  async setFormAnalytics(formId: string, timeRange: string, data: any): Promise<void> {
+  async setFormAnalytics(formId: string, timeRange: string, data: FormAnalytics): Promise<void> {
     const cacheKey = `${CACHE_KEYS.ANALYTICS}${formId}:${timeRange}`;
     await this.set(cacheKey, data, CACHE_TTL[CACHE_KEYS.ANALYTICS]);
   },
@@ -357,9 +385,9 @@ export const cache = {
   /**
    * Cache paginated submissions
    */
-  async getSubmissions(formId: string, page: number = 1, limit: number = 50): Promise<any | null> {
+  async getSubmissions(formId: string, page: number = 1, limit: number = 50): Promise<FormSubmission[] | null> {
     const cacheKey = `${CACHE_KEYS.SUBMISSIONS}${formId}:page:${page}:limit:${limit}`;
-    const cached = await this.get<any>(cacheKey);
+    const cached = await this.get<FormSubmission[]>(cacheKey);
     if (cached) return cached;
 
     const offset = (page - 1) * limit;
@@ -381,7 +409,7 @@ export const cache = {
       await this.set(cacheKey, submissions, CACHE_TTL[CACHE_KEYS.SUBMISSIONS]);
     }
 
-    return submissions;
+    return submissions as FormSubmission[] | null;
   },
 
   /**
