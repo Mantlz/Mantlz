@@ -5,6 +5,16 @@ import { addMonths, startOfMonth } from "date-fns";
 import { getQuotaByPlan } from "@/config/usage";
 import { QuotaService } from "@/services/quota-service";
 
+// Define the user type to match jstack's context
+type JstackUser = { 
+  id: string; 
+  clerkId: string; 
+  email: string; 
+  plan: string; 
+  createdAt: Date; 
+  updatedAt: Date; 
+}
+
 /**
  * Router for handling user usage information
  * Provides endpoints to get usage statistics, limits, and history
@@ -15,7 +25,7 @@ export const usageRouter = j.router({
    * Returns form creation limits and current usage
    */
   getUserUsage: privateProcedure.query(async ({ ctx, c }) => {
-    const { user } = ctx;
+    const { user } = ctx as { user: JstackUser };
 
     try {
       // Count actual forms
@@ -68,7 +78,7 @@ export const usageRouter = j.router({
    * Get current user usage with detailed metrics
    */
   getUsage: privateProcedure.query(async ({ c, ctx }) => {
-    const { user } = ctx;
+    const { user } = ctx as { user: JstackUser };
 
     try {
       // Count actual forms
@@ -130,8 +140,9 @@ export const usageRouter = j.router({
   
   simulateEndOfMonth: privateProcedure
     .mutation(async ({ c, ctx }) => {
+      const { user } = ctx as { user: JstackUser };
       try {
-        const result = await QuotaService.simulateEndOfMonth(ctx.user.id);
+        const result = await QuotaService.simulateEndOfMonth(user.id);
         return c.superjson(result);
       } catch (error) {
         console.error('Error simulating end of month:', error);
@@ -141,8 +152,9 @@ export const usageRouter = j.router({
 
   getQuotaHistory: privateProcedure
     .query(async ({ c, ctx }) => {
+      const { user } = ctx as { user: JstackUser };
       try {
-        const history = await QuotaService.getQuotaHistory(ctx.user.id);
+        const history = await QuotaService.getQuotaHistory(user.id);
         return c.superjson(history);
       } catch (error) {
         console.error('Error getting quota history:', error);

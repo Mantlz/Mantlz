@@ -19,7 +19,7 @@ export const paymentRouter = j.router({
   createCheckoutSession: privateProcedure
     .input(z.object({ priceId: z.string() }))
     .mutation(async ({ c, ctx, input }) => {
-      const { user } = ctx
+      const { user } = ctx as { user: { id: string; clerkId: string; email: string; plan: string; createdAt: Date; updatedAt: Date; } }
       const { priceId } = input
 
       // Determine the plan from the price ID
