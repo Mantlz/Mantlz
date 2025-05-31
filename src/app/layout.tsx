@@ -1,5 +1,3 @@
-// Import polyfill to fix 'self is not defined' error
-import "../utils/global-polyfill.js"
 import type React from "react"
 import type { Metadata } from "next"
 import { Providers } from "../components/global/providers"

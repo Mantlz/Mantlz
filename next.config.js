@@ -1,28 +1,5 @@
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-});
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Core performance optimizations
-  experimental: {
-    optimizePackageImports: [
-      '@radix-ui/react-icons',
-      '@tabler/icons-react',
-      'lucide-react',
-      'recharts',
-      '@clerk/nextjs',
-      'framer-motion',
-      'date-fns',
-      '@editorjs/editorjs',
-    ],
-    serverComponentsExternalPackages: [
-      '@uploadcare/upload-client',
-      '@uploadcare/react-uploader',
-      'wrangler'
-    ],
-  },
-
   // Turbopack configuration (moved from experimental.turbo)
   turbopack: {
     rules: {
@@ -34,7 +11,7 @@ const nextConfig = {
   },
 
   // Only apply webpack config when NOT using turbopack (production builds)
-  webpack: (config, { dev, isServer }) => {
+  webpack: (config, { dev }) => {
     // Skip webpack config if using turbopack in development
     if (dev && process.env.TURBOPACK) {
       return config;
@@ -59,26 +36,8 @@ const nextConfig = {
       config.optimization.usedExports = true;
       config.optimization.sideEffects = false;
     }
-
-    if (isServer) {
-      // Fixes the "self is not defined" error by providing a polyfill
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        // Provide empty objects for browser globals
-        self: false
-      };
-    }
     return config;
   },
-
-  // Build performance settings
-  staticPageGenerationTimeout: 60,
-  
-  // Essential settings
-  compress: true,
-  poweredByHeader: false,
-  generateEtags: false,
-
   // Simplified headers for API routes only
   async headers() {
     if (process.env.NODE_ENV === 'production') {
@@ -122,7 +81,6 @@ const nextConfig = {
         protocol: 'https',
       },
     ],
-    domains: ['files.stripe.com', 'cdn.sanity.io', 'lh3.googleusercontent.com', 'ucarecdn.com'],
   },
 
   // Output optimization for Vercel
@@ -143,13 +101,13 @@ const sentryOptions = {
   automaticVercelMonitors: true,
   
   // Skip source map operations in development
-  dryRun: process.env.NODE_ENV === 'development',
-  hideSourceMaps: true,
+  // dryRun: process.env.NODE_ENV === 'development',
+  // hideSourceMaps: true,
   
-  // Reduce Sentry webpack plugin overhead
-  sourcemaps: {
-    disable: process.env.NODE_ENV === 'development',
-  },
+  // // Reduce Sentry webpack plugin overhead
+  // sourcemaps: {
+  //   disable: process.env.NODE_ENV === 'development',
+  // },
 };
 
 module.exports = withSentryConfig(withBundleAnalyzer(nextConfig), sentryOptions);
