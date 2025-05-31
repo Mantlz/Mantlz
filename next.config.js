@@ -1,43 +1,43 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Turbopack configuration (moved from experimental.turbo)
-  turbopack: {
-    rules: {
-      '*.svg': {
-        loaders: ['@svgr/webpack'],
-        as: '*.js',
-      },
-    },
-  },
+  // turbopack: {
+  //   rules: {
+  //     '*.svg': {
+  //       loaders: ['@svgr/webpack'],
+  //       as: '*.js',
+  //     },
+  //   },
+  // },
 
-  // Only apply webpack config when NOT using turbopack (production builds)
-  webpack: (config, { dev }) => {
-    // Skip webpack config if using turbopack in development
-    if (dev && process.env.TURBOPACK) {
-      return config;
-    }
+  // // Only apply webpack config when NOT using turbopack (production builds)
+  // webpack: (config, { dev }) => {
+  //   // Skip webpack config if using turbopack in development
+  //   if (dev && process.env.TURBOPACK) {
+  //     return config;
+  //   }
 
-    if (!dev) {
-      // Simplified chunk splitting for production builds only
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          default: false,
-          vendors: false,
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-            enforce: true,
-          },
-        },
-      };
+  //   if (!dev) {
+  //     // Simplified chunk splitting for production builds only
+  //     config.optimization.splitChunks = {
+  //       chunks: 'all',
+  //       cacheGroups: {
+  //         default: false,
+  //         vendors: false,
+  //         vendor: {
+  //           test: /[\\/]node_modules[\\/]/,
+  //           name: 'vendors',
+  //           chunks: 'all',
+  //           enforce: true,
+  //         },
+  //       },
+  //     };
 
-      config.optimization.usedExports = true;
-      config.optimization.sideEffects = false;
-    }
-    return config;
-  },
+  //     config.optimization.usedExports = true;
+  //     config.optimization.sideEffects = false;
+  //   }
+  //   return config;
+  // },
   // Simplified headers for API routes only
   async headers() {
     if (process.env.NODE_ENV === 'production') {
