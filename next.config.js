@@ -16,6 +16,11 @@ const nextConfig = {
       'date-fns',
       '@editorjs/editorjs',
     ],
+    serverComponentsExternalPackages: [
+      '@uploadcare/upload-client',
+      '@uploadcare/react-uploader',
+      'wrangler'
+    ],
   },
 
   // Turbopack configuration (moved from experimental.turbo)
@@ -29,7 +34,7 @@ const nextConfig = {
   },
 
   // Only apply webpack config when NOT using turbopack (production builds)
-  webpack: (config, { dev }) => {
+  webpack: (config, { dev, isServer }) => {
     // Skip webpack config if using turbopack in development
     if (dev && process.env.TURBOPACK) {
       return config;
@@ -53,6 +58,15 @@ const nextConfig = {
 
       config.optimization.usedExports = true;
       config.optimization.sideEffects = false;
+    }
+
+    if (isServer) {
+      // Fixes the "self is not defined" error by providing a polyfill
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        // Provide empty objects for browser globals
+        self: false
+      };
     }
     return config;
   },
@@ -108,6 +122,7 @@ const nextConfig = {
         protocol: 'https',
       },
     ],
+    domains: ['files.stripe.com', 'cdn.sanity.io', 'lh3.googleusercontent.com', 'ucarecdn.com'],
   },
 
   // Output optimization for Vercel
