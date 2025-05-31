@@ -1,14 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Turbopack configuration (moved from experimental.turbo)
-  // turbopack: {
-  //   rules: {
-  //     '*.svg': {
-  //       loaders: ['@svgr/webpack'],
-  //       as: '*.js',
-  //     },
-  //   },
-  // },
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
+      },
+    },
+  },
 
   // // Only apply webpack config when NOT using turbopack (production builds)
   // webpack: (config, { dev }) => {
@@ -107,14 +107,14 @@ const sentryOptions = {
   disableLogger: true,
   automaticVercelMonitors: true,
   
-  // Skip source map operations in development
-  // dryRun: process.env.NODE_ENV === 'development',
-  // hideSourceMaps: true,
+  //Skip source map operations in development
+  dryRun: process.env.NODE_ENV === 'development',
+  hideSourceMaps: true,
   
-  // // Reduce Sentry webpack plugin overhead
-  // sourcemaps: {
-  //   disable: process.env.NODE_ENV === 'development',
-  // },
+  // Reduce Sentry webpack plugin overhead
+  sourcemaps: {
+    disable: process.env.NODE_ENV === 'development',
+  },
 };
 
 module.exports = withSentryConfig(nextConfig, sentryOptions);
