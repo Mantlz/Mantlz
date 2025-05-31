@@ -13,7 +13,7 @@ export async function register() {
     // Only run on server
     if (typeof self === 'undefined' && typeof global !== 'undefined') {
       // Polyfill self for server environment
-      (global as any).self = global;
+      (global as unknown as Record<string, typeof global>).self = global;
     }
   }
 }
