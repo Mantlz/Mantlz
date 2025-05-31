@@ -1,10 +1,9 @@
-"use client"
+"use client";
 import FeaturesSection from "@/components/global/landing/feature";
-import AdvancedFeatureGrid from "@/components/global/landing/advancedfeature";
 import Footer from "@/components/global/landing/footer";
-import { HeroSection } from "@/components/global/landing/hero-section";
-import {Navbar} from "@/components/global/landing/navbar";
-import { DashboardPreview } from "@/components/global/landing/preview";
+import HeroSection from "@/components/global/landing/hero-section";
+import { Navbar } from "@/components/global/landing/navbar";
+
 
 import { Container } from "@/components/global/landing/container";
 import Pricing from "@/components/global/landing/pricing";
@@ -17,37 +16,33 @@ import LogoCloud from "@/components/global/landing/logo-cloud";
 
 export default function LandingPage() {
   return (
-     <div className="min-h-screen">
+    <div className="min-h-screen ">
       <Container>
         <Navbar />
 
-        <main>
-          <div className="mt-24 text-center">
+       
+
+
             <HeroSection />
-            
-            <div className="mt-20 pb-20 relative">
-              <DashboardPreview />
-            </div>
-            <LogoCloud />
+<div className="mt-20">
 
+<LogoCloud />
+</div>
+          
 
-
+       
             <OurServices />
-            <FeaturesSection /> 
+            <FeaturesSection />
             <IntegrationsSection />
-            <AdvancedFeatureGrid />
-          </div>
-        </main>
+
       </Container>
-      
+
       <Suspense>
         <Pricing />
       </Suspense>
       <Faq />
       <BottomCTA />
       <Footer />
-    </div> 
+    </div>
   );
 }
-
-

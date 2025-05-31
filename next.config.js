@@ -16,31 +16,6 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
 
-  // async headers() {
-  //   if (process.env.NODE_ENV === 'production') {
-  //     return [
-  //       {
-  //         source: '/api/:path*',
-  //         headers: [
-  //           {
-  //             key: 'Access-Control-Allow-Origin',
-  //             value: process.env.ALLOWED_ORIGIN || '*',
-  //           },
-  //           {
-  //             key: 'Access-Control-Allow-Methods',
-  //             value: 'GET, POST, PUT, DELETE, OPTIONS',
-  //           },
-  //           {
-  //             key: 'Access-Control-Allow-Headers',
-  //             value: 'Content-Type, Authorization',
-  //           },
-  //         ],
-  //       },
-  //     ];
-  //   }
-  //   return [];
-  // },
-
   // Optimized images config
   images: {
     formats: ['image/webp'],

@@ -83,8 +83,9 @@ export function Navbar() {
             className="flex items-center text-sm font-medium"
           >
             <Button 
-              size="sm" 
-              className="h-9 px-6 text-md bg-orange-900 **:[text-shadow:0_1px_0_var(--color-primary)] border-primary from-primary/80 to-primary dark:from-primary dark:to-primary/80 text-primary-foreground dark:border-primary border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+                  size="sm"
+
+                      className="rounded-lg px-2 cursor-pointer text-sm"
 
             >
               Dashboard
@@ -94,7 +95,7 @@ export function Navbar() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               {/* Use user object from useUser(), which should be available if isSignedIn is true */}
-              <Avatar className="h-8 w-8 cursor-pointer bg-white rounded-full ring-2 ring-zinc-500 dark:ring-zinc-950 ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 focus-visible:ring-offset-2">
+              <Avatar className="h-8 w-8 cursor-pointer bg-white rounded-full ring-1 ring-zinc-500 dark:ring-zinc-950 ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 focus-visible:ring-offset-2">
                 <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
                 <AvatarFallback>
                   {user?.firstName?.[0] || user?.lastName?.[0] || "U"}
@@ -130,9 +131,9 @@ export function Navbar() {
               <DropdownMenuItem
                 onClick={() => signOut()}
                 
-                className="cursor-pointer bg-orange-900 hover:bg-orange-800 text-white dark:bg-orange-950 dark:hover:bg-orange-900"
+                className="cursor-pointer bg-red-500 hover:bg-red-600 text-white dark:text-white"
               >
-                <LogOut className="mr-2 h-4 w-4 text-white" />
+                <LogOut className="mr-2 h-4 w-4 text-white dark:text-white" />
                 <span>Sign out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -160,7 +161,7 @@ export function Navbar() {
   };
 
   return (
-    <nav className="flex items-center justify-between pt-10">
+    <nav className="flex items-center justify-between pt-10 relative z-50">
       <div className="flex items-center">
         <Link href="/" className="flex items-center">
           <Logo className="h-8 w-8" size={32} />
@@ -284,9 +285,9 @@ function NavLink({ href, children, active, target, ...props }: NavLinkProps) {
     <Link
       href={href}
       target={target}
-      className={`text-sm font-medium transition-colors hover:text-orange-900 dark:hover:text-orange-800 ${
+      className={`text-sm font-medium transition-colors hover:text-black dark:hover:text-white ${
         active
-          ? "text-orange-900 dark:text-orange-900"
+          ? "text-black dark:text-white"
           : "text-zinc-600 dark:text-zinc-400"
       }`}
       {...props}

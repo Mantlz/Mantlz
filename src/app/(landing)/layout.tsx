@@ -5,7 +5,13 @@ export const metadata = landingMetadata
 export default function LandingLayout({
   children,
 }: {
+
   children: React.ReactNode
 }) {
-  return children
+
+  return (
+    <div className="min-h-screen">
+      {children}
+    </div>
+  )
 } 
