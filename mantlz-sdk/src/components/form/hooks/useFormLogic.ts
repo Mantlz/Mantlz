@@ -184,7 +184,7 @@ export const useFormLogic = (
               options: value.options || undefined,
             }));
           } catch (error) {
-            console.error('Error processing form schema:', error);
+            // console.error('Error processing form schema:', error);
           }
         }
         

@@ -77,7 +77,9 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
         id: form.id,
         name: form.name,
         description: form.description,
-        campaignCount: form._count?.campaigns
+        campaignCount: form._count?.campaigns,
+        submissionCount: form._count?.submissions,
+        _count: form._count
       });
     });
   }
@@ -98,14 +100,23 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
 
   // Handle form selection with premium check
   function handleFormClick(formId: string) {
+    console.log('Form clicked:', formId);
+    
     if (!isPremium) {
+      console.log('User is not premium, showing upgrade modal');
       onUpgradeClick?.();
       return;
     }
-    const newParams = new URLSearchParams(searchParams)
-    newParams.set("formId", formId)
-    newParams.set("page", "1")
-    router.push(`?${newParams.toString()}`)
+    
+    console.log('Setting formId in URL params:', formId);
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.set("formId", formId);
+    newParams.set("page", "1");
+    
+    const newUrl = `?${newParams.toString()}`;
+    console.log('Navigating to new URL:', newUrl);
+    
+    router.push(newUrl);
   }
 
   // Calculate the total pages for forms pagination
@@ -289,7 +300,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">
-                        {formsData?.forms?.reduce((total, form) => total + (form._count?.campaigns || 0), 0) || 0}
+                        {formsData.forms.reduce((total, form) => total + (form._count?.campaigns || 0), 0)}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">Total Campaigns</p>
                     </div>
@@ -305,11 +316,11 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
             {formsData.forms.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((form) => (
               <div
                 key={form.id}
-                className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/50 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer"
+                className={`bg-white dark:bg-zinc-900 border ${(form._count?.campaigns || 0) > 0 ? 'border-blue-100 dark:border-blue-800/30' : 'border-zinc-100 dark:border-zinc-800/50'} rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer`}
                 onClick={() => handleFormClick(form.id)}
               >
                 {(() => {
-                  console.log('Rendering form description:', form.description);
+                  // console.log('Rendering form description:', form.description);
                   return (
                     <div className="p-4 sm:p-6">
                       <div className="space-y-2">
@@ -324,13 +335,15 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                         <div className="flex items-center gap-1">
                           <Mail className="h-4 w-4 text-gray-400" />
                           <span className="text-xs text-gray-500 dark:text-gray-400">
-                            {form._count?.campaigns || 0} campaign{(form._count?.campaigns || 0) !== 1 ? 's' : ''}
+                            <strong>{form._count?.campaigns || 0}</strong> campaign{(form._count?.campaigns || 0) !== 1 ? 's' : ''}
                           </span>
                         </div>
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-7 px-2 text-xs hover:bg-zinc-200 cursor-pointer dark:hover:bg-zinc-950 text-gray-600 dark:text-gray-300 rounded-lg"
+                          className={`h-7 px-2 text-xs ${(form._count?.campaigns || 0) > 0 
+                            ? 'bg-blue-50 hover:bg-blue-100 text-blue-600 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 dark:text-blue-400' 
+                            : 'hover:bg-zinc-200 text-gray-600 dark:hover:bg-zinc-950 dark:text-gray-300'} rounded-lg`}
                         >
                           View Campaigns
                         </Button>
@@ -346,7 +359,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
             {formsData.forms.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((form) => (
               <div
                 key={form.id}
-                className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                className={`bg-white dark:bg-zinc-900 border ${(form._count?.campaigns || 0) > 0 ? 'border-blue-100 dark:border-blue-800/30' : 'border-zinc-100 dark:border-zinc-800/50'} rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer`}
                 onClick={() => handleFormClick(form.id)}
               >
                 <div className="p-4 sm:p-5 flex items-center justify-between">
@@ -374,7 +387,9 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-8 min-w-20 text-xs hover:bg-zinc-200 cursor-pointer dark:hover:bg-zinc-950 text-gray-600 dark:text-gray-300 rounded-lg"
+                    className={`h-7 px-2 text-xs ${(form._count?.campaigns || 0) > 0 
+                      ? 'bg-blue-50 hover:bg-blue-100 text-blue-600 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 dark:text-blue-400' 
+                      : 'hover:bg-zinc-200 text-gray-600 dark:hover:bg-zinc-950 dark:text-gray-300'} rounded-lg`}
                   >
                     View Campaigns
                   </Button>
