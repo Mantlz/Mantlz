@@ -7,28 +7,33 @@ export default function Faq() {
     const faqItems = [
         {
             id: 'item-1',
-            question: 'How long does shipping take?',
-            answer: 'Standard shipping takes 3-5 business days, depending on your location. Express shipping options are available at checkout for 1-2 business day delivery.',
+            question: "What is Mantlz?",
+            answer: "Mantlz is a powerful form builder platform that helps you create, customize, and manage forms for your business or personal needs with ease and efficiency.",
         },
         {
             id: 'item-2',
-            question: 'What payment methods do you accept?',
-            answer: 'We accept all major credit cards (Visa, Mastercard, American Express), PayPal, Apple Pay, and Google Pay. For enterprise customers, we also offer invoicing options.',
+            question: "What plans does Mantlz offer?",
+            answer: "Mantlz offers three plans: Free, Standard, and Pro. Each plan provides different form limits, submission quotas, and access to premium features like campaigns and analytics.",
         },
         {
             id: 'item-3',
-            question: 'Can I change or cancel my order?',
-            answer: 'You can modify or cancel your order within 1 hour of placing it. After this window, please contact our customer support team who will assist you with any changes.',
+            question: "What are the form limits for each plan?",
+            answer: "The Free plan allows 1 form with up to 200 submissions per month. Standard plan includes 5 forms with 5,000 monthly submissions. Pro plan provides 10 forms with 10,000 monthly submissions.",
         },
         {
             id: 'item-4',
-            question: 'Do you ship internationally?',
-            answer: "Yes, we ship to over 50 countries worldwide. International shipping typically takes 7-14 business days. Additional customs fees may apply depending on your country's import regulations.",
+            question: "What campaign features are available?",
+            answer: "Campaigns are available on Standard and Pro plans. Standard includes 3 campaigns per month with up to 500 recipients each and scheduling features. Pro offers 10 campaigns monthly with up to 10,000 recipients each, plus analytics, templates, and custom domain support.",
         },
         {
             id: 'item-5',
-            question: 'What is your return policy?',
-            answer: 'We offer a 30-day return policy for most items. Products must be in original condition with tags attached. Some specialty items may have different return terms, which will be noted on the product page.',
+            question: "How can I customize my forms?",
+            answer: "Mantlz provides extensive customization options through our form builder. You can create templates, add various field types, and style your forms to match your brand identity.",
+        },
+        {
+            id: 'item-6',
+            question: "Can I integrate Mantlz forms with other tools I use?",
+            answer: "Yes, Mantlz seamlessly integrates with popular tools like Slack, Resend, and many CRM systems to fit into your existing workflow.",
         },
     ]
 
@@ -44,7 +49,7 @@ export default function Faq() {
                     <Accordion
                         type="single"
                         collapsible
-                        className="bg-card ring-muted w-full rounded-2xl border px-8 py-3 shadow-sm ring-4 dark:ring-0">
+                        className="bg-card ring-orange-900 w-full rounded-2xl border px-8 py-3 shadow-sm ring-4 dark:ring-0">
                         {faqItems.map((item) => (
                             <AccordionItem
                                 key={item.id}
@@ -61,7 +66,7 @@ export default function Faq() {
                     <p className="text-muted-foreground mt-6 px-8">
                         Can&apos;t find what you&apos;re looking for? Contact our{' '}
                         <Link
-                            href="#"
+                            href="mailto:contact@mantlz.app"
                             className="text-primary font-medium hover:underline">
                             customer support team
                         </Link>

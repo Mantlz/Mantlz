@@ -1,4 +1,4 @@
-import { Slack, Discord, GooglePaLM } from '@/components/logos'
+import { Slack, Discord, Resend } from '@/components/logos'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Plus } from 'lucide-react'
@@ -13,23 +13,23 @@ export default function IntegrationsSection() {
                             <Integration
                                 icon={<Slack />}
                                 name="Slack"
-                                description="The AI model that powers Google's search engine."
+                                description="Receive form submission notifications in your Slack workspace."
                             />
                             <Integration
                                 icon={<Discord />}
                                 name="Discord"
-                                description="The AI model that powers Google's search engine."
+                                description="Receive form submission notifications in your Discord server."
                             />
                             <Integration
-                                icon={<GooglePaLM />}
-                                name="GooglePaLM"
-                                description="The AI model that powers Google's search engine."
+                                icon={<Resend />}
+                                name="Resend"
+                                description="Configure email notifications for form submissions."
                             />
                         </div>
                     </div>
                     <div className="mx-auto mt-6 max-w-lg space-y-6 text-center">
-                        <h2 className="text-balance text-3xl font-semibold md:text-4xl lg:text-5xl">Integrate with your favorite LLMs</h2>
-                        <p className="text-muted-foreground">Connect seamlessly with popular platforms and services to enhance your workflow.</p>
+                        <h2 className="text-balance text-3xl font-semibold md:text-4xl lg:text-5xl">Integrate with your favorite tools</h2>
+                        <p className="text-muted-foreground">Receive notifications and stay updated with form submissions through your preferred platforms.</p>
 
                         <Button
                             variant="outline"

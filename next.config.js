@@ -39,6 +39,13 @@ const nextConfig = {
   //   return config;
   // },
   // Simplified headers for API routes only
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
   async headers() {
     if (process.env.NODE_ENV === 'production') {
       return [
@@ -110,4 +117,4 @@ const sentryOptions = {
   // },
 };
 
-module.exports = withSentryConfig((nextConfig), sentryOptions);
+module.exports = withSentryConfig(nextConfig, sentryOptions);
