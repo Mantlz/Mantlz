@@ -18,14 +18,14 @@ export function PaymentSuccessModal() {
   
   // Debug logging
   useEffect(() => {
-    console.log("Payment Success Modal Debug:", {
-      paymentSuccess,
-      sessionId,
-      showModal,
-      isOpen,
-      currentUrl: window.location.href,
-      searchParams: Object.fromEntries(searchParams.entries())
-    })
+    // console.log("Payment Success Modal Debug:", {
+    //   paymentSuccess,
+    //   sessionId,
+    //   showModal,
+    //   isOpen,
+    //   currentUrl: window.location.href,
+    //   searchParams: Object.fromEntries(searchParams.entries())
+    // })
   }, [paymentSuccess, sessionId, showModal, isOpen, searchParams])
   
   // Fetch the user's current plan

@@ -72,7 +72,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
   })
 
   // Add debug logs
-  console.log('Forms Data:', formsData);
+  // console.log('Forms Data:', formsData);
   if (formsData?.forms) {
     formsData.forms.forEach((form, index) => {
       console.log(`Form ${index + 1}:`, {
