@@ -12,6 +12,7 @@ import { client } from "@/lib/client"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent } from "@/components/ui/card"
 import { PlusCircle, Info, Mail, MessageSquare, Sparkles, Send, LayoutTemplate } from "lucide-react"
+import { useQueryClient } from "@tanstack/react-query"
 
 interface CreateCampaignDialogProps {
   formId: string | null
@@ -25,6 +26,7 @@ export function CreateCampaignDialog({
   onUpgradeClick
 }: CreateCampaignDialogProps) {
   const router = useRouter()
+  const queryClient = useQueryClient()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [campaignName, setCampaignName] = useState("")
@@ -70,7 +72,13 @@ export function CreateCampaignDialog({
       // Show success toast
       toast.success("Campaign created successfully")
       
-      // Refresh page
+      // Invalidate React Query cache to update the table without a page refresh
+      if (formId) {
+        await queryClient.invalidateQueries({ queryKey: ["campaignLogs", formId] })
+        console.log("Campaign cache invalidated for formId:", formId)
+      }
+      
+      // Refresh page (soft refresh, but not really needed)
       router.refresh()
     } catch (error: unknown) {
       console.error("Error creating campaign", error)
