@@ -15,10 +15,11 @@ export const Providers = ({ children }: PropsWithChildren) => {
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 5 * 60 * 1000, // 5 minutes
+            staleTime: 0, // Always consider data stale to ensure fresh data on navigation
             gcTime: 10 * 60 * 1000,   // 10 minutes (formerly cacheTime)
-            refetchOnWindowFocus: false,
-            refetchOnMount: false,
+            refetchOnWindowFocus: true, // Refetch when tab gets focus
+            refetchOnMount: true, // Refetch when component mounts
+            refetchOnReconnect: true, // Refetch when network reconnects
             retry: 2,
             retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
           },

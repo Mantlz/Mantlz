@@ -63,7 +63,9 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
     queryKey: ["userForms", page, itemsPerPage],
     queryFn: () => fetchUserForms(page, itemsPerPage),
     retry: 3,
-    staleTime: 30000,
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true
   })
 
   // Fetch submissions for selected form
@@ -78,6 +80,9 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
     queryKey: ["submissionLogs", formId, page, startDateParam, endDateParam],
     queryFn: () => fetchSubmissions(formId, page, startDateParam || undefined, endDateParam || undefined, itemsPerPage),
     enabled: !!formId,
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true
   })
 
   // Handle form selection

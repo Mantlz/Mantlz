@@ -9,8 +9,6 @@ import { ReadonlyURLSearchParams } from "next/navigation"
  */
 export async function fetchUserForms(page: number = 1, itemsPerPage: number = 8): Promise<FormsResponse> {
   try {
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
     const response = await client.forms.getUserForms.$get({
       limit: 50, // Still fetch all forms to support client-side pagination
     })
@@ -64,8 +62,6 @@ export async function fetchSubmissions(
   }
 
   try {
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
     const response = await client.forms.getSubmissionLogs.$get({
       formId,
       page,

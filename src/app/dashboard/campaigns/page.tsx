@@ -6,9 +6,6 @@ import { useSubscription } from '@/hooks/useSubscription';
 import { useState } from 'react';
 import { Mail } from 'lucide-react';
 
-
-
-
 export default function CampaignsPage() {
   const { isPremium } = useSubscription();
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);

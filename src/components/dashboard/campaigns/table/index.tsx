@@ -66,7 +66,9 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
     queryKey: ["userForms", page, itemsPerPage],
     queryFn: () => fetchUserForms(page, itemsPerPage),
     retry: 3,
-    staleTime: 30000,
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true
   })
 
   // Add debug logs
@@ -96,6 +98,9 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
     queryKey: ["campaignLogs", formId, page, startDateParam, endDateParam],
     queryFn: () => fetchCampaigns(formId, page, startDateParam || undefined, endDateParam || undefined, itemsPerPage),
     enabled: !!formId,
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true
   })
 
   // Handle form selection with premium check
