@@ -52,18 +52,8 @@ export function Navbar() {
 
   // Render the appropriate auth section
   const renderAuthSection = () => {
-    // If auth state is not yet loaded
-    // During this phase, we don't know definitively if the user
-    // will be signed in or out after hydration.
-    // The skeleton is appropriate *only* if we anticipate a user
-    // might be signed in (which is the typical hydration scenario
-    // where you see the flicker).
-    // If Clerk finishes loading and the user is NOT signed in,
-    // we immediately show the "Sign In" button below.
+    // If auth state is not loaded yet
     if (!isAuthLoaded) {
-      // Show skeleton only while Clerk is loading initially.
-      // This placeholder bridges the gap until Clerk determines
-      // if the user is signed in or out.
        return (
         <div className="flex items-center space-x-4">
           {/* Dashboard button placeholder */}
@@ -147,12 +137,15 @@ export function Navbar() {
     // if no session was found, or if the user explicitly signed out.
     return (
       <div className="flex items-center gap-4">
-        <Link href="/sign-in" className="text-sm font-medium text-zinc-950 hover:text-zinc-700 dark:text-white dark:hover:text-zinc-300">
-          Sign in
+        <Link href="/sign-in">
+         <Button size="sm" 
+         className="flex items-center gap-1 bg-zinc-100 hover:bg-orange-800 dark:bg-orange-950 dark:hover:bg-orange-900 text-black dark:text-white border-zinc-300 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200 text-sm ">
+           Sign in
+         </Button>
         </Link>
         <Link href="/sign-up">
           <Button size="sm" 
-          className="flex items-center gap-1 bg-orange-900 hover:bg-orange-800 dark:bg-orange-950 dark:hover:bg-orange-900 text-white border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200 text-sm ">
+          className="flex items-center gap-1 bg-zinc-900 hover:bg-orange-800 dark:bg-orange-950 dark:hover:bg-orange-900 text-white border-zinc-200 dark:border-zinc-900 shadow-sm hover:shadow-md transition-all duration-200 text-sm ">
             Sign up 
           </Button>
         </Link>
@@ -241,7 +234,7 @@ export function Navbar() {
                    <DrawerClose asChild>
                      <Link href="/sign-up">
                        <Button size="sm" 
-                       className="w-full flex items-center justify-center gap-1 dark:text-white bg-orange-900 hover:bg-orange-800 dark:bg-orange-950 dark:hover:bg-orange-900 text-white border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200 text-sm ">
+                       className="w-full flex items-center justify-center gap-1 dark:text-white bg-zinc-500 hover:bg-orange-800 dark:bg-orange-950 dark:hover:bg-orange-900 text-white border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200 text-sm ">
                          Sign up 
                        </Button>
                      </Link>
