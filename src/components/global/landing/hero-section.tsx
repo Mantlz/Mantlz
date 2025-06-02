@@ -1,234 +1,91 @@
-import React from "react";
-import Link from "next/link";
-import { ArrowRight, Play } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { TextEffect } from "@/components/ui/text-effect";
-import { AnimatedGroup } from "@/components/ui/animated-group";
-
-const transitionVariants = {
-  item: {
-    hidden: {
-      opacity: 0,
-      filter: "blur(12px)",
-      y: 12,
-    },
-    visible: {
-      opacity: 1,
-      filter: "blur(0px)",
-      y: 0,
-      transition: {
-        type: "spring",
-        bounce: 0.3,
-        duration: 1.5,
-      },
-    },
-  },
-};
-
-const stats = [
-  { value: "10k+", label: "Active Users" },
-  { value: "99.9%", label: "Uptime" },
-  { value: "5+", label: "Forms Templates" },
-];
+import Image from 'next/image'
+import { Button } from '@/components/ui/button'
+import { ArrowRight, ChevronRight } from 'lucide-react'
+import { useIsMobile } from '@/hooks/use-mobile'
 
 export default function HeroSection() {
+  const isMobile = useIsMobile()
   return (
-    <>
-      <main className="overflow-hidden">
-        <div
-          aria-hidden
-          className="absolute inset-0 isolate hidden opacity-65 contain-strict lg:block"
-        >
-          <div className="w-140 h-320 -translate-y-87.5 absolute left-0 top-0 -rotate-45 rounded-full bg-[radial-gradient(68.54%_68.72%_at_55.02%_31.46%,hsla(0,0%,85%,.08)_0,hsla(0,0%,55%,.02)_50%,hsla(0,0%,45%,0)_80%)]" />
-          <div className="h-320 absolute left-0 top-0 w-60 -rotate-45 rounded-full bg-[radial-gradient(50%_50%_at_50%_50%,hsla(0,0%,85%,.06)_0,hsla(0,0%,45%,.02)_80%,transparent_100%)] [translate:5%_-50%]" />
-          <div className="h-320 -translate-y-87.5 absolute left-0 top-0 w-60 -rotate-45 bg-[radial-gradient(50%_50%_at_50%_50%,hsla(0,0%,85%,.04)_0,hsla(0,0%,45%,.02)_80%,transparent_100%)]" />
-          
-          {/* Added subtle animated dots background */}
-          <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)] [background-size:20px_20px] opacity-25"></div>
-        </div>
-        <section>
-          <div className="relative pt-14 md:pt-16">
-            <AnimatedGroup
-              variants={{
-                container: {
-                  visible: {
-                    transition: {
-                      delayChildren: 1,
-                    },
-                  },
-                },
-                item: {
-                  hidden: {
-                    opacity: 0,
-                    y: 20,
-                  },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      type: "spring",
-                      bounce: 0.3,
-                      duration: 2,
-                    },
-                  },
-                },
-              }}
-              className="absolute inset-0 -z-20"
-            >
-              {/* Background element */}
-              <div className="w-full h-full"></div>
-            </AnimatedGroup>
-            <div className="absolute inset-0 -z-10 size-full [background:radial-gradient(125%_125%_at_50%_100%,transparent_0%,var(--color-background)_75%)]"></div>
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    
-              
-              <div className="text-center sm:mx-auto lg:mr-auto lg:mt-0">
-                <TextEffect
-                  preset="fade-in-blur"
-                  speedSegment={0.3}
-                  as="h1"
-                  className="mt-6 text-balance text-5xl font-bold tracking-tight md:text-7xl lg:mt-10 xl:text-[5.25rem]"
-                >
-                  Powerful Forms for Developers
-                </TextEffect>
-                <TextEffect
-                  per="line"
-                  preset="fade-in-blur"
-                  speedSegment={0.3}
-                  delay={0.5}
-                  as="p"
-                  className="mx-auto mt-6 max-w-2xl text-balance text-lg text-muted-foreground"
-                >
-                  Build beautiful, responsive forms in minutes. Get analytics, custom themes, 
-                  and advanced validation — all with simple API integration.
-                </TextEffect>
+    <div className="relative isolate pt-14">
+      <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
+        <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-orange-900 to-orange-400 opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"></div>
+      </div>
 
-                <AnimatedGroup
-                  variants={{
-                    container: {
-                      visible: {
-                        transition: {
-                          staggerChildren: 0.05,
-                          delayChildren: 0.75,
-                        },
-                      },
-                    },
-                    ...transitionVariants,
-                  }}
-                  className="mt-10 flex flex-col items-center justify-center gap-4 md:flex-row"
-                >
-                  <div
-                    key={1}
-                    className="bg-primary rounded-[calc(var(--radius-xl)+0.125rem)] p-0.5"
-                  >
-                    <Button
-                      asChild
-                      size="lg"
-                      variant="default"
-                      className="rounded-xl px-6 text-base font-medium shadow-lg"
-                    >
-                      <Link href="/dashboard">
-                        <span className="text-nowrap">Start Building</span>
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </div>
-                  <div key={2}>
-                    <Button
-                      asChild
-                      size="lg"
-                      variant="outline"
-                      className="rounded-xl px-6 text-base font-medium"
-                    >
-                      <Link href="/examples">
-                        <span className="text-nowrap">See Examples</span>
-                      </Link>
-                    </Button>
-                  </div>
-                  <div key={3} className="hidden md:block">
-                    <Button
-                      asChild
-                      size="lg"
-                      variant="ghost"
-                      className="rounded-xl px-4 text-base font-medium"
-                    >
-                      <Link href="#demo">
-                        <Play className="mr-2 h-4 w-4" />
-                        <span className="text-nowrap">Watch Demo</span>
-                      </Link>
-                    </Button>
-                  </div>
-                </AnimatedGroup>
-                
-                {/* Added social proof stats */}
-                <AnimatedGroup
-                  variants={{
-                    container: {
-                      visible: {
-                        transition: {
-                          staggerChildren: 0.05,
-                          delayChildren: 1,
-                        },
-                      },
-                    },
-                    ...transitionVariants,
-                  }}
-                  className="mt-12 grid grid-cols-3 gap-4 md:gap-8"
-                >
-                  {stats.map((stat, index) => (
-                    <div key={index} className="flex flex-col">
-                      <div className="text-2xl font-bold md:text-3xl">{stat.value}</div>
-                      <div className="text-sm text-muted-foreground">{stat.label}</div>
-                    </div>
-                  ))}
-                </AnimatedGroup>
-              </div>
+      <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40">
+        <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
+          <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-orange-600 to-orange-800 opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"></div>
+        </div>
+
+        <div className="mx-auto max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-xl lg:pt-8">
+          <div className="relative">
+            <span className="mb-6 inline-flex items-center space-x-2 text-sm font-medium leading-6 text-orange-600">
+              <span className="font-semibold">New</span>
+              <span className="h-4 w-px bg-orange-600/20"></span>
+              <span>Form builder for developers v1.0</span>
+            </span>
+            <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400">
+              Professional Forms,
+              <br />
+              Built for Developers
+            </h1>
+            <p className="mt-6 text-base leading-7 text-zinc-600 dark:text-zinc-400">
+            Mantle is a professional form builder for developers. It offers a drag-and-drop interface, various templates (waitlist, contact, feedback, survey), and seamless integration to efficiently collect data.
+            </p>
+            <div className="mt-10 flex items-center gap-x-6">
+              <Button className="bg-gradient-to-r from-orange-600 to-orange-800 hover:from-orange-700 hover:to-orange-900 text-white gap-x-2 group shadow-lg hover:shadow-xl transition-all duration-200 px-8 py-2.5">
+                Get Started Free
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+              <a href="#features" className="group text-sm font-semibold leading-6 text-zinc-900 dark:text-white transition-colors">
+                View Features <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">→</span>
+              </a>
             </div>
 
-            <AnimatedGroup
-              variants={{
-                container: {
-                  visible: {
-                    transition: {
-                      staggerChildren: 0.05,
-                      delayChildren: 0.75,
-                    },
-                  },
-                },
-                ...transitionVariants,
-              }}
-            >
-              <div className="relative -mr-56 mt-12 overflow-hidden px-2 sm:mr-0 sm:mt-16 md:mt-20">
-                <div
-                  aria-hidden
-                  className="bg-linear-to-b to-background absolute inset-0 z-10 from-transparent from-35%"
-                />
-                <div className="inset-shadow-2xs ring-background dark:inset-shadow-white/20 bg-background relative mx-auto max-w-6xl overflow-hidden rounded-2xl border p-4 shadow-lg shadow-zinc-950/15 ring-1 transition-all hover:shadow-xl">
-                  {/* Added hover effect and interactive feel to the screenshot */}
-                  
-                  <Image
-                    className="bg-background aspect-15/8 relative hidden rounded-b-xl mt-8 dark:block"
-                    src="/preview1.png"
-                    alt="Form builder dashboard interface showing customizable templates and analytics"
-                    width="2700"
-                    height="1440"
-                    priority
-                  />
-                  <Image
-                    className="z-2 border-border/25 aspect-15/8 relative rounded-b-xl mt-8 border dark:hidden"
-                    src="/preview1.png"
-                    alt="Form builder dashboard interface showing customizable templates and analytics"
-                    width="2700"
-                    height="1440"
-                    priority
-                  />
+            {/* Stats Section with improved styling */}
+            {/* <div className="mt-16 grid grid-cols-1 gap-y-8 sm:mt-20 sm:grid-cols-1 sm:gap-x-12 lg:grid-cols-2">
+              <div className="flex gap-x-4 bg-white/5 backdrop-blur-sm rounded-xl p-4 ring-1 ring-zinc-900/5 dark:ring-white/10 transition-colors hover:bg-orange-50/50 dark:hover:bg-orange-900/10">
+                <div className="flex h-12 w-12 p-2 items-center justify-center rounded-lg bg-orange-500/10 text-orange-600 dark:text-orange-400">
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                </div>
+                <div className="flex flex-col justify-center">
+                  <div className="text-xl font-bold text-zinc-900 dark:text-white">5+</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">Forms Templates</div>
                 </div>
               </div>
-            </AnimatedGroup>
+              <div className="flex gap-x-4 bg-white/5 backdrop-blur-sm rounded-xl p-4 ring-1 ring-zinc-900/5 dark:ring-white/10 transition-colors hover:bg-orange-50/50 dark:hover:bg-orange-900/10">
+                <div className="flex h-12 w-12 p-2 items-center justify-center rounded-lg bg-orange-500/10 text-orange-600 dark:text-orange-400">
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div className="flex flex-col justify-center">
+                  <div className="text-xl font-bold text-zinc-900 dark:text-white">99.9%+</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">Uptime</div>
+                </div>
+              </div>
+            </div> */}
           </div>
-        </section>
-      </main>
-    </>
-  );
+        </div>
+        {!isMobile && <div className="mx-auto mt-2 flex sm:mt-14 lg:ml-8 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-24">
+          <div className="max-w-xl flex-none sm:max-w-5xl lg:max-w-none">
+            <div className="rounded-xl bg-zinc-900/5 dark:bg-white/5 p-2 ring-1 ring-inset ring-zinc-900/10 dark:ring-white/10 lg:-m-4 lg:rounded-2xl lg:p-4">
+              <Image
+                src="/preview1.png"
+                alt="App screenshot"
+                width={1216}
+                height={721}
+                className="rounded-md shadow-2xl ring-1 ring-zinc-900/10 dark:ring-white/10"
+              />
+            </div>
+          </div>
+        </div>}
+      </div>
+
+      <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
+        <div className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-orange-900 to-orange-400 opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"></div>
+      </div>
+    </div>
+  )
 }
