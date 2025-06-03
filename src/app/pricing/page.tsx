@@ -7,15 +7,6 @@ import BottomCTA from "@/components/global/landing/bottomcta"
 import { Metadata } from 'next'
 import PricingComparison from "@/components/global/landing/pricing-comparison"
 
-export const metadata: Metadata = {
-  title: 'Pricing | Mantle',
-  description: 'Choose the perfect plan for your needs - Free, Standard, and Pro plans available',
-  openGraph: {
-    title: 'Pricing | Mantle',
-    description: 'Choose the perfect plan for your needs - Free, Standard, and Pro plans available',
-  },
-}
-
 export const dynamic = 'force-static'
 
 export default function PricingPage() {
