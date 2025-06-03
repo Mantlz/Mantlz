@@ -2,7 +2,9 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import React from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { useParams } from 'react-router'
+
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, Mail } from 'lucide-react';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -15,16 +17,13 @@ import { CampaignActions } from './_components/CampaignActions';
 import { CampaignDetailSkeleton } from './_components/CampaignDetailSkeleton';
 import { fetchCampaignById, fetchCampaignStats, getBackUrl } from './_components/utils';
 import { NoAnalytics } from './_components/NoAnalytics';
+import { ClientRoot } from '@/components/providers/client-root'
 
-interface CampaignDetailPageProps {
-  params: Promise<{
-    id: string;
-  }>;
-}
-
-export default function CampaignDetailPage({ params }: CampaignDetailPageProps) {
-  const unwrappedParams = React.use(params);
-  const campaignId = unwrappedParams.id;
+// Remove the interface since we're not using props anymore
+export default function CampaignDetailPage() {
+  // Use useParams hook to get the id from the URL
+  const params = useParams();
+  const campaignId = params?.id as string;
   
   const { isPremium, userPlan } = useSubscription();
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
@@ -73,93 +72,113 @@ export default function CampaignDetailPage({ params }: CampaignDetailPageProps) 
   };
 
   if (loading) {
-    return <CampaignDetailSkeleton />;
+    return (
+      <ClientRoot>
+        <div className="bg-background">
+          <main className="min-h-screen container mx-auto px-4 py-6 mt-14">
+            <CampaignDetailSkeleton />
+          </main>
+        </div>
+      </ClientRoot>
+    );
   }
 
   if (!campaign) {
     return (
-      <div className="container py-8">
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          onClick={handleBackClick}
-          className="mb-6 h-8 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg px-3"
-        >
-          <ChevronLeft className="h-3.5 w-3.5 mr-1" />
-          <span className="hidden xs:inline">Back to Campaigns</span>
-        </Button>
-        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 text-center">
-          <h2 className="text-lg font-medium text-red-800 dark:text-red-300">Campaign not found</h2>
-          <p className="text-red-600 dark:text-red-400 mt-2">
-            The campaign you&apos;re looking for does not exist or you don&apos;t have permission to view it.
-          </p>
+      <ClientRoot>
+        <div className="bg-background">
+          <main className="min-h-screen container mx-auto px-4 py-6 mt-14">
+            <div className="container py-8">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={handleBackClick}
+                className="mb-6 h-8 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg px-3"
+              >
+                <ChevronLeft className="h-3.5 w-3.5 mr-1" />
+                <span className="hidden xs:inline">Back to Campaigns</span>
+              </Button>
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 text-center">
+                <h2 className="text-lg font-medium text-red-800 dark:text-red-300">Campaign not found</h2>
+                <p className="text-red-600 dark:text-red-400 mt-2">
+                  The campaign you&apos;re looking for does not exist or you don&apos;t have permission to view it.
+                </p>
+              </div>
+            </div>
+          </main>
         </div>
-      </div>
+      </ClientRoot>
     );
   }
   
   return (
-    <div className="container py-8 space-y-6">
-      {/* Top Header Section */}
-      <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden">
-        <div className="p-6 lg:p-8">
-          <div className="flex flex-col gap-6">
-            <div className="flex items-start justify-between">
-              <CampaignHeader campaign={campaign} onBackClick={handleBackClick} />
-              <CampaignActions
-                campaign={campaign}
-                isPremium={isPremium}
-                userPlan={userPlan}
-                onUpgradeClick={() => setShowUpgradeModal(true)}
-                onSent={refreshCampaignData}
-                onScheduled={refreshCampaignData}
+    <ClientRoot>
+      <div className="bg-background">
+        <main className="min-h-screen container mx-auto px-4 py-6 mt-14">
+          <div className="container py-8 space-y-6">
+            {/* Top Header Section */}
+            <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden">
+              <div className="p-6 lg:p-8">
+                <div className="flex flex-col gap-6">
+                  <div className="flex items-start justify-between">
+                    <CampaignHeader campaign={campaign} onBackClick={handleBackClick} />
+                    <CampaignActions
+                      campaign={campaign}
+                      isPremium={isPremium}
+                      userPlan={userPlan}
+                      onUpgradeClick={() => setShowUpgradeModal(true)}
+                      onSent={refreshCampaignData}
+                      onScheduled={refreshCampaignData}
+                    />
+                  </div>
+                  <CampaignStatsComponent campaign={campaign} />
+                </div>
+              </div>
+            </div>
+
+            {/* Stats Section */}
+            {campaign.status === 'SENT' ? (
+              <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm">
+                <div className="p-6 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-sm font-medium text-gray-900 dark:text-white">Campaign Analytics</h3>
+                    {!isPremium && (
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => setShowUpgradeModal(true)}
+                        className="h-7 px-2 text-xs cursor-pointer gap-1 bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                      >
+                        Upgrade for Analytics
+                      </Button>
+                    )}
+                  </div>
+                </div>
+                <div className="p-6">
+                  <DetailedMetrics
+                    stats={stats}
+                    isPremium={isPremium}
+                    onUpgradeClick={() => setShowUpgradeModal(true)}
+
+                  />
+                </div>
+              </div>
+            ) : (
+              <NoAnalytics 
+                isDraft={campaign.status === 'DRAFT'}
               />
-            </div>
-            <CampaignStatsComponent campaign={campaign} />
-          </div>
-        </div>
-      </div>
+            )}
 
-      {/* Stats Section */}
-      {campaign.status === 'SENT' ? (
-        <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm">
-          <div className="p-6 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <h3 className="text-sm font-medium text-gray-900 dark:text-white">Campaign Analytics</h3>
-              {!isPremium && (
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => setShowUpgradeModal(true)}
-                  className="h-7 px-2 text-xs cursor-pointer gap-1 bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
-                >
-                  Upgrade for Analytics
-                </Button>
-              )}
-            </div>
-          </div>
-          <div className="p-6">
-            <DetailedMetrics
-              stats={stats}
-              isPremium={isPremium}
-              onUpgradeClick={() => setShowUpgradeModal(true)}
-
+            <UpgradeModal
+              isOpen={showUpgradeModal}
+              onClose={() => setShowUpgradeModal(false)}
+              featureName="Email Campaign Analytics"
+              featureIcon={<Mail className="h-5 w-5 text-slate-700 dark:text-slate-300" />}
+              description="Get detailed insights into your campaign performance with advanced analytics. Track opens, clicks, bounces, and more in real-time."
             />
           </div>
-        </div>
-      ) : (
-        <NoAnalytics 
-          isDraft={campaign.status === 'DRAFT'}
-        />
-      )}
-
-      <UpgradeModal
-        isOpen={showUpgradeModal}
-        onClose={() => setShowUpgradeModal(false)}
-        featureName="Email Campaign Analytics"
-        featureIcon={<Mail className="h-5 w-5 text-slate-700 dark:text-slate-300" />}
-        description="Get detailed insights into your campaign performance with advanced analytics. Track opens, clicks, bounces, and more in real-time."
-      />
-    </div>
+        </main>
+      </div>
+    </ClientRoot>
   );
-} 
+}
