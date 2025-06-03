@@ -132,14 +132,11 @@ export function Navbar() {
       );
     }
 
-    // If auth state is loaded AND user is NOT signed in
-    // This is the state reached after the initial loading phase (!isAuthLoaded)
-    // if no session was found, or if the user explicitly signed out.
     return (
       <div className="flex items-center gap-4">
         <Link href="/sign-in">
          <Button size="sm" 
-         className="flex items-center gap-1 bg-zinc-100 hover:bg-orange-800 dark:bg-orange-950 dark:hover:bg-orange-900 text-black dark:text-white border-zinc-300 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200 text-sm ">
+         className="flex items-center gap-1 bg-zinc-100 hover:bg-orange-800 dark:bg-zinc-100 dark:hover:bg-orange-900 text-black border-zinc-300 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200 text-sm ">
            Sign in
          </Button>
         </Link>

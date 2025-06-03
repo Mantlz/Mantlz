@@ -1,61 +1,134 @@
-import Image from 'next/image'
-import { Button } from '@/components/ui/button'
-import { ArrowRight } from 'lucide-react'
-import { useIsMobile } from '@/hooks/use-mobile'
+"use client";
+
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, CheckCircle, Sparkles } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function HeroSection() {
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile();
+
   return (
-    <div className="relative isolate pt-14">
-      <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40">
-
-
-        <div className="mx-auto max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-xl lg:pt-8">
+    <div className="relative isolate overflow-hidden">
+      <div className="mx-auto max-w-7xl px-6 pb-24 pt-16 sm:pb-32 lg:flex lg:px-8 lg:py-20">
+        <div className="mx-auto max-w-2xl flex-shrink-0 lg:mx-0 lg:max-w-xl lg:pt-12">
           <div className="relative">
-            <span className="mb-6 inline-flex items-center space-x-2 text-sm font-medium leading-6 text-orange-600">
-              <span className="font-semibold">New</span>
-              <span className="h-4 w-px bg-orange-600/20"></span>
-              <span>Form builder for developers v1.0</span>
-            </span>
-            <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-500 to-orange-400">
-              Professional Forms,
-              <br />
-              Built for Developers
-            </h1>
-            <p className="mt-6 text-base leading-7 text-zinc-600 dark:text-zinc-400">
-            Mantle is a professional form builder for developers. It offers a drag-and-drop interface, various templates (waitlist, contact, feedback, survey), and seamless integration to efficiently collect data.
-            </p>
-            <div className="mt-10 flex items-center gap-x-6">
-              <Button className="bg-gradient-to-r from-orange-600 to-orange-800 hover:from-orange-700 hover:to-orange-900 text-white gap-x-2 group shadow-lg hover:shadow-xl transition-all duration-200 px-8 py-2.5">
-                Get Started Free
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-              <a href="#features" className="group text-sm font-semibold leading-6 text-zinc-900 dark:text-white transition-colors">
-                View Features <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-1">→</span>
-              </a>
+            {/* Badge */}
+            <div className="mb-8 inline-flex items-center rounded-full bg-gradient-to-r from-orange-100 to-orange-50 px-4 py-2 text-sm font-medium text-orange-700 ring-1 ring-inset ring-orange-200/50 shadow-sm dark:from-orange-900/30 dark:to-orange-800/20 dark:text-orange-300 dark:ring-orange-700/30">
+              <Sparkles className="h-4 w-4 mr-2" />
+              <span className="font-semibold">SDK</span>
+              <span className="mx-2 h-4 w-px bg-orange-400/30"></span>
+              <span>npm install Mantlz/nextjs</span>
             </div>
 
+            {/* Main heading */}
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-5xl xl:text-6xl">
+              <span className="block bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-900 bg-clip-text text-transparent dark:from-white dark:via-zinc-100 dark:to-white">
+                Professional Forms,
+              </span>
+              <span className="block bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 bg-clip-text text-transparent mt-2">
+                Built for Developers
+              </span>
+            </h1>
+
+            {/* Description */}
+            <p className="mt-8 text-xl leading-8 text-zinc-600 dark:text-zinc-300 max-w-2xl">
+              Mantle is a professional form builder designed specifically for
+              developers. Create beautiful, functional forms with our
+              drag-and-drop interface, extensive templates, and seamless
+              integrations.
+            </p>
+
+            {/* Feature list */}
+            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-4">
+              <div className="flex items-center gap-x-3 text-sm text-zinc-700 dark:text-zinc-300">
+                <div className="flex-shrink-0 w-5 h-5 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center">
+                  <CheckCircle className="h-3 w-3 text-white" />
+                </div>
+                <span className="font-medium">No credit card required</span>
+              </div>
+              <div className="flex items-center gap-x-3 text-sm text-zinc-700 dark:text-zinc-300">
+                <div className="flex-shrink-0 w-5 h-5 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center">
+                  <CheckCircle className="h-3 w-3 text-white" />
+                </div>
+                <span className="font-medium">Free tier available</span>
+              </div>
+              <div className="flex items-center gap-x-3 text-sm text-zinc-700 dark:text-zinc-300">
+                <div className="flex-shrink-0 w-5 h-5 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center">
+                  <CheckCircle className="h-3 w-3 text-white" />
+                </div>
+                <span className="font-medium">Easy integration</span>
+              </div>
+            </div>
+
+            {/* CTA buttons */}
+            <div className="mt-12 flex flex-col sm:flex-row items-start gap-6">
+              <Button className="bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white gap-x-2 group shadow-lg hover:shadow-xl transition-all duration-300 px-8 py-6 rounded-2xl text-base font-semibold transform hover:scale-105">
+                Get Started Free
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </div>
           </div>
         </div>
-        {!isMobile && <div className="mx-auto mt-2 flex sm:mt-14 lg:ml-8 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-24">
-          <div className="max-w-xl flex-none sm:max-w-5xl lg:max-w-none">
-            <div className="rounded-xl bg-zinc-900/5 dark:bg-white/5 p-2 ring-1 ring-inset ring-zinc-900/10 dark:ring-white/10 lg:-m-4 lg:rounded-2xl lg:p-4">
-              <Image
-                src="/preview1.png"
-                alt="App screenshot"
-                width={1216}
-                height={721}
-                className="rounded-md  shadow-2xl shadow-orange-700 ring-1 ring-zinc-900/10 dark:ring-white/10"
-              />
+
+        {!isMobile && (
+          <div className="mx-auto mt-24 flex max-w-2xl sm:mt-32 lg:mx-auto lg:mt-20 lg:max-w-none lg:flex-none lg:items-center lg:justify-center">
+            <div className="max-w-3xl flex-none sm:max-w-5xl lg:max-w-none">
+              <div className="relative w-[450px] h-[400px]">
+                {/* Ambient lighting effects */}
+                <div className="absolute -inset-20 bg-gradient-radial from-orange-500 via-orange-400 to-transparent blur-3xl" />
+                <div className="absolute top-10 -left-10 w-32 h-32 bg-orange-400 rounded-full blur-3xl animate-pulse" />
+                {/* <div className="absolute -bottom-10 -right-10 w-20 h-20 bg-orange-600 rounded-full blur-3xl animate-pulse delay-1000" /> */}
+
+                {/* Card stack */}
+                <div className="relative h-full">
+                  {/* Third card (bottom) */}
+                  <div className="absolute inset-0 rounded-2xl bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm p-3 ring-1 ring-zinc-200/50 dark:ring-zinc-700/50 shadow-2xl transform rotate-[-8deg] transition-all duration-500 hover:rotate-[-6deg] hover:scale-105 z-10">
+                    <div className="relative overflow-hidden rounded-xl">
+                      <Image
+                        src="/waitlist.png"
+                        alt="Form builder interface - Analytics view"
+                        width={600}
+                        height={400}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                    </div>
+                  </div>
+
+                  {/* Second card (middle) */}
+                  <div className="absolute top-4 left-4 right-4 bottom-4 rounded-2xl bg-white/90 dark:bg-zinc-800/90 backdrop-blur-sm p-3 ring-1 ring-zinc-200/50 dark:ring-zinc-700/50 shadow-2xl transform rotate-[-4deg] transition-all duration-500 hover:rotate-[-2deg] hover:scale-105 z-20">
+                    <div className="relative overflow-hidden rounded-xl">
+                      <Image
+                        src="/waitlist.png"
+                        alt="Form builder interface - Form editor"
+                        width={600}
+                        height={400}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+                    </div>
+                  </div>
+
+                  {/* First card (top) */}
+                  <div className="absolute top-8 left-8 right-8 bottom-8 rounded-2xl bg-white dark:bg-zinc-800 backdrop-blur-sm p-3 ring-1 ring-zinc-200/50 dark:ring-zinc-700/50 shadow-2xl transform rotate-0 transition-all duration-500 hover:translate-y-[-8px] hover:shadow-3xl z-30">
+                    <div className="relative overflow-hidden rounded-xl">
+                      <Image
+                        src="/waitlist.png"
+                        alt="Form builder interface - Dashboard"
+                        width={600}
+                        height={400}
+                        className="w-full h-full object-cover"
+                        priority
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>}
+        )}
       </div>
-
-      {/* <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-        <div className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-orange-900 to-orange-900 opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"></div>
-        
-      </div> */}
     </div>
-  )
+  );
 }

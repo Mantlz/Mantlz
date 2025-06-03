@@ -4,7 +4,6 @@ import Footer from "@/components/global/landing/footer";
 import HeroSection from "@/components/global/landing/hero-section";
 import { Navbar } from "@/components/global/landing/navbar";
 
-
 import { Container } from "@/components/global/landing/container";
 import Pricing from "@/components/global/landing/pricing";
 import Faq from "@/components/global/landing/faq";
@@ -20,21 +19,14 @@ export default function LandingPage() {
       <Container>
         <Navbar />
 
-       
+        <HeroSection />
+        <div className="mt-14">
+          <LogoCloud />
+        </div>
 
-
-            <HeroSection />
-<div className="mt-20">
-
-<LogoCloud />
-</div>
-          
-
-       
-            <OurServices />
-            <FeaturesSection />
-            <IntegrationsSection />
-
+        <OurServices />
+        <FeaturesSection />
+        <IntegrationsSection />
       </Container>
 
       <Suspense>
