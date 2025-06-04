@@ -2,7 +2,6 @@ import { Heading } from "@/components/global/heading"
 import { LoadingSpinner } from "@/components/global/loading-spinner"
 import { useEffect, useState } from "react"
 
-
 interface SyncMessageProps {
   title: string
   message: string
@@ -47,47 +46,55 @@ export function SyncMessage({ title, message, syncStatus, syncTime = 0 }: SyncMe
   }, [syncStatus, syncTime])
   
   return (
-    <div className="flex justify-center items-center h-full">
-      <div className="flex flex-col items-center gap-7 max-w-md w-full p-8 rounded-lg  bg-zinc-800">
-        {/* Simple title */}
-        <Heading className="text-3xl sm:text-4xl font-bold text-white text-center">
+    <div className="flex justify-center items-center h-full w-full">
+      <div className="flex flex-col items-center gap-8 max-w-md w-full p-8 rounded-2xl bg-zinc-800  transition-all duration-300 ease-in-out">
+        {/* Logo or icon (optional) */}
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center shadow-lg mb-1">
+          <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21.68 16.96l-3.13-7.31c-1.06-2.48-3.01-2.58-4.32-.22l-1.89 3.41c-.96 1.73-2.75 1.88-3.99.33l-.22-.28c-1.29-1.62-3.11-1.42-4.04.43l-1.72 3.45C1.16 19.17 2.91 22 5.59 22h12.76c2.6 0 4.35-2.65 3.33-5.04z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M7.86 9a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+
+        {/* Title with enhanced styling */}
+        <Heading className="text-3xl sm:text-4xl font-bold  text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
           {title}
         </Heading>
 
-        {/* Message text */}
-        <p className="text-sm sm:text-base text-white/80 text-center">
+        {/* Message text with improved readability */}
+        <p className="text-sm sm:text-base text-white/70 text-center leading-relaxed">
           {message}
         </p>
 
-        {/* Modern progress bar */}
-        <div className="w-full">
-          <div className="h-1.5 w-full bg-white/10 rounded-lg overflow-hidden backdrop-blur-sm">
+        {/* Enhanced progress bar with animation */}
+        <div className="w-full space-y-3">
+          <div className="h-2 w-full bg-zinc-700/30 rounded-full overflow-hidden backdrop-blur-sm">
             <div 
-              className="h-full bg-gradient-to-r from-orange-800 to-orange-900 rounded-lg transition-all duration-300 ease-out"
-              style={{ width: `${progress}%` }}
+              className={`h-full rounded-full transition-all duration-700 ease-out ${syncStatus ? 'bg-emerald-500' : 'bg-gradient-to-r from-orange-500 to-orange-600'}`}
+              style={{ width: `${progress}%`, boxShadow: '0 0 10px rgba(249, 115, 22, 0.5)' }}
             />
           </div>
           
-          <div className="flex justify-between items-center mt-3 text-xs text-white/70">
-            <span>{progress.toFixed(0)}%</span>
-            <span>{syncStatus ? "Completed" : estimatedTime}</span>
+          <div className="flex justify-between items-center text-xs font-medium text-white/60">
+            <span className="tabular-nums">{progress.toFixed(0)}%</span>
+            <span className="tabular-nums">{syncStatus ? "Completed" : estimatedTime}</span>
           </div>
         </div>
 
-        {/* Status and spinner in one row */}
-        <div className="flex items-center gap-3 mt-2 py-2.5 px-4 rounded-lg bg-white/5 backdrop-blur-sm">
-          <div className={`w-2.5 h-2.5 rounded-lg ${
-            syncStatus ? 'bg-green-400' : 'bg-orange-500 animate-pulse'
-          }`} />
-          <span className="text-sm text-white">
+        {/* Status indicator with improved visual feedback */}
+        <div className="flex items-center gap-3 mt-1 py-3 px-5 rounded-xl bg-zinc-800/80 border border-zinc-700/30 backdrop-blur-sm w-full">
+          <div className={`w-3 h-3 rounded-full ${syncStatus ? 'bg-emerald-400 animate-pulse' : 'bg-orange-500 animate-pulse'} shadow-lg shadow-orange-500/20`} />
+          <span className="text-sm font-medium text-white/90">
             {syncStatus ? 'Sync complete' : 'Syncing your workspace'}
           </span>
           
-          <div className="ml-2">
+          <div className="ml-auto">
             {syncStatus ? (
-              <svg className="w-5 h-5 text-green-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 13L9 17L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <div className="w-6 h-6 rounded-full bg-emerald-400/10 flex items-center justify-center">
+                <svg className="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 13L9 17L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
             ) : (
               <LoadingSpinner 
                 size="sm" 
@@ -96,7 +103,9 @@ export function SyncMessage({ title, message, syncStatus, syncTime = 0 }: SyncMe
             )}
           </div>
         </div>
+
+       
       </div>
     </div>
   )
-} 
+}

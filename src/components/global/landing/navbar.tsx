@@ -156,7 +156,7 @@ export function Navbar() {
     <nav className="flex items-center justify-between pt-10 relative z-50">
       <div className="flex items-center">
         <Link href="/" className="flex items-center">
-          <Logo className="h-8 w-8" size={32} />
+          <Logo className="h-8 w-8 mb-2 mr-2" size={32} />
           <span className="font-light text-lg">Mantlz</span>
         </Link>
       </div>

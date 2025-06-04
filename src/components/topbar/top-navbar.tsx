@@ -198,7 +198,9 @@ export const Navbar = memo(function Navbar() {
     >
       <div className="flex items-center gap-6">
         <Link href="/" className="flex items-center gap-2 font-semibold cursor-pointer">
-          <Logo />
+        <Logo className="h-6 w-6 mb-2 mr-1" size={32} />
+
+
           <span>Mantlz</span>
         </Link>
 
