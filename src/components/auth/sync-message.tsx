@@ -1,6 +1,7 @@
 import { Heading } from "@/components/global/heading"
 import { LoadingSpinner } from "@/components/global/loading-spinner"
 import { useEffect, useState } from "react"
+import { Logo } from "../global/logo"
 
 interface SyncMessageProps {
   title: string
@@ -50,11 +51,9 @@ export function SyncMessage({ title, message, syncStatus, syncTime = 0 }: SyncMe
       <div className="flex flex-col items-center gap-8 max-w-md w-full p-8 rounded-2xl bg-zinc-800  transition-all duration-300 ease-in-out">
         {/* Logo or icon (optional) */}
         <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center shadow-lg mb-1">
-          <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21.68 16.96l-3.13-7.31c-1.06-2.48-3.01-2.58-4.32-.22l-1.89 3.41c-.96 1.73-2.75 1.88-3.99.33l-.22-.28c-1.29-1.62-3.11-1.42-4.04.43l-1.72 3.45C1.16 19.17 2.91 22 5.59 22h12.76c2.6 0 4.35-2.65 3.33-5.04z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M7.86 9a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
+        <Logo size={32}/>
+
+        </div> 
 
         {/* Title with enhanced styling */}
         <Heading className="text-3xl sm:text-4xl font-bold  text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
