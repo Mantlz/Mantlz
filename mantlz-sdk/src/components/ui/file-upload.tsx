@@ -136,7 +136,7 @@ export function FileUpload({
               }}>
                 <span style={{
                   margin: 0,
-                  color: 'var(--gray-11)',
+                  color: 'var(--gray-20)',
                   fontSize: '12px',
                   fontWeight: 500
                 }}>
@@ -217,7 +217,7 @@ export function FileUpload({
                 <span style={{
                   fontWeight: 500,
                   fontSize: '12px',
-                  color: 'var(--gray-12)',
+                  color: 'black',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
@@ -250,7 +250,7 @@ export function FileUpload({
                     borderRadius: '2px',
                     border: 'none',
                     backgroundColor: 'var(--gray-4)',
-                    color: 'var(--gray-11)',
+                    color: 'var(--gray-20)',
                     cursor: disabled ? 'not-allowed' : 'pointer',
                     transition: 'all 0.2s',
                     flexShrink: 0

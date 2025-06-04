@@ -1,6 +1,7 @@
 import { Theme } from './types';
 
 export const themes: Record<string, Theme> = {
+  // For each theme in the themes object, modify the form.container property
   default: {
     form: {
       container: {
@@ -12,17 +13,18 @@ export const themes: Record<string, Theme> = {
         border: '1px solid var(--gray-4)',
         boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)',
         backgroundColor: 'white',
+        backdropFilter: 'blur(8px)', // Adds a blur effect behind the form
       },
       title: {
         fontSize: '22px',
         fontWeight: '700',
-        color: 'var(--gray-12)',
+        color: 'black',
         marginBottom: '12px',
         lineHeight: '1.3',
         letterSpacing: '-0.02em',
       },
       description: {
-        color: 'var(--gray-11)',
+        color: 'var(--gray-20)',
         fontSize: '14px',
         lineHeight: '1.5',
         marginBottom: '20px',
@@ -37,7 +39,7 @@ export const themes: Record<string, Theme> = {
         marginBottom: '6px',
         fontSize: '14px',
         fontWeight: '500',
-        color: 'var(--gray-12)',
+        color: 'black',
         letterSpacing: '-0.01em',
       },
       input: {
@@ -47,6 +49,7 @@ export const themes: Record<string, Theme> = {
         border: '1.5px solid var(--gray-6)',
         fontSize: '14px',
         backgroundColor: 'white',
+        color: 'black', // Explicitly set text color to black
         transition: 'all 0.2s ease',
         '&:focus': {
           borderColor: 'var(--blue-8)',
@@ -116,18 +119,18 @@ export const themes: Record<string, Theme> = {
         borderRadius: '8px',
         border: '1px solid var(--gray-5)',
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
-        background: 'linear-gradient(to bottom, var(--gray-1), white)',
+        background: 'white',
       },
       title: {
         fontSize: '18px',
         fontWeight: '600',
-        color: 'var(--gray-12)',
+        color: 'black',
         marginBottom: '8px',
         letterSpacing: '-0.02em',
         lineHeight: '1.2',
       },
       description: {
-        color: 'var(--gray-11)',
+        color: 'var(--gray-20)',
         fontSize: '13px',
         lineHeight: '1.5',
         marginBottom: '14px',
@@ -142,7 +145,7 @@ export const themes: Record<string, Theme> = {
         marginBottom: '4px',
         fontSize: '13px',
         fontWeight: '500',
-        color: 'var(--gray-12)',
+        color: 'black',
         letterSpacing: '-0.01em',
       },
       input: {
@@ -151,6 +154,7 @@ export const themes: Record<string, Theme> = {
         borderRadius: '6px',
         border: '1px solid var(--gray-5)',
         fontSize: '13px',
+        color: 'black', // Explicitly set text color to black
         backgroundColor: 'white',
         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.03)',
         transition: 'all 0.2s',
@@ -174,7 +178,7 @@ export const themes: Record<string, Theme> = {
     },
     button: {
       padding: '8px 16px',
-      backgroundColor: 'var(--gray-12)',
+      backgroundColor: 'black',
       color: 'white',
       border: 'none',
       borderRadius: '6px',
@@ -184,7 +188,7 @@ export const themes: Record<string, Theme> = {
       transition: 'all 0.2s',
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.12)',
       '&:hover': {
-        backgroundColor: 'var(--gray-11)',
+        backgroundColor: 'var(--gray-20)',
         transform: 'translateY(-1px)',
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
       },
@@ -242,6 +246,7 @@ export const themes: Record<string, Theme> = {
         padding: '8px 10px',
         border: '2px solid black',
         borderRadius: '0',
+        color: 'black', // Explicitly set text color to black
         boxShadow: '2px 2px 0 black',
         fontSize: '13px',
         fontFamily: 'monospace',
@@ -295,12 +300,12 @@ export const themes: Record<string, Theme> = {
       title: {
         fontSize: '16px',
         fontWeight: '500',
-        color: 'var(--gray-12)',
+        color: 'black',
         marginBottom: '6px',
         lineHeight: '1.3',
       },
       description: {
-        color: 'var(--gray-11)',
+        color: 'var(--gray-20)',
         fontSize: '13px',
         lineHeight: '1.4',
         marginBottom: '12px',
@@ -315,12 +320,13 @@ export const themes: Record<string, Theme> = {
         marginBottom: '4px',
         fontSize: '13px',
         fontWeight: '400',
-        color: 'var(--gray-11)',
+        color: 'var(--gray-20)',
       },
       input: {
         width: '100%',
         padding: '6px 10px',
         borderRadius: '4px',
+        color: 'black', // Explicitly set text color to black
         border: '1px solid var(--gray-6)',
         fontSize: '13px',
         transition: 'border-color 0.15s',
@@ -350,4 +356,4 @@ export const themes: Record<string, Theme> = {
       },
     },
   },
-}; 
+};

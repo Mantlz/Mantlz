@@ -105,7 +105,7 @@ export function ProductField({ field, formMethods }: ProductFieldProps) {
               <h4 style={{ 
                 fontWeight: 500, 
                 fontSize: '0.875rem',
-                color: 'var(--gray-12)',
+                color: 'black',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap'
@@ -116,7 +116,7 @@ export function ProductField({ field, formMethods }: ProductFieldProps) {
               {product.description && (
                 <p style={{ 
                   fontSize: '0.75rem',
-                  color: 'var(--gray-11)',
+                  color: 'var(--gray-20)',
                   marginTop: '0.25rem',
                   display: '-webkit-box',
                   WebkitLineClamp: 2,
@@ -136,7 +136,7 @@ export function ProductField({ field, formMethods }: ProductFieldProps) {
                 <span style={{ 
                   fontWeight: 500,
                   fontSize: '0.875rem',
-                  color: 'var(--gray-12)'
+                  color: 'black'
                 }}>
                   {formatPrice(product.price, product.currency)}
                 </span>
@@ -151,7 +151,7 @@ export function ProductField({ field, formMethods }: ProductFieldProps) {
                     style={{
                       ...styles.button,
                       backgroundColor: 'var(--gray-4)',
-                      color: 'var(--gray-12)',
+                      color: 'black',
                       width: '1.5rem',
                       height: '1.5rem',
                       padding: 0,
@@ -167,7 +167,7 @@ export function ProductField({ field, formMethods }: ProductFieldProps) {
                     width: '2rem',
                     textAlign: 'center',
                     fontSize: '0.875rem',
-                    color: 'var(--gray-12)'
+                    color: 'black'
                   }}>
                     {selectedProducts.find((p: Product) => p.id === product.id)?.quantity || 0}
                   </span>
@@ -181,7 +181,7 @@ export function ProductField({ field, formMethods }: ProductFieldProps) {
                     style={{
                       ...styles.button,
                       backgroundColor: 'var(--gray-4)',
-                      color: 'var(--gray-12)',
+                      color: 'black',
                       width: '1.5rem',
                       height: '1.5rem',
                       padding: 0,

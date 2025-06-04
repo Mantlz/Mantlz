@@ -33,7 +33,7 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
               borderRadius: '6px',
               border: '1px solid var(--gray-6)',
               backgroundColor: 'var(--gray-1)',
-              color: 'var(--gray-12)',
+              color: 'black',
               fontSize: '14px',
               lineHeight: '1.5',
               gap: '8px',
@@ -64,7 +64,7 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                   justifyContent: 'center',
                   padding: '4px',
                   backgroundColor: 'var(--gray-1)',
-                  color: 'var(--gray-11)',
+                  color: 'var(--gray-20)',
                 }}
               >
                 <ChevronUpIcon />
@@ -78,7 +78,7 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                     style={{
                       padding: '8px 12px',
                       fontSize: '14px',
-                      color: 'var(--gray-12)',
+                      color: 'black',
                       cursor: 'pointer',
                       outline: 'none',
                       userSelect: 'none',
@@ -98,7 +98,7 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                   justifyContent: 'center',
                   padding: '4px',
                   backgroundColor: 'var(--gray-1)',
-                  color: 'var(--gray-11)',
+                  color: 'var(--gray-20)',
                 }}
               >
                 <ChevronDownIcon />

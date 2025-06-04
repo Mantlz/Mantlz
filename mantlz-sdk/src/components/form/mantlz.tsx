@@ -212,7 +212,9 @@ export default function Mantlz({
         className={className}
         style={{
           ...styles.form.container,
-          backgroundColor: 'transparent',
+          backgroundColor: 'white', // Change from 'transparent' to 'white'
+          // Add these properties to ensure content visibility
+          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)',
         }}
       >
         {formType === 'order' && (
@@ -285,7 +287,7 @@ export default function Mantlz({
                 backgroundColor: 'var(--gray-2)',
                 borderRadius: '6px',
                 fontSize: '14px',
-                color: 'var(--gray-11)',
+                color: 'var(--gray-20)',
                 marginBottom: '8px'
               }}>
                 Your privacy choices matter to us. You can change these preferences at any time.
@@ -295,7 +297,7 @@ export default function Mantlz({
             {showUsersJoined && canShowUsersJoined && usersJoined > 0 && (
               <div style={{ 
                 fontSize: '13px',
-                color: 'var(--gray-11)',
+                color: 'var(--gray-20)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -305,7 +307,7 @@ export default function Mantlz({
               }}>
                 <span style={{ 
                   fontWeight: 600,
-                  color: 'var(--gray-12)'
+                  color: 'black'
                 }}>{usersJoined}</span> {usersJoinedLabel}
               </div>
             )}

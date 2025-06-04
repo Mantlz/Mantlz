@@ -7,7 +7,7 @@ export default function CustomerFeedbackPage() {
       <div className="flex flex-row items-center justify-center gap-4 flex-wrap">
          <Mantlz
           formId="cma9tu80t0004o7r0iuisldzg"
-          theme='neobrutalism'
+          theme='default'
           showUsersJoined={true}
           usersJoinedCount={100000}
           usersJoinedLabel='Users already joined'
@@ -16,7 +16,7 @@ export default function CustomerFeedbackPage() {
 
          <Mantlz 
           formId="cmbi9pisu0001jp04lt68brmj"
-          theme='neobrutalism'
+          theme='simple'
         />
         
         <Mantlz 
@@ -26,7 +26,7 @@ export default function CustomerFeedbackPage() {
 
         <Mantlz 
           formId="cman7j8ub0003o7jpmg2bjr6n"
-          theme='neobrutalism'
+          theme='modern'
         />
          {/* <Mantlz 
           formId="cman7j8ub0003o7jpmg2bjr6n"

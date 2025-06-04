@@ -32,8 +32,8 @@ const getVariantStyles = (variant: CardProps['variant'] = 'default') => {
       return {
         border: '1px solid var(--gray-6)',
         backgroundColor: 'var(--gray-2)',
-        titleColor: 'var(--gray-12)',
-        descriptionColor: 'var(--gray-11)',
+        titleColor: 'black',
+        descriptionColor: 'var(--gray-20)',
       };
   }
 };
