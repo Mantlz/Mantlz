@@ -137,7 +137,7 @@ export function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onU
               </div>
               <Button
                 className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-lg px-6 shadow-sm hover:shadow-md"
-                onClick={() => isPremium ? router.push("/dashboard/forms/new") : onUpgradeClick?.()}
+                onClick={() => isPremium ? router.push("/dashboard/forms") : onUpgradeClick?.()}
               >
                 {isPremium ? "Create Your First Form" : "Upgrade to Create Campaigns"}
               </Button>
