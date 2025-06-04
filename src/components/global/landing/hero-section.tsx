@@ -24,9 +24,9 @@ export default function HeroSection() {
         </div>
 
         {/* Main heading */}
-        <h1 className="text-6xl font-bold tracking-tight sm:text-6xl lg:text-7xl xl:text-7xl">
-          <span className="block text-white">Manage All of Your Work</span>
-          <span className="block text-black  dark:text-stone-400 mt-2">
+        <h1 className="text-6xl  mt-4 font-bold tracking-tight sm:text-6xl lg:text-7xl xl:text-7xl">
+          <span className="block text-black dark:text-white">Manage All of Your Forms</span>
+          <span className="block text-stone-400 mt-2">
             In One Place Efficiently
           </span>
         </h1>
@@ -38,16 +38,14 @@ export default function HeroSection() {
         </p>
 
         <div className="mt-2 item-center">
-          <Button className="bg-black dark:bg-white hover:bg-zinc-900 text-white dark:text-black  border border-white px-6 py-3 rounded-lg text-base font-semibold">
+          <Button className="h-10 px-8 text-md bg-black dark:bg-white  text-primary-foreground dark:border-primary border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95">
             Get started
           </Button>
         </div>
         <p className="mt-2">
-
-            <span className="font-extralight text-sm text-stone-700 dark:text-white">
+          <span className="font-extralight text-sm text-stone-700 dark:text-white">
             No credit card required.
-            </span>
-
+          </span>
         </p>
 
         {/* Dashboard preview */}

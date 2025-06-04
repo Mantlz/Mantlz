@@ -20,7 +20,7 @@ export default function BottomCTA() {
           
           {/* CTA Button */}
           <Button
-            className="h-12 px-8 text-md bg-orange-900 **:[text-shadow:0_1px_0_var(--color-primary)] border-primary from-primary/80 to-primary dark:from-primary dark:to-primary/80 text-primary-foreground dark:border-primary border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+            className="h-12 px-8 text-md bg-black dark:bg-white  text-primary-foreground dark:border-primary border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
             size="lg"
           >
             Start Building Forms

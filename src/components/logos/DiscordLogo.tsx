@@ -3,8 +3,9 @@ import { type SVGProps } from "react";
 export default function Discord(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width="400px"
-      height="400px"
+      
+       width="24"
+      height="24"
       viewBox="0 -28.5 256 256"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"

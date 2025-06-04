@@ -136,13 +136,15 @@ export function Navbar() {
       <div className="flex items-center gap-4">
         <Link href="/sign-in">
          <Button size="sm" 
-         className="flex items-center gap-1 bg-zinc-100 hover:bg-orange-800 dark:bg-zinc-100 dark:hover:bg-orange-900 text-black border-zinc-300 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200 text-sm ">
+         className="flex items-center gap-1 bg-zinc-100 hover:bg-stone-800 hover:text-white dark:bg-stone-900 dark:hover:bg-stone-950 text-black dark:text-white border-zinc-300 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200 text-sm ">
            Sign in
          </Button>
         </Link>
         <Link href="/sign-up">
           <Button size="sm" 
-          className="flex items-center gap-1 bg-zinc-900 hover:bg-orange-800 dark:bg-orange-950 dark:hover:bg-orange-900 text-white border-zinc-200 dark:border-zinc-900 shadow-sm hover:shadow-md transition-all duration-200 text-sm ">
+            className="h-8 px-2 text-md bg-black dark:bg-white  text-primary-foreground dark:border-primary border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+
+          >
             Sign up 
           </Button>
         </Link>

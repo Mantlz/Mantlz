@@ -6,6 +6,8 @@ export default function Slack(props: SVGProps<SVGSVGElement>) {
       enableBackground="new 0 0 2447.6 2452.5"
       viewBox="0 0 2447.6 2452.5"
       xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
       {...props}
       className="fill-current"
     >
