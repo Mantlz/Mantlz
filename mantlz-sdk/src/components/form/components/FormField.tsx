@@ -3,12 +3,14 @@ import { UseFormReturn } from 'react-hook-form';
 import * as Form from '@radix-ui/react-form';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import * as Select from '@radix-ui/react-select';
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
+import { //CheckIcon,
+   ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import { FormField as FormFieldType } from '../types';
 import { themes } from '../themes';
 import { useTheme } from '../hooks/useTheme';
 import { FileUpload } from '../../ui/file-upload';
 import { ProductField } from './ProductField';
+import { StarRating } from './StarRating';
 
 interface FormFieldProps {
   field: FormFieldType;
@@ -23,6 +25,36 @@ export const FormField = ({
   const styles = themes[selectedTheme || 'default'];
 
   const renderField = () => {
+    // Special handling for rating field in feedback forms
+    if (field.type === 'number' && field.name === 'rating') {
+      // Get the current rating value from form state
+      const ratingValue = formMethods.watch(field.id) || 0;
+      
+      return (
+        <Form.Field name={field.id}>
+          <Form.Label style={styles.field.label}>
+            {field.label}
+            {field.required && <span style={{ color: 'var(--red-9)' }}>*</span>}
+          </Form.Label>
+          <StarRating 
+            rating={ratingValue} 
+            setRating={(value) => {
+              formMethods.setValue(field.id, value, {
+                shouldValidate: true,
+                shouldDirty: true,
+                shouldTouch: true
+              });
+            }} 
+          />
+          {formMethods.formState.errors[field.id] && (
+            <Form.Message style={styles.field.error}>
+              {formMethods.formState.errors[field.id]?.message as string}
+            </Form.Message>
+          )}
+        </Form.Field>
+      );
+    }
+    
     switch (field.type) {
       case 'textarea':
         return (
@@ -207,4 +239,4 @@ export const FormField = ({
       {renderField()}
     </div>
   );
-}; 
+};

@@ -10,7 +10,6 @@ import { toast } from '../../utils/toast';
 import { useMantlz } from '../../context/mantlzContext';
 import { ApiKeyErrorCard } from '../ui/ApiKeyErrorCard';
 import { MantlzProps, FormType } from './types';
-import { StarRating } from './components/StarRating';
 import { FormField } from './components/FormField';
 import { useFormLogic } from './hooks/useFormLogic';
 import { ThemeProvider } from './context/ThemeContext';
@@ -26,7 +25,6 @@ export default function Mantlz({
   theme = 'default',
 }: MantlzProps) {
   const { client, apiKey } = useMantlz();
-  const [starRating, setStarRating] = useState(0);
   const [usersJoined, setUsersJoined] = useState(initialUsersJoinedCount);
   const [canShowUsersJoined, setCanShowUsersJoined] = useState(false);
   const styles = themes[theme];
@@ -266,23 +264,6 @@ export default function Mantlz({
                 formMethods={formMethods}
               />
             ))}
-            
-            {formType === 'feedback' && (
-              <Form.Field name="rating">
-                <Form.Label style={styles.field.label}>
-                  Rating<span style={{ color: 'var(--red-9)' }}>*</span>
-                </Form.Label>
-                <StarRating 
-                  rating={starRating} 
-                  setRating={setStarRating} 
-                />
-                {formMethods.formState.errors.rating && (
-                  <Form.Message style={styles.field.error}>
-                    {formMethods.formState.errors.rating?.message as string}
-                  </Form.Message>
-                )}
-              </Form.Field>
-            )}
             
             {/* Conditional UI for survey form type */}
             {formType === 'survey' && formMethods.getValues('satisfaction') && (

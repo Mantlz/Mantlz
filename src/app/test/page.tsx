@@ -15,7 +15,7 @@ export default function CustomerFeedbackPage() {
         /> 
 
          <Mantlz 
-          formId="cmao2vgrf0007o7lfm6r82jif"
+          formId="cmbi9pisu0001jp04lt68brmj"
           theme='neobrutalism'
         />
         
@@ -24,11 +24,11 @@ export default function CustomerFeedbackPage() {
           theme='neobrutalism'
         />  
 
-        {/* <Mantlz 
+        <Mantlz 
           formId="cman7j8ub0003o7jpmg2bjr6n"
           theme='neobrutalism'
         />
-         <Mantlz 
+         {/* <Mantlz 
           formId="cman7j8ub0003o7jpmg2bjr6n"
           theme='neobrutalism'
           
