@@ -49,7 +49,7 @@ export default function Faq() {
                     <Accordion
                         type="single"
                         collapsible
-                        className="bg-card ring-orange-900 w-full rounded-2xl border px-8 py-3 shadow-sm ring-4 dark:ring-0">
+                        className="bg-card ring-orange-500 w-full rounded-2xl border px-8 py-3 shadow-sm ring-4 dark:ring-0">
                         {faqItems.map((item) => (
                             <AccordionItem
                                 key={item.id}
@@ -63,7 +63,7 @@ export default function Faq() {
                         ))}
                     </Accordion>
 
-                    <p className="text-muted-foreground mt-6 px-8">
+                    <p className="text-muted-foreground  justify-center text-center mt-6 px-8">
                         Can&apos;t find what you&apos;re looking for? Contact our{' '}
                         <Link
                             href="mailto:contact@mantlz.app"
