@@ -32,4 +32,44 @@ export interface Form {
 export interface SearchResult {
   submissions: Submission[]
   forms?: Form[]
-} 
+}
+
+// Advanced filters interface for search functionality
+export interface AdvancedFilters {
+  dateRange?: { from: Date | undefined; to?: Date | undefined }
+  showOnlyWithAttachments?: boolean
+  sortOrder?: 'newest' | 'oldest'
+  timeFrame?: 'all' | '24h' | '7d' | '30d'
+  hasEmail?: boolean
+  browser?: string
+  location?: string
+}
+
+// Forms data interface
+export interface FormsData {
+  forms: Form[]
+}
+
+// API parameters interface for better type safety
+export interface ApiParams {
+  page: number
+  limit: number
+  search?: string
+  formId?: string
+  type?: string
+  status?: string
+  startDate?: string
+  endDate?: string
+  hasEmail?: string
+  browser?: string
+  location?: string
+  sortOrder?: string
+  emailQuery?: string
+  idQuery?: string
+  dateAfter?: string
+  dateBefore?: string
+  dateEquals?: string
+  formName?: string
+  generalQuery?: string
+  [key: string]: unknown
+}

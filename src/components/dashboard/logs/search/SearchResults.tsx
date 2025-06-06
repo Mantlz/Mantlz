@@ -200,10 +200,6 @@ function SubmissionSearchResult({
             <Calendar className="h-3 w-3 mr-1" />
             {formatDistanceToNow(new Date(submission.createdAt), { addSuffix: true })}
           </span>
-          <span className="text-gray-300 dark:text-gray-600 hidden sm:inline">•</span>
-          <span className="font-mono text-xs text-gray-500 dark:text-gray-400">
-            ID: {submission.id.slice(0, 8)}...
-          </span>
         </div>
       </div>
       

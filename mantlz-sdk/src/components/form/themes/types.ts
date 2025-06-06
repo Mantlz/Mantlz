@@ -14,6 +14,7 @@ export interface Theme {
     container: CSSProperties;
     title: CSSProperties;
     description: CSSProperties;
+    background?: CSSProperties; // Optional additional background styling
   };
   field: {
     container: CSSProperties;
@@ -22,4 +23,4 @@ export interface Theme {
     error: CSSProperties;
   };
   button: ExtendedCSSProperties;
-} 
+}

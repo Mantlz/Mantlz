@@ -321,7 +321,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
             {formsData.forms.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((form) => (
               <div
                 key={form.id}
-                className={`bg-white dark:bg-zinc-900 border ${(form._count?.campaigns || 0) > 0 ? 'border-blue-100 dark:border-blue-800/30' : 'border-zinc-100 dark:border-zinc-800/50'} rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer`}
+                className={`bg-white dark:bg-zinc-900 border ${(form._count?.campaigns || 0) > 0 ? 'border-orange-100 dark:border-orange-800/30' : 'border-zinc-100 dark:border-zinc-800/50'} rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer`}
                 onClick={() => handleFormClick(form.id)}
               >
                 {(() => {
@@ -347,7 +347,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                           variant="ghost"
                           size="sm"
                           className={`h-7 px-2 text-xs ${(form._count?.campaigns || 0) > 0 
-                            ? 'bg-blue-50 hover:bg-blue-100 text-blue-600 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 dark:text-blue-400' 
+                            ? 'bg-orange-50 hover:bg-orange-100 text-stone-800 dark:bg-orange-900/20 dark:hover:bg-orange-900/30 dark:text-white' 
                             : 'hover:bg-zinc-200 text-gray-600 dark:hover:bg-zinc-950 dark:text-gray-300'} rounded-lg`}
                         >
                           View Campaigns
@@ -364,7 +364,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
             {formsData.forms.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((form) => (
               <div
                 key={form.id}
-                className={`bg-white dark:bg-zinc-900 border ${(form._count?.campaigns || 0) > 0 ? 'border-blue-100 dark:border-blue-800/30' : 'border-zinc-100 dark:border-zinc-800/50'} rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer`}
+                className={`bg-white dark:bg-zinc-900 border ${(form._count?.campaigns || 0) > 0 ? 'border-orange-100 dark:border-orange-800/30' : 'border-zinc-100 dark:border-zinc-800/50'} rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer`}
                 onClick={() => handleFormClick(form.id)}
               >
                 <div className="p-4 sm:p-5 flex items-center justify-between">
@@ -393,7 +393,8 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                     variant="ghost"
                     size="sm"
                     className={`h-7 px-2 text-xs ${(form._count?.campaigns || 0) > 0 
-                      ? 'bg-blue-50 hover:bg-blue-100 text-blue-600 dark:bg-blue-900/20 dark:hover:bg-blue-900/30 dark:text-blue-400' 
+                      ? 'bg-orange-50 hover:bg-orange-100 text-stone-800 dark:bg-blue-900/20 dark:hover:bg-orange-900/30 dark:text-white' 
+
                       : 'hover:bg-zinc-200 text-gray-600 dark:hover:bg-zinc-950 dark:text-gray-300'} rounded-lg`}
                   >
                     View Campaigns

@@ -3,7 +3,7 @@ import { Mantlz } from '@mantlz/nextjs';
 
 export default function CustomerFeedbackPage() {
   return (
-    <div className="min-h-screen w-full flex items-center justify-center py-8 px-4">
+    <div className="min-h-screen w-full bg-red-500 flex items-center justify-center py-8 px-4">
       <div className="flex flex-row items-center justify-center gap-4 flex-wrap">
          <Mantlz
           formId="cma9tu80t0004o7r0iuisldzg"
