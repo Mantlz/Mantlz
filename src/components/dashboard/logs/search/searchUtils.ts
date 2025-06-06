@@ -176,15 +176,33 @@ function createSubmissionFromResponse(
  * Apply client-side filters to submissions
  */
 function applyClientSideFilters(submissions: Submission[], advancedFilters?: AdvancedFilters): Submission[] {
-  if (!advancedFilters) return submissions
+  let filtered = submissions
   
-  let filtered = [...submissions]
+  // Return early if no filters provided
+  if (!advancedFilters) {
+    return filtered
+  }
   
-  // Filter by attachment presence
+  // Filter by email presence
+  if (advancedFilters.hasEmail) {
+    filtered = filtered.filter((sub) => {
+      return sub.email && sub.email.trim() !== ''
+    })
+  }
+  
+  // Filter by attachment presence - FIXED VERSION
   if (advancedFilters.showOnlyWithAttachments) {
     filtered = filtered.filter((sub) => {
-      const attachments = (sub.data as Record<string, unknown>).attachments
-      return attachments && Array.isArray(attachments) && attachments.length > 0
+      if (!sub.data || typeof sub.data !== 'object') return false
+      
+      // Check if any field contains a file URL
+      return Object.values(sub.data as Record<string, unknown>).some(value => {
+        if (typeof value === 'string') {
+          return value.startsWith('https://ucarecdn.com/') || 
+                 (value.startsWith('http') && value.includes('file'))
+        }
+        return false
+      })
     })
   }
   
@@ -193,9 +211,7 @@ function applyClientSideFilters(submissions: Submission[], advancedFilters?: Adv
     filtered.sort((a, b) => {
       const dateA = new Date(a.createdAt).getTime()
       const dateB = new Date(b.createdAt).getTime()
-      return advancedFilters.sortOrder === 'newest' 
-        ? dateB - dateA
-        : dateA - dateB
+      return advancedFilters.sortOrder === 'newest' ? dateB - dateA : dateA - dateB
     })
   }
   
