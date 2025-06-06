@@ -12,6 +12,7 @@ import ClientWrapper from "@/components/global/client-wrapper"
 import { FONT_FAMILIES, type FontFamily } from "@/lib/fonts"
 import { FontInitializer } from "@/components/global/font-initializer"
 import Script from "next/script"
+import { SeoConfig, generateMetadata } from "@/types/seo"
 
 const sansFont = Space_Grotesk({
   subsets: ["latin"],
@@ -33,10 +34,18 @@ const monoFont = Space_Mono({
   fallback: ['monospace'],
 });
 
-export const metadata: Metadata = {
+const seoConfig: SeoConfig = {
   title: "Mantlz - Build Custom Forms with Ease",
   description: "Create powerful, customizable forms with Mantlz. The ultimate form builder platform for businesses and developers. Build, deploy, and analyze forms effortlessly.",
-  metadataBase: new URL('https://mantlz.app'),
+  baseUrl: 'https://mantlz.app',
+  siteName: 'Mantlz',
+  twitterHandle: '@trymantlz',
+  googleSiteVerification: 'lTqIuvXz5sq4jT9YOLyja5LLMfvKAiZF3g5fTEa70fI',
+  defaultLocale: 'en_GB'
+}
+
+export const metadata: Metadata = {
+  ...generateMetadata(seoConfig),
   keywords: [
     'form builder',
     'custom forms',
@@ -52,24 +61,9 @@ export const metadata: Metadata = {
   authors: [{ name: 'Mantlz Team' }],
   creator: 'Mantlz',
   publisher: 'Mantlz',
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
   openGraph: {
-    type: 'website',
-    locale: 'en_GB',
-    url: 'https://mantlz.app',
-    siteName: 'Mantlz',
+    ...generateMetadata(seoConfig).openGraph,
     title: 'Mantlz - Professional Form Builder Platform',
-    description: 'Create powerful, customizable forms with Mantlz. The ultimate form builder platform for businesses and developers. Build, deploy, and analyze forms effortlessly.',
     images: [
       {
         url: '/og-image.png',
@@ -80,21 +74,13 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    card: 'summary_large_image',
+    ...generateMetadata(seoConfig).twitter,
     title: 'Mantlz - Professional Form Builder Platform',
-    description: 'Create powerful, customizable forms with Mantlz. The ultimate form builder platform for businesses and developers.',
     images: ['/twitter-image.jpg'],
-    creator: '@trymantlz',
   },
   icons: [
     { rel: 'icon', url: '/favicon.ico' },
-
-
   ],
-  manifest: '/site.webmanifest',
-  verification: {
-    google: 'lTqIuvXz5sq4jT9YOLyja5LLMfvKAiZF3g5fTEa70fI',
-  },
 }
 
 export default function RootLayout({

@@ -17,8 +17,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
           {/* Logo and description */}
           <div className="flex flex-col items-center md:items-start">
-            <div className="flex items-center space-x-2 mb-4">
-              <Logo />
+            <div className="flex items-center space-x-2 mb-2">
+              <Logo  className="mb-1 "size={24}/>
               <p className="text-xl font-bold text-zinc-800 dark:text-white">Mantlz</p>
             </div>
             <p className="text-sm text-center md:text-left mb-6">The best way to create and manage forms</p>

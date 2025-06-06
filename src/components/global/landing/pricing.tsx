@@ -195,19 +195,13 @@ function PricingContent({
   }
 
   return (
-      <section className="py-20 md:py-32 bg-gradient-to-b from-background via-background/95 to-background/90" id="pricing">
+      <section className="py-20 md:py-32" id="pricing">
         <div className="mx-auto max-w-6xl px-2">
           <div className="text-center mb-20">
             <h1 className="text-5xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/90 to-primary/70">Choose the plan that fits your needs</h1>
             <p className="mt-6 text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">Start for free, upgrade as you grow. No hidden fees, cancel anytime.</p>
           </div>
-          <div className="relative">
-            {/* Enhanced decorative elements */}
-            <div className="absolute inset-0 -z-10 overflow-hidden">
-              <div className="absolute left-1/4 top-0 -z-10 h-[400px] w-[400px] rounded-full bg-primary/8 blur-[120px] animate-pulse"></div>
-              <div className="absolute right-1/4 bottom-0 -z-10 h-[350px] w-[350px] rounded-full bg-primary/6 blur-[100px] animate-pulse" style={{animationDelay: '1s'}}></div>
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 h-[200px] w-[200px] rounded-full bg-primary/4 blur-[80px]"></div>
-            </div>
+          <div className="relative">           
             
             <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
               {plans.map((plan, index) => (
@@ -215,8 +209,8 @@ function PricingContent({
                   {/* Enhanced top accent */}
                   <div className={`absolute inset-x-0 top-0 h-1 ${plan.isPopular ? 'bg-gradient-to-r from-primary via-primary/90 to-primary/70' : 'bg-gradient-to-r from-muted/40 via-muted/60 to-muted/40'}`}></div>
                   
-                  {/* Subtle background pattern */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-background/50 to-background opacity-50"></div>
+
+
                   
                   <CardContent className="relative flex h-full flex-col p-8 lg:p-10">
                     <div className="flex items-start justify-between mb-8">
@@ -226,7 +220,7 @@ function PricingContent({
                         </div>
                       </div>
                       {plan.isPopular && (
-                        <Badge variant="default" className="bg-primary text-primary-foreground font-semibold px-4 py-1.5 text-sm shadow-md">
+                        <Badge variant="default" className="bg-orange-500 text-white font-semibold px-4 py-1.5 text-sm shadow-md">
                           Most Popular
                         </Badge>
                       )}

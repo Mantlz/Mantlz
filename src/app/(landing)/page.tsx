@@ -11,6 +11,8 @@ import BottomCTA from "@/components/global/landing/bottomcta";
 import OurServices from "@/components/global/landing/OurServices";
 import { Suspense } from "react";
 import IntegrationsSection from "@/components/global/landing/integrations-6";
+import CustomizeFormSection from "@/components/global/landing/customizeform";
+import SecuritySection from "@/components/global/landing/security";
 // import LogoCloud from "@/components/global/landing/logo-cloud";
 
 export default function LandingPage() {
@@ -23,12 +25,12 @@ export default function LandingPage() {
         <div className="mt-20">
           {/* <LogoCloud /> */}
           <IntegrationsSection />
-
         </div>
 
         <OurServices />
-        {/* <IntegrationsSection /> */}
+        <CustomizeFormSection />
         <FeaturesSection />
+        <SecuritySection />
       </Container>
 
       <Suspense>
