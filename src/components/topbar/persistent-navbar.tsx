@@ -312,7 +312,7 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
         <MobileNavMenu />
 
         <Link href="/dashboard" className="flex items-center gap-1 xs:gap-2 font-semibold group cursor-pointer">
-        <Logo className="h-6 w-6 mb-2 mr-1" size={32} />
+        <Logo className="h-6 w-6 mb-1 mr-0.5" size={20} />
 
           <span className="text-sm sm:text-base group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors duration-200">Mantlz</span>
         </Link>

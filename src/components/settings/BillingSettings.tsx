@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { 
@@ -23,6 +23,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { client } from "@/lib/client";
 import { useSubscription } from "@/hooks/useSubscription";
+import { useLoading } from "@/contexts/LoadingContext";
 
 // Type definitions for subscription data
 interface SubscriptionData {
@@ -162,6 +163,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
 
 export default function BillingSettings() {
   const { userPlan } = useSubscription();
+  const { setIsLoading, setLoadingMessage, renderSkeleton } = useLoading();
   const { data: usageData, isLoading: isLoadingUsage } = useQuery({
     queryKey: ["usage"],
     queryFn: async () => {
@@ -169,6 +171,14 @@ export default function BillingSettings() {
       return response.json();
     }
   });
+
+  // Set global loading state
+  useEffect(() => {
+    if (isLoadingUsage) {
+      setLoadingMessage('Loading subscription information...');
+    }
+    setIsLoading(isLoadingUsage);
+  }, [isLoadingUsage, setIsLoading, setLoadingMessage]);
 
   const subscriptionData: SubscriptionData = {
     status: "active",
@@ -234,258 +244,270 @@ export default function BillingSettings() {
     }).format(amount / 100);
   };
 
-  if (isLoadingUsage) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[40vh] w-full">
-        <Loader2 className="h-6 w-6 text-zinc-400 animate-spin" />
-        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-          Loading subscription information...
+  // Create a renderContent function to handle conditional rendering
+  const renderContent = () => {
+    // Create a common header component that's always visible
+    const headerContent = (
+      <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center">
+            <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
+              Subscription Information
+            </h2>
+            <PlanBadge plan={userPlan} />
+          </div>
+          <Button 
+            onClick={handleManageSubscription} 
+            disabled={isRedirecting}
+            variant="outline"
+            size="sm"
+            className="h-8 text-xs"
+          >
+            {isRedirecting ? (
+              <>
+                <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                Redirecting...
+              </>
+            ) : (
+              <>
+                <ExternalLink className="h-3 w-3 mr-1" />
+                Manage Subscription
+              </>
+            )}
+          </Button>
+        </div>
+        <p className="text-xs text-zinc-600 dark:text-zinc-400">
+          Manage your subscription and billing information
         </p>
-      </div>
+      </header>
     );
-  }
 
-  return (
-    <div className="w-full max-w-5xl mx-auto">
-      <ScrollArea className="h-[550px] w-full">
-        <div className="w-full space-y-4 pr-4">
-          {/* Header with Quick Actions */}
-          <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center">
-                <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
-                  Subscription Information
-                </h2>
-                <PlanBadge plan={userPlan} />
-              </div>
-              <Button 
-                onClick={handleManageSubscription} 
-                disabled={isRedirecting}
-                variant="outline"
-                size="sm"
-                className="h-8 text-xs"
-              >
-                {isRedirecting ? (
-                  <>
-                    <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-                    Redirecting...
-                  </>
-                ) : (
-                  <>
-                    <ExternalLink className="h-3 w-3 mr-1" />
-                    Manage Subscription
-                  </>
-                )}
-              </Button>
+    if (isLoadingUsage) {
+      return (
+        <div className="w-full max-w-5xl mx-auto">
+          <ScrollArea className="h-[550px] w-full">
+            <div className="w-full space-y-4 pr-4">
+              {headerContent}
+              {renderSkeleton('card', 2)}
             </div>
-            <p className="text-xs text-zinc-600 dark:text-zinc-400">
-              Manage your subscription and billing information
-            </p>
-          </header>
+          </ScrollArea>
+        </div>
+      );
+    }
 
-          {/* Current Plan Card */}
-          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
-            <CardHeader className="pb-2 pt-4 px-5">
-              <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Current Plan
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="px-5 pb-4">
-              <div className="space-y-4">
-                <div className="p-3 border border-zinc-200 dark:border-zinc-800 rounded-lg">
-                  <p className="text-xs text-zinc-600 dark:text-zinc-400">Price</p>
-                  <p className="text-sm font-medium text-zinc-900 dark:text-white">
-                    {subscriptionData?.price 
-                      ? `${formatCurrency(subscriptionData.price.amount, subscriptionData.price.currency)}/${subscriptionData.price.interval}`
-                      : "Free"}
-                  </p>
-                </div>
-                
-                {/* Plan Features */}
-                <div className="p-3 border border-zinc-200 dark:border-zinc-800 rounded-lg">
-                  <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-2">Plan Features</p>
-                  <ul className="space-y-1.5 text-xs text-zinc-700 dark:text-zinc-300">
-                    {userPlan === "PRO" && (
-                      <>
-                        <li className="flex items-center">
-                          <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                          <span>Unlimited forms</span>
-                        </li>
-                        <li className="flex items-center">
-                          <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                          <span>Unlimited submissions</span>
-                        </li>
-                        <li className="flex items-center">
-                          <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                          <span>Advanced analytics & reporting</span>
-                        </li>
-                        <li className="flex items-center">
-                          <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                          <span>Custom branding</span>
-                        </li>
-                        <li className="flex items-center">
-                          <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                          <span>Priority support</span>
-                        </li>
-                      </>
-                    )}
-                    {userPlan === "STANDARD" && (
-                      <>
-                        <li className="flex items-center">
-                          <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                          <span>Advanced form builder</span>
-                        </li>
-                        <li className="flex items-center">
-                          <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                          <span>Custom form themes</span>
-                        </li>
-                        <li className="flex items-center">
-                          <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                          <span>Advanced analytics</span>
-                        </li>
-                        <li className="flex items-center">
-                          <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                          <span>Email notifications</span>
-                        </li>
-                        <li className="flex items-center">
-                          <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                          <span>Priority support</span>
-                        </li>
-                      </>
-                    )}
-                    {(!userPlan || userPlan === "FREE") && (
-                      <>
-                        <li className="flex items-center">
-                          <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                          <span>Basic form builder</span>
-                        </li>
-                        <li className="flex items-center">
-                          <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                          <span>Up to 100 submissions per month</span>
-                        </li>
-                        <li className="flex items-center">
-                          <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                          <span>Basic analytics</span>
-                        </li>
-                        <li className="flex items-center">
-                          <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                          <span>Community support</span>
-                        </li>
-                      </>
-                    )}
-                  </ul>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+    return (
+      <div className="w-full max-w-5xl mx-auto">
+        <ScrollArea className="h-[550px] w-full">
+          <div className="w-full space-y-4 pr-4">
+            {headerContent}
 
-          {/* Invoices Section */}
-          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
-            <CardHeader className="pb-2 pt-4 px-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
-                    <FileText className="h-3.5 w-3.5 mr-1.5 text-zinc-500" />
-                    Recent Invoices
-                  </CardTitle>
-                  <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
-                    View and download your recent invoices
-                  </CardDescription>
+            {/* Current Plan Card */}
+            <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+              <CardHeader className="pb-2 pt-4 px-5">
+                <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Current Plan
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="px-5 pb-4">
+                <div className="space-y-4">
+                  <div className="p-3 border border-zinc-200 dark:border-zinc-800 rounded-lg">
+                    <p className="text-xs text-zinc-600 dark:text-zinc-400">Price</p>
+                    <p className="text-sm font-medium text-zinc-900 dark:text-white">
+                      {subscriptionData?.price 
+                        ? `${formatCurrency(subscriptionData.price.amount, subscriptionData.price.currency)}/${subscriptionData.price.interval}`
+                        : "Free"}
+                    </p>
+                  </div>
+                  
+                  {/* Plan Features */}
+                  <div className="p-3 border border-zinc-200 dark:border-zinc-800 rounded-lg">
+                    <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-2">Plan Features</p>
+                    <ul className="space-y-1.5 text-xs text-zinc-700 dark:text-zinc-300">
+                      {userPlan === "PRO" && (
+                        <>
+                          <li className="flex items-center">
+                            <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
+                            <span>Unlimited forms</span>
+                          </li>
+                          <li className="flex items-center">
+                            <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
+                            <span>Unlimited submissions</span>
+                          </li>
+                          <li className="flex items-center">
+                            <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
+                            <span>Advanced analytics & reporting</span>
+                          </li>
+                          <li className="flex items-center">
+                            <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
+                            <span>Custom branding</span>
+                          </li>
+                          <li className="flex items-center">
+                            <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
+                            <span>Priority support</span>
+                          </li>
+                        </>
+                      )}
+                      {userPlan === "STANDARD" && (
+                        <>
+                          <li className="flex items-center">
+                            <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
+                            <span>Advanced form builder</span>
+                          </li>
+                          <li className="flex items-center">
+                            <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
+                            <span>Custom form themes</span>
+                          </li>
+                          <li className="flex items-center">
+                            <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
+                            <span>Advanced analytics</span>
+                          </li>
+                          <li className="flex items-center">
+                            <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
+                            <span>Email notifications</span>
+                          </li>
+                          <li className="flex items-center">
+                            <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
+                            <span>Priority support</span>
+                          </li>
+                        </>
+                      )}
+                      {(!userPlan || userPlan === "FREE") && (
+                        <>
+                          <li className="flex items-center">
+                            <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
+                            <span>Basic form builder</span>
+                          </li>
+                          <li className="flex items-center">
+                            <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
+                            <span>Up to 100 submissions per month</span>
+                          </li>
+                          <li className="flex items-center">
+                            <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
+                            <span>Basic analytics</span>
+                          </li>
+                          <li className="flex items-center">
+                            <CheckCircle2 className="h-3.5 w-3.5 mr-1.5 text-green-500" />
+                            <span>Community support</span>
+                          </li>
+                        </>
+                      )}
+                    </ul>
+                  </div>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 text-xs"
-                  onClick={() => window.location.href = '/dashboard/billing'}
-                >
-                  View All
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent className="px-5 pb-4">
-              {isLoadingInvoices ? (
-                <div className="flex items-center justify-center py-4">
-                  <Loader2 className="h-4 w-4 text-zinc-400 animate-spin" />
-                  <span className="ml-2 text-sm text-zinc-600 dark:text-zinc-400">Loading invoices...</span>
+              </CardContent>
+            </Card>
+
+            {/* Invoices Section */}
+            <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+              <CardHeader className="pb-2 pt-4 px-5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
+                      <FileText className="h-3.5 w-3.5 mr-1.5 text-zinc-500" />
+                      Recent Invoices
+                    </CardTitle>
+                    <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+                      View and download your recent invoices
+                    </CardDescription>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 text-xs"
+                    onClick={() => window.location.href = '/dashboard/billing'}
+                  >
+                    View All
+                  </Button>
                 </div>
-              ) : invoices && invoices.length > 0 ? (
-                <div className="space-y-2">
-                  {invoices.slice(0, 3).map((invoice) => (
-                    <div
-                      key={invoice.id}
-                      className="flex items-center justify-between p-3 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
-                    >
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium text-zinc-900 dark:text-white">
-                          Invoice #{invoice.number}
-                        </span>
-                        <span className="text-xs text-zinc-600 dark:text-zinc-400">
-                          {new Date(invoice.created * 1000).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm font-medium text-zinc-900 dark:text-white">
-                          {formatCurrency(invoice.amount, invoice.currency)}
-                        </span>
-                        <StatusBadge status={invoice.status} />
-                        <div className="flex space-x-1">
-                          {invoice.pdf && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-8 w-8 p-0"
-                              onClick={() => invoice.pdf && window.open(invoice.pdf, "_blank")}
-                            >
-                              <Download className="h-4 w-4" />
-                            </Button>
-                          )}
-                          {invoice.hostedUrl && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-8 w-8 p-0"
-                              onClick={() => invoice.hostedUrl && window.open(invoice.hostedUrl, "_blank")}
-                            >
-                              <ExternalLink className="h-4 w-4" />
-                            </Button>
-                          )}
+              </CardHeader>
+              <CardContent className="px-5 pb-4">
+                {isLoadingInvoices ? (
+                  <div className="flex items-center justify-center py-4">
+                    <Loader2 className="h-4 w-4 text-zinc-400 animate-spin" />
+                    <span className="ml-2 text-sm text-zinc-600 dark:text-zinc-400">Loading invoices...</span>
+                  </div>
+                ) : invoices && invoices.length > 0 ? (
+                  <div className="space-y-2">
+                    {invoices.slice(0, 3).map((invoice) => (
+                      <div
+                        key={invoice.id}
+                        className="flex items-center justify-between p-3 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+                      >
+                        <div className="flex flex-col">
+                          <span className="text-sm font-medium text-zinc-900 dark:text-white">
+                            Invoice #{invoice.number}
+                          </span>
+                          <span className="text-xs text-zinc-600 dark:text-zinc-400">
+                            {new Date(invoice.created * 1000).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <span className="text-sm font-medium text-zinc-900 dark:text-white">
+                            {formatCurrency(invoice.amount, invoice.currency)}
+                          </span>
+                          <StatusBadge status={invoice.status} />
+                          <div className="flex space-x-1">
+                            {invoice.pdf && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0"
+                                onClick={() => invoice.pdf && window.open(invoice.pdf, "_blank")}
+                              >
+                                <Download className="h-4 w-4" />
+                              </Button>
+                            )}
+                            {invoice.hostedUrl && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0"
+                                onClick={() => invoice.hostedUrl && window.open(invoice.hostedUrl, "_blank")}
+                              >
+                                <ExternalLink className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-4 text-sm text-zinc-600 dark:text-zinc-400">
-                  No invoices found
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-4 text-sm text-zinc-600 dark:text-zinc-400">
+                    No invoices found
+                  </div>
+                )}
+              </CardContent>
+            </Card>
 
-          {/* Free Plan Upgrade Message */}
-          {(!userPlan || userPlan === "FREE") && (
-            <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 dark:bg-amber-900/30 dark:border-amber-800/30 dark:text-amber-400 text-sm flex items-center justify-between">
-              <div className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                <span>You are on a free plan. Consider upgrading for more features.</span>
+            {/* Free Plan Upgrade Message */}
+            {(!userPlan || userPlan === "FREE") && (
+              <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 dark:bg-amber-900/30 dark:border-amber-800/30 dark:text-amber-400 text-sm flex items-center justify-between">
+                <div className="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  <span>You are on a free plan. Consider upgrading for more features.</span>
+                </div>
+                <Button 
+                  onClick={() => window.location.href = '/pricing'} 
+                  variant="link"
+                  size="sm"
+                  className="h-6 text-xs p-0 text-zinc-950 dark:text-zinc-200 hover:underline"
+                >
+                  View Plans
+                </Button>
               </div>
-              <Button 
-                onClick={() => window.location.href = '/pricing'} 
-                variant="link"
-                size="sm"
-                className="h-6 text-xs p-0 text-zinc-950 dark:text-zinc-200 hover:underline"
-              >
-                View Plans
-              </Button>
-            </div>
-          )}
-        </div>
-      </ScrollArea>
-    </div>
-  );
-} 
+            )}
+          </div>
+        </ScrollArea>
+      </div>
+    );
+  };
+
+  // Return the renderContent result instead of conditional rendering
+  return renderContent();
+}

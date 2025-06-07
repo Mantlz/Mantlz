@@ -38,10 +38,15 @@ const resendKeySchema = z.object({
 
 type ResendKeyFormValues = z.infer<typeof resendKeySchema>;
 
+// Add the useLoading hook import if not already present
+import { useLoading } from "@/contexts/LoadingContext";
+
 export default function EmailSettings() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isDeveloperNotificationsEnabled, setIsDeveloperNotificationsEnabled] = useState(false);
+  // Add this line to get access to the loading context and renderSkeleton function
+  const { setIsLoading, setLoadingMessage, renderSkeleton } = useLoading();
 
   // Get the user's current Resend API key and plan
   const { data: userData, isLoading, refetch } = useQuery({
@@ -139,202 +144,220 @@ export default function EmailSettings() {
   // Check if user has set an API key
   const hasApiKey = userData?.resendApiKey && userData.resendApiKey.length > 0;
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[40vh] w-full">
-        <Loader2 className="h-6 w-6 text-zinc-400 animate-spin" />
-        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-          Loading email settings...
-        </p>
+  // Set global loading state when this component is loading
+  useEffect(() => {
+    if (isLoading) {
+      setLoadingMessage('Loading Email settings...');
+    }
+    setIsLoading(isLoading);
+  }, [isLoading, setIsLoading, setLoadingMessage]);
+
+  // Create a common header component that's always visible
+  const headerContent = (
+    <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center">
+          <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
+            Email Settings
+          </h2>
+        </div>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={handleRefresh}
+          disabled={isRefreshing || isLoading}
+          className="h-8 text-xs"
+        >
+          {isRefreshing ? (
+            <>
+              <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+              Refreshing...
+            </>
+          ) : (
+            <>
+              <RefreshCw className="h-3 w-3 mr-1" />
+              Refresh
+            </>
+          )}
+        </Button>
       </div>
-    );
-  }
+      <p className="text-xs text-zinc-600 dark:text-zinc-400">
+        Configure email notifications for form submissions
+      </p>
+    </header>
+  );
 
-  return (
-    <div className="w-full max-w-5xl mx-auto">
-      <div className="w-full space-y-4 pr-4">
-        <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center">
-              <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
-                Email Settings
-              </h2>
-            </div>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-              className="h-8 text-xs"
-            >
-              {isRefreshing ? (
-                <>
-                  <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-                  Refreshing...
-                </>
-              ) : (
-                <>
-                  <RefreshCw className="h-3 w-3 mr-1" />
-                  Refresh
-                </>
-              )}
-            </Button>
+  // Replace the direct loading return with renderContent function
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <div className="w-full max-w-5xl mx-auto">
+          <div className="w-full space-y-4 pr-4">
+            {headerContent}
+            {renderSkeleton('card', 1)}
           </div>
-          <p className="text-xs text-zinc-600 dark:text-zinc-400">
-            Configure email notifications for form submissions
-          </p>
-        </header>
+        </div>
+      );
+    }
 
-        <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 shadow-sm">
-          <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
-            <div>
-              <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
-                <AtSign className="h-4 w-4 mr-2 text-zinc-500" />
-                Developer Notifications
-              </CardTitle>
-              <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
-                Receive email notifications when users submit your forms
-              </CardDescription>
-            </div>
-            <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-200 w-fit">
-              PRO
-            </Badge>
-          </CardHeader>
-          
-          <CardContent className="px-5 pb-4">
-            {!isPro ? (
-              <div className="rounded-lg bg-amber-50 border border-amber-200 p-3 sm:p-4 dark:bg-amber-900/20 dark:border-amber-800/30">
-                <div className="flex gap-2 sm:gap-3">
-                  <AlertCircle className="h-4 w-4 text-amber-500 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-                  <div className="space-y-1">
-                    <p className="text-xs font-medium text-amber-800 dark:text-amber-300">
-                      Pro Plan Required
-                    </p>
-                    <p className="text-xs text-amber-700 dark:text-amber-400">
-                      Upgrade to Pro to receive email notifications for form submissions.
-                    </p>
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
-                      className="h-7 px-2 py-1 text-xs border-amber-300 text-amber-700 bg-amber-50 cursor-pointer hover:bg-amber-100 dark:border-amber-700 dark:text-amber-400 dark:bg-amber-900/30 dark:hover:bg-amber-800/30 mt-2"
-                    >
-                      Upgrade to Pro
-                    </Button>
-                  </div>
-                </div>
+    return (
+      <div className="w-full max-w-5xl mx-auto">
+        <div className="w-full space-y-4 pr-4">
+          {headerContent}
+          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 shadow-sm">
+            <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
+              <div>
+                <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
+                  <AtSign className="h-4 w-4 mr-2 text-zinc-500" />
+                  Developer Notifications
+                </CardTitle>
+                <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+                  Receive email notifications when users submit your forms
+                </CardDescription>
               </div>
-            ) : (
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 sm:space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="developerNotificationsEnabled"
-                    render={() => (
-                      <FormItem className="flex flex-col sm:flex-row sm:items-center gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
-                        <div className="flex items-center gap-4 flex-1">
-                          <div className="bg-white dark:bg-zinc-900 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
-                            <Mail className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
-                          </div>
-                          <div className="flex flex-col gap-0.5">
-                            <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                              Developer Notifications
-                            </span>
-                            <span className="text-xs text-zinc-500 dark:text-zinc-400">
-                              {isDeveloperNotificationsEnabled ? (
-                                <span className="text-emerald-600 dark:text-emerald-500 font-medium">
-                                  Enabled
-                                </span>
-                              ) : (
-                                <span className="text-zinc-500 dark:text-zinc-400">
-                                  Disabled
-                                </span>
-                              )}
-                            </span>
-                          </div>
-                        </div>
-                        <FormControl>
-                          <Switch
-                            checked={isDeveloperNotificationsEnabled}
-                            onCheckedChange={handleDeveloperNotificationsToggle}
-                            disabled={!hasApiKey}
-                            className="data-[state=checked]:bg-emerald-500 dark:data-[state=checked]:bg-emerald-600"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-
-                  <div className="rounded-lg bg-zinc-50 border border-blue-200 p-3 sm:p-4 dark:bg-zinc-900 dark:border-blue-100">
-                    <div className="flex gap-2 sm:gap-3">
-                      <Info className="h-4 w-4 text-blue-500 dark:text-blue-400 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <p className="text-xs font-medium text-blue-800 dark:text-blue-300">
-                          Resend API Key Required
-                        </p>
-                        <p className="text-xs text-blue-700 dark:text-blue-400 mt-1">
-                          Add your Resend API key to enable email notifications.{" "}
-                          <a
-                            href="https://resend.com/signup"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 dark:text-blue-300 underline underline-offset-4"
-                          >
-                            Get API key
-                          </a>
-                        </p>
-                      </div>
+              <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-200 w-fit">
+                PRO
+              </Badge>
+            </CardHeader>
+            
+            <CardContent className="px-5 pb-4">
+              {!isPro ? (
+                <div className="rounded-lg bg-amber-50 border border-amber-200 p-3 sm:p-4 dark:bg-amber-900/20 dark:border-amber-800/30">
+                  <div className="flex gap-2 sm:gap-3">
+                    <AlertCircle className="h-4 w-4 text-amber-500 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                    <div className="space-y-1">
+                      <p className="text-xs font-medium text-amber-800 dark:text-amber-300">
+                        Pro Plan Required
+                      </p>
+                      <p className="text-xs text-amber-700 dark:text-amber-400">
+                        Upgrade to Pro to receive email notifications for form submissions.
+                      </p>
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        className="h-7 px-2 py-1 text-xs border-amber-300 text-amber-700 bg-amber-50 cursor-pointer hover:bg-amber-100 dark:border-amber-700 dark:text-amber-400 dark:bg-amber-900/30 dark:hover:bg-amber-800/30 mt-2"
+                      >
+                        Upgrade to Pro
+                      </Button>
                     </div>
                   </div>
-
-                  <FormField
-                    control={form.control}
-                    name="resendApiKey"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-xs text-zinc-700 dark:text-zinc-300">Resend API Key</FormLabel>
-                        <FormControl>
-                          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                            <Input
-                              type="password"
-                              placeholder={hasApiKey ? "••••••••••••••••••••••••••" : "re_123abc..."}
-                              className="h-9 border-zinc-200 dark:border-zinc-800"
-                              {...field}
-                            />
-                            <Button
-                              type="submit"
-                              disabled={isPending}
-                              size="sm"
-                              className="h-9 w-full sm:w-auto"
-                            >
-                              {isPending ? (
-                                <RefreshCw className="h-4 w-4 animate-spin mr-2" />
-                              ) : isSuccess ? (
-                                <Check className="h-4 w-4 mr-2" />
-                              ) : null}
-                              {isPending ? "Saving..." : isSuccess ? "Saved" : "Save"}
-                            </Button>
+                </div>
+              ) : (
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 sm:space-y-4">
+                    <FormField
+                      control={form.control}
+                      name="developerNotificationsEnabled"
+                      render={() => (
+                        <FormItem className="flex flex-col sm:flex-row sm:items-center gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
+                          <div className="flex items-center gap-4 flex-1">
+                            <div className="bg-white dark:bg-zinc-900 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
+                              <Mail className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+                            </div>
+                            <div className="flex flex-col gap-0.5">
+                              <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                                Developer Notifications
+                              </span>
+                              <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                                {isDeveloperNotificationsEnabled ? (
+                                  <span className="text-emerald-600 dark:text-emerald-500 font-medium">
+                                    Enabled
+                                  </span>
+                                ) : (
+                                  <span className="text-zinc-500 dark:text-zinc-400">
+                                    Disabled
+                                  </span>
+                                )}
+                              </span>
+                            </div>
                           </div>
-                        </FormControl>
-                        <FormDescription className="text-xs">
-                          {hasApiKey ? (
-                            <span className="flex items-center gap-2 text-green-600 dark:text-green-400">
-                              <Check className="h-3.5 w-3.5" /> Resend API key is set
-                            </span>
-                          ) : (
-                            "Enter your Resend API key starting with 're_'"
-                          )}
-                        </FormDescription>
-                        <FormMessage className="text-xs" />
-                      </FormItem>
-                    )}
-                  />
-                </form>
-              </Form>
-            )}
-          </CardContent>
-        
-        </Card>
+                          <FormControl>
+                            <Switch
+                              checked={isDeveloperNotificationsEnabled}
+                              onCheckedChange={handleDeveloperNotificationsToggle}
+                              disabled={!hasApiKey}
+                              className="data-[state=checked]:bg-emerald-500 dark:data-[state=checked]:bg-emerald-600"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+
+                    <div className="rounded-lg bg-zinc-50 border border-blue-200 p-3 sm:p-4 dark:bg-zinc-900 dark:border-blue-100">
+                      <div className="flex gap-2 sm:gap-3">
+                        <Info className="h-4 w-4 text-blue-500 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-xs font-medium text-blue-800 dark:text-blue-300">
+                            Resend API Key Required
+                          </p>
+                          <p className="text-xs text-blue-700 dark:text-blue-400 mt-1">
+                            Add your Resend API key to enable email notifications.{" "}
+                            <a
+                              href="https://resend.com/signup"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 dark:text-blue-300 underline underline-offset-4"
+                            >
+                              Get API key
+                            </a>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <FormField
+                      control={form.control}
+                      name="resendApiKey"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-xs text-zinc-700 dark:text-zinc-300">Resend API Key</FormLabel>
+                          <FormControl>
+                            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                              <Input
+                                type="password"
+                                placeholder={hasApiKey ? "••••••••••••••••••••••••••" : "re_123abc..."}
+                                className="h-9 border-zinc-200 dark:border-zinc-800"
+                                {...field}
+                              />
+                              <Button
+                                type="submit"
+                                disabled={isPending}
+                                size="sm"
+                                className="h-9 w-full sm:w-auto"
+                              >
+                                {isPending ? (
+                                  <RefreshCw className="h-4 w-4 animate-spin mr-2" />
+                                ) : isSuccess ? (
+                                  <Check className="h-4 w-4 mr-2" />
+                                ) : null}
+                                {isPending ? "Saving..." : isSuccess ? "Saved" : "Save"}
+                              </Button>
+                            </div>
+                          </FormControl>
+                          <FormDescription className="text-xs">
+                            {hasApiKey ? (
+                              <span className="flex items-center gap-2 text-green-600 dark:text-green-400">
+                                <Check className="h-3.5 w-3.5" /> Resend API key is set
+                              </span>
+                            ) : (
+                              "Enter your Resend API key starting with 're_'"
+                            )}
+                          </FormDescription>
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+                  </form>
+                </Form>
+              )}
+            </CardContent>
+          
+          </Card>
+        </div>
       </div>
-    </div>
-  );
-} 
+    );
+  };
+
+  // Remove the if (isLoading) block and return the renderContent function
+  return renderContent();
+}

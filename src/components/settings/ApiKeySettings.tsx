@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { Loader2, Key, Copy, AlertCircle, Eye, EyeOff, Terminal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -11,7 +11,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-
+import { useLoading } from '@/contexts/LoadingContext'
 
 interface ApiKey {
   id: string
@@ -25,6 +25,7 @@ export default function ApiKeySettings() {
   const [keyName, setKeyName] = useState('')
   const [isCreating, setIsCreating] = useState(false)
   const [showKey, setShowKey] = useState(false)
+  const { setIsLoading, setLoadingMessage, renderSkeleton } = useLoading()
 
   // Fetch current API key
   const { 
@@ -39,6 +40,14 @@ export default function ApiKeySettings() {
       return data as { data: ApiKey | null }
     }
   })
+
+  // Set global loading state when this component is loading
+  useEffect(() => {
+    if (isLoading) {
+      setLoadingMessage('Loading API Key settings...')
+    }
+    setIsLoading(isLoading)
+  }, [isLoading, setIsLoading, setLoadingMessage])
 
   const apiKey = apiKeyResponse?.data
 
@@ -92,37 +101,26 @@ export default function ApiKeySettings() {
     toast.success('API key copied to clipboard')
   }
 
-  if (isLoading) {
+  // Remove the local loading UI code
+  // if (isLoading) {
+  //   return (
+  //     <div className="flex flex-col items-center justify-center min-h-[40vh] w-full">
+  //       <Loader2 className="h-6 w-6 text-zinc-400 animate-spin" />
+  //       <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+  //         Loading API key information...
+  //       </p>
+  //     </div>
+  //   )
+  // }
+
+  // Render the content based on loading state
+  const renderContent = () => {
+    if (isLoading) {
+      return renderSkeleton('card', 1);
+    }
+
     return (
-      <div className="flex flex-col items-center justify-center min-h-[40vh] w-full">
-        <Loader2 className="h-6 w-6 text-zinc-400 animate-spin" />
-        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-          Loading API key information...
-        </p>
-      </div>
-    )
-  }
-
-  return (
-    <div className="w-full  mx-auto">
-      <div className="w-full space-y-4 pr-4">
-        <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center">
-              <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
-                API Key Management
-              </h2>
-              <Badge variant="destructive" className="ml-2 flex items-center  text-white  dark:bg-red-950 bg-red-500 gap-1">
-                <Terminal className="h-3.5 w-3.5" />
-                API Access
-              </Badge>
-            </div>
-          </div>
-          <p className="text-xs text-zinc-600 dark:text-zinc-400">
-            Manage your API keys for programmatic access to your account
-          </p>
-        </header>
-
+      <>
         <Alert variant="destructive" className="bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-900">
           <AlertCircle className="h-4 w-4 text-red-500" />
           <AlertDescription className="text-red-700 dark:text-red-500">
@@ -229,7 +227,32 @@ export default function ApiKeySettings() {
             </CardContent>
           </Card>
         )}
+      </>
+    );
+  };
+
+  return (
+    <div className="w-full mx-auto">
+      <div className="w-full space-y-4 pr-4">
+        <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center">
+              <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
+                API Key Management
+              </h2>
+              <Badge variant="destructive" className="ml-2 flex items-center text-white dark:bg-red-950 bg-red-500 gap-1">
+                <Terminal className="h-3.5 w-3.5" />
+                API Access
+              </Badge>
+            </div>
+          </div>
+          <p className="text-xs text-zinc-600 dark:text-zinc-400">
+            Manage your API keys for programmatic access to your account
+          </p>
+        </header>
+
+        {renderContent()}
       </div>
     </div>
   )
-} 
+}

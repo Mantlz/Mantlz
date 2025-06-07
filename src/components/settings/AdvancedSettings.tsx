@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Bell, Loader2, RefreshCw, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSubscription } from "@/hooks/useSubscription";
+import { useLoading } from "@/contexts/LoadingContext";
 
 interface AdvancedSettings {
   maxNotificationsPerHour: number;
@@ -32,6 +33,9 @@ export function AdvancedSettings() {
     maxNotificationsPerHour: 10,
     developerNotificationsEnabled: false,
   });
+
+  // Get the global loading state
+  const { isLoading: globalIsLoading, setIsLoading, setLoadingMessage, renderSkeleton } = useLoading();
 
   // Get settings
   const { data: settingsData, isLoading: isLoadingSettings } = useQuery({
@@ -84,6 +88,14 @@ export function AdvancedSettings() {
     }
   }, [settingsData]);
 
+  // Sync with global loading state
+  useEffect(() => {
+    setIsLoading(isLoadingSettings);
+    if (isLoadingSettings) {
+      setLoadingMessage('Loading advanced settings...');
+    }
+  }, [isLoadingSettings, setIsLoading, setLoadingMessage]);
+
   const handleRefresh = async () => {
     setIsRefreshing(true);
     try {
@@ -115,135 +127,148 @@ export function AdvancedSettings() {
     setSettings(prev => ({ ...prev, maxNotificationsPerHour: boundedValue }));
   };
 
-  if (isLoadingSettings) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[40vh] w-full">
-        <Loader2 className="h-6 w-6 text-zinc-400 animate-spin" />
-        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-          Loading advanced settings...
+  // Create a renderContent function to handle conditional rendering
+  const renderContent = () => {
+    // Create a common header component that's always visible
+    const headerContent = (
+      <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center">
+            <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
+              Advanced Settings
+            </h2>
+          </div>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleRefresh}
+            disabled={isRefreshing || !isProUser || isLoadingSettings}
+            className="h-8 text-xs"
+          >
+            {isRefreshing ? (
+              <>
+                <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                Refreshing...
+              </>
+            ) : (
+              <>
+                <RefreshCw className="h-3 w-3 mr-1" />
+                Refresh
+              </>
+            )}
+          </Button>
+        </div>
+        <p className="text-xs text-zinc-600 dark:text-zinc-400">
+          Configure advanced notification settings
         </p>
+      </header>
+    );
+
+    if (isLoadingSettings) {
+      return (
+        <div className="w-full max-w-5xl mx-auto">
+          <ScrollArea className="h-[550px] w-full">
+            <div className="w-full space-y-6 pr-4">
+              {headerContent}
+              {renderSkeleton('card', 1)}
+            </div>
+          </ScrollArea>
+        </div>
+      );
+    }
+
+    return (
+      <div className="w-full max-w-5xl mx-auto">
+        <ScrollArea className="h-[550px] w-full">
+          <div className="w-full space-y-6 pr-4">
+            {headerContent}
+
+            <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+              <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
+                <div>
+                  <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
+                    <Bell className="h-4 w-4 mr-2 text-zinc-500" />
+                    Notification Frequency
+                  </CardTitle>
+                  <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+                    Set the maximum number of notifications you want to receive per hour
+                  </CardDescription>
+                </div>
+                <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-200 w-fit">
+                  PRO
+                </Badge>
+              </CardHeader>
+              
+              <CardContent className="px-5 pb-4">
+                {!isProUser ? (
+                  <div className="rounded-lg bg-amber-50 border border-amber-200 p-3 sm:p-4 dark:bg-amber-900/20 dark:border-amber-800/30">
+                    <div className="flex gap-2 sm:gap-3">
+                      <AlertCircle className="h-4 w-4 text-amber-500 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                      <div className="space-y-1">
+                        <p className="text-xs font-medium text-amber-800 dark:text-amber-300">
+                          Pro Plan Required
+                        </p>
+                        <p className="text-xs text-amber-700 dark:text-amber-400">
+                          Upgrade to Pro to customize your notification frequency.
+                        </p>
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          className="h-7 px-2 py-1 text-xs border-amber-300 text-amber-700 bg-amber-50 cursor-pointer hover:bg-amber-100 dark:border-amber-700 dark:text-amber-400 dark:bg-amber-900/30 dark:hover:bg-amber-800/30 mt-2"
+                        >
+                          Upgrade to Pro
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
+                      <div className="flex items-center gap-4 flex-1">
+                        <div className="bg-white dark:bg-zinc-900 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
+                          <Bell className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+                        </div>
+                        <div className="flex flex-col gap-0.5">
+                          <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                            Maximum Notifications per Hour
+                          </span>
+                          <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                            Current limit: {settings.maxNotificationsPerHour}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          type="number"
+                          min={1}
+                          max={100}
+                          value={String(settings.maxNotificationsPerHour)}
+                          onChange={(e) => handleSettingChange(e.target.value)}
+                          className="h-9 w-24 border-zinc-200 dark:border-zinc-800"
+                        />
+                        <Button
+                          onClick={() => updateSettings(settings)}
+                          disabled={isUpdating}
+                          size="sm"
+                          className="h-9"
+                        >
+                          {isUpdating ? (
+                            <RefreshCw className="h-4 w-4 animate-spin mr-2" />
+                          ) : null}
+                          {isUpdating ? "Saving..." : "Save"}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </ScrollArea>
       </div>
     );
-  }
+  };
 
-  return (
-    <div className="w-full max-w-5xl mx-auto">
-      <ScrollArea className="h-[550px] w-full">
-        <div className="w-full space-y-6 pr-4">
-          <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center">
-                <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
-                  Advanced Settings
-                </h2>
-              </div>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={handleRefresh}
-                disabled={isRefreshing || !isProUser}
-                className="h-8 text-xs"
-              >
-                {isRefreshing ? (
-                  <>
-                    <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-                    Refreshing...
-                  </>
-                ) : (
-                  <>
-                    <RefreshCw className="h-3 w-3 mr-1" />
-                    Refresh
-                  </>
-                )}
-              </Button>
-            </div>
-            <p className="text-xs text-zinc-600 dark:text-zinc-400">
-              Configure advanced notification settings
-            </p>
-          </header>
-
-          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
-            <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
-              <div>
-                <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
-                  <Bell className="h-4 w-4 mr-2 text-zinc-500" />
-                  Notification Frequency
-                </CardTitle>
-                <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
-                  Set the maximum number of notifications you want to receive per hour
-                </CardDescription>
-              </div>
-              <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-200 w-fit">
-                PRO
-              </Badge>
-            </CardHeader>
-            
-            <CardContent className="px-5 pb-4">
-              {!isProUser ? (
-                <div className="rounded-lg bg-amber-50 border border-amber-200 p-3 sm:p-4 dark:bg-amber-900/20 dark:border-amber-800/30">
-                  <div className="flex gap-2 sm:gap-3">
-                    <AlertCircle className="h-4 w-4 text-amber-500 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-                    <div className="space-y-1">
-                      <p className="text-xs font-medium text-amber-800 dark:text-amber-300">
-                        Pro Plan Required
-                      </p>
-                      <p className="text-xs text-amber-700 dark:text-amber-400">
-                        Upgrade to Pro to customize your notification frequency.
-                      </p>
-                      <Button 
-                        size="sm" 
-                        variant="outline" 
-                        className="h-7 px-2 py-1 text-xs border-amber-300 text-amber-700 bg-amber-50 cursor-pointer hover:bg-amber-100 dark:border-amber-700 dark:text-amber-400 dark:bg-amber-900/30 dark:hover:bg-amber-800/30 mt-2"
-                      >
-                        Upgrade to Pro
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
-                    <div className="flex items-center gap-4 flex-1">
-                      <div className="bg-white dark:bg-zinc-900 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
-                        <Bell className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
-                      </div>
-                      <div className="flex flex-col gap-0.5">
-                        <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                          Maximum Notifications per Hour
-                        </span>
-                        <span className="text-xs text-zinc-500 dark:text-zinc-400">
-                          Current limit: {settings.maxNotificationsPerHour}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Input
-                        type="number"
-                        min={1}
-                        max={100}
-                        value={String(settings.maxNotificationsPerHour)}
-                        onChange={(e) => handleSettingChange(e.target.value)}
-                        className="h-9 w-24 border-zinc-200 dark:border-zinc-800"
-                      />
-                      <Button
-                        onClick={() => updateSettings(settings)}
-                        disabled={isUpdating}
-                        size="sm"
-                        className="h-9"
-                      >
-                        {isUpdating ? (
-                          <RefreshCw className="h-4 w-4 animate-spin mr-2" />
-                        ) : null}
-                        {isUpdating ? "Saving..." : "Save"}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-      </ScrollArea>
-    </div>
-  );
-} 
+  // Return the renderContent result instead of conditional rendering
+  return renderContent();
+}
