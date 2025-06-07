@@ -27,7 +27,7 @@ export function DetailedMetrics({
         </p>
         <Button
           onClick={onUpgradeClick}
-          className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white"
+          className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white"
         >
           Upgrade Now
         </Button>

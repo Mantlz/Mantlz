@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -9,15 +9,22 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { client } from "@/lib/client"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent } from "@/components/ui/card"
-import { PlusCircle, Info, Mail, MessageSquare, Sparkles, Send, LayoutTemplate } from "lucide-react"
+import { PlusCircle, Send, Eye, Save, RotateCcw } from "lucide-react"
 import { useQueryClient } from "@tanstack/react-query"
+import { Separator } from "@/components/ui/separator"
 
 interface CreateCampaignDialogProps {
   formId: string | null
   isPremium: boolean
   onUpgradeClick: () => void
+}
+
+interface DraftData {
+  campaignName: string
+  campaignDescription: string
+  campaignSubject: string
+  campaignContent: string
+  lastSaved: string
 }
 
 export function CreateCampaignDialog({
@@ -33,10 +40,94 @@ export function CreateCampaignDialog({
   const [campaignDescription, setCampaignDescription] = useState("")
   const [campaignSubject, setCampaignSubject] = useState("")
   const [campaignContent, setCampaignContent] = useState("")
-  const [activeTab, setActiveTab] = useState("details")
+  const [isPreview, setIsPreview] = useState(false)
+  const [hasDraft, setHasDraft] = useState(false)
+  const [lastSaved, setLastSaved] = useState<string | null>(null)
 
-  const isDetailsComplete = campaignName && campaignSubject
-  const isContentComplete = campaignContent
+  const isFormValid = campaignName && campaignSubject && campaignContent
+  const DRAFT_KEY = `campaign-draft-${formId}`
+
+  // Load draft on component mount and when dialog opens
+  useEffect(() => {
+    if (open && typeof window !== 'undefined') {
+      loadDraft()
+    }
+  }, [open, formId])
+
+  // Auto-save draft every 30 seconds if there's content
+  useEffect(() => {
+    if (!open) return
+    
+    const autoSaveInterval = setInterval(() => {
+      if (campaignName || campaignSubject || campaignContent || campaignDescription) {
+        saveDraft(true) // true for silent save
+      }
+    }, 30000) // 30 seconds
+
+    return () => clearInterval(autoSaveInterval)
+  }, [open, campaignName, campaignSubject, campaignContent, campaignDescription])
+
+  const loadDraft = () => {
+    try {
+      const savedDraft = localStorage.getItem(DRAFT_KEY)
+      if (savedDraft) {
+        const draft: DraftData = JSON.parse(savedDraft)
+        setCampaignName(draft.campaignName || "")
+        setCampaignDescription(draft.campaignDescription || "")
+        setCampaignSubject(draft.campaignSubject || "")
+        setCampaignContent(draft.campaignContent || "")
+        setLastSaved(draft.lastSaved)
+        setHasDraft(true)
+      }
+    } catch (error) {
+      console.error('Error loading draft:', error)
+    }
+  }
+
+  const saveDraft = (silent = false) => {
+    try {
+      const draftData: DraftData = {
+        campaignName,
+        campaignDescription,
+        campaignSubject,
+        campaignContent,
+        lastSaved: new Date().toISOString()
+      }
+      
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(draftData))
+      setLastSaved(draftData.lastSaved)
+      setHasDraft(true)
+      
+      if (!silent) {
+        toast.success("Draft saved")
+      }
+    } catch (error) {
+      console.error('Error saving draft:', error)
+      if (!silent) {
+        toast.error("Failed to save draft")
+      }
+    }
+  }
+
+  const clearDraft = () => {
+    try {
+      localStorage.removeItem(DRAFT_KEY)
+      setHasDraft(false)
+      setLastSaved(null)
+      toast.success("Draft cleared")
+    } catch (error) {
+      console.error('Error clearing draft:', error)
+    }
+  }
+
+  const resetForm = () => {
+    setCampaignName("")
+    setCampaignDescription("")
+    setCampaignSubject("")
+    setCampaignContent("")
+    setLastSaved(null)
+    setHasDraft(false)
+  }
 
   const handleCreateCampaign = async () => {
     if (!formId) {
@@ -60,11 +151,11 @@ export function CreateCampaignDialog({
         content: campaignContent
       })
       
+      // Clear draft after successful creation
+      localStorage.removeItem(DRAFT_KEY)
+      
       // Reset form
-      setCampaignName("")
-      setCampaignDescription("")
-      setCampaignSubject("")
-      setCampaignContent("")
+      resetForm()
       
       // Close dialog
       setOpen(false)
@@ -99,6 +190,17 @@ export function CreateCampaignDialog({
     }
   }
 
+  const formatLastSaved = (timestamp: string) => {
+    const date = new Date(timestamp)
+    const now = new Date()
+    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
+    
+    if (diffInMinutes < 1) return "Just now"
+    if (diffInMinutes < 60) return `${diffInMinutes}m ago`
+    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`
+    return date.toLocaleDateString()
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -119,148 +221,149 @@ export function CreateCampaignDialog({
           <span className="sm:hidden">Create</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[700px] p-0 overflow-hidden rounded-lg border border-gray-200 dark:border-zinc-800 shadow-xl">
-        <DialogHeader className="p-6 pb-4 bg-gradient-to-r from-slate-50 to-gray-50 dark:from-zinc-950 dark:to-zinc-900 border-b border-gray-100 dark:border-zinc-800">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-blue-500" />
-            <DialogTitle className="text-xl font-semibold">Create New Campaign</DialogTitle>
+      <DialogContent className="sm:max-w-[600px] max-h-[85vh] p-0 overflow-hidden">
+        {/* Simple Header */}
+        <DialogHeader className="p-4 border-b">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div>
+                <DialogTitle className="text-lg font-semibold">New Campaign</DialogTitle>
+                {lastSaved && (
+                  <DialogDescription className="text-xs text-green-600">
+                    Saved {formatLastSaved(lastSaved)}
+                  </DialogDescription>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center gap-1 mr-5">
+              {hasDraft && (
+                <Button variant="ghost" size="sm" onClick={clearDraft}>
+                  <RotateCcw className="h-4 w-4" />
+                </Button>
+              )}
+              <Button variant="ghost" size="sm" onClick={() => saveDraft()}>
+                <Save className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => setIsPreview(!isPreview)}>
+                <Eye className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
-          <DialogDescription className="mt-2 text-sm opacity-80">
-            Create a new email campaign to send to your form submissions.
-          </DialogDescription>
         </DialogHeader>
         
-        <Tabs defaultValue="details" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="border-b border-gray-100 dark:border-zinc-800">
-            <TabsList className="w-full justify-start rounded-none h-12 bg-transparent p-0 pl-6">
-              <TabsTrigger 
-                value="details" 
-                className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:shadow-none rounded-none h-12 px-4"
-              >
-                <Info className="h-4 w-4 mr-2" />
-                Campaign Details
-                {isDetailsComplete && <div className="ml-2 h-2 w-2 rounded-full bg-green-500"></div>}
-              </TabsTrigger>
-              <TabsTrigger 
-                value="content" 
-                className="data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:shadow-none rounded-none h-12 px-4"
-                disabled={!isDetailsComplete}
-              >
-                <LayoutTemplate className="h-4 w-4 mr-2" />
-                Email Content
-                {isContentComplete && <div className="ml-2 h-2 w-2 rounded-full bg-green-500"></div>}
-              </TabsTrigger>
-            </TabsList>
+        {!isPreview ? (
+          /* Compose Mode */
+          <div className="p-4 space-y-4 overflow-y-auto max-h-[calc(85vh-140px)]">
+            {/* Campaign Name */}
+            <div className="space-y-2 ">
+              <Label htmlFor="name" className="text-sm font-medium">Campaign Name</Label>
+              <Input 
+                id="name" 
+                placeholder="Welcome Series #1" 
+                value={campaignName}
+                onChange={(e) => setCampaignName(e.target.value)}
+                className="h-9"
+              />
+            </div>
+
+            {/* Description */}
+            <div className="space-y-2">
+              <Label htmlFor="description" className="text-sm font-medium">Description (Optional)</Label>
+              <Input 
+                id="description" 
+                placeholder="Brief description"
+                value={campaignDescription}
+                onChange={(e) => setCampaignDescription(e.target.value)}
+                className="h-9"
+              />
+            </div>
+
+            <Separator />
+
+            {/* Subject Line */}
+            <div className="space-y-2">
+              <Label htmlFor="subject" className="text-sm font-medium">Subject Line</Label>
+              <Input 
+                id="subject" 
+                placeholder="Welcome! Your form submission was received"
+                value={campaignSubject}
+                onChange={(e) => setCampaignSubject(e.target.value)}
+                className="h-10 font-medium"
+              />
+            </div>
+
+            {/* Email Content */}
+            <div className="space-y-2">
+              <Label htmlFor="content" className="text-sm font-medium">Email Content</Label>
+              <Textarea 
+                id="content" 
+                placeholder="Write your email content here...\n\nYou can use HTML for formatting:\n• <strong>Bold text</strong>\n• <em>Italic text</em>\n• <a href='#'>Links</a>"
+                className="min-h-[200px] resize-none text-sm"
+                value={campaignContent}
+                onChange={(e) => setCampaignContent(e.target.value)}
+              />
+              <p className="text-xs text-gray-500">
+                💡 HTML supported. Variables like {'{name}'} coming soon.
+              </p>
+            </div>
           </div>
-          
-          <TabsContent value="details" className="m-0 p-0">
-            <div className="p-6 space-y-5">
-              <Card className="border border-gray-100 dark:border-zinc-800 shadow-sm">
-                <CardContent className="p-5 space-y-5">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <Info className="h-4 w-4 text-blue-500" />
-                      <Label htmlFor="name" className="text-sm font-medium">Campaign Name</Label>
-                    </div>
-                    <Input 
-                      id="name" 
-                      placeholder="Monthly Newsletter" 
-                      value={campaignName}
-                      onChange={(e) => setCampaignName(e.target.value)}
-                      className="w-full focus:ring-2 focus:ring-blue-500/20 transition-shadow"
-                    />
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 ml-1">
-                      This is for your reference only. Recipients won&apos;t see this.
-                    </p>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <MessageSquare className="h-4 w-4 text-blue-500" />
-                      <Label htmlFor="description" className="text-sm font-medium">Description (Optional)</Label>
-                    </div>
-                    <Textarea 
-                      id="description" 
-                      placeholder="Brief description of this campaign's purpose"
-                      value={campaignDescription}
-                      onChange={(e) => setCampaignDescription(e.target.value)}
-                      className="w-full min-h-[80px] focus:ring-2 focus:ring-blue-500/20 transition-shadow resize-none"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <Mail className="h-4 w-4 text-blue-500" />
-                      <Label htmlFor="subject" className="text-sm font-medium">Email Subject</Label>
-                    </div>
-                    <Input 
-                      id="subject" 
-                      placeholder="Your form has been received"
-                      value={campaignSubject}
-                      onChange={(e) => setCampaignSubject(e.target.value)}
-                      className="w-full focus:ring-2 focus:ring-blue-500/20 transition-shadow"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <div className="flex justify-end mt-4">
-                <Button 
-                  onClick={() => setActiveTab("content")} 
-                  disabled={!isDetailsComplete}
-                  className="gap-2 hover:scale-[1.02] transition-transform duration-200"
-                >
-                  Continue to Content
-                  <Send className="h-4 w-4" />
-                </Button>
+        ) : (
+          /* Preview Mode */
+          <div className="p-4 overflow-y-auto max-h-[calc(85vh-140px)]">
+            <div className="border rounded-lg p-4 bg-gray-50 dark:bg-gray-900">
+              <div className="space-y-3">
+                <div className="border-b pb-2">
+                  <h3 className="font-semibold">
+                    {campaignSubject || "Subject Line Preview"}
+                  </h3>
+                  <p className="text-xs text-gray-500">
+                    From: Your Campaign • To: Form Subscribers
+                  </p>
+                </div>
+                <div 
+                  className="prose prose-sm max-w-none text-sm"
+                  dangerouslySetInnerHTML={{ 
+                    __html: campaignContent || "<p>Your email content will appear here...</p>" 
+                  }}
+                />
               </div>
             </div>
-          </TabsContent>
-          
-          <TabsContent value="content" className="m-0 p-0">
-            <div className="p-6 space-y-5">
-              <Card className="border border-gray-100 dark:border-zinc-800 shadow-sm">
-                <CardContent className="p-5">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <LayoutTemplate className="h-4 w-4 text-blue-500" />
-                      <Label htmlFor="content" className="text-sm font-medium">Email Content</Label>
-                    </div>
-                    <Textarea 
-                      id="content" 
-                      placeholder="Enter email content (HTML supported)" 
-                      className="w-full min-h-[300px] focus:ring-2 focus:ring-blue-500/20 transition-shadow"
-                      value={campaignContent}
-                      onChange={(e) => setCampaignContent(e.target.value)}
-                    />
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 ml-1">
-                      HTML is supported. You can include personalization variables if needed.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <div className="flex justify-between mt-4">
-                <Button 
-                  variant="outline" 
-                  onClick={() => setActiveTab("details")}
-                  className="hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
-                >
-                  Back to Details
-                </Button>
-                <Button 
-                  onClick={handleCreateCampaign} 
-                  disabled={loading || !isContentComplete}
-                  className="gap-2 hover:scale-[1.02] transition-transform duration-200"
-                >
-                  {loading ? "Creating..." : "Create Campaign"}
-                  <Send className="h-4 w-4" />
-                </Button>
-              </div>
+          </div>
+        )}
+        
+        {/* Footer */}
+        <div className="p-4 border-t">
+          <div className="flex items-center justify-between">
+            <div className="text-xs text-gray-500">
+              {isFormValid ? (
+                <span className="text-green-600">✓ Ready to send</span>
+              ) : (
+                <span>Fill required fields</span>
+              )}
             </div>
-          </TabsContent>
-        </Tabs>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
+              <Button 
+                size="sm"
+                onClick={handleCreateCampaign} 
+                disabled={loading || !isFormValid}
+                className="gap-1"
+              >
+                {loading ? (
+                  "Creating..."
+                ) : (
+                  <>
+                    <Send className="h-3 w-3" />
+                    Create
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   )
-} 
+}

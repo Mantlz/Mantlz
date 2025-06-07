@@ -33,7 +33,7 @@ const chartConfig = {
   },
   opens: {
     label: 'Opens',
-    color: 'hsl(265, 89%, 78%)', // Purple
+    color: 'hsl(265, 89%, 78%)', // orange
   },
   clicks: {
     label: 'Clicks',

@@ -153,9 +153,9 @@ export function SendCampaignDialog({
             </div>
 
             {/* Preview */}
-            <div className="flex items-center gap-2 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-100 dark:border-purple-800/50">
-              <Send className="h-4 w-4 text-purple-500" />
-              <p className="text-sm text-purple-900 dark:text-purple-300">
+            <div className="flex items-center gap-2 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-100 dark:border-orange-800/50">
+              <Send className="h-4 w-4 text-orange-500" />
+              <p className="text-sm text-orange-900 dark:text-orange-300">
                 Sending to {recipientType === "custom" ? customRecipientCount : 100} {recipientType === "first" ? "first" : recipientType === "last" ? "last" : ""} subscribers
               </p>
             </div>
@@ -174,7 +174,7 @@ export function SendCampaignDialog({
               size="sm"
               onClick={handleSend} 
               disabled={loading}
-              className="h-8 text-xs bg-purple-500 hover:bg-purple-600 text-white"
+              className="h-8 text-xs bg-orange-500 hover:bg-orange-600 text-white"
             >
               {loading ? "Sending..." : "Send Campaign"}
             </Button>

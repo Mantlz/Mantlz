@@ -144,30 +144,74 @@ export function SearchDialog({
                 onValueChange={(value) => handleFormSelect(value)}
               >
                 <SelectTrigger 
-                  className="h-8 border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-gray-700 dark:text-gray-300 rounded-lg min-w-[130px] focus:ring-zinc-300 dark:focus:ring-zinc-700 cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-all"
+                  className="h-9 border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm text-gray-700 dark:text-gray-300 rounded-lg min-w-[140px] focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 dark:focus:ring-orange-400/20 dark:focus:border-orange-400 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all duration-200 shadow-sm hover:shadow-md"
                 >
-                  <SelectValue placeholder="Select Form" />
+                  <SelectValue placeholder="Choose a form" />
                 </SelectTrigger>
-                <SelectContent className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs rounded-lg overflow-hidden">
+                <SelectContent className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-sm rounded-xl overflow-hidden shadow-xl min-w-[200px] max-w-[300px]">
                   <SelectGroup>
-                    <div className="relative cursor-pointer">
+                    <div className="p-2 max-h-[300px] overflow-y-auto">
+                      <div className="text-xs font-medium text-gray-500 dark:text-gray-400 px-2 py-1 mb-1">
+                        Available Forms ({formsData.forms.length})
+                      </div>
                       <SelectItem 
                         value="all" 
                         disabled={!isProUser}
-                        className={!isProUser ? "opacity-50 pl-8" : "pl-8"}
+                        className={`relative rounded-lg mb-1 px-3 py-2.5 cursor-pointer transition-all duration-200 ${
+                          !isProUser 
+                            ? "opacity-50 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20" 
+                            : "hover:bg-zinc-50 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-700"
+                        }`}
                       >
-                        {isProUser ? "All Forms" : "All Forms"}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2 min-w-0 flex-1">
+                            <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-orange-500 flex-shrink-0"></div>
+                            <span className="font-medium truncate">All Forms</span>
+                          </div>
+                          {!isProUser && (
+                            <span className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm flex-shrink-0 ml-2">
+                              PRO
+                            </span>
+                          )}
+                        </div>
                         {!isProUser && (
-                          <span className="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-lg">
-                            PRO
-                          </span>
+                          <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            Search across all forms
+                          </div>
                         )}
                       </SelectItem>
-                      {formsData.forms.map((form: Form) => (
-                        <SelectItem key={form.id} value={form.id} className="pl-8">
-                          {form.name}
-                        </SelectItem>
-                      ))}
+                      
+                      <div className="border-t border-zinc-100 dark:border-zinc-800 my-2"></div>
+                      
+                      {formsData.forms.map((form: Form, index: number) => {
+                        const truncatedName = form.name.length > 15 
+                          ? `${form.name.substring(0, 15)}...` 
+                          : form.name;
+                        
+                        return (
+                          <SelectItem 
+                            key={form.id} 
+                            value={form.id} 
+                            className="rounded-lg mb-1 px-3 py-2.5 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-700 transition-all duration-200 group"
+                          >
+                            <div className="flex items-center gap-2 min-w-0 w-full" title={form.name}>
+                              <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                                index % 4 === 0 ? 'bg-green-500' :
+                                index % 4 === 1 ? 'bg-blue-500' :
+                                index % 4 === 2 ? 'bg-orange-500' : 'bg-orange-500'
+                              }`}></div>
+                              <span className="font-medium truncate min-w-0 flex-1">
+                                {truncatedName}
+                              </span>
+                              {form.name.length > 15 && (
+                                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute left-0 top-full mt-1 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs px-2 py-1 rounded shadow-lg z-50 whitespace-nowrap pointer-events-none">
+                                  {form.name}
+                                </div>
+                              )}
+                            </div>
+                          </SelectItem>
+                        );
+                      })}
                     </div>
                   </SelectGroup>
                 </SelectContent>
@@ -181,12 +225,12 @@ export function SearchDialog({
                 <button
                   className={`ml-2 p-1.5 rounded-lg ${
                     Object.keys(advancedFilters || {}).length > 0 
-                      ? "bg-zinc-50 dark:bg-zinc-900/30 border border-blue-200 dark:border-blue-700/50 text-blue-500" 
+                      ? "bg-zinc-50 dark:bg-zinc-900/30 border border-orange-200 dark:border-orange-700/50 text-orange-500" 
                       : "bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-gray-500 dark:text-gray-400"
                   } transition-colors cursor-pointer`}
                   title="Advanced Filters"
                 >
-                  <Filter className={`h-4 w-4 ${Object.keys(advancedFilters || {}).length > 0 ? "text-blue-500" : ""}`} />
+                  <Filter className={`h-4 w-4 ${Object.keys(advancedFilters || {}).length > 0 ? "text-orange-500" : ""}`} />
                 </button>
               </PopoverTrigger>
               <PopoverContent className="w-80 p-0 rounded-lg border border-zinc-200 dark:border-zinc-700 shadow-lg bg-white dark:bg-zinc-900" align="end">
@@ -230,7 +274,7 @@ export function SearchDialog({
                               onClick={() => setTempFilters({...tempFilters, timeFrame: period as 'all' | '24h' | '7d' | '30d'})}
                               className={`px-2 py-1 text-xs rounded-lg border ${
                                 tempFilters.timeFrame === period 
-                                  ? 'bg-zinc-50 border-blue-200 text-blue-700 dark:bg-zinc-900/30 dark:border-blue-800 dark:text-blue-400' 
+                                  ? 'bg-zinc-50 border-orange-200 text-orange-700 dark:bg-zinc-900/30 dark:border-orange-800 dark:text-orange-400' 
                                   : 'bg-zinc-50 border-zinc-200 text-gray-700 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-300'
                               } hover:shadow-sm transition-all`}
                             >
@@ -254,7 +298,7 @@ export function SearchDialog({
                             onClick={() => setTempFilters({...tempFilters, sortOrder: 'newest'})}
                             className={`flex-1 px-3 py-1.5 text-xs rounded-lg border ${
                               tempFilters.sortOrder !== 'oldest' 
-                                ? 'bg-zinc-50 border-blue-200 text-blue-700 dark:bg-zinc-900/30 dark:border-blue-800 dark:text-blue-400' 
+                                ? 'bg-zinc-50 border-orange-200 text-orange-700 dark:bg-zinc-900/30 dark:border-orange-800 dark:text-orange-400' 
                                 : 'bg-zinc-50 border-zinc-200 text-gray-700 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-300'
                             } hover:shadow-sm transition-all`}
                           >
@@ -264,7 +308,7 @@ export function SearchDialog({
                             onClick={() => setTempFilters({...tempFilters, sortOrder: 'oldest'})}
                             className={`flex-1 px-3 py-1.5 text-xs rounded-lg border ${
                               tempFilters.sortOrder === 'oldest'
-                                ? 'bg-zinc-50 border-blue-200 text-blue-700 dark:bg-zinc-900/30 dark:border-blue-800 dark:text-blue-400' 
+                                ? 'bg-zinc-50 border-orange-200 text-orange-700 dark:bg-zinc-900/30 dark:border-orange-800 dark:text-orange-400' 
                                 : 'bg-zinc-50 border-zinc-200 text-gray-700 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-300'
                             } hover:shadow-sm transition-all`}
                           >
@@ -288,7 +332,7 @@ export function SearchDialog({
                               id="has-email" 
                               checked={tempFilters.hasEmail || false}
                               onCheckedChange={(checked) => setTempFilters({...tempFilters, hasEmail: checked})}
-                              className="data-[state=checked]:bg-zinc-500"
+                              className="data-[state=checked]:bg-green-500"
                             />
                             <Label htmlFor="has-email" className="text-xs">Only with email</Label>
                           </div>
@@ -297,7 +341,7 @@ export function SearchDialog({
                               id="has-attachments" 
                               checked={tempFilters.showOnlyWithAttachments || false}
                               onCheckedChange={(checked) => setTempFilters({...tempFilters, showOnlyWithAttachments: checked})}
-                              className="data-[state=checked]:bg-zinc-500"
+                              className="data-[state=checked]:bg-green-500"
                             />
                             <Label htmlFor="has-attachments" className="text-xs">Has attachments</Label>
                           </div>
@@ -352,36 +396,36 @@ export function SearchDialog({
         {renderSearchHint()}
         
         {isProUser && advancedFilters && Object.keys(advancedFilters).length > 0 && (
-          <div className="px-4 py-2 bg-zinc-50/80 dark:bg-zinc-900/10 border-b border-blue-100 dark:border-blue-800/20 flex flex-wrap gap-2 items-center">
-            <span className="text-xs text-blue-700 dark:text-blue-400">Active filters:</span>
+          <div className="px-4 py-2 bg-zinc-50/80 dark:bg-zinc-900/10 border-b border-orange-100 dark:border-orange-800/20 flex flex-wrap gap-2 items-center">
+            <span className="text-xs text-orange-700 dark:text-orange-400">Active filters:</span>
             {advancedFilters.dateRange && (
-              <Badge className="bg-zinc-100 text-blue-700 dark:bg-zinc-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
+              <Badge className="bg-zinc-100 text-orange-700 dark:bg-zinc-900/30 dark:text-orange-400 text-[10px] rounded-lg px-2.5">
                 Date Range
               </Badge>
             )}
             {advancedFilters.timeFrame && advancedFilters.timeFrame !== 'all' && (
-              <Badge className="bg-zinc-100 text-blue-700 dark:bg-zinc-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
+              <Badge className="bg-zinc-100 text-orange-700 dark:bg-zinc-900/30 dark:text-orange-400 text-[10px] rounded-lg px-2.5">
                 Last {advancedFilters.timeFrame}
               </Badge>
             )}
             {advancedFilters.sortOrder && (
-              <Badge className="bg-zinc-100 text-blue-700 dark:bg-zinc-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
+              <Badge className="bg-zinc-100 text-orange-700 dark:bg-zinc-900/30 dark:text-orange-400 text-[10px] rounded-lg px-2.5">
                 {advancedFilters.sortOrder === 'newest' ? 'Newest First' : 'Oldest First'}
               </Badge>
             )}
             {advancedFilters.hasEmail && (
-              <Badge className="bg-zinc-100 text-blue-700 dark:bg-zinc-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
+              <Badge className="bg-zinc-100 text-orange-700 dark:bg-zinc-900/30 dark:text-orange-400 text-[10px] rounded-lg px-2.5">
                 Has Email
               </Badge>
             )}
             {advancedFilters.showOnlyWithAttachments && (
-              <Badge className="bg-zinc-100 text-blue-700 dark:bg-zinc-900/30 dark:text-blue-400 text-[10px] rounded-lg px-2.5">
+              <Badge className="bg-zinc-100 text-orange-700 dark:bg-zinc-900/30 dark:text-orange-400 text-[10px] rounded-lg px-2.5">
                 Has Attachments
               </Badge>
             )}
             <button
               onClick={handleResetFilters}
-              className="text-[10px] text-blue-700 dark:text-blue-400 hover:underline ml-auto"
+              className="text-[10px] text-orange-700 dark:text-orange-400 hover:underline ml-auto"
             >
               Reset
             </button>
@@ -389,18 +433,17 @@ export function SearchDialog({
         )}
         
         {!isProUser && selectedFormId === null && (
-          <div className="px-4 py-3 mt-1 bg-amber-50/80 dark:bg-amber-900/20 border-b border-amber-100 dark:border-amber-800/20 flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs text-amber-700 dark:text-amber-400">
-              <Lock className="h-3.5 w-3.5" />
-              <span>Standard users can only search within a specific form</span>
+          <div className="mx-4 my-2 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/40 rounded-lg flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Lock className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+              <span className="text-sm text-amber-700 dark:text-amber-300">Select a form to search</span>
             </div>
             {showUpgradeModal && (
               <button 
                 onClick={showUpgradeModal}
-                className="text-xs text-amber-700 dark:text-amber-400 cursor-pointer hover:text-amber-800 dark:hover:text-amber-300 font-medium flex items-center gap-1 px-3 py-1 rounded-lg bg-amber-100/50 dark:bg-amber-800/20 hover:bg-amber-100 dark:hover:bg-amber-800/30 transition-colors"
+                className="text-xs px-3 py-1 cursor-pointer bg-amber-600 hover:bg-amber-700 text-white rounded-md font-medium transition-colors"
               >
-                <Sparkles className="h-3.5 w-3.5 m-1 " />
-                <span>Upgrade to PRO</span>
+                Upgrade
               </button>
             )}
           </div>
@@ -437,4 +480,4 @@ export function SearchDialog({
       </div>
     </div>
   )
-} 
+}

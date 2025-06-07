@@ -231,7 +231,7 @@ export function formatCampaignStatus(
       return {
         label: "Scheduled",
         color:
-          "bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400",
+          "bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400",
       };
     case "SENDING":
       return {

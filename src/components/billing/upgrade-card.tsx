@@ -91,7 +91,7 @@ export function UpgradeCard() {
               : "Go Pro for maximum potential"}
           </CardDescription>
         </div>
-        <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-200 whitespace-nowrap">
+        <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-200 whitespace-nowrap">
           {usageData.plan === "FREE" ? "STANDARD" : "PRO"}
         </Badge>
       </CardHeader>
@@ -146,7 +146,7 @@ export function UpgradeCard() {
       
       <CardFooter className="px-6 pb-2">
         <Button 
-          className="w-full h-8 bg-zinc-300 hover:bg-purple-700 dark:bg-zinc-600 dark:hover:bg-purple-700"
+          className="w-full h-8 bg-zinc-300 hover:bg-orange-700 dark:bg-zinc-600 dark:hover:bg-orange-700"
           onClick={() => router.push("/settings/billing")}
         >
           <span>Upgrade Now</span>

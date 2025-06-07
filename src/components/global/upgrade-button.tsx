@@ -33,7 +33,7 @@ export function UpgradeButton() {
       variant="outline"
       size="sm"
       onClick={() => router.push("/pricing")}
-      className="hidden sm:flex items-center gap-1.5 bg-gradient-to-r from-violet-500/10 to-purple-500/10 hover:from-violet-500/20 hover:to-purple-500/20 border-violet-500/50 text-violet-700 dark:text-violet-400 hover:text-violet-800 dark:hover:text-violet-300 transition-all duration-200"
+      className="hidden sm:flex items-center gap-1.5 bg-gradient-to-r from-orange-500/10 to-orange-500/10 hover:from-orange-500/20 hover:to-orange-500/20 border-orange-500/50 text-orange-700 dark:text-orange-400 hover:text-orange-800 dark:hover:text-orange-300 transition-all duration-200"
     >
       <Sparkles className="h-4 w-4" />
       <span>Upgrade</span>

@@ -196,7 +196,7 @@ export default function EmailSettings() {
                 Receive email notifications when users submit your forms
               </CardDescription>
             </div>
-            <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-200 w-fit">
+            <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-200 w-fit">
               PRO
             </Badge>
           </CardHeader>

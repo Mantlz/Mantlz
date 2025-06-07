@@ -521,7 +521,7 @@ export function BrowserAndLocationStats({
                 {/* Progress bar with all browsers */}
                 <div className="flex h-2 mb-3 rounded-lg overflow-hidden bg-zinc-100 dark:bg-zinc-900">
                   {browsers.map((browser, idx) => {
-                    const colors = ["orange", "indigo", "violet", "purple", "cyan", "sky", "teal", "emerald", "green", "lime"];
+                    const colors = ["orange", "indigo", "violet", "orange", "cyan", "sky", "teal", "emerald", "green", "lime"];
                     return (
                       <div
                         key={browser.name}
@@ -538,7 +538,7 @@ export function BrowserAndLocationStats({
                 {/* Color legend - simplified and horizontal */}
                 <div className="mb-5 flex flex-wrap gap-x-4 gap-y-2">
                   {browsers.slice(0, 5).map((browser, idx) => {
-                    const colors = ["orange", "indigo", "violet", "purple", "cyan"];
+                    const colors = ["orange", "indigo", "violet", "orange", "cyan"];
                     return (
                       <div key={browser.name} className="flex items-center gap-1.5 text-xs">
                         <div className={`w-2 h-2 rounded-lg bg-${colors[idx % colors.length]}-500`}></div>
@@ -556,7 +556,7 @@ export function BrowserAndLocationStats({
                       name={browser.name}
                       count={browser.count}
                       percentage={browser.percentage}
-                      color={["orange", "indigo", "violet", "purple", "cyan"][idx % 5]}
+                      color={["orange", "indigo", "violet", "orange", "cyan"][idx % 5]}
                       isTop={(browsersPage === 1 && idx === 0)}
                     />
                   ))}

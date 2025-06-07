@@ -106,7 +106,7 @@ const PlanBadge: React.FC<PlanBadgeProps> = ({ plan }) => {
   const badgeStyles = {
     FREE: "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200",
     STANDARD: "bg-zinc-100 text-blue-800 dark:bg-zinc-900 dark:text-blue-200",
-    PRO: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
+    PRO: "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200",
   }[plan] || "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200";
 
   return (

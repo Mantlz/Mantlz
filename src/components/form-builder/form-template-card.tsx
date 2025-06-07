@@ -83,7 +83,7 @@ export function FormTemplateCard({ template, isSelected, onSelect, onContinue }:
                   className={cn(
                     "flex items-center gap-0.5 text-[10px] font-medium py-0 h-4 px-1.5",
                     isProPlan 
-                      ? "bg-purple-50 hover:bg-purple-50 text-purple-600 dark:bg-purple-400/10 dark:text-purple-400"
+                      ? "bg-orange-50 hover:bg-orange-50 text-orange-600 dark:bg-orange-400/10 dark:text-orange-400"
                       : "bg-blue-50 hover:bg-blue-50 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400"
                   )}
                 >

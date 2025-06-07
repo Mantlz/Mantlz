@@ -143,81 +143,110 @@ export function TestEmailDialog({
 
   return (
     <>
-      {/* Main Dialog - Only shown for Paid users */}
       {isOpen && !showUpgradeModal && (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-          <DialogContent className="sm:max-w-[450px] p-0 gap-0">
-            <DialogHeader className="p-6 pb-2">
-              <DialogTitle className="text-xl font-semibold flex items-center gap-2">
-                <Mail className="h-5 w-5 text-purple-500" />
-                Send Test Email
-              </DialogTitle>
-              <DialogDescription className="mt-2 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                Send a test email to verify your campaign content and settings.
-                {!isDraft && " Test emails can only be sent for draft campaigns."}
+          <DialogContent className="sm:max-w-[500px] bg-white dark:bg-gray-900 border-0 shadow-xl">
+            <DialogHeader className="p-6 pb-4 border-b border-gray-100 dark:border-gray-800">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-2.5 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
+                  <Mail className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                </div>
+                <DialogTitle className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                  Send Test Email
+                </DialogTitle>
+              </div>
+              <DialogDescription className="text-sm text-gray-600 dark:text-gray-400">
+                Verify your campaign content and settings before sending to your audience.
               </DialogDescription>
             </DialogHeader>
 
-            <div className="p-6 pt-2 space-y-4">
-              {/* Email Info Box */}
-              <div className="bg-gray-50 dark:bg-zinc-900 rounded-lg p-4 border border-gray-100 dark:border-zinc-800">
-                <div className="flex items-start gap-3">
-                  <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-full">
-                    <Mail className="h-4 w-4 text-purple-500 dark:text-purple-400" />
+            <div className="p-6 space-y-5">
+              {/* Recipient Info */}
+              <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 border border-gray-100 dark:border-gray-800">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="flex-shrink-0">
+                      <Mail className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900 dark:text-gray-100 text-sm">
+                        Test Recipient
+                      </p>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm mt-0.5">
+                        {user?.emailAddresses[0]?.emailAddress}
+                      </p>
+                    </div>
                   </div>
-                  <div className="space-y-1 flex-1">
-                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                      Recipient
-                    </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {user?.emailAddresses[0]?.emailAddress}
-                    </p>
-                  </div>
+                  {isPaidUser && isDraft && (
+                    <span className="px-2.5 py-1 text-xs font-medium bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded-full">
+                      Ready
+                    </span>
+                  )}
                 </div>
               </div>
 
-              {/* Note */}
-              <div className="flex items-start gap-2 px-1">
-                <AlertCircle className="h-4 w-4 text-gray-400 mt-0.5" />
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  This test email will help you preview how your campaign will look in recipients&apos; inboxes.
-                  {!isPaidUser && " This feature requires a Standard or Pro plan."}
-                </p>
-              </div>
+              {/* Status Messages */}
+              {!isPaidUser && (
+                <div className="flex items-start gap-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 border border-gray-100 dark:border-gray-800">
+                  <AlertCircle className="h-5 w-5 text-gray-500 dark:text-gray-400 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                      Upgrade Required
+                    </h4>
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                      Test emails are available on Standard and Pro plans
+                    </p>
+                  </div>
+                </div>
+              )}
 
-              {/* Buttons */}
-              <div className="flex justify-end gap-3 pt-2">
-                <Button
-                  variant="outline"
-                  onClick={onClose}
-                  className="px-4"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={handleTestEmail}
-                  disabled={loading || !isPaidUser || !isDraft}
-                  className={`${isPaidUser && isDraft ? 'bg-purple-500 hover:bg-purple-600' : 'bg-gray-400'} text-white px-4 shadow-sm`}
-                >
-                  {loading ? (
-                    <>
-                      <Mail className="mr-2 h-4 w-4 animate-pulse" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="mr-2 h-4 w-4" />
-                      {!isPaidUser ? 'Upgrade Required' : !isDraft ? 'Not Available' : 'Send Test'}
-                    </>
-                  )}
-                </Button>
-              </div>
+              {!isDraft && isPaidUser && (
+                <div className="flex items-start gap-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 border border-gray-100 dark:border-gray-800">
+                  <AlertCircle className="h-5 w-5 text-gray-500 dark:text-gray-400 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                      Campaign Not in Draft
+                    </h4>
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                      Test emails can only be sent for draft campaigns
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center justify-end gap-3 p-6 pt-2 border-t border-gray-100 dark:border-gray-800">
+              <Button
+                variant="outline"
+                onClick={onClose}
+                className="px-4 py-2 text-sm font-medium"
+                disabled={loading}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleTestEmail}
+                disabled={loading || !isPaidUser || !isDraft}
+                className={`px-4 py-2 text-sm font-medium ${isPaidUser && isDraft ? 'bg-orange-600 hover:bg-orange-700 text-white' : 'bg-gray-400 text-white cursor-not-allowed'}`}
+              >
+                {loading ? (
+                  <>
+                    <span className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Send className="h-4 w-4 mr-2" />
+                    {!isPaidUser ? 'Upgrade Required' : !isDraft ? 'Not Available' : 'Send Test'}
+                  </>
+                )}
+              </Button>
             </div>
           </DialogContent>
         </Dialog>
       )}
 
-      {/* Upgrade Modal - Rendered in a portal for isolation */}
+      {/* Upgrade Modal */}
       {isMounted && showUpgradeModal && createPortal(
         <UpgradeModal
           isOpen={showUpgradeModal}
@@ -230,4 +259,4 @@ export function TestEmailDialog({
       )}
     </>
   )
-} 
+}

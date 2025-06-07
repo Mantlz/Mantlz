@@ -131,7 +131,7 @@ export function UpgradeModal({
             </Button>
             <Button 
               onClick={() => window.location.href = '/settings/billing'}
-              className="bg-slate-800 hover:bg-slate-700 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white transition-colors font-medium text-sm cursor-pointer"
+              className="bg-orange-800 hover:bg-orange-700 dark:bg-orange-800 dark:hover:bg-orange-700 text-white transition-colors font-medium text-sm cursor-pointer"
             >
               Upgrade Plan
             </Button>

@@ -79,7 +79,7 @@ export function FormTemplateListItem({ template, isSelected, onSelect, onContinu
                   className={cn(
                     "flex items-center gap-1 text-xs font-medium py-0.5 h-5 px-2",
                     isProPlan 
-                      ? "bg-purple-50 hover:bg-purple-50 text-purple-600 dark:bg-purple-400/10 dark:text-purple-400"
+                      ? "bg-orange-50 hover:bg-orange-50 text-orange-600 dark:bg-orange-400/10 dark:text-orange-400"
                       : "bg-blue-50 hover:bg-blue-50 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400"
                   )}
                 >
