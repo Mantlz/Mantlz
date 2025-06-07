@@ -148,9 +148,6 @@ export function TestEmailDialog({
           <DialogContent className="sm:max-w-[500px] bg-white dark:bg-gray-900 border-0 shadow-xl">
             <DialogHeader className="p-6 pb-4 border-b border-gray-100 dark:border-gray-800">
               <div className="flex items-center gap-3 mb-2">
-                <div className="p-2.5 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
-                  <Mail className="h-5 w-5 text-orange-600 dark:text-orange-400" />
-                </div>
                 <DialogTitle className="text-xl font-semibold text-gray-900 dark:text-gray-100">
                   Send Test Email
                 </DialogTitle>

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Filter, Search, X, Lock, Sparkles, Clock, CalendarRange, ArrowDownUp } from "lucide-react"
+import { Filter, Search, X, Lock, Clock, CalendarRange, ArrowDownUp } from "lucide-react"
 import { Form, SearchResult, Submission } from "./types"
 import { Badge } from "@/components/ui/badge"
 import {

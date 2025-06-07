@@ -4,7 +4,7 @@ import { FileSearch } from "lucide-react"
 
 export function NoSubmissionsView() {
   return (
-    <div className="min-h-[300px] flex flex-col items-center justify-center text-center py-12 sm:py-16">
+    <div className="min-h-[300px] flex flex-col items-center justify-center text-center py-12 sm:py-16 border border-dashed border-zinc-200 dark:border-zinc-800">
       <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6  flex items-center justify-center">
         <FileSearch className="h-6 w-6 sm:h-8 sm:w-8 text-orange-400" />
       </div>
@@ -15,3 +15,7 @@ export function NoSubmissionsView() {
     </div>
   )
 } 
+
+
+
+

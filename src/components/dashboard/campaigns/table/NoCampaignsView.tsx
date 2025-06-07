@@ -1,26 +1,15 @@
 "use client"
 
 import { Mail } from "lucide-react"
-import { Button } from "@/components/ui/button"
+
 
 interface NoCampaignsViewProps {
   isPremium?: boolean
   onUpgradeClick?: () => void
 }
 
-export function NoCampaignsView({ isPremium = false, onUpgradeClick }: NoCampaignsViewProps) {
+export function NoCampaignsView({ isPremium = false, }: NoCampaignsViewProps) {
 
-  const handleCreateCampaign = () => {
-    if (!isPremium) {
-      onUpgradeClick?.();
-      return;
-    }
-    // Get the current dialog from the table header to open
-    const createButton = document.querySelector("[data-create-campaign-button]") as HTMLButtonElement
-    if (createButton) {
-      createButton.click()
-    }
-  }
   
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 text-center space-y-6 bg-white dark:bg-zinc-900 rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800">
@@ -37,13 +26,6 @@ export function NoCampaignsView({ isPremium = false, onUpgradeClick }: NoCampaig
             : "Create and manage email campaigns with advanced features like scheduling, analytics, and more. Available on Standard and Pro plans."}
         </p>
       </div>
-      <Button 
-        size="sm" 
-        className="mt-4" 
-        onClick={handleCreateCampaign}
-      >
-        {isPremium ? "Create Campaign" : "Upgrade Now"}
-      </Button>
     </div>
   )
 } 
