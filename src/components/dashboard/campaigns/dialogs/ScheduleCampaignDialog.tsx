@@ -427,7 +427,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
       <Button 
         variant="outline" 
         size="sm" 
-        className="h-9 px-4 text-sm cursor-pointer gap-2 bg-white hover:bg-orange-50 text-orange-600 border-gray-200 dark:bg-zinc-800 dark:hover:bg-orange-900/20 dark:text-orange-400 rounded-lg transition-all duration-200 shadow-sm"
+        className="h-7 px-2 text-sm cursor-pointer gap-2 bg-white hover:bg-orange-50 text-orange-600 border-gray-200 dark:bg-zinc-800 dark:hover:bg-orange-900/20 dark:text-orange-400 rounded-lg transition-all duration-200 shadow-sm"
         onClick={handleScheduleClick}
       >
         <CalendarDays className="h-4 w-4" />
@@ -440,9 +440,6 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
           <DialogContent className="sm:max-w-[450px] p-0 border rounded-xl shadow-xl overflow-hidden">
             <DialogHeader className="p-4 bg-white dark:bg-zinc-800 border-b border-gray-100 dark:border-zinc-700">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
-                  <CalendarDays className="h-4 w-4 text-orange-600 dark:text-orange-400" />
-                </div>
                 <div>
                   <DialogTitle className="text-lg font-semibold text-gray-900 dark:text-white">Schedule Campaign</DialogTitle>
                   <DialogDescription className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
