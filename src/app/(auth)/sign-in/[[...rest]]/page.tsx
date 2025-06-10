@@ -29,10 +29,10 @@ export default function Page() {
                 colorInputBackground: "#3f3f46",
                 colorText: "#ffffff",
                 colorInputText: "#ffffff",
-                borderRadius: "0.375rem",
+                borderRadius: "0.5rem",
               },
               elements: {
-                card: "shadow-lg border border-zinc-700 rounded-xl text-white",
+                card: "shadow-lg rounded-xl text-white",
                 formButtonPrimary: "bg-zinc-200 hover:bg-zinc-300 text-zinc-900 text-sm normal-case font-medium rounded-lg shadow-sm transition-colors",
                 headerTitle: "text-2xl font-semibold font-sans text-white",
                 headerSubtitle: "text-zinc-400 font-sans",

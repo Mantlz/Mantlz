@@ -19,7 +19,7 @@ const Page = () => {
                 colorInputBackground: "#3f3f46",
                 colorText: "#ffffff",
                 colorInputText: "#ffffff",
-                borderRadius: "0.375rem",
+                borderRadius: "0.5rem",
               },
               elements: {
                 card: "shadow-lg border border-zinc-700 rounded-xl text-white",

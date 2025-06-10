@@ -26,7 +26,7 @@ export default function HeroSection() {
         {/* Main heading */}
         <h1 className="text-6xl  mt-4 font-bold tracking-tight sm:text-6xl lg:text-7xl xl:text-7xl">
           <span className="block text-black dark:text-white">Manage All of Your Forms</span>
-          <span className="block text-stone-400 mt-2">
+          <span className="block text-orange-400 mt-2">
             In One Place Efficiently
           </span>
         </h1>
