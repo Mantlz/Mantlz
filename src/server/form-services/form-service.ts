@@ -225,22 +225,73 @@ export class FormService {
 
       // Delete everything in a transaction to ensure data consistency
       await db.$transaction([
-        // 1. Delete notification logs first (they reference both form and submissions)
+        // 1. Delete stripe order items first (they reference stripe orders)
+        db.stripeOrderItem.deleteMany({
+          where: {
+            stripeOrder: {
+              formId
+            }
+          }
+        }),
+
+        // 2. Delete stripe orders
+        db.stripeOrder.deleteMany({
+          where: { formId }
+        }),
+
+        // 3. Delete sent emails (they reference campaigns and submissions)
+        db.sentEmail.deleteMany({
+          where: {
+            OR: [
+              {
+                campaign: {
+                  formId
+                }
+              },
+              {
+                testSubmission: {
+                  formId
+                }
+              }
+            ]
+          }
+        }),
+
+        // 4. Delete campaign recipients
+        db.campaignRecipient.deleteMany({
+          where: {
+            campaign: {
+              formId
+            }
+          }
+        }),
+
+        // 5. Delete campaigns
+        db.campaign.deleteMany({
+          where: { formId }
+        }),
+
+        // 6. Delete test email submissions
+        db.testEmailSubmission.deleteMany({
+          where: { formId }
+        }),
+
+        // 7. Delete notification logs (they reference both form and submissions)
         db.notificationLog.deleteMany({
           where: { formId }
         }),
 
-        // 2. Delete submissions
+        // 8. Delete submissions
         db.submission.deleteMany({
           where: { formId }
         }),
 
-        // 3. Delete email settings
+        // 9. Delete email settings
         db.emailSettings.deleteMany({
           where: { formId }
         }),
 
-        // 4. Finally delete the form itself
+        // 10. Finally delete the form itself
         db.form.delete({
           where: {
             id: formId,
@@ -254,7 +305,7 @@ export class FormService {
 
       return { success: true };
     } catch (error) {
-      console.error('Error deleting form:', error);
+      console.error('Error deleting form and all associated data:', error);
       throw new Error('Failed to delete form and its related data');
     }
   }
@@ -332,4 +383,4 @@ export class FormService {
       throw new Error('Failed to update users joined settings');
     }
   }
-} 
+}

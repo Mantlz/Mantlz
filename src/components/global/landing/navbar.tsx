@@ -75,7 +75,7 @@ export function Navbar() {
             <Button 
                   size="sm"
 
-                      className="rounded-lg px-2 cursor-pointer text-sm"
+                      className="rounded-lg px-2 cursor-pointer bg-orange-700 text-sm"
 
             >
               Dashboard

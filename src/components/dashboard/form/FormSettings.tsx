@@ -1,17 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
 import { ExportSubmissions } from './ExportSubmissions';
+import { DeleteForm } from './DeleteForm';
 import { toast } from 'sonner';
 import { client } from '@/lib/client';
-import { useRouter } from 'next/navigation';
 import { cn } from "@/lib/utils"
 import { UpgradeModal } from "@/components/modals/UpgradeModal";
 import { Mail, Users, Download } from "lucide-react";
@@ -50,7 +43,7 @@ export function FormSettings({
   onRefresh 
 }: FormSettingsProps) {
   // Log received props for debugging
-  console.log('FormSettings props:', { formId, formType, usersJoinedSettings });
+  // console.log('FormSettings props:', { formId, formType, usersJoinedSettings });
   
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState('');
@@ -64,7 +57,7 @@ export function FormSettings({
   const [upgradeFeatureName, setUpgradeFeatureName] = useState<string>('');
   const [upgradeFeatureIcon, setUpgradeFeatureIcon] = useState<React.ReactNode>(null);
   const [upgradeFeatureDescription, setUpgradeFeatureDescription] = useState<string>('');
-  const router = useRouter();
+  // const router = useRouter();
 
   // Sync emailEnabled state with emailSettings prop
   useEffect(() => {
@@ -240,8 +233,8 @@ export function FormSettings({
       setIsDeleteModalOpen(false);
       
       console.log('Redirecting to dashboard');
-      router.push('/dashboard');
-      router.refresh();
+      // router.push('/dashboard');
+      // router.refresh();
       
     } catch (error) {
       console.error('Detailed error information:', {
@@ -509,124 +502,13 @@ export function FormSettings({
         </div>
       </div>
 
-      <div className="mt-12 pt-6 border-t border-zinc-100 dark:border-zinc-800">
-        <div className="flex items-center justify-between pb-4">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white">Danger Zone</h3>
-        </div>
-        
-        <div className="bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-900/30 rounded-lg p-4">
-          <h4 className="text-sm font-medium text-red-800 dark:text-red-400 mb-2">Delete Form</h4>
-          <p className="text-sm text-red-700 dark:text-red-300 mb-4">
-            Once you delete a form, there is no going back. All form submissions will be permanently deleted.
-          </p>
-          <button 
-            onClick={() => setIsDeleteModalOpen(true)}
-            className="px-4 py-2 bg-white cursor-pointer dark:bg-zinc-900 border border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 text-sm font-medium rounded-lg transition-colors"
-          >
-            Delete Form
-          </button>
-        </div>
-      </div>
 
-      <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
-        <DialogContent className="w-[95vw] max-w-[400px] sm:max-w-[600px] p-0 bg-transparent border-none">
-          <div className="flex flex-col bg-white dark:bg-zinc-900/90 rounded-xl border border-zinc-200 dark:border-white/5 shadow-2xl overflow-hidden dark:backdrop-blur-xl">
-            {/* Header */}
-            <div className="p-6 sm:p-8 bg-white dark:bg-transparent border-b border-zinc-200 dark:border-white/5">
-              <DialogTitle className={cn(
-                "text-2xl sm:text-3xl",
-                "font-sans font-bold",
-                "text-gray-900 dark:text-white",
-                "flex items-center gap-2",
-                "tracking-tight"
-              )}>
-                Delete Form
-              </DialogTitle>
-              <DialogDescription className={cn(
-                "mt-3",
-                "font-sans text-base",
-                "text-gray-600 dark:text-gray-300",
-                "leading-relaxed"
-              )}>
-                This action cannot be undone. All form submissions will be permanently deleted.
-                <br className="hidden sm:block" />
-                Type <span className="font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 px-2.5 py-1 rounded-lg text-sm">delete</span> to confirm.
-              </DialogDescription>
-            </div>
-
-            {/* Input section */}
-            <div className="p-6 sm:p-8 bg-white dark:bg-zinc-800/30">
-              <Input
-                value={deleteConfirmation}
-                onChange={(e) => setDeleteConfirmation(e.target.value)}
-                placeholder="Type 'delete' to confirm"
-                className={cn(
-                  "font-sans",
-                  "px-4 py-3",
-                  "bg-zinc-50 dark:bg-zinc-800/50",
-                  "border border-zinc-200 dark:border-zinc-700/50",
-                  "rounded-lg",
-                  "text-gray-900 dark:text-gray-100",
-                  "placeholder:text-gray-400 dark:placeholder:text-gray-500",
-                  "focus:ring-4 focus:ring-red-500/10 dark:focus:ring-red-500/10",
-                  "focus:border-red-400 dark:focus:border-red-400",
-                  "transition-all duration-200"
-                )}
-              />
-            </div>
-
-            {/* Footer */}
-            <div className={cn(
-              "flex flex-col sm:flex-row justify-end gap-2 sm:gap-3",
-              "p-6 sm:p-8",
-              "bg-white dark:bg-zinc-800/30",
-              "border-t border-zinc-200 dark:border-white/5"
-            )}>
-              <Button
-                variant="outline"
-                onClick={() => setIsDeleteModalOpen(false)}
-                className={cn(
-                  "font-sans font-medium cursor-pointer",
-                  "px-6 py-2.5",
-                  "bg-white dark:bg-transparent",
-                  "border border-zinc-200 dark:border-zinc-700",
-                  "text-gray-700 dark:text-gray-200",
-                  "hover:bg-zinc-50 dark:hover:bg-zinc-800/50",
-                  "rounded-lg",
-                  "transition-all duration-200"
-                )}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="destructive"
-                onClick={handleDelete}
-                disabled={deleteConfirmation !== 'delete' || isDeleting}
-                className={cn(
-                  "font-sans font-medium cursor-pointer" ,
-                  "px-6 py-2.5",
-                  "bg-red-500 dark:bg-red-500",
-                  "text-white",
-                  "hover:bg-red-600 dark:hover:bg-red-600",
-                  "disabled:opacity-50 disabled:cursor-not-allowed",
-                  "rounded-lg",
-                  "transition-all duration-200",
-                  "disabled:hover:bg-red-500"
-                )}
-              >
-                {isDeleting ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-lg animate-spin" />
-                    <span>Deleting...</span>
-                  </div>
-                ) : (
-                  "Delete Form"
-                )}
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <DeleteForm 
+        formId={formId}
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onOpen={() => setIsDeleteModalOpen(true)}  // Add this line
+      />
 
       <UpgradeModal
         isOpen={isUpgradeModalOpen}
@@ -637,4 +519,4 @@ export function FormSettings({
       />
     </div>
   );
-} 
+}
