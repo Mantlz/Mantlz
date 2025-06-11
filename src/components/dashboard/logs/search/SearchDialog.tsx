@@ -165,7 +165,7 @@ export function SearchDialog({
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2 min-w-0 flex-1">
-                            <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-orange-500 flex-shrink-0"></div>
+                            <div className="w-2 h-2 rounded-full bg-gradient-to-r from-orange-500 to-orange-500 flex-shrink-0"></div>
                             <span className="font-medium truncate">All Forms</span>
                           </div>
                           {!isProUser && (

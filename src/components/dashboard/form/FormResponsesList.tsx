@@ -85,6 +85,47 @@ export function FormResponsesList({
     }
   }, [localSubmissions, currentPage, itemsPerPage])
 
+  // Add helper function for smart pagination
+  const getVisiblePages = (currentPage: number, totalPages: number) => {
+    const delta = 2; // Number of pages to show on each side of current page
+    const range = [];
+    const rangeWithDots = [];
+
+    // Always show first page
+    range.push(1);
+
+    // Calculate start and end of middle range
+    const start = Math.max(2, currentPage - delta);
+    const end = Math.min(totalPages - 1, currentPage + delta);
+
+    // Add pages around current page
+    for (let i = start; i <= end; i++) {
+      range.push(i);
+    }
+
+    // Always show last page if there are multiple pages
+    if (totalPages > 1) {
+      range.push(totalPages);
+    }
+
+    // Remove duplicates and sort
+    const uniqueRange = [...new Set(range)].sort((a, b) => a - b);
+
+    // Add dots where there are gaps
+    for (let i = 0; i < uniqueRange.length; i++) {
+      const current = uniqueRange[i];
+      const next = uniqueRange[i + 1];
+
+      rangeWithDots.push(current);
+
+      if (current !== undefined && next && next - current > 1) {
+        rangeWithDots.push('...');
+      }
+    }
+
+    return rangeWithDots;
+  };
+
   const handleDeleteSubmission = (id: string) => {
     setLocalSubmissions((prev) => prev.filter((sub) => sub.id !== id))
     setSheetOpen(false)
@@ -305,38 +346,88 @@ export function FormResponsesList({
         </CardContent>
       </Card>
 
-      {/* Pagination UI */}
+      {/* Smart Pagination UI */}
       {totalPages > 1 && (
         <div className="mt-4 flex justify-center">
           <Pagination>
-            <PaginationContent>
+            <PaginationContent className="flex-wrap gap-1">
+              {/* Previous Button */}
               <PaginationItem>
                 <PaginationPrevious
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                  className={`${
+                    currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"
+                  } text-xs sm:text-sm`}
                 />
               </PaginationItem>
 
-              {[...Array(totalPages)].map((_, i) => (
-                <PaginationItem key={i + 1}>
-                  <PaginationLink
-                    onClick={() => setCurrentPage(i + 1)}
-                    isActive={currentPage === i + 1}
-                    className="cursor-pointer"
-                  >
-                    {i + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
+              {/* Mobile: Show current page info */}
+              <div className="flex items-center px-3 py-2 text-xs text-zinc-600 dark:text-zinc-400 sm:hidden">
+                Page {currentPage} of {totalPages}
+              </div>
 
+              {/* Desktop: Show page numbers */}
+              <div className="hidden sm:flex items-center gap-1">
+                {getVisiblePages(currentPage, totalPages).map((page, index) => {
+                  if (page === '...') {
+                    return (
+                      <PaginationItem key={`dots-${index}`}>
+                        <span className="px-3 py-2 text-zinc-400">...</span>
+                      </PaginationItem>
+                    );
+                  }
+
+                  return (
+                    <PaginationItem key={page}>
+                      <PaginationLink
+                        onClick={() => setCurrentPage(page as number)}
+                        isActive={currentPage === page}
+                        className="cursor-pointer text-sm"
+                      >
+                        {page}
+                      </PaginationLink>
+                    </PaginationItem>
+                  );
+                })}
+              </div>
+
+              {/* Next Button */}
               <PaginationItem>
                 <PaginationNext
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                  className={`${
+                    currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"
+                  } text-xs sm:text-sm`}
                 />
               </PaginationItem>
             </PaginationContent>
           </Pagination>
+        </div>
+      )}
+
+      {/* Mobile: Quick jump to first/last */}
+      {totalPages > 10 && (
+        <div className="mt-2 flex justify-center gap-2 sm:hidden">
+          {currentPage > 5 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(1)}
+              className="text-xs h-8"
+            >
+              First
+            </Button>
+          )}
+          {currentPage < totalPages - 4 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(totalPages)}
+              className="text-xs h-8"
+            >
+              Last
+            </Button>
+          )}
         </div>
       )}
     </div>

@@ -18,7 +18,7 @@ export function PlanBadge({ plan }: PlanBadgeProps) {
     case 'STANDARD':
     case Plan.STANDARD:
       return (
-        <Badge className="ml-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-none">
+        <Badge className="ml-2 bg-gradient-to-r from-orange-500 to-cyan-500 text-white border-none">
           STANDARD
         </Badge>
       );

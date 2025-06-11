@@ -121,7 +121,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
           <div className="flex flex-col h-full">
             <div className="flex items-center justify-between p-4 border-b border-zinc-200 dark:border-zinc-800">
               <Link href="/dashboard" className="flex items-center gap-1 xs:gap-2 font-semibold cursor-pointer">
-                <Logo />
+                <Logo className="h-6 w-6 mb-1"/>
                 <span className="text-sm sm:text-base">Mantlz</span>
               </Link>
             </div>
@@ -311,7 +311,7 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
       <div className="flex items-center gap-2 md:gap-6">
         <MobileNavMenu />
 
-        <Link href="/dashboard" className="flex items-center gap-1 xs:gap-2 font-semibold group cursor-pointer">
+        <Link href="/dashboard" className="hidden md:flex items-center gap-1 xs:gap-2 font-semibold group cursor-pointer">
         <Logo className="h-6 w-6 mb-1 mr-0.5" size={20} />
 
           <span className="text-sm sm:text-base group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors duration-200">Mantlz</span>
