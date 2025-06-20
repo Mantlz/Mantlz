@@ -46,9 +46,9 @@ export function FormTemplateCard({ template, isSelected, onSelect, onContinue }:
             ? 'border-primary/30 dark:border-primary/40' 
             : '',
           isComingSoon || isLocked
-            ? 'border-dashed border-neutral-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50'
+            ? 'border-dashed border-neutral-200 dark:border-zinc-800 '
             : 'border-neutral-200 dark:border-zinc-800 hover:border-neutral-300 dark:hover:border-zinc-700',
-          "bg-white dark:bg-zinc-900 overflow-hidden"
+          "overflow-hidden"
         )}
       >
         {isSelected && !isComingSoon && !isLocked && (
@@ -62,8 +62,8 @@ export function FormTemplateCard({ template, isSelected, onSelect, onContinue }:
               isSelected && !isComingSoon && !isLocked
                 ? 'bg-primary/10 text-primary' 
                 : isComingSoon || isLocked
-                  ? 'bg-zinc-100 text-neutral-400 dark:bg-zinc-800 dark:text-neutral-500'
-                  : 'bg-zinc-100 text-neutral-500 dark:bg-zinc-800 dark:text-neutral-400'
+                  ? 'bg-background text-neutral-400 dark:bg-background dark:text-neutral-500'
+                  : 'bg-background text-neutral-500 dark:bg-background dark:text-neutral-400'
             )}>
               <Icon className="h-4 w-4" />
             </div>

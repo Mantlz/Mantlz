@@ -116,7 +116,7 @@ export function FormsList({
   return (
     <div className="space-y-6 sm:space-y-8">
       {/* Welcome Section with Stats */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-zinc-100 via-zinc-50 to-zinc-100 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-800 rounded-xl sm:rounded-2xl border border-zinc-100 dark:border-zinc-800/50">
+      <div className="relative overflow-hidden bg-white dark:bg-background rounded-xl sm:rounded-2xl border border-zinc-100 dark:border-zinc-800/50 shadow-2xl">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative p-6 sm:p-8 lg:p-12">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">

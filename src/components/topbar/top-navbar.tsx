@@ -194,8 +194,8 @@ export const Navbar = memo(function Navbar() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 flex h-14 items-center justify-between backdrop-blur-md border-b px-4 text-black dark:text-white transition-all duration-200",
         scrolled 
-          ? "bg-white dark:bg-zinc-950/70 border-zinc-200/70 dark:border-zinc-800/70" 
-          : "bg-white dark:bg-zinc-950/95 border-zinc-200 dark:border-zinc-800"
+          ? " border-zinc-200/70 dark:border-zinc-800/70" 
+          : " border-zinc-200 dark:border-zinc-800"
       )}
     >
       <div className="flex items-center gap-6">

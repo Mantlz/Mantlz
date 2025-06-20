@@ -17,7 +17,7 @@ import { themes } from "./themes";
 
 export default function Mantlz({
   formId,
-  className,
+  //className,
   showUsersJoined = false,
   usersJoinedCount: initialUsersJoinedCount = 0,
   usersJoinedLabel = "people have joined",
@@ -230,158 +230,168 @@ export default function Mantlz({
   return (
     <ThemeProvider theme={theme}>
       <div
-        className={className}
         style={{
-          ...styles.form.container,
-          backgroundColor: "transparent", // Override theme's background color
-          boxShadow: "0 4px 16px rgba(0, 0, 0, 0.06)",
+          maxWidth: styles.form.container.maxWidth,
+          width: styles.form.container.width,
+          margin: styles.form.container.margin,
         }}
       >
-        {formType === "order" && (
-          <div
-            style={{
-              padding: "12px",
-              marginBottom: "16px",
-              borderRadius: "8px",
-              border: "1px solid var(--amber-6)",
-              backgroundColor: "var(--amber-2)",
-            }}
-          >
+        <div
+          style={{
+            padding: styles.form.container.padding,
+            borderRadius: styles.form.container.borderRadius,
+            border: styles.form.container.border,
+            boxShadow: styles.form.container.boxShadow,
+            background: 'purple !important',
+            backdropFilter: styles.form.container.backdropFilter,
+          }}
+        >
+          {formType === "order" && (
             <div
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                color: "var(--amber-11)",
-                fontSize: "14px",
-                fontWeight: 500,
+                padding: "12px",
+                marginBottom: "16px",
+                borderRadius: "8px",
+                border: "1px solid var(--amber-6)",
+                backgroundColor: "var(--amber-2)",
               }}
             >
-              <span>⚠️</span>
-              <span>Order Forms - Coming Soon</span>
-            </div>
-            <p
-              style={{
-                marginTop: "4px",
-                fontSize: "13px",
-                color: "var(--amber-11)",
-                opacity: 0.8,
-              }}
-            >
-              This feature is currently under development. Submissions are
-              disabled.
-            </p>
-          </div>
-        )}
-        <div style={{ marginBottom: "24px" }}>
-          <h2 style={styles.form.title}>{formData?.title || formData?.name}</h2>
-          {formData?.description && (
-            <p style={styles.form.description}>{formData.description}</p>
-          )}
-        </div>
-
-        <Form.Root onSubmit={formMethods.handleSubmit(onSubmitHandler)}>
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-          >
-            {fields.map((field) => (
-              <FormField
-                key={field.id}
-                field={field}
-                formMethods={formMethods}
-              />
-            ))}
-
-            {/* Conditional UI for survey form type */}
-            {formType === "survey" && formMethods.getValues("satisfaction") && (
               <div
                 style={{
-                  padding: "8px",
-                  backgroundColor: "var(--blue-2)",
-                  borderRadius: "6px",
-                  fontSize: "14px",
-                  color: "var(--blue-11)",
-                }}
-              >
-                Thank you for rating your satisfaction!
-              </div>
-            )}
-
-            {/* Show analytics consent info for analytics-opt-in forms */}
-            {formType === "analytics-opt-in" && (
-              <div
-                style={{
-                  padding: "8px",
-                  backgroundColor: "var(--gray-2)",
-                  borderRadius: "6px",
-                  fontSize: "14px",
-                  color: "var(--gray-20)",
-                  marginBottom: "8px",
-                }}
-              >
-                Your privacy choices matter to us. You can change these
-                preferences at any time.
-              </div>
-            )}
-
-            {showUsersJoined && canShowUsersJoined && usersJoined > 0 && (
-              <div
-                style={{
-                  fontSize: "13px",
-                  color: "var(--gray-20)",
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",
-                  gap: "4px",
-                  marginBottom: "2px",
-                  marginTop: "-2px",
+                  gap: "8px",
+                  color: "var(--amber-11)",
+                  fontSize: "14px",
+                  fontWeight: 500,
                 }}
               >
-                <span
+                <span>⚠️</span>
+                <span>Order Forms - Coming Soon</span>
+              </div>
+              <p
+                style={{
+                  marginTop: "4px",
+                  fontSize: "13px",
+                  color: "var(--amber-11)",
+                  opacity: 0.8,
+                }}
+              >
+                This feature is currently under development. Submissions are
+                disabled.
+              </p>
+            </div>
+          )}
+          <div style={{ marginBottom: "24px" }}>
+            <h2 style={styles.form.title}>{formData?.title || formData?.name}</h2>
+            {formData?.description && (
+              <p style={styles.form.description}>{formData.description}</p>
+            )}
+          </div>
+
+          <Form.Root onSubmit={formMethods.handleSubmit(onSubmitHandler)}>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+            >
+              {fields.map((field) => (
+                <FormField
+                  key={field.id}
+                  field={field}
+                  formMethods={formMethods}
+                />
+              ))}
+
+              {/* Conditional UI for survey form type */}
+              {formType === "survey" && formMethods.getValues("satisfaction") && (
+                <div
                   style={{
-                    fontWeight: 600,
-                    color: "black",
+                    padding: "8px",
+                    backgroundColor: "var(--blue-2)",
+                    borderRadius: "6px",
+                    fontSize: "14px",
+                    color: "var(--blue-11)",
                   }}
                 >
-                  {usersJoined}
-                </span>{" "}
-                {usersJoinedLabel}
-              </div>
-            )}
+                  Thank you for rating your satisfaction!
+                </div>
+              )}
 
-            <Form.Submit asChild>
-              <button
-                type="submit"
-                disabled={submitting}
-                style={{
-                  ...styles.button,
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "8px",
-                  backgroundColor:
-                    formType === "order"
-                      ? "var(--green-9)"
-                      : styles.button.backgroundColor,
-                }}
-              >
-                {submitting ? (
-                  <>
-                    <ReloadIcon
-                      style={{ animation: "spin 1s linear infinite" }}
-                    />
-                    {formType === "order" ? "Processing..." : "Submitting..."}
-                  </>
-                ) : formType === "order" ? (
-                  "Proceed to Payment"
-                ) : (
-                  "Submit"
-                )}
-              </button>
-            </Form.Submit>
-          </div>
-        </Form.Root>
+              {/* Show analytics consent info for analytics-opt-in forms */}
+              {formType === "analytics-opt-in" && (
+                <div
+                  style={{
+                    padding: "8px",
+                    backgroundColor: "var(--gray-2)",
+                    borderRadius: "6px",
+                    fontSize: "14px",
+                    color: "var(--gray-20)",
+                    marginBottom: "8px",
+                  }}
+                >
+                  Your privacy choices matter to us. You can change these
+                  preferences at any time.
+                </div>
+              )}
+
+              {showUsersJoined && canShowUsersJoined && usersJoined > 0 && (
+                <div
+                  style={{
+                    fontSize: "13px",
+                    color: "var(--gray-20)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "4px",
+                    marginBottom: "2px",
+                    marginTop: "-2px",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontWeight: 600,
+                      color: "black",
+                    }}
+                  >
+                    {usersJoined}
+                  </span>{" "}
+                  {usersJoinedLabel}
+                </div>
+              )}
+
+              <Form.Submit asChild>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  style={{
+                    ...styles.button,
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "8px",
+                    backgroundColor:
+                      formType === "order"
+                        ? "var(--green-9)"
+                        : styles.button.backgroundColor,
+                  }}
+                >
+                  {submitting ? (
+                    <>
+                      <ReloadIcon
+                        style={{ animation: "spin 1s linear infinite" }}
+                      />
+                      {formType === "order" ? "Processing..." : "Submitting..."}
+                    </>
+                  ) : formType === "order" ? (
+                    "Proceed to Payment"
+                  ) : (
+                    "Submit"
+                  )}
+                </button>
+              </Form.Submit>
+            </div>
+          </Form.Root>
+        </div>
       </div>
     </ThemeProvider>
   );

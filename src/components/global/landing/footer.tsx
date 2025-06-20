@@ -7,7 +7,7 @@ import { Mail, ExternalLink, Github, Twitter } from "lucide-react"
 
 const Footer = () => {
   return (
-    <footer className="relative w-full border-t border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-white to-zinc-50 dark:from-zinc-950 dark:to-zinc-900 text-zinc-600 dark:text-zinc-400 py-16">
+    <footer className="relative w-full border-t border-zinc-200 dark:border-zinc-800  text-zinc-600 dark:text-zinc-400 py-16">
       {/* Subtle background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-zinc-200/30 dark:bg-zinc-800/20 rounded-full blur-3xl transform translate-y-1/2 -translate-x-1/4 opacity-50"></div>

@@ -66,7 +66,7 @@ export default function FormBuilderPage() {
               <IconSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-400" />
               <Input
                 placeholder="Search templates..."
-                className="pl-12 h-11 bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 rounded-lg w-full sm:w-96 focus-visible:ring-primary/20 focus-visible:ring-offset-0 text-base cursor-text"
+                className="pl-12 h-11  border border-neutral-200 dark:border-zinc-800 rounded-lg w-full sm:w-96 focus-visible:ring-primary/20 focus-visible:ring-offset-0 text-base cursor-text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -90,7 +90,7 @@ export default function FormBuilderPage() {
                   className={cn(
                     "p-2 rounded transition-all duration-150 cursor-pointer",
                     viewMode === 'list' 
-                      ? "bg-zinc-100 dark:bg-zinc-800 text-neutral-900 dark:text-white" 
+                      ? " text-neutral-900 dark:text-white" 
                       : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300"
                   )}
                   onClick={() => setViewMode('list')}
@@ -104,7 +104,7 @@ export default function FormBuilderPage() {
 
           <div className="w-full overflow-x-auto pb-2 -mx-2 px-2">
             <Tabs defaultValue="all" value={activeCategory} onValueChange={setActiveCategory} className="w-full min-w-[480px]">
-              <TabsList className="bg-white dark:bg-zinc-900 p-1 h-auto flex space-x-2 overflow-x-auto border border-neutral-200 dark:border-zinc-800 rounded-lg">
+              <TabsList className="bg-background dark:bg-background p-1 h-auto flex space-x-2 overflow-x-auto border border-neutral-200 dark:border-zinc-800 rounded-lg">
                 {categories.map(category => {
                   const Icon = category.icon;
                   return (
@@ -113,7 +113,7 @@ export default function FormBuilderPage() {
                       value={category.id}
                       className={cn(
                         "flex items-center gap-1.5 px-3 py-1.5 text-sm transition-all duration-150 cursor-pointer whitespace-nowrap",
-                        "data-[state=active]:bg-zinc-100 dark:data-[state=active]:bg-zinc-800",
+                        "data-[state=active]:bg-accent dark:data-[state=active]:bg-accent",
                         "data-[state=active]:text-neutral-900 dark:data-[state=active]:text-white",
                         "data-[state=inactive]:text-neutral-500 dark:data-[state=inactive]:text-neutral-400",
                         "data-[state=inactive]:hover:text-neutral-700 dark:data-[state=inactive]:hover:text-neutral-300",
@@ -131,7 +131,7 @@ export default function FormBuilderPage() {
         </div>
 
         {filteredForms.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center bg-zinc-50 dark:bg-zinc-900 rounded-lg border border-neutral-200 dark:border-zinc-800">
+          <div className="flex flex-col items-center justify-center py-16 text-center bg-background dark:bg-background rounded-lg border border-neutral-200 dark:border-zinc-800">
             <IconSearch className="h-12 w-12 text-neutral-300 dark:text-neutral-600 mb-4" />
             <h3 className="text-lg font-medium text-neutral-800 dark:text-neutral-200 mb-2">No matching templates</h3>
             <p className="text-base text-neutral-500 dark:text-neutral-400 max-w-md px-6">Try adjusting your search or category filter</p>
@@ -151,7 +151,7 @@ export default function FormBuilderPage() {
                 ))}
               </div>
             ) : (
-              <div className="rounded-lg border border-neutral-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-900 mb-8 divide-y divide-neutral-200 dark:divide-zinc-800">
+              <div className="rounded-lg border border-neutral-200 dark:border-zinc-800 overflow-hidden mb-8 divide-y divide-neutral-200 dark:divide-zinc-800">
                 {filteredForms.map((template) => (
                   <FormTemplateListItem
                     key={template.id}
