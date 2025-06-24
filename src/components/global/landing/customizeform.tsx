@@ -10,7 +10,7 @@ export default function CustomizeFormSection() {
                     <p className="mt-4 text-lg md:text-xl text-muted-foreground">Easily design and personalise forms to fit your brand's identity and look great on any device.</p>
                 </div>
                 <div className="relative">
-                    <Card className="relative overflow-hidden mb-12 shadow-xl">
+                    <Card className="relative overflow-hidden mb-12">
                         <CardContent className="pt-6 px-6 py-8">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                                 <div>
@@ -58,17 +58,25 @@ export default function CustomizeFormSection() {
                                                     <div className="size-4 rounded-full bg-primary/20 mr-2"></div>
                                                     <div className="h-3 bg-muted/50 rounded w-1/2"></div>
                                                 </div>
+                                                <div className="h-10 bg-muted/30 rounded border flex items-center px-2">
+                                                    <div className="size-4 rounded-full bg-primary/20 mr-2"></div>
+                                                    <div className="h-3 bg-muted/50 rounded w-1/2"></div>
+                                                </div>
+
                                             </div>
                                             
                                             {/* Middle panel - Form preview */}
                                             <div className="col-span-2 space-y-2">
                                                 <div className="h-6 bg-muted/50 rounded w-3/4"></div>
                                                 <div className="h-10 bg-muted/30 rounded border"></div>
-                                                <div className="h-6 bg-muted/50 rounded w-1/2"></div>
-                                                <div className="h-24 bg-muted/30 rounded border"></div>
-                                                <div className="h-10 bg-primary rounded flex items-center justify-center">
-                                                    <div className="text-primary-foreground text-xs">Submit</div>
-                                                </div>
+                                                <div className="h-10 bg-muted/30 rounded border"></div>
+                                                <div className="h-10 bg-muted/30 rounded border"></div>
+                                                <div className="h-10 bg-muted/30 rounded border"></div>
+
+
+
+
+
                                             </div>
                                         </div>
                                     </div>

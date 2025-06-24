@@ -37,40 +37,42 @@ const UserDropdown = memo(function UserDropdown() {
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="flex items-center gap-2 p-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
+            className="flex items-center gap-2 p-1 rounded-lg bg-muted hover:bg-muted/80 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer transition-all duration-200"
           >
-            <Avatar className="h-7 w-7 xs:h-8 xs:w-8 ring-2 ring-zinc-100 dark:ring-zinc-800">
+            <Avatar className="h-7 w-7 xs:h-8 xs:w-8 ring-2 ring-border">
               <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
-              <AvatarFallback className="bg-zinc-700 text-zinc-100">
+              <AvatarFallback className="bg-primary text-primary-foreground">
                 {user?.firstName?.[0] || user?.lastName?.[0] || "U"}
               </AvatarFallback>
             </Avatar>
             <span className="hidden sm:inline text-sm font-medium">{user?.fullName || "User"}</span>
-            <ChevronDown className="hidden sm:inline h-3.5 w-3.5 text-zinc-500 dark:text-zinc-400" />
+            <ChevronDown className="hidden sm:inline h-3.5 w-3.5 text-muted-foreground" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
-          className="w-[220px] p-2 m-1 mt-2 bg-white dark:bg-zinc-900/50 backdrop-blur-sm border border-zinc-200/70 dark:border-zinc-800/70 shadow-lg rounded-xl"
+          className="w-[220px] p-2 m-1 mt-2 bg-popover/95 backdrop-blur-sm border border-border shadow-lg rounded-xl"
         >
-          <DropdownMenuItem className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5" onClick={() => openUserProfile()}>
+          <DropdownMenuItem className="hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-lg transition-all duration-200 my-0.5" onClick={() => openUserProfile()}>
             <User className="h-4 w-4 mr-2" />
             Profile
           </DropdownMenuItem>
           <DropdownMenuItem 
-            className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5" 
+            className="hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-lg transition-all duration-200 my-0.5" 
             asChild
           >
             <SettingsDialog>
-              <div className="flex items-center w-full px-2 py-1.5 cursor-pointer hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 rounded-lg transition-all duration-200">
+              <div className="flex items-center w-full text-sm px-2 py-1.5 cursor-pointer hover:bg-accent hover:text-accent-foreground rounded-lg transition-all duration-200">
                 <Settings className="h-4 w-4 mr-2" />
-                Settings
+
+                <span className="ml-2">Settings</span> 
+
               </div>
             </SettingsDialog>
           </DropdownMenuItem>
-          <Separator className="my-1.5 bg-zinc-300 dark:bg-zinc-700" />
-          <DropdownMenuItem className="hover:bg-red-100/70  bg-red-500 dark:hover:bg-red-900/40 text-white dark:text-white p-2 cursor-pointer rounded-lg transition-all duration-200 my-0.5" onClick={() => signOut()}>
-            <LogOut className="h-4 w-4 mr-2 text-white" />
+          <Separator className="my-1.5 bg-border" />
+          <DropdownMenuItem className="hover:bg-destructive/90 bg-destructive text-destructive-foreground p-2 cursor-pointer rounded-lg transition-all duration-200 my-0.5" onClick={() => signOut()}>
+            <LogOut className="h-4 w-4 mr-2" />
             Sign out
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -115,11 +117,11 @@ const MobileNavMenu = memo(function MobileNavMenu() {
         </SheetTrigger>
         <SheetContent
           side="left"
-          className="w-[250px] xs:w-[280px] sm:w-[320px] md:w-[350px] p-0 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800"
+          className="w-[250px] xs:w-[280px] sm:w-[320px] md:w-[350px] p-0 bg-background border-r border-border"
         >
           <SheetTitle className="sr-only">Mantlz Navigation</SheetTitle>
           <div className="flex flex-col h-full">
-            <div className="flex items-center justify-between p-4 border-b border-zinc-200 dark:border-zinc-800">
+            <div className="flex items-center justify-between p-4 border-b border-border">
               <Link href="/dashboard" className="flex items-center gap-1 xs:gap-2 font-semibold cursor-pointer">
                 <Logo className="h-6 w-6 mb-1"/>
                 <span className="text-sm sm:text-base">Mantlz</span>
@@ -129,14 +131,14 @@ const MobileNavMenu = memo(function MobileNavMenu() {
             <div className="flex-1 overflow-y-auto">
               <div className="p-4 space-y-6">
                 <div className="space-y-2">
-                  <h3 className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider px-2">
+                  <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider px-2">
                     Navigation
                   </h3>
                   <div className="space-y-1.5">
                     <SheetClose asChild>
                       <Link
                         href="/dashboard"
-                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
                       >
                         <Home className="h-4 w-4" />
                         <span>Dashboard</span>
@@ -145,7 +147,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                     <SheetClose asChild>
                       <Link
                         href="/dashboard/campaigns"
-                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
                       >
                         <Mail className="h-4 w-4" />
                         <span>Campaigns</span>
@@ -154,7 +156,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                     <SheetClose asChild>
                       <Link
                         href="/dashboard/logs"
-                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
                       >
                         <Activity className="h-4 w-4" />
                         <span>Logs</span>
@@ -167,7 +169,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                         href="/dashboard/form"
                         className="w-full cursor-pointer"
                       >
-                        <Button variant="outline" className="w-full cursor-pointer bg-zinc-100/90 dark:bg-zinc-900/90 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/90 backdrop-blur-sm border justify-start gap-2 rounded-lg border-zinc-300 dark:border-zinc-700">
+                        <Button variant="outline" className="w-full cursor-pointer bg-muted/90 hover:bg-muted backdrop-blur-sm border justify-start gap-2 rounded-lg border-border">
                           <Plus className="h-4 w-4" />
                           <span>Create Form</span>
                         </Button>
@@ -177,21 +179,21 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider px-2">
+                  <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider px-2">
                     Account
                   </h3>
                   <div className="space-y-1.5">
                     {user && (
-                      <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-zinc-100/50 dark:bg-zinc-800/50">
-                        <Avatar className="h-8 w-8 ring-2 ring-zinc-200 dark:ring-zinc-700">
+                      <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-muted/50">
+                        <Avatar className="h-8 w-8 ring-2 ring-border">
                           <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
-                          <AvatarFallback className="bg-zinc-700 text-zinc-100">
+                          <AvatarFallback className="bg-primary text-primary-foreground">
                             {user?.firstName?.[0] || user?.lastName?.[0] || "U"}
                           </AvatarFallback>
                         </Avatar>
                         <div className="flex flex-col">
                           <span className="text-sm font-medium">{user?.fullName || "User"}</span>
-                          <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                          <span className="text-xs text-muted-foreground">
                             {user?.primaryEmailAddress?.emailAddress}
                           </span>
                         </div>
@@ -201,7 +203,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                     <SheetClose asChild>
                       <button
                         onClick={() => openUserProfile()}
-                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors w-full cursor-pointer"
+                        className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors w-full cursor-pointer"
                       >
                         <User className="h-4 w-4" />
                         <span>Profile</span>
@@ -210,7 +212,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
 
                     <SheetClose asChild>
                       <SettingsDialog>
-                        <button className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors w-full cursor-pointer">
+                        <button className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors w-full cursor-pointer">
                           <Settings className="h-4 w-4" />
                           <span>Settings</span>
                         </button>
@@ -219,7 +221,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
 
                     <button
                       onClick={() => signOut()}
-                      className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 transition-colors w-full cursor-pointer"
+                      className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors w-full cursor-pointer"
                     >
                       <LogOut className="h-4 w-4" />
                       <span>Sign out</span>
@@ -229,13 +231,13 @@ const MobileNavMenu = memo(function MobileNavMenu() {
               </div>
             </div>
 
-            <div className="p-4 border-t border-zinc-200 dark:border-zinc-800">
+            <div className="p-4 border-t border-border">
               <QuestionModal
                 trigger={
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    className="w-full gap-2 rounded-lg border-zinc-300 dark:border-zinc-700 cursor-pointer"
+                    className="w-full gap-2 rounded-lg border-border cursor-pointer"
                   >
                     <HelpCircle className="h-4 w-4" />
                     <span>Help & Support</span>
@@ -260,7 +262,7 @@ const ActionButtonsSection = memo(function ActionButtonsSection() {
           <Button
           variant="ghost"
           size="icon"
-          className="h-9 w-9 rounded-lg hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
+          className="h-9 w-9 rounded-lg hover:bg-accent hover:text-accent-foreground hover:backdrop-blur-sm hover:shadow-sm cursor-pointer transition-all duration-200"
           aria-label="Help"
           >
             <HelpCircle className="h-4.5 w-4.5" />
@@ -272,7 +274,7 @@ const ActionButtonsSection = memo(function ActionButtonsSection() {
         <Button
           variant="ghost"
           size="icon"
-          className="h-9 w-9 rounded-lg hover:bg-zinc-200/50  hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 transition-all duration-200"
+          className="h-9 w-9 rounded-lg hover:bg-accent hover:text-accent-foreground hover:backdrop-blur-sm hover:shadow-sm cursor-pointer transition-all duration-200"
           aria-label="Settings"
         >
           <Settings className="h-4.5 w-4.5" />
@@ -302,10 +304,10 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 right-0 z-50  flex h-16 items-center justify-between backdrop-blur-sm border-b px-3 sm:px-4 md:px-6 lg:px-8 text-black dark:text-white transition-all duration-300",
+        "fixed top-0 left-0 right-0 z-50  flex h-16 items-center justify-between backdrop-blur-sm border-b px-3 sm:px-4 md:px-6 lg:px-8 text-foreground transition-all duration-300",
         scrolled
-          ? "bg-background dark:bg-background border-zinc-200/70 dark:border-zinc-800/70 shadow-sm"
-          : "bg-background dark:bg-background border-zinc-200/50 dark:border-zinc-800/50"
+          ? "bg-background border-border/70 shadow-sm"
+          : "bg-background border-border/50"
       )}
     >
       <div className="flex items-center gap-2 md:gap-6">
@@ -314,7 +316,7 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
         <Link href="/dashboard" className="hidden md:flex items-center gap-1 xs:gap-2 font-semibold group cursor-pointer">
         <Logo className="h-6 w-6 mb-1 mr-0.5" size={20} />
 
-          <span className="text-sm sm:text-base group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors duration-200">Mantlz</span>
+          <span className="text-sm sm:text-base group-hover:text-muted-foreground transition-colors duration-200">Mantlz</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-2 lg:gap-6">
@@ -322,39 +324,39 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="flex items-center gap-1.5 px-3 py-2 text-sm hover:bg-zinc-200/50 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer dark:hover:bg-zinc-800/40 rounded-lg transition-all duration-200"
+                className="flex items-center gap-1.5 px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground hover:backdrop-blur-sm hover:shadow-sm cursor-pointer rounded-lg transition-all duration-200"
               >
                 <span>Menu</span>
-                <ChevronDown className="h-4 w-4 text-zinc-500 dark:text-zinc-400 transition-transform duration-200" />
+                <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform duration-200" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="start"
-              className="w-[220px] p-2 m-1  bg-white dark:bg-zinc-900/50 backdrop-blur-sm border border-zinc-200/70 dark:border-zinc-800/70 shadow-lg rounded-lg"
+              className="w-[220px] p-2 m-1  bg-popover/95 backdrop-blur-sm border border-border shadow-lg rounded-lg"
             >
-              <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5">
+              <DropdownMenuItem asChild className="hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-lg transition-all duration-200 my-0.5">
                 <Link href="/dashboard" className="flex items-center gap-2.5 py-1.5 cursor-pointer">
                   <Home className="h-4 w-4" />
                   <span>Dashboard</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5">
+              <DropdownMenuItem asChild className="hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-lg transition-all duration-200 my-0.5">
                 <Link href="/dashboard/campaigns" className="flex items-center gap-2.5 py-1.5 cursor-pointer">
                   <Mail className="h-4 w-4" />
                   <span>Campaigns</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 cursor-pointer rounded-lg transition-all duration-200 my-0.5">
+              <DropdownMenuItem asChild className="hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-lg transition-all duration-200 my-0.5">
                 <Link href="/dashboard/logs" className="flex items-center gap-2.5 py-1.5 cursor-pointer">
                   <Activity className="h-4 w-4" />
                   <span>Logs</span>
                 </Link>
               </DropdownMenuItem>
     
-              <DropdownMenuItem asChild className="hover:bg-zinc-200/70 dark:hover:bg-zinc-800/70 p-0 rounded-lg my-1">
+              <DropdownMenuItem asChild className="hover:bg-accent hover:text-accent-foreground p-0 rounded-lg my-1">
                 <Link 
                   href="/dashboard/form"
-                  className="flex items-center gap-2.5 w-full px-2 py-1.5  bg-zinc-200/90 dark:bg-zinc-900/90 hover:bg-zinc-200/90 dark:hover:bg-zinc-800/90 backdrop-blur-sm border justify-start  rounded-lg border-zinc-300 dark:border-zinc-700 cursor-pointer"
+                  className="flex items-center gap-2.5 w-full px-2 py-1.5  bg-muted/90 hover:bg-muted backdrop-blur-sm border justify-start  rounded-lg border-border cursor-pointer"
                 >
                   <Plus className="h-4 w-4" />
                   <span>Create Form</span>
@@ -365,7 +367,7 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
 
           <Separator
             orientation="vertical"
-            className={cn("mx-1 lg:mx-2", "bg-zinc-400 dark:bg-zinc-800 data-[orientation=vertical]:h-5 opacity-70")}
+            className={cn("mx-1 lg:mx-2", "bg-border data-[orientation=vertical]:h-5 opacity-70")}
           />
 
           <div className="ml-0 lg:ml-1">
