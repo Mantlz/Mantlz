@@ -76,7 +76,7 @@ export function FileUpload({
     padding: '8px',
     textAlign: 'center',
     cursor: disabled ? 'not-allowed' : 'pointer',
-    backgroundColor: disabled ? 'var(--gray-3)' : 'var(--gray-1)',
+    backgroundColor: disabled ? 'var(--gray-3)' : 'white',
     opacity: disabled ? 0.7 : 1,
     transition: 'all 0.2s',
     position: 'relative',
@@ -272,4 +272,4 @@ export function FileUpload({
       </div>
     </Tooltip.Provider>
   )
-} 
+}

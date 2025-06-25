@@ -32,7 +32,7 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
               padding: '8px 12px',
               borderRadius: '6px',
               border: '1px solid var(--gray-6)',
-              backgroundColor: 'var(--gray-1)',
+              backgroundColor: 'white',
               color: 'black',
               fontSize: '14px',
               lineHeight: '1.5',
@@ -51,7 +51,7 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
             <SelectPrimitive.Content
               style={{
                 overflow: 'hidden',
-                backgroundColor: 'var(--gray-1)',
+                backgroundColor: 'white',
                 borderRadius: '6px',
                 border: '1px solid var(--gray-6)',
                 boxShadow: '0 2px 10px var(--gray-7)',
@@ -63,7 +63,7 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                   alignItems: 'center',
                   justifyContent: 'center',
                   padding: '4px',
-                  backgroundColor: 'var(--gray-1)',
+                  backgroundColor: 'white',
                   color: 'var(--gray-20)',
                 }}
               >
@@ -97,7 +97,7 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                   alignItems: 'center',
                   justifyContent: 'center',
                   padding: '4px',
-                  backgroundColor: 'var(--gray-1)',
+                  backgroundColor: 'white',
                   color: 'var(--gray-20)',
                 }}
               >
@@ -113,4 +113,4 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
 
 Select.displayName = 'Select';
 
-export { Select }; 
+export { Select };

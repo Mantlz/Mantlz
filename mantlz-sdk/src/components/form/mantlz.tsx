@@ -216,7 +216,7 @@ export default function Mantlz({
             borderRadius: styles.form.container.borderRadius,
             border: styles.form.container.border,
             boxShadow: styles.form.container.boxShadow,
-            background: 'purple !important',
+            backgroundColor: styles.form.container.backgroundColor,
             backdropFilter: styles.form.container.backdropFilter,
           }}
         >

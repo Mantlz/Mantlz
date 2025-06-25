@@ -15,7 +15,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             padding: '8px 12px',
             borderRadius: '6px',
             border: '1px solid var(--gray-6)',
-            backgroundColor: 'var(--gray-1)',
+            backgroundColor: 'white',
             color: 'black',
             fontSize: '14px',
             lineHeight: '1.5',
@@ -40,4 +40,4 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 
 Textarea.displayName = 'Textarea';
 
-export { Textarea }; 
+export { Textarea };

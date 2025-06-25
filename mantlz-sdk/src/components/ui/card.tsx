@@ -31,7 +31,7 @@ const getVariantStyles = (variant: CardProps['variant'] = 'default') => {
     default:
       return {
         border: '1px solid var(--gray-6)',
-        backgroundColor: 'var(--gray-2)',
+        backgroundColor: 'white',
         titleColor: 'black',
         descriptionColor: 'var(--gray-20)',
       };
@@ -192,4 +192,4 @@ export {
   CardFooter,
   CardTitle,
   CardDescription,
-}; 
+};

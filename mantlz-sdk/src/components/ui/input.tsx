@@ -15,7 +15,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             padding: '8px 12px',
             borderRadius: '6px',
             border: '1px solid var(--gray-6)',
-            backgroundColor: 'var(--gray-1)',
+            backgroundColor: 'white',
             color: 'black',
             fontSize: '14px',
             lineHeight: '1.5',
@@ -39,4 +39,4 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
 Input.displayName = 'Input';
 
-export { Input }; 
+export { Input };

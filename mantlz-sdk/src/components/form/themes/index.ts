@@ -119,7 +119,7 @@ export const themes: Record<string, Theme> = {
         borderRadius: '8px',
         border: '1px solid var(--gray-5)',
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
-        background: 'white',
+        backgroundColor: 'white',
       },
       title: {
         fontSize: '18px',
@@ -208,6 +208,7 @@ export const themes: Record<string, Theme> = {
         border: '2px solid black',
         borderRadius: '0',
         boxShadow: '4px 4px 0 black',
+        backgroundColor: 'white',
         position: 'relative',
       },
       title: {
@@ -296,6 +297,7 @@ export const themes: Record<string, Theme> = {
         maxWidth: '380px',
         margin: '0 auto',
         padding: '14px',
+        backgroundColor: 'white',
       },
       title: {
         fontSize: '16px',
