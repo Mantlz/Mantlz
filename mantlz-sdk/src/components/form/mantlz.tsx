@@ -10,10 +10,10 @@ import { useMantlz } from "../../context/mantlzContext";
 import { ApiKeyErrorCard } from "../ui/ApiKeyErrorCard";
 import { MantlzProps, FormType } from "./types";
 import { FormField } from "./components/FormField";
+import { UsersJoined } from "./components/UsersJoined";
 import { useFormLogic } from "./hooks/useFormLogic";
-import { useDarkMode } from "./hooks/useDarkMode";
+import { useFormStyles } from "./hooks/useFormStyles";
 // ThemeProvider moved to individual UI components
-import { themes } from "./themes";
 
 export default function Mantlz({
   formId,
@@ -27,48 +27,10 @@ export default function Mantlz({
   const { client, apiKey } = useMantlz();
   const [usersJoined, setUsersJoined] = useState(initialUsersJoinedCount);
   const [canShowUsersJoined, setCanShowUsersJoined] = useState(false);
-  const isDarkMode = useDarkMode();
-  const styles = themes[theme];
   const [submitting, setSubmitting] = useState(false);
 
-  // Get the appropriate styles based on dark mode
-  const getContainerStyles = () => {
-    return isDarkMode && styles.form.containerDark 
-      ? styles.form.containerDark 
-      : styles.form.container;
-  };
-
-  const getTitleStyles = () => {
-    return isDarkMode && styles.form.titleDark 
-      ? styles.form.titleDark 
-      : styles.form.title;
-  };
-
-  const getDescriptionStyles = () => {
-    return isDarkMode && styles.form.descriptionDark 
-      ? styles.form.descriptionDark 
-      : styles.form.description;
-  };
-
-  const getUsersJoinedStyles = () => {
-    return {
-      fontSize: "13px",
-      color: isDarkMode ? "white" : "var(--gray-20)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: "4px",
-      marginBottom: "2px",
-      marginTop: "-2px",
-    };
-  };
-
-  const getUsersJoinedNumberStyles = () => {
-    return {
-      fontWeight: 600,
-      color: isDarkMode ? "white" : "black",
-    };
-  };
+  // Get styles using custom hook
+  const { getContainerStyles, getTitleStyles, getDescriptionStyles, styles } = useFormStyles(theme);
 
   // Fetch users joined count
   React.useEffect(() => {
@@ -344,14 +306,12 @@ export default function Mantlz({
                 </div>
               )}
 
-              {showUsersJoined && canShowUsersJoined && usersJoined > 0 && (
-                <div style={getUsersJoinedStyles()}>
-                  <span style={getUsersJoinedNumberStyles()}>
-                    {usersJoined}
-                  </span>{" "}
-                  {usersJoinedLabel}
-                </div>
-              )}
+              <UsersJoined
+                showUsersJoined={showUsersJoined}
+                canShowUsersJoined={canShowUsersJoined}
+                usersJoined={usersJoined}
+                usersJoinedLabel={usersJoinedLabel}
+              />
 
               <Form.Submit asChild>
                 <button
