@@ -6,8 +6,7 @@ import * as Select from '@radix-ui/react-select';
 import { //CheckIcon,
    ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import { FormField as FormFieldType } from '../types';
-import { themes } from '../themes';
-import { useDarkMode } from '../hooks/useDarkMode';
+import { useAppearance } from '../hooks/useAppearance';
 import { FileUpload } from '../../ui/file-upload';
 import { ProductField } from './ProductField';
 import { StarRating } from './StarRating';
@@ -16,27 +15,24 @@ interface FormFieldProps {
   field: FormFieldType;
   formMethods: UseFormReturn<any>;
   theme: string;
+  appearance?: import('../types').Appearance;
 }
 
 export const FormField = ({
   field,
   formMethods,
   theme,
+  appearance,
 }: FormFieldProps) => {
-  const styles = themes[theme || 'default'];
-  const isDarkMode = useDarkMode();
-
-  const getLabelStyles = () => {
-    return isDarkMode && styles.field.labelDark 
-      ? styles.field.labelDark 
-      : styles.field.label;
-  };
-
-  const getInputStyles = () => {
-    return isDarkMode && styles.field.inputDark 
-      ? styles.field.inputDark 
-      : styles.field.input;
-  };
+  const { 
+    getLabelStyles, 
+    getInputStyles, 
+    getElementClasses, 
+    mergeClasses,
+    styles 
+  } = useAppearance(theme, appearance);
+  
+  const elementClasses = getElementClasses();
 
   const renderField = () => {
     // Special handling for rating field in feedback forms
@@ -46,7 +42,10 @@ export const FormField = ({
       
       return (
         <Form.Field name={field.id}>
-          <Form.Label style={getLabelStyles()}>
+          <Form.Label 
+            className={mergeClasses('', elementClasses.formLabel)}
+            style={getLabelStyles()}
+          >
             {field.label}
             {field.required && <span style={{ color: 'var(--red-9)' }}>*</span>}
           </Form.Label>
@@ -73,7 +72,10 @@ export const FormField = ({
       case 'textarea':
         return (
           <Form.Field name={field.id}>
-            <Form.Label style={getLabelStyles()}>
+            <Form.Label 
+              className={mergeClasses('', elementClasses.formLabel)}
+              style={getLabelStyles()}
+            >
               {field.label}
               {field.required && <span style={{ color: 'var(--red-9)' }}>*</span>}
             </Form.Label>
@@ -81,6 +83,7 @@ export const FormField = ({
               <textarea
                 id={field.id}
                 placeholder={field.placeholder}
+                className={mergeClasses('', elementClasses.formInput)}
                 {...formMethods.register(field.id)}
                 style={{
                   ...getInputStyles(),
@@ -89,7 +92,10 @@ export const FormField = ({
               />
             </Form.Control>
             {formMethods.formState.errors[field.id] && (
-              <Form.Message style={styles.field.error}>
+              <Form.Message 
+                className={mergeClasses('', elementClasses.formError)}
+                style={styles.field.error}
+              >
                 {formMethods.formState.errors[field.id]?.message as string}
               </Form.Message>
             )}
@@ -131,7 +137,10 @@ export const FormField = ({
                 </label>
               </div>
               {formMethods.formState.errors[field.id] && (
-                <Form.Message style={styles.field.error}>
+                <Form.Message 
+                  className={mergeClasses('', elementClasses.formError)}
+                  style={styles.field.error}
+                >
                   {formMethods.formState.errors[field.id]?.message as string}
                 </Form.Message>
               )}
@@ -143,12 +152,18 @@ export const FormField = ({
         if (!Array.isArray(field.options)) return null;
         return (
           <Form.Field name={field.id}>
-            <Form.Label style={getLabelStyles()}>
+            <Form.Label 
+              className={mergeClasses('', elementClasses.formLabel)}
+              style={getLabelStyles()}
+            >
               {field.label}
               {field.required && <span style={{ color: 'var(--red-9)' }}>*</span>}
             </Form.Label>
             <Select.Root onValueChange={(value) => formMethods.setValue(field.id, value)}>
-              <Select.Trigger style={getInputStyles()}>
+              <Select.Trigger 
+                className={mergeClasses('', elementClasses.formInput)}
+                style={getInputStyles()}
+              >
                 <Select.Value placeholder="Select an option" />
                 <Select.Icon>
                   <ChevronDownIcon />
@@ -182,7 +197,10 @@ export const FormField = ({
               </Select.Portal>
             </Select.Root>
             {formMethods.formState.errors[field.id] && (
-              <Form.Message style={styles.field.error}>
+              <Form.Message 
+                className={mergeClasses('', elementClasses.formError)}
+                style={styles.field.error}
+              >
                 {formMethods.formState.errors[field.id]?.message as string}
               </Form.Message>
             )}
@@ -192,7 +210,10 @@ export const FormField = ({
       case 'file':
         return (
           <Form.Field name={field.id}>
-            <Form.Label style={getLabelStyles()}>
+            <Form.Label 
+              className={mergeClasses('', elementClasses.formLabel)}
+              style={getLabelStyles()}
+            >
               {field.label}
               {field.required && <span style={{ color: 'var(--red-9)' }}>*</span>}
             </Form.Label>
@@ -206,7 +227,10 @@ export const FormField = ({
               onBlur={() => formMethods.trigger(field.id)}
             />
             {formMethods.formState.errors[field.id] && (
-              <Form.Message style={styles.field.error}>
+              <Form.Message 
+                className={mergeClasses('', elementClasses.formError)}
+                style={styles.field.error}
+              >
                 {formMethods.formState.errors[field.id]?.message as string}
               </Form.Message>
             )}
@@ -219,13 +243,17 @@ export const FormField = ({
             field={field}
             formMethods={formMethods}
             theme={theme}
+            appearance={appearance}
           />
         );
 
       default:
         return (
           <Form.Field name={field.id}>
-            <Form.Label style={getLabelStyles()}>
+            <Form.Label 
+              className={mergeClasses('', elementClasses.formLabel)}
+              style={getLabelStyles()}
+            >
               {field.label}
               {field.required && <span style={{ color: 'var(--red-9)' }}>*</span>}
             </Form.Label>
@@ -234,12 +262,16 @@ export const FormField = ({
                 id={field.id}
                 type={field.type || 'text'}
                 placeholder={field.placeholder}
+                className={mergeClasses('', elementClasses.formInput)}
                 {...formMethods.register(field.id)}
                 style={getInputStyles()}
               />
             </Form.Control>
             {formMethods.formState.errors[field.id] && (
-              <Form.Message style={styles.field.error}>
+              <Form.Message 
+                className={mergeClasses('', elementClasses.formError)}
+                style={styles.field.error}
+              >
                 {formMethods.formState.errors[field.id]?.message as string}
               </Form.Message>
             )}

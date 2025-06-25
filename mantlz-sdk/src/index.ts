@@ -34,7 +34,10 @@ export type {
   BaseFormProps,
   WaitlistFormProps,
   ContactFormProps,
-  FeedbackFormProps
+  FeedbackFormProps,
+  Appearance,
+  AppearanceVariables,
+  AppearanceElements
 } from './components/form/types';
 
 export type { ToastHandler, ToastOptions, ToastType } from './utils/toast';

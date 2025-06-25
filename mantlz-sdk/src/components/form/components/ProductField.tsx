@@ -2,7 +2,7 @@ import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import * as Form from '@radix-ui/react-form';
 import { FormField } from '../types';
-import { themes } from '../themes';
+import { useAppearance } from '../hooks/useAppearance';
 // useTheme hook removed - theme passed as prop
 
 interface ProductFieldProps {
@@ -10,6 +10,7 @@ interface ProductFieldProps {
   formMethods: UseFormReturn<any>;
   className?: string;
   theme: string;
+  appearance?: import('../types').Appearance;
 }
 
 interface Product {
@@ -22,10 +23,18 @@ interface Product {
   quantity?: number;
 }
 
-export function ProductField({ field, formMethods, theme }: ProductFieldProps) {
+export function ProductField({ field, formMethods, theme, appearance }: ProductFieldProps) {
   const { register, watch, setValue } = formMethods;
   const selectedProducts = watch(field.name) || [];
-  const styles = themes[theme || 'default'];
+  const { 
+    getLabelStyles, 
+    getInputStyles, 
+    getElementClasses, 
+    mergeClasses,
+    styles 
+  } = useAppearance(theme, appearance);
+  
+  const elementClasses = getElementClasses();
 
   // Format price for display
   const formatPrice = (price: number, currency: string) => {

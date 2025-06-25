@@ -105,6 +105,39 @@ export interface FeedbackFormProps extends BaseFormProps {
   // Feedback specific props can be added here
 }
 
+// Appearance customization types (similar to Clerk)
+export interface AppearanceVariables {
+  colorPrimary?: string;
+  colorBackground?: string;
+  colorInputBackground?: string;
+  colorText?: string;
+  colorInputText?: string;
+  colorError?: string;
+  colorSuccess?: string;
+  borderRadius?: string;
+  fontFamily?: string;
+  fontSize?: string;
+  fontWeight?: string;
+}
+
+export interface AppearanceElements {
+  card?: string; // CSS classes for the main form container
+  formTitle?: string; // CSS classes for the form title
+  formDescription?: string; // CSS classes for the form description
+  formField?: string; // CSS classes for form field containers
+  formLabel?: string; // CSS classes for form labels
+  formInput?: string; // CSS classes for form inputs
+  formButton?: string; // CSS classes for form buttons
+  formError?: string; // CSS classes for error messages
+  usersJoined?: string; // CSS classes for users joined text
+}
+
+export interface Appearance {
+  baseTheme?: 'light' | 'dark';
+  variables?: AppearanceVariables;
+  elements?: AppearanceElements;
+}
+
 export interface MantlzProps {
   formId: string;
   className?: string;
@@ -113,6 +146,7 @@ export interface MantlzProps {
   usersJoinedLabel?: string;
   redirectUrl?: string;
   theme?: 'default' | 'modern' | 'neobrutalism' | 'simple';
+  appearance?: Appearance;
 }
 
 export interface SurveyFormProps extends BaseFormProps {
@@ -153,4 +187,4 @@ export interface FormSubmitResponse {
     allowed: boolean;
     reason?: string;
   };
-} 
+}

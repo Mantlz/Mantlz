@@ -12,7 +12,7 @@ import { MantlzProps, FormType } from "./types";
 import { FormField } from "./components/FormField";
 import { UsersJoined } from "./components/UsersJoined";
 import { useFormLogic } from "./hooks/useFormLogic";
-import { useFormStyles } from "./hooks/useFormStyles";
+import { useAppearance } from "./hooks/useAppearance";
 // ThemeProvider moved to individual UI components
 
 export default function Mantlz({
@@ -23,14 +23,24 @@ export default function Mantlz({
   usersJoinedLabel = "people have joined",
   redirectUrl,
   theme = "default",
+  appearance,
 }: MantlzProps) {
   const { client, apiKey } = useMantlz();
   const [usersJoined, setUsersJoined] = useState(initialUsersJoinedCount);
   const [canShowUsersJoined, setCanShowUsersJoined] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // Get styles using custom hook
-  const { getContainerStyles, getTitleStyles, getDescriptionStyles, styles } = useFormStyles(theme);
+  // Get styles and classes using appearance customization hook
+  const { 
+    getContainerStyles, 
+    getTitleStyles, 
+    getDescriptionStyles, 
+    getElementClasses,
+    mergeClasses,
+    styles 
+  } = useAppearance(theme, appearance);
+  
+  const elementClasses = getElementClasses();
 
   // Fetch users joined count
   React.useEffect(() => {
@@ -214,6 +224,7 @@ export default function Mantlz({
         }}
       >
         <div
+          className={mergeClasses('', elementClasses.card)}
           style={{
             ...getContainerStyles(),
           }}
@@ -255,9 +266,19 @@ export default function Mantlz({
             </div>
           )}
           <div style={{ marginBottom: "24px" }}>
-            <h2 style={getTitleStyles()}>{formData?.title || formData?.name}</h2>
+            <h2 
+              className={mergeClasses('', elementClasses.formTitle)}
+              style={getTitleStyles()}
+            >
+              {formData?.title || formData?.name}
+            </h2>
             {formData.description && (
-              <p style={getDescriptionStyles()}>{formData.description}</p>
+              <p 
+                className={mergeClasses('', elementClasses.formDescription)}
+                style={getDescriptionStyles()}
+              >
+                {formData.description}
+              </p>
             )}
           </div>
 
@@ -271,6 +292,7 @@ export default function Mantlz({
                   field={field}
                   formMethods={formMethods}
                   theme={theme}
+                  appearance={appearance}
                 />
               ))}
 
@@ -311,12 +333,14 @@ export default function Mantlz({
                 canShowUsersJoined={canShowUsersJoined}
                 usersJoined={usersJoined}
                 usersJoinedLabel={usersJoinedLabel}
+                appearance={appearance}
               />
 
               <Form.Submit asChild>
                 <button
                   type="submit"
                   disabled={submitting}
+                  className={mergeClasses('', elementClasses.formButton)}
                   style={{
                     ...styles.button,
                     width: "100%",
@@ -328,6 +352,10 @@ export default function Mantlz({
                       formType === "order"
                         ? "var(--green-9)"
                         : styles.button.backgroundColor,
+                    // Apply appearance variables if provided
+                    ...(appearance?.variables?.colorPrimary && formType !== "order" ? {
+                      backgroundColor: appearance.variables.colorPrimary
+                    } : {}),
                   }}
                 >
                   {submitting ? (
