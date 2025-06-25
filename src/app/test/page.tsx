@@ -10,7 +10,7 @@ export default function CustomerFeedbackPage() {
       <div className="flex flex-row items-center justify-center gap-4 flex-wrap">
         <Mantlz
           formId="cmc44ix1u001pl0oswpc14utt"
-          theme="modern"
+          theme="default"
           showUsersJoined={true}
           usersJoinedCount={100000}
           usersJoinedLabel="Users already joined"

@@ -2,6 +2,7 @@ import React from 'react';
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import { Theme } from '@radix-ui/themes';
+import { useDarkMode } from '../form/hooks/useDarkMode';
 
 interface SelectOption {
   value: string;
@@ -18,8 +19,10 @@ interface SelectProps {
 
 const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
   ({ options, onChange, placeholder = 'Select an option...', disabled, name }, ref) => {
+    const isDarkMode = useDarkMode();
+    
     return (
-      <Theme appearance="light" accentColor="blue" radius="medium">
+      <Theme appearance={isDarkMode ? "dark" : "light"} accentColor="blue" radius="medium">
         <SelectPrimitive.Root onValueChange={onChange} name={name}>
           <SelectPrimitive.Trigger
             ref={ref}

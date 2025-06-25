@@ -11,6 +11,7 @@ import { ApiKeyErrorCard } from "../ui/ApiKeyErrorCard";
 import { MantlzProps, FormType } from "./types";
 import { FormField } from "./components/FormField";
 import { useFormLogic } from "./hooks/useFormLogic";
+import { useDarkMode } from "./hooks/useDarkMode";
 // ThemeProvider moved to individual UI components
 import { themes } from "./themes";
 
@@ -26,8 +27,28 @@ export default function Mantlz({
   const { client, apiKey } = useMantlz();
   const [usersJoined, setUsersJoined] = useState(initialUsersJoinedCount);
   const [canShowUsersJoined, setCanShowUsersJoined] = useState(false);
+  const isDarkMode = useDarkMode();
   const styles = themes[theme];
   const [submitting, setSubmitting] = useState(false);
+
+  // Get the appropriate styles based on dark mode
+  const getContainerStyles = () => {
+    return isDarkMode && styles.form.containerDark 
+      ? styles.form.containerDark 
+      : styles.form.container;
+  };
+
+  const getTitleStyles = () => {
+    return isDarkMode && styles.form.titleDark 
+      ? styles.form.titleDark 
+      : styles.form.title;
+  };
+
+  const getDescriptionStyles = () => {
+    return isDarkMode && styles.form.descriptionDark 
+      ? styles.form.descriptionDark 
+      : styles.form.description;
+  };
 
   // Fetch users joined count
   React.useEffect(() => {
@@ -205,19 +226,14 @@ export default function Mantlz({
   return (
       <div
         style={{
-          maxWidth: styles.form.container.maxWidth,
-          width: styles.form.container.width,
-          margin: styles.form.container.margin,
+          maxWidth: getContainerStyles().maxWidth,
+          width: getContainerStyles().width,
+          margin: getContainerStyles().margin,
         }}
       >
         <div
           style={{
-            padding: styles.form.container.padding,
-            borderRadius: styles.form.container.borderRadius,
-            border: styles.form.container.border,
-            boxShadow: styles.form.container.boxShadow,
-            backgroundColor: styles.form.container.backgroundColor,
-            backdropFilter: styles.form.container.backdropFilter,
+            ...getContainerStyles(),
           }}
         >
           {formType === "order" && (
@@ -257,9 +273,9 @@ export default function Mantlz({
             </div>
           )}
           <div style={{ marginBottom: "24px" }}>
-            <h2 style={styles.form.title}>{formData?.title || formData?.name}</h2>
-            {formData?.description && (
-              <p style={styles.form.description}>{formData.description}</p>
+            <h2 style={getTitleStyles()}>{formData?.title || formData?.name}</h2>
+            {formData.description && (
+              <p style={getDescriptionStyles()}>{formData.description}</p>
             )}
           </div>
 
