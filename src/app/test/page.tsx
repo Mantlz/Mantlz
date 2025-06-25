@@ -10,6 +10,24 @@ export default function CustomerFeedbackPage() {
       <div className="flex flex-row items-center justify-center gap-4 flex-wrap">
         <Mantlz
           formId="cmc44ix1u001pl0oswpc14utt"
+          theme="neobrutalism"
+          showUsersJoined={true}
+          usersJoinedCount={100000}
+          usersJoinedLabel="Users already joined"
+          // redirectUrl='https://www.mantlz.app'
+
+        />
+         <Mantlz
+          formId="cmc44ix1u001pl0oswpc14utt"
+          theme="modern"
+          showUsersJoined={true}
+          usersJoinedCount={100000}
+          usersJoinedLabel="Users already joined"
+          // redirectUrl='https://www.mantlz.app'
+
+        />
+         <Mantlz
+          formId="cmc44ix1u001pl0oswpc14utt"
           theme="default"
           showUsersJoined={true}
           usersJoinedCount={100000}
@@ -17,6 +35,16 @@ export default function CustomerFeedbackPage() {
           // redirectUrl='https://www.mantlz.app'
 
         />
+         <Mantlz
+          formId="cmc44ix1u001pl0oswpc14utt"
+          theme="simple"
+          showUsersJoined={true}
+          usersJoinedCount={100000}
+          usersJoinedLabel="Users already joined"
+          // redirectUrl='https://www.mantlz.app'
+
+        />
+
       </div>
     </div>
   );

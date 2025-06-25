@@ -50,6 +50,26 @@ export default function Mantlz({
       : styles.form.description;
   };
 
+  const getUsersJoinedStyles = () => {
+    return {
+      fontSize: "13px",
+      color: isDarkMode ? "white" : "var(--gray-20)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "4px",
+      marginBottom: "2px",
+      marginTop: "-2px",
+    };
+  };
+
+  const getUsersJoinedNumberStyles = () => {
+    return {
+      fontWeight: 600,
+      color: isDarkMode ? "white" : "black",
+    };
+  };
+
   // Fetch users joined count
   React.useEffect(() => {
     if (!showUsersJoined || !client || !formId) return;
@@ -325,24 +345,8 @@ export default function Mantlz({
               )}
 
               {showUsersJoined && canShowUsersJoined && usersJoined > 0 && (
-                <div
-                  style={{
-                    fontSize: "13px",
-                    color: "var(--gray-20)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "4px",
-                    marginBottom: "2px",
-                    marginTop: "-2px",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontWeight: 600,
-                      color: "black",
-                    }}
-                  >
+                <div style={getUsersJoinedStyles()}>
+                  <span style={getUsersJoinedNumberStyles()}>
                     {usersJoined}
                   </span>{" "}
                   {usersJoinedLabel}
