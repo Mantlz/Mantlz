@@ -51,7 +51,7 @@ export default function CustomerFeedbackPage() {
   redirectUrl="https://example.com"
   />
 
-  <Mantlz 
+  {/* <Mantlz 
   formId="cmccal7ip0001o7fknk1agow5" 
   theme="neobrutalism" 
  
@@ -62,7 +62,16 @@ export default function CustomerFeedbackPage() {
   formId="cmccao2wa0004o7fk1k4qjy0x" 
   theme="neobrutalism" 
  
+  /> */}
+
+    <Mantlz 
+  formId="cmccb5j5s0007o7fkgkb2d6fw" 
+  theme="neobrutalism" 
+ 
   />
+
+
+
 
 
 
