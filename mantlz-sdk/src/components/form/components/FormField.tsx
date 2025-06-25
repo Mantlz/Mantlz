@@ -7,7 +7,7 @@ import { //CheckIcon,
    ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import { FormField as FormFieldType } from '../types';
 import { themes } from '../themes';
-// useTheme hook removed - theme passed as prop
+import { useDarkMode } from '../hooks/useDarkMode';
 import { FileUpload } from '../../ui/file-upload';
 import { ProductField } from './ProductField';
 import { StarRating } from './StarRating';
@@ -24,6 +24,19 @@ export const FormField = ({
   theme,
 }: FormFieldProps) => {
   const styles = themes[theme || 'default'];
+  const isDarkMode = useDarkMode();
+
+  const getLabelStyles = () => {
+    return isDarkMode && styles.field.labelDark 
+      ? styles.field.labelDark 
+      : styles.field.label;
+  };
+
+  const getInputStyles = () => {
+    return isDarkMode && styles.field.inputDark 
+      ? styles.field.inputDark 
+      : styles.field.input;
+  };
 
   const renderField = () => {
     // Special handling for rating field in feedback forms
@@ -33,7 +46,7 @@ export const FormField = ({
       
       return (
         <Form.Field name={field.id}>
-          <Form.Label style={styles.field.label}>
+          <Form.Label style={getLabelStyles()}>
             {field.label}
             {field.required && <span style={{ color: 'var(--red-9)' }}>*</span>}
           </Form.Label>
@@ -60,7 +73,7 @@ export const FormField = ({
       case 'textarea':
         return (
           <Form.Field name={field.id}>
-            <Form.Label style={styles.field.label}>
+            <Form.Label style={getLabelStyles()}>
               {field.label}
               {field.required && <span style={{ color: 'var(--red-9)' }}>*</span>}
             </Form.Label>
@@ -70,7 +83,7 @@ export const FormField = ({
                 placeholder={field.placeholder}
                 {...formMethods.register(field.id)}
                 style={{
-                  ...styles.field.input,
+                  ...getInputStyles(),
                   minHeight: '100px',
                 }}
               />
@@ -130,12 +143,12 @@ export const FormField = ({
         if (!Array.isArray(field.options)) return null;
         return (
           <Form.Field name={field.id}>
-            <Form.Label style={styles.field.label}>
+            <Form.Label style={getLabelStyles()}>
               {field.label}
               {field.required && <span style={{ color: 'var(--red-9)' }}>*</span>}
             </Form.Label>
             <Select.Root onValueChange={(value) => formMethods.setValue(field.id, value)}>
-              <Select.Trigger style={styles.field.input}>
+              <Select.Trigger style={getInputStyles()}>
                 <Select.Value placeholder="Select an option" />
                 <Select.Icon>
                   <ChevronDownIcon />
@@ -179,7 +192,7 @@ export const FormField = ({
       case 'file':
         return (
           <Form.Field name={field.id}>
-            <Form.Label style={styles.field.label}>
+            <Form.Label style={getLabelStyles()}>
               {field.label}
               {field.required && <span style={{ color: 'var(--red-9)' }}>*</span>}
             </Form.Label>
@@ -212,7 +225,7 @@ export const FormField = ({
       default:
         return (
           <Form.Field name={field.id}>
-            <Form.Label style={styles.field.label}>
+            <Form.Label style={getLabelStyles()}>
               {field.label}
               {field.required && <span style={{ color: 'var(--red-9)' }}>*</span>}
             </Form.Label>
@@ -222,7 +235,7 @@ export const FormField = ({
                 type={field.type || 'text'}
                 placeholder={field.placeholder}
                 {...formMethods.register(field.id)}
-                style={styles.field.input}
+                style={getInputStyles()}
               />
             </Form.Control>
             {formMethods.formState.errors[field.id] && (

@@ -64,7 +64,7 @@ export const themes: Record<string, Theme> = {
         marginBottom: '6px',
         fontSize: '14px',
         fontWeight: '500',
-        color: 'black',
+        color: 'white',
         letterSpacing: '-0.01em',
       },
       labelDark: {
@@ -72,7 +72,7 @@ export const themes: Record<string, Theme> = {
         marginBottom: '6px',
         fontSize: '14px',
         fontWeight: '500',
-        color: 'white',
+        color: 'black',
         letterSpacing: '-0.01em',
       },
       input: {
@@ -497,7 +497,7 @@ export const themes: Record<string, Theme> = {
         marginBottom: '4px',
         fontSize: '13px',
         fontWeight: '400',
-        color: 'var(--gray-20)',
+        color: 'black',
       },
       labelDark: {
         display: 'block',
