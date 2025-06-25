@@ -3,12 +3,13 @@ import { UseFormReturn } from 'react-hook-form';
 import * as Form from '@radix-ui/react-form';
 import { FormField } from '../types';
 import { themes } from '../themes';
-import { useTheme } from '../hooks/useTheme';
+// useTheme hook removed - theme passed as prop
 
 interface ProductFieldProps {
   field: FormField;
   formMethods: UseFormReturn<any>;
   className?: string;
+  theme: string;
 }
 
 interface Product {
@@ -21,11 +22,10 @@ interface Product {
   quantity?: number;
 }
 
-export function ProductField({ field, formMethods }: ProductFieldProps) {
+export function ProductField({ field, formMethods, theme }: ProductFieldProps) {
   const { register, watch, setValue } = formMethods;
   const selectedProducts = watch(field.name) || [];
-  const { theme: selectedTheme } = useTheme();
-  const styles = themes[selectedTheme || 'default'];
+  const styles = themes[theme || 'default'];
 
   // Format price for display
   const formatPrice = (price: number, currency: string) => {
@@ -207,4 +207,4 @@ export function ProductField({ field, formMethods }: ProductFieldProps) {
       />
     </Form.Field>
   );
-} 
+}

@@ -7,7 +7,7 @@ import { //CheckIcon,
    ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import { FormField as FormFieldType } from '../types';
 import { themes } from '../themes';
-import { useTheme } from '../hooks/useTheme';
+// useTheme hook removed - theme passed as prop
 import { FileUpload } from '../../ui/file-upload';
 import { ProductField } from './ProductField';
 import { StarRating } from './StarRating';
@@ -15,14 +15,15 @@ import { StarRating } from './StarRating';
 interface FormFieldProps {
   field: FormFieldType;
   formMethods: UseFormReturn<any>;
+  theme: string;
 }
 
 export const FormField = ({
   field,
   formMethods,
+  theme,
 }: FormFieldProps) => {
-  const { theme: selectedTheme } = useTheme();
-  const styles = themes[selectedTheme || 'default'];
+  const styles = themes[theme || 'default'];
 
   const renderField = () => {
     // Special handling for rating field in feedback forms
@@ -204,7 +205,7 @@ export const FormField = ({
           <ProductField
             field={field}
             formMethods={formMethods}
-            className={selectedTheme}
+            theme={theme}
           />
         );
 

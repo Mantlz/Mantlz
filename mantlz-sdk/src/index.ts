@@ -14,7 +14,7 @@ export { default as Mantlz } from './components/form/mantlz';
 export { toast } from './utils/toast';
 export { createSonnerToastAdapter } from './adapters/sonner-toast';
 export { SDK_CONFIG } from './config';
-export { ThemeProvider } from './components/form/context/ThemeContext';
+// ThemeProvider removed - now handled at individual UI component level
 export { themes } from './components/form/themes';
 
 // Re-export types for better tree-shaking

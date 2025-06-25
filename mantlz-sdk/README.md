@@ -35,6 +35,24 @@ function App() {
 }
 
 
+## Theming and Customization
+
+Mantlz SDK comes with built-in themes and customization options. You can easily change the appearance of your forms, including background colors and styles.
+
+```tsx
+// Using a built-in theme
+import { Mantlz } from '@mantlz/nextjs';
+
+function App() {
+  return (
+    <Mantlz
+      formId="your-form-id"
+      theme="neobrutalism" // Options: default, modern, neobrutalism, simple
+    />
+  );
+}
+```
+
 ## Documentation
 
 For detailed documentation, examples, and API reference, visit:
@@ -51,4 +69,4 @@ Features covered in documentation:
 
 ## License
 
-MIT 
+MIT

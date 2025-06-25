@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { Theme } from "@radix-ui/themes";
 import * as Form from "@radix-ui/react-form";
-// import * as Progress from '@radix-ui/react-progress';
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { toast } from "../../utils/toast";
 
@@ -12,7 +11,7 @@ import { ApiKeyErrorCard } from "../ui/ApiKeyErrorCard";
 import { MantlzProps, FormType } from "./types";
 import { FormField } from "./components/FormField";
 import { useFormLogic } from "./hooks/useFormLogic";
-import { ThemeProvider } from "./context/ThemeContext";
+// ThemeProvider moved to individual UI components
 import { themes } from "./themes";
 
 export default function Mantlz({
@@ -29,7 +28,6 @@ export default function Mantlz({
   const [canShowUsersJoined, setCanShowUsersJoined] = useState(false);
   const styles = themes[theme];
   const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
   // Fetch users joined count
   React.useEffect(() => {
@@ -87,7 +85,6 @@ export default function Mantlz({
   // Render loading state
   if (!isMounted || loading) {
     return (
-      <ThemeProvider theme={theme}>
         <div
           style={{
             display: "flex",
@@ -105,7 +102,6 @@ export default function Mantlz({
             }}
           />
         </div>
-      </ThemeProvider>
     );
   }
 
@@ -117,7 +113,6 @@ export default function Mantlz({
   // Render form error
   if (!formData || fields.length === 0) {
     return (
-      <ThemeProvider theme={theme}>
         <div
           style={{
             padding: "16px",
@@ -142,39 +137,10 @@ export default function Mantlz({
               : "Form configuration is missing or empty."}
           </p>
         </div>
-      </ThemeProvider>
     );
   }
 
-  // Render success message after submission
-  if (submitted) {
-    return (
-      <ThemeProvider theme={theme}>
-        <div
-          style={{
-            padding: "16px",
-            borderRadius: "8px",
-            border: "1px solid var(--green-6)",
-            backgroundColor: "var(--green-2)",
-          }}
-        >
-          <h2
-            style={{
-              color: "var(--green-11)",
-              fontSize: "18px",
-              fontWeight: 600,
-              marginBottom: "8px",
-            }}
-          >
-            Thank You!
-          </h2>
-          <p style={{ color: "var(--green-11)" }}>
-            Your submission has been received.
-          </p>
-        </div>
-      </ThemeProvider>
-    );
-  }
+  // Remove success message section - now handled by redirect
 
   // Extract form type safely
   const formType = formData.formType as FormType;
@@ -201,7 +167,16 @@ export default function Mantlz({
       const result = await onSubmit(data);
 
       if (result?.success) {
-        setSubmitted(true);
+        // Redirect to the specified URL after successful submission
+        if (redirectUrl) {
+          window.location.href = redirectUrl;
+        } else {
+          // Default redirect or show a toast if no redirectUrl provided
+          toast.success("Form submitted successfully!", {
+            duration: 3000,
+            position: "bottom-right",
+          });
+        }
       } else if (result?.isConflict) {
         // Handle conflict errors with a specific message
         toast.error("Duplicate Entry", {
@@ -228,7 +203,6 @@ export default function Mantlz({
 
   // Main form render
   return (
-    <ThemeProvider theme={theme}>
       <div
         style={{
           maxWidth: styles.form.container.maxWidth,
@@ -298,6 +272,7 @@ export default function Mantlz({
                   key={field.id}
                   field={field}
                   formMethods={formMethods}
+                  theme={theme}
                 />
               ))}
 
@@ -393,6 +368,5 @@ export default function Mantlz({
           </Form.Root>
         </div>
       </div>
-    </ThemeProvider>
   );
 }

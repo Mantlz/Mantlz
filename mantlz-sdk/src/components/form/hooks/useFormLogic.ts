@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -16,7 +16,6 @@ export const useFormLogic = (
   const [formData, setFormData] = useState<FormSchema | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [fields, setFields] = useState<FormField[]>([]);
 
@@ -278,7 +277,6 @@ export const useFormLogic = (
       const response = await client.submitForm(formId, submissionData);
       
       if (response.success) {
-        setSubmitted(true);
         return response;
       } else {
         // Handle conflict errors specifically
@@ -317,10 +315,9 @@ export const useFormLogic = (
     formData,
     loading,
     submitting,
-    submitted,
     fields,
     formMethods,
     onSubmit,
     isMounted,
   };
-}; 
+};

@@ -9,7 +9,9 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ children, loading, disabled, ...props }, ref) => {
     return (
+
       <Theme>
+
         <button
           ref={ref}
           disabled={disabled || loading}
