@@ -38,7 +38,7 @@ export const baseMetadata: Metadata = {
     description: 'Modern headless form management platform with SDK for developers. Create beautiful, customizable forms with pre-built components, analytics, and TypeScript support.',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Mantlz - Modern Form Builder for Developers',
@@ -49,7 +49,7 @@ export const baseMetadata: Metadata = {
     card: 'summary_large_image',
     title: 'Mantlz - Headless Form Builder for Developers',
     description: 'Modern headless form management platform with SDK for developers. Create beautiful, customizable forms with pre-built components, analytics, and TypeScript support.',
-    images: ['/og-image.jpg'],
+    images: ['/og-image.png'],
   },
 }
 
