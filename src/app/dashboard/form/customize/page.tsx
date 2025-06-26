@@ -136,7 +136,7 @@ function CustomizeFormContent() {
       const result = await response.json()
       toast.success('Form created successfully')
       router.push(`/dashboard/form/${result.id}`)
-    } catch (error: Error | unknown) {
+    } catch (error: unknown) {
       toast.error(error instanceof Error ? error.message : 'Failed to create form')
       console.error(error)
     } finally {
@@ -220,7 +220,7 @@ function CustomizeFormContent() {
             <div className="p-4">
               {isClient ? (
                 <Tabs defaultValue="fields" className="w-full">
-                  <TabsList className="bg-white dark:bg-zinc-900 p-1 h-auto flex space-x-1 overflow-x-auto border border-neutral-200 dark:border-zinc-800 rounded-lg mb-4">
+                  <TabsList className="bg-background dark:bg-background p-1 h-auto flex space-x-1 overflow-x-auto border border-neutral-200 dark:border-zinc-800 rounded-lg mb-4">
                     <TabsTrigger 
                       value="fields" 
                       className={cn(

@@ -149,7 +149,7 @@ export function FormsList({
               
               {forms.length > 0 && (
                 <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full sm:w-auto">
-                  <div className="bg-white dark:bg-zinc-800/50 rounded-xl p-4 sm:p-5 border border-zinc-100 dark:border-zinc-800/50 hover:border-zinc-200 dark:hover:border-zinc-700 transition-all duration-200">
+                  <div className="bg-white dark:bg-zinc-800/50 rounded-xl p-4 sm:p-5 border border-zinc-100 dark:border-zinc-800/50  dark:hover:border-zinc-700 transition-all duration-200">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                         <FileSpreadsheet className="h-5 w-5 text-gray-900 dark:text-white" />
@@ -239,7 +239,7 @@ export function FormsList({
           {currentForms.map((form: Form) => (
             <Card 
               key={form.id}
-              className="group bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/50 hover:border-zinc-200 dark:hover:border-zinc-700 transition-all duration-200 cursor-pointer hover:shadow-md"
+              className="group bg-white dark:bg-background border border-zinc-100 dark:border-zinc-800/50 hover:border-zinc-200 dark:hover:border-zinc-700 transition-all duration-200 cursor-pointer hover:shadow-md"
               onClick={() => window.location.href = `/dashboard/form/${form.id}`}
             >
               <div className="p-4 sm:p-6">

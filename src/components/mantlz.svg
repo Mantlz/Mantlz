@@ -1,0 +1,45 @@
+ <svg 
+        width={size} 
+        height={size} 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg"
+        className="object-contain"
+      >
+        <defs>
+          <linearGradient id="simpleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ff6b35" />
+            <stop offset="100%" stopColor="#f7931e" />
+          </linearGradient>
+        </defs>
+        
+        {/* Left pillar */}
+        <rect 
+          x="4" 
+          y="8" 
+          width="6" 
+          height="12" 
+          fill="url(#simpleGradient)"
+        />
+        
+        {/* Right pillar */}
+        <rect 
+          x="14" 
+          y="8" 
+          width="6" 
+          height="12" 
+          fill="url(#simpleGradient)"
+        />
+        
+        {/* Center diagonal - left side */}
+        <polygon 
+          points="10,8 12,12 10,20 8,12" 
+          fill="url(#simpleGradient)"
+        />
+        
+        {/* Center diagonal - right side */}
+        <polygon 
+          points="14,8 16,12 14,20 12,12" 
+          fill="url(#simpleGradient)"
+        />
+      </svg>

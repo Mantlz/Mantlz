@@ -41,7 +41,7 @@ export function FormSettingsTab({
             value={formTitle}
             onChange={(e) => onTitleChange(e.target.value)}
             className={cn(
-              "bg-white dark:bg-zinc-900",
+              // "bg-white dark:bg-zinc-900",
               "border border-neutral-200 dark:border-zinc-700",
               "rounded-lg p-2 cursor-text",
               "text-neutral-900 dark:text-neutral-200",
@@ -68,7 +68,7 @@ export function FormSettingsTab({
             onChange={(e) => onDescriptionChange(e.target.value)}
             rows={4}
             className={cn(
-              "bg-white dark:bg-zinc-900",
+              // "bg-white dark:bg-zinc-900",
               "border border-neutral-200 dark:border-zinc-700",
               "rounded-lg p-2 cursor-text",
               "text-neutral-900 dark:text-neutral-200",

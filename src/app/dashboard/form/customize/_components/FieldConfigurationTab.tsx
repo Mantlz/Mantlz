@@ -157,7 +157,7 @@ export function FieldConfigurationTab({
       return (
         <div className="space-y-3">
           {formFields.map((field) => (
-            <div key={field.id} className="bg-white dark:bg-zinc-800 rounded-lg border border-neutral-200 dark:border-zinc-800 p-3">
+            <div key={field.id} className=" rounded-lg border border-neutral-200 dark:border-zinc-800 p-3">
               <div className="flex items-center justify-between">
                 <span>{field.label}</span>
               </div>
@@ -236,7 +236,7 @@ export function FieldConfigurationTab({
       {/* Current Fields Section */}
       <div>
         {formFields.length === 0 ? (
-          <div className="text-center py-6 px-4 bg-zinc-50/80 dark:bg-zinc-800/30 rounded-lg border border-dashed border-neutral-200 dark:border-zinc-800 transition-all duration-300">
+          <div className="text-center py-6 px-4  rounded-lg border border-dashed border-neutral-200 dark:border-zinc-800 transition-all duration-300">
             <GripHorizontal className="h-8 w-8 mx-auto text-neutral-300 dark:text-neutral-600 mb-2" />
             <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400">No fields added yet</p>
             <div className="mt-2 flex items-center justify-center text-primary">
@@ -257,7 +257,7 @@ export function FieldConfigurationTab({
           </span>
         </h3>
         {filteredAvailableFields.length === 0 ? (
-          <p className="text-sm text-neutral-500 dark:text-neutral-400 p-3 bg-zinc-50/80 dark:bg-zinc-800/30 rounded-lg border border-neutral-200 dark:border-zinc-800">
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 p-3  rounded-lg border border-neutral-200 dark:border-zinc-800">
             No additional fields available for this form type.
           </p>
         ) : (
@@ -276,8 +276,8 @@ export function FieldConfigurationTab({
                       className={cn(
                         "flex items-center gap-2 px-3 py-2.5 rounded-lg transition-all duration-200",
                         formFields.some(f => f.id === field.id)
-                          ? 'bg-zinc-100/80 text-neutral-400 dark:bg-zinc-800/60 dark:text-neutral-500 border border-neutral-200 dark:border-zinc-800 opacity-60 cursor-not-allowed' 
-                          : 'bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 hover:border-primary/20 dark:hover:border-primary/20 hover:shadow-sm cursor-pointer'
+                          ? ' text-neutral-400 dark:bg-zinc-800/60 dark:text-neutral-500 border border-neutral-200 dark:border-zinc-800 opacity-60 cursor-not-allowed' 
+                          : 'border border-neutral-200 dark:border-zinc-800 hover:border-primary/20 dark:hover:border-primary/20 hover:shadow-sm cursor-pointer'
                       )}
                       onClick={() => !formFields.some(f => f.id === field.id) && onToggleField(field)}
                       role="button"

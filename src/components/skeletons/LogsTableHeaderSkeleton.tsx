@@ -4,7 +4,7 @@ import { ChevronLeft, Users, Clock, File, Search } from "lucide-react"
 
 export function LogsTableHeaderSkeleton() {
   return (
-    <div className="relative overflow-hidden bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+    <div className="relative overflow-hidden bg-white dark:bg-background rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
       <div className="relative p-6 lg:p-8">
         <div className="flex flex-col gap-6">
@@ -26,7 +26,7 @@ export function LogsTableHeaderSkeleton() {
             </div>
             <div className="flex items-center gap-3">
               {/* Search Button */}
-              <div className="h-9 gap-2 cursor-pointer rounded-lg bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 backdrop-blur shadow-sm flex items-center px-3">
+              <div className="h-9 gap-2 cursor-pointer rounded-lg bg-white/80 dark:bg-background hover:bg-zinc-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 backdrop-blur shadow-sm flex items-center px-3">
                 <Search className="h-4 w-4 text-gray-400" />
                 <span className="text-sm font-normal hidden sm:inline-block text-gray-500">Search submissions...</span>
                 <div className="hidden sm:flex items-center justify-center h-5 px-1.5 ml-1 rounded-lg bg-zinc-100 dark:bg-zinc-800">
@@ -43,7 +43,7 @@ export function LogsTableHeaderSkeleton() {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
+            <div className="bg-white dark:bg-background rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                   <Users className="h-5 w-5 text-gray-400 dark:text-gray-500" />
@@ -55,12 +55,12 @@ export function LogsTableHeaderSkeleton() {
                   <p className="text-xs text-gray-500 dark:text-gray-400">Total Submissions</p>
                 </div>
               </div>
-              <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden">
+              <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-background rounded-lg overflow-hidden">
                 <div className="h-full bg-zinc-300 dark:bg-zinc-600 rounded-lg w-1/3" />
               </div>
             </div>
             
-            <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
+            <div className="bg-white dark:bg-background rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                   <Clock className="h-5 w-5 text-gray-400 dark:text-gray-500" />
@@ -75,7 +75,7 @@ export function LogsTableHeaderSkeleton() {
             </div>
 
             {/* Last Submission Card */}
-            <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
+            <div className="bg-white dark:bg-background rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                   <File className="h-5 w-5 text-gray-400 dark:text-gray-500" />

@@ -245,7 +245,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
     // Show forms grid/list based on viewMode
     return (
       <div className="space-y-6 sm:space-y-8">
-        <div className="relative overflow-hidden bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm mb-6">
+        <div className="relative overflow-hidden bg-white dark:bg-background rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm mb-6">
           <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
           <div className="relative p-6 lg:p-8">
             <div className="flex flex-col gap-6">
@@ -286,7 +286,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
 
               {/* Stats Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-white dark:bg-zinc-900 rounded-xl hover:bg-zinc-100 p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-300 dark:hover:border-zinc-300/50 transition-all duration-200">
+                <div className=" rounded-xl hover:bg-zinc-100 p-4 border border-zinc-100 dark:border-zinc-700/50  dark:hover:border-zinc-300/50 transition-all duration-200">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                       <FileSpreadsheet className="h-5 w-5 text-gray-900 dark:text-white" />
@@ -298,7 +298,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                   </div>
                 </div>
                 
-                <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
+                <div className=" rounded-xl p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                       <Mail className="h-5 w-5 text-gray-900 dark:text-white" />
@@ -321,7 +321,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
             {formsData.forms.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((form) => (
               <div
                 key={form.id}
-                className={`bg-white dark:bg-zinc-900 border ${(form._count?.campaigns || 0) > 0 ? 'border-orange-100 dark:border-orange-800/30' : 'border-zinc-100 dark:border-zinc-800/50'} rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer`}
+                className={` border ${(form._count?.campaigns || 0) > 0 ? 'border-background dark:border-background' : 'border-zinc-100 dark:border-zinc-800/50'} rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer`}
                 onClick={() => handleFormClick(form.id)}
               >
                 {(() => {
@@ -347,7 +347,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                           variant="ghost"
                           size="sm"
                           className={`h-7 px-2 text-xs ${(form._count?.campaigns || 0) > 0 
-                            ? 'bg-orange-50 hover:bg-orange-100 text-stone-800 dark:bg-orange-900/20 dark:hover:bg-orange-900/30 dark:text-white' 
+                            ? 'bg-background hover:bg-background text-stone-800 dark:bg-background dark:hover:bg-background dark:text-white' 
                             : 'hover:bg-zinc-200 text-gray-600 dark:hover:bg-zinc-950 dark:text-gray-300'} rounded-lg`}
                         >
                           View Campaigns
@@ -364,7 +364,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
             {formsData.forms.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((form) => (
               <div
                 key={form.id}
-                className={`bg-white dark:bg-zinc-900 border ${(form._count?.campaigns || 0) > 0 ? 'border-orange-100 dark:border-orange-800/30' : 'border-zinc-100 dark:border-zinc-800/50'} rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer`}
+                className={` border ${(form._count?.campaigns || 0) > 0 ? 'border-background dark:border-background' : 'border-zinc-100 dark:border-zinc-800/50'} rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer`}
                 onClick={() => handleFormClick(form.id)}
               >
                 <div className="p-4 sm:p-5 flex items-center justify-between">

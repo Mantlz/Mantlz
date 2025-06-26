@@ -151,7 +151,7 @@ export function FormHeader({
               <Button
                 variant="outline"
                 size="sm"
-                className="flex items-center gap-1 xs:gap-2 cursor-pointer bg-zinc-50 dark:bg-zinc-800 px-2 xs:px-3 sm:px-4 py-1.5 xs:py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200 h-8 xs:h-9"
+                className="flex items-center gap-1 xs:gap-2 cursor-pointer bg-zinc-50 dark:bg-background px-2 xs:px-3 sm:px-4 py-1.5 xs:py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 shadow-sm hover:shadow-md transition-shadow duration-200 h-8 xs:h-9"
                 onClick={copyId}
               >
                 <Copy className="h-3.5 w-3.5 xs:h-4 xs:w-4 text-gray-600 dark:text-gray-300" />
@@ -165,7 +165,7 @@ export function FormHeader({
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 xs:gap-3 sm:gap-4">
-            <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
+            <div className="bg-background rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
               <div className="flex items-center gap-2 xs:gap-3">
                 <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                   <Users className="h-4 w-4 xs:h-4.5 xs:w-4.5 sm:h-5 sm:w-5 text-gray-900 dark:text-white" />
@@ -183,7 +183,7 @@ export function FormHeader({
               </div>
             </div>
 
-            <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
+            <div className="bg-background rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
               <div className="flex items-center gap-2 xs:gap-3">
                 <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                   <Activity className="h-4 w-4 xs:h-4.5 xs:w-4.5 sm:h-5 sm:w-5 text-gray-900 dark:text-white" />
@@ -197,7 +197,7 @@ export function FormHeader({
               </div>
             </div>
 
-            <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
+            <div className="bg-background rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
               <div className="flex items-center gap-2 xs:gap-3">
                 <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                   <BarChart3 className="h-4 w-4 xs:h-4.5 xs:w-4.5 sm:h-5 sm:w-5 text-gray-900 dark:text-white" />
@@ -211,7 +211,7 @@ export function FormHeader({
               </div>
             </div>
 
-            <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
+            <div className="bg-background rounded-lg sm:rounded-xl p-2 xs:p-3 sm:p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
               <div className="flex items-center gap-2 xs:gap-3">
                 <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                   <Clock className="h-4 w-4 xs:h-4.5 xs:w-4.5 sm:h-5 sm:w-5 text-gray-900 dark:text-white" />

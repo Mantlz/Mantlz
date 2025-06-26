@@ -44,7 +44,7 @@ export function FormFieldItem({
     <div
       ref={setNodeRef}
       style={style}
-      className="group flex items-start gap-4 p-4 bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-primary/20 dark:hover:border-primary/20 transition-all duration-200"
+      className="group flex items-start gap-4 p-4 bg-white dark:bg-background rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-primary/20 dark:hover:border-primary/20 transition-all duration-200"
     >
       <div 
         {...attributes} 

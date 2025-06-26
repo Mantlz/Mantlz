@@ -13,12 +13,12 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
   const skeletons = Array(skeletonCount).fill(0).map((_, i) => (
     <Card 
       key={i}
-      className="group bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/50 transition-all duration-200"
+      className="group bg-white dark:bg-background border border-zinc-100 dark:border-zinc-800/50 transition-all duration-200"
     >
       <div className="p-4 sm:p-6">
         <div className="flex items-center justify-between mb-3 sm:mb-4">
-          <Skeleton className="h-5 w-1/2 rounded-lg" />
-          <div className="text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-800/50 text-gray-400 dark:text-gray-500 px-2 sm:px-3 py-1 rounded-lg flex items-center justify-center">
+          <Skeleton className="h-5 w-1/2 rounded-lg " />
+          <div className="text-xs sm:text-sm  text-gray-400 dark:text-gray-500 px-2 sm:px-3 py-1 rounded-lg flex items-center justify-center">
             <span><Skeleton className="h-4 w-5 rounded-lg inline-block mr-1 mt-2" /></span> responses
           </div>
         </div>
@@ -43,7 +43,7 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
   return (
     <div className="space-y-6 sm:space-y-8">
       {/* Welcome Section Skeleton */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-zinc-100 via-zinc-50 to-zinc-100 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-800 rounded-xl sm:rounded-2xl border border-zinc-100 dark:border-zinc-800/50">
+      <div className="relative overflow-hidden   rounded-xl sm:rounded-2xl border border-zinc-100 dark:border-zinc-800/50">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative p-6 sm:p-8 lg:p-12">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">
@@ -63,7 +63,7 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
               </div>
               
               <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full sm:w-auto">
-                <div className="bg-white dark:bg-zinc-800/50 rounded-xl p-4 sm:p-5 border border-zinc-100 dark:border-zinc-800/50 transition-all duration-200">
+                <div className="rounded-xl p-4 sm:p-5 border border-zinc-100 dark:border-zinc-800/50 transition-all duration-200">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-gray-400 dark:text-gray-500">
@@ -87,7 +87,7 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
                   </div>
                 </div>
                 
-                <div className="bg-white dark:bg-zinc-800/50 rounded-xl p-4 sm:p-5 border border-zinc-100 dark:border-zinc-800/50 transition-all duration-200">
+                <div className="rounded-xl p-4 sm:p-5 border border-zinc-100 dark:border-zinc-800/50 transition-all duration-200">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-gray-400 dark:text-gray-500">

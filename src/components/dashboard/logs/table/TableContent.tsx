@@ -211,7 +211,7 @@ export function TableContent({
 
   return (
     <>
-      <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+      <div className=" rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
         <div className="p-3 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
           <div className="flex items-center gap-1">
             <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">

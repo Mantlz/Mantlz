@@ -12,7 +12,7 @@ export function NoCampaignsView({ isPremium = false, }: NoCampaignsViewProps) {
 
   
   return (
-    <div className="flex flex-col items-center justify-center py-12 px-4 text-center space-y-6 bg-white dark:bg-zinc-900 rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800">
+    <div className="flex flex-col items-center justify-center py-12 px-4 text-center space-y-6 rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800">
       <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
         <Mail className="h-8 w-8 text-blue-600 dark:text-blue-400" />
       </div>

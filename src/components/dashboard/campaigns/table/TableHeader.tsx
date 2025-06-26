@@ -35,7 +35,7 @@ export function TableHeader({
   }
 
   return (
-    <div className="relative overflow-hidden bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm">
+    <div className="relative overflow-hidden bg-white dark:bg-background rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm">
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
       <div className="relative p-6 lg:p-8">
         <div className="flex flex-col gap-6">
@@ -80,7 +80,7 @@ export function TableHeader({
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
+            <div className="rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                   <Mail className="h-5 w-5 text-gray-900 dark:text-white" />
@@ -92,7 +92,7 @@ export function TableHeader({
               </div>
             </div>
             
-            <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
+            <div className="bg-white dark:bg-background rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                   <Clock className="h-5 w-5 text-gray-900 dark:text-white" />
@@ -106,7 +106,7 @@ export function TableHeader({
               </div>
             </div>
 
-            <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
+            <div className="bg-white dark:bg-background rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                   <Users className="h-5 w-5 text-gray-900 dark:text-white" />
@@ -120,7 +120,7 @@ export function TableHeader({
               </div>
             </div>
 
-            <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
+            <div className="bg-white dark:bg-background rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                   <Send className="h-5 w-5 text-gray-900 dark:text-white" />
