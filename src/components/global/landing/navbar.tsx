@@ -142,7 +142,7 @@ export function Navbar() {
         </Link>
         <Link href="/sign-up">
           <Button size="sm" 
-            className="h-8 px-2 text-md bg-black dark:bg-white  text-primary-foreground dark:border-primary border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+            className="h-8 px-2 text-md bg-orange-500 dark:bg-white  text-white dark:text-black dark:border-primary border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
 
           >
             Sign up 
