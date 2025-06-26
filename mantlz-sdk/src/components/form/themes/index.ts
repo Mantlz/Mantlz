@@ -1,11 +1,9 @@
 import { Theme } from './types';
-
 export const themes: Record<string, Theme> = {
-  // For each theme in the themes object, modify the form.container property
   default: {
     form: {
       container: {
-        maxWidth: '480px',
+        maxWidth: '450px',
         width: '100%',
         margin: '0 auto',
         padding: '24px',
@@ -16,7 +14,7 @@ export const themes: Record<string, Theme> = {
         backdropFilter: 'blur(8px)', // Adds a blur effect behind the form
       },
       containerDark: {
-        maxWidth: '480px',
+        maxWidth: '450px',
         width: '100%',
         margin: '0 auto',
         padding: '24px',
@@ -162,12 +160,41 @@ export const themes: Record<string, Theme> = {
         },
       },
     },
+    buttonDark: {
+      padding: '10px 18px',
+      backgroundColor: '#f5f5f5',
+      color: 'black',
+      border: 'none',
+      borderRadius: '8px',
+      fontWeight: '600',
+      fontSize: '14px',
+      cursor: 'pointer',
+      transition: 'all 0.2s ease',
+      boxShadow: '0 2px 4px rgba(255, 255, 255, 0.08)',
+      width: '100%',
+      marginTop: '8px',
+      '&:hover': {
+        backgroundColor: 'white',
+        transform: 'translateY(-1px)',
+        boxShadow: '0 4px 8px rgba(255, 255, 255, 0.12)',
+      },
+      '&:active': {
+        transform: 'translateY(0)',
+        boxShadow: '0 1px 2px rgba(255, 255, 255, 0.08)',
+      },
+      '&:disabled': {
+        opacity: 0.6,
+        cursor: 'not-allowed',
+        transform: 'none',
+        boxShadow: 'none',
+      },
+    },
   },
 
   modern: {
     form: {
       container: {
-        maxWidth: '380px',
+        maxWidth: '600px',
         margin: '0 auto',
         padding: '18px',
         borderRadius: '8px',
@@ -176,7 +203,7 @@ export const themes: Record<string, Theme> = {
         backgroundColor: 'white',
       },
       containerDark: {
-        maxWidth: '380px',
+        maxWidth: '600px',
         margin: '0 auto',
         padding: '18px',
         borderRadius: '8px',
@@ -301,12 +328,33 @@ export const themes: Record<string, Theme> = {
         boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
       },
     },
+    buttonDark: {
+      padding: '8px 16px',
+      backgroundColor: '#f5f5f5',
+      color: 'black',
+      border: 'none',
+      borderRadius: '6px',
+      fontWeight: '600',
+      fontSize: '13px',
+      cursor: 'pointer',
+      transition: 'all 0.2s',
+      boxShadow: '0 2px 4px rgba(255, 255, 255, 0.12)',
+      '&:hover': {
+        backgroundColor: 'white',
+        transform: 'translateY(-1px)',
+        boxShadow: '0 4px 8px rgba(255, 255, 255, 0.15)',
+      },
+      '&:active': {
+        transform: 'translateY(1px)',
+        boxShadow: '0 1px 2px rgba(255, 255, 255, 0.1)',
+      },
+    },
   },
 
   neobrutalism: {
     form: {
       container: {
-        maxWidth: '380px',
+        maxWidth: '500px',
         margin: '0 auto',
         padding: '16px',
         border: '2px solid black',
@@ -316,7 +364,7 @@ export const themes: Record<string, Theme> = {
         position: 'relative',
       },
       containerDark: {
-        maxWidth: '380px',
+        maxWidth: '500px',
         margin: '0 auto',
         padding: '16px',
         border: '2px solid white',
@@ -445,18 +493,38 @@ export const themes: Record<string, Theme> = {
         boxShadow: '0px 0px 0 black',
       },
     },
+    buttonDark: {
+      padding: '8px 14px',
+      backgroundColor: 'var(--yellow-4)',
+      color: 'white',
+      border: '2px solid white',
+      borderRadius: '0',
+      fontWeight: '800',
+      fontSize: '13px',
+      cursor: 'pointer',
+      boxShadow: '2px 2px 0 white',
+      textTransform: 'uppercase',
+      transition: 'transform 0.1s, box-shadow 0.1s',
+      '&:hover': {
+        backgroundColor: 'var(--yellow-5)',
+      },
+      '&:active': {
+        transform: 'translate(2px, 2px)',
+        boxShadow: '0px 0px 0 white',
+      },
+    },
   },
 
   simple: {
     form: {
       container: {
-        maxWidth: '380px',
+        maxWidth: '1000px',
         margin: '0 auto',
         padding: '14px',
         backgroundColor: 'white',
       },
       containerDark: {
-        maxWidth: '380px',
+        maxWidth: '1000px',
         margin: '0 auto',
         padding: '14px',
         backgroundColor: '#1a1a1a',
@@ -551,6 +619,20 @@ export const themes: Record<string, Theme> = {
       transition: 'background-color 0.15s',
       '&:hover': {
         backgroundColor: 'var(--gray-10)',
+      },
+    },
+    buttonDark: {
+      padding: '6px 12px',
+      backgroundColor: '#f5f5f5',
+      color: 'black',
+      border: 'none',
+      borderRadius: '4px',
+      fontWeight: '500',
+      fontSize: '13px',
+      cursor: 'pointer',
+      transition: 'background-color 0.15s',
+      '&:hover': {
+        backgroundColor: 'white',
       },
     },
   },

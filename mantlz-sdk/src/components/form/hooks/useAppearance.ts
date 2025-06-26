@@ -103,11 +103,14 @@ export const useAppearance = (theme: string, appearance?: Appearance) => {
 
   // Get button styles with appearance customization
   const getButtonStyles = (): CSSProperties => {
-    const baseStyles = baseTheme.button;
+    // Use buttonDark styles in dark mode if available, otherwise use regular button styles
+    const baseStyles = shouldUseDarkMode && baseTheme.buttonDark 
+      ? baseTheme.buttonDark 
+      : baseTheme.button;
     let updatedStyles = applyVariables(baseStyles, appearance?.variables);
     
-    // Apply primary color to button
-    if (appearance?.variables?.colorPrimary) {
+    // Apply primary color to button (only if not in dark mode or no buttonDark styles)
+    if (appearance?.variables?.colorPrimary && !(shouldUseDarkMode && baseTheme.buttonDark)) {
       updatedStyles.backgroundColor = appearance.variables.colorPrimary;
     }
     

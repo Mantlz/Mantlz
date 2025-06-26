@@ -35,9 +35,9 @@ export default function Mantlz({
     getContainerStyles, 
     getTitleStyles, 
     getDescriptionStyles, 
+    getButtonStyles,
     getElementClasses,
     mergeClasses,
-    styles 
   } = useAppearance(theme, appearance);
   
   const elementClasses = getElementClasses();
@@ -342,7 +342,7 @@ export default function Mantlz({
                   disabled={submitting}
                   className={mergeClasses('', elementClasses.formButton)}
                   style={{
-                    ...styles.button,
+                    ...getButtonStyles(),
                     width: "100%",
                     display: "flex",
                     alignItems: "center",
@@ -351,7 +351,7 @@ export default function Mantlz({
                     backgroundColor:
                       formType === "order"
                         ? "var(--green-9)"
-                        : styles.button.backgroundColor,
+                        : getButtonStyles().backgroundColor,
                     // Apply appearance variables if provided
                     ...(appearance?.variables?.colorPrimary && formType !== "order" ? {
                       backgroundColor: appearance.variables.colorPrimary

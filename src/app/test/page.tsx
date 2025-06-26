@@ -43,7 +43,7 @@ export default function CustomerFeedbackPage() {
 />
 
 <Mantlz 
-  formId="cmc800k870001o7ajt41b67j1" 
+  formId="cmccb5j5s0007o7fkgkb2d6fw" 
   theme="neobrutalism" 
   showUsersJoined={true} 
   usersJoinedCount={100000} 
@@ -51,22 +51,22 @@ export default function CustomerFeedbackPage() {
   redirectUrl="https://example.com"
   />
 
-  {/* <Mantlz 
-  formId="cmccal7ip0001o7fknk1agow5" 
-  theme="neobrutalism" 
+  <Mantlz 
+  formId="cmccb5j5s0007o7fkgkb2d6fw" 
+  theme="default" 
  
   />
 
 
     <Mantlz 
-  formId="cmccao2wa0004o7fk1k4qjy0x" 
-  theme="neobrutalism" 
+  formId="cmccb5j5s0007o7fkgkb2d6fw" 
+  theme="simple" 
  
-  /> */}
+  />
 
     <Mantlz 
   formId="cmccb5j5s0007o7fkgkb2d6fw" 
-  theme="neobrutalism" 
+  theme="modern" 
  
   />
 

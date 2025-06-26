@@ -23,10 +23,17 @@ export const useFormStyles = (theme: string) => {
       : styles.form.description;
   };
 
+  const getButtonStyles = () => {
+    return isDarkMode && styles.buttonDark 
+      ? styles.buttonDark 
+      : styles.button;
+  };
+
   return {
     getContainerStyles,
     getTitleStyles,
     getDescriptionStyles,
+    getButtonStyles,
     styles,
     isDarkMode
   };

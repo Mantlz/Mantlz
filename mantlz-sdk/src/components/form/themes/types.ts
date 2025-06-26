@@ -28,4 +28,5 @@ export interface Theme {
     error: CSSProperties;
   };
   button: ExtendedCSSProperties;
+  buttonDark?: ExtendedCSSProperties; // Dark mode variant
 }
