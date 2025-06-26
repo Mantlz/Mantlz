@@ -17,10 +17,10 @@ export default function HeroSection() {
         {/* Top badge */}
 
         <div className=" inline-flex items-center rounded-xl mb-2 bg-gradient-to-r from-zinc-100 to-zinc-50 px-4 py-2 text-sm font-light text-zinc-700 ring-1 ring-inset ring-zinc-200/50 shadow-sm dark:from-zinc-800/30 dark:to-zinc-500/20 dark:text-zinc-300 dark:ring-zinc-500/30">
-          <Sparkles className="h-4 w-4 mr-2 text-black dark:text-white" />
-          <span className="font-semibold text-black dark:text-white">SDK</span>
+          <Sparkles className="h-4 w-4 mr-2 text-orange-500 dark:text-white" />
+          <span className="font-mono text-black dark:text-white">SDK</span>
           <span className="mx-2 h-4 w-px bg-zinc-700"></span>
-          <span>npm install Mantlz/nextjs</span>
+          <span className="text-stone-900 dark:text-stone-300">npm install Mantlz/nextjs</span>
         </div>
 
         {/* Main heading */}

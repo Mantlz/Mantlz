@@ -33,9 +33,10 @@ export default function IntegrationsSection() {
 
                         <Button
                             variant="outline"
+                            className='bg-orange-500 text-black dark:bg-orange-500 dark:text-white'
                             size="sm"
                             asChild>
-                            <Link href="#">Get Started</Link>
+                            <Link href="/dashboard">Get Started</Link>
                         </Button>
                     </div>
                 </div>
