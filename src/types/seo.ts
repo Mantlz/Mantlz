@@ -37,6 +37,7 @@ export interface TwitterConfig {
   description?: string
   images?: string[]
   creator?: string
+  site?: string
 }
 
 // Robots.txt configuration
@@ -79,6 +80,7 @@ export function generateMetadata(config: SeoConfig): Metadata {
       title: config.title,
       description: config.description,
       creator: config.twitterHandle,
+      site: config.twitterHandle,
     },
     verification: config.googleSiteVerification 
       ? { google: config.googleSiteVerification }

@@ -64,6 +64,9 @@ export const metadata: Metadata = {
   openGraph: {
     ...generateMetadata(seoConfig).openGraph,
     title: 'Mantlz - Professional Form Builder Platform',
+    description: 'Create powerful, customizable forms with Mantlz. The ultimate form builder platform for businesses and developers. Build, deploy, and analyze forms effortlessly.',
+    url: 'https://mantlz.app',
+    siteName: 'Mantlz',
     images: [
       {
         url: '/og-image.png',
@@ -72,11 +75,17 @@ export const metadata: Metadata = {
         alt: 'Mantlz - Form Builder Platform',
       },
     ],
+    type: 'website',
+    locale: 'en_US',
   },
   twitter: {
     ...generateMetadata(seoConfig).twitter,
+    card: 'summary_large_image',
     title: 'Mantlz - Professional Form Builder Platform',
+    description: 'Create powerful, customizable forms with Mantlz. The ultimate form builder platform for businesses and developers. Build, deploy, and analyze forms effortlessly.',
     images: ['/twitter.png'],
+    creator: '@trymantlz',
+    site: '@trymantlz',
   },
   icons: [
     { rel: 'icon', url: '/favicon.ico' },
