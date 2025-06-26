@@ -1,36 +1,50 @@
 # Mantlz
 
-A modern form management platform that enables you to create beautiful, customizable forms in minutes. Built with Next.js and TypeScript.
-
-double check yet
+A modern headless form management platform that enables developers to create beautiful, customizable forms with a powerful dashboard and TypeScript-native SDK. Built with Next.js and designed for modern web applications.
 
 ## Project Overview
 
 Mantlz consists of two main components:
 
-1. **Main Application (`src/app`)** - A Next.js application that provides the dashboard and form management interface.
-2. **SDK Library (`mantlz-sdk`)** - A TypeScript library that provides React components for creating various form types.
+1. **Main Application** - A Next.js dashboard for form management, analytics, and configuration
+2. **SDK Library (`@mantlz/nextjs`)** - A TypeScript-native React component library for embedding forms
 
 ## Features
 
-- **Multiple Form Types**: Create feedback forms, contact forms, waitlist forms, and more
-- **Customizable Themes**: Choose from a variety of pre-built themes or create custom designs
-- **Dark Mode Support**: Automatic dark mode detection with manual override options
-- **Form Analytics**: Track form submissions and analyze responses
-- **Developer-Friendly**: TypeScript native with React Hook Form and Zod validation
+### Dashboard Features
+- **Form Builder**: Visual form builder with drag-and-drop interface
+- **Analytics Dashboard**: Real-time form submission analytics and insights
+- **User Management**: Authentication and user management with Clerk
+- **Billing Integration**: Stripe-powered subscription management
+- **Campaign Management**: Email campaigns and automation
+- **API Management**: RESTful API for form submissions and data
+
+### SDK Features
+- **Multiple Form Types**: Waitlist, contact, feedback, survey, application, order, and custom forms
+- **Built-in Themes**: Default, modern, neobrutalism, and simple themes
+- **Dark Mode Support**: Automatic dark mode detection with manual override
+- **TypeScript Native**: Full TypeScript support with Zod validation
+- **Customizable Appearance**: Extensive styling and theming options
+- **File Uploads**: Support for file attachments with validation
 
 ## Getting Started
 
+### Platform Setup
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Set up environment variables (see `.env.example`)
+4. Run the development server: `npm run dev`
 
 ### Using the SDK
 
-The Mantlz SDK can be installed separately for use in your own projects:
+Install the Mantlz SDK in your project:
 
 ```bash
 npm install @mantlz/nextjs
 ```
 
-Make sure to wrap your application with the `MantlzProvider`:
+Wrap your application with the `MantlzProvider`:
 
 ```tsx
 import { MantlzProvider } from "@mantlz/nextjs";
@@ -44,83 +58,124 @@ export default function App({ children }) {
 }
 ```
 
-## Available Form Components
+## Using the Mantlz Component
 
-### Feedback Form
+The SDK provides a single `Mantlz` component that can render different form types based on your dashboard configuration:
+
+### Basic Usage
 
 ```tsx
-import { FeedbackForm } from "@mantlz/nextjs";
+import { Mantlz } from "@mantlz/nextjs";
 
-export default function FeedbackPage() {
+export default function MyForm() {
   return (
     <div className="container mx-auto p-4">
-      <FeedbackForm 
-        formId="your-form-id"
-        theme="colorful"
+      <Mantlz formId="your-form-id" />
     </div>
   );
 }
 ```
 
-### Contact Form
+### With Custom Theme
 
 ```tsx
-import { ContactForm } from "@mantlz/nextjs";
+import { Mantlz } from "@mantlz/nextjs";
 
-export default function ContactPage() {
+export default function ThemedForm() {
   return (
-    <div className="container mx-auto p-4">
-      <ContactForm 
-        formId="your-form-id"
-        title="Get in Touch"
-        description="Have questions? We'd love to hear from you."
-      />
-    </div>
+    <Mantlz 
+      formId="your-form-id"
+      theme="neobrutalism"
+    />
   );
 }
 ```
 
-### Waitlist Form
+### Waitlist Form with User Count
 
 ```tsx
-import { WaitlistForm } from "@mantlz/nextjs";
+import { Mantlz } from "@mantlz/nextjs";
 
 export default function WaitlistPage() {
   return (
-    <div className="container mx-auto p-4">
-      <WaitlistForm
-        formId="your-form-id"
-        title="Get early access"
-        description="Join the waitlist to get early access to the platform."
-        showUsersJoined={true}
-      />
-    </div>
+    <Mantlz
+      formId="your-form-id"
+      showUsersJoined={true}
+      usersJoinedCount={1250}
+      usersJoinedLabel="developers have joined"
+    />
   );
 }
 ```
 
 ## Theming and Customization
 
-All form components support multiple theming options:
+The Mantlz component supports extensive theming and customization options:
+
+### Built-in Themes
 
 ```tsx
-// Using preset themes
-<FeedbackForm
+// Available themes: default, modern, neobrutalism, simple
+<Mantlz
   formId="your-form-id"
   theme="neobrutalism"
 />
+```
 
-// Using custom appearance
-<ContactForm
+### Custom Appearance
+
+```tsx
+<Mantlz
   formId="your-form-id"
   appearance={{
-    background: '#f8f9fa',
-    border: '1px solid #dee2e6',
-    submitButton: 'bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg',
-    formInput: 'bg-white border border-zinc-300 rounded px-3 py-2',
+    variables: {
+      primaryColor: '#6366f1',
+      backgroundColor: '#f8fafc',
+      borderRadius: '8px',
+    },
+    elements: {
+      container: 'max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg',
+      title: 'text-2xl font-bold text-gray-900 mb-4',
+      input: 'w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500',
+      button: 'w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors',
+    }
   }}
 />
 ```
+
+## Form Types Supported
+
+- **Waitlist**: Collect email signups with optional user count display
+- **Contact**: Contact forms with customizable fields
+- **Feedback**: Feedback collection with rating systems
+- **Survey**: Multi-step surveys with conditional logic
+- **Application**: Job applications and form submissions
+- **Order**: Product ordering forms with payment integration
+- **Custom**: Fully customizable forms with any field configuration
+
+## API Reference
+
+For detailed API documentation, visit: [https://docs.mantlz.app](https://docs.mantlz.app)
+
+## Tech Stack
+
+### Dashboard
+- **Framework**: Next.js 14 with App Router
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: Clerk
+- **Payments**: Stripe
+- **Styling**: Tailwind CSS
+- **UI Components**: Radix UI
+
+### SDK
+- **Framework**: React with TypeScript
+- **Validation**: Zod
+- **Styling**: CSS-in-JS with theme system
+- **Build**: tsup for optimal bundling
+
+## Contributing
+
+We welcome contributions! Please see our contributing guidelines for more information.
 
 ## License
 
