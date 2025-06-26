@@ -132,7 +132,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
   // Error state
   if (formsError) {
     return (
-      <div className="min-h-[400px] w-full flex items-center justify-center bg-white dark:bg-zinc-900 rounded-lg border border-red-100 dark:border-red-900/50 shadow-sm p-6">
+      <div className="min-h-[400px] w-full flex items-center justify-center  rounded-lg border border-red-100 dark:border-red-900/50 shadow-sm p-6">
         <div className="flex flex-col items-center gap-4 max-w-md text-center">
           <div className="w-12 h-12 flex items-center justify-center bg-red-50 dark:bg-red-900/20 text-red-500 rounded-lg">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
@@ -196,7 +196,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
     if (!formsData?.forms?.length) {
       return (
         <div className="space-y-6 sm:space-y-8">
-          <div className="relative overflow-hidden bg-gradient-to-br from-zinc-100 via-zinc-50 to-zinc-100 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-800 rounded-xl sm:rounded-2xl border border-zinc-100 dark:border-zinc-800/50">
+          <div className="relative overflow-hidden rounded-xl sm:rounded-2xl border border-zinc-100 dark:border-zinc-800/50">
             <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
             <div className="relative p-6 sm:p-8 lg:p-12">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">
@@ -219,7 +219,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
             </div>
           </div>
 
-          <div className="text-center py-12 sm:py-16 bg-white dark:bg-zinc-900 rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800">
+          <div className="text-center py-12 sm:py-16  rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800">
             <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 rounded-2xl bg-white dark:bg-zinc-800/50 flex items-center justify-center">
               <FileSpreadsheet className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 dark:text-gray-500" />
             </div>
