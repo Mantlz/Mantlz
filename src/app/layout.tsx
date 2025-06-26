@@ -76,7 +76,7 @@ export const metadata: Metadata = {
   twitter: {
     ...generateMetadata(seoConfig).twitter,
     title: 'Mantlz - Professional Form Builder Platform',
-    images: ['/twitter-image.jpg'],
+    images: ['/twitter.png'],
   },
   icons: [
     { rel: 'icon', url: '/favicon.ico' },
