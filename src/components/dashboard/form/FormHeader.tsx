@@ -58,7 +58,7 @@ export function FormHeader({
   }
 
   return (
-    <div className="relative overflow-hidden bg-white dark:bg-zinc-900 rounded-xl sm:rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm">
+    <div className="relative overflow-hiddenrounded-xl sm:rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm">
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
       <div className="relative p-3 xs:p-4 sm:p-6 lg:p-8">
         <div className="flex flex-col gap-4 sm:gap-6">
@@ -70,7 +70,7 @@ export function FormHeader({
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="flex items-center gap-1 cursor-pointer bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 p-1 h-7"
+                    className="flex items-center gap-1 cursor-pointer  text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 p-1 h-7"
                   >
                     <ArrowLeft className="h-4 w-4" />
                     <span className="text-xs font-medium">Back</span>

@@ -252,7 +252,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
 
               {/* Stats Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className=" rounded-xl hover:bg-zinc-100 p-4 border border-zinc-100 dark:border-zinc-700/50  dark:hover:border-zinc-300/50 transition-all duration-200">
+                <div className=" rounded-xl  p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                       <FileSpreadsheet className="h-5 w-5 text-gray-900 dark:text-white" />

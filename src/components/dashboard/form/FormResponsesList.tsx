@@ -141,11 +141,11 @@ export function FormResponsesList({
           <div className="w-24 h-9 bg-zinc-200 dark:bg-zinc-800 rounded-lg animate-pulse"></div>
         </div>
 
-        <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+        <Card className="border-zinc-200 dark:border-zinc-800  shadow-sm">
           <CardContent className="p-0">
-            <div className="bg-zinc-50 dark:bg-zinc-800/50 p-3 border-b border-zinc-200 dark:border-zinc-800 grid grid-cols-4 gap-4">
+            <div className=" p-3 border-b border-zinc-200 dark:border-zinc-800 grid grid-cols-4 gap-4">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="h-6 bg-zinc-200 dark:bg-zinc-700 rounded animate-pulse"></div>
+                <div key={i} className="h-6  rounded animate-pulse"></div>
               ))}
             </div>
 
@@ -155,7 +155,7 @@ export function FormResponsesList({
                 className="p-4 border-b last:border-0 border-zinc-200 dark:border-zinc-800 grid grid-cols-4 gap-4"
               >
                 {[...Array(4)].map((_, i) => (
-                  <div key={i} className="h-6 bg-zinc-100 dark:bg-zinc-800 rounded animate-pulse"></div>
+                  <div key={i} className="h-6 rounded animate-pulse"></div>
                 ))}
               </div>
             ))}
@@ -167,7 +167,7 @@ export function FormResponsesList({
 
   if (isError) {
     return (
-      <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+      <Card className="border-zinc-200 dark:border-zinc-800 shadow-sm">
         <CardContent className="flex flex-col items-center text-center gap-4 py-16">
           <div className="rounded-lg bg-red-100 dark:bg-red-900/30 p-4 mb-2">
             <AlertCircle className="h-8 w-8 text-red-600 dark:text-red-400" />
@@ -188,7 +188,7 @@ export function FormResponsesList({
 
   if (!localSubmissions.length) {
     return (
-      <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+      <Card className="border-zinc-200 dark:border-zinc-800  shadow-sm">
         <CardContent className="flex flex-col items-center text-center gap-4 py-16">
           <div className="rounded-lg bg-zinc-100 dark:bg-zinc-800 p-4 mb-2">
             <FileText className="h-8 w-8 text-zinc-400" />
@@ -219,9 +219,9 @@ export function FormResponsesList({
         </Badge>
       </div>
 
-      <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
-        <CardContent className="p-0">
-          <div className="bg-zinc-50 dark:bg-zinc-900 p-3 border-b border-zinc-200 dark:border-zinc-800 grid grid-cols-1 sm:grid-cols-4 gap-4">
+      <Card className="bg-background border-zinc-200 dark:border-zinc-800  shadow-sm">
+        <CardContent className="p-0 bg-background">
+          <div className="p-3 border-b border-zinc-200 dark:border-zinc-800 grid grid-cols-1 sm:grid-cols-4 gap-4">
             <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Email</div>
             <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider hidden sm:block">
               Date
@@ -300,7 +300,7 @@ export function FormResponsesList({
                       <Button
                         variant="outline"
                         size="sm"
-                        className="h-8 text-xs cursor-pointer bg-white hover:bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                        className="h-8 text-xs cursor-pointer bg-white hover:bg-zinc-100 text-zinc-600  dark:hover:bg-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
                         onClick={() => {
                           setSelectedSubmission(submission)
                           setSheetOpen(true)
