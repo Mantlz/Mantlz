@@ -173,10 +173,6 @@ For detailed API documentation, visit: [https://docs.mantlz.app](https://docs.ma
 - **Styling**: CSS-in-JS with theme system
 - **Build**: tsup for optimal bundling
 
-## Contributing
-
-We welcome contributions! Please see our contributing guidelines for more information.
-
 ## License
 
 MIT
