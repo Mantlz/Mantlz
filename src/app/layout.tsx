@@ -83,7 +83,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Mantlz - Professional Form Builder Platform',
     description: 'Create powerful, customizable forms with Mantlz. The ultimate form builder platform for businesses and developers. Build, deploy, and analyze forms effortlessly.',
-    images: ['/twitter.png'],
+    images: ['/og-image.png'],
     creator: '@trymantlz',
     site: '@trymantlz',
   },
