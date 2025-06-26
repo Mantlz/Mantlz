@@ -63,7 +63,7 @@ export function UpgradeModal({
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] overflow-y-auto">
       <div className="min-h-full flex items-center justify-center p-4">
-        <div className="relative bg-white dark:bg-zinc-900 rounded-lg max-w-md w-full border border-slate-200 dark:border-zinc-800 shadow-xl overflow-hidden">
+        <div className="relative bg-white dark:bg-background rounded-lg max-w-md w-full border border-slate-200 dark:border-zinc-800 shadow-xl overflow-hidden">
           {/* Modern minimal header */}
           <div className="bg-zinc-100 dark:bg-black p-6 rounded-t-lg border-b border-slate-200 dark:border-zinc-800">
             <h2 className="text-black dark:text-white text-xl font-medium tracking-tight flex items-center space-x-2">
@@ -131,7 +131,7 @@ export function UpgradeModal({
             </Button>
             <Button 
               onClick={() => window.location.href = '/settings/billing'}
-              className="bg-orange-800 hover:bg-orange-700 dark:bg-orange-800 dark:hover:bg-orange-700 text-white transition-colors font-medium text-sm cursor-pointer"
+              className="bg-orange-500 hover:bg-orange-600 dark:hover:bg-orange-700 text-white transition-colors font-medium text-sm cursor-pointer"
             >
               Upgrade Plan
             </Button>

@@ -92,7 +92,7 @@ export function FormsList({
   if (error) {
     toast.error('Failed to load forms')
     return (
-      <div className="min-h-[400px] w-full flex items-center justify-center bg-white dark:bg-zinc-900 rounded-lg border border-red-100 dark:border-red-900/50 shadow-sm p-6">
+      <div className="min-h-[400px] w-full flex items-center justify-center  rounded-lg border border-red-100 dark:border-red-900/50 shadow-sm p-6">
         <div className="flex flex-col items-center gap-4 max-w-md text-center">
           <div className="w-12 h-12 flex items-center justify-center bg-red-50 dark:bg-red-900/20 text-red-500 rounded-lg">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
@@ -271,7 +271,7 @@ export function FormsList({
           {currentForms.map((form: Form) => (
             <div 
               key={form.id}
-              className="group bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800/50 hover:border-zinc-200 dark:hover:border-zinc-700 transition-all duration-200 cursor-pointer hover:shadow-md rounded-lg"
+              className="group border border-zinc-100 dark:border-zinc-800/50 hover:border-zinc-200 dark:hover:border-zinc-700 transition-all duration-200 cursor-pointer hover:shadow-md rounded-lg"
               onClick={() => window.location.href = `/dashboard/form/${form.id}`}
             >
               <div className="p-4 sm:p-5 flex items-center justify-between">
@@ -307,7 +307,7 @@ export function FormsList({
       
       {/* Empty State */}
       {forms.length === 0 && (
-        <div className="text-center py-12 sm:py-16 bg-white dark:bg-zinc-900 rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800">
+        <div className="text-center py-12 sm:py-16  rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800">
           <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 flex items-center justify-center">
             <FileSpreadsheet className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 dark:text-gray-500" />
           </div>
