@@ -53,6 +53,9 @@ export default function CustomerFeedbackPage() {
 
   <Mantlz 
   formId="cmccb5j5s0007o7fkgkb2d6fw" 
+    showUsersJoined={true} 
+  usersJoinedCount={100000} 
+  usersJoinedLabel="Users already joined" 
   theme="default" 
  
   />
@@ -60,12 +63,18 @@ export default function CustomerFeedbackPage() {
 
     <Mantlz 
   formId="cmccb5j5s0007o7fkgkb2d6fw" 
+    showUsersJoined={true} 
+  usersJoinedCount={100000} 
+  usersJoinedLabel="Users already joined" 
   theme="simple" 
  
   />
 
     <Mantlz 
   formId="cmccb5j5s0007o7fkgkb2d6fw" 
+    showUsersJoined={true} 
+  usersJoinedCount={100000} 
+  usersJoinedLabel="Users already joined" 
   theme="modern" 
  
   />
