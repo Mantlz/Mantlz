@@ -16,7 +16,7 @@ export default function HeroSection() {
       <div className="relative z-10 mx-auto max-w-7xl  mt-20  text-center">
         {/* Top badge */}
 
-        <div className=" inline-flex items-center rounded-full mb-2 bg-gradient-to-r from-zinc-100 to-zinc-50 px-4 py-2 text-sm font-light text-zinc-700 ring-1 ring-inset ring-zinc-200/50 shadow-sm dark:from-zinc-800/30 dark:to-zinc-500/20 dark:text-zinc-300 dark:ring-zinc-500/30">
+        <div className=" inline-flex items-center rounded-xl mb-2 bg-gradient-to-r from-zinc-100 to-zinc-50 px-4 py-2 text-sm font-light text-zinc-700 ring-1 ring-inset ring-zinc-200/50 shadow-sm dark:from-zinc-800/30 dark:to-zinc-500/20 dark:text-zinc-300 dark:ring-zinc-500/30">
           <Sparkles className="h-4 w-4 mr-2 text-black dark:text-white" />
           <span className="font-semibold text-black dark:text-white">SDK</span>
           <span className="mx-2 h-4 w-px bg-zinc-700"></span>
@@ -38,12 +38,12 @@ export default function HeroSection() {
         </p>
 
         <div className="mt-2 item-center">
-          <Button className="h-10 px-8 text-md bg-black dark:bg-white  text-primary-foreground dark:border-primary border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95">
+          <Button className="h-10 px-8 text-md bg-orange-500  text-black dark:text-white dark:border-primary border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95">
             Get started
           </Button>
         </div>
         <p className="mt-2">
-          <span className="font-extralight text-sm text-stone-700 dark:text-white">
+          <span className="font-extralight text-xs text-stone-700 dark:text-white">
             No credit card required.
           </span>
         </p>
