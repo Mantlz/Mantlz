@@ -150,7 +150,7 @@ export function AdvancedAnalytics({
 
               <Button
                 size="default"
-                className="bg-zinc-900 cursor-pointer dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 w-full h-11 sm:h-12 text-sm sm:text-base font-medium"
+                className="bg-orange-500 cursor-pointer  text-black hover:bg-orange-600 dark:hover:bg-orange-800 w-[100px] h-11 sm:h-12 text-sm sm:text-base font-medium"
                 onClick={() => setIsUpgradeModalOpen(true)}
               >
                 <Rocket className="h-5 w-5 mr-2" />
@@ -161,7 +161,7 @@ export function AdvancedAnalytics({
         ) : !hasPremiumAccess ? (
           <Card
             onClick={() => setShowPaywall(true)}
-            className="border-zinc-200 dark:border-zinc-800shadow-sm cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all w-full rounded-lg sm:rounded-xl"
+            className="border-zinc-200 dark:border-zinc-800 shadow-sm cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all w-full rounded-lg sm:rounded-xl"
           >
             <CardHeader className="pb-2 pt-4 px-4 sm:px-5 flex flex-row items-start justify-center content-center space-y-0">
             </CardHeader>
