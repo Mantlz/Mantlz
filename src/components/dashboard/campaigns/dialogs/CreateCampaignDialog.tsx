@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -47,27 +47,7 @@ export function CreateCampaignDialog({
   const isFormValid = campaignName && campaignSubject && campaignContent
   const DRAFT_KEY = `campaign-draft-${formId}`
 
-  // Load draft on component mount and when dialog opens
-  useEffect(() => {
-    if (open && typeof window !== 'undefined') {
-      loadDraft()
-    }
-  }, [open, formId])
-
-  // Auto-save draft every 30 seconds if there's content
-  useEffect(() => {
-    if (!open) return
-    
-    const autoSaveInterval = setInterval(() => {
-      if (campaignName || campaignSubject || campaignContent || campaignDescription) {
-        saveDraft(true) // true for silent save
-      }
-    }, 30000) // 30 seconds
-
-    return () => clearInterval(autoSaveInterval)
-  }, [open, campaignName, campaignSubject, campaignContent, campaignDescription])
-
-  const loadDraft = () => {
+  const loadDraft = useCallback(() => {
     try {
       const savedDraft = localStorage.getItem(DRAFT_KEY)
       if (savedDraft) {
@@ -82,9 +62,9 @@ export function CreateCampaignDialog({
     } catch (error) {
       console.error('Error loading draft:', error)
     }
-  }
+  }, [DRAFT_KEY, setCampaignName, setCampaignDescription, setCampaignSubject, setCampaignContent, setLastSaved, setHasDraft])
 
-  const saveDraft = (silent = false) => {
+  const saveDraft = useCallback((silent = false) => {
     try {
       const draftData: DraftData = {
         campaignName,
@@ -107,7 +87,27 @@ export function CreateCampaignDialog({
         toast.error("Failed to save draft")
       }
     }
-  }
+  }, [DRAFT_KEY, campaignName, campaignDescription, campaignSubject, campaignContent, setLastSaved, setHasDraft])
+
+  // Load draft on component mount and when dialog opens
+  useEffect(() => {
+    if (open && typeof window !== 'undefined') {
+      loadDraft()
+    }
+  }, [open, formId, loadDraft])
+
+  // Auto-save draft every 30 seconds if there's content
+  useEffect(() => {
+    if (!open) return
+    
+    const autoSaveInterval = setInterval(() => {
+      if (campaignName || campaignSubject || campaignContent || campaignDescription) {
+        saveDraft(true) // true for silent save
+      }
+    }, 30000) // 30 seconds
+
+    return () => clearInterval(autoSaveInterval)
+  }, [open, campaignName, campaignSubject, campaignContent, campaignDescription, saveDraft])
 
   const clearDraft = () => {
     try {

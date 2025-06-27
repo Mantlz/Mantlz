@@ -9,6 +9,7 @@ import { client } from '@/lib/client'
 import { format } from 'date-fns'
 import { FormCardSkeleton } from '@/components/skeletons/FormCardSkeleton'
 import { useUser } from '@clerk/nextjs'
+import Image from 'next/image'
 
 
 interface Form {
@@ -124,9 +125,11 @@ export function FormsList({
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black dark:bg-white flex items-center justify-center overflow-hidden">
                   {user?.imageUrl ? (
-                    <img
+                    <Image
                       src={user.imageUrl} 
                       alt={`${user?.firstName || 'User'}'s avatar`}
+                      width={48}
+                      height={48}
                       className="w-full h-full bg-zinc-100 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-lg object-cover"
                     />
                   ) : (
@@ -355,4 +358,4 @@ export function FormsList({
       )}
     </div>
   )
-} 
+}
