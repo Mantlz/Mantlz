@@ -35,7 +35,7 @@ export function AdvancedSettings() {
   });
 
   // Get the global loading state
-  const { isLoading: globalIsLoading, setIsLoading, setLoadingMessage, renderSkeleton } = useLoading();
+  const { setIsLoading, setLoadingMessage, renderSkeleton } = useLoading();
 
   // Get settings
   const { data: settingsData, isLoading: isLoadingSettings } = useQuery({

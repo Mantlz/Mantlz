@@ -31,7 +31,7 @@ export function DeleteForm({ formId, isOpen, onClose, onOpen }: DeleteFormProps)
     try {
       setIsDeleting(true);
       
-      const response = await client.forms.delete.$post({
+      await client.forms.delete.$post({
         formId: formId
       });
 

@@ -46,8 +46,6 @@ export function FormSettings({
   // console.log('FormSettings props:', { formId, formType, usersJoinedSettings });
   
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [deleteConfirmation, setDeleteConfirmation] = useState('');
-  const [isDeleting, setIsDeleting] = useState(false);
   const [emailEnabled, setEmailEnabled] = useState(false);
   const [usersJoinedEnabled, setUsersJoinedEnabled] = useState(false);
   const [userPlan, setUserPlan] = useState<string | null>(null);
@@ -211,47 +209,7 @@ export function FormSettings({
     }
   };
 
-  const handleDelete = async () => {
-    console.log('Starting delete process for formId:', formId);
-    if (deleteConfirmation !== 'delete') {
-      console.log('Delete confirmation text does not match');
-      return;
-    }
 
-    try {
-      console.log('Setting deleting state to true');
-      setIsDeleting(true);
-      
-      console.log('Making API call to delete form...');
-      const response = await client.forms.delete.$post({
-        formId: formId
-      });
-      console.log('Delete API response:', response);
-
-      console.log('Form deleted successfully, showing toast');
-      toast.success('Form deleted successfully');
-      setIsDeleteModalOpen(false);
-      
-      console.log('Redirecting to dashboard');
-      // router.push('/dashboard');
-      // router.refresh();
-      
-    } catch (error) {
-      console.error('Detailed error information:', {
-        error,
-        errorMessage: error instanceof Error ? error.message : 'Unknown error',
-        errorStack: error instanceof Error ? error.stack : undefined,
-        formId: formId
-      });
-
-      toast.error('Failed to delete form', {
-        description: error instanceof Error ? error.message : 'An unexpected error occurred',
-      });
-    } finally {
-      console.log('Cleanup: Setting deleting state to false');
-      setIsDeleting(false);
-    }
-  };
 
   return (
     <div className="space-y-6">
