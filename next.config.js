@@ -39,6 +39,10 @@ const nextConfig = {
         hostname: 'files.stripe.com',
         protocol: 'https',
       },
+      {
+        hostname: 'img.clerk.com',
+        protocol: 'https',
+      },
     ],
   },
 };

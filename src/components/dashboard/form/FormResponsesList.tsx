@@ -188,7 +188,7 @@ export function FormResponsesList({
 
   if (!localSubmissions.length) {
     return (
-      <Card className="border-zinc-200 dark:border-zinc-800  shadow-sm">
+      <Card className="border-zinc-200 bg-background dark:border-zinc-800  shadow-sm">
         <CardContent className="flex flex-col items-center text-center gap-4 py-16">
           <div className="rounded-lg bg-zinc-100 dark:bg-zinc-800 p-4 mb-2">
             <FileText className="h-8 w-8 text-zinc-400" />
