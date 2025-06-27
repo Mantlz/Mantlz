@@ -104,7 +104,7 @@ export function AdvancedAnalytics({
     <>
       <div className={`transition-all duration-300 ${isCollapsed ? "max-h-0 opacity-0" : ""}`}>
         {!hasPremiumAccess && showPaywall ? (
-          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm w-full rounded-lg sm:rounded-xl">
+          <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background shadow-sm w-full rounded-lg sm:rounded-xl">
             <CardHeader className="pb-3 pt-4 px-4 sm:px-5">
               <div className="flex items-center justify-center mb-3 sm:mb-4">
                 <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
@@ -120,7 +120,7 @@ export function AdvancedAnalytics({
             </CardHeader>
             <CardContent className="text-center px-4 sm:px-5 pb-5">
               <div className="space-y-3 mb-4">
-                <div className="p-3 sm:p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg text-sm sm:text-base text-zinc-700 dark:text-zinc-300">
+                <div className="p-3 sm:p-4 bg-white dark:bg-zinc-900 rounded-lg text-sm sm:text-base text-zinc-700 dark:text-zinc-300">
                   <div className="items-center">
                     <div>
                       <p className="pl-0">
@@ -134,14 +134,14 @@ export function AdvancedAnalytics({
                   <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg text-center">
                     <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-1">Browsers</p>
                     <p className="text-base font-medium text-zinc-900 dark:text-white mt-1">
-                      <Lock className="h-4 w-4 inline-block mr-1.5 align-text-bottom" />
+                      <Lock className="h-4 w-4 inline-block mr-1 align-text-bottom" />
                       Premium
                     </p>
                   </div>
                   <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg text-center">
                     <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-1">Locations</p>
                     <p className="text-base font-medium text-zinc-900 dark:text-white mt-1">
-                      <Lock className="h-4 w-4 inline-block mr-1.5 align-text-bottom" />
+                      <Lock className="h-4 w-4 inline-block mr-1 align-text-bottom" />
                       Premium
                     </p>
                   </div>
@@ -150,7 +150,7 @@ export function AdvancedAnalytics({
 
               <Button
                 size="default"
-                className="bg-orange-500 cursor-pointer  text-black hover:bg-orange-600 dark:hover:bg-orange-800 w-[100px] h-11 sm:h-12 text-sm sm:text-base font-medium"
+                className="bg-orange-500 cursor-pointer  text-black hover:bg-orange-600 dark:hover:bg-orange-800 w-full h-11 sm:h-12 text-sm sm:text-base font-medium"
                 onClick={() => setIsUpgradeModalOpen(true)}
               >
                 <Rocket className="h-5 w-5 mr-2" />
@@ -161,7 +161,7 @@ export function AdvancedAnalytics({
         ) : !hasPremiumAccess ? (
           <Card
             onClick={() => setShowPaywall(true)}
-            className="border-zinc-200 dark:border-zinc-800 shadow-sm cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all w-full rounded-lg sm:rounded-xl"
+            className="border-zinc-200 bg-background dark:bg-background dark:border-zinc-800 shadow-sm cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all w-full rounded-lg sm:rounded-xl"
           >
             <CardHeader className="pb-2 pt-4 px-4 sm:px-5 flex flex-row items-start justify-center content-center space-y-0">
             </CardHeader>
