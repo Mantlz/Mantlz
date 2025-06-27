@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Check, Copy, FileCode, Package, Zap, BookOpen, ExternalLink } from "lucide-react"
+import { Check, Copy, FileCode, Package, BookOpen, ExternalLink } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface SdkDocsProps {
@@ -111,7 +111,7 @@ export default function MyContactPage() {
                 <Check className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
               </div>
               <div>
-                <h4 className="text-sm font-medium text-green-800 dark:text-green-300 mb-1">You're all set!</h4>
+                <h4 className="text-sm font-medium text-green-800 dark:text-green-300 mb-1">You&lsquo;re all set!</h4>
                 <p className="text-sm text-green-700 dark:text-green-400 mb-3">Your form is now ready to collect submissions. Check out our documentation for advanced customization options.</p>
                 <Button variant="outline" size="sm" className="text-green-700 dark:text-green-300 border-green-300 dark:border-green-700 hover:bg-green-100 dark:hover:bg-green-900/20">
                   <ExternalLink className="w-3.5 h-3.5 mr-1.5" />

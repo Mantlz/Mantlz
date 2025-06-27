@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertCircle, Lock, Shield, UserCheck, Mail, FileText } from 'lucide-react';
+import { AlertCircle, Lock, Shield, UserCheck, Mail } from 'lucide-react';
 import Footer from '@/components/global/landing/footer';
 import { Navbar } from '@/components/global/landing/navbar';
 import { Container } from '@/components/global/landing/container';

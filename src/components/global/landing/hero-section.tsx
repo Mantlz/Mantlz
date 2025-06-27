@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle, Sparkles } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
+import {  Sparkles } from "lucide-react";
+// import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function HeroSection() {
-  const isMobile = useIsMobile();
+  // const isMobile = useIsMobile();
 
   return (
     <div className="relative isolate overflow-hidden min-h-screen">

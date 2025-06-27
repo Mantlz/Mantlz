@@ -204,7 +204,7 @@ function PricingContent({
           <div className="relative">           
             
             <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
-              {plans.map((plan, index) => (
+              {plans.map((plan) => (
                 <Card key={plan.title} className={`relative overflow-hidden rounded-2xl transition-all duration-500 ${plan.isPopular ? 'border-primary/30 shadow-xl shadow-primary/5 hover:shadow-2xl hover:shadow-primary/10 ring-1 ring-primary/20' : 'border-border/50 shadow-lg hover:shadow-xl hover:border-primary/20'}`}>
                   {/* Enhanced top accent */}
                   <div className={`absolute inset-x-0 top-0 h-1 ${plan.isPopular ? 'bg-gradient-to-r from-primary via-primary/90 to-primary/70' : 'bg-gradient-to-r from-muted/40 via-muted/60 to-muted/40'}`}></div>

@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { UpgradeModal } from "@/components/modals/UpgradeModal"
 import { createPortal } from "react-dom"
-import { motion } from "framer-motion"
+// import { motion } from "framer-motion"
 
 interface ScheduleCampaignDialogProps {
   campaignId: string

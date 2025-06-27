@@ -7,7 +7,7 @@ export default function CustomizeFormSection() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Customise forms to your needs</h1>
-                    <p className="mt-4 text-lg md:text-xl text-muted-foreground">Easily design and personalise forms to fit your brand's identity and look great on any device.</p>
+                    <p className="mt-4 text-lg md:text-xl text-muted-foreground">Easily design and personalise forms to fit your brand&lsquo;s identity and look great on any device.</p>
                 </div>
                 <div className="relative">
                     <Card className="relative overflow-hidden mb-12">

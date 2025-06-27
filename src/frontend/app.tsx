@@ -1,7 +1,7 @@
 "use client";
 
 import { BrowserRouter, Route, Routes } from "react-router";
-import { Suspense, lazy } from "react";
+import { lazy } from "react";
 
 // Lazy load components for better performance
 const LandingPage = lazy(() => import("../app/(landing)/page"));
