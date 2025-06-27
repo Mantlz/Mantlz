@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Cookie, X } from "lucide-react"
+import { X } from "lucide-react"
 import { useMediaQuery } from "@/hooks/user-media-query"
 import Link from "next/link"
 
@@ -40,9 +40,6 @@ export function CookieConsent() {
       <div className="bg-white dark:bg-zinc-900 border-t border-neutral-200 dark:border-zinc-800 p-4">
         <div className="max-w-7xl mx-auto">
           <div className={`flex ${isMobile ? 'flex-col' : 'items-start'} gap-3`}>
-            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800">
-              <Cookie className="h-5 w-5 text-neutral-800 dark:text-neutral-200" />
-            </div>
             <div className="flex-1">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-50">
