@@ -147,7 +147,7 @@ export function UpgradeCard() {
       <CardFooter className="px-6 pb-2">
         <Button 
           className="w-full h-8 bg-zinc-300 hover:bg-orange-700 dark:bg-zinc-600 dark:hover:bg-orange-700"
-          onClick={() => router.push("/settings/billing")}
+          onClick={() => router.push("/pricing")}
         >
           <span>Upgrade Now</span>
           <ArrowRight className="ml-2 h-4 w-4" />

@@ -130,7 +130,7 @@ export function UpgradeModal({
               Cancel
             </Button>
             <Button 
-              onClick={() => window.location.href = '/settings/billing'}
+              onClick={() => window.location.href = '/pricing'}
               className="bg-orange-500 hover:bg-orange-600 dark:hover:bg-orange-700 text-white transition-colors font-medium text-sm cursor-pointer"
             >
               Upgrade Plan

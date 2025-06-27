@@ -475,7 +475,7 @@ export async function POST(req: Request) {
                   to: subscription.user.email,
                   attemptNumber: failedAttempts + 1,
                   nextAttemptDate,
-                  updatePaymentUrl: `${process.env.NEXT_PUBLIC_APP_URL}/settings/billing`
+                  updatePaymentUrl: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`
                 })
 
                 console.log(`[DEBUG] Payment failure recorded for user ${subscription.userId}, attempt ${failedAttempts + 1} of 3`)
