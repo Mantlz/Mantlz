@@ -630,10 +630,10 @@ CREATE UNIQUE INDEX "DiscordConfig_userId_key" ON "DiscordConfig"("userId");
 CREATE INDEX "DiscordConfig_userId_idx" ON "DiscordConfig"("userId");
 
 -- AddForeignKey
-ALTER TABLE "Subscription" ADD CONSTRAINT "Subscription_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Subscription" ADD CONSTRAINT "Subscription_planId_fkey" FOREIGN KEY ("planId") REFERENCES "SubscriptionPlan"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Subscription" ADD CONSTRAINT "Subscription_planId_fkey" FOREIGN KEY ("planId") REFERENCES "SubscriptionPlan"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Subscription" ADD CONSTRAINT "Subscription_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Payment" ADD CONSTRAINT "Payment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -705,10 +705,10 @@ ALTER TABLE "StripeProduct" ADD CONSTRAINT "StripeProduct_stripeConnectionId_fke
 ALTER TABLE "StripeOrder" ADD CONSTRAINT "StripeOrder_formId_fkey" FOREIGN KEY ("formId") REFERENCES "Form"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StripeOrder" ADD CONSTRAINT "StripeOrder_submissionId_fkey" FOREIGN KEY ("submissionId") REFERENCES "Submission"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "StripeOrder" ADD CONSTRAINT "StripeOrder_stripeConnectionId_fkey" FOREIGN KEY ("stripeConnectionId") REFERENCES "StripeConnection"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StripeOrder" ADD CONSTRAINT "StripeOrder_stripeConnectionId_fkey" FOREIGN KEY ("stripeConnectionId") REFERENCES "StripeConnection"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "StripeOrder" ADD CONSTRAINT "StripeOrder_submissionId_fkey" FOREIGN KEY ("submissionId") REFERENCES "Submission"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "StripeOrderItem" ADD CONSTRAINT "StripeOrderItem_stripeOrderId_fkey" FOREIGN KEY ("stripeOrderId") REFERENCES "StripeOrder"("id") ON DELETE CASCADE ON UPDATE CASCADE;

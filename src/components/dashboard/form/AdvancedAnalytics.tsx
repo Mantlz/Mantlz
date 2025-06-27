@@ -106,11 +106,6 @@ export function AdvancedAnalytics({
         {!hasPremiumAccess && showPaywall ? (
           <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background shadow-sm w-full rounded-lg sm:rounded-xl">
             <CardHeader className="pb-3 pt-4 px-4 sm:px-5">
-              <div className="flex items-center justify-center mb-3 sm:mb-4">
-                <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-                  <CreditCard className="h-6 w-6 sm:h-7 sm:w-7 text-zinc-500" />
-                </div>
-              </div>
               <CardTitle className="text-center text-zinc-900 dark:text-white text-lg sm:text-xl mb-2">
                 Premium Feature
               </CardTitle>
@@ -120,7 +115,7 @@ export function AdvancedAnalytics({
             </CardHeader>
             <CardContent className="text-center px-4 sm:px-5 pb-5">
               <div className="space-y-3 mb-4">
-                <div className="p-3 sm:p-4 bg-white dark:bg-zinc-900 rounded-lg text-sm sm:text-base text-zinc-700 dark:text-zinc-300">
+                <div className="p-3 sm:p-4  rounded-lg text-sm sm:text-base text-zinc-700 dark:text-zinc-300">
                   <div className="items-center">
                     <div>
                       <p className="pl-0">
@@ -133,24 +128,24 @@ export function AdvancedAnalytics({
                 <div className="grid grid-cols-2 gap-3">
                   <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg text-center">
                     <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-1">Browsers</p>
-                    <p className="text-base font-medium text-zinc-900 dark:text-white mt-1">
-                      <Lock className="h-4 w-4 inline-block mr-1 align-text-bottom" />
+                      <Lock className="h-4 w-4 inline-block mr-2 mb-0.5 align-text-bottom" />
+                    {/* <p className="text-base font-medium text-zinc-900 dark:text-white mt-1">
                       Premium
-                    </p>
+                    </p> */}
                   </div>
                   <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg text-center">
                     <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-1">Locations</p>
-                    <p className="text-base font-medium text-zinc-900 dark:text-white mt-1">
-                      <Lock className="h-4 w-4 inline-block mr-1 align-text-bottom" />
-                      Premium
-                    </p>
+                      <Lock className="h-4 w-4 inline-block mr-2 align-text-bottom" />
+                    {/* <p className="text-base font-medium text-zinc-900 dark:text-white mt-1">
+                      
+                    </p> */}
                   </div>
                 </div>
               </div>
 
               <Button
                 size="default"
-                className="bg-orange-500 cursor-pointer  text-black hover:bg-orange-600 dark:hover:bg-orange-800 w-full h-11 sm:h-12 text-sm sm:text-base font-medium"
+                className="bg-orange-500 cursor-pointer  text-white hover:bg-orange-600 dark:hover:bg-orange-800 w-48 h-11 sm:h-12 text-sm sm:text-base font-medium"
                 onClick={() => setIsUpgradeModalOpen(true)}
               >
                 <Rocket className="h-5 w-5 mr-2" />
@@ -167,8 +162,8 @@ export function AdvancedAnalytics({
             </CardHeader>
             <CardContent className="text-center px-4 sm:px-5 pb-4">
               <div className="py-4 sm:py-5 flex flex-col items-center">
-                <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-3 sm:mb-4">
-                  <Lock className="h-5 w-5 sm:h-6 sm:w-6 text-zinc-500 dark:text-zinc-400" />
+                <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-lg flex items-center justify-center mb-3 sm:mb-4">
+                  <Lock className="h-5 w-5 sm:h-6 sm:w-6 text-orange-500" />
                 </div>
                 <p className="text-base sm:text-lg font-medium text-zinc-800 dark:text-zinc-200 mb-2">View User Insights</p>
                 <p className="text-sm sm:text-base text-zinc-500 dark:text-zinc-400 max-w-[240px] sm:max-w-[280px] mx-auto">
