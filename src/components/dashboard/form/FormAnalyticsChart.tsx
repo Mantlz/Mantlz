@@ -140,7 +140,7 @@ export function FormAnalyticsChart({
 
   if (isLoading) {
     return (
-      <div className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 rounded-lg sm:rounded-xl border border-zinc-100 dark:border-zinc-800/50">
+      <div className="relative overflow-hidden  rounded-lg sm:rounded-xl border border-zinc-100 dark:border-zinc-800/50">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative p-6 sm:p-8 lg:p-12">
           <div className="flex flex-col items-center justify-center h-[400px] gap-4">

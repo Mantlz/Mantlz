@@ -9,42 +9,42 @@ datasource db {
 }
 
 model User {
-  id               String   @id @default(cuid())
-  clerkId          String   @unique
-  email            String   @unique
+  id               String            @id @default(cuid())
+  clerkId          String            @unique
+  email            String            @unique
   firstName        String?
   lastName         String?
   imageUrl         String?
-  quotaLimit       Int      @default(200) // Default to FREE_QUOTA.maxSubmissionsPerMonth
+  quotaLimit       Int               @default(200)
   resendApiKey     String?
-  stripeCustomerId String?  @unique
-  plan             Plan     @default(FREE)
+  stripeCustomerId String?           @unique
+  plan             Plan              @default(FREE)
   customDomain     String?
-  domainVerified   Boolean  @default(false)
-  dnsRecords       DnsRecord[]
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  forms            Form[]
-  quota            Quota[]
+  domainVerified   Boolean           @default(false)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
   apiKeys          ApiKey[]
-  globalSettings   GlobalSettings?
-  subscription     Subscription?
-  payments         Payment[]
-  invoices         Invoice[]
   campaigns        Campaign[]
-  stripeConnection StripeConnection?
-  slackConfig      SlackConfig?
   discordConfig    DiscordConfig?
+  dnsRecords       DnsRecord[]
+  forms            Form[]
+  globalSettings   GlobalSettings?
+  invoices         Invoice[]
+  payments         Payment[]
+  quota            Quota[]
+  slackConfig      SlackConfig?
+  stripeConnection StripeConnection?
+  subscription     Subscription?
 
   @@index([clerkId])
   @@index([stripeCustomerId])
 }
 
 model Subscription {
-  id                     String           @id @default(uuid())
-  createdAt              DateTime         @default(now())
-  updatedAt              DateTime         @updatedAt
-  subscriptionId         String           @unique
+  id                     String             @id @default(uuid())
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+  subscriptionId         String             @unique
   stripeUserId           String
   status                 SubscriptionStatus
   startDate              DateTime
@@ -53,26 +53,26 @@ model Subscription {
   defaultPaymentMethodId String?
   email                  String
   clerkId                String
-  user                   User             @relation(fields: [userId], references: [id])
-  userId                 String           @unique
-  plan                   SubscriptionPlan @relation(fields: [planId], references: [id])
+  userId                 String             @unique
   paymentFailures        PaymentFailure[]
+  plan                   SubscriptionPlan   @relation(fields: [planId], references: [id])
+  user                   User               @relation(fields: [userId], references: [id])
 
   @@index([clerkId, subscriptionId])
 }
 
 model SubscriptionPlan {
-  id             String         @id @default(uuid())
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
-  planId         String         @unique
-  name           String         @unique
-  description    String
-  amount         Decimal
-  currency       String
-  maxForms       Int           // Maximum number of forms allowed
-  maxSubmissionsPerMonth Int   // Maximum submissions per month
-  subscriptions  Subscription[]
+  id                     String         @id @default(uuid())
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
+  planId                 String         @unique
+  name                   String         @unique
+  description            String
+  amount                 Decimal
+  currency               String
+  maxForms               Int
+  maxSubmissionsPerMonth Int
+  subscriptions          Subscription[]
 }
 
 model Payment {
@@ -86,45 +86,42 @@ model Payment {
   clerkId         String
   customerDetails Json
   paymentIntent   String
-  user            User     @relation(fields: [userId], references: [id])
   userId          String
+  user            User     @relation(fields: [userId], references: [id])
 
   @@index([clerkId, stripeId])
 }
 
 model Invoice {
-  id             String   @id @default(uuid())
-  createdAt      DateTime @default(now())
-  invoiceId      String   @unique
+  id             String        @id @default(uuid())
+  createdAt      DateTime      @default(now())
+  invoiceId      String        @unique
   subscriptionId String?
   amountPaid     Decimal
   amountDue      Decimal?
   currency       String
   status         InvoiceStatus
   email          String
-  clerkId        String   // Make this required since we're using userId
-  user           User     @relation(fields: [userId], references: [id])
+  clerkId        String
   userId         String
+  user           User          @relation(fields: [userId], references: [id])
 
   @@index([clerkId, invoiceId])
 }
 
 model Quota {
-  id        String   @id @default(cuid())
-  userId    String
-  year      Int
-  month     Int
-  // Different types of usage counts
-  submissionCount Int @default(0)
-  formCount      Int @default(0)
-  campaignCount  Int @default(0)
-  // Track email campaign specific metrics
-  emailsSent     Int @default(0)
-  emailsOpened   Int @default(0)
-  emailsClicked  Int @default(0)
-  // Metadata
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
+  id              String   @id @default(cuid())
+  userId          String
+  year            Int
+  month           Int
+  submissionCount Int      @default(0)
+  formCount       Int      @default(0)
+  campaignCount   Int      @default(0)
+  emailsSent      Int      @default(0)
+  emailsOpened    Int      @default(0)
+  emailsClicked   Int      @default(0)
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id])
 
   @@unique([userId, year, month])
   @@index([userId])
@@ -132,22 +129,22 @@ model Quota {
 }
 
 model Form {
-  id          String       @id @default(cuid())
-  name        String
-  description String?
-  schema      String
-  userId      String
-  settings    Json?
-  formType    FormType     @default(CUSTOM)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  user        User         @relation(fields: [userId], references: [id])
-  submissions Submission[]
-  emailSettings EmailSettings?
+  id               String                @id @default(cuid())
+  name             String
+  description      String?
+  schema           String
+  userId           String
+  settings         Json?
+  formType         FormType              @default(CUSTOM)
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+  campaigns        Campaign[]
+  emailSettings    EmailSettings?
+  user             User                  @relation(fields: [userId], references: [id])
   notificationLogs NotificationLog[]
-  campaigns   Campaign[]
-  testSubmissions TestEmailSubmission[]
-  stripeOrders StripeOrder[]
+  stripeOrders     StripeOrder[]
+  submissions      Submission[]
+  testSubmissions  TestEmailSubmission[]
 
   @@index([userId, formType])
   @@index([userId])
@@ -155,36 +152,35 @@ model Form {
 }
 
 model EmailSettings {
-  id          String   @id @default(cuid())
-  formId      String   @unique
-  form        Form     @relation(fields: [formId], references: [id])
-  enabled     Boolean  @default(false)
-  fromEmail   String?
-  subject     String?
-  template    String?
-  replyTo     String?
-  // Developer notification settings
-  developerNotificationsEnabled Boolean @default(false)
-  developerEmail String?
-  maxNotificationsPerHour Int @default(10)
-  notificationConditions Json?
-  lastNotificationSentAt DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                            String    @id @default(cuid())
+  formId                        String    @unique
+  enabled                       Boolean   @default(false)
+  fromEmail                     String?
+  subject                       String?
+  template                      String?
+  replyTo                       String?
+  developerNotificationsEnabled Boolean   @default(false)
+  developerEmail                String?
+  maxNotificationsPerHour       Int       @default(10)
+  notificationConditions        Json?
+  lastNotificationSentAt        DateTime?
+  createdAt                     DateTime  @default(now())
+  updatedAt                     DateTime  @updatedAt
+  form                          Form      @relation(fields: [formId], references: [id])
 }
 
 model Submission {
-  id        String   @id @default(cuid())
-  data      Json
-  formId    String
-  email     String?
-  createdAt DateTime @default(now())
-  form      Form     @relation(fields: [formId], references: [id])
-  notificationLogs NotificationLog[]
-  sentEmails SentEmail[]
-  unsubscribed Boolean @default(false)
+  id                 String              @id @default(cuid())
+  data               Json
+  formId             String
+  email              String?
+  createdAt          DateTime            @default(now())
+  unsubscribed       Boolean             @default(false)
   campaignRecipients CampaignRecipient[]
-  stripeOrders StripeOrder[]
+  notificationLogs   NotificationLog[]
+  sentEmails         SentEmail[]
+  stripeOrders       StripeOrder[]
+  form               Form                @relation(fields: [formId], references: [id])
 
   @@unique([formId, email])
   @@index([email])
@@ -194,88 +190,81 @@ model Submission {
 }
 
 model ApiKey {
-  id          String   @id @default(cuid())
-  key         String   @unique
-  name        String
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  createdAt   DateTime @default(now())
-  lastUsedAt  DateTime @updatedAt
-  isActive    Boolean  @default(true)
+  id         String   @id @default(cuid())
+  key        String   @unique
+  name       String
+  userId     String
+  createdAt  DateTime @default(now())
+  lastUsedAt DateTime @updatedAt
+  isActive   Boolean  @default(true)
+  user       User     @relation(fields: [userId], references: [id])
 
   @@index([key])
 }
 
-// New model for notification logs
 model NotificationLog {
-  id           String   @id @default(cuid())
+  id           String             @id @default(cuid())
   formId       String
-  form         Form     @relation(fields: [formId], references: [id])
   submissionId String
-  submission   Submission @relation(fields: [submissionId], references: [id])
   type         String
-  status       NotificationStatus   @default(SENT)
+  status       NotificationStatus @default(SENT)
   error        String?
   metadata     Json?
-  createdAt    DateTime @default(now())
+  createdAt    DateTime           @default(now())
+  form         Form               @relation(fields: [formId], references: [id])
+  submission   Submission         @relation(fields: [submissionId], references: [id])
 
   @@index([formId, type])
   @@index([createdAt])
   @@index([status])
 }
 
-// New model for global settings
 model GlobalSettings {
-  id          String   @id @default(cuid())
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id])
-  developerNotificationsEnabled Boolean @default(false)
-  maxNotificationsPerHour Int @default(10)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                            String   @id @default(cuid())
+  userId                        String   @unique
+  developerNotificationsEnabled Boolean  @default(false)
+  maxNotificationsPerHour       Int      @default(10)
+  createdAt                     DateTime @default(now())
+  updatedAt                     DateTime @updatedAt
+  user                          User     @relation(fields: [userId], references: [id])
 }
 
-// Campaign models
 model Campaign {
-  id           String    @id @default(cuid())
-  name         String
-  description  String?
-  subject      String
-  content      String
-  formId       String
-  userId       String
-  status       CampaignStatus @default(DRAFT)
-  senderEmail  String?
-  recipientCount Int     @default(0)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  scheduledAt  DateTime?
-  sentAt       DateTime?
-  
-  // Relations
-  form         Form      @relation(fields: [formId], references: [id])
-  user         User      @relation(fields: [userId], references: [id])
-  sentEmails   SentEmail[]
-  recipients   CampaignRecipient[]
+  id             String              @id @default(cuid())
+  name           String
+  description    String?
+  subject        String
+  content        String
+  formId         String
+  userId         String
+  status         CampaignStatus      @default(DRAFT)
+  senderEmail    String?
+  recipientCount Int                 @default(0)
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  scheduledAt    DateTime?
+  sentAt         DateTime?
+  form           Form                @relation(fields: [formId], references: [id])
+  user           User                @relation(fields: [userId], references: [id])
+  recipients     CampaignRecipient[]
+  sentEmails     SentEmail[]
 
   @@index([userId, status])
   @@index([formId])
 }
 
 model CampaignRecipient {
-  id           String    @id @default(cuid())
+  id           String             @id @default(cuid())
   campaignId   String
   submissionId String
   email        String
   status       CampaignSendStatus @default(PENDING)
   error        String?
   sentAt       DateTime?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-
-  // Relations
-  campaign     Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  campaign     Campaign           @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  submission   Submission         @relation(fields: [submissionId], references: [id], onDelete: Cascade)
 
   @@index([campaignId, status])
   @@index([submissionId])
@@ -283,45 +272,43 @@ model CampaignRecipient {
 }
 
 model TestEmailSubmission {
-  id        String   @id @default(cuid())
-  formId    String
-  email     String
-  data      Json?
-  createdAt DateTime @default(now())
-  form      Form     @relation(fields: [formId], references: [id])
+  id         String      @id @default(cuid())
+  formId     String
+  email      String
+  data       Json?
+  createdAt  DateTime    @default(now())
   sentEmails SentEmail[]
+  form       Form        @relation(fields: [formId], references: [id])
 
   @@unique([formId, email])
   @@index([email])
 }
 
 model SentEmail {
-  id           String    @id @default(cuid())
-  status       CampaignSendStatus @default(PENDING)
-  error        String?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  campaignId   String
-  submissionId String?
-  testSubmissionId String?
-  campaign     Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  submission   Submission? @relation(fields: [submissionId], references: [id], onDelete: Cascade)
-  testSubmission TestEmailSubmission? @relation(fields: [testSubmissionId], references: [id], onDelete: Cascade)
-  isTest      Boolean   @default(false)
-  
-  // Email tracking
-  openedAt     DateTime?
-  clickedAt    DateTime?
-  lastOpenedAt DateTime?
-  lastClickedAt DateTime?
-  openCount    Int       @default(0)
-  clickCount   Int       @default(0)
-  bounced      Boolean   @default(false)
-  bounceReason String?
-  spamReported Boolean   @default(false)
-  spamReportedAt DateTime?
-  unsubscribeClicked Boolean @default(false)
+  id                   String               @id @default(cuid())
+  status               CampaignSendStatus   @default(PENDING)
+  error                String?
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  campaignId           String
+  submissionId         String?
+  testSubmissionId     String?
+  isTest               Boolean              @default(false)
+  openedAt             DateTime?
+  clickedAt            DateTime?
+  lastOpenedAt         DateTime?
+  lastClickedAt        DateTime?
+  openCount            Int                  @default(0)
+  clickCount           Int                  @default(0)
+  bounced              Boolean              @default(false)
+  bounceReason         String?
+  spamReported         Boolean              @default(false)
+  spamReportedAt       DateTime?
+  unsubscribeClicked   Boolean              @default(false)
   unsubscribeClickedAt DateTime?
+  campaign             Campaign             @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  submission           Submission?          @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  testSubmission       TestEmailSubmission? @relation(fields: [testSubmissionId], references: [id], onDelete: Cascade)
 
   @@index([campaignId])
   @@index([submissionId])
@@ -330,6 +317,154 @@ model SentEmail {
   @@index([clickedAt])
   @@index([status])
   @@index([isTest])
+}
+
+model DnsRecord {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  name      String
+  value     String
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, type])
+  @@index([userId])
+}
+
+model PaymentFailure {
+  id             String       @id @default(uuid())
+  createdAt      DateTime     @default(now())
+  subscriptionId String
+  invoiceId      String
+  amount         Decimal
+  failureReason  String
+  attemptNumber  Int
+  resolved       Boolean      @default(false)
+  resolvedAt     DateTime?
+  subscription   Subscription @relation(fields: [subscriptionId], references: [subscriptionId])
+
+  @@index([subscriptionId])
+  @@index([invoiceId])
+}
+
+model StripeConnection {
+  id              String          @id @default(cuid())
+  userId          String          @unique
+  stripeAccountId String          @unique
+  accessToken     String
+  refreshToken    String?
+  tokenType       String          @default("bearer")
+  scope           String?
+  expiresAt       DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  isActive        Boolean         @default(true)
+  lastRefreshedAt DateTime?
+  state           String?
+  status          String?
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stripeOrders    StripeOrder[]
+  stripeProducts  StripeProduct[]
+
+  @@index([userId])
+  @@index([stripeAccountId])
+}
+
+model StripeProduct {
+  id                 String            @id @default(cuid())
+  stripeConnectionId String
+  stripeProductId    String
+  stripePriceId      String
+  name               String
+  description        String?
+  price              Decimal
+  currency           String
+  image              String?
+  active             Boolean           @default(true)
+  metadata           Json?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  stripeOrders       StripeOrderItem[]
+  stripeConnection   StripeConnection  @relation(fields: [stripeConnectionId], references: [id], onDelete: Cascade)
+
+  @@unique([stripeConnectionId, stripeProductId, stripePriceId])
+  @@index([stripeConnectionId])
+  @@index([stripeProductId])
+  @@index([stripePriceId])
+}
+
+model StripeOrder {
+  id                      String            @id @default(cuid())
+  formId                  String
+  submissionId            String?
+  stripeConnectionId      String
+  stripeCheckoutSessionId String?
+  stripePaymentIntentId   String?
+  status                  StripeOrderStatus @default(PENDING)
+  amount                  Decimal
+  currency                String
+  customerEmail           String?
+  customerName            String?
+  metadata                Json?
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+  form                    Form              @relation(fields: [formId], references: [id], onDelete: Cascade)
+  stripeConnection        StripeConnection  @relation(fields: [stripeConnectionId], references: [id], onDelete: Cascade)
+  submission              Submission?       @relation(fields: [submissionId], references: [id])
+  items                   StripeOrderItem[]
+
+  @@index([formId])
+  @@index([submissionId])
+  @@index([stripeConnectionId])
+  @@index([stripeCheckoutSessionId])
+  @@index([stripePaymentIntentId])
+  @@index([status])
+}
+
+model StripeOrderItem {
+  id              String        @id @default(cuid())
+  stripeOrderId   String
+  stripeProductId String
+  quantity        Int           @default(1)
+  price           Decimal
+  currency        String
+  metadata        Json?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  stripeOrder     StripeOrder   @relation(fields: [stripeOrderId], references: [id], onDelete: Cascade)
+  stripeProduct   StripeProduct @relation(fields: [stripeProductId], references: [id])
+
+  @@index([stripeOrderId])
+  @@index([stripeProductId])
+}
+
+model SlackConfig {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  enabled    Boolean  @default(false)
+  webhookUrl String
+  channel    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model DiscordConfig {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  enabled    Boolean  @default(false)
+  webhookUrl String
+  channel    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 enum NotificationType {
@@ -378,7 +513,6 @@ enum Plan {
   PRO
 }
 
-// Add new enums for Campaign status
 enum CampaignStatus {
   DRAFT
   SCHEDULED
@@ -397,131 +531,6 @@ enum CampaignSendStatus {
   CLICKED
 }
 
-// New model for DNS records
-model DnsRecord {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  type        String   // SPF, DKIM, DMARC
-  name        String   // Record name (e.g., @, _dmarc)
-  value       String   // Record value
-  verified    Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([userId])
-  @@unique([userId, type])
-}
-
-model PaymentFailure {
-  id             String   @id @default(uuid())
-  createdAt      DateTime @default(now())
-  subscriptionId String
-  invoiceId      String
-  amount         Decimal
-  failureReason  String
-  attemptNumber  Int
-  resolved       Boolean  @default(false)
-  resolvedAt     DateTime?
-  subscription   Subscription @relation(fields: [subscriptionId], references: [subscriptionId])
-
-  @@index([subscriptionId])
-  @@index([invoiceId])
-}
-
-// Stripe Connection Models
-model StripeConnection {
-  id                String   @id @default(cuid())
-  userId            String   @unique
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  stripeAccountId   String   @unique
-  accessToken       String
-  refreshToken      String?
-  tokenType         String   @default("bearer")
-  scope             String?
-  expiresAt         DateTime?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  isActive          Boolean  @default(true)
-  lastRefreshedAt   DateTime?
-  state             String?  // Add state field for OAuth flow
-  status            String?  // Add status field for OAuth flow
-  stripeProducts    StripeProduct[]
-  stripeOrders      StripeOrder[]
-
-  @@index([userId])
-  @@index([stripeAccountId])
-}
-
-model StripeProduct {
-  id                String   @id @default(cuid())
-  stripeConnectionId String
-  stripeConnection  StripeConnection @relation(fields: [stripeConnectionId], references: [id], onDelete: Cascade)
-  stripeProductId   String
-  stripePriceId     String
-  name              String
-  description       String?
-  price             Decimal
-  currency          String
-  image             String?
-  active            Boolean  @default(true)
-  metadata          Json?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  stripeOrders      StripeOrderItem[]
-
-  @@unique([stripeConnectionId, stripeProductId, stripePriceId])
-  @@index([stripeConnectionId])
-  @@index([stripeProductId])
-  @@index([stripePriceId])
-}
-
-model StripeOrder {
-  id                String   @id @default(cuid())
-  formId            String
-  form              Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
-  submissionId      String?
-  submission        Submission? @relation(fields: [submissionId], references: [id])
-  stripeConnectionId String
-  stripeConnection  StripeConnection @relation(fields: [stripeConnectionId], references: [id], onDelete: Cascade)
-  stripeCheckoutSessionId String?
-  stripePaymentIntentId String?
-  status            StripeOrderStatus @default(PENDING)
-  amount            Decimal
-  currency          String
-  customerEmail     String?
-  customerName      String?
-  metadata          Json?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  items             StripeOrderItem[]
-
-  @@index([formId])
-  @@index([submissionId])
-  @@index([stripeConnectionId])
-  @@index([stripeCheckoutSessionId])
-  @@index([stripePaymentIntentId])
-  @@index([status])
-}
-
-model StripeOrderItem {
-  id                String   @id @default(cuid())
-  stripeOrderId     String
-  stripeOrder       StripeOrder @relation(fields: [stripeOrderId], references: [id], onDelete: Cascade)
-  stripeProductId   String
-  stripeProduct     StripeProduct @relation(fields: [stripeProductId], references: [id])
-  quantity          Int      @default(1)
-  price             Decimal
-  currency          String
-  metadata          Json?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-  @@index([stripeOrderId])
-  @@index([stripeProductId])
-}
-
-// Add new enum for order status
 enum StripeOrderStatus {
   PENDING
   PROCESSING
@@ -529,34 +538,4 @@ enum StripeOrderStatus {
   FAILED
   REFUNDED
   CANCELED
-}
-
-model SlackConfig {
-  id          String    @id @default(cuid())
-  userId      String    @unique
-  enabled     Boolean   @default(false)
-  webhookUrl  String
-  channel     String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  // Relations
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-}
-
-model DiscordConfig {
-  id          String    @id @default(cuid())
-  userId      String    @unique
-  enabled     Boolean   @default(false)
-  webhookUrl  String
-  channel     String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  // Relations
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
 }

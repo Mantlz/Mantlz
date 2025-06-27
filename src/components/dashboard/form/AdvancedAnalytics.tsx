@@ -161,17 +161,9 @@ export function AdvancedAnalytics({
         ) : !hasPremiumAccess ? (
           <Card
             onClick={() => setShowPaywall(true)}
-            className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all w-full rounded-lg sm:rounded-xl"
+            className="border-zinc-200 dark:border-zinc-800shadow-sm cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all w-full rounded-lg sm:rounded-xl"
           >
             <CardHeader className="pb-2 pt-4 px-4 sm:px-5 flex flex-row items-start justify-center content-center space-y-0">
-              <div>
-                <CardTitle className="text-zinc-900 dark:text-white text-base sm:text-lg">
-                  User Insights
-                </CardTitle>
-                <CardDescription className="text-zinc-600 dark:text-zinc-400 text-sm">
-                  Discover who&apos;s using your form
-                </CardDescription>
-              </div>
             </CardHeader>
             <CardContent className="text-center px-4 sm:px-5 pb-4">
               <div className="py-4 sm:py-5 flex flex-col items-center">
