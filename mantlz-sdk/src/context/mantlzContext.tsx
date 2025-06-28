@@ -1,10 +1,13 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, type PropsWithChildren } from 'react';
-import { createMantlzClient } from '../client';
-import { MantlzClient } from '../types';
-import { toast } from '../utils/toast';
-import { injectStyles } from '../utils/styles';
+import React, {
+  createContext,
+  useContext,
+  type PropsWithChildren,
+} from "react";
+import { createMantlzClient } from "../client";
+import { MantlzClient } from "../types";
+import { injectStyles } from "../utils/styles";
 
 interface MantlzContextType {
   apiKey: string | undefined;
@@ -16,7 +19,7 @@ const MantlzContext = createContext<MantlzContextType | null>(null);
 export function useMantlz() {
   const context = useContext(MantlzContext);
   if (!context) {
-    throw new Error('useMantlz must be used within a MantlzProvider');
+    throw new Error("useMantlz must be used within a MantlzProvider");
   }
   return context;
 }
@@ -26,55 +29,21 @@ interface MantlzProviderProps extends PropsWithChildren {
 }
 
 export function MantlzProvider({ apiKey, children }: MantlzProviderProps) {
-  const [hasShownApiKeyError, setHasShownApiKeyError] = React.useState(false);
-  
   // Inject styles on mount - works in both dev and prod
   React.useEffect(() => {
     injectStyles();
   }, []);
-  
-  // Show a warning toast if apiKey is missing
-  React.useEffect(() => {
-    if (hasShownApiKeyError) {
-      return; // Prevent showing the error toast multiple times
-    }
-    
-    if (!apiKey) {
-      console.warn('MANTLZ_KEY is not set. Forms will not work correctly.');
-      if (typeof window !== 'undefined') {
-        setTimeout(() => {
-          toast.error('MANTLZ_KEY is not configured', {
-            description: 'Add your API key to your .env.local file: MANTLZ_KEY=mk_xxxxxxxxxx',
-            duration: 10000,
-          });
-          setHasShownApiKeyError(true);
-        }, 1000);
-      }
-    } else if (apiKey.trim() === '') {
-      console.warn('MANTLZ_KEY is empty. Forms will not work correctly.');
-      if (typeof window !== 'undefined') {
-        setTimeout(() => {
-          toast.error('MANTLZ_KEY is empty', {
-            description: 'Your API key cannot be empty. Get your key from the Mantlz dashboard.',
-            duration: 10000,
-          });
-          setHasShownApiKeyError(true);
-        }, 1000);
-      }
-    }
-  }, [apiKey, hasShownApiKeyError]);
 
   // Create client inside the provider using useMemo for performance
-  const client = React.useMemo(() => 
-    apiKey ? createMantlzClient(apiKey) : null, 
+  const client = React.useMemo(
+    () => (apiKey ? createMantlzClient(apiKey) : null),
     [apiKey]
   );
-  
+
   // Keep backward compatibility with window.mantlz
   React.useEffect(() => {
-    if (typeof window !== 'undefined' && client) {
+    if (typeof window !== "undefined" && client) {
       window.mantlz = client;
-     // ('Mantlz client initialized with API key:', apiKey);
     }
   }, [apiKey, client]);
 
@@ -90,4 +59,4 @@ declare global {
   interface Window {
     mantlz: MantlzClient;
   }
-} 
+}

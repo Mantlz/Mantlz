@@ -26,16 +26,6 @@ export function ApiKeyErrorCard({}: ApiKeyErrorCardProps) {
           textAlign: 'center' as const
         }}
       >
-        <h2
-          style={{
-            color: 'var(--red-11)',
-            fontSize: '18px',
-            fontWeight: '600',
-            margin: '0 0 8px 0'
-          }}
-        >
-          API Key Error
-        </h2>
         <p
           style={{
             color: 'var(--red-10)',

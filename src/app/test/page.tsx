@@ -3,7 +3,7 @@ import { Mantlz } from "@mantlz/nextjs";
 
 export default function CustomerFeedbackPage() {
   return (
-    <div className="min-h-screen w-full bg-gradient-to-r from-purple-50 via-purple-100 to-purple-50 flex items-center justify-center py-8 px-4">
+    <div className="min-h-screen w-full  flex items-center justify-center py-8 px-4">
       <div className="flex flex-row items-center justify-center gap-4 flex-wrap">
         <Mantlz
           formId="cmcf2mb690001o7ro57d031kj"
@@ -44,7 +44,7 @@ export default function CustomerFeedbackPage() {
           // }}
         />
 
-        {/* <Mantlz
+        <Mantlz
           formId="cmccb5j5s0007o7fkgkb2d6fw"
           theme="neobrutalism"
           showUsersJoined={true}
@@ -75,7 +75,7 @@ export default function CustomerFeedbackPage() {
           usersJoinedCount={100000}
           usersJoinedLabel="Users already joined"
           theme="modern"
-        /> */}
+        />
       </div>
     </div>
   );

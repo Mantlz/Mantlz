@@ -30,28 +30,7 @@ function isMantlzError(error: any): error is MantlzError {
   return error && typeof error === 'object' && 'code' in error;
 }
 
-/**
- * Sanitizes strings to prevent injection in UI (basic)
- */
-// function sanitizeString(input: string): string {
-//   return input.replace(/[<>&"'`]/g, (char) => {
-//     const map: Record<string, string> = {
-//       '<': '&lt;',
-//       '>': '&gt;',
-//       '&': '&amp;',
-//       '"': '&quot;',
-//       "'": '&#39;',
-//       '`': '&#96;',
-//     };
-//     return map[char] || char;
-//   });
-// }
 
-/**
- * Creates a new Mantlz SDK client instance
- * @param apiKey - Your Mantlz API key (or undefined to use environment variable)
- * @param config - Optional client configuration
- */
 export function createMantlzClient(
   apiKey?: string,
   config?: MantlzClientConfig
@@ -79,9 +58,6 @@ export function createMantlzClient(
 
   // Notification enabled flag (default true)
   let notificationsEnabled = config?.notifications !== false;
-  
-  // Development mode for local testing (bypasses CORS)
-  const developmentMode = config?.developmentMode === true;
   
   // Credentials mode for fetch requests (default to 'include' for cross-origin requests)
   const credentialsMode = config?.credentials || 'include';
@@ -269,12 +245,12 @@ export function createMantlzClient(
       let description = error.code ? `Error ${error.code}` : undefined;
 
       if (error.code === 404 && formId) {
-        description = `Form ${formId} not found. Please check your formId.`;
+        description = `Please check your formId.`;
       }
 
       toast.error(title, {
         description,
-        duration: 5000,
+        duration: 3000,
       });
     }
 
@@ -413,53 +389,11 @@ export function createMantlzClient(
             'Content-Type': 'application/json',
             'X-API-Key': key,
           },
-          credentials: developmentMode ? 'omit' : credentialsMode,
-          mode: developmentMode ? 'no-cors' : 'cors',
+          credentials: credentialsMode,
+          mode: 'cors',
         });
         
-        // With no-cors mode, the response type is 'opaque' and cannot be read
-        // In development mode, return a default schema with a note
-        if (developmentMode && response.type === 'opaque') {
-          log('Development mode: Returning mock schema for form', formId);
-          return {
-            id: formId,
-            name: 'Development Form',
-            description: 'This is a mock form generated in development mode',
-            formType: 'custom',
-            fields: [
-              {
-                id: 'email',
-                name: 'email',
-                type: 'email',
-                required: true,
-                label: 'Email',
-                placeholder: 'your@email.com'
-              },
-              {
-                id: 'name',
-                name: 'name',
-                type: 'text',
-                required: true,
-                label: 'Name',
-                placeholder: 'Your Name'
-              }
-            ],
-            schema: {
-              email: {
-                type: 'email',
-                required: true,
-                label: 'Email',
-                placeholder: 'your@email.com'
-              },
-              name: {
-                type: 'text',
-                required: true,
-                label: 'Name',
-                placeholder: 'Your Name'
-              }
-            }
-          };
-        }
+
 
         if (!response.ok) {
           const error = await handleApiError(response, formId);
@@ -573,27 +507,11 @@ export function createMantlzClient(
             data,
             redirectUrl,
           }),
-          credentials: developmentMode ? 'omit' : credentialsMode,
-          mode: developmentMode ? 'no-cors' : 'cors',
+          credentials: credentialsMode,
+          mode: 'cors',
         });
         
-        if (developmentMode && response.type === 'opaque') {
-          log('Development mode: Simulating successful form submission');
-          
-          const mockResponse: FormSubmitResponse = {
-            success: true,
-            submissionId: 'dev-' + Math.random().toString(36).substring(2, 11),
-            message: 'Form submitted successfully in development mode',
-          };
-          
-          if (notificationsEnabled) {
-            toast.success('Form submitted successfully (Dev Mode)', {
-              duration: 3000,
-            });
-          }
-          
-          return mockResponse;
-        }
+
 
         if (!response.ok) {
           const error = await handleApiError(response, formId);
@@ -693,8 +611,8 @@ export function createMantlzClient(
               'X-API-Key': key,
             },
             body: JSON.stringify(data),
-            credentials: developmentMode ? 'omit' : credentialsMode,
-            mode: developmentMode ? 'no-cors' : 'cors',
+            credentials: credentialsMode,
+            mode: 'cors',
           });
 
           if (!response.ok) {
