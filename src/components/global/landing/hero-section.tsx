@@ -32,9 +32,8 @@ export default function HeroSection() {
         </h1>
 
         {/* Description */}
-        <p className="mt-2 text-md leading-8 text-stone-700  dark:text-zinc-200 max-w-2xl mx-auto">
-          Manage your work, timelines and team notes all at once. Set and follow
-          deadlines, assign tasks and keep your projects on check.
+        <p className="mt-2 text-md leading-8 text-stone-600  dark:text-zinc-200 max-w-2xl mx-auto">
+          A modern headless form management platform with TypeScript SDK for beautiful, customizable forms.
         </p>
 
         <div className="mt-2 item-center">
@@ -51,13 +50,13 @@ export default function HeroSection() {
         {/* Dashboard preview */}
         <div className="mx-auto mt-8 flex justify-center items-center w-full sm:mt-14 lg:mt-10">
           <div className="w-full max-w-7xl">
-            <div className="rounded-xl bg-zinc-900/5 dark:bg-white/5 p-2 ring-1 ring-inset ring-zinc-900/10 dark:ring-white/10 lg:rounded-2xl lg:p-4">
+            <div className="rounded-xl bg-orange-500/5 dark:bg-orange-100/5 p-2 ring-1 ring-inset ring-orange-900/10 dark:ring-orange/10 lg:rounded-2xl lg:p-4">
               <Image
                 src="/preview1.png"
                 alt="App screenshot"
                 width={1216}
                 height={721}
-                className="w-full h-auto rounded-md shadow-xl shadow-stone-300 ring-1 ring-zinc-900/10 dark:ring-white/10"
+                className="w-full h-auto rounded-md shadow-2xl shadow-orange-500 ring-1 ring-orange-500/5 dark:ring-orange/5"
                 priority
               />
             </div>
