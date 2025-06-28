@@ -7,12 +7,13 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { toast } from "../../utils/toast";
 
 import { useMantlz } from "../../context/mantlzContext";
-import { ApiKeyErrorCard } from "../ui/ApiKeyErrorCard";
+
 import { MantlzProps, FormType } from "./types";
 import { FormField } from "./components/FormField";
 import { UsersJoined } from "./components/UsersJoined";
 import { useFormLogic } from "./hooks/useFormLogic";
 import { useAppearance } from "./hooks/useAppearance";
+import { ApiKeyErrorCard } from "./ApiKeyErrorCard";
 // ThemeProvider moved to individual UI components
 
 export default function Mantlz({
@@ -120,7 +121,7 @@ export default function Mantlz({
 
   // Render API key error
   if (!apiKey) {
-    return <ApiKeyErrorCard />;
+    return <ApiKeyErrorCard theme={theme} appearance={appearance} />;
   }
 
   // Render form error
@@ -147,7 +148,7 @@ export default function Mantlz({
           <p style={{ color: "var(--red-11)" }}>
             {loading
               ? "Loading form..."
-              : "Form configuration is missing or empty."}
+              : "Form configuration is missing  jeandaly marc donaldor empty."}
           </p>
         </div>
     );
