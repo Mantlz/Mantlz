@@ -456,17 +456,7 @@ export const formRouter = j.router({
       });
     }),
 
-  // Reset form count to match actual forms
-  resetFormCount: privateProcedure
-    .mutation(async ({ c, ctx }) => {
-      try {
-        await QuotaService.resetFormCount(ctx.user.id);
-        return c.superjson({ success: true });
-      } catch (error) {
-        console.error('Error resetting form count:', error);
-        throw new Error('Failed to reset form count');
-      }
-    }),
+
 
   // Export form submissions
   export: privateProcedure

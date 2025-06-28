@@ -27,8 +27,8 @@ export async function GET(request: NextRequest) {
     const endOfCurrentMonth = endOfMonth(now);
     const daysUntilReset = differenceInDays(endOfCurrentMonth, now) + 1; // +1 because reset happens on 1st of next month
 
-    // Only send warnings if it's exactly 3 days before month end
-    if (daysUntilReset !== 3) {
+    // Send warnings if it's 3 days or 1 day before month end
+    if (daysUntilReset !== 3 && daysUntilReset !== 1) {
       console.log(`Not time to send warnings. Days until reset: ${daysUntilReset}`);
       return NextResponse.json({ 
         success: true, 
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    console.log("It's 3 days before month end. Sending quota warning emails...");
+    console.log(`It's ${daysUntilReset} day(s) before month end. Sending quota warning emails...`);
 
     // Get all users with their current month's quota
     const currentYear = now.getFullYear();

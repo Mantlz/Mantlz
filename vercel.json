@@ -15,6 +15,10 @@
     {
       "path": "/api/cron/quota-warnings",
       "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/end-of-month-reset",
+      "schedule": "0 23 28-31 * *"
     }
   ]
 }
