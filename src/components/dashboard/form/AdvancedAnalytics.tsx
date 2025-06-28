@@ -5,7 +5,6 @@ import {
   Lock,
   UserRound,
   Rocket,
-  CreditCard,
   GlobeIcon,
   Chrome,
   MonitorSmartphone,

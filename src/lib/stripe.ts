@@ -3,7 +3,7 @@ import { db } from "@/lib/db"
 import { Plan, SubscriptionStatus } from "@prisma/client"
 import { PaymentEmailService } from "@/services/payment-email-service"
 import { FREE_QUOTA } from "@/config/usage"
-import { cache, CACHE_KEYS } from "@/server/cache"
+
 
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", {
@@ -229,10 +229,7 @@ export async function handleSubscriptionUpdate(subscription: StripeSubscription)
       }
     })
 
-    // Invalidate user cache to ensure fresh data is fetched
-    const userCacheKey = `${CACHE_KEYS.USER}clerk:${userId}`
-    await cache.invalidate(userCacheKey)
-    console.log(`Invalidated user cache for userId: ${userId}`)
+
 
     // Send cancellation email if downgraded to FREE plan
     if (isDowngradeToFree) {

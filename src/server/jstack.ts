@@ -1,9 +1,8 @@
 import { HTTPException } from "hono/http-exception"
 import { jstack } from "jstack"
 import { db } from "../lib/db"
-import { currentUser, User } from "@clerk/nextjs/server"
+import { currentUser } from "@clerk/nextjs/server"
 import { ratelimitConfig } from "@/lib/ratelimiter"
-import { cache, CACHE_KEYS, CACHE_TTL } from "./cache"
 
 interface Env {
   Bindings: { DATABASE_URL: string }
@@ -20,20 +19,12 @@ const authMiddleware = j.middleware(async ({ c, next }) => {
       throw new HTTPException(401, { message: "Invalid API key format" });
     }
 
-    // Try cache first
-    const cachedKey = await cache.getApiKey(apiKey);
-    if (cachedKey?.isActive && cachedKey.user) {
-      return next({ user: cachedKey.user });
-    }
-
-    // If not in cache, fetch and cache
     const keyRecord = await db.apiKey.findUnique({
-      where: { key: apiKey, isActive: true }, // Add isActive to the where clause
+      where: { key: apiKey, isActive: true },
       include: { user: true }
     });
 
     if (keyRecord?.user) {
-      await cache.set(`${CACHE_KEYS.API_KEY}${apiKey}`, keyRecord, CACHE_TTL[CACHE_KEYS.API_KEY]);
       return next({ user: keyRecord.user });
     }
 
@@ -45,13 +36,6 @@ const authMiddleware = j.middleware(async ({ c, next }) => {
     throw new HTTPException(401, { message: "Unauthorized" });
   }
 
-  // Try cache first using clerkId
-  const userCacheKey = `${CACHE_KEYS.USER}clerk:${auth.id}`;
-  const cachedUser = await cache.get<User>(userCacheKey);
-  if (cachedUser) {
-    return next({ user: cachedUser });
-  }
-
   const user = await db.user.findUnique({
     where: { clerkId: auth.id },
   });
@@ -59,9 +43,6 @@ const authMiddleware = j.middleware(async ({ c, next }) => {
   if (!user) {
     throw new HTTPException(401, { message: "Unauthorized" });
   }
-
-  // Cache with clerkId-based key
-  await cache.set(userCacheKey, user, CACHE_TTL[CACHE_KEYS.USER]);
 
   return next({ user });
 });

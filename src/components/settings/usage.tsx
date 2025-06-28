@@ -20,22 +20,6 @@ import { useSubscription } from "@/hooks/useSubscription";
 import { useLoading } from "@/contexts/LoadingContext";
 
 // Type definitions for our usage data
-interface UsageData {
-  plan: string;
-  currentUsage: {
-    submissions: number;
-    forms: number;
-    campaigns: number;
-  };
-  limits: {
-    maxForms: number;
-    maxSubmissionsPerMonth: number;
-    campaigns: {
-      enabled: boolean;
-      maxCampaignsPerMonth: number;
-    };
-  };
-}
 
 // Interface for the submissions and plan data
 interface PlanUsageData {
@@ -63,22 +47,6 @@ interface PlanUsageData {
   plan: string;
 }
 
-
-// Create custom hooks for API calls
-const useUsageData = () => {
-  return useQuery<UsageData>({
-    queryKey: ["userUsage"],
-    queryFn: async () => {
-      try {
-        const response = await client.usage.getUserUsage.$get();
-        return response.json();
-      } catch (err) {
-        console.error("Error fetching usage data:", err);
-        throw err;
-      }
-    }
-  });
-};
 
 // Hook for getting plan-specific usage data
 const usePlanUsage = () => {
@@ -119,9 +87,6 @@ const PlanBadge: React.FC<PlanBadgeProps> = ({ plan }) => {
 };
 
 export default function UsageSettings() {
-  // Fetch user usage data
-  const { data, isLoading, error, refetch } = useUsageData();
-  
   // Fetch plan-specific usage data
   const { 
     data: planData, 
@@ -141,12 +106,12 @@ export default function UsageSettings() {
 
   // Set global loading state
   useEffect(() => {
-    const loading = isLoading || isPlanLoading || isSubscriptionLoading;
+    const loading = isPlanLoading || isSubscriptionLoading;
     if (loading) {
       setLoadingMessage('Loading usage information...');
     }
     setIsLoading(loading);
-  }, [isLoading, isPlanLoading, isSubscriptionLoading, setIsLoading, setLoadingMessage]);
+  }, [isPlanLoading, isSubscriptionLoading, setIsLoading, setLoadingMessage]);
 
   // Format reset date
   const formattedResetDate = planData?.resetDate 
@@ -167,7 +132,7 @@ export default function UsageSettings() {
   const handleRefresh = async () => {
     setIsRefreshing(true);
     try {
-      await Promise.all([refetch(), refetchPlan()]);
+      await refetchPlan();
     } finally {
       setTimeout(() => setIsRefreshing(false), 600); // Ensure minimum loading time for visual feedback
     }
@@ -235,7 +200,7 @@ export default function UsageSettings() {
     );
 
     // If loading, show skeleton with header
-    if (isLoading || isPlanLoading || isSubscriptionLoading) {
+    if (isPlanLoading || isSubscriptionLoading) {
       console.log('🔄 Rendering loading state');
       return (
         <div className="w-full max-w-5xl mx-auto">
@@ -276,7 +241,7 @@ export default function UsageSettings() {
     }
 
     // Otherwise, show the actual content with header
-    console.log('✅ Rendering usage cards with planData:', planData);
+    // console.log('✅ Rendering usage cards with planData:', planData);
     return (
       <div className="w-full max-w-5xl mx-auto">
         <ScrollArea className="h-[550px] w-full">
