@@ -5,6 +5,7 @@ import Stripe from "stripe"
 import { NextResponse } from "next/server"
 import { FREE_QUOTA, getQuotaByPlan } from "@/config/usage"
 import { Plan } from "@prisma/client"
+import { cache, CACHE_KEYS } from "@/server/cache"
 
 import { 
   sendPaymentFailureEmail, 
@@ -498,6 +499,11 @@ export async function POST(req: Request) {
                   }
                 })
 
+                // Invalidate user cache to ensure fresh data is fetched
+                const userCacheKey = `${CACHE_KEYS.USER}clerk:${subscription.userId}`
+                await cache.invalidate(userCacheKey)
+                console.log(`Invalidated user cache for userId: ${subscription.userId}`)
+
                 // Send final notification
                 await sendSubscriptionCanceledEmail({
                   to: subscription.user.email,
@@ -541,6 +547,13 @@ export async function POST(req: Request) {
                 quotaLimit: quota.maxSubmissionsPerMonth
               }
             })
+
+            // Invalidate user cache to ensure fresh data is fetched
+            if (subscription.metadata?.userId) {
+              const userCacheKey = `${CACHE_KEYS.USER}clerk:${subscription.metadata.userId}`
+              await cache.invalidate(userCacheKey)
+              console.log(`Invalidated user cache for userId: ${subscription.metadata.userId}`)
+            }
 
             // Mark payment failures as resolved
             await db.paymentFailure.updateMany({

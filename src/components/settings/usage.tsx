@@ -126,7 +126,8 @@ export default function UsageSettings() {
   const { 
     data: planData, 
     isLoading: isPlanLoading, 
-    error: planError 
+    error: planError,
+    refetch: refetchPlan
   } = usePlanUsage();
   
   // Use the subscription hook to get the user's plan
@@ -157,20 +158,35 @@ export default function UsageSettings() {
     : 'Next month';
 
   // Validate that the data is properly formatted
-  const isValidData = data && 
-    typeof data.plan === 'string' &&
-    typeof data.currentUsage === 'object' &&
-    typeof data.limits === 'object';
+  // const isValidData = data && 
+  //   typeof data.plan === 'string' &&
+  //   typeof data.currentUsage === 'object' &&
+  //   typeof data.limits === 'object';
 
   // Handle refresh with loading state
   const handleRefresh = async () => {
     setIsRefreshing(true);
     try {
-      await Promise.all([refetch()]);
+      await Promise.all([refetch(), refetchPlan()]);
     } finally {
       setTimeout(() => setIsRefreshing(false), 600); // Ensure minimum loading time for visual feedback
     }
   };
+
+  // Debug logging to help identify issues
+  // useEffect(() => {
+  //   console.log('=== USAGE COMPONENT DEBUG ===');
+  //   console.log('isLoading:', isLoading);
+  //   console.log('isPlanLoading:', isPlanLoading);
+  //   console.log('isSubscriptionLoading:', isSubscriptionLoading);
+  //   console.log('error:', error);
+  //   console.log('planError:', planError);
+  //   console.log('data (getUserUsage):', data);
+  //   console.log('planData (getUsage):', planData);
+  //   console.log('userPlan from subscription:', userPlan);
+  //   console.log('isValidData:', isValidData);
+  //   console.log('==============================');
+  // }, [isLoading, isPlanLoading, isSubscriptionLoading, error, planError, data, planData, userPlan, isValidData]);
 
   // Create a renderContent function to handle conditional rendering
   const renderContent = () => {
@@ -220,6 +236,7 @@ export default function UsageSettings() {
 
     // If loading, show skeleton with header
     if (isLoading || isPlanLoading || isSubscriptionLoading) {
+      console.log('🔄 Rendering loading state');
       return (
         <div className="w-full max-w-5xl mx-auto">
           <ScrollArea className="h-[550px] w-full">
@@ -233,7 +250,8 @@ export default function UsageSettings() {
     }
 
     // If error, show error message with header
-    if ((error || !data || !isValidData) && (planError || !planData)) {
+    if (planError || !planData) {
+      console.log('❌ Rendering error state - planError:', planError, 'planData:', planData);
       return (
         <div className="w-full max-w-5xl mx-auto">
           <ScrollArea className="h-[550px] w-full">
@@ -243,6 +261,9 @@ export default function UsageSettings() {
                 <AlertCircle className="h-6 w-6 text-red-500" />
                 <p className="mt-2 text-sm text-zinc-800 dark:text-zinc-200">
                   Could not load your usage information.
+                </p>
+                <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
+                  {planError ? `Error: ${planError.message}` : 'No usage data available'}
                 </p>
                 <Button variant="outline" className="mt-3" onClick={handleRefresh}>
                   Try Again
@@ -255,6 +276,7 @@ export default function UsageSettings() {
     }
 
     // Otherwise, show the actual content with header
+    console.log('✅ Rendering usage cards with planData:', planData);
     return (
       <div className="w-full max-w-5xl mx-auto">
         <ScrollArea className="h-[550px] w-full">
@@ -265,6 +287,7 @@ export default function UsageSettings() {
               {/* Forms usage card */}
               {planData && (
                 <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+                
                   <CardHeader className="pb-2 space-y-0">
                     <CardTitle className="text-sm flex items-center text-zinc-900 dark:text-white">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -319,6 +342,7 @@ export default function UsageSettings() {
               {/* Submissions usage card */}
               {planData && (
                 <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+                
                   <CardHeader className="pb-2 space-y-0">
                     <CardTitle className="text-sm flex items-center text-zinc-900 dark:text-white">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -373,6 +397,7 @@ export default function UsageSettings() {
               {/* Campaigns usage card */}
               {planData && planData.features.campaigns && (
                 <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+            
                   <CardHeader className="pb-2 space-y-0">
                     <CardTitle className="text-sm flex items-center text-zinc-900 dark:text-white">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">

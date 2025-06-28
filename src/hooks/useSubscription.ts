@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import { client } from "@/lib/client"
 import { useUser } from "@clerk/nextjs"
 
+
 type Plan = 'FREE' | 'PRO' | 'STANDARD'
 
 interface Subscription {
@@ -37,4 +38,4 @@ export function useSubscription() {
     isPremium,
     userPlan,
   }
-} 
+}
