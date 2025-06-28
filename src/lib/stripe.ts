@@ -2,12 +2,16 @@ import Stripe from "stripe"
 import { db } from "@/lib/db"
 import { Plan, SubscriptionStatus } from "@prisma/client"
 import { PaymentEmailService } from "@/services/payment-email-service"
+import { FREE_QUOTA } from "@/config/usage"
 
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", {
-  apiVersion: "2025-04-30.basil",
+  apiVersion: "2025-05-28.basil",
   typescript: true,
 })
+
+
+  // apiVersion: "2025-05-28.basil",
 
 // Get price IDs from environment variables
 const STRIPE_PRICE_IDS = {
@@ -126,10 +130,21 @@ export async function handleSubscriptionUpdate(subscription: StripeSubscription)
   const { metadata } = subscription
   const userId = metadata?.userId
   const userEmail = metadata?.userEmail
-  const plan = metadata?.plan
+  let plan = metadata?.plan
 
-  if (!userId || !userEmail || !plan) {
+  if (!userId || !userEmail) {
     console.error("Missing required metadata:", { userId, userEmail, plan })
+    return
+  }
+
+  // If subscription is canceled or incomplete_expired, downgrade to FREE plan
+  if (subscription.status === 'canceled' || subscription.status === 'incomplete_expired') {
+    plan = 'FREE'
+    console.log(`Subscription ${subscription.id} is ${subscription.status}, downgrading user ${userId} to FREE plan`)
+  }
+
+  if (!plan) {
+    console.error("Missing plan metadata and subscription is not canceled:", { userId, userEmail, status: subscription.status })
     return
   }
 
@@ -199,7 +214,10 @@ export async function handleSubscriptionUpdate(subscription: StripeSubscription)
     })
 
     // Determine the new quota limit based on the plan
-    const newQuotaLimit = plan === "PRO" ? 10000 : plan === "STANDARD" ? 1000 : 100
+    const newQuotaLimit = plan === "PRO" ? 10000 : plan === "STANDARD" ? 1000 : plan === "FREE" ? FREE_QUOTA.maxSubmissionsPerMonth : 100
+
+    // Check if this is a downgrade to FREE plan
+    const isDowngradeToFree = currentUser && currentUser.plan !== "FREE" && plan === "FREE"
 
     // Update user's plan and quota
     await db.user.update({
@@ -209,6 +227,16 @@ export async function handleSubscriptionUpdate(subscription: StripeSubscription)
         quotaLimit: newQuotaLimit,
       }
     })
+
+    // Send cancellation email if downgraded to FREE plan
+    if (isDowngradeToFree) {
+      await PaymentEmailService.sendSubscriptionCanceledEmail({
+        to: userEmail,
+        currentPlan: currentUser.plan,
+        reactivationUrl: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`
+      })
+      console.log(`Sent subscription cancellation email to ${userEmail} for downgrade from ${currentUser.plan} to FREE`)
+    }
 
     // Then update or create the subscription
     await db.subscription.upsert({
