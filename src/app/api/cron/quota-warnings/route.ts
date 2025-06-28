@@ -3,11 +3,12 @@ import { db } from '@/lib/db';
 import { resend } from '@/services/email-service';
 import { QuotaWarningEmail } from '@/emails/quota-warning-email';
 import { getQuotaByPlan } from '@/config/usage';
-import { addDays, endOfMonth, startOfMonth, differenceInDays } from 'date-fns';
+import { addDays, startOfMonth } from 'date-fns';
+
 
 // Vercel Cron Job: This function will be called by Vercel's cron job scheduler
 // See vercel.json configuration for the schedule
-// This runs daily and checks if it's 3 days before month end
+// This runs on the 29th of each month to send quota warning emails 2 days before reset
 
 export async function GET(request: NextRequest) {
   try {
@@ -24,20 +25,23 @@ export async function GET(request: NextRequest) {
     console.log("Processing quota warning emails...");
 
     const now = new Date();
-    const endOfCurrentMonth = endOfMonth(now);
-    const daysUntilReset = differenceInDays(endOfCurrentMonth, now) + 1; // +1 because reset happens on 1st of next month
-
-    // Send warnings if it's 3 days or 1 day before month end
-    if (daysUntilReset !== 3 && daysUntilReset !== 1) {
-      console.log(`Not time to send warnings. Days until reset: ${daysUntilReset}`);
+    
+    // Check if today is the 29th of the month
+    const is29thOfMonth = now.getDate() === 29;
+    
+    if (!is29thOfMonth) {
+      console.log(`Not the 29th of the month. Current date: ${now.toDateString()}`);
       return NextResponse.json({ 
         success: true, 
-        message: `No warnings sent. Days until reset: ${daysUntilReset}`,
+        message: `Not the 29th of the month. No warnings sent.`,
         processed: 0 
       });
     }
 
-    console.log(`It's ${daysUntilReset} day(s) before month end. Sending quota warning emails...`);
+    console.log("It's the 29th of the month. Sending quota warning emails (2 days before reset)...");
+
+    // Since this runs on the 29th and quotas reset on the 1st, it's always 2 days until reset
+    const daysUntilReset = 2;
 
     // Get all users with their current month's quota
     const currentYear = now.getFullYear();

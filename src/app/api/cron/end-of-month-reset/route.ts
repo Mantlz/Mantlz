@@ -3,11 +3,11 @@ import { db } from '@/lib/db';
 import { resend } from '@/services/email-service';
 import { EndOfMonthEmail } from '@/emails/end-of-month-email';
 import { getQuotaByPlan } from '@/config/usage';
-import { endOfMonth, startOfMonth } from 'date-fns';
+import { startOfMonth } from 'date-fns';
 
 // Vercel Cron Job: This function will be called by Vercel's cron job scheduler
 // See vercel.json configuration for the schedule
-// This runs on the last day of each month to perform quota reset and send notifications
+// This runs on the first day of each month to perform quota reset and send notifications
 
 export async function GET(request: NextRequest) {
   try {
@@ -24,40 +24,41 @@ export async function GET(request: NextRequest) {
     console.log("Processing end-of-month quota reset...");
 
     const now = new Date();
-    const endOfCurrentMonth = endOfMonth(now);
     
-    // Check if today is the last day of the month
-    const isLastDayOfMonth = now.getDate() === endOfCurrentMonth.getDate();
+    // Check if today is the first day of the month
+    const isFirstDayOfMonth = now.getDate() === 1;
     
-    if (!isLastDayOfMonth) {
-      console.log(`Not the last day of the month. Current date: ${now.toDateString()}`);
+    if (!isFirstDayOfMonth) {
+      console.log(`Not the first day of the month. Current date: ${now.toDateString()}`);
       return NextResponse.json({ 
         success: true, 
-        message: `Not the last day of the month. No reset performed.`,
+        message: `Not the first day of the month. No reset performed.`,
         processed: 0 
       });
     }
 
-    console.log("It's the last day of the month. Performing quota reset...");
+    console.log("It's the first day of the month. Performing quota reset...");
 
-    // Get all users with their current month's quota
-    const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth() + 1;
+    // Get all users with their previous month's quota (since we're running on the 1st)
+    const previousMonth = now.getMonth() === 0 ? 12 : now.getMonth();
+    const previousYear = now.getMonth() === 0 ? now.getFullYear() - 1 : now.getFullYear();
+    const previousMonthStart = new Date(previousYear, previousMonth - 1, 1);
+    const previousMonthEnd = new Date(previousYear, previousMonth, 0);
 
     const users = await db.user.findMany({
       include: {
         quota: {
           where: {
-            year: currentYear,
-            month: currentMonth
+            year: previousYear,
+            month: previousMonth
           }
         },
         forms: true,
         campaigns: {
           where: {
             createdAt: {
-              gte: startOfMonth(now),
-              lte: endOfCurrentMonth
+              gte: previousMonthStart,
+              lte: previousMonthEnd
             }
           }
         }
@@ -73,11 +74,11 @@ export async function GET(request: NextRequest) {
 
     for (const user of users) {
       try {
-        const currentQuota = user.quota[0]; // Should only be one for current month
+        const previousQuota = user.quota[0]; // Should only be one for previous month
         
         // Skip users with no quota (inactive users)
-        if (!currentQuota) {
-          console.log(`Skipping user ${user.email} - no current quota`);
+        if (!previousQuota) {
+          console.log(`Skipping user ${user.email} - no previous month quota`);
           continue;
         }
 
@@ -85,8 +86,8 @@ export async function GET(request: NextRequest) {
         const formsCount = user.forms.length;
         const campaignsCount = user.campaigns.length;
 
-        // Store current stats before reset for email
-        const currentSubmissions = currentQuota.submissionCount;
+        // Store previous month stats before reset for email
+        const currentSubmissions = previousQuota.submissionCount;
         const maxSubmissions = planQuota.maxSubmissionsPerMonth;
 
         try {
@@ -167,16 +168,15 @@ export async function GET(request: NextRequest) {
               where: { userId: user.id }
             });
 
-            // Create new quota for next month
-            const nextMonth = now.getMonth() + 2; // +2 because getMonth() is 0-indexed and we want next month
-            const nextYear = nextMonth > 12 ? now.getFullYear() + 1 : now.getFullYear();
-            const adjustedNextMonth = nextMonth > 12 ? 1 : nextMonth;
+            // Create new quota for current month (since we're running on the 1st)
+            const currentMonth = now.getMonth() + 1; // +1 because getMonth() is 0-indexed
+            const currentYear = now.getFullYear();
 
             await tx.quota.create({
               data: {
                 userId: user.id,
-                year: adjustedNextMonth === 1 ? nextYear : now.getFullYear(),
-                month: adjustedNextMonth,
+                year: currentYear,
+                month: currentMonth,
                 submissionCount: 0,
                 formCount: 0,
                 campaignCount: 0,
