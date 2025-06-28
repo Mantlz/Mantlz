@@ -1,8 +1,6 @@
-'use server';
-
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+export const resend = new Resend(process.env.RESEND_API_KEY);
 
 interface EmailOptions {
   to: string;
@@ -27,4 +25,4 @@ export async function sendEmail({ to, subject, html, from, replyTo }: EmailOptio
     console.error('Failed to send email:', error);
     throw error;
   }
-} 
+}

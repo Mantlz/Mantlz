@@ -11,6 +11,10 @@
     {
       "path": "/api/cron/scheduled-campaigns",
       "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/quota-warnings",
+      "schedule": "0 9 * * *"
     }
   ]
-} 
+}

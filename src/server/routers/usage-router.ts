@@ -138,17 +138,7 @@ export const usageRouter = j.router({
     }
   }),
   
-  simulateEndOfMonth: privateProcedure
-    .mutation(async ({ c, ctx }) => {
-      const { user } = ctx as { user: JstackUser };
-      try {
-        const result = await QuotaService.simulateEndOfMonth(user.id);
-        return c.superjson(result);
-      } catch (error) {
-        console.error('Error simulating end of month:', error);
-        throw new Error('Failed to simulate end of month');
-      }
-    }),
+ 
 
   getQuotaHistory: privateProcedure
     .query(async ({ c, ctx }) => {
