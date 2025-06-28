@@ -6,7 +6,7 @@ export default function CustomerFeedbackPage() {
     <div className="min-h-screen w-full  flex items-center justify-center py-8 px-4">
       <div className="flex flex-row items-center justify-center gap-4 flex-wrap">
         <Mantlz
-          formId="cmcf2mb690001o7ro57d031kj"
+          formId="cmcgnd7na0001o7hn6wl2t65n"
           theme="neobrutalism"
           showUsersJoined={true}
           usersJoinedCount={100000}
@@ -44,38 +44,7 @@ export default function CustomerFeedbackPage() {
           // }}
         />
 
-        <Mantlz
-          formId="cmccb5j5s0007o7fkgkb2d6fw"
-          theme="neobrutalism"
-          showUsersJoined={true}
-          usersJoinedCount={100000}
-          usersJoinedLabel="Users already joined"
-          // redirectUrl="https://example.com"
-        />
 
-        <Mantlz
-          formId="cmccb5j5s0007o7fkgkb2d6fw"
-          showUsersJoined={true}
-          usersJoinedCount={100000}
-          usersJoinedLabel="Users already joined"
-          theme="default"
-        />
-
-        <Mantlz
-          formId="cmccb5j5s0007o7fkgkb2d6fw"
-          showUsersJoined={true}
-          usersJoinedCount={100000}
-          usersJoinedLabel="Users already joined"
-          theme="simple"
-        />
-
-        <Mantlz
-          formId="cmccb5j5s0007o7fkgkb2d6fw"
-          showUsersJoined={true}
-          usersJoinedCount={100000}
-          usersJoinedLabel="Users already joined"
-          theme="modern"
-        />
       </div>
     </div>
   );

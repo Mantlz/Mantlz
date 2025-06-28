@@ -12,6 +12,14 @@ export class QuotaService {
     const currentYear = now.getFullYear();
     const currentMonth = now.getMonth() + 1;
 
+    // First, verify user exists
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { id: true }
+    });
+
+    if (!user) throw new HTTPException(404, { message: "User not found" });
+
     let quota = await db.quota.findFirst({
       where: {
         userId,
@@ -244,7 +252,8 @@ export class QuotaService {
   }
 
   /**
-   * Simulate end of month quota reset
+   * Simulate end of month quota reset with COMPLETE DATA DELETION
+   * WARNING: This will permanently delete ALL user data including forms, submissions, campaigns
    * This is for testing purposes only
    */
   static async simulateEndOfMonth(userId: string) {
@@ -252,14 +261,7 @@ export class QuotaService {
     const currentYear = now.getFullYear();
     const currentMonth = now.getMonth() + 1;
 
-    // Get current quota
-    const currentQuota = await this.getCurrentQuota(userId);
-    
-    // Create a new quota for next month
-    const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
-    const nextYear = currentMonth === 12 ? currentYear + 1 : currentYear;
-
-    // Get user's plan
+    // First, verify user exists
     const user = await db.user.findUnique({
       where: { id: userId },
       select: { plan: true }
@@ -267,18 +269,126 @@ export class QuotaService {
 
     if (!user) throw new HTTPException(404, { message: "User not found" });
 
-    // Create new quota for next month
+    // Get current quota before deletion (create one if it doesn't exist)
+    let currentQuota;
+    try {
+      currentQuota = await this.getCurrentQuota(userId);
+    } catch (error) {
+      // If no quota exists, create a default one for reference
+      currentQuota = {
+        id: 'none',
+        userId,
+        year: currentYear,
+        month: currentMonth,
+        submissionCount: 0,
+        formCount: 0,
+        campaignCount: 0,
+        emailsSent: 0,
+        emailsOpened: 0,
+        emailsClicked: 0,
+        createdAt: now,
+        updatedAt: now
+      };
+    }
+    
+    // Create a new quota for next month
+    const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
+    const nextYear = currentMonth === 12 ? currentYear + 1 : currentYear;
+
+    // COMPLETE DATA DELETION - Delete all user data in transaction
+    await db.$transaction(async (tx) => {
+      // Delete all submissions for user's forms
+      await tx.submission.deleteMany({
+        where: {
+          form: {
+            userId: userId
+          }
+        }
+      });
+
+      // Delete all campaign recipients
+      await tx.campaignRecipient.deleteMany({
+        where: {
+          campaign: {
+            userId: userId
+          }
+        }
+      });
+
+      // Delete all email settings
+      await tx.emailSettings.deleteMany({
+        where: {
+          form: {
+            userId: userId
+          }
+        }
+      });
+
+      // Delete all notification logs
+      await tx.notificationLog.deleteMany({
+        where: {
+          form: {
+            userId: userId
+          }
+        }
+      });
+
+      // Delete all test email submissions
+      await tx.testEmailSubmission.deleteMany({
+        where: {
+          form: {
+            userId: userId
+          }
+        }
+      });
+
+      // Delete all stripe orders
+      await tx.stripeOrder.deleteMany({
+        where: {
+          form: {
+            userId: userId
+          }
+        }
+      });
+
+      // Delete all campaigns
+      await tx.campaign.deleteMany({
+        where: {
+          userId: userId
+        }
+      });
+
+      // Delete all forms
+      await tx.form.deleteMany({
+        where: {
+          userId: userId
+        }
+      });
+
+      // Delete all API keys
+      await tx.apiKey.deleteMany({
+        where: {
+          userId: userId
+        }
+      });
+
+      // Delete all quotas
+      await tx.quota.deleteMany({
+        where: {
+          userId: userId
+        }
+      });
+    });
+
+    // Create fresh quota for next month with everything at zero
     const nextMonthQuota = await db.quota.create({
       data: {
         userId,
         year: nextYear,
         month: nextMonth,
-        // Reset submission count
         submissionCount: 0,
-        // Carry over form and campaign counts
-        formCount: currentQuota.formCount,
-        campaignCount: currentQuota.campaignCount,
-        // Reset email metrics
+        formCount: 0,
+        campaignCount: 0,
         emailsSent: 0,
         emailsOpened: 0,
         emailsClicked: 0
@@ -288,7 +398,19 @@ export class QuotaService {
     return {
       currentQuota,
       nextMonthQuota,
-      message: `Simulated end of month. New quota created for ${nextMonth}/${nextYear}`
+      deletedData: {
+        message: "ALL USER DATA PERMANENTLY DELETED",
+        deletedItems: [
+          "All forms",
+          "All submissions", 
+          "All campaigns",
+          "All email settings",
+          "All notification logs",
+          "All API keys",
+          "All quota history"
+        ]
+      },
+      message: `COMPLETE RESET: All data deleted and fresh quota created for ${nextMonth}/${nextYear}`
     };
   }
 
@@ -315,4 +437,4 @@ export class QuotaService {
       emailsClicked: quota.emailsClicked
     }));
   }
-} 
+}
