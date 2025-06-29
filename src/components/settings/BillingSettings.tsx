@@ -188,7 +188,7 @@ export default function BillingSettings() {
     cancelAt: null,
     trialEnd: null,
     price: {
-      amount: userPlan === "PRO" ? 9900 : userPlan === "STANDARD" ? 2900 : 0,
+      amount: userPlan === "PRO" ? 1500 : userPlan === "STANDARD" ? 800 : 0,
       currency: "usd",
       interval: "month"
     },
