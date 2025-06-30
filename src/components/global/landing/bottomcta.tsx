@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function BottomCTA() {
   return (
@@ -19,12 +20,14 @@ export default function BottomCTA() {
           </p>
           
           {/* CTA Button */}
-          <Button
-            className="h-10 px-4 text-md bg-orange-500 text-black dark:bg-orange-500 dark:text-white dark:border-primary border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
-            size="lg"
-          >
-            Start Building Forms
-          </Button>
+          <Link href="/dashboard">
+            <Button
+              className="h-10 px-4 text-md bg-orange-500 text-black dark:bg-orange-500 dark:text-white dark:border-primary border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+              size="lg"
+            >
+              Start Building Forms
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
