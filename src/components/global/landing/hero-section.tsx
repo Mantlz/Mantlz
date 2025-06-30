@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {  Sparkles } from "lucide-react";
+import Link from "next/link";
 // import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function HeroSection() {
@@ -37,9 +38,13 @@ export default function HeroSection() {
         </p>
 
         <div className="mt-2 item-center">
-          <Button className="h-10 px-8 text-md bg-orange-500  text-black dark:text-white dark:border-primary border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95">
-            Get started
-          </Button>
+          <Link href="/dashboard">
+            <Button 
+              className="h-10 px-8 text-md bg-orange-500  text-black dark:text-white dark:border-primary border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+            >
+              Get started
+            </Button>
+          </Link>
         </div>
         <p className="mt-2">
           <span className="font-extralight text-xs text-stone-700 dark:text-white">
