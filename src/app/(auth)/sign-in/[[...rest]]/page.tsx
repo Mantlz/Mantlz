@@ -20,7 +20,6 @@ export default function Page() {
         <div className="flex text-center justify-center">
           <SignIn 
             fallbackRedirectUrl={redirectUrl}
-            forceRedirectUrl={redirectUrl}
             appearance={{
               baseTheme: dark,
               variables: {
@@ -40,8 +39,6 @@ export default function Page() {
                 footerActionLink: "text-zinc-400 hover:text-white font-medium transition-colors"
               }
             }}
-            afterSignInUrl={redirectUrl}
-            redirectUrl={redirectUrl}
           />
         </div>
       </div>
