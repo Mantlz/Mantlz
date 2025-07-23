@@ -2,6 +2,15 @@
   "name": "aria-docs",
   "version": "1.0.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mantlz/Mantlz.git",
+    "directory": "docs-site"
+  },
+  "homepage": "https://github.com/Mantlz/Mantlz",
+  "bugs": {
+    "url": "https://github.com/Mantlz/Mantlz/issues"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "node scripts/build-search.js && next build",

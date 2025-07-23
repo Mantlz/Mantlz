@@ -147,6 +147,14 @@
   },
   "description": "Headless Backend Form builder  Mantlz",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mantlz/Mantlz.git"
+  },
+  "homepage": "https://github.com/Mantlz/Mantlz",
+  "bugs": {
+    "url": "https://github.com/Mantlz/Mantlz/issues"
+  },
   "keywords": [],
   "author": "Jean daly",
   "license": "ISC",
