@@ -60,10 +60,8 @@ function App() {
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/blog/*" element={<Blog />} />
         <Route path="*" element={<NotFound />} />
-
       </Routes>
     </BrowserRouter>
   );
 }
-
 export default App;
