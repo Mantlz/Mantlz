@@ -1,25 +1,72 @@
-# Mantlz
-
-🎉 **Now Open Source!** 🎉
-
-A modern headless form management platform that enables developers to create beautiful, customizable forms with a powerful dashboard and TypeScript-native SDK. Built with Next.js and designed for modern web applications.
-
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-[![Version](https://img.shields.io/badge/Version-0.1.0-green.svg)](https://github.com/mantlz/mantlz)
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Next.js](https://img.shields.io/badge/Next.js-000000?logo=next.js&logoColor=white)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](https://reactjs.org/)
-[![Turborepo](https://img.shields.io/badge/Turborepo-EF4444?logo=turborepo&logoColor=white)](https://turbo.build/repo)
-[![Bun](https://img.shields.io/badge/Bun-000000?logo=bun&logoColor=white)](https://bun.sh/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![GitHub stars](https://img.shields.io/github/stars/mantlz/mantlz)](https://github.com/mantlz/mantlz/stargazers)
-[![GitHub issues](https://img.shields.io/github/issues/mantlz/mantlz)](https://github.com/mantlz/mantlz/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/mantlz/mantlz)](https://github.com/mantlz/mantlz/pulls)
-[![CodeRabbit](https://img.shields.io/badge/CodeRabbit-AI_Reviews-blue)](https://coderabbit.ai)
-[![CI/CD](https://img.shields.io/badge/CI%2FCD-Automated-brightgreen)](https://github.com/mantlz/mantlz/actions)
-[![Code Coverage](https://img.shields.io/badge/Coverage-Tracked-yellow)](https://github.com/mantlz/mantlz)
-[![Security Scan](https://img.shields.io/badge/Security-Scanned-red)](https://github.com/mantlz/mantlz)
-[![Dependency Status](https://img.shields.io/badge/Dependencies-Monitored-orange)](https://github.com/mantlz/mantlz)
+<div align="center">
+  <img src="./public/og-image.png" alt="Mantlz" width="600" />
+  
+  # Mantlz
+  
+  🎉 **Now Open Source!** 🎉
+  
+  A modern headless form management platform that enables developers to create beautiful, customizable forms with a powerful dashboard and TypeScript-native SDK. Built with Next.js and designed for modern web applications.
+  
+  <p align="center">
+    <a href="https://www.gnu.org/licenses/agpl-3.0">
+      <img src="https://img.shields.io/badge/License-AGPL_v3-blue.svg?style=for-the-badge" alt="License: AGPL v3" />
+    </a>
+    <a href="https://github.com/mantlz/mantlz">
+      <img src="https://img.shields.io/badge/Version-0.1.0-green.svg?style=for-the-badge" alt="Version" />
+    </a>
+  </p>
+  
+  <p align="center">
+    <a href="https://www.typescriptlang.org/">
+      <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+    </a>
+    <a href="https://nextjs.org/">
+      <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js" />
+    </a>
+    <a href="https://reactjs.org/">
+      <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+    </a>
+    <a href="https://turbo.build/repo">
+      <img src="https://img.shields.io/badge/Turborepo-EF4444?style=for-the-badge&logo=turborepo&logoColor=white" alt="Turborepo" />
+    </a>
+    <a href="https://bun.sh/">
+      <img src="https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white" alt="Bun" />
+    </a>
+    <a href="https://tailwindcss.com/">
+      <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+    </a>
+  </p>
+  
+  <p align="center">
+    <a href="https://github.com/mantlz/mantlz/stargazers">
+      <img src="https://img.shields.io/github/stars/mantlz/mantlz?style=for-the-badge&logo=github" alt="GitHub stars" />
+    </a>
+    <a href="https://github.com/mantlz/mantlz/issues">
+      <img src="https://img.shields.io/github/issues/mantlz/mantlz?style=for-the-badge&logo=github" alt="GitHub issues" />
+    </a>
+    <a href="https://github.com/mantlz/mantlz/pulls">
+      <img src="https://img.shields.io/github/issues-pr/mantlz/mantlz?style=for-the-badge&logo=github" alt="GitHub pull requests" />
+    </a>
+  </p>
+  
+  <p align="center">
+    <a href="https://coderabbit.ai">
+      <img src="https://img.shields.io/badge/CodeRabbit-AI_Reviews-blue?style=for-the-badge&logo=robot" alt="CodeRabbit" />
+    </a>
+    <a href="https://github.com/mantlz/mantlz/actions">
+      <img src="https://img.shields.io/badge/CI%2FCD-Automated-brightgreen?style=for-the-badge&logo=github-actions&logoColor=white" alt="CI/CD" />
+    </a>
+    <a href="https://github.com/mantlz/mantlz">
+      <img src="https://img.shields.io/badge/Coverage-Tracked-yellow?style=for-the-badge&logo=codecov&logoColor=white" alt="Code Coverage" />
+    </a>
+    <a href="https://github.com/mantlz/mantlz">
+      <img src="https://img.shields.io/badge/Security-Scanned-red?style=for-the-badge&logo=security&logoColor=white" alt="Security Scan" />
+    </a>
+    <a href="https://github.com/mantlz/mantlz">
+      <img src="https://img.shields.io/badge/Dependencies-Monitored-orange?style=for-the-badge&logo=dependabot&logoColor=white" alt="Dependency Status" />
+    </a>
+  </p>
+</div>
 
 ## Project Overview
 
