@@ -9,7 +9,7 @@
     <a href="https://www.gnu.org/licenses/agpl-3.0">
       <img src="https://img.shields.io/badge/License-AGPL_v3-blue.svg?style=for-the-badge" alt="License: AGPL v3" />
     </a>
-    <a href="https://github.com/mantlz/mantlz">
+    <a href="https://github.com/artistatbl/Mantlz">
       <img src="https://img.shields.io/badge/Version-0.1.0-green.svg?style=for-the-badge" alt="Version" />
     </a>
   </p>
@@ -36,14 +36,14 @@
   </p>
   
   <p align="center">
-    <a href="https://github.com/mantlz/mantlz/stargazers">
-      <img src="https://img.shields.io/github/stars/mantlz/mantlz?style=for-the-badge&logo=github" alt="GitHub stars" />
+    <a href="https://github.com/artistatbl/Mantlz/stargazers">
+      <img src="https://img.shields.io/github/stars/artistatbl/Mantlz?style=for-the-badge&logo=github" alt="GitHub stars" />
     </a>
-    <a href="https://github.com/mantlz/mantlz/issues">
-      <img src="https://img.shields.io/github/issues/mantlz/mantlz?style=for-the-badge&logo=github" alt="GitHub issues" />
+    <a href="https://github.com/artistatbl/Mantlz/issues">
+      <img src="https://img.shields.io/github/issues/artistatbl/Mantlz?style=for-the-badge&logo=github" alt="GitHub issues" />
     </a>
-    <a href="https://github.com/mantlz/mantlz/pulls">
-      <img src="https://img.shields.io/github/issues-pr/mantlz/mantlz?style=for-the-badge&logo=github" alt="GitHub pull requests" />
+    <a href="https://github.com/artistatbl/Mantlz/pulls">
+      <img src="https://img.shields.io/github/issues-pr/artistatbl/Mantlz?style=for-the-badge&logo=github" alt="GitHub pull requests" />
     </a>
   </p>
   
@@ -51,16 +51,16 @@
     <a href="https://coderabbit.ai">
       <img src="https://img.shields.io/badge/CodeRabbit-AI_Reviews-blue?style=for-the-badge&logo=robot" alt="CodeRabbit" />
     </a>
-    <a href="https://github.com/mantlz/mantlz/actions">
+    <a href="https://github.com/artistatbl/Mantlz/actions">
       <img src="https://img.shields.io/badge/CI%2FCD-Automated-brightgreen?style=for-the-badge&logo=github-actions&logoColor=white" alt="CI/CD" />
     </a>
-    <a href="https://github.com/mantlz/mantlz">
+    <a href="https://github.com/artistatbl/Mantlz">
       <img src="https://img.shields.io/badge/Coverage-Tracked-yellow?style=for-the-badge&logo=codecov&logoColor=white" alt="Code Coverage" />
     </a>
-    <a href="https://github.com/mantlz/mantlz">
+    <a href="https://github.com/artistatbl/Mantlz">
       <img src="https://img.shields.io/badge/Security-Scanned-red?style=for-the-badge&logo=security&logoColor=white" alt="Security Scan" />
     </a>
-    <a href="https://github.com/mantlz/mantlz">
+    <a href="https://github.com/artistatbl/Mantlz">
       <img src="https://img.shields.io/badge/Dependencies-Monitored-orange?style=for-the-badge&logo=dependabot&logoColor=white" alt="Dependency Status" />
     </a>
   </p>
