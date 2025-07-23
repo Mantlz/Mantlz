@@ -5,9 +5,21 @@
 A modern headless form management platform that enables developers to create beautiful, customizable forms with a powerful dashboard and TypeScript-native SDK. Built with Next.js and designed for modern web applications.
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![Version](https://img.shields.io/badge/Version-0.1.0-green.svg)](https://github.com/mantlz/mantlz)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-000000?logo=next.js&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![Turborepo](https://img.shields.io/badge/Turborepo-EF4444?logo=turborepo&logoColor=white)](https://turbo.build/repo)
+[![Bun](https://img.shields.io/badge/Bun-000000?logo=bun&logoColor=white)](https://bun.sh/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![GitHub stars](https://img.shields.io/github/stars/mantlz/mantlz)](https://github.com/mantlz/mantlz/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/mantlz/mantlz)](https://github.com/mantlz/mantlz/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/mantlz/mantlz)](https://github.com/mantlz/mantlz/pulls)
+[![CodeRabbit](https://img.shields.io/badge/CodeRabbit-AI_Reviews-blue)](https://coderabbit.ai)
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-Automated-brightgreen)](https://github.com/mantlz/mantlz/actions)
+[![Code Coverage](https://img.shields.io/badge/Coverage-Tracked-yellow)](https://github.com/mantlz/mantlz)
+[![Security Scan](https://img.shields.io/badge/Security-Scanned-red)](https://github.com/mantlz/mantlz)
+[![Dependency Status](https://img.shields.io/badge/Dependencies-Monitored-orange)](https://github.com/mantlz/mantlz)
 
 ## Project Overview
 
