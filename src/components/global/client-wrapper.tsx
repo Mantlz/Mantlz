@@ -1,12 +1,11 @@
 'use client'
 
-import dynamic from 'next/dynamic'
 import { PostHogProvider } from "@/components/providers/posthog-provider"
-
-const CookieConsent = dynamic(() => import("@/components/global/cookie-consent").then(mod => mod.CookieConsent), {
-  ssr: false,
-  loading: () => null
-})
+import {
+  ConsentManagerProvider,
+  CookieBanner,
+  ConsentManagerDialog
+} from "@c15t/nextjs"
 
 interface ClientWrapperProps {
   children: React.ReactNode
@@ -15,8 +14,14 @@ interface ClientWrapperProps {
 export default function ClientWrapper({ children }: ClientWrapperProps) {
   return (
     <PostHogProvider>
-      {children}
-      <CookieConsent />
+      <ConsentManagerProvider options={{
+        mode: 'c15t',
+        backendURL: process.env.NEXT_PUBLIC_C15T_URL || 'https://daly-jean-111nte1o-europe-onboarding.c15t.dev'
+      }}>
+        {children}
+        <CookieBanner />
+        <ConsentManagerDialog />
+      </ConsentManagerProvider>
     </PostHogProvider>
   )
-} 
+}

@@ -10,6 +10,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@c15t/nextjs": "^1.4.4",
     "@clerk/nextjs": "^6.12.5",
     "@clerk/themes": "^2.2.27",
     "@dnd-kit/core": "^6.3.1",
