@@ -1,6 +1,4 @@
 <div align="center">
-  <img src="./public/og-image.png" alt="Mantlz" width="600" />
-  
   # Mantlz
   
   🎉 **Now Open Source!** 🎉
@@ -66,6 +64,8 @@
       <img src="https://img.shields.io/badge/Dependencies-Monitored-orange?style=for-the-badge&logo=dependabot&logoColor=white" alt="Dependency Status" />
     </a>
   </p>
+  
+  <img src="./public/og-image.png" alt="Mantlz" width="600" />
 </div>
 
 ## Project Overview
