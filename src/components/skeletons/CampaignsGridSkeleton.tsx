@@ -5,7 +5,7 @@ export function CampaignsGridSkeleton() {
   return (
     <div className="space-y-6 sm:space-y-8">
       {/* Header Section in its own card */}
-      <div className="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+      <div className="relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800 ">
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
         <div className="relative p-6 lg:p-8">
           <div className="flex flex-col gap-6">
@@ -22,7 +22,7 @@ export function CampaignsGridSkeleton() {
 
               <div className="flex items-center gap-3">
                 {/* View Toggle */}
-                <div className="bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-800 rounded-lg p-1 flex items-center">
+                <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg p-1 flex items-center">
                   <div className="h-6 w-8 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm">
                     <LayoutGrid className="h-4 w-4" />
                   </div>
@@ -69,7 +69,7 @@ export function CampaignsGridSkeleton() {
       {/* Forms Grid Skeleton in its own container */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {[1, 2, 3, 4, 5, 6].map((i) => (
-          <div key={i} className=" border border-zinc-100 dark:border-zinc-800/50 rounded-xl shadow-sm overflow-hidden">
+          <div key={i} className=" border border-zinc-200 dark:border-zinc-800/50 rounded-xl  overflow-hidden">
             <div className="p-4 sm:p-6">
               <div className="space-y-2">
                 <Skeleton className="h-6 w-3/4 rounded-lg" />

@@ -121,7 +121,7 @@ export function CampaignChart({ data }: CampaignChartProps) {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-800/50 rounded-lg p-3 sm:p-4 border border-zinc-100 dark:border-zinc-800/50">
+        <div className="bg-white dark:bg-zinc-800/50 rounded-lg p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50">
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -149,7 +149,7 @@ export function CampaignChart({ data }: CampaignChartProps) {
                   content={({ active, payload, label }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-3 border border-zinc-100 dark:border-zinc-800">
+                        <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-3 border border-zinc-200 dark:border-zinc-800">
                           <p className="text-sm font-medium text-gray-900 dark:text-white mb-2">
                             {label}
                           </p>

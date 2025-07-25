@@ -11,7 +11,7 @@ import {
 
 export function CampaignsTableHeaderSkeleton() {
   return (
-    <div className="relative overflow-hidden bg-white dark:bg-background rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm">
+    <div className="relative overflow-hidden bg-white dark:bg-background rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
       <div className="relative p-6 lg:p-8">
         <div className="flex flex-col gap-6">

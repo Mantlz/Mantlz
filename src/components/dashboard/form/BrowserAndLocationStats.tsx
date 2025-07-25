@@ -293,7 +293,7 @@ export function BrowserAndLocationStats({
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
         {/* Map Card - Hidden on mobile if list view is selected */}
-        <Card className={`bg-white dark:bg-zinc-900/50 shadow-sm border border-zinc-100 dark:border-zinc-800 rounded-xl lg:col-span-3 overflow-hidden transition-all duration-300 hover:shadow-md ${mobileView !== 'map' ? 'hidden lg:block' : ''}`}>
+        <Card className={`bg-white dark:bg-zinc-900/50 shadow-sm border border-zinc-200 dark:border-zinc-800 rounded-xl lg:col-span-3 overflow-hidden transition-all duration-300 hover:shadow-md ${mobileView !== 'map' ? 'hidden lg:block' : ''}`}>
           <CardHeader className="pb-3 px-6 pt-5">
             <div className="flex justify-between items-center w-full">
               <CardTitleWithIcon icon={MapPin} title="Geographic Distribution" />
@@ -321,7 +321,7 @@ export function BrowserAndLocationStats({
                   <div className="lg:flex-grow">
                     <div
                       ref={mapRef}
-                      className="bg-white dark:bg-black h-[340px] overflow-hidden relative rounded-xl border border-zinc-100 dark:border-zinc-900"
+                      className="bg-white dark:bg-black h-[340px] overflow-hidden relative rounded-xl border border-zinc-200 dark:border-zinc-900"
                     >
                       {/* Map content */}
                       {mapLoaded ? (
@@ -421,7 +421,7 @@ export function BrowserAndLocationStats({
                       
                       {/* Top country callout at bottom */}
                       {sortedLocations.length > 0 && (
-                        <div className="absolute bottom-3 left-3 bg-white/90 dark:bg-zinc-800/90 backdrop-blur-sm rounded-lg py-2 px-3 shadow-sm border border-zinc-100 dark:border-zinc-800">
+                        <div className="absolute bottom-3 left-3 bg-white/90 dark:bg-zinc-800/90 backdrop-blur-sm rounded-lg py-2 px-3 shadow-sm border border-zinc-200 dark:border-zinc-800">
                           <div className="flex items-center gap-2">
                             <div className="w-3 h-3 rounded-lg bg-zinc-500"></div>
                             <span className="text-xs font-medium">{sortedLocations[0]?.name}</span>
@@ -484,7 +484,7 @@ export function BrowserAndLocationStats({
         </Card>
 
         {/* Browser Stats Card - Hidden on mobile if map view is selected */}
-        <Card className={`bg-white dark:bg-zinc-900/50 shadow-sm border border-zinc-100 dark:border-zinc-800 rounded-xl lg:col-span-2 transition-all duration-300 hover:shadow-md ${mobileView !== 'list' ? 'hidden lg:block' : ''}`}>
+        <Card className={`bg-white dark:bg-zinc-900/50 shadow-sm border border-zinc-200 dark:border-zinc-800 rounded-xl lg:col-span-2 transition-all duration-300 hover:shadow-md ${mobileView !== 'list' ? 'hidden lg:block' : ''}`}>
           <CardHeader className="pb-3 px-6 pt-5">
             <div className="flex justify-between items-center w-full">
               <CardTitleWithIcon icon={Globe} title="Browsers" />
@@ -577,7 +577,7 @@ export function BrowserAndLocationStats({
       <Dialog open={mapExpanded} onOpenChange={setMapExpanded}>
         <DialogContent
           className="sm:max-w-[900px] p-0 overflow-hidden 
-            bg-white dark:bg-zinc-950/50 rounded-xl backdrop-blur-3xl shadow-2xl  border border-zinc-100 dark:border-zinc-900"
+            bg-white dark:bg-zinc-950/50 rounded-xl backdrop-blur-3xl shadow-2xl  border border-zinc-200 dark:border-zinc-900"
         >
           <DialogHeader className="px-8 pt-6 pb-4">
             <DialogTitle className="text-xl font-medium flex items-center">
@@ -592,7 +592,7 @@ export function BrowserAndLocationStats({
           <div className="p-6 pt-0">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <div className="md:col-span-2">
-                <div className="h-[400px] overflow-hidden relative rounded-xl border border-zinc-100 dark:border-zinc-900">
+                <div className="h-[400px] overflow-hidden relative rounded-xl border border-zinc-200 dark:border-zinc-900">
                   <ComposableMap
                     projectionConfig={{
                       scale: 170,
@@ -694,7 +694,7 @@ export function BrowserAndLocationStats({
               </div>
               
               <div>
-                <div className="h-[400px] overflow-y-auto rounded-xl border border-zinc-100 dark:border-zinc-900 divide-y divide-gray-100 dark:divide-gray-900">
+                <div className="h-[400px] overflow-y-auto rounded-xl border border-zinc-200 dark:border-zinc-900 divide-y divide-gray-100 dark:divide-gray-900">
                   {sortedLocations.slice(0, 20).map((country, _) => (
                     <div key={country.name} className="flex items-center justify-between px-4 py-2.5">
                       <div className="flex items-center gap-2">

@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 
 export function SubmissionTableSkeleton({ isPremium }: { isPremium: boolean }) {
   return (
-    <div className="bg-background dark:bg-background rounded-xl border border-zinc-100 dark:border-zinc-800/50 overflow-hidden">
+    <div className="bg-background dark:bg-background rounded-xl border border-zinc-200 dark:border-zinc-800/50 overflow-hidden">
       {/* Header with submission count and date range picker */}
       <div className="p-3 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
         <div className="flex items-center gap-1">
@@ -30,7 +30,7 @@ export function SubmissionTableSkeleton({ isPremium }: { isPremium: boolean }) {
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
-            <TableRow className="hover:bg-transparent border-b border-zinc-100 dark:border-zinc-800/50">
+            <TableRow className="hover:bg-transparent border-b border-zinc-200 dark:border-zinc-800/50">
               <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
                 <span className="hidden sm:inline">Submission ID</span>
                 <span className="sm:hidden">ID</span>

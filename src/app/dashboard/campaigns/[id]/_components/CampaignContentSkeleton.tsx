@@ -31,7 +31,7 @@ export function CampaignContentSkeleton() {
           </div>
 
           {/* Chart Skeleton */}
-          <div className="bg-white dark:bg-zinc-800/50 rounded-lg p-3 sm:p-4 border border-zinc-100 dark:border-zinc-800/50">
+          <div className="bg-white dark:bg-zinc-800/50 rounded-lg p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50">
             <div className="h-[300px] w-full flex items-center justify-center">
               <div className="w-full h-full grid grid-cols-12 gap-2 items-end px-8">
                 {barHeights.map((height, i) => (

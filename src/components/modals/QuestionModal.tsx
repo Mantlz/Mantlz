@@ -66,7 +66,7 @@ export function QuestionModal({ isOpen, onClose, trigger }: QuestionModalProps) 
                 href={option.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center p-6 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-750 transition-all shadow-sm hover:shadow cursor-pointer"
+                className="flex flex-col items-center justify-center p-6 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-750 transition-all shadow-sm hover:shadow cursor-pointer"
                 onClick={() => onClose?.()}
               >
                 <div className="flex justify-center items-center mb-3">

@@ -167,7 +167,7 @@ export function FormResponsesList({
 
   if (isError) {
     return (
-      <Card className="border-zinc-200 dark:border-zinc-800 shadow-sm">
+      <Card className="border-zinc-200 dark:border-zinc-800">
         <CardContent className="flex flex-col items-center text-center gap-4 py-16">
           <div className="rounded-lg bg-red-100 dark:bg-red-900/30 p-4 mb-2">
             <AlertCircle className="h-8 w-8 text-red-600 dark:text-red-400" />
@@ -188,7 +188,7 @@ export function FormResponsesList({
 
   if (!localSubmissions.length) {
     return (
-      <Card className="border-zinc-200 bg-background dark:border-zinc-800  shadow-sm">
+      <Card className="border-zinc-200 bg-background dark:border-zinc-800 shadow-none">
         <CardContent className="flex flex-col items-center text-center gap-4 py-16">
           <div className="rounded-lg bg-zinc-100 dark:bg-zinc-800 p-4 mb-2">
             <FileText className="h-8 w-8 text-zinc-400" />
@@ -219,7 +219,7 @@ export function FormResponsesList({
         </Badge>
       </div>
 
-      <Card className="bg-background border-zinc-200 dark:border-zinc-800  shadow-sm">
+      <Card className="bg-background border-zinc-200 dark:border-zinc-800">
         <CardContent className="p-0 bg-background">
           <div className="p-3 border-b border-zinc-200 dark:border-zinc-800 grid grid-cols-1 sm:grid-cols-4 gap-4">
             <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Email</div>

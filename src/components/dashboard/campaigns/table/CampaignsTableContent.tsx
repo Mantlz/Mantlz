@@ -122,7 +122,7 @@ export function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onU
   if (!formsData?.forms?.length) {
     return (
       <div className="space-y-6 sm:space-y-8">
-        <div className="relative overflow-hidden rounded-xl sm:rounded-2xl border border-zinc-100 dark:border-zinc-800/50">
+        <div className="relative overflow-hidden rounded-xl sm:rounded-2xl border border-zinc-200 dark:border-zinc-800/50">
           <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
           <div className="relative p-6 sm:p-8 lg:p-12">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">

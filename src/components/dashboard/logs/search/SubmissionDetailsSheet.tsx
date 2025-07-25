@@ -143,7 +143,7 @@ export function SubmissionDetailsSheet({
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetContent className="w-full max-w-md sm:max-w-lg p-0 overflow-y-auto">
         <div className="h-full flex flex-col">
-          <SheetHeader className="p-4 sm:p-6 border-b border-zinc-100 dark:border-zinc-800/50 sticky top-0 bg-white dark:bg-zinc-950 z-10">
+          <SheetHeader className="p-4 sm:p-6 border-b border-zinc-200 dark:border-zinc-800/50 sticky top-0 bg-white dark:bg-zinc-950 z-10">
             <div className="flex items-center justify-between">
               <SheetTitle className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
                 Submission Details
@@ -157,7 +157,7 @@ export function SubmissionDetailsSheet({
           <ScrollArea className="h-[calc(100vh-120px)]"> 
             <div className="p-4 sm:p-6 space-y-6">
               
-            <div className="bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 p-3 sm:p-6 border border-zinc-100 dark:border-zinc-800/50 rounded-lg">
+            <div className="bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 p-3 sm:p-6 border border-zinc-200 dark:border-zinc-800/50 rounded-lg">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="space-y-2">
                     <h2 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white tracking-tight flex flex-wrap items-center gap-2">
@@ -212,7 +212,7 @@ export function SubmissionDetailsSheet({
                   </div>
                   <div className="space-y-3">
                     {/* User Email Status */}
-                    <div className="p-3 sm:p-4 border border-zinc-100 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900">
+                    <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
                           <Mail className="h-3.5 w-3.5 text-gray-500" />
@@ -241,7 +241,7 @@ export function SubmissionDetailsSheet({
                     </div>
                     
                     {/* Developer Email Status */}
-                    <div className="p-3 sm:p-4 border border-zinc-100 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900">
+                    <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
                           <Bell className="h-3.5 w-3.5 text-gray-500" />
@@ -287,7 +287,7 @@ export function SubmissionDetailsSheet({
                       .map(([key, value]) => (
                       <div
                         key={key}
-                        className="p-3 sm:p-4 border border-zinc-100 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900"
+                        className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900"
                       >
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
@@ -354,7 +354,7 @@ export function SubmissionDetailsSheet({
                     </p>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                    <div className="p-3 sm:p-4 border border-zinc-100 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900">
+                    <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900">
                       <div className="flex items-center gap-2 mb-2">
                         <Globe className="h-3.5 w-3.5 text-gray-500" />
                         <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Browser</p>
@@ -363,7 +363,7 @@ export function SubmissionDetailsSheet({
                         {(submission.data as SubmissionData)._meta?.browser || 'Unknown'}
                       </p>
                     </div>
-                    <div className="p-3 sm:p-4 border border-zinc-100 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900">
+                    <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900">
                       <div className="flex items-center gap-2 mb-2">
                         <MapPin className="h-3.5 w-3.5 text-gray-500" />
                         <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Location</p>

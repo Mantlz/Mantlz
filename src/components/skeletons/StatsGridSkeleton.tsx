@@ -5,7 +5,7 @@ export function StatsGridSkeleton() {
   return (
     <div className="space-y-6 sm:space-y-8">
       {/* Header Section in its own card */}
-      <div className="relative overflow-hidden  rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
+      <div className="relative overflow-hidden  rounded-2xl border border-zinc-200 dark:border-zinc-800">
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
         <div className="relative p-6 lg:p-8">
           <div className="flex flex-col gap-6">
@@ -21,7 +21,7 @@ export function StatsGridSkeleton() {
               </div>
               <div className="flex items-center gap-3">
                 {/* Grid/List View Toggle */}
-                <div className="bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-800 rounded-lg p-1 flex items-center">
+                <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg p-1 flex items-center">
                   <div className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white">
                     <LayoutGrid className="h-4 w-4" />
                   </div>
@@ -30,7 +30,7 @@ export function StatsGridSkeleton() {
                   </div>
                 </div>
                 {/* Search Button */}
-                <div className="h-9 gap-2 cursor-pointer rounded-lg bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 backdrop-blur shadow-sm flex items-center px-3">
+                <div className="h-9 gap-2 cursor-pointer rounded-lg bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 backdrop-blur flex items-center px-3">
                   <Search className="h-4 w-4 text-gray-400" />
                   <span className="text-sm font-normal hidden sm:inline-block text-gray-500">Search submissions...</span>
                   <div className="hidden sm:flex items-center justify-center h-5 px-1.5 ml-1 rounded-lg bg-zinc-100 dark:bg-zinc-800">
@@ -76,7 +76,7 @@ export function StatsGridSkeleton() {
       {/* Forms Grid Skeleton in its own container */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {[1, 2, 3, 4, 5, 6].map((i) => (
-          <div key={i} className="bg-white dark:bg-background border border-zinc-100 dark:border-zinc-800/50 rounded-xl shadow-sm overflow-hidden">
+          <div key={i} className="bg-white dark:bg-background border border-zinc-200 dark:border-zinc-800/50 rounded-xl  overflow-hidden">
             <div className="p-4 sm:p-6">
               <Skeleton className="h-6 w-3/4 mb-2 rounded-lg" />
               <Skeleton className="h-4 w-full max-w-md mb-4 rounded-lg" />

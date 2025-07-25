@@ -181,7 +181,7 @@ export function SearchDialog({
                         )}
                       </SelectItem>
                       
-                      <div className="border-t border-zinc-100 dark:border-zinc-800 my-2"></div>
+                      <div className="border-t border-zinc-200 dark:border-zinc-800 my-2"></div>
                       
                       {formsData.forms.map((form: Form, index: number) => {
                         const truncatedName = form.name.length > 15 

@@ -132,7 +132,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
   // Error state
   if (formsError) {
     return (
-      <div className="min-h-[400px] w-full flex items-center justify-center  rounded-lg border border-red-100 dark:border-red-900/50 shadow-sm p-6">
+      <div className="min-h-[400px] w-full flex items-center justify-center  rounded-lg border border-red-100 dark:border-red-900/50  p-6">
         <div className="flex flex-col items-center gap-4 max-w-md text-center">
           <div className="w-12 h-12 flex items-center justify-center bg-red-50 dark:bg-red-900/20 text-red-500 rounded-lg">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
@@ -196,7 +196,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
     if (!formsData?.forms?.length) {
       return (
         <div className="space-y-6 sm:space-y-8">
-          <div className="relative overflow-hidden rounded-xl sm:rounded-2xl border border-zinc-100 dark:border-zinc-800/50">
+          <div className="relative overflow-hidden rounded-xl sm:rounded-2xl border border-zinc-200 dark:border-zinc-800/50">
             <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
             <div className="relative p-6 sm:p-8 lg:p-12">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">
@@ -210,7 +210,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                   </div>
                 </div>
                 <Button
-                  className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-lg px-6 shadow-sm hover:shadow-md"
+                  className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-lg px-6  hover:shadow-md"
                   onClick={() => isPremium ? router.push("/dashboard/forms") : onUpgradeClick?.()}
                 >
                   {isPremium ? "Create Your First Form" : "Upgrade to Create Campaigns"}
@@ -232,7 +232,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                 : "Create and manage email campaigns with advanced features like scheduling, analytics, and more"}
             </p>
             <Button
-              className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-lg px-6 shadow-sm hover:shadow-md"
+              className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-lg px-6  hover:shadow-md"
               onClick={() => isPremium ? router.push("/dashboard/forms") : onUpgradeClick?.()}
             >
               {isPremium ? "Create Your First Form" : "Upgrade Now"}
@@ -245,7 +245,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
     // Show forms grid/list based on viewMode
     return (
       <div className="space-y-6 sm:space-y-8">
-        <div className="relative overflow-hidden bg-white dark:bg-background rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-sm mb-6">
+        <div className="relative overflow-hidden bg-white dark:bg-background rounded-2xl border border-zinc-200 dark:border-zinc-800 mb-6">
           <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]"></div>
           <div className="relative p-6 lg:p-8">
             <div className="flex flex-col gap-6">
@@ -261,7 +261,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                 </div>
                 <div className="flex items-center gap-3">
                   {/* View Toggle */}
-                  <div className="bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-800 rounded-lg p-1 flex items-center">
+                  <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg p-1 flex items-center">
                     <button
                       onClick={() => handleViewModeChange('grid')}
                       className={`p-1.5 rounded-lg ${viewMode === 'grid' 
@@ -286,7 +286,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
 
               {/* Stats Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className=" rounded-xl  p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
+                <div className=" rounded-xl  p-4 border border-zinc-200 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                       <FileSpreadsheet className="h-5 w-5 text-gray-900 dark:text-white" />
@@ -298,7 +298,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                   </div>
                 </div>
                 
-                <div className=" rounded-xl p-4 border border-zinc-100 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
+                <div className=" rounded-xl p-4 border border-zinc-200 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
                       <Mail className="h-5 w-5 text-gray-900 dark:text-white" />
@@ -321,7 +321,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
             {formsData.forms.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((form) => (
               <div
                 key={form.id}
-                className={` border ${(form._count?.campaigns || 0) > 0 ? 'border-background dark:border-background' : 'border-zinc-100 dark:border-zinc-800/50'} rounded-xl shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer`}
+                className={` border ${(form._count?.campaigns || 0) > 0 ? 'border-background dark:border-background' : 'border-zinc-200 dark:border-zinc-800/50'} rounded-xl  hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer`}
                 onClick={() => handleFormClick(form.id)}
               >
                 {(() => {
@@ -364,7 +364,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
             {formsData.forms.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((form) => (
               <div
                 key={form.id}
-                className={` border ${(form._count?.campaigns || 0) > 0 ? 'border-background dark:border-background' : 'border-zinc-100 dark:border-zinc-800/50'} rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer`}
+                className={` border ${(form._count?.campaigns || 0) > 0 ? 'border-background dark:border-background' : 'border-zinc-200 dark:border-zinc-800/50'} rounded-lg  hover:shadow-md transition-all duration-200 cursor-pointer`}
                 onClick={() => handleFormClick(form.id)}
               >
                 <div className="p-4 sm:p-5 flex items-center justify-between">

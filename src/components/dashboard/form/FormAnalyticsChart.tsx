@@ -140,7 +140,7 @@ export function FormAnalyticsChart({
 
   if (isLoading) {
     return (
-      <div className="relative overflow-hidden  rounded-lg sm:rounded-xl border border-zinc-100 dark:border-zinc-800/50">
+      <div className="relative overflow-hidden  rounded-lg sm:rounded-xl border border-zinc-200 dark:border-zinc-800/50">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="relative p-6 sm:p-8 lg:p-12">
           <div className="flex flex-col items-center justify-center h-[400px] gap-4">
@@ -156,7 +156,7 @@ export function FormAnalyticsChart({
   const hasData = chartData.some(point => point.submissions > 0);
 
   return (
-    <div className="relative overflow-hidden  rounded-lg sm:rounded-xl border border-zinc-100 dark:border-zinc-800/50 shadow-2xl">
+    <div className="relative overflow-hidden  rounded-lg sm:rounded-xl border border-zinc-200 dark:border-zinc-800/50">
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
       <div className="relative p-6 sm:p-8 lg:p-12">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
@@ -253,7 +253,7 @@ export function FormAnalyticsChart({
             ) : (
 
 
-                <div className="bg-white dark:bg-zinc-800/50 rounded-lg p-4 sm:p-5 border border-zinc-100 dark:border-zinc-800/50">
+                <div className="bg-white dark:bg-zinc-800/50 rounded-lg p-4 sm:p-5 border border-zinc-200 dark:border-zinc-800/50">
                   <div className="h-[300px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={chartData || []}>
@@ -270,7 +270,7 @@ export function FormAnalyticsChart({
                           content={({ active, payload, label }) => {
                             if (active && payload && payload.length) {
                               return (
-                                <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-3 border border-zinc-100 dark:border-zinc-800">
+                                <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-3 border border-zinc-200 dark:border-zinc-800">
                                   <p className="text-sm font-medium text-gray-900 dark:text-white">{label}</p>
                                   <p className="text-sm text-gray-500 dark:text-gray-400">
                                     {payload[0]?.value || 0} submissions
