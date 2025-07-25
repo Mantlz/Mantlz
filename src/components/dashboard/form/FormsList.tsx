@@ -242,7 +242,7 @@ export function FormsList({
           {currentForms.map((form: Form) => (
             <Card 
               key={form.id}
-              className="group bg-white dark:bg-background border border-zinc-100 dark:border-zinc-800/50 hover:border-zinc-200 dark:hover:border-zinc-700 transition-all duration-200 cursor-pointer hover:shadow-md"
+              className="group bg-white dark:bg-background border border-zinc-200 dark:border-zinc-700 cursor-pointer rounded-lg shadow-none"
               onClick={() => window.location.href = `/dashboard/form/${form.id}`}
             >
               <div className="p-4 sm:p-6">
@@ -274,7 +274,7 @@ export function FormsList({
           {currentForms.map((form: Form) => (
             <div 
               key={form.id}
-              className="group border border-zinc-100 dark:border-zinc-800/50 hover:border-zinc-200 dark:hover:border-zinc-700 transition-all duration-200 cursor-pointer hover:shadow-md rounded-lg"
+              className="group border border-zinc-100 dark:border-zinc-800/50 hover:border-zinc-200 dark:hover:border-zinc-700  cursor-pointer rounded-lg"
               onClick={() => window.location.href = `/dashboard/form/${form.id}`}
             >
               <div className="p-4 sm:p-5 flex items-center justify-between">
