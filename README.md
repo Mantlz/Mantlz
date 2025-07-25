@@ -1,8 +1,6 @@
 <div align="center">
-  <h1>Mantlz</h1>
-  
-  🎉 **Now Open Source!** 🎉
-  
+# Mantlz
+    
   A modern headless form management platform that enables developers to create beautiful, customizable forms with a powerful dashboard and TypeScript-native SDK. Built with Next.js and designed for modern web applications.
   
   <p align="center">
