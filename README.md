@@ -1,5 +1,5 @@
 <div align="center">
-  # Mantlz
+  <h1>Mantlz</h1>
   
   🎉 **Now Open Source!** 🎉
   
@@ -35,7 +35,7 @@
     </a>
   </p>
   
-  <p align="center">
+  <!-- <p align="center">
     <a href="https://github.com/artistatbl/Mantlz/stargazers">
       <img src="https://img.shields.io/github/stars/artistatbl/Mantlz?style=for-the-badge&logo=github" alt="GitHub stars" />
     </a>
@@ -45,7 +45,7 @@
     <a href="https://github.com/artistatbl/Mantlz/pulls">
       <img src="https://img.shields.io/github/issues-pr/artistatbl/Mantlz?style=for-the-badge&logo=github" alt="GitHub pull requests" />
     </a>
-  </p>
+  </p> -->
   
   <p align="center">
     <a href="https://coderabbit.ai">
