@@ -107,7 +107,7 @@ export default function FormBuilderPage() {
               <TabsList className="bg-background dark:bg-background p-1 h-auto flex space-x-2 overflow-x-auto border border-neutral-200 dark:border-zinc-800 rounded-lg">
                 {categories.map(category => {
                   const Icon = category.icon;
-                  return (
+                  return ( 
                     <TabsTrigger 
                       key={category.id} 
                       value={category.id}
