@@ -1,6 +1,8 @@
 <div align="center">
-# Mantlz
-    
+
+  <h1>Mantlz</h1>
+  
+
   A modern headless form management platform that enables developers to create beautiful, customizable forms with a powerful dashboard and TypeScript-native SDK. Built with Next.js and designed for modern web applications.
   
   <p align="center">
@@ -93,119 +95,199 @@ Mantlz consists of two main components:
 
 ## Getting Started
 
-### Platform Setup
+### Prerequisites
 
-1. Clone the repository
-2. Install dependencies: `npm install`
-3. Set up environment variables (see `.env.example`)
-4. Run the development server: `npm run dev`
+- Node.js 18+ or Bun
+- PostgreSQL database
+- Git
 
-### Using the SDK
+### Local Development Setup
 
-Install the Mantlz SDK in your project:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/mantlz/mantlz.git
+   cd mantlz
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or if you prefer bun
+   bun install
+   ```
+
+3. **Set up your database**
+   
+   Create a PostgreSQL database locally or use a cloud provider like Supabase, Neon, or Railway.
+
+4. **Configure environment variables**
+   
+   Copy the example environment file and configure it:
+   ```bash
+   cp .env.example .env.local
+   ```
+   
+   Edit `.env.local` with your configuration. Here are the required environment variables:
+
+   **Database Configuration:**
+   ```env
+   DATABASE_URL="postgresql://username:password@localhost:5432/mantlz"
+   ```
+
+   **Authentication (Clerk):**
+   ```env
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_your_key_here"
+   CLERK_SECRET_KEY="sk_test_your_secret_here"
+   NEXT_PUBLIC_CLERK_SIGN_IN_URL="/sign-in"
+   NEXT_PUBLIC_CLERK_SIGN_UP_URL="/sign-up"
+   NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL="/dashboard"
+   NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL="/dashboard"
+   ```
+
+   **Email Service (Resend):**
+   ```env
+   RESEND_API_KEY="re_your_api_key_here"
+   RESEND_FROM_EMAIL="contact@yourdomain.com"
+   ```
+
+   **Payment Processing (Stripe):**
+   ```env
+   STRIPE_SECRET_KEY="sk_test_your_stripe_secret_key"
+   STRIPE_WEBHOOK_SECRET="whsec_your_webhook_secret"
+   STRIPE_CLIENT_ID="ca_your_client_id"
+   NEXT_PUBLIC_STRIPE_PUBLIC_KEY="pk_test_your_public_key"
+   NEXT_PUBLIC_STRIPE_STANDARD_PRICE_ID="price_your_standard_price_id"
+   NEXT_PUBLIC_STRIPE_PRO_PRICE_ID="price_your_pro_price_id"
+   ```
+
+   **Content Management (Sanity):**
+   ```env
+   NEXT_PUBLIC_SANITY_PROJECT_ID="your_project_id"
+   NEXT_PUBLIC_SANITY_DATASET="production"
+   ```
+
+   **File Uploads (Uploadcare):**
+   ```env
+   NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY="your_uploadcare_public_key"
+   ```
+
+   **Analytics (PostHog) - Optional:**
+   ```env
+   NEXT_PUBLIC_POSTHOG_KEY="phc_your_posthog_key"
+   NEXT_PUBLIC_POSTHOG_HOST="https://app.posthog.com"
+   ```
+
+   **Application URLs:**
+   ```env
+   NEXT_PUBLIC_APP_URL="http://localhost:3000"
+   NEXT_PUBLIC_APP_DOMAIN="localhost:3000"
+   ```
+
+   **Rate Limiting (Upstash Redis) - Optional:**
+   ```env
+   UPSTASH_REDIS_REST_URL="your_redis_url"
+   UPSTASH_REDIS_REST_TOKEN="your_redis_token"
+   ```
+
+5. **Set up the database**
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
+
+6. **Run the development server**
+   ```bash
+   npm run dev
+   # or
+   bun dev
+   ```
+
+   The application will be available at [http://localhost:3000](http://localhost:3000)
+
+### Quick Start with Docker
+
+For a faster setup, you can use Docker Compose:
 
 ```bash
-npm install @mantlz/nextjs
+# Clone and navigate to the project
+git clone https://github.com/mantlz/mantlz.git
+cd mantlz
+
+# Start with Docker Compose
+docker-compose up -d
 ```
 
-Wrap your application with the `MantlzProvider`:
+This will start the application with a PostgreSQL database. The app will be available at [http://localhost:3000](http://localhost:3000).
 
-```tsx
-import { MantlzProvider } from "@mantlz/nextjs";
+### Service Setup Guide
 
-export default function App({ children }) {
-  return (
-    <MantlzProvider apiKey="your-mantlz-api-key">
-      {children}
-    </MantlzProvider>
-  );
-}
-```
+**1. Database Setup (Choose one):**
+- **Local PostgreSQL**: Install PostgreSQL locally and create a database
+- **Supabase**: Create a free account at [supabase.com](https://supabase.com)
+- **Neon**: Create a free account at [neon.tech](https://neon.tech)
+- **Railway**: Create a free account at [railway.app](https://railway.app)
 
-## Using the Mantlz Component
+**2. Authentication Setup (Clerk):**
+- Create a free account at [clerk.com](https://clerk.com)
+- Create a new application
+- Copy the publishable key and secret key to your `.env.local`
 
-The SDK provides a single `Mantlz` component that can render different form types based on your dashboard configuration:
+**3. Email Service Setup (Resend):**
+- Create a free account at [resend.com](https://resend.com)
+- Generate an API key
+- Add your domain for sending emails
 
-### Basic Usage
+**4. Payment Processing Setup (Stripe):**
+- Create a free account at [stripe.com](https://stripe.com)
+- Get your API keys from the dashboard
+- Create products and pricing plans
+- Set up webhooks for your local development
 
-```tsx
-import { Mantlz } from "@mantlz/nextjs";
+**5. Content Management Setup (Sanity):**
+- Create a free account at [sanity.io](https://sanity.io)
+- Create a new project
+- Copy the project ID to your environment variables
 
-export default function MyForm() {
-  return (
-    <div className="container mx-auto p-4">
-      <Mantlz formId="your-form-id" />
-    </div>
-  );
-}
-```
+**6. File Upload Setup (Uploadcare):**
+- Create a free account at [uploadcare.com](https://uploadcare.com)
+- Get your public key from the dashboard
 
-### With Custom Theme
+### Troubleshooting
 
-```tsx
-import { Mantlz } from "@mantlz/nextjs";
+**Common Issues:**
 
-export default function ThemedForm() {
-  return (
-    <Mantlz 
-      formId="your-form-id"
-      theme="neobrutalism"
-    />
-  );
-}
-```
+1. **Database Connection Issues:**
+   - Ensure PostgreSQL is running
+   - Check your DATABASE_URL format
+   - Verify database credentials and permissions
+   - Run `npx prisma db push` to sync the schema
 
-### Waitlist Form with User Count
+2. **Authentication Not Working:**
+   - Verify Clerk keys are correct
+   - Check that your domain is added to Clerk's allowed origins
+   - Ensure CLERK_SECRET_KEY starts with `sk_`
 
-```tsx
-import { Mantlz } from "@mantlz/nextjs";
+3. **Email Service Issues:**
+   - Verify your Resend API key
+   - Check that your sending domain is verified in Resend
+   - Ensure RESEND_FROM_EMAIL uses a verified domain
 
-export default function WaitlistPage() {
-  return (
-    <Mantlz
-      formId="your-form-id"
-      showUsersJoined={true}
-      usersJoinedCount={1250}
-      usersJoinedLabel="developers have joined"
-    />
-  );
-}
-```
+4. **Stripe Payment Issues:**
+   - Use test keys for development (they start with `sk_test_` and `pk_test_`)
+   - Set up webhook endpoints in Stripe dashboard
+   - Verify price IDs match your Stripe products
 
-## Theming and Customization
+5. **Build Errors:**
+   - Run `npm run lint` to check for code issues
+   - Ensure all required environment variables are set
+   - Clear `.next` folder and rebuild: `rm -rf .next && npm run build`
 
-The Mantlz component supports extensive theming and customization options:
+**Getting Help:**
+- Check the [GitHub Issues](https://github.com/mantlz/mantlz/issues) for known problems
+- Join our [Discord community](https://discord.gg/mantlz) for support
+- Review the [documentation](https://docs.mantlz.app) for detailed guides
 
-### Built-in Themes
 
-```tsx
-// Available themes: default, modern, neobrutalism, simple
-<Mantlz
-  formId="your-form-id"
-  theme="neobrutalism"
-/>
-```
-
-### Custom Appearance
-
-```tsx
-<Mantlz
-  formId="your-form-id"
-  appearance={{
-    variables: {
-      primaryColor: '#6366f1',
-      backgroundColor: '#f8fafc',
-      borderRadius: '8px',
-    },
-    elements: {
-      container: 'max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg',
-      title: 'text-2xl font-bold text-gray-900 mb-4',
-      input: 'w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500',
-      button: 'w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors',
-    }
-  }}
-/>
-```
 
 ## Form Types Supported
 
@@ -286,36 +368,5 @@ For security vulnerabilities, please email security@mantlz.app instead of openin
 
 - **GitHub Discussions**: [Join the conversation](https://github.com/mantlz/mantlz/discussions)
 - **Discord**: [Join our Discord server](https://discord.gg/mantlz) (coming soon)
-- **Twitter**: [@mantlz_app](https://twitter.com/mantlz_app)
+- **Twitter**: [@trymantlz](https://x.com/trymantlz)
 
-## Roadmap
-
-Check out our [public roadmap](https://github.com/mantlz/mantlz/projects) to see what we're working on next!
-
-## License
-
-This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0). See the [LICENSE.md](LICENSE.md) file for details.
-
-### What does AGPL-3.0 mean?
-
-- ✅ **Commercial use**: You can use Mantlz for commercial purposes
-- ✅ **Modification**: You can modify the source code
-- ✅ **Distribution**: You can distribute the software
-- ✅ **Private use**: You can use it privately
-- ⚠️ **Network use**: If you run a modified version on a server, you must provide the source code to users
-- ⚠️ **Same license**: Derivative works must be licensed under AGPL-3.0
-- ⚠️ **State changes**: You must document changes made to the code
-
-## Support
-
-If you like this project, please consider:
-
-- ⭐ **Starring the repository**
-- 🐛 **Reporting bugs**
-- 💡 **Suggesting new features**
-- 🔧 **Contributing code**
-- 📖 **Improving documentation**
-
----
-
-**Made with ❤️ by the open source community**
