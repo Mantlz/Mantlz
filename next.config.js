@@ -1,5 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Fix prettier version conflicts with turbopack
+  serverExternalPackages: [],
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Ensure prettier uses the same version across all modules
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        'prettier': require.resolve('prettier'),
+        'prettier/plugins/html': require.resolve('prettier/plugins/html'),
+        'prettier/standalone': require.resolve('prettier/standalone')
+      };
+    }
+    return config;
+  },
   rewrites: async () => {
     return [
       {
