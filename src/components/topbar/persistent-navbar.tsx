@@ -169,7 +169,9 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                         href="/dashboard/form"
                         className="w-full cursor-pointer"
                       >
-                        <Button variant="outline" className="w-full cursor-pointer bg-muted/90 hover:bg-muted backdrop-blur-sm border justify-start gap-2 rounded-lg border-border">
+                        <Button variant="outline" 
+                            className="h-8 px-2 text-md  bg-orange-500 text-white dark:text-black dark:border-background border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+                        >
                           <Plus className="h-4 w-4" />
                           <span>Create Form</span>
                         </Button>
@@ -353,10 +355,10 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
                 </Link>
               </DropdownMenuItem>
     
-              <DropdownMenuItem asChild className="hover:bg-accent hover:text-accent-foreground p-0 rounded-lg my-1">
+              <DropdownMenuItem asChild className="hover:bg-accent hover:text-accent-foreground text-orange-700 rounded-lg my-1">
                 <Link 
                   href="/dashboard/form"
-                  className="flex items-center gap-2.5 w-full px-2 py-1.5  bg-muted/90 hover:bg-muted backdrop-blur-sm border justify-start  rounded-lg border-border cursor-pointer"
+                            className="h-9 px-2 text-md  bg-orange-500 text-white dark:text-black dark:border-backgroundborder text-sm shadow-zinc-950/30 ring-2 ring-inset ring-white hover:ring-amber-600 transition-[filter] duration-200 hover:brightness-125 active:brightness-95 cursor-pointer"
                 >
                   <Plus className="h-4 w-4" />
                   <span>Create Form</span>

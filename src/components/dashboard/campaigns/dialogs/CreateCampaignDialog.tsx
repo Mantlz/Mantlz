@@ -213,7 +213,8 @@ export function CreateCampaignDialog({
             setOpen(true)
           }}
           size="sm"
-          className="gap-1.5 px-4 hover:scale-[1.02] transition-transform duration-200"
+          className="h-8 px-2 text-md bg-orange-500 text-white dark:text-black dark:border-background border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+
           disabled={!isPremium}
         >
           <PlusCircle className="h-4 w-4" />
@@ -347,9 +348,11 @@ export function CreateCampaignDialog({
               </Button>
               <Button 
                 size="sm"
+                            className="h-8 px-2 text-md gap-1 bg-orange-500 text-white dark:text-black dark:border-background border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+
                 onClick={handleCreateCampaign} 
                 disabled={loading || !isFormValid}
-                className="gap-1"
+
               >
                 {loading ? (
                   "Creating..."

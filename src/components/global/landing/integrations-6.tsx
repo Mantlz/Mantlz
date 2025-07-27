@@ -32,8 +32,8 @@ export default function IntegrationsSection() {
                         <p className="text-muted-foreground">Receive notifications and stay updated with form submissions through your preferred platforms.</p>
 
                         <Button
-                            variant="outline"
-                            className='bg-orange-500 text-black dark:bg-orange-500 dark:text-white'
+                            className="h-10 px-2 text-md bg-orange-500 text-white dark:text-black dark:border-background border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+
                             size="sm"
                             asChild>
                             <Link href="/dashboard">Get Started</Link>
