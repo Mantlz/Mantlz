@@ -29,6 +29,7 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 
 
 interface SearchDialogProps {
@@ -123,12 +124,12 @@ export function SearchDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24">
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative z-50 bg-white dark:bg-zinc-900 rounded-lg shadow-2xl max-w-[90vw] w-[550px] overflow-hidden border border-zinc-200 dark:border-zinc-800">
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm cursor-pointer" onClick={onClose} />
+      <div className="relative z-50 bg-white dark:bg-zinc-900 rounded-lg max-w-[90vw] w-[550px] overflow-hidden border border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">
           <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/50 rounded-lg flex items-center px-3 py-1.5 flex-1 transition-shadow hover:shadow-inner">
             <Search className="mr-2 h-4 w-4 shrink-0 text-gray-400 dark:text-gray-500" />
-            <input 
+            <Input 
               placeholder={`${isProUser ? 'Search' : 'Search'} by email, ID${isProUser ? ', or content' : ''}...`}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -144,11 +145,11 @@ export function SearchDialog({
                 onValueChange={(value) => handleFormSelect(value)}
               >
                 <SelectTrigger 
-                  className="h-9 border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm text-gray-700 dark:text-gray-300 rounded-lg min-w-[140px] focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 dark:focus:ring-orange-400/20 dark:focus:border-orange-400 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all duration-200 shadow-sm hover:shadow-md"
+                  className="h-9 border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm text-gray-700 dark:text-gray-300 rounded-lg min-w-[140px] focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 dark:focus:ring-orange-400/20 dark:focus:border-orange-400 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all duration-200 "
                 >
                   <SelectValue placeholder="Choose a form" />
                 </SelectTrigger>
-                <SelectContent className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-sm rounded-xl overflow-hidden shadow-xl min-w-[200px] max-w-[300px]">
+                <SelectContent className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-sm rounded-xl overflow-hidden  min-w-[200px] max-w-[300px]">
                   <SelectGroup>
                     <div className="p-2 max-h-[300px] overflow-y-auto">
                       <div className="text-xs font-medium text-gray-500 dark:text-gray-400 px-2 py-1 mb-1">
@@ -169,16 +170,11 @@ export function SearchDialog({
                             <span className="font-medium truncate">All Forms</span>
                           </div>
                           {!isProUser && (
-                            <span className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm flex-shrink-0 ml-2">
+                            <span className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-full flex-shrink-0 ml-2">
                               PRO
                             </span>
                           )}
                         </div>
-                        {!isProUser && (
-                          <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                            Search across all forms
-                          </div>
-                        )}
                       </SelectItem>
                       
                       <div className="border-t border-zinc-200 dark:border-zinc-800 my-2"></div>
@@ -204,7 +200,7 @@ export function SearchDialog({
                                 {truncatedName}
                               </span>
                               {form.name.length > 15 && (
-                                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute left-0 top-full mt-1 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs px-2 py-1 rounded shadow-lg z-50 whitespace-nowrap pointer-events-none">
+                                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute left-0 top-full mt-1 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs px-2 py-1 rounded  z-50 whitespace-nowrap pointer-events-none">
                                   {form.name}
                                 </div>
                               )}
@@ -233,7 +229,7 @@ export function SearchDialog({
                   <Filter className={`h-4 w-4 ${Object.keys(advancedFilters || {}).length > 0 ? "text-orange-500" : ""}`} />
                 </button>
               </PopoverTrigger>
-              <PopoverContent className="w-80 p-0 rounded-lg border border-zinc-200 dark:border-zinc-700 shadow-lg bg-white dark:bg-zinc-900" align="end">
+              <PopoverContent className="w-80 p-0 rounded-lg border border-zinc-200 dark:border-zinc-700  bg-white dark:bg-zinc-900" align="end">
                 <div className="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">
                   <h3 className="font-medium text-sm text-gray-900 dark:text-gray-100">Advanced Search</h3>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Pro users can filter with these advanced options</p>
@@ -276,7 +272,7 @@ export function SearchDialog({
                                 tempFilters.timeFrame === period 
                                   ? 'bg-zinc-50 border-orange-200 text-orange-700 dark:bg-zinc-900/30 dark:border-orange-800 dark:text-orange-400' 
                                   : 'bg-zinc-50 border-zinc-200 text-gray-700 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-300'
-                              } hover:shadow-sm transition-all`}
+                              } transition-all`}
                             >
                               {period === 'all' ? 'All Time' : period}
                             </button>
@@ -300,7 +296,7 @@ export function SearchDialog({
                               tempFilters.sortOrder !== 'oldest' 
                                 ? 'bg-zinc-50 border-orange-200 text-orange-700 dark:bg-zinc-900/30 dark:border-orange-800 dark:text-orange-400' 
                                 : 'bg-zinc-50 border-zinc-200 text-gray-700 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-300'
-                            } hover:shadow-sm transition-all`}
+                            } transition-all`}
                           >
                             Newest First
                           </button>
@@ -310,7 +306,7 @@ export function SearchDialog({
                               tempFilters.sortOrder === 'oldest'
                                 ? 'bg-zinc-50 border-orange-200 text-orange-700 dark:bg-zinc-900/30 dark:border-orange-800 dark:text-orange-400' 
                                 : 'bg-zinc-50 border-zinc-200 text-gray-700 dark:bg-zinc-800 dark:border-zinc-700 dark:text-gray-300'
-                            } hover:shadow-sm transition-all`}
+                            }  transition-all`}
                           >
                             Oldest First
                           </button>
@@ -379,7 +375,7 @@ export function SearchDialog({
               >
                 <Filter className="h-4 w-4" />
               </button>
-              <span className="absolute -top-2 -right-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-lg shadow-sm">
+              <span className="absolute -top-2 -right-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-lg">
                 PRO
               </span>
             </div>

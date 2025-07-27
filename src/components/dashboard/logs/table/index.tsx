@@ -319,7 +319,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
             {formsData.forms.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((form) => (
               <div
                 key={form.id}
-                className={`bg-white dark:bg-zinc-900 border ${form.submissionCount > 0 ? 'border-orange-100 dark:border-orange-800/30' : 'border-zinc-200 dark:border-zinc-800/50'} rounded-lg  hover:shadow-md transition-all duration-200 cursor-pointer`}
+                className={`bg-white dark:bg-background border ${form.submissionCount > 0 ? 'border-orange-100 dark:border-orange-800/30' : 'border-zinc-200 dark:border-zinc-800/50'} rounded-lg  hover:shadow-md transition-all duration-200 cursor-pointer`}
                 onClick={() => handleFormClick(form.id)}
               >
                 <div className="p-4 sm:p-5 flex items-center justify-between">

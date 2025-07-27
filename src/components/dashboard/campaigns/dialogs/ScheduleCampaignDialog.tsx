@@ -427,11 +427,13 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
       <Button 
         variant="outline" 
         size="sm" 
-        className="h-7 px-2 text-sm cursor-pointer gap-2 bg-white hover:bg-orange-50 text-orange-600 border-gray-200 dark:bg-zinc-800 dark:hover:bg-orange-900/20 dark:text-orange-400 rounded-lg transition-all duration-200 shadow-sm"
+        className="h-7 text-md bg-orange-500 text-black/70 dark:text-white dark:border-background border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+
+
         onClick={handleScheduleClick}
       >
         <CalendarDays className="h-4 w-4" />
-        Schedule
+        Scheduless
       </Button>
 
       {/* Scheduling Dialog - Only shown for Pro users */}
