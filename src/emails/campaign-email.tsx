@@ -56,7 +56,7 @@ export function CampaignEmail({
       <Text style={styles.footer}>
         If you have any questions, feel free to{' '}
         <Link 
-          href={clickTrackingUrl ? `${clickTrackingUrl}&url=mailto:contact@mantlz.app` : "mailto:contact@mantlz.app"}
+          href={clickTrackingUrl ? `${clickTrackingUrl}&url=mailto:contact@mantlz.com` : "mailto:contact@mantlz.com"}
           style={styles.link}
         >
           contact us

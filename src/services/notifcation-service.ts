@@ -226,7 +226,7 @@ export async function sendDeveloperNotification(
     );
 
     const result = await resend.emails.send({
-      from: form.emailSettings.fromEmail || `notifications@${process.env.NEXT_PUBLIC_APP_DOMAIN || 'mantlz.app'}`,
+      from: form.emailSettings.fromEmail || `notifications@${process.env.NEXT_PUBLIC_APP_DOMAIN || 'mantlz.com'}`,
       to: targetEmail,
       subject: `New Form Submission: ${form.name}`,
       html: htmlContent,

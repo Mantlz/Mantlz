@@ -125,7 +125,7 @@ export function FormSubmissionEmail({
       
       <Section style={{ textAlign: 'center', margin: '32px 0' }}>
         <Button
-          href={clickTrackingUrl ? `${clickTrackingUrl}&url=https://mantlz.app` : "https://mantlz.app"}
+          href={clickTrackingUrl ? `${clickTrackingUrl}&url=https://mantlz.com` : "https://mantlz.com"}
           style={{
             backgroundColor: '#000000',
             color: '#ffffff',

@@ -139,7 +139,7 @@ export class FormService {
       updatedAt: form.updatedAt,
       submissionCount: form._count.submissions,
       emailSettings: {
-        ...(form.emailSettings || { fromEmail: process.env.RESEND_FROM_EMAIL || 'contact@mantlz.app' }),
+        ...(form.emailSettings || { fromEmail: process.env.RESEND_FROM_EMAIL || 'contact@mantlz.com' }),
         // If user is on FREE plan, force disable email notifications
         enabled: isFreeUser ? false : (form.emailSettings?.enabled || false)
       },
@@ -190,7 +190,7 @@ export class FormService {
         emailSettings: {
           create: {
             enabled: false,
-            fromEmail: process.env.RESEND_FROM_EMAIL || 'contact@mantlz.app',
+            fromEmail: process.env.RESEND_FROM_EMAIL || 'contact@mantlz.com',
             subject: `Form Submission Confirmation - ${name}`,
             template: `
               <h1>Thank you for your submission!</h1>

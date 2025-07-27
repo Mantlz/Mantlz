@@ -92,7 +92,7 @@ export async function GET(request: NextRequest) {
 
         // Send the warning email
         const emailResult = await resend.emails.send({
-          from: `notifications@${process.env.NEXT_PUBLIC_APP_DOMAIN || 'mantlz.app'}`,
+          from: `notifications@${process.env.NEXT_PUBLIC_APP_DOMAIN || 'mantlz.com'}`,
           to: user.email,
           subject: `⚠️ Your monthly quota resets in ${daysUntilReset} days - Export your data now!`,
           react: QuotaWarningEmail({

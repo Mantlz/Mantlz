@@ -102,10 +102,10 @@ export default clerkMiddleware(async (auth, req) => {
   
   // Block v1 API routes on the main domain
   if (!isApiSubdomain && url.pathname.startsWith('/api/v1')) {
-    return new NextResponse('Please use api.mantlz.app for v1 API endpoints', { 
+    return new NextResponse('Please use api.mantlz.com for v1 API endpoints', { 
       status: 301,
       headers: {
-        'Location': `https://api.mantlz.app${url.pathname}${url.search}`,
+        'Location': `https://api.mantlz.com${url.pathname}${url.search}`,
       }
     });
   }

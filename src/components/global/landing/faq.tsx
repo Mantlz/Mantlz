@@ -66,7 +66,7 @@ export default function Faq() {
                     <p className="text-muted-foreground  justify-center text-center mt-6 px-8">
                         Can&apos;t find what you&apos;re looking for? Contact our{' '}
                         <Link
-                            href="mailto:contact@mantlz.app"
+                            href="mailto:contact@mantlz.com"
                             className="text-primary font-medium hover:underline">
                             customer support team
                         </Link>

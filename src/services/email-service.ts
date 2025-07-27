@@ -12,7 +12,7 @@ interface EmailOptions {
 
 export async function sendEmail({ to, subject, html, from, replyTo }: EmailOptions) {
   try {
-    const defaultFrom = process.env.DEFAULT_FROM_EMAIL || 'noreply@mantlz.app';
+    const defaultFrom = process.env.DEFAULT_FROM_EMAIL || 'noreply@mantlz.com';
     
     await resend.emails.send({
       from: from || defaultFrom,

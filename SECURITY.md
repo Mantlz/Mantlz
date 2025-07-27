@@ -10,7 +10,7 @@ We take the security of Mantlz seriously. If you discover a security vulnerabili
 
 To report a security vulnerability, please email us at:
 
-**security@mantlz.app**
+**security@mantlz.com**
 
 Please include the following information in your report:
 
@@ -61,4 +61,4 @@ We currently do not have a formal bug bounty program, but we greatly appreciate 
 
 ## Contact
 
-For any questions about this security policy, please contact us at security@mantlz.app.
+For any questions about this security policy, please contact us at security@mantlz.com.

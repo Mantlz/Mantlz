@@ -3,7 +3,7 @@ import { SitemapConfig, generateSitemap } from '@/types/seo'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const sitemapConfig: SitemapConfig = {
-    baseUrl: 'https://mantlz.app',
+    baseUrl: 'https://mantlz.com',
     routes: [
       { path: '/', priority: 1.0, changeFrequency: 'weekly' },
       { path: '/forms/contact', priority: 0.9, changeFrequency: 'monthly' },

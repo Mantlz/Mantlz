@@ -118,11 +118,11 @@ For example:
 
 ```bash
 # Initial request
-curl -X GET "https://api.mantlz.app/api/v1/forms/form_123abc/submissions?limit=10" \
+curl -X GET "https://api.mantlz.com/api/v1/forms/form_123abc/submissions?limit=10" \
   -H "X-API-Key: mk_your_api_key_here"
 
 # Subsequent request using the nextCursor
-curl -X GET "https://api.mantlz.app/api/v1/forms/form_123abc/submissions?limit=10&cursor=sub_345mno" \
+curl -X GET "https://api.mantlz.com/api/v1/forms/form_123abc/submissions?limit=10&cursor=sub_345mno" \
   -H "X-API-Key: mk_your_api_key_here"
 ```
 
@@ -131,7 +131,7 @@ When there are no more results to fetch, the `nextCursor` field will be `null`.
 ## Example Request
 
 ```bash
-curl -X GET "https://api.mantlz.app/api/v1/forms/form_123abc/submissions?limit=10" \
+curl -X GET "https://api.mantlz.com/api/v1/forms/form_123abc/submissions?limit=10" \
   -H "X-API-Key: mk_your_api_key_here"
 ```
 
@@ -140,7 +140,7 @@ curl -X GET "https://api.mantlz.app/api/v1/forms/form_123abc/submissions?limit=1
 ```javascript
 async function listSubmissions(formId, limit = 50, cursor = null) {
   try {
-    let url = `https://api.mantlz.app/api/v1/forms/${formId}/submissions?limit=${limit}`;
+    let url = `https://api.mantlz.com/api/v1/forms/${formId}/submissions?limit=${limit}`;
     
     if (cursor) {
       url += `&cursor=${cursor}`;

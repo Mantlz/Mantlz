@@ -88,10 +88,10 @@ const TermsOfService: React.FC = () => (
 
             <div className="p-6 rounded-xl bg-white dark:bg-zinc-900 shadow-sm text-center border border-neutral-200 dark:border-zinc-800">
               <h3 className="text-neutral-800 dark:text-neutral-200 font-medium mb-3">Contact Us</h3>
-              <a href="mailto:contact@mantlz.app" 
+              <a href="mailto:contact@mantlz.com" 
                 className="inline-flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors">
                 <Mail className="w-4 h-4" />
-                contact@mantlz.app
+                contact@mantlz.com
               </a>
             </div>
           </div>

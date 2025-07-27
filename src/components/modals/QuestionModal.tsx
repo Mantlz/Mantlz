@@ -18,13 +18,13 @@ const helpOptions = [
     id: "documentation",
     icon: <Book className="h-8 w-8 text-indigo-500" />,
     label: "Documentation",
-    href: "https://doc.mantlz.app"
+    href: "https://doc.mantlz.com"
   },
   {
     id: "support",
     icon: <HelpCircle className="h-8 w-8 text-blue-500" />,
     label: "Support",
-    href: "mailto:contact@mantlz.app"
+    href: "mailto:contact@mantlz.com"
   },
   {
     id: "feature-request",
@@ -36,7 +36,7 @@ const helpOptions = [
     id: "contact-sales",
     icon: <ShoppingCart className="h-8 w-8 text-amber-500" />,
     label: "Contact sales",
-    href: "mailto:sale@mantlz.app"
+    href: "mailto:sale@mantlz.com"
   }
 ];
 

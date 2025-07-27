@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://api.mantlz.app';
+export const API_BASE_URL = 'https://api.mantlz.com';
 
 export const API_ENDPOINTS = {
   SUBMIT_FORM: '/v1/forms/submit',

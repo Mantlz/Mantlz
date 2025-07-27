@@ -295,7 +295,7 @@ export async function POST(req: Request) {
         }
 
         const resendClient = new Resend(resendApiKey);
-        const fromEmail = form.emailSettings.fromEmail || process.env.RESEND_FROM_EMAIL || 'contact@mantlz.app';
+        const fromEmail = form.emailSettings.fromEmail || process.env.RESEND_FROM_EMAIL || 'contact@mantlz.com';
         const subject = form.emailSettings.subject || `Form Submission Confirmation - ${form.name}`;
 
         const htmlContent = await render(
@@ -309,7 +309,7 @@ export async function POST(req: Request) {
           from: fromEmail,
           to: submissionData.email,
           subject,
-          replyTo: form.emailSettings.replyTo || 'contact@mantlz.app',
+          replyTo: form.emailSettings.replyTo || 'contact@mantlz.com',
           html: htmlContent,
         });
 
@@ -422,7 +422,7 @@ export async function POST(req: Request) {
 
     // Define default redirect URL
     const defaultRedirectUrl = process.env.MANTLZ_THANK_YOU_URL || 
-                              `${process.env.NEXT_PUBLIC_APP_URL || 'https://mantlz.app'}/thank-you`;
+                              `${process.env.NEXT_PUBLIC_APP_URL || 'https://mantlz.com'}/thank-you`;
     
     // Handle redirect URLs based on the user's plan
     if (redirectUrl && redirectUrl.trim() !== '') {

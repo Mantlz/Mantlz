@@ -12,7 +12,7 @@ The Mantlz API allows you to programmatically interact with your forms, submissi
 All API requests should be made to the following base URL:
 
 ```
-https://api.mantlz.app/api/v1
+https://api.mantlz.com/api/v1
 ```
 
 ## Authentication
@@ -69,7 +69,7 @@ GET /forms/list
 **Example Request:**
 
 ```bash
-curl -X GET "https://api.mantlz.app/api/v1/forms/list?limit=10" \
+curl -X GET "https://api.mantlz.com/api/v1/forms/list?limit=10" \
   -H "X-API-Key: mk_your_api_key_here"
 ```
 
@@ -103,7 +103,7 @@ GET /forms/{formId}
 **Example Request:**
 
 ```bash
-curl -X GET "https://api.mantlz.app/api/v1/forms/form_123abc" \
+curl -X GET "https://api.mantlz.com/api/v1/forms/form_123abc" \
   -H "X-API-Key: mk_your_api_key_here"
 ```
 
@@ -140,7 +140,7 @@ GET /forms/{formId}/users-joined
 **Example Request:**
 
 ```bash
-curl -X GET "https://api.mantlz.app/api/v1/forms/form_123abc/users-joined" \
+curl -X GET "https://api.mantlz.com/api/v1/forms/form_123abc/users-joined" \
   -H "X-API-Key: mk_your_api_key_here"
 ```
 
@@ -180,7 +180,7 @@ POST /forms/submit
 **Example Request:**
 
 ```bash
-curl -X POST "https://api.mantlz.app/api/v1/forms/submit" \
+curl -X POST "https://api.mantlz.com/api/v1/forms/submit" \
   -H "X-API-Key: mk_your_api_key_here" \
   -H "Content-Type: application/json" \
   -d '{
@@ -223,7 +223,7 @@ GET /forms/{formId}/submissions
 **Example Request:**
 
 ```bash
-curl -X GET "https://api.mantlz.app/api/v1/forms/form_123abc/submissions?limit=10" \
+curl -X GET "https://api.mantlz.com/api/v1/forms/form_123abc/submissions?limit=10" \
   -H "X-API-Key: mk_your_api_key_here"
 ```
 
@@ -272,7 +272,7 @@ GET /forms/{formId}/analytics
 **Example Request:**
 
 ```bash
-curl -X GET "https://api.mantlz.app/api/v1/forms/form_123abc/analytics?period=week" \
+curl -X GET "https://api.mantlz.com/api/v1/forms/form_123abc/analytics?period=week" \
   -H "X-API-Key: mk_your_api_key_here"
 ```
 
@@ -330,7 +330,7 @@ If you're using the Mantlz SDK, the API is automatically used behind the scenes.
 // Example using fetch API
 async function submitFeedback(formData) {
   try {
-    const response = await fetch('https://api.mantlz.app/api/v1/forms/submit', {
+    const response = await fetch('https://api.mantlz.com/api/v1/forms/submit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -61,7 +61,7 @@ The `data` object should contain key-value pairs corresponding to the form field
 ## Example Request
 
 ```bash
-curl -X POST "https://api.mantlz.app/api/v1/forms/submit" \
+curl -X POST "https://api.mantlz.com/api/v1/forms/submit" \
   -H "X-API-Key: mk_your_api_key_here" \
   -H "Content-Type: application/json" \
   -d '{
@@ -125,7 +125,7 @@ Returned when the rate limit is exceeded.
 ```javascript
 async function submitForm(formId, formData, redirectUrl = null) {
   try {
-    const response = await fetch('https://api.mantlz.app/api/v1/forms/submit', {
+    const response = await fetch('https://api.mantlz.com/api/v1/forms/submit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

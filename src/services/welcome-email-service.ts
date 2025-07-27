@@ -20,7 +20,7 @@ export async function sendWelcomeEmail({ userName, userEmail, resendApiKey }: Se
 
     // Send the email
     const result = await resend.emails.send({
-      from: `welcome@${process.env.NEXT_PUBLIC_APP_DOMAIN || 'mantlz.app'}`,
+      from: `welcome@${process.env.NEXT_PUBLIC_APP_DOMAIN || 'mantlz.com'}`,
       to: userEmail,
       subject: 'Welcome to Mantlz!',
       html: htmlContent,

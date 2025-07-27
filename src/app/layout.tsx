@@ -37,7 +37,7 @@ const monoFont = Space_Mono({
 const seoConfig: SeoConfig = {
   title: "Mantlz - Build Custom Forms with Ease",
   description: "Create powerful, customizable forms with Mantlz. The ultimate form builder platform for businesses and developers. Build, deploy, and analyze forms effortlessly.",
-  baseUrl: 'https://mantlz.app',
+  baseUrl: 'https://mantlz.com',
   siteName: 'Mantlz',
   twitterHandle: '@trymantlz',
   googleSiteVerification: 'lTqIuvXz5sq4jT9YOLyja5LLMfvKAiZF3g5fTEa70fI',
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     ...generateMetadata(seoConfig).openGraph,
     title: 'Mantlz - Professional Form Builder Platform',
     description: 'Create powerful, customizable forms with Mantlz. The ultimate form builder platform for businesses and developers. Build, deploy, and analyze forms effortlessly.',
-    url: 'https://mantlz.app',
+    url: 'https://mantlz.com',
     siteName: 'Mantlz',
     images: [
       {

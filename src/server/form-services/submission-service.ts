@@ -135,10 +135,10 @@ export class SubmissionService {
         );
 
         await resend.emails.send({
-          from: form.emailSettings?.fromEmail || 'contact@mantlz.app',
+          from: form.emailSettings?.fromEmail || 'contact@mantlz.com',
           to: processedData.email,
           subject: form.emailSettings?.subject || `Confirmation: ${form.name} Submission`,
-          replyTo: 'contact@mantlz.app',
+          replyTo: 'contact@mantlz.com',
           html: htmlContent
         });
 

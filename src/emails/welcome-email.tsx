@@ -30,7 +30,7 @@ export function WelcomeEmail({ userName }: WelcomeEmailProps) {
         
         <Section style={{ textAlign: 'center', margin: '32px 0' }}>
           <Button
-            href="https://doc.mantlz.app"
+            href="https://doc.mantlz.com"
             style={{
               backgroundColor: '#000000',
               color: '#ffffff',

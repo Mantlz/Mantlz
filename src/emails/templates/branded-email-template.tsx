@@ -96,7 +96,7 @@ export function BrandedEmailTemplate({
               © {new Date().getFullYear()} Mantlz • All rights reserved
             </Text>
             <Text style={styles.footerText}>
-              <Link href={clickTrackingUrl ? `${clickTrackingUrl}&url=mailto:contact@mantlz.app` : "mailto:contact@mantlz.app"} style={styles.link}>contact@mantlz.app</Link>
+              <Link href={clickTrackingUrl ? `${clickTrackingUrl}&url=mailto:contact@mantlz.com` : "mailto:contact@mantlz.com"} style={styles.link}>contact@mantlz.com</Link>
             </Text>
             <Text style={styles.footerText}>
               {unsubscribeUrl && (

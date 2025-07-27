@@ -30,11 +30,11 @@ const Footer = () => {
             <h3 className="text-lg font-semibold text-zinc-800 dark:text-white mb-4">Quick Links</h3>
             <nav className="flex flex-col items-center md:items-start space-y-3">
               <a
-                href="mailto:contact@mantlz.app"
+                href="mailto:contact@mantlz.com"
                 className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors flex items-center group"
               >
                 <Mail className="h-4 w-4 mr-2 text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-white transition-colors" />
-                contact@mantlz.app
+                contact@mantlz.com
               </a>
               <a
                 href="/privacy-policy"

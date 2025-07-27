@@ -6,7 +6,7 @@ I am building an SDK that makes adding forms into your application easy. The goa
 
 Can you give me some feedback about the features necessary for such a platform? Here is the current version:
 
-https://mantlz.app
+https://mantlz.com
 
 ## Current Features:
 - **Simple Integration**: Add forms to any React/Next.js app with a single component

@@ -368,7 +368,7 @@ export const campaignRouter = j.router({
           
           // Send email
           await resend.emails.send({
-            from: campaign.form.emailSettings?.fromEmail || 'contact@mantlz.app',
+            from: campaign.form.emailSettings?.fromEmail || 'contact@mantlz.com',
             to: recipient.email,
             subject: campaign.subject,
             html: emailHtml,

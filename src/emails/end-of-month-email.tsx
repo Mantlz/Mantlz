@@ -82,7 +82,7 @@ export function EndOfMonthEmail({
 
             <Section style={linkSection}>
               <Link
-                href={`https://${process.env.NEXT_PUBLIC_APP_DOMAIN || 'mantlz.app'}/dashboard`}
+                href={`https://${process.env.NEXT_PUBLIC_APP_DOMAIN || 'mantlz.com'}/dashboard`}
                 style={button}
               >
                 Go to Dashboard

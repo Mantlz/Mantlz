@@ -15,7 +15,7 @@ Disallow: /(auth)/
 Disallow: /unsubscribe/
 
 # Sitemap location - Next.js automatically generates it at /sitemap.xml
-Sitemap: https://mantlz.app/sitemap.xml
+Sitemap: https://mantlz.com/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 1 

@@ -3,7 +3,6 @@ import { db } from '@/lib/db';
 import { resend } from '@/services/email-service';
 import { EndOfMonthEmail } from '@/emails/end-of-month-email';
 import { getQuotaByPlan } from '@/config/usage';
-import { startOfMonth } from 'date-fns';
 
 // Vercel Cron Job: This function will be called by Vercel's cron job scheduler
 // See vercel.json configuration for the schedule
@@ -199,7 +198,7 @@ export async function GET(request: NextRequest) {
         // Send end-of-month notification email
         try {
           const emailResult = await resend.emails.send({
-            from: `notifications@${process.env.NEXT_PUBLIC_APP_DOMAIN || 'mantlz.app'}`,
+            from: `notifications@${process.env.NEXT_PUBLIC_APP_DOMAIN || 'mantlz.com'}`,
             to: user.email,
             subject: `🔄 Your monthly quota has been reset - Fresh start!`,
             react: EndOfMonthEmail({
