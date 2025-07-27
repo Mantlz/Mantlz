@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { FormFieldItem } from './FormFieldItem';
 import { FormField } from '../types';
-//ProductDisplayMode in type.ts
 import { PlusCircleIcon, CheckCircleIcon, ArrowDownIcon, GripHorizontal, InfoIcon, CrownIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { 
@@ -23,10 +22,7 @@ import {
 import { restrictToVerticalAxis, restrictToParentElement } from '@dnd-kit/modifiers';
 import { useSubscription } from '@/hooks/useSubscription';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-// import ProductField from './product-field';
-// import { useQuery } from "@tanstack/react-query";
-// import { client } from "@/lib/client";
-// import { Decimal } from '@prisma/client/runtime/library';
+
 
 interface FieldConfigurationTabProps {
   formFields: FormField[];
