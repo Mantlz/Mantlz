@@ -129,8 +129,8 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
 
       {/* View Toggle Skeleton */}
       <div className="flex justify-end mb-2">
-        <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg p-1 flex items-center">
-          <div className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-700">
+        <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg p-1 gap-1 flex items-center">
+          <div className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-700 border border-zinc-200 dark:border-zinc-800">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 dark:text-gray-500">
               <rect width="7" height="7" x="3" y="3" rx="1" />
               <rect width="7" height="7" x="14" y="3" rx="1" />
@@ -138,7 +138,7 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
               <rect width="7" height="7" x="3" y="14" rx="1" />
             </svg>
           </div>
-          <div className="p-1.5 rounded-lg">
+          <div className="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 dark:text-gray-500">
               <line x1="3" x2="21" y1="6" y2="6" />
               <line x1="3" x2="21" y1="12" y2="12" />

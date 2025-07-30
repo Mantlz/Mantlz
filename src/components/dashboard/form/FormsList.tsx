@@ -204,11 +204,12 @@ export function FormsList({
       {/* View Toggle */}
       {forms.length > 0 && (
         <div className="flex justify-end mb-2">
-          <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg p-1 flex items-center">
-            <button
+          <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg p-1 gap-1 flex items-center">
+            <Button
+            variant="outline"
               onClick={() => handleViewModeChange('grid')}
               className={`p-1.5 rounded-lg ${viewMode === 'grid' 
-                ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
+                ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white ' 
                 : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
               aria-label="Grid view"
             >
@@ -218,8 +219,10 @@ export function FormsList({
                 <rect width="7" height="7" x="14" y="14" rx="1" />
                 <rect width="7" height="7" x="3" y="14" rx="1" />
               </svg>
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="outline"
+
               onClick={() => handleViewModeChange('list')}
               className={`p-1.5 rounded-lg ${viewMode === 'list' 
                 ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
@@ -231,7 +234,7 @@ export function FormsList({
                 <line x1="3" x2="21" y1="12" y2="12" />
                 <line x1="3" x2="21" y1="18" y2="18" />
               </svg>
-            </button>
+            </Button>
           </div>
         </div>
       )}
