@@ -10,7 +10,7 @@ export default function CustomizeFormSection() {
                     <p className="mt-4 text-lg md:text-xl text-muted-foreground">Easily design and personalise forms to fit your brand&lsquo;s identity and look great on any device.</p>
                 </div>
                 <div className="relative">
-                    <Card className="relative overflow-hidden mb-12 border-amber-600">
+                    <Card className="relative overflow-hidden mb-12 border dark:border-background">
                         <CardContent className="pt-6 px-6 py-8">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                                 <div>
@@ -104,7 +104,7 @@ export default function CustomizeFormSection() {
 
 const CustomizationFeature = ({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) => {
     return (
-        <Card className="relative overflow-hidden border-amber-600">
+        <Card className="relative overflow-hidden border dark:border-background">
             <CardContent className="pt-6">
                 <div className="relative mx-auto flex aspect-square size-16 rounded-full border before:absolute before:-inset-2 before:rounded-full before:border dark:border-white/10 dark:before:border-white/5">
                     {icon}

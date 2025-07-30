@@ -10,7 +10,7 @@ export default function OurServices() {
                     <h2 className="text-balance text-4xl font-semibold lg:text-5xl">Form solutions for every need</h2>
                     <p className="mt-4">Create, customize, and manage powerful forms with our intuitive platform</p>
                 </div>
-                <Card className=" @min-4xl:max-w-full @min-4xl:grid-cols-3 @min-4xl:divide-x @min-4xl:divide-y-0 mx-auto mt-8 grid max-w-sm divide-y overflow-hidden shadow-zinc-950/5 *:text-center md:mt-16 border-amber-600">
+                <Card className=" @min-4xl:max-w-full @min-4xl:grid-cols-3 @min-4xl:divide-x @min-4xl:divide-y-0 mx-auto mt-8 grid max-w-sm divide-y overflow-hidden shadow-zinc-950/5 *:text-center md:mt-16 border dark:border-background">
                     <div className="group shadow-zinc-950/5">
                         <CardHeader className="pb-3">
                             <CardDecorator>

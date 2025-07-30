@@ -12,7 +12,7 @@ export default function FeaturesSection() {
                 </div>
                 <div className="relative">
                     <div className="relative z-10 grid grid-cols-5 gap-3">
-                        <Card className="relative col-span-full border-amber-600 flex overflow-hidden lg:col-span-2">
+                        <Card className="relative col-span-full border dark:border-background flex overflow-hidden lg:col-span-2">
                             <CardContent className="relative m-auto size-fit pt-6">
                                 <div className="relative flex h-24 w-56 items-center">
                                     <svg
@@ -30,7 +30,7 @@ export default function FeaturesSection() {
                                 <h2 className="mt-6 text-center text-3xl font-semibold">Customizable</h2>
                             </CardContent>
                         </Card>
-                        <Card className="relative col-span-full overflow-hidden sm:col-span-3 lg:col-span-3 border-amber-600">
+                        <Card className="relative col-span-full overflow-hidden sm:col-span-3 lg:col-span-3 border dark:border-background">
                             <CardContent className="pt-6">
                                 <div className="relative mx-auto flex aspect-square size-32 rounded-full border before:absolute before:-inset-2 before:rounded-full before:border dark:border-white/10 dark:before:border-white/5">
                                     <Shield
@@ -44,7 +44,7 @@ export default function FeaturesSection() {
                                 </div>
                             </CardContent>
                         </Card>
-                        <Card className="relative col-span-full overflow-hidden sm:col-span-3 border-amber-600 lg:col-span-2">
+                        <Card className="relative col-span-full overflow-hidden sm:col-span-3 border dark:border-background lg:col-span-2">
                             <CardContent className="pt-6">
                                 <div className="pt-6 lg:px-6">
                                     <svg
@@ -115,7 +115,7 @@ export default function FeaturesSection() {
                                 </div>
                             </CardContent>
                         </Card>
-                        <Card className="card variant-outlined relative col-span-full overflow-hidden border-amber-600 lg:col-span-3">
+                        <Card className="card variant-outlined relative col-span-full overflow-hidden border dark:border-background lg:col-span-3">
                             <CardContent className="grid pt-6 sm:grid-cols-2">
                                 <div className="relative z-10 flex flex-col justify-between space-y-12 lg:space-y-6">
                                     <div className="relative flex aspect-square size-12 rounded-full border before:absolute before:-inset-2 before:rounded-full before:border dark:border-white/10 dark:before:border-white/5">
