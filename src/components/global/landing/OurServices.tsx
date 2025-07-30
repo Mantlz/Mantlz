@@ -4,64 +4,52 @@ import { ReactNode } from 'react'
 
 export default function OurServices() {
     return (
-        <section className=" py-16 md:py-32 ">
-            <div className="@container mx-auto max-w-5xl px-6">
-                <div className="text-center">
-                    <h2 className="text-balance text-4xl font-semibold lg:text-5xl">Form solutions for every need</h2>
-                    <p className="mt-4">Create, customize, and manage powerful forms with our intuitive platform</p>
+        <section className="py-16 md:py-32">
+            <div className="@container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-12 md:mb-16">
+                    <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+                        <span className="text-sm font-medium text-primary">Our Services</span>
+                    </div>
+                    <h2 className="text-balance text-3xl sm:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 leading-tight">Form solutions for every need</h2>
+                    <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">Create, customize, and manage powerful forms with our intuitive platform</p>
                 </div>
-                <Card className=" @min-4xl:max-w-full @min-4xl:grid-cols-3 @min-4xl:divide-x @min-4xl:divide-y-0 mx-auto mt-8 grid max-w-sm divide-y overflow-hidden shadow-zinc-950/5 *:text-center md:mt-16 border dark:border-background">
-                    <div className="group shadow-zinc-950/5">
-                        <CardHeader className="pb-3">
-                            <CardDecorator>
-                                <Zap
-                                    className="size-6"
-                                    aria-hidden
-                                />
-                            </CardDecorator>
-
-                            <h3 className="mt-6 font-medium">Form Builder</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+                    <Card className="group relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-lg hover:shadow-xl hover:border-primary/30">
+                        <CardHeader className="pb-4">
+                            <div className="relative flex aspect-square size-16 rounded-2xl items-center justify-center transition-all duration-300 group-hover:scale-110 bg-gradient-to-br from-muted/40 to-muted/20 ring-1 ring-muted/30 group-hover:ring-primary/40 mb-4">
+                                <Zap className="size-7 text-primary transition-all duration-300" aria-hidden />
+                            </div>
+                            <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">Form Builder</h3>
                         </CardHeader>
-
                         <CardContent>
-                            <p className="text-sm">Powerful and intuitive form builder with customizable templates, field types, and styling options to match your brand.</p>
+                            <p className="text-sm text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-200">Powerful and intuitive form builder with customizable templates, field types, and styling options to match your brand.</p>
                         </CardContent>
-                    </div>
+                    </Card>
 
-                    <div className="group shadow-zinc-950/5">
-                        <CardHeader className="pb-3">
-                            <CardDecorator>
-                                <Settings2
-                                    className="size-6"
-                                    aria-hidden
-                                />
-                            </CardDecorator>
-
-                            <h3 className="mt-6 font-medium">Campaign Management</h3>
+                    <Card className="group relative overflow-hidden rounded-2xl  border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-lg hover:shadow-xl hover:border-primary/30">
+                        <CardHeader className="pb-4">
+                            <div className="relative flex aspect-square size-16 rounded-2xl items-center justify-center transition-all duration-300 group-hover:scale-110 bg-gradient-to-br from-muted/40 to-muted/20 ring-1 ring-muted/30 group-hover:ring-primary/40 mb-4">
+                                <Settings2 className="size-7 text-primary transition-all duration-300" aria-hidden />
+                            </div>
+                            <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">Campaign Management</h3>
                         </CardHeader>
-
                         <CardContent>
-                            <p className="mt-3 text-sm">Create and manage form campaigns with scheduling, analytics, and integrations for Standard and Pro plans.</p>
+                            <p className="text-sm text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-200">Create and manage form campaigns with scheduling, analytics, and integrations for Standard and Pro plans.</p>
                         </CardContent>
-                    </div>
+                    </Card>
 
-                    <div className="group shadow-zinc-950/5">
-                        <CardHeader className="pb-3">
-                            <CardDecorator>
-                                <Sparkles
-                                    className="size-6"
-                                    aria-hidden
-                                />
-                            </CardDecorator>
-
-                            <h3 className="mt-6 font-medium">Integrations</h3>
+                    <Card className="group relative overflow-hidden rounded-2xl  border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-lg hover:shadow-xl hover:border-primary/30">
+                        <CardHeader className="pb-4">
+                            <div className="relative flex aspect-square size-16 rounded-2xl items-center justify-center transition-all duration-300 group-hover:scale-110 bg-gradient-to-br from-muted/40 to-muted/20 ring-1 ring-muted/30 group-hover:ring-primary/40 mb-4">
+                                <Sparkles className="size-7 text-primary transition-all duration-300" aria-hidden />
+                            </div>
+                            <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">Integrations</h3>
                         </CardHeader>
-
                         <CardContent>
-                            <p className="mt-3 text-sm">Seamlessly connect with tools like Slack, Discord, and email services to streamline your workflow and data collection.</p>
+                            <p className="text-sm text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-200">Seamlessly connect with tools like Slack, Discord, and email services to streamline your workflow and data collection.</p>
                         </CardContent>
-                    </div>
-                </Card>
+                    </Card>
+                </div>
             </div>
         </section>
     )
