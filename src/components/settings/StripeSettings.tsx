@@ -9,7 +9,7 @@ export default function StripeSettings() {
   return (
     <div className="w-full mx-auto">
       <div className="w-full space-y-4 pr-4">
-        <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+        <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg ">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center">
               <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
@@ -27,7 +27,7 @@ export default function StripeSettings() {
 
         <ScrollArea className="h-[450px] w-full">
           {/* Work in Progress Banner */}
-          <div className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+          <div className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg ">
             <p className="text-sm text-zinc-700 dark:text-zinc-300 mb-3">
               We&apos;re currently working on integrating Stripe payments into our platform. This feature will allow you to:
             </p>

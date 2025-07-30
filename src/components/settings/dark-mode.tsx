@@ -27,14 +27,14 @@ const ThemeOption: React.FC<ThemeOptionProps> = React.memo(({ type, isSelected, 
         'hover:shadow-md dark:hover:shadow-md/20',
         'hover:-translate-y-0.5',
         // Border and background
-        'bg-white dark:bg-zinc-900',
+        'bg-white dark:bg-background',
         'border-zinc-200 dark:border-zinc-800',
         // Selected state
         isSelected && [
           'border-zinc-200 dark:border-zinc-600',
           'shadow-md dark:shadow-lg/10',
           '-translate-y-0.5',
-          'bg-white dark:bg-zinc-900'
+          'bg-white dark:bg-background'
         ]
       )}
       onClick={onClick}
@@ -42,7 +42,7 @@ const ThemeOption: React.FC<ThemeOptionProps> = React.memo(({ type, isSelected, 
       {/* Gradient overlay */}
       <div className={cn(
         "absolute inset-0 opacity-0 transition-opacity duration-150",
-        "bg-gradient-to-br from-zinc-100/40 via-transparent to-zinc-100/40 dark:from-zinc-800/20 dark:to-zinc-800/20",
+        "bg-gradient-to-br from-amber-600/40 via-transparent to-amber-600/40 dark:from-amber-600/20 dark:to-amber-600/20",
         "group-hover:opacity-100"
       )} />
 
@@ -80,7 +80,7 @@ const ThemeOption: React.FC<ThemeOptionProps> = React.memo(({ type, isSelected, 
             "size-5 rounded-lg",
             "transition-colors duration-150",
             "border",
-            isSelected ? "bg-zinc-900 border-zinc-800 dark:bg-white dark:border-zinc-200" : "bg-zinc-200 border-zinc-300 dark:bg-zinc-800 dark:border-zinc-700",
+            isSelected ? "bg-background border-zinc-800 dark:bg-white dark:border-zinc-200" : "bg-zinc-200 border-zinc-300 dark:bg-zinc-800 dark:border-zinc-700",
             "group-hover:bg-zinc-800 group-hover:border-zinc-700 dark:group-hover:bg-zinc-300 dark:group-hover:border-zinc-200"
           )}>
             <Check className={cn(
@@ -117,7 +117,7 @@ export default function DarkModeToggle() {
         {[...Array(3)].map((_, i) => (
           <div 
             key={i} 
-            className="h-[160px] animate-pulse bg-zinc-100/5 dark:bg-zinc-800/5 rounded-lg border border-zinc-200 dark:border-zinc-800"
+            className="h-[160px] animate-pulse bg-background/5 dark:bg-background/5 rounded-lg border border-zinc-200 dark:border-zinc-800"
           />
         ))}
       </div>

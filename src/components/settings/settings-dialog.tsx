@@ -93,8 +93,8 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
           "max-w-[1100px]",
           "h-[600px]",
           "border-2 border-zinc-300 dark:border-zinc-800",
-          "shadow-[5px_5px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[5px_5px_0px_0px_rgba(0,0,0,0.3)]",
-          "bg-white dark:bg-zinc-950",
+          //"shadow-[5px_5px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[5px_5px_0px_0px_rgba(0,0,0,0.3)]",
+          "bg-background dark:bg-background",
           "rounded-lg"
         )}>
           <DialogTitle className="sr-only">Settings</DialogTitle>
@@ -109,9 +109,9 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
                 className={cn(
                   "hidden md:flex border-r w-[200px]",
                   // Light mode - light gray sidebar
-                  "bg-zinc-100 border-zinc-200",
+                  "bg-background border-zinc-200",
                   // Dark mode - dark gray sidebar
-                  "dark:bg-zinc-900 dark:border-zinc-800"
+                  "dark:bg-background dark:border-zinc-800"
                 )}
               >
                 <SidebarContent>
@@ -141,10 +141,10 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
                                 "dark:hover:bg-zinc-800 dark:hover:text-white",
                                 // Active state
                                 item.name === selectedTab && [
-                                  "bg-zinc-200 text-zinc-900 border-zinc-300",
-                                  "dark:bg-zinc-800 dark:text-white dark:border-zinc-700",
-                                  "shadow-[2px_2px_0px_0px_rgba(0,0,0,0.05)]",
-                                  "dark:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)]"
+                                  "bg-accent text-zinc-900 border-zinc-300",
+                                  "dark:bg-accent dark:text-white dark:border-zinc-700",
+                                 // "shadow-[2px_2px_0px_0px_rgba(0,0,0,0.05)]",
+                                  //"dark:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)]"
                                 ]
                               )}
                             >
@@ -172,9 +172,9 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
               </Sidebar>
 
               {/* Content Area - Subtle retro style */}
-              <main className="flex flex-1 flex-col overflow-hidden bg-white dark:bg-zinc-950">
+              <main className="flex flex-1 flex-col overflow-hidden bg-background dark:bg-background">
                 <div className="flex flex-1 flex-col overflow-y-auto">
-                  <div className="flex-1 p-8">
+                  <div className="flex-1 p-8 ">
                     {selectedTab === 'Appearance' && <AppearanceSettings />}
                     {selectedTab === 'Accessibility' && <AccessibilitySettings />}
                     {selectedTab === 'Billing' && <BillingSettings />}

@@ -248,7 +248,7 @@ export default function BillingSettings() {
   const renderContent = () => {
     // Create a common header component that's always visible
     const headerContent = (
-      <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+      <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg ">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center">
             <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
@@ -302,7 +302,7 @@ export default function BillingSettings() {
             {headerContent}
 
             {/* Current Plan Card */}
-            <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+            <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background">
               <CardHeader className="pb-2 pt-4 px-5">
                 <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -401,7 +401,7 @@ export default function BillingSettings() {
             </Card>
 
             {/* Invoices Section */}
-            <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+            <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background">
               <CardHeader className="pb-2 pt-4 px-5">
                 <div className="flex items-center justify-between">
                   <div>

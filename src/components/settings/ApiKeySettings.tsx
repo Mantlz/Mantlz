@@ -121,7 +121,7 @@ export default function ApiKeySettings() {
 
     return (
       <>
-        <Alert variant="destructive" className="bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-900">
+        <Alert variant="destructive" className="bg-background dark:bg-background border-zinc-200 dark:border-zinc-900">
           <AlertCircle className="h-4 w-4 text-red-500" />
           <AlertDescription className="text-red-700 dark:text-red-500">
             API keys provide full access to your account. Keep them secure and never share them with anyone.
@@ -129,7 +129,7 @@ export default function ApiKeySettings() {
         </Alert>
 
         {apiKey ? (
-          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm min-h-[250px] w-full">
+          <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background min-h-[250px] w-full">
             <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
               <div>
                 <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center gap-2">
@@ -190,7 +190,7 @@ export default function ApiKeySettings() {
             </CardContent>
           </Card>
         ) : (
-          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm min-h-[250px]">
+          <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-backgroundmin-h-[250px]">
             <CardHeader className="pb-3 pt-4 px-5">
               <CardTitle className="text-zinc-900 dark:text-white text-sm">
                 Create New API Key
@@ -234,7 +234,7 @@ export default function ApiKeySettings() {
   return (
     <div className="w-full mx-auto">
       <div className="w-full space-y-4 pr-4">
-        <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+        <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg ">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center">
               <h2 className="text-base font-semibold text-zinc-900 dark:text-white">

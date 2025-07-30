@@ -131,7 +131,7 @@ export function AdvancedSettings() {
   const renderContent = () => {
     // Create a common header component that's always visible
     const headerContent = (
-      <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+      <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center">
             <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
@@ -183,7 +183,7 @@ export function AdvancedSettings() {
           <div className="w-full space-y-6 pr-4">
             {headerContent}
 
-            <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+            <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background">
               <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
                 <div>
                   <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
@@ -223,7 +223,7 @@ export function AdvancedSettings() {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3  px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
                       <div className="flex items-center gap-4 flex-1">
                         <div className="bg-white dark:bg-zinc-900 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
                           <Bell className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />

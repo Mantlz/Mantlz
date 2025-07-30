@@ -147,7 +147,7 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
     <div className={`w-full max-w-4xl mx-auto ${className || ''}`}>
       <ScrollArea className="h-[550px]">
         <div className="w-full space-y-4 pr-4">
-          <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+          <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg ">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center">
                 <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
@@ -160,7 +160,7 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
             </p>
           </header>
 
-          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+          <Card className="border-zinc-200 dark:border-zinc-800 ">
             <CardHeader className="pb-3 pt-4 px-5">
               <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
                 <Eye className="h-4 w-4 mr-2 text-zinc-500" />
@@ -173,7 +173,7 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
             
             <CardContent className="px-5 pb-4 space-y-3">
               {/* High Contrast */}
-              <div className="flex items-center justify-between gap-3 bg-zinc-100/50 dark:bg-zinc-950/50 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm opacity-75">
+              <div className="flex items-center justify-between gap-3  px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm opacity-75">
                 <div className="flex items-center gap-4">
                   <div className="bg-white/50 dark:bg-zinc-900/50 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
                     <Eye className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
@@ -196,7 +196,7 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
               </div>
 
               {/* Larger Text */}
-              <div className="flex items-center justify-between gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
+              <div className="flex items-center justify-between gap-3  px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800">
                 <div className="flex items-center gap-4">
                   <div className="bg-white dark:bg-zinc-900 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
                     <Type className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
@@ -228,7 +228,7 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
             </CardContent>
           </Card>
 
-          <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+          <Card className="border-zinc-200 dark:border-zinc-800">
             <CardHeader className="pb-3 pt-4 px-5">
               <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
                 <MousePointer2 className="h-4 w-4 mr-2 text-zinc-500" />
@@ -240,7 +240,7 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
             </CardHeader>
             
             <CardContent className="px-2 pb-2">
-              <div className="flex items-center justify-between gap-3 bg-zinc-100 dark:bg-zinc-950 px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
+              <div className="flex items-center justify-between gap-3  px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800">
                 <div className="flex items-center gap-4">
                   <div className="bg-white dark:bg-zinc-900 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
                     <MousePointer2 className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
@@ -276,7 +276,7 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
             <Button 
               onClick={saveSettings}
               disabled={saving}
-              className="bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white text-sm font-medium px-3 py-1.5 rounded-lg border border-zinc-700 dark:border-zinc-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] hover:translate-y-[-1px] transition-all"
+              className=" hover:bg-zinc-800  dark:hover:bg-zinc-700 text-white text-sm font-medium px-3 py-1.5 rounded-lg border border-zinc-700 dark:border-zinc-600 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] hover:translate-y-[-1px] transition-all"
             >
               {saving ? (
                 <span className="inline-flex items-center">

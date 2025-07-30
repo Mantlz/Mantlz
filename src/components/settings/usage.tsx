@@ -157,7 +157,7 @@ export default function UsageSettings() {
   const renderContent = () => {
     // Create a common header component that's always visible
     const headerContent = (
-      <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+      <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center">
             <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
@@ -251,7 +251,7 @@ export default function UsageSettings() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Forms usage card */}
               {planData && (
-                <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+                <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background">
                 
                   <CardHeader className="pb-2 space-y-0">
                     <CardTitle className="text-sm flex items-center text-zinc-900 dark:text-white">
@@ -306,7 +306,7 @@ export default function UsageSettings() {
 
               {/* Submissions usage card */}
               {planData && (
-                <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+                <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background">
                 
                   <CardHeader className="pb-2 space-y-0">
                     <CardTitle className="text-sm flex items-center text-zinc-900 dark:text-white">
@@ -361,7 +361,7 @@ export default function UsageSettings() {
 
               {/* Campaigns usage card */}
               {planData && planData.features.campaigns && (
-                <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+                <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background">
             
                   <CardHeader className="pb-2 space-y-0">
                     <CardTitle className="text-sm flex items-center text-zinc-900 dark:text-white">

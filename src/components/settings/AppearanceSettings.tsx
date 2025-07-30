@@ -34,7 +34,7 @@ export const AppearanceSettings = () => {
   return (
     <div className="w-full mx-auto">
       <div className="w-full space-y-4 pr-4">
-        <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+        <header className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg  shadow-sm">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center">
               <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
@@ -48,11 +48,11 @@ export const AppearanceSettings = () => {
         </header>
 
         <div className="space-y-4">
-          <div className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+          <div className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-sm">
             <DarkModeToggle />
           </div>
 
-          <div className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+          <div className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-sm">
             <h3 className="text-base font-semibold text-zinc-900 dark:text-white mb-1">
               Font Family
             </h3>
