@@ -195,54 +195,54 @@ function PricingContent({
   }
 
   return (
-      <section className="py-20 md:py-32" id="pricing">
-        <div className="mx-auto max-w-6xl px-2">
-          <div className="text-center mb-20">
-            <h1 className="text-5xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/90 to-primary/70">Choose the plan that fits your needs</h1>
-            <p className="mt-6 text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">Start for free, upgrade as you grow. No hidden fees, cancel anytime.</p>
+      <section className="py-12 sm:py-16 md:py-20 lg:py-32" id="pricing">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/90 to-primary/70 leading-tight">Choose the plan that fits your needs</h1>
+            <p className="mt-4 sm:mt-6 text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed px-2">Start for free, upgrade as you grow. No hidden fees, cancel anytime.</p>
           </div>
           <div className="relative">           
             
-            <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
+            <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
               {plans.map((plan) => (
-                <Card key={plan.title} className={`relative overflow-hidden rounded-2xl transition-all duration-500 ${plan.isPopular ? 'border-primary/30 shadow-xl shadow-primary/5 hover:shadow-2xl hover:shadow-primary/10 ring-1 ring-primary/20' : 'border-border/50 shadow-lg hover:shadow-xl hover:border-primary/20'}`}>
+                <Card key={plan.title} className={`relative overflow-hidden rounded-xl sm:rounded-2xl transition-all duration-500 ${plan.isPopular ? 'border-primary/30 shadow-xl shadow-primary/5 hover:shadow-2xl hover:shadow-primary/10 ring-1 ring-primary/20 sm:col-span-2 lg:col-span-1' : 'border-border/50 shadow-lg hover:shadow-xl hover:border-primary/20'}`}>
                   {/* Enhanced top accent */}
                   <div className={`absolute inset-x-0 top-0 h-1 ${plan.isPopular ? 'bg-gradient-to-r from-primary via-primary/90 to-primary/70' : 'bg-gradient-to-r from-muted/40 via-muted/60 to-muted/40'}`}></div>
                   
 
 
                   
-                  <CardContent className="relative flex h-full flex-col p-8 lg:p-10">
-                    <div className="flex items-start justify-between mb-8">
-                      <div className={`relative flex aspect-square size-16 rounded-2xl items-center justify-center transition-all duration-300 ${plan.isPopular ? 'bg-primary/10 ring-2 ring-primary/20' : 'bg-muted/30 ring-1 ring-muted/40'}`}>
-                        <div className={`size-7 transition-colors duration-300 ${plan.isPopular ? 'text-primary' : 'text-muted-foreground group-hover:text-primary/80'}`}>
+                  <CardContent className="relative flex h-full flex-col p-6 sm:p-8 lg:p-10">
+                    <div className="flex items-start justify-between mb-6 sm:mb-8">
+                      <div className={`relative flex aspect-square size-12 sm:size-14 lg:size-16 rounded-xl sm:rounded-2xl items-center justify-center transition-all duration-300 ${plan.isPopular ? 'bg-primary/10 ring-2 ring-primary/20' : 'bg-muted/30 ring-1 ring-muted/40'}`}>
+                        <div className={`size-5 sm:size-6 lg:size-7 transition-colors duration-300 ${plan.isPopular ? 'text-primary' : 'text-muted-foreground group-hover:text-primary/80'}`}>
                           {plan.icon}
                         </div>
                       </div>
                       {plan.isPopular && (
-                        <Badge variant="default" className="bg-orange-500 text-white font-semibold px-4 py-1.5 text-sm shadow-md">
+                        <Badge variant="default" className="bg-orange-500 text-white font-semibold px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm shadow-md">
                           Most Popular
                         </Badge>
                       )}
                     </div>
                     
                     <div className="flex flex-1 flex-col">
-                      <div className="mb-8">
-                        <h2 className="text-2xl font-bold mb-3 text-foreground">{plan.title}</h2>
+                      <div className="mb-6 sm:mb-8">
+                        <h2 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-3 text-foreground">{plan.title}</h2>
                         <div className="flex items-baseline mb-2">
-                          <span className="text-5xl lg:text-6xl font-bold text-foreground">${plan.monthlyPrice}</span>
-                          <span className="ml-2 text-lg font-medium text-muted-foreground">/month</span>
+                          <span className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground">${plan.monthlyPrice}</span>
+                          <span className="ml-2 text-base sm:text-lg font-medium text-muted-foreground">/month</span>
                         </div>
                         {plan.monthlyPrice === 0 && (
                           <p className="text-sm text-muted-foreground">Forever free</p>
                         )}
                       </div>
                       
-                      <ul className="flex-1 space-y-4 mb-8">
+                      <ul className="flex-1 space-y-3 sm:space-y-4 mb-6 sm:mb-8">
                         {plan.features.map((feature, i) => (
                           <li key={i} className="flex items-start gap-3 text-muted-foreground group/item">
-                            <Check className={`h-5 w-5 flex-shrink-0 mt-0.5 transition-colors duration-200 ${plan.isPopular ? 'text-primary' : 'text-primary/60 group-hover/item:text-primary'}`} />
-                            <span className="text-sm leading-relaxed group-hover/item:text-foreground transition-colors duration-200">{feature}</span>
+                            <Check className={`h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 mt-0.5 transition-colors duration-200 ${plan.isPopular ? 'text-primary' : 'text-primary/60 group-hover/item:text-primary'}`} />
+                            <span className="text-sm sm:text-sm leading-relaxed group-hover/item:text-foreground transition-colors duration-200">{feature}</span>
                           </li>
                         ))}
                       </ul>
@@ -250,14 +250,15 @@ function PricingContent({
                       <Button
                         onClick={() => handleCheckout(plan)}
                         disabled={processingPlan === plan.title || isCurrentUserPlan(plan.title)}
-                        className={`w-full py-4 text-base font-semibold transition-all duration-300 ${plan.isPopular ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl' : 'bg-background border-2 border-primary/20 text-foreground hover:bg-primary/5 hover:border-primary/40'}`}
+                        className={`w-full py-3 sm:py-4 text-sm sm:text-base font-semibold transition-all duration-300 ${plan.isPopular ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl' : 'bg-background border-2 border-primary/20 text-foreground hover:bg-primary/5 hover:border-primary/40'}`}
                         variant={plan.isPopular ? "default" : "outline"}
                         size="lg"
                       >
                         {isCurrentUserPlan(plan.title) ? (
                           <span className="flex items-center gap-2">
                             <Check className="h-4 w-4" />
-                            Current Plan
+                            <span className="hidden sm:inline">Current Plan</span>
+                            <span className="sm:hidden">Current</span>
                           </span>
                         ) : processingPlan === plan.title ? (
                           <div className="flex items-center gap-2">
@@ -265,7 +266,7 @@ function PricingContent({
                             <span>Processing...</span>
                           </div>
                         ) : (
-                          plan.buttonText
+                          <span className="truncate">{plan.buttonText}</span>
                         )}
                       </Button>
                     </div>
