@@ -30,7 +30,7 @@ export default function HeroSection() {
         <div className="mt-8 flex justify-center">
           <Link href="/dashboard">
             <Button 
-                            className="h-10 px-4 text-md bg-orange-500 text-white dark:text-black dark:border-background border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+                            className="h-10 px-4 text-md bg-orange-500 text-black dark:text-white dark:border-background border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
 
             >
               Get started

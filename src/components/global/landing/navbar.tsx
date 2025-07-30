@@ -135,7 +135,7 @@ export function Navbar() {
       <div className="flex items-center gap-4">
         <Link href="/sign-in">
          <Button size="sm" 
-            className="h-8 px-2 text-md bg-stone-900/90 text-white dark:text-black dark:border-background border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+            className="h-8 px-2 text-md bg-stone-200/20 text-black dark:bg-stone-950 dark:text-white dark:border-none border text-sm shadow-md shadow-zinc-950/30  dark:ring-none transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
 
           >
             Sign in
@@ -143,7 +143,7 @@ export function Navbar() {
         </Link>
         <Link href="/sign-up">
           <Button size="sm" 
-            className="h-8 px-2 text-md bg-orange-500 text-white dark:text-black dark:border-background border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+            className="h-8 px-2 text-md bg-orange-500 text-black dark:text-white dark:border-background border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
 
           >
             Sign up 
