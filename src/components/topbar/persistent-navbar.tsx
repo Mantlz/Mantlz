@@ -264,7 +264,7 @@ const ActionButtonsSection = memo(function ActionButtonsSection() {
           <Button
           variant="ghost"
           size="icon"
-          className="h-9 w-9 rounded-lg hover:bg-accent hover:text-accent-foreground hover:backdrop-blur-sm hover:shadow-sm cursor-pointer transition-all duration-200"
+          className="h-9 w-9 rounded-lg hover:bg-accent hover:text-accent-foreground  cursor-pointer transition-all duration-200"
           aria-label="Help"
           >
             <HelpCircle className="h-4.5 w-4.5" />
@@ -276,7 +276,7 @@ const ActionButtonsSection = memo(function ActionButtonsSection() {
         <Button
           variant="ghost"
           size="icon"
-          className="h-9 w-9 rounded-lg hover:bg-accent hover:text-accent-foreground hover:backdrop-blur-sm hover:shadow-sm cursor-pointer transition-all duration-200"
+          className="h-9 w-9 rounded-lg hover:bg-accent hover:text-accent-foreground  cursor-pointer transition-all duration-200"
           aria-label="Settings"
         >
           <Settings className="h-4.5 w-4.5" />
@@ -326,7 +326,7 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="flex items-center gap-1.5 px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground hover:backdrop-blur-sm hover:shadow-sm cursor-pointer rounded-lg transition-all duration-200"
+                className="flex items-center gap-1.5 px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground  cursor-pointer rounded-lg transition-all duration-200"
               >
                 <span>Menu</span>
                 <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform duration-200" />
