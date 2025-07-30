@@ -4,15 +4,15 @@ import { Shield } from 'lucide-react'
 
 export default function FeaturesSection() {
     return (
-        <section className=" py-16 md:py-32 " id="features">
+        <section className="py-16 md:py-32 " id="features">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Powerful form building features</h1>
-                    <p className="mt-4 text-lg md:text-xl text-muted-foreground">Everything you need to create, manage and analyze your forms</p>
+                <div className="text-center mb-12 md:mb-16">
+                    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 leading-tight tracking-tight">Powerful form building features</h1>
+                    <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">Everything you need to create, manage and analyze your forms</p>
                 </div>
                 <div className="relative">
-                    <div className="relative z-10 grid grid-cols-5 gap-3">
-                        <Card className="relative col-span-full border dark:border-background flex overflow-hidden lg:col-span-2">
+                    <div className="relative z-10 grid grid-cols-5 gap-4 lg:gap-6">
+                        <Card className="group relative col-span-full rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-primary/30 flex overflow-hidden lg:col-span-2">
                             <CardContent className="relative m-auto size-fit pt-6">
                                 <div className="relative flex h-24 w-56 items-center">
                                     <svg
@@ -30,21 +30,23 @@ export default function FeaturesSection() {
                                 <h2 className="mt-6 text-center text-3xl font-semibold">Customizable</h2>
                             </CardContent>
                         </Card>
-                        <Card className="relative col-span-full overflow-hidden sm:col-span-3 lg:col-span-3 border dark:border-background">
-                            <CardContent className="pt-6">
-                                <div className="relative mx-auto flex aspect-square size-32 rounded-full border before:absolute before:-inset-2 before:rounded-full before:border dark:border-white/10 dark:before:border-white/5">
-                                    <Shield
-                                        className="m-auto size-5"
-                                        strokeWidth={1}
-                                    />
+                        <Card className="group relative col-span-full overflow-hidden sm:col-span-3 lg:col-span-3 rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-primary/30">
+                            <CardContent className="pt-8 pb-8">
+                                <div className="relative mx-auto flex aspect-square size-32 rounded-2xl items-center justify-center bg-gradient-to-br from-muted/40 to-muted/20 ring-1 ring-muted/30 group-hover:ring-primary/40 transition-all duration-300 mb-6">
+                                    <div className="text-muted-foreground group-hover:text-primary transition-colors duration-300">
+                                        <Shield
+                                            className="m-auto size-8"
+                                            strokeWidth={1}
+                                        />
+                                    </div>
                                 </div>
-                                <div className="relative z-10 mt-6 space-y-2 text-center">
-                                    <h2 className="group-hover:text-secondary-950 text-lg font-medium transition dark:text-white">Advanced Security</h2>
-                                    <p className="text-foreground">Built-in API key management, secure form submissions, and comprehensive access controls to protect your data.</p>
+                                <div className="relative z-10 space-y-3 text-center">
+                                    <h2 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">Advanced Security</h2>
+                                    <p className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-200">Built-in API key management, secure form submissions, and comprehensive access controls to protect your data.</p>
                                 </div>
                             </CardContent>
                         </Card>
-                        <Card className="relative col-span-full overflow-hidden sm:col-span-3 border dark:border-background lg:col-span-2">
+                        <Card className="group relative col-span-full overflow-hidden sm:col-span-3 rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-primary/30 lg:col-span-2">
                             <CardContent className="pt-6">
                                 <div className="pt-6 lg:px-6">
                                     <svg
@@ -109,24 +111,26 @@ export default function FeaturesSection() {
                                       
                                     </svg>
                                 </div>
-                                <div className="relative z-10 mt-14 space-y-2 text-center">
-                                    <h2 className="text-lg font-medium transition">Real-time Analytics</h2>
-                                    <p className="text-foreground">Track form performance, response rates, and user engagement with built-in analytics and usage monitoring.</p>
+                                <div className="relative z-10 mt-14 space-y-3 text-center">
+                                    <h2 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">Real-time Analytics</h2>
+                                    <p className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-200">Track form performance, response rates, and user engagement with built-in analytics and usage monitoring.</p>
                                 </div>
                             </CardContent>
                         </Card>
-                        <Card className="card variant-outlined relative col-span-full overflow-hidden border dark:border-background lg:col-span-3">
-                            <CardContent className="grid pt-6 sm:grid-cols-2">
-                                <div className="relative z-10 flex flex-col justify-between space-y-12 lg:space-y-6">
-                                    <div className="relative flex aspect-square size-12 rounded-full border before:absolute before:-inset-2 before:rounded-full before:border dark:border-white/10 dark:before:border-white/5">
-                                        <Shield
-                                            className="m-auto size-5"
-                                            strokeWidth={1}
-                                        />
+                        <Card className="group relative col-span-full overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-primary/30 lg:col-span-3">
+                            <CardContent className="grid pt-8 pb-8 sm:grid-cols-2">
+                                <div className="relative z-10 flex flex-col justify-between space-y-12 lg:space-y-8">
+                                    <div className="relative flex aspect-square size-16 rounded-2xl items-center justify-center bg-gradient-to-br from-muted/40 to-muted/20 ring-1 ring-muted/30 group-hover:ring-primary/40 transition-all duration-300">
+                                        <div className="text-muted-foreground group-hover:text-primary transition-colors duration-300">
+                                            <Shield
+                                                className="m-auto size-6"
+                                                strokeWidth={1}
+                                            />
+                                        </div>
                                     </div>
-                                    <div className="space-y-2">
-                                        <h2 className="group-hover:text-secondary-950 text-lg font-medium text-zinc-800 transition dark:text-white">Seamless Integrations</h2>
-                                        <p className="text-foreground">Connect with Discord, Slack, and email notifications to streamline your form workflow and response management.</p>
+                                    <div className="space-y-3">
+                                        <h2 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">Seamless Integrations</h2>
+                                        <p className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-200">Connect with Discord, Slack, and email notifications to streamline your form workflow and response management.</p>
                                     </div>
                                 </div>
                                 <div className="rounded-tl-(--radius) relative -mb-6 -mr-6 mt-6 h-fit border-l border-t p-6 py-6 sm:ml-6">

@@ -38,36 +38,36 @@ export default function Faq() {
     ]
 
     return (
-        <section className="py-16 md:py-24">
+        <section className="py-16 md:py-24 bg-gradient-to-br from-background via-background to-muted/20">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-2xl text-center">
-                    <h2 className="text-balance text-3xl font-bold md:text-4xl lg:text-5xl">Frequently Asked Questions</h2>
-                    <p className="text-muted-foreground mt-4 text-balance">Discover quick and comprehensive answers to common questions about our platform, services, and features.</p>
+                    <h2 className="text-balance text-3xl font-bold md:text-4xl lg:text-5xl bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">Frequently Asked Questions</h2>
+                    <p className="text-muted-foreground mt-4 text-balance text-lg">Discover quick and comprehensive answers to common questions about our platform, services, and features.</p>
                 </div>
 
-                <div className="mx-auto mt-12 max-w-3xl">
+                <div className="mx-auto mt-12 md:mt-16 max-w-3xl">
                     <Accordion
                         type="single"
                         collapsible
-                        className="bg-card ring-orange-500 w-full rounded-2xl border dark:border-background px-8 py-3 shadow-sm ring-2 dark:ring-orange-500">
+                        className="bg-gradient-to-br from-card to-card/50 backdrop-blur-sm w-full rounded-2xl border border-border/50 px-8 py-6 shadow-lg hover:shadow-xl transition-all duration-300">
                         {faqItems.map((item) => (
                             <AccordionItem
                                 key={item.id}
                                 value={item.id}
-                                className="border-dashed">
-                                <AccordionTrigger className="cursor-pointer text-base hover:no-underline">{item.question}</AccordionTrigger>
+                                className="border-dashed border-border/30">
+                                <AccordionTrigger className="cursor-pointer text-base font-medium hover:no-underline hover:text-primary transition-colors">{item.question}</AccordionTrigger>
                                 <AccordionContent>
-                                    <p className="text-base">{item.answer}</p>
+                                    <p className="text-base text-muted-foreground leading-relaxed">{item.answer}</p>
                                 </AccordionContent>
                             </AccordionItem>
                         ))}
                     </Accordion>
 
-                    <p className="text-muted-foreground  justify-center text-center mt-6 px-8">
+                    <p className="text-muted-foreground justify-center text-center mt-8 px-8 text-base">
                         Can&apos;t find what you&apos;re looking for? Contact our{' '}
                         <Link
                             href="mailto:contact@mantlz.com"
-                            className="text-primary font-medium hover:underline">
+                            className="text-primary font-medium hover:underline transition-colors">
                             customer support team
                         </Link>
                     </p>
