@@ -10,7 +10,7 @@ export const dynamic = 'force-static'
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-zinc-50 dark:from-zinc-950 dark:to-zinc-950">
+    <div className="min-h-screen ">
       <Container>
         <Navbar />
         <Pricing />

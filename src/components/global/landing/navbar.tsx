@@ -75,7 +75,7 @@ export function Navbar() {
             <Button 
                   size="sm"
 
-                      className="rounded-lg px-2 cursor-pointer bg-orange-500 text-sm text-white dark:text-black"
+                      className="rounded-lg px-2 cursor-pointer bg-orange-500 text-sm text-black dark:text-white"
 
             >
               Dashboard
@@ -92,8 +92,8 @@ export function Navbar() {
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 mt-2 p-2 bg-gradient-to-br from-white/95 to-gray-50/95 dark:from-zinc-900/95 dark:to-zinc-950/95 backdrop-blur-xl border border-gray-200/50 dark:border-zinc-700/50 shadow-xl shadow-black/10 dark:shadow-black/30 rounded-xl">
-              <div className="flex items-center justify-start gap-2 p-2 rounded-lg bg-gradient-to-r from-gray-50/50 to-white/50 dark:from-zinc-800/50 dark:to-zinc-900/50 border border-gray-200/30 dark:border-zinc-700/30">
+            <DropdownMenuContent align="end" className="w-50 mt-2 p-2 backdrop-blur-xl border border-gray-500/50 dark:border-zinc-950/50 shadow-md shadow-black/10 dark:shadow-black/30 rounded-xl">
+              <div className="flex items-center justify-start gap-2 p-2 rounded-lg bg-gradient-to-r from-gray-50/50 to-white/50 dark:from-zinc-900/50 dark:to-zinc-900/50 border border-gray-200/30 dark:border-zinc-700/30">
                 <Avatar className="h-8 w-8 ring-2 ring-orange-500/20 dark:ring-orange-400/20">
                   <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
                   <AvatarFallback className="bg-gradient-to-br from-orange-500 to-orange-600 text-white font-semibold">

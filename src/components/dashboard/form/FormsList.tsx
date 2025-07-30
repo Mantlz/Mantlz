@@ -191,7 +191,7 @@ export function FormsList({
               )}
             </div>
             <Button
-              className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-xl px-6 shadow-sm hover:shadow-md"
+              className="h-10 px-2 text-md bg-orange-500 text-white dark:text-black dark:border-background border text-sm ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
               onClick={() => window.location.href = '/dashboard/form'}
             >
               <Plus className="h-4 w-4 mr-2" />

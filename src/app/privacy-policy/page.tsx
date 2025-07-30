@@ -11,7 +11,7 @@ interface PolicySectionProps {
 }
 
 const PolicySection: React.FC<PolicySectionProps> = ({ title, children, icon: Icon }) => (
-  <div className="p-6 rounded-xl bg-white dark:bg-zinc-900 shadow-sm mb-6 border border-neutral-200 dark:border-zinc-800">
+  <div className="p-6 rounded-xlshadow-sm mb-6 border border-neutral-200 dark:border-zinc-800">
     <div className="flex items-center gap-3 mb-3">
       <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800">
         <Icon className="text-neutral-800 dark:text-neutral-200" size={20} />
@@ -25,8 +25,8 @@ const PolicySection: React.FC<PolicySectionProps> = ({ title, children, icon: Ic
 );
 
 const PrivacyPolicy: React.FC = () => (
-  <div className="min-h-screen bg-white dark:bg-zinc-950">
-    <div className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-zinc-950 ">
+  <div className="min-h-screen ">
+    <div className="fixed top-0 left-0 right-0 z-50 ">
       <Container>
         <Navbar />
       </Container>
@@ -157,7 +157,7 @@ const PrivacyPolicy: React.FC = () => (
               </p>
             </PolicySection>
 
-            <div className="p-6 rounded-xl bg-white dark:bg-zinc-900 shadow-sm text-center border border-neutral-200 dark:border-zinc-800">
+            <div className="p-6 rounded-xl  shadow-sm text-center border border-neutral-200 dark:border-zinc-800">
               <h3 className="text-neutral-800 dark:text-neutral-200 font-medium mb-3">Contact Us</h3>
               <a href="mailto:contact@mantlz.com" 
                 className="inline-flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors">

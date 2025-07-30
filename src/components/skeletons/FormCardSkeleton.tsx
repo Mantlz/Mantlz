@@ -57,7 +57,8 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
                     Welcome back, <Skeleton className="h-6 w-16 rounded-lg inline-block align-middle" />
                   </h1>
                   <div className="text-sm text-gray-500 dark:text-gray-400">
-                    You have <Skeleton className="h-4 w-5 rounded-lg inline-block align-middle mx-1" /> form<Skeleton className="h-4 w-3 rounded-lg inline-block align-middle" />
+                    You have <Skeleton className="h-4 w-5 rounded-lg inline-block align-middle mx-1" /> form
+                    {/* <Skeleton className="h-4 w-3 rounded-lg inline-block align-middle" /> */}
                   </div>
                 </div>
               </div>
@@ -110,7 +111,12 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
                 </div>
               </div>
             </div>
-            <div className="w-full sm:w-auto bg-zinc-200 dark:bg-zinc-700 text-gray-500 dark:text-gray-400 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-all duration-200 rounded-xl px-6 h-10 flex items-center justify-center">
+            <div className="w-full sm:w-auto text-md bg-orange-500 text-white dark:text-black dark:border-background border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] rounded-lg duration-200 hover:brightness-125 active:brightness-95 px-4  h-10 flex items-center justify-center">
+
+
+
+                            {/* className="h-10 px-2 text-md bg-orange-500 text-white dark:text-black dark:border-background border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95" */}
+
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 mr-2">
                 <path d="M5 12h14"></path>
                 <path d="M12 5v14"></path>

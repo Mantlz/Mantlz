@@ -23,8 +23,6 @@ const Footer = () => {
             </p>
             <StatusButton />
           </div>
-
-          {/* Quick links */}
           <div className="flex flex-col items-center md:items-start">
             <h3 className="text-lg font-semibold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-200 bg-clip-text text-transparent mb-6">
               Quick Links

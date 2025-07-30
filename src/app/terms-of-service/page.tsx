@@ -11,7 +11,7 @@ interface TermsSectionProps {
 }
 
 const TermsSection: React.FC<TermsSectionProps> = ({ title, children, icon: Icon }) => (
-  <div className="p-6 rounded-xl bg-white dark:bg-zinc-900 shadow-sm mb-6 border border-neutral-200 dark:border-zinc-800">
+  <div className="p-6 rounded-xl  shadow-sm mb-6 border border-neutral-200 dark:border-zinc-800">
     <div className="flex items-center gap-3 mb-3">
       <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800">
         <Icon className="text-neutral-800 dark:text-neutral-200" size={20} />
@@ -25,8 +25,8 @@ const TermsSection: React.FC<TermsSectionProps> = ({ title, children, icon: Icon
 );
 
 const TermsOfService: React.FC = () => (
-  <div className="min-h-screen bg-white dark:bg-zinc-950">
-    <div className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-zinc-950 ">
+  <div className="min-h-screen ">
+    <div className="fixed top-0 left-0 right-0 z-50 ">
       <Container>
         <Navbar />
       </Container>
@@ -44,7 +44,7 @@ const TermsOfService: React.FC = () => (
           </header>
 
           <div className="space-y-6">
-            <div className="p-4 rounded-xl bg-zinc-100 dark:bg-zinc-800/50 text-neutral-600 dark:text-neutral-300 text-sm">
+            <div className="p-4 rounded-xl  text-neutral-600 dark:text-neutral-300 text-sm">
               <div className="flex items-start gap-3">
                 <AlertCircle className="h-5 w-5 text-neutral-500 dark:text-neutral-400 mt-0.5 flex-shrink-0" />
                 <p>
@@ -86,7 +86,7 @@ const TermsOfService: React.FC = () => (
               </p>
             </TermsSection>
 
-            <div className="p-6 rounded-xl bg-white dark:bg-zinc-900 shadow-sm text-center border border-neutral-200 dark:border-zinc-800">
+            <div className="p-6 rounded-xl  shadow-sm text-center border border-neutral-200 dark:border-zinc-800">
               <h3 className="text-neutral-800 dark:text-neutral-200 font-medium mb-3">Contact Us</h3>
               <a href="mailto:contact@mantlz.com" 
                 className="inline-flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors">
