@@ -103,7 +103,7 @@ export function AdvancedAnalytics({
     <>
       <div className={`transition-all duration-300 ${isCollapsed ? "max-h-0 opacity-0" : ""}`}>
         {!hasPremiumAccess && showPaywall ? (
-          <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background shadow-sm w-full rounded-lg sm:rounded-xl">
+          <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background  w-full rounded-lg sm:rounded-xl">
             <CardHeader className="pb-3 pt-4 px-4 sm:px-5">
               <CardTitle className="text-center text-zinc-900 dark:text-white text-lg sm:text-xl mb-2">
                 Premium Feature
@@ -155,7 +155,7 @@ export function AdvancedAnalytics({
         ) : !hasPremiumAccess ? (
           <Card
             onClick={() => setShowPaywall(true)}
-            className="border-zinc-200 bg-background dark:bg-background dark:border-zinc-800 shadow-sm cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all w-full rounded-lg sm:rounded-xl"
+            className="border-zinc-200 bg-background dark:bg-background dark:border-zinc-800 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all w-full rounded-lg sm:rounded-xl"
           >
             <CardHeader className="pb-2 pt-4 px-4 sm:px-5 flex flex-row items-start justify-center content-center space-y-0">
             </CardHeader>
