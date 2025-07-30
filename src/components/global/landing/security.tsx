@@ -3,7 +3,7 @@ import { Shield, Lock, FileCheck } from 'lucide-react'
 
 export default function SecuritySection() {
     return (
-        <section className="py-16 md:py-32 bg-muted/5">
+        <section className="py-16 md:py-32">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Security, compliance and privacy</h1>
