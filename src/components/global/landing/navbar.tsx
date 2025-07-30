@@ -92,39 +92,38 @@ export function Navbar() {
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 mt-2 p-2 bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800">
-              <div className="flex items-center justify-start gap-2 p-2">
-                <Avatar className="h-8 w-8">
+            <DropdownMenuContent align="end" className="w-56 mt-2 p-2 bg-gradient-to-br from-white/95 to-gray-50/95 dark:from-zinc-900/95 dark:to-zinc-950/95 backdrop-blur-xl border border-gray-200/50 dark:border-zinc-700/50 shadow-xl shadow-black/10 dark:shadow-black/30 rounded-xl">
+              <div className="flex items-center justify-start gap-2 p-2 rounded-lg bg-gradient-to-r from-gray-50/50 to-white/50 dark:from-zinc-800/50 dark:to-zinc-900/50 border border-gray-200/30 dark:border-zinc-700/30">
+                <Avatar className="h-8 w-8 ring-2 ring-orange-500/20 dark:ring-orange-400/20">
                   <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
-                  <AvatarFallback>
+                  <AvatarFallback className="bg-gradient-to-br from-orange-500 to-orange-600 text-white font-semibold">
                     {user?.firstName?.[0] || user?.lastName?.[0] || "U"}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">
+                  <p className="text-sm font-semibold leading-none text-gray-900 dark:text-gray-100">
                     {user?.fullName || "User"}
                   </p>
-                  <p className="text-xs leading-none text-muted-foreground">
+                  <p className="text-xs leading-none text-gray-600 dark:text-gray-400">
                     {user?.primaryEmailAddress?.emailAddress}
                   </p>
                 </div>
               </div>
-              <DropdownMenuSeparator />
+              <DropdownMenuSeparator className="my-2 bg-gradient-to-r from-transparent via-gray-300 to-transparent dark:via-zinc-600" />
               <DropdownMenuItem
                 onClick={() => openUserProfile()}
-                className="cursor-pointer"
+                className="cursor-pointer rounded-lg p-2 hover:bg-gradient-to-r hover:from-gray-100/80 hover:to-gray-50/80 dark:hover:from-zinc-800/80 dark:hover:to-zinc-700/80 transition-all duration-200 group"
               >
-                <User className="mr-2 h-4 w-4" />
-                <span>Manage Account</span>
+                <User className="mr-2 h-4 w-4 text-gray-600 dark:text-gray-400 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors" />
+                <span className="font-medium text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-gray-100">Manage Account</span>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              <DropdownMenuSeparator className="my-2 bg-gradient-to-r from-transparent via-gray-300 to-transparent dark:via-zinc-600" />
               <DropdownMenuItem
                 onClick={() => signOut()}
-                
-                className="cursor-pointer bg-red-500 hover:bg-red-600 text-white dark:text-white"
+                className="cursor-pointer rounded-lg p-2 bg-gradient-to-r from-red-500/10 to-red-600/10 hover:from-red-500 hover:to-red-600 text-red-600 hover:text-white dark:text-red-400 dark:hover:text-white transition-all duration-200 group border border-red-200/50 dark:border-red-800/50 hover:border-red-500"
               >
-                <LogOut className="mr-2 h-4 w-4 text-white dark:text-white" />
-                <span>Sign out</span>
+                <LogOut className="mr-2 h-4 w-4 transition-colors" />
+                <span className="font-medium">Sign out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
