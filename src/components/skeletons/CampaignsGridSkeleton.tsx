@@ -22,11 +22,11 @@ export function CampaignsGridSkeleton() {
 
               <div className="flex items-center gap-3">
                 {/* View Toggle */}
-                <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg p-1 flex items-center">
-                  <div className="h-6 w-8 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm">
+                <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg p-1 gap-1 flex items-center">
+                  <div className="h-8 w-8 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm border border-zinc-200 dark:border-zinc-800">
                     <LayoutGrid className="h-4 w-4" />
                   </div>
-                  <div className="h-6 w-8 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm">
+                  <div className="h-8 w-8 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 dark:text-zinc-400 text-sm border border-zinc-200 dark:border-zinc-800" >
                     <List className="h-4 w-4" />
                   </div>
                 </div>

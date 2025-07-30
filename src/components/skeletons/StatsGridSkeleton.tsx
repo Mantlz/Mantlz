@@ -21,11 +21,11 @@ export function StatsGridSkeleton() {
               </div>
               <div className="flex items-center gap-3">
                 {/* Grid/List View Toggle */}
-                <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg p-1 flex items-center">
-                  <div className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white">
+                <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg p-1  gap-1 flex items-center">
+                  <div className="p-1.5 h-8 w-8 px-2 rounded-lg bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white border border-zinc-200 dark:border-zinc-800">
                     <LayoutGrid className="h-4 w-4" />
                   </div>
-                  <div className="p-1.5 rounded-lg text-gray-500 dark:text-gray-400">
+                  <div className="p-1.5 h-8 w-8 rounded-lg text-gray-500 dark:text-gray-400 border border-zinc-200 dark:border-zinc-800">
                     <List className="h-4 w-4" />
                   </div>
                 </div>

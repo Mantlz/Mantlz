@@ -1,19 +1,19 @@
-"use client"
+"use client";
 
-import { useRouter, useSearchParams } from "next/navigation"
-import { useQuery } from "@tanstack/react-query"
-import { useSubscription } from "@/hooks/useSubscription"
-import { StatsGridSkeleton } from "@/components/skeletons"
-import { Button } from "@/components/ui/button"
-import { FileSpreadsheet, Users, LayoutGrid, List } from "lucide-react"
-import { FormsResponse, SubmissionResponse } from "./types"
-import { fetchUserForms, fetchSubmissions } from "./tableUtils"
-import { TableHeader } from "./TableHeader"
-import { TableContent } from "./TableContent"
-import { LogsTableHeaderSkeleton } from "@/components/skeletons"
-import { SubmissionSearch } from "../../logs/SubmissionSearch"
-import { SubmissionTableSkeleton } from "../../../skeletons"
-import { useState, useEffect, Suspense } from "react"
+import { useRouter, useSearchParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { useSubscription } from "@/hooks/useSubscription";
+import { StatsGridSkeleton } from "@/components/skeletons";
+import { Button } from "@/components/ui/button";
+import { FileSpreadsheet, Users, LayoutGrid, List } from "lucide-react";
+import { FormsResponse, SubmissionResponse } from "./types";
+import { fetchUserForms, fetchSubmissions } from "./tableUtils";
+import { TableHeader } from "./TableHeader";
+import { TableContent } from "./TableContent";
+import { LogsTableHeaderSkeleton } from "@/components/skeletons";
+import { SubmissionSearch } from "../../logs/SubmissionSearch";
+import { SubmissionTableSkeleton } from "../../../skeletons";
+import { useState, useEffect, Suspense } from "react";
 
 interface LogsTableProps {
   itemsPerPage?: number;
@@ -24,35 +24,37 @@ export function LogsTable({ itemsPerPage = 8 }: LogsTableProps) {
     <Suspense fallback={<StatsGridSkeleton />}>
       <LogsTableContent itemsPerPage={itemsPerPage} />
     </Suspense>
-  )
+  );
 }
 
 function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const page = Number(searchParams.get("page")) || 1
-  const formId = searchParams.get("formId")
-  const viewParam = searchParams.get("view") as "grid" | "list" | null
-  const [viewMode, setViewMode] = useState<"grid" | "list">(viewParam || "grid")
-  const { isPremium, subscription } = useSubscription()
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const page = Number(searchParams.get("page")) || 1;
+  const formId = searchParams.get("formId");
+  const viewParam = searchParams.get("view") as "grid" | "list" | null;
+  const [viewMode, setViewMode] = useState<"grid" | "list">(
+    viewParam || "grid"
+  );
+  const { isPremium, subscription } = useSubscription();
 
   // Get the plan from the subscription or default to FREE
-  const userPlan = subscription?.plan || 'FREE'
+  const userPlan = subscription?.plan || "FREE";
 
   // Update viewMode when URL parameter changes
   useEffect(() => {
     if (viewParam === "grid" || viewParam === "list") {
-      setViewMode(viewParam)
+      setViewMode(viewParam);
     }
-  }, [viewParam])
+  }, [viewParam]);
 
   // Handle view mode change
   const handleViewModeChange = (mode: "grid" | "list") => {
-    setViewMode(mode)
-    const newParams = new URLSearchParams(searchParams.toString())
-    newParams.set("view", mode)
-    router.push(`?${newParams.toString()}`)
-  }
+    setViewMode(mode);
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.set("view", mode);
+    router.push(`?${newParams.toString()}`);
+  };
 
   // Fetch forms data
   const {
@@ -65,37 +67,45 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
     retry: 3,
     staleTime: 0,
     refetchOnMount: true,
-    refetchOnWindowFocus: true
-  })
+    refetchOnWindowFocus: true,
+  });
 
   // Fetch submissions for selected form
-  const startDateParam = searchParams.get('startDate');
-  const endDateParam = searchParams.get('endDate');
+  const startDateParam = searchParams.get("startDate");
+  const endDateParam = searchParams.get("endDate");
 
-  const { 
-    data, 
-    isLoading: isLoadingSubmissions, 
-    refetch 
+  const {
+    data,
+    isLoading: isLoadingSubmissions,
+    refetch,
   } = useQuery<SubmissionResponse>({
     queryKey: ["submissionLogs", formId, page, startDateParam, endDateParam],
-    queryFn: () => fetchSubmissions(formId, page, startDateParam || undefined, endDateParam || undefined, itemsPerPage),
+    queryFn: () =>
+      fetchSubmissions(
+        formId,
+        page,
+        startDateParam || undefined,
+        endDateParam || undefined,
+        itemsPerPage
+      ),
     enabled: !!formId,
     staleTime: 0,
     refetchOnMount: true,
-    refetchOnWindowFocus: true
-  })
+    refetchOnWindowFocus: true,
+  });
 
   // Handle form selection
   function handleFormClick(formId: string) {
-    const newParams = new URLSearchParams(searchParams)
-    newParams.set("formId", formId)
-    newParams.set("page", "1") // Reset to page 1 when selecting a form
-    router.push(`?${newParams.toString()}`)
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("formId", formId);
+    newParams.set("page", "1"); // Reset to page 1 when selecting a form
+    router.push(`?${newParams.toString()}`);
   }
 
   // Calculate the total pages for forms pagination
   const formsPerPage = itemsPerPage;
-  const totalFormsPages = formsData?.pagination?.totalPages || 
+  const totalFormsPages =
+    formsData?.pagination?.totalPages ||
     Math.ceil((formsData?.forms?.length || 0) / formsPerPage);
 
   // Error state
@@ -104,15 +114,30 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
       <div className="min-h-[400px] w-full flex items-center justify-center rounded-lg border border-red-100 dark:border-red-900/50  p-6">
         <div className="flex flex-col items-center gap-4 max-w-md text-center">
           <div className="w-12 h-12 flex items-center justify-center bg-red-50 dark:bg-red-900/20 text-red-500 rounded-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+              />
             </svg>
           </div>
-          <h2 className="text-lg font-semibold text-red-600 dark:text-red-400">Error Loading Forms</h2>
-          <p className="text-sm text-gray-600 dark:text-gray-300">{(formsError as Error)?.message || "An unknown error occurred"}</p>
+          <h2 className="text-lg font-semibold text-red-600 dark:text-red-400">
+            Error Loading Forms
+          </h2>
+          <p className="text-sm text-gray-600 dark:text-gray-300">
+            {(formsError as Error)?.message || "An unknown error occurred"}
+          </p>
         </div>
       </div>
-    )
+    );
   }
 
   // Handle different view states based on formId and loading states
@@ -130,14 +155,14 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
     // Form is loaded and submissions are loaded
     return (
       <div className="space-y-6 sm:space-y-8">
-        <TableHeader 
+        <TableHeader
           formId={formId}
           formsData={formsData}
           searchParams={searchParams}
           router={router}
           submissionsData={data}
         />
-        <TableContent 
+        <TableContent
           data={data}
           isLoading={false}
           page={page}
@@ -192,9 +217,12 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
             <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 rounded-2xl bg-white dark:bg-zinc-800/50 flex items-center justify-center">
               <FileSpreadsheet className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 dark:text-gray-500" />
             </div>
-            <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">Ready to create your first form?</h3>
+            <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">
+              Ready to create your first form?
+            </h3>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 sm:mb-6 max-w-sm mx-auto px-4">
-              Start collecting responses in minutes with our easy-to-use form builder
+              Start collecting responses in minutes with our easy-to-use form
+              builder
             </p>
             <Button
               className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-lg px-6  hover:shadow-md"
@@ -221,12 +249,13 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                     Your Forms
                   </h1>
                   <p className="text-sm text-gray-600 dark:text-gray-300">
-                    {formsData.forms.length} form{formsData.forms.length !== 1 ? 's' : ''} available
+                    {formsData.forms.length} form
+                    {formsData.forms.length !== 1 ? "s" : ""} available
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
                   {/* View Toggle */}
-                  <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg p-1 flex items-center">
+                  {/* <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg p-1 flex items-center">
                     <button
                       onClick={() => handleViewModeChange('grid')}
                       className={`p-1.5 rounded-lg ${viewMode === 'grid' 
@@ -245,6 +274,61 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                     >
                       <List className="h-4 w-4" />
                     </button>
+                  </div> */}
+                  <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg p-0.5 gap-1 flex items-center">
+                    <Button
+                      variant="outline"
+                      onClick={() => handleViewModeChange("grid")}
+                      className={`p-1 rounded-lg ${
+                        viewMode === "grid"
+                          ? "bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white "
+                          : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                      }`}
+                      aria-label="Grid view"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect width="7" height="7" x="3" y="3" rx="1" />
+                        <rect width="7" height="7" x="14" y="3" rx="1" />
+                        <rect width="7" height="7" x="14" y="14" rx="1" />
+                        <rect width="7" height="7" x="3" y="14" rx="1" />
+                      </svg>
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => handleViewModeChange("list")}
+                      className={`p-1 rounded-lg ${
+                        viewMode === "list"
+                          ? "bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white"
+                          : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                      }`}
+                      aria-label="List view"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <line x1="3" x2="21" y1="6" y2="6" />
+                        <line x1="3" x2="21" y1="12" y2="12" />
+                        <line x1="3" x2="21" y1="18" y2="18" />
+                      </svg>
+                    </Button>
                   </div>
                   <SubmissionSearch />
                 </div>
@@ -258,12 +342,16 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                       <FileSpreadsheet className="h-5 w-5 text-gray-900 dark:text-white" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{formsData.forms.length}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Total Forms</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        {formsData.forms.length}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Total Forms
+                      </p>
                     </div>
                   </div>
                 </div>
-                
+
                 <div className=" rounded-xl p-4 border border-zinc-200 dark:border-zinc-700/50 hover:border-zinc-200 dark:hover:border-zinc-600/50 transition-all duration-200">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
@@ -271,9 +359,14 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">
-                        {formsData.forms.reduce((total, form) => total + (form.submissionCount || 0), 0)}
+                        {formsData.forms.reduce(
+                          (total, form) => total + (form.submissionCount || 0),
+                          0
+                        )}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Total Submissions</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Total Submissions
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -281,76 +374,94 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
             </div>
           </div>
         </div>
-        
-        {viewMode === 'grid' ? (
+
+        {viewMode === "grid" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {formsData.forms.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((form) => (
-              <div
-                key={form.id}
-                className={` border ${form.submissionCount > 0 ? 'border-background-100 dark:border-background-800/30' : 'border-zinc-200 dark:border-zinc-800/50'} rounded-xl  hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer`}
-                onClick={() => handleFormClick(form.id)}
-              >
-                <div className="p-4 sm:p-6">
-                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-2 truncate">{form.name}</h3>
-                  {form.description && (
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 line-clamp-2">{form.description}</p>
-                  )}
-                  <div className="flex justify-between items-center mt-4">
-                    <div className="flex items-center gap-1">
-                      <FileSpreadsheet className="h-4 w-4 text-gray-400" />
-                      <span className="text-xs text-gray-500 dark:text-gray-400">{form.submissionCount} submission{form.submissionCount !== 1 ? 's' : ''}</span>
+            {formsData.forms
+              .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+              .map((form) => (
+                <div
+                  key={form.id}
+                  className={` border ${form.submissionCount > 0 ? "border-background-100 dark:border-background-800/30" : "border-zinc-200 dark:border-zinc-800/50"} rounded-xl  hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer`}
+                  onClick={() => handleFormClick(form.id)}
+                >
+                  <div className="p-4 sm:p-6">
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-2 truncate">
+                      {form.name}
+                    </h3>
+                    {form.description && (
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 line-clamp-2">
+                        {form.description}
+                      </p>
+                    )}
+                    <div className="flex justify-between items-center mt-4">
+                      <div className="flex items-center gap-1">
+                        <FileSpreadsheet className="h-4 w-4 text-gray-400" />
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          {form.submissionCount} submission
+                          {form.submissionCount !== 1 ? "s" : ""}
+                        </span>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className={`h-7 px-2 text-xs ${
+                          form.submissionCount > 0
+                            ? "bg-background hover:bg-background-100 text-stone-800 dark:bg-background-900/20 dark:hover:bg-background-900/30 dark:text-white"
+                            : "hover:bg-zinc-200 text-gray-600 dark:hover:bg-zinc-950 dark:text-gray-300"
+                        } rounded-lg`}
+                      >
+                        View Logs
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {formsData.forms
+              .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+              .map((form) => (
+                <div
+                  key={form.id}
+                  className={`bg-white dark:bg-background border ${form.submissionCount > 0 ? "border-orange-100 dark:border-orange-800/30" : "border-zinc-200 dark:border-zinc-800/50"} rounded-lg  hover:shadow-md transition-all duration-200 cursor-pointer`}
+                  onClick={() => handleFormClick(form.id)}
+                >
+                  <div className="p-4 sm:p-5 flex items-center justify-between">
+                    <div className="flex items-center space-x-4 flex-1 min-w-0">
+                      <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                        <FileSpreadsheet className="h-5 w-5 text-gray-900 dark:text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
+                          {form.name}
+                        </h3>
+                        <div className="flex items-center gap-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                          <div className="flex items-center">
+                            <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5" />
+                            <span>
+                              {form.submissionCount} submission
+                              {form.submissionCount !== 1 ? "s" : ""}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <Button
                       variant="ghost"
                       size="sm"
-                      className={`h-7 px-2 text-xs ${form.submissionCount > 0 
-                        ? 'bg-background hover:bg-background-100 text-stone-800 dark:bg-background-900/20 dark:hover:bg-background-900/30 dark:text-white' 
-                        : 'hover:bg-zinc-200 text-gray-600 dark:hover:bg-zinc-950 dark:text-gray-300'} rounded-lg`}
+                      className={`h-7 px-2 text-xs ${
+                        form.submissionCount > 0
+                          ? "bg-orange-50 hover:bg-orange-100 text-stone-800 dark:bg-orange-900/20 dark:hover:bg-orange-900/30 dark:text-white"
+                          : "hover:bg-zinc-200 text-gray-600 dark:hover:bg-zinc-950 dark:text-gray-300"
+                      } rounded-lg`}
                     >
                       View Logs
                     </Button>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {formsData.forms.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((form) => (
-              <div
-                key={form.id}
-                className={`bg-white dark:bg-background border ${form.submissionCount > 0 ? 'border-orange-100 dark:border-orange-800/30' : 'border-zinc-200 dark:border-zinc-800/50'} rounded-lg  hover:shadow-md transition-all duration-200 cursor-pointer`}
-                onClick={() => handleFormClick(form.id)}
-              >
-                <div className="p-4 sm:p-5 flex items-center justify-between">
-                  <div className="flex items-center space-x-4 flex-1 min-w-0">
-                    <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
-                      <FileSpreadsheet className="h-5 w-5 text-gray-900 dark:text-white" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
-                        {form.name}
-                      </h3>
-                      <div className="flex items-center gap-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                        <div className="flex items-center">
-                          <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5" />
-                          <span>{form.submissionCount} submission{form.submissionCount !== 1 ? 's' : ''}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className={`h-7 px-2 text-xs ${form.submissionCount > 0 
-                      ? 'bg-orange-50 hover:bg-orange-100 text-stone-800 dark:bg-orange-900/20 dark:hover:bg-orange-900/30 dark:text-white' 
-                      : 'hover:bg-zinc-200 text-gray-600 dark:hover:bg-zinc-950 dark:text-gray-300'} rounded-lg`}
-                  >
-                    View Logs
-                  </Button>
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
         )}
 
@@ -363,9 +474,9 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
               className="h-8 px-3 rounded-lg"
               disabled={page <= 1}
               onClick={() => {
-                const newParams = new URLSearchParams(searchParams.toString())
-                newParams.set("page", String(page - 1))
-                router.push(`?${newParams.toString()}`)
+                const newParams = new URLSearchParams(searchParams.toString());
+                newParams.set("page", String(page - 1));
+                router.push(`?${newParams.toString()}`);
               }}
             >
               Previous
@@ -379,9 +490,9 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
               className="h-8 px-3 rounded-lg"
               disabled={page >= totalFormsPages}
               onClick={() => {
-                const newParams = new URLSearchParams(searchParams.toString())
-                newParams.set("page", String(page + 1))
-                router.push(`?${newParams.toString()}`)
+                const newParams = new URLSearchParams(searchParams.toString());
+                newParams.set("page", String(page + 1));
+                router.push(`?${newParams.toString()}`);
               }}
             >
               Next
@@ -391,4 +502,4 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
       </div>
     );
   }
-} 
+}
