@@ -11,7 +11,7 @@ interface TermsSectionProps {
 }
 
 const TermsSection: React.FC<TermsSectionProps> = ({ title, children, icon: Icon }) => (
-  <div className="p-6 rounded-xl  shadow-sm mb-6 border border-neutral-200 dark:border-zinc-800">
+  <div className="p-6 rounded-xl   mb-6 border border-neutral-200 dark:border-zinc-800">
     <div className="flex items-center gap-3 mb-3">
       <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800">
         <Icon className="text-neutral-800 dark:text-neutral-200" size={20} />
@@ -26,12 +26,12 @@ const TermsSection: React.FC<TermsSectionProps> = ({ title, children, icon: Icon
 
 const TermsOfService: React.FC = () => (
   <div className="min-h-screen ">
-    <div className="fixed top-0 left-0 right-0 z-50 ">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur-sm ">
       <Container>
         <Navbar />
       </Container>
     </div>
-    <main className="pt-32 pb-16">
+    <main className="pt-32 pb-16 relative z-10">
       <Container>
         <div className="max-w-3xl mx-auto">
           <header className="text-center mb-10">
@@ -86,7 +86,7 @@ const TermsOfService: React.FC = () => (
               </p>
             </TermsSection>
 
-            <div className="p-6 rounded-xl  shadow-sm text-center border border-neutral-200 dark:border-zinc-800">
+            <div className="p-6 rounded-xl  text-center border border-neutral-200 dark:border-zinc-800">
               <h3 className="text-neutral-800 dark:text-neutral-200 font-medium mb-3">Contact Us</h3>
               <a href="mailto:contact@mantlz.com" 
                 className="inline-flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors">
