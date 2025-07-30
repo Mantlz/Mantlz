@@ -203,9 +203,9 @@ export default function UsageSettings() {
     if (isPlanLoading || isSubscriptionLoading) {
       console.log('🔄 Rendering loading state');
       return (
-        <div className="w-full max-w-5xl mx-auto">
+        <div className="w-full mx-auto">
           <ScrollArea className="h-[550px] w-full">
-            <div className="w-full space-y-6 p-1">
+            <div className="w-full space-y-4 pr-4">
               {headerContent}
               {renderSkeleton('custom', 3)}
             </div>
@@ -218,9 +218,9 @@ export default function UsageSettings() {
     if (planError || !planData) {
       console.log('❌ Rendering error state - planError:', planError, 'planData:', planData);
       return (
-        <div className="w-full max-w-5xl mx-auto">
+        <div className="w-full mx-auto">
           <ScrollArea className="h-[550px] w-full">
-            <div className="w-full space-y-6 p-1">
+            <div className="w-full space-y-4 pr-4">
               {headerContent}
               <div className="flex flex-col items-center justify-center py-8 text-center">
                 <AlertCircle className="h-6 w-6 text-red-500" />
@@ -243,9 +243,9 @@ export default function UsageSettings() {
     // Otherwise, show the actual content with header
     // console.log('✅ Rendering usage cards with planData:', planData);
     return (
-      <div className="w-full max-w-5xl mx-auto">
+      <div className="w-full mx-auto">
         <ScrollArea className="h-[550px] w-full">
-          <div className="w-full space-y-6 p-1">
+          <div className="w-full space-y-4 pr-4">
             {headerContent}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
