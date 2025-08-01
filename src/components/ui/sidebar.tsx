@@ -139,7 +139,7 @@ function SidebarProvider({
             } as React.CSSProperties
           }
           className={cn(
-            "group/sidebar-wrapper bg-background dark:bg-zinc-950 has-data-[variant=inset]:bg-zinc-50/50 dark:has-data-[variant=inset]:bg-zinc-950/50 flex min-h-svh w-full transition-colors duration-300",
+            "group/sidebar-wrapper bg-background dark:bg-background has-data-[variant=inset]:bg-zinc-50/50 dark:has-data-[variant=inset]:bg-background flex min-h-svh w-full transition-colors duration-300",
             className
           )}
           {...props}
@@ -246,7 +246,7 @@ function Sidebar({
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
           className={cn(
-            "bg-sidebar text-sidebar-foreground dark:bg-zinc-900/50 rounded-lg group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm",
+            "bg-sidebar text-sidebar-foreground dark:bg-background rounded-lg group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm",
           )}
         >
           {children}

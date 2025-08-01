@@ -102,7 +102,7 @@ export default function BillingHistoryPage() {
         </div>
 
         {/* Invoices List */}
-        <Card className="border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
+        <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background">
           <CardHeader className="pb-2">
             <CardTitle className="text-zinc-900 dark:text-white text-sm">
               All Invoices
