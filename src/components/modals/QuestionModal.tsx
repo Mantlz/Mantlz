@@ -50,12 +50,12 @@ export function QuestionModal({ isOpen, onClose, trigger }: QuestionModalProps) 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
-      <DialogContent className="max-w-xl border-2 border-zinc-200 shadow-lg dark:border-zinc-800 p-0 overflow-hidden border-none">
+      <DialogContent className="max-w-xl bg-background dark:bg-background border border-zinc-200 dark:border-zinc-800 p-0 overflow-hidden">
         <div className="p-8 pt-10">
-          <DialogTitle className="text-xl font-semibold text-center mb-2">
+          <DialogTitle className="text-xl font-semibold text-foreground text-center mb-2">
             How can we help?
           </DialogTitle>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 text-center mt-2 mb-8">
+          <p className="text-sm text-muted-foreground text-center mt-2 mb-8">
             Choose an option based on your needs.
           </p>
           
@@ -66,13 +66,13 @@ export function QuestionModal({ isOpen, onClose, trigger }: QuestionModalProps) 
                 href={option.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center p-6 rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-750 transition-all shadow-sm hover:shadow cursor-pointer"
+                className="flex flex-col items-center justify-center p-6 rounded-xl bg-background dark:bg-background border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all cursor-pointer"
                 onClick={() => onClose?.()}
               >
                 <div className="flex justify-center items-center mb-3">
                   {option.icon}
                 </div>
-                <span className="text-sm font-medium">{option.label}</span>
+                <span className="text-sm font-medium text-foreground">{option.label}</span>
               </Link>
             ))}
           </div>
@@ -80,4 +80,4 @@ export function QuestionModal({ isOpen, onClose, trigger }: QuestionModalProps) 
       </DialogContent>
     </Dialog>
   );
-} 
+}

@@ -58,8 +58,8 @@ function SheetContent({
       <SheetPrimitive.Content
         data-slot="sheet-content"
         className={cn(
-          "fixed z-50 flex flex-col gap-4 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
-          "bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700",
+          "fixed z-50 flex flex-col gap-4 shadow-sm transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
+          "bg-white dark:bg-background border-2 border-zinc-500/80 dark:border-stone-900/50",
           "data-[state=open]:animate-in data-[state=closed]:animate-out",
           side === "right" &&
             "data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-3/4",
@@ -74,7 +74,7 @@ function SheetContent({
         {...props}
       >
         {children}
-        <SheetPrimitive.Close className="absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none">
+        <SheetPrimitive.Close className="absolute top-4 right-4 rounded-sm cursor-pointer opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none">
           <XIcon className="h-5 w-5 text-gray-700 dark:text-gray-300" />
           <span className="sr-only">Close</span>
         </SheetPrimitive.Close>
