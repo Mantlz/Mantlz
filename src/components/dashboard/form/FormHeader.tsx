@@ -99,10 +99,10 @@ export function FormHeader({
                       <span className="xs:hidden">SDK</span>
                     </span>
                   </Button>
-                </SheetTrigger>
-                <SheetContent side="right" className="w-[100vw] sm:w-[100vw] lg:w-[1800px] xl:w-[2000px] p-0 max-w-screen-2xl h-screen overflow-hidden">
+                 </SheetTrigger>
+                <SheetContent side="right" className="w-[80vw] sm:w-[60vw] md:w-[50vw] lg:w-[40vw] xl:w-[30vw] p-0 max-w-screen-md h-screen overflow-hidden">
                   <div className="h-full flex flex-col">
-                    <SheetHeader className="px-6 py-4 border-b border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+                    <SheetHeader className="px-6 py-4 border-b border-zinc-200 dark:border-zinc-700 bg-background dark:bg-background">
                       <SheetTitle className="text-xl font-bold">Integration Guide</SheetTitle>
                       <SheetDescription className="text-base">
                         Follow these steps to integrate this form into your Next.js application
@@ -126,9 +126,9 @@ export function FormHeader({
                     <span className="text-sm xs:text-base font-medium text-gray-800 dark:text-gray-200">Settings</span>
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-[100vw] sm:w-[100vw] lg:w-[1800px] xl:w-[2000px] p-0 max-w-screen-2xl h-screen overflow-hidden">
+                <SheetContent side="right" className="w-[75vw] sm:w-[55vw] md:w-[45vw] lg:w-[35vw] xl:w-[25vw] p-0 max-w-screen-md h-screen overflow-hidden">
                   <div className="h-full flex flex-col">
-                    <SheetHeader className="px-4 sm:px-6 py-3 sm:py-4 border-b border-zinc-200 dark:border-zinc-700">
+                    <SheetHeader className="px-4 sm:px-6 py-3 sm:py-4 border-b border-zinc-200 dark:border-zinc-700 bg-background dark:bg-background">
                       <SheetTitle className="text-lg sm:text-xl">Form Settings</SheetTitle>
                       <SheetDescription className="text-sm sm:text-base">
                         Manage your form settings and preferences.

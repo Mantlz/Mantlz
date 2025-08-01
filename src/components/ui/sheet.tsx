@@ -62,9 +62,9 @@ function SheetContent({
           "bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-700",
           "data-[state=open]:animate-in data-[state=closed]:animate-out",
           side === "right" &&
-            "data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-3/4 sm:max-w-md",
+            "data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-3/4",
           side === "left" &&
-            "data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left inset-y-0 left-0 h-full w-3/4 sm:max-w-md",
+            "data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left inset-y-0 left-0 h-full w-3/4",
           side === "top" &&
             "data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top inset-x-0 top-0 h-auto",
           side === "bottom" &&
