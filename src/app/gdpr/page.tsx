@@ -26,7 +26,7 @@ const PrivacySection: React.FC<PrivacySectionProps> = ({ title, children, icon: 
 
 const PrivacyPage: React.FC = () => (
   <div className="min-h-screen ">
-    <div className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-black/95 backdrop-blur-sm ">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-background/95 backdrop-blur-sm ">
       <Container>
         <Navbar />
       </Container>
