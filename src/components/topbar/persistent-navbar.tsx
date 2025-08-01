@@ -37,11 +37,11 @@ const UserDropdown = memo(function UserDropdown() {
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="flex items-center gap-2 p-1 rounded-lg bg-muted hover:bg-muted/80 hover:backdrop-blur-sm hover:shadow-sm cursor-pointer transition-all duration-200"
+            className="flex items-center gap-2 p-1 rounded-lg bg-background dark:bg-background hover:backdrop-blur-sm cursor-pointer transition-all duration-200"
           >
             <Avatar className="h-7 w-7 xs:h-8 xs:w-8 ring-2 ring-border">
               <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
-              <AvatarFallback className="bg-primary text-primary-foreground">
+              <AvatarFallback className="bg-background text-black dark:text-white">
                 {user?.firstName?.[0] || user?.lastName?.[0] || "U"}
               </AvatarFallback>
             </Avatar>
