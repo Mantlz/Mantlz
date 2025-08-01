@@ -15,7 +15,7 @@ import {
   useClerk,
   useAuth,
 } from "@clerk/nextjs";
-import { Logo } from "@/components/global/logo";
+import Image from "next/image";
 import {
   Drawer,
   DrawerContent,
@@ -157,7 +157,13 @@ export function Navbar() {
     <nav className="flex items-center justify-between pt-10 relative z-50">
       <div className="flex items-center">
         <Link href="/" className="flex items-center">
-          <Logo className="h-7 w-7 mb-2 mr-1 " size={32} />
+          <Image 
+            src="/logo.png" 
+            alt="Mantlz Logo" 
+            width={28} 
+            height={28} 
+            className="mb-0.5 mr-1" 
+          />
           <span className="font-semibold text-lg">Mantlz</span>
         </Link>
       </div>

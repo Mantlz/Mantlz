@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from "@/components/ui/sheet"
-import { Logo } from "@/components/global/logo"
+import Image from "next/image"
 import { SettingsDialog } from "@/components/settings/settings-dialog"
 import { NavUserSkeleton } from "@/components/skeletons/navUser-skeleton"
 import { BreadcrumbNav } from "@/components/dashboard/breadcum-nav"
@@ -123,7 +123,13 @@ const MobileNavMenu = memo(function MobileNavMenu() {
           <div className="flex flex-col h-full">
             <div className="flex items-center justify-between p-4 border-b border-border">
               <Link href="/dashboard" className="flex items-center gap-1 xs:gap-2 font-semibold cursor-pointer">
-                <Logo className="h-6 w-6 mb-1"/>
+                <Image 
+                  src="/logo.png" 
+                  alt="Mantlz Logo" 
+                  width={24} 
+                  height={24} 
+                  className="mb-0.5" 
+                />
                 <span className="text-sm sm:text-base">Mantlz</span>
               </Link>
             </div>
@@ -316,7 +322,13 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
         <MobileNavMenu />
 
         <Link href="/dashboard" className="hidden md:flex items-center gap-1 xs:gap-2 font-semibold group cursor-pointer">
-        <Logo className="h-6 w-6 mb-1 mr-0.5" size={20} />
+        <Image 
+          src="/logo.png" 
+          alt="Mantlz Logo" 
+          width={24} 
+          height={24} 
+          className="mb-0.5 " 
+        />
 
           <span className="text-sm sm:text-base group-hover:text-muted-foreground transition-colors duration-200">Mantlz</span>
         </Link>

@@ -1,7 +1,7 @@
 import { Heading } from "@/components/global/heading"
 import { LoadingSpinner } from "@/components/global/loading-spinner"
 import { useEffect, useState } from "react"
-import { Logo } from "../global/logo"
+import Image from "next/image"
 
 interface SyncMessageProps {
   title: string
@@ -50,8 +50,13 @@ export function SyncMessage({ title, message, syncStatus, syncTime = 0 }: SyncMe
     <div className="flex justify-center items-center h-full w-full">
       <div className="flex flex-col items-center gap-8 max-w-md w-full p-8 rounded-2xl bg-zinc-800  transition-all duration-300 ease-in-out">
         {/* Logo or icon (optional) */}
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center shadow-lg mb-1">
-        <Logo size={32}/>
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-300 to-orange-400 flex items-center justify-center shadow-lg mb-1">
+        <Image 
+          src="/logo.png" 
+          alt="Mantlz Logo" 
+          width={32} 
+          height={32} 
+        />
 
         </div> 
 

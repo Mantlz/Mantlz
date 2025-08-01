@@ -1,6 +1,6 @@
 "use client";
 import { TextHoverEffectDemo } from "@/components/global/textHoverEffect";
-import { Logo } from "@/components/global/logo";
+import Image from "next/image";
 import { Container } from "./container";
 import { StatusButton } from "./status-button";
 import { Mail, ExternalLink, Github, Twitter } from "lucide-react";
@@ -12,8 +12,14 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
           {/* Logo and description */}
           <div className="flex flex-col items-center md:items-start">
-            <div className="flex items-center space-x-2 mb-3 p-3 rounded-xl bg-gradient-to-r from-white/80 to-gray-50/80 dark:from-zinc-800/80 dark:to-zinc-900/80 border border-gray-200/30 dark:border-zinc-700/30 shadow-sm">
-              <Logo className="mb-1" size={24} />
+            <div className="flex items-center space-x-2 mb-2 p-2 rounded-xl bg-gradient-to-r from-white/80 to-gray-50/80 dark:from-zinc-800/80 dark:to-zinc-900/80 border border-gray-200/30 dark:border-zinc-700/30">
+              <Image 
+                src="/logo.png" 
+                alt="Mantlz Logo" 
+                width={24} 
+                height={24} 
+                className="mb-0.5" 
+              />
               <p className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-200 bg-clip-text text-transparent">
                 Mantlz
               </p>
