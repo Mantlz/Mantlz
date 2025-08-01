@@ -32,9 +32,9 @@ function CustomizeFormContent() {
   const formType = rawFormType.trim().toLowerCase()
   
   // Debug the exact form type value from URL parameter
-  console.log('Form type from URL (raw):', rawFormType)
-  console.log('Form type normalized:', formType)
-  console.log('Valid types check:', ['waitlist', 'contact', 'feedback', 'custom', 'survey', 'application', 'order', 'analytics-opt-in', 'rsvp'].includes(formType))
+  // console.log('Form type from URL (raw):', rawFormType)
+  // console.log('Form type normalized:', formType)
+  // console.log('Valid types check:', ['waitlist', 'contact', 'feedback', 'custom', 'survey', 'application', 'order', 'analytics-opt-in', 'rsvp'].includes(formType))
   
   // Add client-side rendering flag
   const [isClient, setIsClient] = useState(false)
@@ -274,11 +274,11 @@ function CustomizeFormContent() {
                 </Tabs>
               ) : (
                 <div className="animate-pulse">
-                  <div className="h-10 bg-zinc-100 dark:bg-zinc-800 rounded-lg mb-6"></div>
+                  <div className="h-10 bg-zinc-100 dark:bg-stone-900/20 rounded-lg mb-6"></div>
                   <div className="space-y-4">
-                    <div className="h-12 bg-zinc-100 dark:bg-zinc-800 rounded-lg"></div>
-                    <div className="h-12 bg-zinc-100 dark:bg-zinc-800 rounded-lg"></div>
-                    <div className="h-12 bg-zinc-100 dark:bg-zinc-800 rounded-lg"></div>
+                    <div className="h-12 bg-zinc-100 dark:bg-stone-900/80 rounded-lg"></div>
+                    <div className="h-12 bg-zinc-100 dark:bg-stone-900/80 rounded-lg"></div>
+                    <div className="h-12 bg-zinc-100 dark:bg-stone-900/80 rounded-lg"></div>
                   </div>
                 </div>
               )}
@@ -288,14 +288,12 @@ function CustomizeFormContent() {
           {/* Preview Panel */}
           <div className="w-full lg:w-1/2 overflow-y-auto ">
             <div className="p-4">
-              <div className="shadow-sm">
                 <FormPreview 
                   formTitle={formTitle}
                   formDescription={formDescription}
                   formFields={formFields}
                   formType={formType}
                 />
-              </div>
             </div>
           </div>
         </div>

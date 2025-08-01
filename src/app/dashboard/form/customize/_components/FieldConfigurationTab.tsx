@@ -272,8 +272,8 @@ export function FieldConfigurationTab({
                       className={cn(
                         "flex items-center gap-2 px-3 py-2.5 rounded-lg transition-all duration-200",
                         formFields.some(f => f.id === field.id)
-                          ? ' text-neutral-400 dark:bg-zinc-800/60 dark:text-neutral-500 border border-neutral-200 dark:border-zinc-800 opacity-60 cursor-not-allowed' 
-                          : 'border border-neutral-200 dark:border-zinc-800 hover:border-primary/20 dark:hover:border-primary/20 hover:shadow-sm cursor-pointer'
+                          ? ' text-neutral-400 dark:bg-zinc-900/50 dark:text-neutral-500 border border-neutral-200 dark:border-zinc-800 opacity-60 cursor-not-allowed' 
+                          : 'border border-neutral-200 dark:border-zinc-800 hover:border-primary/20 dark:hover:border-primary/20  cursor-pointer'
                       )}
                       onClick={() => !formFields.some(f => f.id === field.id) && onToggleField(field)}
                       role="button"
@@ -332,10 +332,10 @@ export function FieldConfigurationTab({
                       className={cn(
                         "flex items-center gap-2 px-3 py-2.5 rounded-lg transition-all duration-200",
                         formFields.some(f => f.id === field.id)
-                          ? 'bg-zinc-100/80 text-neutral-400 dark:bg-zinc-800/60 dark:text-neutral-500 border border-neutral-200 dark:border-zinc-800 opacity-60 cursor-not-allowed' 
+                          ? 'bg-zinc-100/80 text-neutral-400 dark:bg-zinc-900/50 dark:text-neutral-500 border border-neutral-200 dark:border-zinc-700/50 opacity-60 cursor-not-allowed' 
                           : !isPremium || (field.type === 'product')
-                            ? 'bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 opacity-70 cursor-not-allowed'
-                            : 'bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-800 hover:border-primary/20 dark:hover:border-primary/20 hover:shadow-sm cursor-pointer'
+                            ? 'bg-white dark:bg-background border border-neutral-200 dark:border-zinc-700/50 opacity-70 cursor-not-allowed'
+                            : 'bg-white dark:bg-background border border-neutral-200 dark:border-zinc-700/50 hover:border-primary/20 dark:hover:border-primary/20 cursor-pointer'
                       )}
                       onClick={() => {
                         if (!formFields.some(f => f.id === field.id) && 

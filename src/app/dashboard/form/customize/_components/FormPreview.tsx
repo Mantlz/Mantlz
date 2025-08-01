@@ -28,7 +28,7 @@ export function FormPreview({
   const { isPremium } = useSubscription();
 
   return (
-    <div className="py-6 px-4 rounded-lg border border-neutral-200 dark:border-zinc-900 ">
+    <div className="py-6 px-4 rounded-lg border border-neutral-200 dark:border-zinc-700/50 ">
       <div className='pb-4 mb-4 '>
         <h1 className="text-xl font-medium mb-2 text-neutral-900 dark:text-white">{formTitle || 'Form Title'}</h1>
         {formDescription && (
