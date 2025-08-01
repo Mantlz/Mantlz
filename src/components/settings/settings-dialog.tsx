@@ -93,7 +93,7 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
           "max-w-[1100px]",
           "h-[600px]",
           "border-2 border-zinc-300 dark:border-zinc-800",
-          //"shadow-[5px_5px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[5px_5px_0px_0px_rgba(0,0,0,0.3)]",
+          "shadow-[5px_5px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[5px_5px_0px_0px_rgba(0,0,0,0.3)]",
           "bg-background dark:bg-background",
           "rounded-lg"
         )}>
@@ -103,14 +103,11 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
           </DialogDescription>
           <LoadingProvider>
             <SidebarProvider className="items-start">
-              {/* Navigation Sidebar - Subtle retro style */}
               <Sidebar 
                 collapsible="none" 
                 className={cn(
                   "hidden md:flex border-r w-[200px]",
-                  // Light mode - light gray sidebar
                   "bg-background border-zinc-200",
-                  // Dark mode - dark gray sidebar
                   "dark:bg-background dark:border-zinc-800"
                 )}
               >
@@ -133,18 +130,11 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
                                 "w-full text-sm font-medium rounded-lg",
                                 "transition-all duration-150",
                                 "border",
-                                // Default state
                                 "text-zinc-700 dark:text-zinc-300",
                                 "border-transparent",
-                                // Hover state
-                                "hover:bg-zinc-200 hover:text-zinc-900",
-                                "dark:hover:bg-zinc-800 dark:hover:text-white",
-                                // Active state
+                                "hover:bg-accent/50 hover:text-accent-foreground",
                                 item.name === selectedTab && [
-                                  "bg-accent text-zinc-900 border-zinc-300",
-                                  "dark:bg-accent dark:text-white dark:border-zinc-700",
-                                 // "shadow-[2px_2px_0px_0px_rgba(0,0,0,0.05)]",
-                                  //"dark:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)]"
+                                  "bg-accent text-accent-foreground border-accent/20",
                                 ]
                               )}
                             >
@@ -155,7 +145,7 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
                                     <IconComponent className={cn(
                                       "h-4 w-4",
                                       item.name === selectedTab 
-                                        ? "text-zinc-900 dark:text-white" 
+                                        ? "text-accent-foreground" 
                                         : "text-zinc-500 dark:text-zinc-400"
                                     )} />
                                   ) : null
