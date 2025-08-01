@@ -137,7 +137,7 @@ export function TableContent({
           <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">
             Campaign List
           </h3>
-          <Badge className="ml-2 bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-200">
+          <Badge className="ml-2" variant="default">
             {data.campaigns.length} campaigns
           </Badge>
         </div>
@@ -207,7 +207,7 @@ export function TableContent({
                     </div>
                   </TableCell>
                   <TableCell className="py-3 sm:py-4">
-                    <Badge variant="outline" className={`${statusInfo.color}`}>
+                    <Badge variant="default" className={`${statusInfo.color}`}>
                       {statusInfo.label}
                     </Badge>
                   </TableCell>
@@ -411,10 +411,10 @@ export function TableContent({
                         </PopoverTrigger>
                         <PopoverContent
                           align="end"
-                          className="w-[180px] p-0 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800"
+                          className="w-[180px] p-0 bg-white dark:bg-background border border-zinc-200 dark:border-zinc-800"
                         >
                           <button
-                            className="w-full flex items-center px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left text-sm text-gray-700 dark:text-gray-300 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+                            className="w-full flex items-center px-3 py-2 hover:bg-accent dark:hover:bg-accent/90 text-left text-sm text-gray-700 dark:text-gray-300 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                             onClick={() =>
                               !isPremium
                                 ? onUpgradeClick?.()
@@ -427,7 +427,7 @@ export function TableContent({
                             Send Test Email
                           </button>
                           <button
-                            className="w-full flex items-center px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left text-sm text-gray-700 dark:text-gray-300 cursor-pointer"
+                            className="w-full flex items-center px-3 py-2 hover:bg-accent dark:hover:bg-accent/90 text-left text-sm text-gray-700 dark:text-gray-300 cursor-pointer"
                             onClick={() =>
                               !isPremium
                                 ? onUpgradeClick?.()
@@ -451,7 +451,7 @@ export function TableContent({
                           >
                             <AlertDialogTrigger asChild>
                               <button
-                                className="w-full flex items-center px-3 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left text-sm text-red-600 dark:text-red-400 border-t border-zinc-200 dark:border-zinc-800 cursor-pointer"
+                                className="w-full flex items-center px-3 py-2 hover:bg-accent dark:hover:bg-accent/90 text-left text-sm text-red-600 dark:text-red-400 border-t border-zinc-200 dark:border-zinc-800 cursor-pointer"
                                 onClick={() => !isPremium && onUpgradeClick?.()}
                               >
                                 <Trash2 className="h-4 w-4 mr-2" />
