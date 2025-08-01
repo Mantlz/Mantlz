@@ -49,7 +49,7 @@ export default function Faq() {
                     <Accordion
                         type="single"
                         collapsible
-                        className="bg-gradient-to-br from-card to-card/50 backdrop-blur-sm w-full rounded-2xl border border-border/50 px-8 py-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                        className="bg-gradient-to-br from-card to-card/50 backdrop-blur-sm w-full rounded-2xl border border-border/50 px-8 py-6 shadow-none hover:shadow-sm transition-all duration-300">
                         {faqItems.map((item) => (
                             <AccordionItem
                                 key={item.id}

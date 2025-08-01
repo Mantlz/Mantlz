@@ -208,7 +208,7 @@ function PricingContent({
             
             <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
               {plans.map((plan) => (
-                <Card key={plan.title} className={`group relative overflow-hidden rounded-2xl transition-all duration-500 hover:scale-[1.02] ${plan.isPopular ? 'border-0 bg-gradient-to-b from-primary/5 via-background to-background shadow-2xl shadow-primary/10 ring-2 ring-primary/20 sm:col-span-2 lg:col-span-1' : 'border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-lg hover:shadow-xl hover:border-primary/30'}`}>
+                <Card key={plan.title} className={`group relative overflow-hidden rounded-2xl transition-all duration-500 hover:scale-[1.02] ${plan.isPopular ? 'border-0 bg-gradient-to-b from-primary/5 via-background to-background shadow-none ring-2 ring-primary/20 sm:col-span-2 lg:col-span-1' : 'border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-none hover:shadow-sm hover:border-primary/30'}`}>
                   {plan.isPopular && (
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-50"></div>
                   )}

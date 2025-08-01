@@ -34,7 +34,7 @@ export default function SecuritySection() {
 
 const ComplianceCard = ({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) => {
     return (
-        <Card className="group relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-primary/30">
+        <Card className="group relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-none transition-all duration-300 hover:shadow-sm hover:border-primary/30">
             <CardContent className="pt-8 pb-8">
                 <div className="relative mx-auto flex aspect-square size-16 rounded-2xl items-center justify-center bg-gradient-to-br from-muted/40 to-muted/20 ring-1 ring-muted/30 group-hover:ring-primary/40 transition-all duration-300 mb-6">
                     <div className="text-muted-foreground group-hover:text-primary transition-colors duration-300">

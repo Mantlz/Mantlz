@@ -12,7 +12,7 @@ export default function FeaturesSection() {
                 </div>
                 <div className="relative">
                     <div className="relative z-10 grid grid-cols-5 gap-4 lg:gap-6">
-                        <Card className="group relative col-span-full rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-primary/30 flex overflow-hidden lg:col-span-2">
+                        <Card className="group relative col-span-full rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-none transition-all duration-300 hover:shadow-sm hover:border-primary/30 flex overflow-hidden lg:col-span-2">
                             <CardContent className="relative m-auto size-fit pt-6">
                                 <div className="relative flex h-24 w-56 items-center">
                                     <svg
@@ -30,7 +30,7 @@ export default function FeaturesSection() {
                                 <h2 className="mt-6 text-center text-3xl font-semibold">Customizable</h2>
                             </CardContent>
                         </Card>
-                        <Card className="group relative col-span-full overflow-hidden sm:col-span-3 lg:col-span-3 rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-primary/30">
+                        <Card className="group relative col-span-full overflow-hidden sm:col-span-3 lg:col-span-3 rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-none transition-all duration-300 hover:shadow-sm hover:border-primary/30">
                             <CardContent className="pt-8 pb-8">
                                 <div className="relative mx-auto flex aspect-square size-32 rounded-2xl items-center justify-center bg-gradient-to-br from-muted/40 to-muted/20 ring-1 ring-muted/30 group-hover:ring-primary/40 transition-all duration-300 mb-6">
                                     <div className="text-muted-foreground group-hover:text-primary transition-colors duration-300">
@@ -46,7 +46,7 @@ export default function FeaturesSection() {
                                 </div>
                             </CardContent>
                         </Card>
-                        <Card className="group relative col-span-full overflow-hidden sm:col-span-3 rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-primary/30 lg:col-span-2">
+                        <Card className="group relative col-span-full overflow-hidden sm:col-span-3 rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-none transition-all duration-300 hover:shadow-sm hover:border-primary/30 lg:col-span-2">
                             <CardContent className="pt-6">
                                 <div className="pt-6 lg:px-6">
                                     <svg
@@ -117,7 +117,7 @@ export default function FeaturesSection() {
                                 </div>
                             </CardContent>
                         </Card>
-                        <Card className="group relative col-span-full overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-primary/30 lg:col-span-3">
+                        <Card className="group relative col-span-full overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-none transition-all duration-300 hover:shadow-sm hover:border-primary/30 lg:col-span-3">
                             <CardContent className="grid pt-8 pb-8 sm:grid-cols-2">
                                 <div className="relative z-10 flex flex-col justify-between space-y-12 lg:space-y-8">
                                     <div className="relative flex aspect-square size-16 rounded-2xl items-center justify-center bg-gradient-to-br from-muted/40 to-muted/20 ring-1 ring-muted/30 group-hover:ring-primary/40 transition-all duration-300">

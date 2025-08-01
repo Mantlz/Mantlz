@@ -14,7 +14,7 @@ export default function OurServices() {
                     <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">Create, customize, and manage powerful forms with our intuitive platform</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-                    <Card className="group relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-lg hover:shadow-xl hover:border-primary/30">
+                    <Card className="group relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-none hover:shadow-sm hover:border-primary/30">
                         <CardHeader className="pb-4">
                             <div className="relative flex aspect-square size-16 rounded-2xl items-center justify-center transition-all duration-300 group-hover:scale-110 bg-gradient-to-br from-muted/40 to-muted/20 ring-1 ring-muted/30 group-hover:ring-primary/40 mb-4">
                                 <Zap className="size-7 text-primary transition-all duration-300" aria-hidden />
@@ -26,7 +26,7 @@ export default function OurServices() {
                         </CardContent>
                     </Card>
 
-                    <Card className="group relative overflow-hidden rounded-2xl  border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-lg hover:shadow-xl hover:border-primary/30">
+                    <Card className="group relative overflow-hidden rounded-2xl  border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-none hover:shadow-sm hover:border-primary/30">
                         <CardHeader className="pb-4">
                             <div className="relative flex aspect-square size-16 rounded-2xl items-center justify-center transition-all duration-300 group-hover:scale-110 bg-gradient-to-br from-muted/40 to-muted/20 ring-1 ring-muted/30 group-hover:ring-primary/40 mb-4">
                                 <Settings2 className="size-7 text-primary transition-all duration-300" aria-hidden />
@@ -38,7 +38,7 @@ export default function OurServices() {
                         </CardContent>
                     </Card>
 
-                    <Card className="group relative overflow-hidden rounded-2xl  border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-lg hover:shadow-xl hover:border-primary/30">
+                    <Card className="group relative overflow-hidden rounded-2xl  border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-none hover:shadow-sm hover:border-primary/30">
                         <CardHeader className="pb-4">
                             <div className="relative flex aspect-square size-16 rounded-2xl items-center justify-center transition-all duration-300 group-hover:scale-110 bg-gradient-to-br from-muted/40 to-muted/20 ring-1 ring-muted/30 group-hover:ring-primary/40 mb-4">
                                 <Sparkles className="size-7 text-primary transition-all duration-300" aria-hidden />
