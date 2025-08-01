@@ -1,4 +1,4 @@
-import { Book, HelpCircle, MessageSquare, ShoppingCart } from "lucide-react";
+import { Book, HelpCircle, MessageSquare, ShoppingCart, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import {
   Dialog,
@@ -16,27 +16,35 @@ interface QuestionModalProps {
 const helpOptions = [
   {
     id: "documentation",
-    icon: <Book className="h-8 w-8 text-indigo-500" />,
+    icon: <Book className="h-5 w-5" />,
     label: "Documentation",
-    href: "https://doc.mantlz.com"
+    description: "Learn how to use Mantlz",
+    href: "https://doc.mantlz.com",
+    color: "bg-blue-500/10 text-blue-600 dark:text-blue-400"
   },
   {
     id: "support",
-    icon: <HelpCircle className="h-8 w-8 text-blue-500" />,
-    label: "Support",
-    href: "mailto:contact@mantlz.com"
+    icon: <HelpCircle className="h-5 w-5" />,
+    label: "Get Support",
+    description: "Contact our support team",
+    href: "mailto:contact@mantlz.com",
+    color: "bg-green-500/10 text-green-600 dark:text-green-400"
   },
   {
     id: "feature-request",
-    icon: <MessageSquare className="h-8 w-8 text-green-500" />,
-    label: "Feature request",
-    href: "https://mantlz.featurebase.app/"
+    icon: <MessageSquare className="h-5 w-5" />,
+    label: "Feature Request",
+    description: "Suggest new features",
+    href: "https://mantlz.featurebase.app/",
+    color: "bg-purple-500/10 text-purple-600 dark:text-purple-400"
   },
   {
     id: "contact-sales",
-    icon: <ShoppingCart className="h-8 w-8 text-amber-500" />,
-    label: "Contact sales",
-    href: "mailto:sale@mantlz.com"
+    icon: <ShoppingCart className="h-5 w-5" />,
+    label: "Contact Sales",
+    description: "Talk to our sales team",
+    href: "mailto:sale@mantlz.com",
+    color: "bg-orange-500/10 text-orange-600 dark:text-orange-400"
   }
 ];
 
@@ -50,29 +58,37 @@ export function QuestionModal({ isOpen, onClose, trigger }: QuestionModalProps) 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
-      <DialogContent className="max-w-xl bg-background dark:bg-background border border-zinc-200 dark:border-zinc-800 p-0 overflow-hidden">
-        <div className="p-8 pt-10">
-          <DialogTitle className="text-xl font-semibold text-foreground text-center mb-2">
-            How can we help?
-          </DialogTitle>
-          <p className="text-sm text-muted-foreground text-center mt-2 mb-8">
-            Choose an option based on your needs.
-          </p>
+      <DialogContent className="max-w-md bg-background dark:bg-background border border-zinc-200 dark:border-zinc-800 p-0 overflow-hidden">
+        <div className="p-6">
+          <div className="text-center mb-6">
+            <DialogTitle className="text-lg font-semibold text-foreground mb-2">
+              How can we help you?
+            </DialogTitle>
+            <p className="text-sm text-muted-foreground">
+              Choose the best option for your needs
+            </p>
+          </div>
           
-          <div className="grid grid-cols-2 gap-6">
+          <div className="space-y-3">
             {helpOptions.map((option) => (
               <Link 
                 key={option.id}
                 href={option.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center p-6 rounded-xl bg-background dark:bg-background border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all cursor-pointer"
+                className="group flex items-center gap-4 p-4 rounded-lg bg-background border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200"
                 onClick={() => onClose?.()}
               >
-                <div className="flex justify-center items-center mb-3">
+                <div className={`flex items-center justify-center w-10 h-10 rounded-lg ${option.color}`}>
                   {option.icon}
                 </div>
-                <span className="text-sm font-medium text-foreground">{option.label}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-medium text-foreground text-sm">{option.label}</h3>
+                    <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-foreground transition-colors" />
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-0.5">{option.description}</p>
+                </div>
               </Link>
             ))}
           </div>
