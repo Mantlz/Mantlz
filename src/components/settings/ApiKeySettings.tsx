@@ -129,7 +129,7 @@ export default function ApiKeySettings() {
         </Alert>
 
         {apiKey ? (
-          <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background min-h-[250px] w-full">
+          <Card className="border-zinc-200 dark:border-zinc-800  min-h-[250px] w-full shadow-none">
             <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
               <div>
                 <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center gap-2">
@@ -190,7 +190,7 @@ export default function ApiKeySettings() {
             </CardContent>
           </Card>
         ) : (
-          <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-backgroundmin-h-[250px]">
+          <Card className="border-zinc-200 dark:border-zinc-800  min-h-[250px] shadow-none">
             <CardHeader className="pb-3 pt-4 px-5">
               <CardTitle className="text-zinc-900 dark:text-white text-sm">
                 Create New API Key

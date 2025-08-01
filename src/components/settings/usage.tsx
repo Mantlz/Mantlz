@@ -251,7 +251,7 @@ export default function UsageSettings() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Forms usage card */}
               {planData && (
-                <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background">
+                <Card className="border-zinc-200 dark:border-zinc-800  shadow-none">
                 
                   <CardHeader className="pb-2 space-y-0">
                     <CardTitle className="text-sm flex items-center text-zinc-900 dark:text-white">
@@ -306,7 +306,7 @@ export default function UsageSettings() {
 
               {/* Submissions usage card */}
               {planData && (
-                <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background">
+                <Card className="border-zinc-200 dark:border-zinc-800 shadow-none">
                 
                   <CardHeader className="pb-2 space-y-0">
                     <CardTitle className="text-sm flex items-center text-zinc-900 dark:text-white">
@@ -361,7 +361,7 @@ export default function UsageSettings() {
 
               {/* Campaigns usage card */}
               {planData && planData.features.campaigns && (
-                <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background">
+                <Card className="border-zinc-200 dark:border-zinc-800  shadow-none">
             
                   <CardHeader className="pb-2 space-y-0">
                     <CardTitle className="text-sm flex items-center text-zinc-900 dark:text-white">

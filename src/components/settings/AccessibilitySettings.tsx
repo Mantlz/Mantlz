@@ -160,7 +160,7 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
             </p>
           </header>
 
-          <Card className="border-zinc-200 dark:border-zinc-800 ">
+          <Card className="border-zinc-200 dark:border-zinc-800 shadow-none">
             <CardHeader className="pb-3 pt-4 px-5">
               <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
                 <Eye className="h-4 w-4 mr-2 text-zinc-500" />
@@ -228,7 +228,7 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
             </CardContent>
           </Card>
 
-          <Card className="border-zinc-200 dark:border-zinc-800">
+          <Card className="border-zinc-200 dark:border-zinc-800 shadow-none">
             <CardHeader className="pb-3 pt-4 px-5">
               <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
                 <MousePointer2 className="h-4 w-4 mr-2 text-zinc-500" />

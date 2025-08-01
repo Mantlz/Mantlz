@@ -302,7 +302,7 @@ export default function BillingSettings() {
             {headerContent}
 
             {/* Current Plan Card */}
-            <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background">
+            <Card className="border-zinc-200 dark:border-zinc-800 shadow-none">
               <CardHeader className="pb-2 pt-4 px-5">
                 <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -401,7 +401,7 @@ export default function BillingSettings() {
             </Card>
 
             {/* Invoices Section */}
-            <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background">
+            <Card className="border-zinc-200 dark:border-zinc-800 shadow-none">
               <CardHeader className="pb-2 pt-4 px-5">
                 <div className="flex items-center justify-between">
                   <div>

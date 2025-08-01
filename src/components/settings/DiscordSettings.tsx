@@ -216,7 +216,7 @@ export default function DiscordSettings() {
         <ScrollArea className="h-[550px] w-full scrollbar-hide">
           <div className="w-full space-y-4 pr-4">
             {headerContent}
-            <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background">
+            <Card className="border-zinc-200 dark:border-zinc-800 shadow-none">
               <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
                 <div>
                   <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
