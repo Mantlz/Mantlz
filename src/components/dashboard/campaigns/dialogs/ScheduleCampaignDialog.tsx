@@ -166,7 +166,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
         return (
           <div className="p-5 bg-white dark:bg-zinc-800 rounded-b-lg">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center rounded-full">
+              <div className="w-8 h-8 bg-orange-50 dark:bg-amber-700/20 flex items-center justify-center rounded-full">
                 <Users className="h-4 w-4 text-orange-600 dark:text-orange-400" />
               </div>
               <Label className="text-base font-medium text-gray-900 dark:text-white">
@@ -188,7 +188,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                   className={cn(
                     "flex items-start p-3 rounded-lg transition-all duration-200 cursor-pointer border",
                     recipientType === value 
-                      ? "bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800 shadow-sm"
+                      ? "bg-orange-50 dark:bg-amber-700/20 border-orange-200 dark:border-orange-800 shadow-sm"
                       : "hover:bg-gray-50 dark:hover:bg-zinc-700 border-gray-100 dark:border-zinc-700 hover:border-gray-200 dark:hover:border-zinc-600"
                   )}
                   onClick={() => setRecipientType(value as "first" | "last" | "custom")}
@@ -239,7 +239,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                     </span>
                     <div className="h-1.5 bg-gray-200 dark:bg-zinc-600 rounded-full mt-1.5 overflow-hidden">
                       <div 
-                        className="h-full bg-orange-500 dark:bg-orange-600 rounded-full transition-all duration-300"
+                        className="h-full bg-amber-500 dark:bg-amber-500 rounded-full transition-all duration-300"
                         style={{ width: `${Math.min((customRecipientCount / 200) * 100, 100)}%` }}
                       ></div>
                     </div>
@@ -254,7 +254,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
         return (
           <div className="p-5 bg-white dark:bg-zinc-800 rounded-b-lg">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center rounded-full">
+              <div className="w-8 h-8 bg-orange-50 dark:bg-amber-700/20 flex items-center justify-center rounded-full">
                 <CalendarDays className="h-4 w-4 text-orange-600 dark:text-orange-400" />
               </div>
               <Label className="text-base font-medium text-gray-900 dark:text-white">
@@ -276,7 +276,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
             </div>
             
             {date && (
-              <div className="mt-4 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-100 dark:border-orange-800 text-center">
+              <div className="mt-4 p-3 bg-orange-50 dark:bg-amber-700/20 rounded-lg border border-orange-100 dark:border-orange-800 text-center">
                 <p className="text-sm font-medium text-orange-700 dark:text-orange-300 flex items-center justify-center gap-2">
                   <CheckCircle2 className="h-4 w-4" />
                   {format(date, "EEEE, MMMM d, yyyy")}
@@ -290,7 +290,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
         return (
           <div className="p-5 bg-white dark:bg-zinc-800 rounded-b-lg">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center rounded-full">
+              <div className="w-8 h-8 bg-orange-50 dark:bg-amber-700/20 flex items-center justify-center rounded-full">
                 <Clock className="h-4 w-4 text-orange-600 dark:text-orange-400" />
               </div>
               <Label className="text-base font-medium text-gray-900 dark:text-white">
@@ -308,7 +308,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                     className={cn(
                       "flex-1 py-2 text-sm font-medium transition-all duration-200 rounded-md cursor-pointer",
                       period === p
-                        ? "bg-orange-600 text-white shadow-sm"
+                        ? "bg-amber-500 text-white shadow-sm"
                         : "text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400"
                     )}
                   >
@@ -331,7 +331,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                         className={cn(
                           "py-2 rounded-md text-sm font-medium transition-all duration-200 cursor-pointer border",
                           isSelected
-                            ? "bg-orange-600 text-white border-orange-700 shadow-sm"
+                            ? "bg-amber-500 text-white border-orange-700 shadow-sm"
                             : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-600 border-transparent hover:border-gray-300 dark:hover:border-zinc-500"
                         )}
                       >
@@ -352,7 +352,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
               {date && (
                 <div className="mt-4 p-4 rounded-lg border border-orange-200 dark:border-orange-800 bg-gradient-to-r from-orange-50 to-white dark:from-orange-900/20 dark:to-zinc-800">
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-800/40 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-8 h-8 rounded-full bg-orange-100 dark:bg-amber-600/40 flex items-center justify-center shrink-0 mt-0.5">
                       <Clock className="h-4 w-4 text-orange-600 dark:text-orange-400" />
                     </div>
                     <div>
@@ -387,7 +387,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
           {/* Progress Line */}
           <div className="absolute top-4 left-8 right-8 h-0.5 bg-gray-100 dark:bg-zinc-700 -z-10">
             <div 
-              className="h-full bg-orange-500 dark:bg-orange-600 transition-all duration-500 ease-in-out" 
+              className="h-full bg-amber-500 dark:bg-amber-500 transition-all duration-500 ease-in-out" 
               style={{ width: `${((currentStep - 1) / 2) * 100}%` }}
             ></div>
           </div>
@@ -399,9 +399,9 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                 className={cn(
                   "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-300",
                   currentStep === step.number
-                    ? "bg-orange-600 text-white shadow-md ring-4 ring-orange-100 dark:ring-orange-900/30"
+                    ? "bg-amber-500 text-white shadow-md ring-4 ring-orange-100 dark:ring-orange-900/30"
                     : currentStep > step.number
-                    ? "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300"
+                    ? "bg-orange-100 text-orange-700 dark:bg-amber-700/40 dark:text-orange-300"
                     : "bg-gray-100 text-gray-500 dark:bg-zinc-700 dark:text-gray-400"
                 )}
               >
@@ -427,7 +427,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
       <Button 
         variant="outline" 
         size="sm" 
-        className="h-7 text-md bg-orange-500 text-black/70 dark:text-white dark:border-background border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+        className="h-7 text-md bg-amber-500 text-black/70 dark:text-white dark:border-background border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
 
 
         onClick={handleScheduleClick}
@@ -467,7 +467,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                 size="sm"
                 onClick={currentStep === 3 ? handleSchedule : nextStep} 
                 disabled={(loading || (currentStep === 3 && !date))}
-                className="h-9 px-4 text-sm bg-orange-600 hover:bg-orange-700 dark:bg-orange-600 dark:hover:bg-orange-700 text-white rounded-md transition-all duration-200 shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
+                className="h-9 px-4 text-sm bg-amber-500 hover:bg-amber-600 dark:bg-amber-500 dark:hover:bg-amber-600 text-white rounded-md transition-all duration-200 shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
               >
                 {currentStep === 3 
                   ? (loading ? "Scheduling..." : "Schedule Campaign") 

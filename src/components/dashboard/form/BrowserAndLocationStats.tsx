@@ -300,7 +300,7 @@ export function BrowserAndLocationStats({
               <button 
                 onClick={() => setMapExpanded(true)}
                 // className="text-xs bg-zinc-50 dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-lg py-1.5 px-3 transition-colors cursor-pointer"
-                              className="h-8 px-2 text-md bg-orange-500 text-white dark:text-black dark:border-background border text-sm  shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95 cursor-pointer"
+                              className="h-8 px-2 text-md bg-amber-500 text-white dark:text-black dark:border-background border text-sm  shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95 cursor-pointer"
 
               >
                 <span className="flex items-center gap-1.5 text-white hover:text-white dark:hover:text-white">

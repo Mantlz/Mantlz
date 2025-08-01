@@ -38,7 +38,7 @@ export function CampaignsTableHeaderSkeleton() {
               </h1>
             </div>
             {/* Create Campaign Button Skeleton */}
-            <div className="h-8 bg-orange-700/30 hover:bg-zinc-900 dark:hover:bg-zinc-100 text-white dark:text-black rounded-lg flex items-center gap-2 px-2 cursor-pointer transition-all duration-200">
+            <div className="h-8 bg-amber-600/30 hover:bg-zinc-900 dark:hover:bg-zinc-100 text-white dark:text-black rounded-lg flex items-center gap-2 px-2 cursor-pointer transition-all duration-200">
               <PlusCircle className="h-4 w-4" />
 
               <span className="text-sm font-medium">Create Campaign</span>

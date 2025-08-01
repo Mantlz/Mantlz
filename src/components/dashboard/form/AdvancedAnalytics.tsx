@@ -144,7 +144,7 @@ export function AdvancedAnalytics({
 
               <Button
                 size="default"
-                className="bg-orange-500 cursor-pointer  text-white hover:bg-orange-600 dark:hover:bg-orange-800 w-48 h-11 sm:h-12 text-sm sm:text-base font-medium"
+                className="bg-amber-500 cursor-pointer  text-white hover:bg-amber-500 dark:hover:bg-amber-600 w-48 h-11 sm:h-12 text-sm sm:text-base font-medium"
                 onClick={() => setIsUpgradeModalOpen(true)}
               >
                 <Rocket className="h-5 w-5 mr-2" />

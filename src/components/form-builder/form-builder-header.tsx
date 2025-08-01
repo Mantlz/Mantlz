@@ -29,12 +29,15 @@ export function FormBuilderHeader({ onBack, onContinue, canContinue }: FormBuild
           <Button 
             onClick={onContinue}
             disabled={!canContinue}
-            className={cn(
-              "flex items-center gap-2 font-medium rounded-lg",
-              "bg-primary hover:bg-primary/90 text-white dark:text-black dark:bg-primary",
-              "disabled:opacity-60 disabled:pointer-events-none transition-all duration-200",
-              "text-sm px-5 h-10 cursor-pointer"
-            )}
+            variant="outline"
+            // className={cn(
+            //   "flex items-center gap-2 font-medium rounded-lg",
+            //   "bg-primary hover:bg-primary/90 text-white dark:text-black dark:bg-primary",
+            //   "disabled:opacity-60 disabled:pointer-events-none transition-all duration-200",
+            //   "text-sm px-5 h-10 cursor-pointer"
+            // )}
+                          className="h-10 px-2 text-md bg-amber-500 text-black dark:text-white dark:border-background border text-sm  shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+
           >
             Continue
             <IconChevronRight className="h-3.5 w-3.5" />

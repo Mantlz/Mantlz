@@ -453,7 +453,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                       size="sm"
                       className={`h-7 px-2 text-xs ${
                         form.submissionCount > 0
-                          ? "bg-orange-50 hover:bg-orange-100 text-stone-800 dark:bg-orange-900/20 dark:hover:bg-orange-900/30 dark:text-white"
+                          ? "bg-orange-50 hover:bg-orange-100 text-stone-800 dark:bg-amber-700/20 dark:hover:bg-amber-700/30 dark:text-white"
                           : "hover:bg-zinc-200 text-gray-600 dark:hover:bg-zinc-950 dark:text-gray-300"
                       } rounded-lg`}
                     >

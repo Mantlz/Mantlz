@@ -75,7 +75,7 @@ export function Navbar() {
             <Button 
                   size="sm"
 
-                      className="rounded-lg px-2 cursor-pointer bg-orange-500 text-sm text-black dark:text-white"
+                      className="rounded-lg px-2 cursor-pointer bg-amber-500 text-sm text-black dark:text-white"
 
             >
               Dashboard
@@ -143,7 +143,7 @@ export function Navbar() {
         </Link>
         <Link href="/sign-up">
           <Button size="sm" 
-            className="h-8 px-2 text-md bg-orange-500 text-black dark:text-white dark:border-background border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+            className="h-8 px-2 text-md bg-amber-500 text-black dark:text-white dark:border-background border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
 
           >
             Sign up 
@@ -234,7 +234,7 @@ export function Navbar() {
                    <DrawerClose asChild>
                      <Link href="/sign-up">
                        <Button size="sm" 
-                       className="w-full flex items-center justify-center gap-1 dark:text-white bg-zinc-500 hover:bg-orange-800 dark:bg-orange-950 dark:hover:bg-orange-900 text-white border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200 text-sm ">
+                       className="w-full flex items-center justify-center gap-1 dark:text-white bg-zinc-500 hover:bg-amber-600 dark:bg-orange-950 dark:hover:bg-amber-700 text-white border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200 text-sm ">
                          Sign up 
                        </Button>
                      </Link>
@@ -311,7 +311,7 @@ function MobileNavLink({
         target={target}
         className={`block px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
           isActive
-            ? "bg-orange-100 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400"
+            ? "bg-orange-100 text-orange-600 dark:bg-amber-700/20 dark:text-orange-400"
             : "text-zinc-600 hover:text-orange-600 dark:text-zinc-400 dark:hover:text-orange-400"
         }`}
         {...props}

@@ -60,7 +60,7 @@ export default function MyContactPage() {
           {/* Progress indicator */}
           <div className="flex items-center gap-2 mb-6">
             <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-              <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
               <span>3 simple steps to integration</span>
             </div>
           </div>

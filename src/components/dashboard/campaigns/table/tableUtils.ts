@@ -231,7 +231,7 @@ export function formatCampaignStatus(
       return {
         label: "Scheduled",
         color:
-          "bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400",
+          "bg-orange-50 dark:bg-amber-700/20 text-orange-600 dark:text-orange-400",
       };
     case "SENDING":
       return {
@@ -254,7 +254,7 @@ export function formatCampaignStatus(
       return {
         label: "Cancelled",
         color:
-          "bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400",
+          "bg-orange-50 dark:bg-amber-700/20 text-orange-600 dark:text-orange-400",
       };
     default:
       return {

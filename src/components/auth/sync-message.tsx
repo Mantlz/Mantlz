@@ -82,7 +82,7 @@ export function SyncMessage({ title, message, syncStatus, syncTime = 0 }: SyncMe
 
         {/* Status indicator with improved visual feedback */}
         <div className="flex items-center gap-3 mt-1 py-3 px-5 rounded-xl bg-zinc-800/80 border border-zinc-700/30 backdrop-blur-sm w-full">
-          <div className={`w-3 h-3 rounded-full ${syncStatus ? 'bg-emerald-400 animate-pulse' : 'bg-orange-500 animate-pulse'} shadow-lg shadow-orange-500/20`} />
+          <div className={`w-3 h-3 rounded-full ${syncStatus ? 'bg-emerald-400 animate-pulse' : 'bg-amber-500 animate-pulse'} shadow-lg shadow-orange-500/20`} />
           <span className="text-sm font-medium text-white/90">
             {syncStatus ? 'Sync complete' : 'Syncing your workspace'}
           </span>

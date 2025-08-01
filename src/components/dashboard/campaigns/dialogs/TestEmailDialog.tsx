@@ -224,7 +224,7 @@ export function TestEmailDialog({
               <Button
                 onClick={handleTestEmail}
                 disabled={loading || !isPaidUser || !isDraft}
-                className={`px-4 py-2 text-sm font-medium ${isPaidUser && isDraft ? 'bg-orange-600 hover:bg-orange-700 text-white' : 'bg-gray-400 text-white cursor-not-allowed'}`}
+                className={`px-4 py-2 text-sm font-medium ${isPaidUser && isDraft ? 'bg-amber-500 hover:bg-amber-600 text-white' : 'bg-gray-400 text-white cursor-not-allowed'}`}
               >
                 {loading ? (
                   <>

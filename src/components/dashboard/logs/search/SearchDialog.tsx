@@ -194,7 +194,7 @@ export function SearchDialog({
                               <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
                                 index % 4 === 0 ? 'bg-green-500' :
                                 index % 4 === 1 ? 'bg-blue-500' :
-                                index % 4 === 2 ? 'bg-orange-500' : 'bg-orange-500'
+                                index % 4 === 2 ? 'bg-amber-500' : 'bg-amber-500'
                               }`}></div>
                               <span className="font-medium truncate min-w-0 flex-1">
                                 {truncatedName}

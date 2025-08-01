@@ -228,7 +228,7 @@ export default function SlackSettings() {
                     Get notified in Slack when you receive new form submissions
                   </CardDescription>
                 </div>
-                <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-200 w-fit">
+                <Badge className="bg-orange-100 text-orange-800 dark:bg-amber-700/30 dark:text-orange-200 w-fit">
                   STANDARD+
                 </Badge>
               </CardHeader>

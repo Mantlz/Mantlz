@@ -19,7 +19,7 @@ export function CampaignStats({ campaign }: CampaignStatsProps) {
       {campaign.status === 'SCHEDULED' && campaign.scheduledAt && (
         <Popover>
           <PopoverTrigger>
-            <div className="inline-flex items-center gap-2.5 cursor-help group bg-orange-50/50 dark:bg-orange-900/10 px-2.5 py-1.5 rounded-md">
+            <div className="inline-flex items-center gap-2.5 cursor-help group bg-orange-50/50 dark:bg-amber-700/10 px-2.5 py-1.5 rounded-md">
               <div className="shrink-0">
                 <CalendarDays className="h-3.5 w-3.5 text-orange-500 group-hover:text-orange-600 transition-colors" />
               </div>
