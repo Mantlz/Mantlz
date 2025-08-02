@@ -199,7 +199,7 @@ function CustomizeFormContent() {
                 className={cn(
                   "flex items-center gap-2 font-medium rounded-lg cursor-pointer",
                   formType === 'order' ? "bg-amber-500 hover:bg-amber-600" : "bg-primary hover:bg-primary/90",
-                  "text-white dark:text-black",
+                  "text-black dark:text-white",
                   "disabled:opacity-60 disabled:pointer-events-none transition-all duration-200",
                   "text-sm px-4 h-9"
                 )}
