@@ -103,7 +103,7 @@ export function AdvancedAnalytics({
     <>
       <div className={`transition-all duration-300 ${isCollapsed ? "max-h-0 opacity-0" : ""}`}>
         {!hasPremiumAccess && showPaywall ? (
-          <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background  w-full rounded-lg sm:rounded-xl">
+          <Card className="border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background shadow-none w-full rounded-lg sm:rounded-xl">
             <CardHeader className="pb-3 pt-4 px-4 sm:px-5">
               <CardTitle className="text-center text-zinc-900 dark:text-white text-lg sm:text-xl mb-2">
                 Premium Feature
@@ -156,14 +156,14 @@ export function AdvancedAnalytics({
         ) : !hasPremiumAccess ? (
           <Card
             onClick={() => setShowPaywall(true)}
-            className="border-zinc-200 bg-background dark:bg-background dark:border-zinc-800 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all w-full rounded-lg sm:rounded-xl"
+            className=" shadow-none border-zinc-200 bg-background dark:bg-background dark:border-zinc-800 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all w-full rounded-lg sm:rounded-xl"
           >
             <CardHeader className="pb-2 pt-4 px-4 sm:px-5 flex flex-row items-start justify-center content-center space-y-0">
             </CardHeader>
             <CardContent className="text-center px-4 sm:px-5 pb-4">
               <div className="py-4 sm:py-5 flex flex-col items-center">
-                <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-lg flex items-center justify-center mb-3 sm:mb-4">
-                  <Lock className="h-5 w-5 sm:h-6 sm:w-6 text-orange-500" />
+                <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-accent/80 flex items-center justify-center mb-2 ">
+                  <Lock className="h-5 w-5 text-white" />
                 </div>
                 <p className="text-base sm:text-lg font-medium text-zinc-800 dark:text-zinc-300 mb-2">View User Insights</p>
                 <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 max-w-[240px] sm:max-w-[280px] mx-auto">
