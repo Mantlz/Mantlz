@@ -81,8 +81,8 @@ const ptComponents: PortableTextComponents = {
     normal: ({ children }: { children?: React.ReactNode }) => <p className="mt-6 leading-8 text-lg text-gray-600 dark:text-gray-300">{children}</p>,
   },
   list: {
-    bullet: ({ children }: { children?: React.ReactNode }) => <ul className="mt-6 mb-8 list-disc list-inside text-lg text-gray-600 dark:text-gray-300 marker:text-gray-400 dark:marker:text-gray-500 space-y-3">{children}</ul>,
-    number: ({ children }: { children?: React.ReactNode }) => <ol className="mt-6 mb-8 list-decimal list-inside text-lg text-gray-600 dark:text-gray-300 marker:text-gray-400 dark:marker:text-gray-500 space-y-3">{children}</ol>,
+    bullet: ({ children }: { children?: React.ReactNode }) => <ul className="mt-6 mb-8 list-disc list-inside text-lg text-gray-600 dark:text-gray-300 marker:text-gray-400 dark:marker:text-zinc-600 space-y-3">{children}</ul>,
+    number: ({ children }: { children?: React.ReactNode }) => <ol className="mt-6 mb-8 list-decimal list-inside text-lg text-gray-600 dark:text-gray-300 marker:text-gray-400 dark:marker:text-zinc-600 space-y-3">{children}</ol>,
   },
   listItem: {
     bullet: ({ children }: { children?: React.ReactNode }) => <li className="leading-relaxed">{children}</li>,
@@ -118,7 +118,7 @@ export default async function BlogPost({ params }: Props) {
   if (!post) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl text-gray-600 dark:text-gray-400">Post not found</p>
+        <p className="text-xl text-gray-600 dark:text-zinc-300">Post not found</p>
       </div>
     );
   }
@@ -171,7 +171,7 @@ export default async function BlogPost({ params }: Props) {
                 </div>
                 <div className="ml-4 text-left">
                   <p className="text-base font-semibold text-gray-900 dark:text-white">{post.author.name}</p>
-                  <time dateTime={post.publishedAt} className="text-sm text-gray-500 dark:text-gray-400">
+                  <time dateTime={post.publishedAt} className="text-sm text-zinc-600 dark:text-zinc-300">
                     {new Date(post.publishedAt).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'long',

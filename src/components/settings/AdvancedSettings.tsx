@@ -187,7 +187,7 @@ export function AdvancedSettings() {
               <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
                 <div>
                   <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
-                    <Bell className="h-4 w-4 mr-2 text-zinc-500" />
+                    <Bell className="h-4 w-4 mr-2 text-zinc-600" />
                     Notification Frequency
                   </CardTitle>
                   <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
@@ -232,7 +232,7 @@ export function AdvancedSettings() {
                           <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                             Maximum Notifications per Hour
                           </span>
-                          <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                          <span className="text-xs text-zinc-600 dark:text-zinc-400">
                             Current limit: {settings.maxNotificationsPerHour}
                           </span>
                         </div>

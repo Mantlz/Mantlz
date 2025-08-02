@@ -9,7 +9,7 @@ export function NoSubmissionsView() {
         <FileSearch className="h-6 w-6 sm:h-8 sm:w-8 text-orange-400" />
       </div>
       <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">No Submissions Found</h3>
-      <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xs mx-auto px-4">
+      <p className="text-sm text-zinc-600 dark:text-zinc-300 max-w-xs mx-auto px-4">
         Submissions will appear here once your form receives responses
       </p>
     </div>

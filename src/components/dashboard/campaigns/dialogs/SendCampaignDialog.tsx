@@ -92,7 +92,7 @@ export function SendCampaignDialog({
         <DialogContent className="sm:max-w-[400px] p-0">
           <DialogHeader className="p-4 border-b border-zinc-200 dark:border-zinc-800">
             <DialogTitle className="text-lg font-medium text-gray-900 dark:text-white">Send Campaign</DialogTitle>
-            <DialogDescription className="text-sm text-gray-500 dark:text-gray-400">
+            <DialogDescription className="text-sm text-zinc-600 dark:text-zinc-300">
               Choose your recipients and send your campaign
             </DialogDescription>
           </DialogHeader>
@@ -143,7 +143,7 @@ export function SendCampaignDialog({
                         }}
                         className="w-24 h-8 text-sm"
                       />
-                      <span className="text-sm text-gray-500 dark:text-gray-400">
+                      <span className="text-sm text-zinc-600 dark:text-zinc-300">
                         subscribers (max 200)
                       </span>
                     </div>

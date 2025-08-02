@@ -31,9 +31,9 @@ export function SearchResults({
     return (
       <div className="p-6 text-center">
         <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-white dark:bg-zinc-800 flex items-center justify-center">
-          <Loader2 className="h-6 w-6 text-gray-500 animate-spin" />
+          <Loader2 className="h-6 w-6 text-zinc-600 animate-spin" />
         </div>
-        <p className="text-sm text-gray-600 dark:text-gray-400">Loading results...</p>
+        <p className="text-sm text-gray-600 dark:text-zinc-300">Loading results...</p>
       </div>
     )
   }
@@ -47,7 +47,7 @@ export function SearchResults({
         <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Pro Feature: Search Across All Forms
         </p>
-        <p className="text-xs text-gray-500 dark:text-gray-400 max-w-xs mx-auto mb-4">
+        <p className="text-xs text-zinc-600 dark:text-zinc-300 max-w-xs mx-auto mb-4">
           Standard users can search within a specific form. Please select a form to search or upgrade to PRO to search across all forms.
         </p>
       </div>
@@ -59,7 +59,7 @@ export function SearchResults({
       <div className="flex flex-col items-center justify-center py-16 text-center p-4">
         <Search className="h-12 w-12 text-gray-300 dark:text-gray-700 mb-3" />
         <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-1">Search for submissions</h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md">
+        <p className="text-sm text-zinc-600 dark:text-zinc-300 max-w-md">
           Search by email address or submission ID
           {isProUser && " - Pro users can also search content and use advanced filters"}
         </p>
@@ -71,10 +71,10 @@ export function SearchResults({
     return (
       <div className="p-6 text-center">
         <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-white dark:bg-zinc-800 flex items-center justify-center">
-          <FileSearch className="h-6 w-6 text-gray-400 dark:text-gray-500" />
+          <FileSearch className="h-6 w-6 text-gray-400 dark:text-zinc-600" />
         </div>
         <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No Results Found</h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md">
+        <p className="text-sm text-zinc-600 dark:text-zinc-300 max-w-md">
           Try adjusting your search terms or filters
         </p>
       </div>
@@ -110,7 +110,7 @@ export function SearchResults({
             <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">
               Upgrade to see all {data.submissions.length} results
             </h4>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-1">
               Standard users are limited to 10 results per search
             </p>
           </div>
@@ -174,12 +174,12 @@ function SubmissionSearchResult({
           </div>
         </div>
         
-        <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2 flex-wrap">
+        <div className="text-xs text-zinc-600 dark:text-zinc-300 flex items-center gap-2 flex-wrap">
           <span className="truncate">Form: <span className="font-medium text-gray-700 dark:text-gray-300">{submission.formName}</span></span>
           <span className="text-gray-300 dark:text-gray-600 hidden sm:inline">•</span>
           {isProUser && submission.analytics && (
             <>
-              <span className="flex items-center text-xs text-gray-400 dark:text-gray-500">
+              <span className="flex items-center text-xs text-gray-400 dark:text-zinc-600">
                 {submission.analytics.browser && (
                   <span className="inline-flex items-center mr-2">
                     <Globe className="h-3 w-3 mr-1" />
@@ -196,7 +196,7 @@ function SubmissionSearchResult({
               <span className="text-gray-300 dark:text-gray-600 hidden sm:inline">•</span>
             </>
           )}
-          <span className="flex items-center text-xs text-gray-400 dark:text-gray-500">
+          <span className="flex items-center text-xs text-gray-400 dark:text-zinc-600">
             <Calendar className="h-3 w-3 mr-1" />
             {formatDistanceToNow(new Date(submission.createdAt), { addSuffix: true })}
           </span>
@@ -207,7 +207,7 @@ function SubmissionSearchResult({
         <Button
           variant="outline"
           size="sm"
-          className="h-7 w-7 p-0 text-gray-500 hover:text-gray-700 cursor-pointer dark:text-gray-400 dark:hover:text-gray-300 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border-zinc-200 dark:border-zinc-700"
+          className="h-7 w-7 p-0 text-zinc-600 hover:text-gray-700 cursor-pointer dark:text-zinc-300 dark:hover:text-gray-300 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border-zinc-200 dark:border-zinc-700"
           onClick={onViewClick}
           aria-label="View submission details"
         >

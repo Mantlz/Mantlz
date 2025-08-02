@@ -92,8 +92,8 @@ export default async function BlogPage() {
                       )}
                       <span className="text-sm font-medium text-gray-900 dark:text-white">{post.author.name}</span>
                     </div>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">•</span>
-                    <time className="text-sm text-gray-500 dark:text-gray-400">
+                    <span className="text-sm text-zinc-600 dark:text-zinc-300">•</span>
+                    <time className="text-sm text-zinc-600 dark:text-zinc-300">
                       {new Date(post.publishedAt).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
@@ -106,7 +106,7 @@ export default async function BlogPage() {
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-black dark:group-hover:text-gray-200 transition-colors">
                       {post.title}
                     </h2>
-                    <p className="mt-3 text-base text-gray-600 dark:text-gray-400 line-clamp-2">{post.excerpt}</p>
+                    <p className="mt-3 text-base text-gray-600 dark:text-zinc-300 line-clamp-2">{post.excerpt}</p>
                   </div>
                   
                   <div className="flex items-center mt-4">

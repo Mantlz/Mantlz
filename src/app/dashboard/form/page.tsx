@@ -81,7 +81,7 @@ export default function FormBuilderPage() {
                       className={`p-1 rounded-lg ${
                         viewMode === "grid"
                           ? "bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white "
-                          : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                          : "text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300"
                       }`}
                       aria-label="Grid view"
                     >
@@ -108,7 +108,7 @@ export default function FormBuilderPage() {
                       className={`p-1 rounded-lg ${
                         viewMode === "list"
                           ? "bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white"
-                          : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                          : "text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300"
                       }`}
                       aria-label="List view"
                     >

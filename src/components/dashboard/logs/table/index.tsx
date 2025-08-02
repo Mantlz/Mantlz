@@ -197,15 +197,15 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                 <div className="space-y-3 sm:space-y-4 w-full sm:w-auto">
                   <div className="flex items-center gap-3">
                     <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                      <p className="text-sm text-zinc-600 dark:text-zinc-300">
                         Let&apos;s create your first form
                       </p>
                     </div>
                   </div>
                 </div>
                 <Button
-                  className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-lg px-6  hover:shadow-md"
-                  onClick={() => router.push("/dashboard/forms/new")}
+              className="h-10 px-2 text-md bg-amber-500 text-black dark:text-white dark:border-background border text-sm ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+                  onClick={() => router.push("/dashboard/form")}
                 >
                   Create Your First Form
                 </Button>
@@ -214,19 +214,19 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
           </div>
 
           <div className="text-center py-12 sm:py-16  rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 rounded-2xl bg-white dark:bg-zinc-800/50 flex items-center justify-center">
-              <FileSpreadsheet className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 dark:text-gray-500" />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-4 rounded-xl bg-accent/80 flex items-center justify-center">
+              <FileSpreadsheet className="h-5 w-5 text-black dark:text-white" />
             </div>
             <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">
               Ready to create your first form?
             </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 sm:mb-6 max-w-sm mx-auto px-4">
+            <p className="text-sm text-zinc-600 dark:text-zinc-300 mb-4 sm:mb-6 max-w-sm mx-auto px-4">
               Start collecting responses in minutes with our easy-to-use form
               builder
             </p>
             <Button
-              className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-lg px-6  hover:shadow-md"
-              onClick={() => router.push("/dashboard/forms/new")}
+              className="h-10 px-2 text-md bg-amber-500 text-black dark:text-white dark:border-background border text-sm  shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+              onClick={() => router.push("/dashboard/form")}
             >
               Create Your First Form
             </Button>
@@ -260,7 +260,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                       onClick={() => handleViewModeChange('grid')}
                       className={`p-1.5 rounded-lg ${viewMode === 'grid' 
                         ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                        : 'text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300'}`}
                       aria-label="Grid view"
                     >
                       <LayoutGrid className="h-4 w-4" />
@@ -269,7 +269,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                       onClick={() => handleViewModeChange('list')}
                       className={`p-1.5 rounded-lg ${viewMode === 'list' 
                         ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                        : 'text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300'}`}
                       aria-label="List view"
                     >
                       <List className="h-4 w-4" />
@@ -282,7 +282,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                       className={`p-1 rounded-lg ${
                         viewMode === "grid"
                           ? "bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white "
-                          : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                          : "text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300"
                       }`}
                       aria-label="Grid view"
                     >
@@ -309,7 +309,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                       className={`p-1 rounded-lg ${
                         viewMode === "list"
                           ? "bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white"
-                          : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                          : "text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300"
                       }`}
                       aria-label="List view"
                     >
@@ -345,7 +345,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                       <p className="text-sm font-medium text-gray-900 dark:text-white">
                         {formsData.forms.length}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-xs text-zinc-600 dark:text-zinc-300">
                         Total Forms
                       </p>
                     </div>
@@ -364,7 +364,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                           0
                         )}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-xs text-zinc-600 dark:text-zinc-300">
                         Total Submissions
                       </p>
                     </div>
@@ -390,14 +390,14 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                       {form.name}
                     </h3>
                     {form.description && (
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 line-clamp-2">
+                      <p className="text-sm text-zinc-600 dark:text-zinc-300 mb-3 line-clamp-2">
                         {form.description}
                       </p>
                     )}
                     <div className="flex justify-between items-center mt-4">
                       <div className="flex items-center gap-1">
                         <FileSpreadsheet className="h-4 w-4 text-gray-400" />
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                        <span className="text-xs text-zinc-600 dark:text-zinc-300">
                           {form.submissionCount} submission
                           {form.submissionCount !== 1 ? "s" : ""}
                         </span>
@@ -437,7 +437,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                         <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
                           {form.name}
                         </h3>
-                        <div className="flex items-center gap-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                        <div className="flex items-center gap-4 text-xs sm:text-sm text-zinc-600 dark:text-zinc-300">
                           <div className="flex items-center">
                             <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5" />
                             <span>
@@ -481,7 +481,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
             >
               Previous
             </Button>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className="text-sm text-zinc-600 dark:text-zinc-300">
               Page {page} of {totalFormsPages}
             </span>
             <Button

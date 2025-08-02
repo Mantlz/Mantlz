@@ -129,14 +129,15 @@ export function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onU
               <div className="space-y-3 sm:space-y-4 w-full sm:w-auto">
                 <div className="flex items-center gap-3">
                   <div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                    <p className="text-sm text-zinc-600 dark:text-zinc-300">
                       {isPremium ? "Let's create your first form" : "Upgrade to create email campaigns"}
                     </p>
                   </div>
                 </div>
               </div>
               <Button
-                className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-lg px-6 shadow-sm hover:shadow-md"
+                            className="h-10 px-2 text-md bg-amber-500 text-black dark:text-white dark:border-background border text-sm  ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+
                 onClick={() => isPremium ? router.push("/dashboard/forms") : onUpgradeClick?.()}
               >
                 {isPremium ? "Create Your First Form" : "Upgrade to Create Campaigns"}
@@ -146,13 +147,13 @@ export function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onU
         </div>
 
         <div className="text-center py-12 sm:py-16  rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 rounded-2xl bg-white dark:bg-zinc-800/50 flex items-center justify-center">
-            <FileSpreadsheet className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 dark:text-gray-500" />
+          <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-4 rounded-xl bg-accent/80 flex items-center justify-center">
+            <FileSpreadsheet className="h-5 w-5 text-black dark:text-white" />
           </div>
           <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">
             {isPremium ? "Ready to create your first form?" : "Upgrade to access email campaigns"}
           </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 sm:mb-6 max-w-sm mx-auto px-4">
+          <p className="text-sm text-zinc-600 dark:text-zinc-300 mb-4 sm:mb-6 max-w-sm mx-auto px-4">
             {isPremium 
               ? "Create your first form to start collecting responses and sending email campaigns."
               : "Upgrade your account to unlock email campaigns and start engaging with your audience."

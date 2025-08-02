@@ -68,7 +68,7 @@ export function TableHeader({
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-900 dark:text-white">{selectedForm?.submissionCount || 0}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Total Submissions</p>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300">Total Submissions</p>
                 </div>
               </div>
               <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden">
@@ -88,7 +88,7 @@ export function TableHeader({
                   <p className="text-sm font-medium text-gray-900 dark:text-white">
                     {selectedForm?.createdAt ? formatDistanceToNow(new Date(selectedForm.createdAt), { addSuffix: true }) : 'N/A'}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Created</p>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300">Created</p>
                 </div>
               </div>
             </div>
@@ -103,7 +103,7 @@ export function TableHeader({
                   <p className="text-sm font-medium text-gray-900 dark:text-white">
                     {lastSubmission ? formatDistanceToNow(new Date(lastSubmission.createdAt), { addSuffix: true }) : 'No submissions yet'}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Last Submission</p>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300">Last Submission</p>
                 </div>
               </div>
             </div>

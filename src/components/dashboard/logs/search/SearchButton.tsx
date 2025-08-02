@@ -24,7 +24,7 @@ export function SearchButton({ onClick }: SearchButtonProps) {
       <Search className="h-4 w-4" />
       <span className="text-sm font-normal hidden sm:inline-block">Search submissions...</span>
       <div className="hidden sm:flex items-center justify-center h-5 px-1.5 ml-1 rounded-lg bg-zinc-100 dark:bg-zinc-800">
-        <kbd className="text-xs font-mono tracking-wider text-gray-500 dark:text-gray-400">
+        <kbd className="text-xs font-mono tracking-wider text-zinc-600 dark:text-zinc-300">
           {isMac ? '⌘K' : 'Ctrl+K'}
         </kbd>
       </div>

@@ -303,7 +303,7 @@ export function CreateCampaignDialog({
                 value={campaignContent}
                 onChange={(e) => setCampaignContent(e.target.value)}
               />
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-zinc-600">
                 💡 HTML supported. Variables like {'{name}'} coming soon.
               </p>
             </div>
@@ -317,7 +317,7 @@ export function CreateCampaignDialog({
                   <h3 className="font-semibold">
                     {campaignSubject || "Subject Line Preview"}
                   </h3>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-zinc-600">
                     From: Your Campaign • To: Form Subscribers
                   </p>
                 </div>
@@ -335,7 +335,7 @@ export function CreateCampaignDialog({
         {/* Footer */}
         <div className="p-4 border-t">
           <div className="flex items-center justify-between">
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-zinc-600">
               {isFormValid ? (
                 <span className="text-green-600">✓ Ready to send</span>
               ) : (

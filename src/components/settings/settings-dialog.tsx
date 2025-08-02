@@ -146,7 +146,7 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
                                       "h-4 w-4",
                                       item.name === selectedTab 
                                         ? "text-accent-foreground" 
-                                        : "text-zinc-500 dark:text-zinc-400"
+                                        : "text-zinc-600 dark:text-zinc-400"
                                     )} />
                                   ) : null
                                 })()}

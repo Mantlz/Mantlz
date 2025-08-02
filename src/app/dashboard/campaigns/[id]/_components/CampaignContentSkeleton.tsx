@@ -15,7 +15,7 @@ export function CampaignContentSkeleton() {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
             <div className="space-y-1">
               <h2 className="text-lg font-medium text-gray-900 dark:text-white">Campaign Analytics</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Monthly email campaign performance metrics</p>
+              <p className="text-sm text-zinc-600 dark:text-zinc-300">Monthly email campaign performance metrics</p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               {[...Array(3)].map((_, i) => (

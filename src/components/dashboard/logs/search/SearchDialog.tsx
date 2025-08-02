@@ -108,7 +108,7 @@ export function SearchDialog({
 
   const renderSearchHint = () => {
     return (
-      <div className="pt-1 text-[10px] text-gray-400 dark:text-gray-500 px-3">
+      <div className="pt-1 text-[10px] text-gray-400 dark:text-zinc-600 px-3">
         <span>Search tips: </span>
         <span className="px-1 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono mx-1">email@example.com</span>
         <span className="px-1 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono mx-1">abc123</span>
@@ -128,12 +128,12 @@ export function SearchDialog({
       <div className="relative z-50 bg-white dark:bg-zinc-900 rounded-lg max-w-[90vw] w-[550px] overflow-hidden border border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">
           <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/50 rounded-lg flex items-center px-3 py-1.5 flex-1 transition-shadow hover:shadow-inner">
-            <Search className="mr-2 h-4 w-4 shrink-0 text-gray-400 dark:text-gray-500" />
+            <Search className="mr-2 h-4 w-4 shrink-0 text-gray-400 dark:text-zinc-600" />
             <Input 
               placeholder={`${isProUser ? 'Search' : 'Search'} by email, ID${isProUser ? ', or content' : ''}...`}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="flex h-full w-full bg-transparent py-1 text-sm outline-none border-none placeholder:text-gray-400 dark:placeholder:text-gray-500" 
+              className="flex h-full w-full bg-transparent py-1 text-sm outline-none border-none placeholder:text-gray-400 dark:placeholder:text-zinc-600" 
               autoFocus 
             />
           </div>
@@ -152,7 +152,7 @@ export function SearchDialog({
                 <SelectContent className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-sm rounded-xl overflow-hidden  min-w-[200px] max-w-[300px]">
                   <SelectGroup>
                     <div className="p-2 max-h-[300px] overflow-y-auto">
-                      <div className="text-xs font-medium text-gray-500 dark:text-gray-400 px-2 py-1 mb-1">
+                      <div className="text-xs font-medium text-zinc-600 dark:text-zinc-300 px-2 py-1 mb-1">
                         Available Forms ({formsData.forms.length})
                       </div>
                       <SelectItem 
@@ -222,7 +222,7 @@ export function SearchDialog({
                   className={`ml-2 p-1.5 rounded-lg ${
                     Object.keys(advancedFilters || {}).length > 0 
                       ? "bg-zinc-50 dark:bg-zinc-900/30 border border-orange-200 dark:border-orange-700/50 text-orange-500" 
-                      : "bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-gray-500 dark:text-gray-400"
+                      : "bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300"
                   } transition-colors cursor-pointer`}
                   title="Advanced Filters"
                 >
@@ -232,7 +232,7 @@ export function SearchDialog({
               <PopoverContent className="w-80 p-0 rounded-lg border border-zinc-200 dark:border-zinc-700  bg-white dark:bg-zinc-900" align="end">
                 <div className="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">
                   <h3 className="font-medium text-sm text-gray-900 dark:text-gray-100">Advanced Search</h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Pro users can filter with these advanced options</p>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-1">Pro users can filter with these advanced options</p>
                 </div>
                 
                 <div className="p-4 space-y-4 max-h-[60vh] overflow-y-auto">
@@ -240,7 +240,7 @@ export function SearchDialog({
                     <AccordionItem value="date-range" className="border-b border-zinc-200 dark:border-zinc-800">
                       <AccordionTrigger className="text-sm py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
                         <div className="flex items-center">
-                          <CalendarRange className="h-4 w-4 mr-2 text-gray-500" />
+                          <CalendarRange className="h-4 w-4 mr-2 text-zinc-600" />
                           <span>Date Range</span>
                         </div>
                       </AccordionTrigger>
@@ -258,7 +258,7 @@ export function SearchDialog({
                     <AccordionItem value="quick-timeframe" className="border-b border-zinc-200 dark:border-zinc-800">
                       <AccordionTrigger className="text-sm py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
                         <div className="flex items-center">
-                          <Clock className="h-4 w-4 mr-2 text-gray-500" />
+                          <Clock className="h-4 w-4 mr-2 text-zinc-600" />
                           <span>Time Frame</span>
                         </div>
                       </AccordionTrigger>
@@ -284,7 +284,7 @@ export function SearchDialog({
                     <AccordionItem value="sort-order" className="border-b border-zinc-200 dark:border-zinc-800">
                       <AccordionTrigger className="text-sm py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
                         <div className="flex items-center">
-                          <ArrowDownUp className="h-4 w-4 mr-2 text-gray-500" />
+                          <ArrowDownUp className="h-4 w-4 mr-2 text-zinc-600" />
                           <span>Sort Order</span>
                         </div>
                       </AccordionTrigger>
@@ -317,7 +317,7 @@ export function SearchDialog({
                     <AccordionItem value="content-filters" className="border-b border-zinc-200 dark:border-zinc-800">
                       <AccordionTrigger className="text-sm py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
                         <div className="flex items-center">
-                          <Filter className="h-4 w-4 mr-2 text-gray-500" />
+                          <Filter className="h-4 w-4 mr-2 text-zinc-600" />
                           <span>Content Filters</span>
                         </div>
                       </AccordionTrigger>
@@ -369,7 +369,7 @@ export function SearchDialog({
           ) : (
             <div className="relative ml-2">
               <button
-                className="p-1.5 rounded-lg bg-zinc-50/50 dark:bg-zinc-800/50 border border-zinc-200/50 dark:border-zinc-700/50 text-gray-400/50 dark:text-gray-500/50 cursor-not-allowed opacity-70"
+                className="p-1.5 rounded-lg bg-zinc-50/50 dark:bg-zinc-800/50 border border-zinc-200/50 dark:border-zinc-700/50 text-gray-400/50 dark:text-zinc-600/50 cursor-not-allowed opacity-70"
                 title="Advanced Filters (PRO)"
                 onClick={showUpgradeModal}
               >
@@ -383,7 +383,7 @@ export function SearchDialog({
           
           <button 
             onClick={onClose}
-            className="ml-3 p-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            className="ml-3 p-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-gray-400 dark:text-zinc-600 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
           >
             <X className="h-4 w-4" />
           </button>
@@ -457,7 +457,7 @@ export function SearchDialog({
           />
         </div>
         
-        <div className="border-t border-zinc-200 dark:border-zinc-800 px-4 py-2.5 text-xs text-gray-400 dark:text-gray-500">
+        <div className="border-t border-zinc-200 dark:border-zinc-800 px-4 py-2.5 text-xs text-gray-400 dark:text-zinc-600">
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               <span className="mr-1">Press</span>

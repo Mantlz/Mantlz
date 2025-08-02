@@ -205,7 +205,7 @@ function CodeSnippet({ code, onCopy, language = "javascript" }: CodeSnippetProps
       {/* Code content */}
       <div className="overflow-x-auto">
         <pre className="p-4 text-sm leading-relaxed">
-          <code className="text-zinc-100 dark:text-zinc-200">{code}</code>
+          <code className="text-zinc-100 dark:text-zinc-300">{code}</code>
         </pre>
       </div>
       

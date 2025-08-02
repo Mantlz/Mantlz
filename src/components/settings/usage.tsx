@@ -74,10 +74,10 @@ type PlanBadgeProps = {
 
 const PlanBadge: React.FC<PlanBadgeProps> = ({ plan }) => {
   const badgeStyles = {
-    FREE: "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200",
+    FREE: "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300",
     STANDARD: "bg-zinc-100 text-blue-800 dark:bg-zinc-900 dark:text-blue-200",
     PRO: "bg-orange-100 text-orange-800 dark:bg-amber-700 dark:text-orange-200",
-  }[plan] || "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200";
+  }[plan] || "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300";
 
   return (
     <Badge className={cn("ml-2 font-medium", badgeStyles)}>
@@ -224,7 +224,7 @@ export default function UsageSettings() {
               {headerContent}
               <div className="flex flex-col items-center justify-center py-8 text-center">
                 <AlertCircle className="h-6 w-6 text-red-500" />
-                <p className="mt-2 text-sm text-zinc-800 dark:text-zinc-200">
+                <p className="mt-2 text-sm text-zinc-800 dark:text-zinc-300">
                   Could not load your usage information.
                 </p>
                 <p className="mt-1 text-xs text-zinc-600 dark:text-zinc-400">
@@ -255,7 +255,7 @@ export default function UsageSettings() {
                 
                   <CardHeader className="pb-2 space-y-0">
                     <CardTitle className="text-sm flex items-center text-zinc-900 dark:text-white">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                       Forms
@@ -310,7 +310,7 @@ export default function UsageSettings() {
                 
                   <CardHeader className="pb-2 space-y-0">
                     <CardTitle className="text-sm flex items-center text-zinc-900 dark:text-white">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
                       </svg>
                       Submissions
@@ -365,7 +365,7 @@ export default function UsageSettings() {
             
                   <CardHeader className="pb-2 space-y-0">
                     <CardTitle className="text-sm flex items-center text-zinc-900 dark:text-white">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                       Campaigns

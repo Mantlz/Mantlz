@@ -53,7 +53,7 @@ export function CampaignHeader({ campaign, onBackClick }: CampaignHeaderProps) {
               <p className="text-sm font-medium text-gray-900 dark:text-white">
                 {campaign._count?.sentEmails || 0}
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Total Emails</p>
+              <p className="text-xs text-zinc-600 dark:text-zinc-300">Total Emails</p>
             </div>
           </div>
         </div>
@@ -67,7 +67,7 @@ export function CampaignHeader({ campaign, onBackClick }: CampaignHeaderProps) {
               <p className="text-sm font-medium text-gray-900 dark:text-white">
                 {formatDistanceToNow(new Date(campaign.createdAt), { addSuffix: true })}
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Created</p>
+              <p className="text-xs text-zinc-600 dark:text-zinc-300">Created</p>
             </div>
           </div>
         </div>
@@ -81,7 +81,7 @@ export function CampaignHeader({ campaign, onBackClick }: CampaignHeaderProps) {
               <p className="text-sm font-medium text-gray-900 dark:text-white">
                 {campaign._count?.recipients || 0}
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Recipients</p>
+              <p className="text-xs text-zinc-600 dark:text-zinc-300">Recipients</p>
             </div>
           </div>
         </div>
@@ -98,7 +98,7 @@ export function CampaignHeader({ campaign, onBackClick }: CampaignHeaderProps) {
                   'Not sent'
                 }
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Sent Date</p>
+              <p className="text-xs text-zinc-600 dark:text-zinc-300">Sent Date</p>
             </div>
           </div>
         </div>

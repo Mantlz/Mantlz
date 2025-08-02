@@ -208,7 +208,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                         <CheckCircle2 className="h-4 w-4 text-orange-600 dark:text-orange-400 ml-auto" />
                       )}
                     </div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 ml-9">{description}</p>
+                    <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-1 ml-9">{description}</p>
                   </div>
                 </div>
               ))}
@@ -229,12 +229,12 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                       }}
                       className="w-28 h-9 text-sm rounded-md border-gray-200 dark:border-zinc-700 focus:ring-orange-500 dark:focus:ring-orange-400 pl-8"
                     />
-                    <div className="absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center text-gray-500">
+                    <div className="absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center text-zinc-600">
                       <span>#</span>
                     </div>
                   </div>
                   <div className="flex-1">
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                    <span className="text-xs text-zinc-600 dark:text-zinc-300">
                       subscribers (max 200)
                     </span>
                     <div className="h-1.5 bg-gray-200 dark:bg-zinc-600 rounded-full mt-1.5 overflow-hidden">
@@ -309,7 +309,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                       "flex-1 py-2 text-sm font-medium transition-all duration-200 rounded-md cursor-pointer",
                       period === p
                         ? "bg-amber-500 text-white shadow-sm"
-                        : "text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400"
+                        : "text-gray-600 dark:text-zinc-300 hover:text-orange-600 dark:hover:text-orange-400"
                     )}
                   >
                     {p}
@@ -332,7 +332,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                           "py-2 rounded-md text-sm font-medium transition-all duration-200 cursor-pointer border",
                           isSelected
                             ? "bg-amber-500 text-white border-orange-700 shadow-sm"
-                            : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-600 border-transparent hover:border-gray-300 dark:hover:border-zinc-500"
+                            : "text-gray-600 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-600 border-transparent hover:border-gray-300 dark:hover:border-zinc-500"
                         )}
                       >
                         {time}
@@ -340,7 +340,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                     )
                   })}
                 </div>
-                <div className="mt-3 px-3 py-2 bg-gray-100 dark:bg-zinc-600 rounded-md text-xs text-gray-500 dark:text-gray-400">
+                <div className="mt-3 px-3 py-2 bg-gray-100 dark:bg-zinc-600 rounded-md text-xs text-zinc-600 dark:text-zinc-300">
                   <span className="flex items-center gap-1.5">
                     <Clock className="h-3.5 w-3.5" /> 
                     Campaigns are sent at the start of the selected hour
@@ -402,7 +402,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                     ? "bg-amber-500 text-white shadow-md ring-4 ring-orange-100 dark:ring-orange-900/30"
                     : currentStep > step.number
                     ? "bg-orange-100 text-orange-700 dark:bg-amber-700/40 dark:text-orange-300"
-                    : "bg-gray-100 text-gray-500 dark:bg-zinc-700 dark:text-gray-400"
+                    : "bg-gray-100 text-zinc-600 dark:bg-zinc-700 dark:text-zinc-300"
                 )}
               >
                 {currentStep > step.number ? <CheckCircle2 className="h-4 w-4" /> : step.icon}
@@ -411,7 +411,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                 "text-xs mt-2 font-medium",
                 currentStep === step.number
                   ? "text-orange-600 dark:text-orange-400"
-                  : "text-gray-500 dark:text-gray-400"
+                  : "text-zinc-600 dark:text-zinc-300"
               )}>
                 {step.label}
               </span>
@@ -444,7 +444,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
               <div className="flex items-center gap-3">
                 <div>
                   <DialogTitle className="text-lg font-semibold text-gray-900 dark:text-white">Schedule Campaign</DialogTitle>
-                  <DialogDescription className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  <DialogDescription className="text-xs text-zinc-600 dark:text-zinc-300 mt-0.5">
                     Configure when and how to send your campaign
                   </DialogDescription>
                 </div>

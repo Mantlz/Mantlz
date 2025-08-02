@@ -208,7 +208,7 @@ export default function EmailSettings() {
             <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
               <div>
                 <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
-                  <AtSign className="h-4 w-4 mr-2 text-zinc-500" />
+                  <AtSign className="h-4 w-4 mr-2 text-zinc-600" />
                   Developer Notifications
                 </CardTitle>
                 <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
@@ -258,13 +258,13 @@ export default function EmailSettings() {
                               <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                                 Developer Notifications
                               </span>
-                              <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                              <span className="text-xs text-zinc-600 dark:text-zinc-400">
                                 {isDeveloperNotificationsEnabled ? (
                                   <span className="text-emerald-600 dark:text-emerald-500 font-medium">
                                     Enabled
                                   </span>
                                 ) : (
-                                  <span className="text-zinc-500 dark:text-zinc-400">
+                                  <span className="text-zinc-600 dark:text-zinc-400">
                                     Disabled
                                   </span>
                                 )}

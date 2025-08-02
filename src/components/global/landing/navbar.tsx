@@ -104,7 +104,7 @@ export function Navbar() {
                   <p className="text-sm font-semibold leading-none text-gray-900 dark:text-gray-100">
                     {user?.fullName || "User"}
                   </p>
-                  <p className="text-xs leading-none text-gray-600 dark:text-gray-400">
+                  <p className="text-xs leading-none text-gray-600 dark:text-zinc-300">
                     {user?.primaryEmailAddress?.emailAddress}
                   </p>
                 </div>
@@ -114,7 +114,7 @@ export function Navbar() {
                 onClick={() => openUserProfile()}
                 className="cursor-pointer rounded-lg p-2 hover:bg-gradient-to-r hover:from-gray-100/80 hover:to-gray-50/80 dark:hover:from-zinc-800/80 dark:hover:to-zinc-700/80 transition-all duration-200 group"
               >
-                <User className="mr-2 h-4 w-4 text-gray-600 dark:text-gray-400 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors" />
+                <User className="mr-2 h-4 w-4 text-gray-600 dark:text-zinc-300 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors" />
                 <span className="font-medium text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-gray-100">Manage Account</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator className="my-2 bg-gradient-to-r from-transparent via-gray-300 to-transparent dark:via-zinc-600" />
@@ -233,7 +233,7 @@ export function Navbar() {
                  // Render SignedOut content if auth is loaded and user is out
                  <div className="flex flex-col space-y-3 mt-2">
                    <DrawerClose asChild>
-                     <Link href="/sign-in" className="text-base py-2 text-gray-600 dark:text-gray-400">
+                     <Link href="/sign-in" className="text-base py-2 text-gray-600 dark:text-zinc-300">
                        Sign in
                      </Link>
                    </DrawerClose>

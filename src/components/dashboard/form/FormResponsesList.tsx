@@ -214,7 +214,7 @@ export function FormResponsesList({
     <div className="flex flex-col space-y-4">
       <div className="flex justify-between items-center pb-4 border-b border-zinc-200 dark:border-zinc-800">
         <h3 className="text-lg font-medium text-zinc-900 dark:text-white">Form Responses</h3>
-        <Badge variant="secondary" className="text-xs bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200">
+        <Badge variant="secondary" className="text-xs bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
           {localSubmissions.length} {localSubmissions.length === 1 ? "response" : "responses"}
         </Badge>
       </div>
@@ -222,14 +222,14 @@ export function FormResponsesList({
       <Card className="bg-background border-zinc-200 dark:border-zinc-800">
         <CardContent className="p-0 bg-background">
           <div className="p-3 border-b border-zinc-200 dark:border-zinc-800 grid grid-cols-1 sm:grid-cols-4 gap-4">
-            <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Email</div>
-            <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider hidden sm:block">
+            <div className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">Email</div>
+            <div className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wider hidden sm:block">
               Date
             </div>
-            <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider hidden sm:block">
+            <div className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wider hidden sm:block">
               Status
             </div>
-            <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider text-right">
+            <div className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wider text-right">
               Actions
             </div>
           </div>
@@ -282,7 +282,7 @@ export function FormResponsesList({
                           className="h-8 text-xs cursor-pointer bg-white hover:bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
                           onClick={() => window.open(value, '_blank')}
                         >
-                          <Download className="h-3.5 w-3.5 mr-1.5 text-zinc-500" />
+                          <Download className="h-3.5 w-3.5 mr-1.5 text-zinc-600" />
                           {getFileNameFromUrl(value)}
                         </Button>
                       );
@@ -306,7 +306,7 @@ export function FormResponsesList({
                           setSheetOpen(true)
                         }}
                       >
-                        <Eye className="h-3.5 w-3.5 mr-1.5 text-zinc-500" />
+                        <Eye className="h-3.5 w-3.5 mr-1.5 text-zinc-600" />
                         View
                       </Button>
                     </SheetTrigger>

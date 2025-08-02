@@ -203,14 +203,14 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                 <div className="space-y-3 sm:space-y-4 w-full sm:w-auto">
                   <div className="flex items-center gap-3">
                     <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                      <p className="text-sm text-zinc-600 dark:text-zinc-300">
                         {isPremium ? "Let's create your first form" : "Upgrade to create email campaigns"}
                       </p>
                     </div>
                   </div>
                 </div>
                 <Button
-                  className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-lg px-6  hover:shadow-md"
+                  className="h-10 px-2 text-md bg-amber-500 text-black dark:text-white dark:border-background border text-sm  ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
                   onClick={() => isPremium ? router.push("/dashboard/forms") : onUpgradeClick?.()}
                 >
                   {isPremium ? "Create Your First Form" : "Upgrade to Create Campaigns"}
@@ -220,19 +220,19 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
           </div>
 
           <div className="text-center py-12 sm:py-16  rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 rounded-2xl bg-white dark:bg-zinc-800/50 flex items-center justify-center">
-              <FileSpreadsheet className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400 dark:text-gray-500" />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-4 rounded-xl bg-accent/80 flex items-center justify-center">
+              <FileSpreadsheet className="h-5 w-5 text-black dark:text-white" />
             </div>
             <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">
               {isPremium ? "Ready to create your first form?" : "Upgrade to access email campaigns"}
             </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 sm:mb-6 max-w-sm mx-auto px-4">
+            <p className="text-sm text-zinc-600 dark:text-zinc-300 mb-4 sm:mb-6 max-w-sm mx-auto px-4">
               {isPremium 
                 ? "Start collecting responses in minutes with our easy-to-use form builder"
                 : "Create and manage email campaigns with advanced features like scheduling, analytics, and more"}
             </p>
             <Button
-              className="w-full sm:w-auto bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all duration-200 rounded-lg px-6  hover:shadow-md"
+              className="h-10 px-2 text-md bg-amber-500 text-black dark:text-white dark:border-background border text-sm  ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
               onClick={() => isPremium ? router.push("/dashboard/forms") : onUpgradeClick?.()}
             >
               {isPremium ? "Create Your First Form" : "Upgrade Now"}
@@ -266,7 +266,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                       onClick={() => handleViewModeChange('grid')}
                       className={`p-1.5 rounded-lg ${viewMode === 'grid' 
                         ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                        : 'text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300'}`}
                       aria-label="Grid view"
                     >
                       <LayoutGrid className="h-4 w-4" />
@@ -275,7 +275,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                       onClick={() => handleViewModeChange('list')}
                       className={`p-1.5 rounded-lg ${viewMode === 'list' 
                         ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
-                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                        : 'text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300'}`}
                       aria-label="List view"
                     >
                       <List className="h-4 w-4" />
@@ -287,7 +287,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
               onClick={() => handleViewModeChange('grid')}
               className={`p-1.5 rounded-lg ${viewMode === 'grid' 
                 ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white ' 
-                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                : 'text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300'}`}
               aria-label="Grid view"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -303,7 +303,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
               onClick={() => handleViewModeChange('list')}
               className={`p-1.5 rounded-lg ${viewMode === 'list' 
                 ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
-                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                : 'text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300'}`}
               aria-label="List view"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -325,7 +325,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">{formsData.forms.length}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Total Forms</p>
+                      <p className="text-xs text-zinc-600 dark:text-zinc-300">Total Forms</p>
                     </div>
                   </div>
                 </div>
@@ -339,7 +339,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                       <p className="text-sm font-medium text-gray-900 dark:text-white">
                         {formsData.forms.reduce((total, form) => total + (form._count?.campaigns || 0), 0)}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">Total Campaigns</p>
+                      <p className="text-xs text-zinc-600 dark:text-zinc-300">Total Campaigns</p>
                     </div>
                   </div>
                 </div>
@@ -364,14 +364,14 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                         <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate">
                           {form.name}
                         </h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
+                        <p className="text-sm text-zinc-600 dark:text-zinc-300 line-clamp-2">
                           {form.description || "No description available"}
                         </p>
                       </div>
                       <div className="flex justify-between items-center mt-4">
                         <div className="flex items-center gap-1">
                           <Mail className="h-4 w-4 text-gray-400" />
-                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                          <span className="text-xs text-zinc-600 dark:text-zinc-300">
                             <strong>{form._count?.campaigns || 0}</strong> campaign{(form._count?.campaigns || 0) !== 1 ? 's' : ''}
                           </span>
                         </div>
@@ -410,11 +410,11 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                         <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
                           {form.name}
                         </h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
+                        <p className="text-sm text-zinc-600 dark:text-zinc-300 line-clamp-1">
                           {form.description || "No description available"}
                         </p>
                       </div>
-                      <div className="flex items-center gap-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-2">
+                      <div className="flex items-center gap-4 text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-2">
                         <div className="flex items-center">
                           <Mail className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5" />
                           <span>{form._count?.campaigns || 0} campaign{(form._count?.campaigns || 0) !== 1 ? 's' : ''}</span>
@@ -454,7 +454,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
             >
               Previous
             </Button>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className="text-sm text-zinc-600 dark:text-zinc-300">
               Page {page} of {totalFormsPages}
             </span>
             <Button

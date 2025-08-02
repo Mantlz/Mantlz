@@ -172,7 +172,7 @@ export function FormHeader({
                 </div>
                 <div>
                   <p className="text-sm xs:text-base font-medium text-gray-900 dark:text-white">{responsesCount || 0}</p>
-                  <p className="text-xs xs:text-sm text-gray-500 dark:text-gray-400">Total Submissions</p>
+                  <p className="text-xs xs:text-sm text-zinc-600 dark:text-zinc-300">Total Submissions</p>
                 </div>
               </div>
               <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-700 rounded-lg overflow-hidden">
@@ -192,7 +192,7 @@ export function FormHeader({
                   <p className="text-sm xs:text-base font-medium text-gray-900 dark:text-white">
                     {analytics?.last24HoursSubmissions || 0}
                   </p>
-                  <p className="text-xs xs:text-sm text-gray-500 dark:text-gray-400">Last 24h</p>
+                  <p className="text-xs xs:text-sm text-zinc-600 dark:text-zinc-300">Last 24h</p>
                 </div>
               </div>
             </div>
@@ -206,7 +206,7 @@ export function FormHeader({
                   <p className="text-sm xs:text-base font-medium text-gray-900 dark:text-white">
                     {responsesCount > 0 ? `${analytics?.completionRate || 0}%` : 'N/A'}
                   </p>
-                  <p className="text-xs xs:text-sm text-gray-500 dark:text-gray-400">Completion Rate</p>
+                  <p className="text-xs xs:text-sm text-zinc-600 dark:text-zinc-300">Completion Rate</p>
                 </div>
               </div>
             </div>
@@ -220,7 +220,7 @@ export function FormHeader({
                   <p className="text-sm xs:text-base font-medium text-gray-900 dark:text-white">
                     {responsesCount > 0 ? `${analytics?.averageResponseTime || 0}s` : 'N/A'}
                   </p>
-                  <p className="text-xs xs:text-sm text-gray-500 dark:text-gray-400">Avg. Time to Complete</p>
+                  <p className="text-xs xs:text-sm text-zinc-600 dark:text-zinc-300">Avg. Time to Complete</p>
                 </div>
               </div>
             </div>

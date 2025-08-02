@@ -24,7 +24,7 @@ export default function Canceled() {
           Your subscription has been canceled. You can still use your current plan until the end of your billing period.
         </p>
 
-        <p className="mb-8 text-base text-zinc-500 dark:text-zinc-500">
+        <p className="mb-8 text-base text-zinc-600 dark:text-zinc-600">
           If you have any questions about your subscription or need help, please contact our support team.
         </p>
 

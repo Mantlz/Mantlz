@@ -62,7 +62,7 @@ export function DeleteForm({ formId, isOpen, onClose, onOpen }: DeleteFormProps)
       <div className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-700">
         <div className="mb-6">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Danger Zone</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Irreversible and destructive actions</p>
+          <p className="text-sm text-zinc-600 dark:text-zinc-300">Irreversible and destructive actions</p>
         </div>
         
         <div className="bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-900/30 rounded-xl p-6">
@@ -100,7 +100,7 @@ export function DeleteForm({ formId, isOpen, onClose, onOpen }: DeleteFormProps)
               <DialogTitle className="text-2xl font-semibold text-gray-900 dark:text-white mb-3">
                 Delete Form & All Data
               </DialogTitle>
-              <DialogDescription className="text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+              <DialogDescription className="text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
                 This action cannot be undone. This will permanently delete your form and ALL associated data including submissions, campaigns, orders, and analytics.
               </DialogDescription>
             </div>

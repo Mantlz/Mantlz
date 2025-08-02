@@ -133,7 +133,7 @@ export default function ApiKeySettings() {
             <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
               <div>
                 <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center gap-2">
-                  <Key className="h-4 w-4 text-zinc-500" />
+                  <Key className="h-4 w-4 text-zinc-600" />
                   {apiKey.name}
                 </CardTitle>
                 <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">

@@ -16,14 +16,14 @@ export function BreadcrumbSkeleton() {
     
     return (
       <div key={index} className="flex items-center">
-        {index > 0 && <ChevronRight className="mx-1.5 h-3 w-3 text-gray-500" />}
+        {index > 0 && <ChevronRight className="mx-1.5 h-3 w-3 text-zinc-600" />}
         <Skeleton className={`h-4 ${width} **:rounded-lg`} />
       </div>
     )
   })
 
   return (
-    <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
+    <div className="flex items-center space-x-2 text-sm text-zinc-600 dark:text-zinc-300">
       {segments}
     </div>
   )

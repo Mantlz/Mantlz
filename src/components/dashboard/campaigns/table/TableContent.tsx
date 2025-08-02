@@ -147,22 +147,22 @@ export function TableContent({
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent border-b border-zinc-200 dark:border-zinc-800">
-              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
+              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
                 Campaign Name
               </TableHead>
-              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
+              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
                 Status
               </TableHead>
-              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
+              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
                 Created
               </TableHead>
-              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
+              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
                 Schedule/Sent Date
               </TableHead>
-              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
+              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
                 Recipients
               </TableHead>
-              <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4 text-right">
+              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4 text-right">
                 Actions
               </TableHead>
             </TableRow>
@@ -188,7 +188,7 @@ export function TableContent({
                         {campaign.description && (
                           <Popover>
                             <PopoverTrigger asChild>
-                              <div className="text-xs text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
+                              <div className="text-xs text-zinc-600 dark:text-zinc-300 cursor-pointer hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
                                 {campaign.description.length > 50
                                   ? `${campaign.description.substring(0, 50)}...`
                                   : campaign.description}
@@ -284,7 +284,7 @@ export function TableContent({
                         title={new Date(campaign.sentAt).toLocaleString()}
                       >
                         <div className="shrink-0">
-                          <CalendarIcon className="h-3.5 w-3.5 text-gray-400 group-hover:text-gray-500 transition-colors" />
+                          <CalendarIcon className="h-3.5 w-3.5 text-gray-400 group-hover:text-zinc-600 transition-colors" />
                         </div>
                         <span className="text-xs text-gray-600 dark:text-gray-300 group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors">
                           {formatDistanceToNow(new Date(campaign.sentAt), {
@@ -297,7 +297,7 @@ export function TableContent({
                         <div className="shrink-0">
                           <CalendarIcon className="h-3.5 w-3.5 text-gray-400" />
                         </div>
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                        <span className="text-xs text-zinc-600 dark:text-zinc-300">
                           Not sent
                         </span>
                       </div>
@@ -463,7 +463,7 @@ export function TableContent({
                                 <AlertDialogTitle className="text-gray-900 dark:text-gray-100">
                                   Delete Campaign
                                 </AlertDialogTitle>
-                                <AlertDialogDescription className="text-gray-600 dark:text-gray-400">
+                                <AlertDialogDescription className="text-gray-600 dark:text-zinc-300">
                                   Are you sure you want to delete this campaign?
                                   This action cannot be undone.
                                 </AlertDialogDescription>
@@ -509,7 +509,7 @@ export function TableContent({
       {/* Pagination */}
       {pagination.totalPages > 1 && (
         <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
-          <span className="text-xs text-gray-500 dark:text-gray-400">
+          <span className="text-xs text-zinc-600 dark:text-zinc-300">
             Page {pagination.currentPage} of {pagination.totalPages}
           </span>
           <div className="flex items-center gap-2">

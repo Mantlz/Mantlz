@@ -172,8 +172,8 @@ export function SubmissionDetailsSheet({
                         {userEmailStatus.type === 'SENT' ? "Email Sent" : "No Email Sent"}
                       </Badge>
                     </h2>
-                    <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                      <Calendar className="h-3.5 w-3.5 mr-1.5 text-gray-500" />
+                    <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-zinc-300">
+                      <Calendar className="h-3.5 w-3.5 mr-1.5 text-zinc-600" />
                       <span>
                         Received{" "}
                         {formatDistanceToNow(new Date(submission.createdAt), { addSuffix: true })}
@@ -205,8 +205,8 @@ export function SubmissionDetailsSheet({
               {submission.email && (
                 <div>
                   <div className="flex items-center mb-3">
-                    <Mail className="h-3.5 w-3.5 mr-2 text-gray-500" />
-                    <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <Mail className="h-3.5 w-3.5 mr-2 text-zinc-600" />
+                    <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300 uppercase tracking-wider">
                       Email Status
                     </p>
                   </div>
@@ -215,8 +215,8 @@ export function SubmissionDetailsSheet({
                     <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <Mail className="h-3.5 w-3.5 text-gray-500" />
-                          <p className="text-xs font-medium text-gray-500 dark:text-gray-400">User Email</p>
+                          <Mail className="h-3.5 w-3.5 text-zinc-600" />
+                          <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300">User Email</p>
                         </div>
                         <Badge
                           variant="secondary"
@@ -244,8 +244,8 @@ export function SubmissionDetailsSheet({
                     <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <Bell className="h-3.5 w-3.5 text-gray-500" />
-                          <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Developer Email</p>
+                          <Bell className="h-3.5 w-3.5 text-zinc-600" />
+                          <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300">Developer Email</p>
                         </div>
                         <Badge
                           variant="secondary"
@@ -276,8 +276,8 @@ export function SubmissionDetailsSheet({
               {submission.data && (
                 <div>
                   <div className="flex items-center mb-3">
-                    <File className="h-3.5 w-3.5 mr-2 text-gray-500" />
-                    <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <File className="h-3.5 w-3.5 mr-2 text-zinc-600" />
+                    <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300 uppercase tracking-wider">
                       Form Data
                     </p>
                   </div>
@@ -292,11 +292,11 @@ export function SubmissionDetailsSheet({
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
                             {typeof value === 'string' && isFileUrl(value) ? (
-                              <FileIcon className="h-3.5 w-3.5 text-gray-500" />
+                              <FileIcon className="h-3.5 w-3.5 text-zinc-600" />
                             ) : (
                               <div className="w-2 h-2 bg-zinc-300 dark:bg-zinc-600 rounded-lg"></div>
                             )}
-                            <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300 uppercase tracking-wider">
                               {key}
                             </p>
                           </div>
@@ -305,7 +305,7 @@ export function SubmissionDetailsSheet({
                               <Button
                                 variant="outline"
                                 size="sm"
-                                className="h-7 px-2 text-gray-500 cursor-pointer dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
+                                className="h-7 px-2 text-zinc-600 cursor-pointer dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
                                 onClick={() => window.open(value, '_blank')}
                               >
                                 <Download className="h-3.5 w-3.5 mr-1.5" />
@@ -315,7 +315,7 @@ export function SubmissionDetailsSheet({
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="h-7 px-2 text-gray-500 cursor-pointer dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
+                                className="h-7 px-2 text-zinc-600 cursor-pointer dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
                                 onClick={() => copyToClipboard(key, value)}
                               >
                                 {copiedField === key ? (
@@ -348,16 +348,16 @@ export function SubmissionDetailsSheet({
               {submission.data && (submission.data as SubmissionData)._meta && (
                 <div>
                   <div className="flex items-center mb-3">
-                    <BarChart className="h-3.5 w-3.5 mr-2 text-gray-500" />
-                    <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <BarChart className="h-3.5 w-3.5 mr-2 text-zinc-600" />
+                    <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300 uppercase tracking-wider">
                       Analytics
                     </p>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900">
                       <div className="flex items-center gap-2 mb-2">
-                        <Globe className="h-3.5 w-3.5 text-gray-500" />
-                        <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Browser</p>
+                        <Globe className="h-3.5 w-3.5 text-zinc-600" />
+                        <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300">Browser</p>
                       </div>
                       <p className="text-xs sm:text-sm text-gray-900 dark:text-white">
                         {(submission.data as SubmissionData)._meta?.browser || 'Unknown'}
@@ -365,8 +365,8 @@ export function SubmissionDetailsSheet({
                     </div>
                     <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900">
                       <div className="flex items-center gap-2 mb-2">
-                        <MapPin className="h-3.5 w-3.5 text-gray-500" />
-                        <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Location</p>
+                        <MapPin className="h-3.5 w-3.5 text-zinc-600" />
+                        <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300">Location</p>
                       </div>
                       <p className="text-xs sm:text-sm text-gray-900 dark:text-white">
                         {(submission.data as SubmissionData)._meta?.country || 'Unknown'}

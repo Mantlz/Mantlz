@@ -217,7 +217,7 @@ export function TableContent({
             <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">
               Submission Logs
             </h3>
-            <Badge className="ml-2 bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-200">
+            <Badge className="ml-2 bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
               {submissions.length} submissions
             </Badge>
             {userPlan === 'FREE' && enhancedSubmissions.filter(sub => new Date(sub.createdAt) > standardTimeLimit).length > 20 && (
@@ -339,27 +339,27 @@ export function TableContent({
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent border-b border-zinc-200 dark:border-zinc-800">
-                <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
+                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
                   <span className="hidden sm:inline">Submission ID</span>
                   <span className="sm:hidden">ID</span>
                 </TableHead>
-                <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">Email</TableHead>
-                <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
+                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">Email</TableHead>
+                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
                   <div className="flex items-center">
                     <span>Status</span>
                   </div>
                 </TableHead>
                 {isPremium && (
-                  <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4 hidden md:table-cell">
+                  <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4 hidden md:table-cell">
                     <div className="flex items-center">
                       <span>Analytics</span>
                     </div>
                   </TableHead>
                 )}
-                <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4">
+                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
                   Submitted
                 </TableHead>
-                <TableHead className="text-xs font-medium text-gray-500 dark:text-gray-400 py-3 sm:py-4 text-right">
+                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4 text-right">
                   Actions
                 </TableHead>
               </TableRow>
@@ -373,7 +373,7 @@ export function TableContent({
                   <TableCell className="py-3 sm:py-4">
                     <div className="flex items-center gap-2">
                       <div className="w-1.5 h-1.5 rounded-lg bg-zinc-300 dark:bg-zinc-600"></div>
-                      <span className="font-mono text-xs text-gray-600 dark:text-gray-400">{submission.id.slice(0, 8)}...</span>
+                      <span className="font-mono text-xs text-gray-600 dark:text-zinc-300">{submission.id.slice(0, 8)}...</span>
                     </div>
                   </TableCell>
                   <TableCell className="py-3 sm:py-4">
@@ -491,7 +491,7 @@ export function TableContent({
                 </span>
               </div>
             )}
-            <span className="text-xs text-gray-500 dark:text-gray-400">
+            <span className="text-xs text-zinc-600 dark:text-zinc-300">
               Page {pagination.currentPage} of {userPlan === 'FREE' ? Math.min(pagination.pages, 4) : pagination.pages}
               {!isPremium && " (Limited view)"}
             </span>

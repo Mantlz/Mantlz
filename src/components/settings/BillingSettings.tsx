@@ -119,10 +119,10 @@ type PlanBadgeProps = {
 
 const PlanBadge: React.FC<PlanBadgeProps> = ({ plan }) => {
   const badgeStyles = {
-    FREE: "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200",
+    FREE: "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300",
     STANDARD: "bg-zinc-100 text-blue-800 dark:bg-zinc-900 dark:text-blue-200",
     PRO: "bg-orange-100 text-orange-800 dark:bg-amber-700 dark:text-orange-200",
-  }[plan?.toUpperCase() || 'FREE'] || "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200";
+  }[plan?.toUpperCase() || 'FREE'] || "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300";
 
   return (
     <Badge className={cn("ml-2 font-medium", badgeStyles)}>
@@ -305,7 +305,7 @@ export default function BillingSettings() {
             <Card className="border-zinc-200 dark:border-zinc-800 shadow-none">
               <CardHeader className="pb-2 pt-4 px-5">
                 <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                   Current Plan
@@ -406,7 +406,7 @@ export default function BillingSettings() {
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
-                      <FileText className="h-3.5 w-3.5 mr-1.5 text-zinc-500" />
+                      <FileText className="h-3.5 w-3.5 mr-1.5 text-zinc-600" />
                       Recent Invoices
                     </CardTitle>
                     <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
@@ -496,7 +496,7 @@ export default function BillingSettings() {
                   onClick={() => window.location.href = '/pricing'} 
                   variant="link"
                   size="sm"
-                  className="h-6 text-xs p-0 text-zinc-950 dark:text-zinc-200 hover:underline"
+                  className="h-6 text-xs p-0 text-zinc-950 dark:text-zinc-300 hover:underline"
                 >
                   View Plans
                 </Button>

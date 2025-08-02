@@ -82,7 +82,7 @@ export function UpgradeCard() {
       <CardHeader className="pb-2 pt-3 px-4 flex flex-row items-start justify-between space-y-0">
         <div>
           <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
-            <Sparkles className="h-4 w-4 mr-2 text-zinc-500" />
+            <Sparkles className="h-4 w-4 mr-2 text-zinc-600" />
             {usageData.plan === "FREE" ? "Standard Plan" : "Pro Plan"}
           </CardTitle>
           <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
@@ -106,7 +106,7 @@ export function UpgradeCard() {
               <span className="text-xs font-medium text-zinc-900 dark:text-zinc-100">
                 Forms
               </span>
-              <span className="text-xs text-zinc-500 dark:text-zinc-400  whitespace-nowrap">
+              <span className="text-xs text-zinc-600 dark:text-zinc-400  whitespace-nowrap">
                 {usageData.usage?.forms.used || 0}/{currentQuota.maxForms} → {nextQuota.maxForms}
               </span>
             </div>
@@ -120,7 +120,7 @@ export function UpgradeCard() {
               <span className="text-xs font-medium text-zinc-900 dark:text-zinc-100">
                 Submissions
               </span>
-              <span className="text-xs text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
+              <span className="text-xs text-zinc-600 dark:text-zinc-400 whitespace-nowrap">
                 {usageData.usage?.submissions.used || 0}/{currentQuota.maxSubmissionsPerMonth} → {nextQuota.maxSubmissionsPerMonth}
               </span>
             </div>
@@ -135,7 +135,7 @@ export function UpgradeCard() {
                 <span className="text-xs font-medium text-zinc-900 dark:text-zinc-100">
                   Pro Features
                 </span>
-                <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                <span className="text-xs text-zinc-600 dark:text-zinc-400">
                   Dev Notifications
                 </span>
               </div>

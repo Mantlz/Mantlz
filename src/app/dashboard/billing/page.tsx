@@ -79,7 +79,7 @@ export default function BillingHistoryPage() {
     return (
       <div className="flex flex-col items-center justify-center py-8 text-center">
         <AlertCircle className="h-6 w-6 text-red-500" />
-        <p className="mt-2 text-sm text-zinc-800 dark:text-zinc-200">
+        <p className="mt-2 text-sm text-zinc-800 dark:text-zinc-300">
           Could not load your billing history.
         </p>
       </div>

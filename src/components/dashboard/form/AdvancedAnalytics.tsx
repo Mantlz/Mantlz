@@ -144,7 +144,8 @@ export function AdvancedAnalytics({
 
               <Button
                 size="default"
-                className="bg-amber-500 cursor-pointer  text-white hover:bg-amber-500 dark:hover:bg-amber-600 w-48 h-11 sm:h-12 text-sm sm:text-base font-medium"
+              className="h-10 px-2 text-md bg-amber-500 text-white dark:text-black dark:border-background border text-sm  ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+
                 onClick={() => setIsUpgradeModalOpen(true)}
               >
                 <Rocket className="h-5 w-5 mr-2" />
@@ -164,8 +165,8 @@ export function AdvancedAnalytics({
                 <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-lg flex items-center justify-center mb-3 sm:mb-4">
                   <Lock className="h-5 w-5 sm:h-6 sm:w-6 text-orange-500" />
                 </div>
-                <p className="text-base sm:text-lg font-medium text-zinc-800 dark:text-zinc-200 mb-2">View User Insights</p>
-                <p className="text-sm sm:text-base text-zinc-500 dark:text-zinc-400 max-w-[240px] sm:max-w-[280px] mx-auto">
+                <p className="text-base sm:text-lg font-medium text-zinc-800 dark:text-zinc-300 mb-2">View User Insights</p>
+                <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 max-w-[240px] sm:max-w-[280px] mx-auto">
                   Click to upgrade and see detailed analytics about your users
                 </p>
               </div>

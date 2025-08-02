@@ -20,8 +20,8 @@ export function CampaignsTableHeaderSkeleton() {
             <div className="space-y-1">
               <div className="flex items-center gap-3">
                 <div className="h-8 text-xs cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg px-3 bg-zinc-50 dark:bg-zinc-800/50 flex items-center">
-                  <ChevronLeft className="h-3.5 w-3.5 mr-1 text-zinc-500 dark:text-zinc-400" />
-                  <span className="hidden xs:inline text-zinc-500 dark:text-zinc-400">
+                  <ChevronLeft className="h-3.5 w-3.5 mr-1 text-zinc-600 dark:text-zinc-400" />
+                  <span className="hidden xs:inline text-zinc-600 dark:text-zinc-400">
                     Back to Forms
                   </span>
                 </div>
@@ -56,7 +56,7 @@ export function CampaignsTableHeaderSkeleton() {
                   <div className="text-sm font-medium text-gray-900 dark:text-white">
                     <Skeleton className="h-4 w-10 mb-1 rounded-lg" />
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300">
                     Total Campaigns
                   </p>
                 </div>
@@ -72,7 +72,7 @@ export function CampaignsTableHeaderSkeleton() {
                   <div className="text-sm font-medium text-gray-900 dark:text-white">
                     <Skeleton className="h-4 w-28 mb-1 rounded-lg" />
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300">
                     Form Created
                   </p>
                 </div>
@@ -88,7 +88,7 @@ export function CampaignsTableHeaderSkeleton() {
                   <div className="text-sm font-medium text-gray-900 dark:text-white">
                     <Skeleton className="h-4 w-10 mb-1 rounded-lg" />
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300">
                     Total Submissions
                   </p>
                 </div>
@@ -104,7 +104,7 @@ export function CampaignsTableHeaderSkeleton() {
                   <div className="text-sm font-medium text-gray-900 dark:text-white">
                     <Skeleton className="h-4 w-10 mb-1 rounded-lg" />
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300">
                     Unsubscribed
                   </p>
                 </div>

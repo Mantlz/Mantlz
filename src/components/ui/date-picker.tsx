@@ -34,10 +34,10 @@ export function DatePicker({ value, onChange, placeholder = "Pick a date" }: Dat
             "hover:bg-zinc-50 dark:hover:bg-zinc-800",
             "shadow-sm",
             "h-9 px-3 py-2",
-            !value && "text-gray-500 dark:text-gray-400"
+            !value && "text-zinc-600 dark:text-zinc-300"
           )}
         >
-          <CalendarIcon className="mr-2 h-4 w-4 text-gray-600 dark:text-gray-400" />
+          <CalendarIcon className="mr-2 h-4 w-4 text-gray-600 dark:text-zinc-300" />
           {value ? format(value, "PPP") : <span>{placeholder}</span>}
         </Button>
       </PopoverTrigger>
@@ -61,7 +61,7 @@ export function DatePicker({ value, onChange, placeholder = "Pick a date" }: Dat
               "[&_.rdp-nav_button_next]:absolute [&_.rdp-nav_button_next]:right-1",
               "[&_.rdp-table]:w-full [&_.rdp-table]:border-collapse [&_.rdp-table]:space-x-1",
               "[&_.rdp-head_row]:flex",
-              "[&_.rdp-head_cell]:text-gray-500 [&_.rdp-head_cell]:rounded-lg [&_.rdp-head_cell]:w-8 [&_.rdp-head_cell]:font-normal [&_.rdp-head_cell]:text-[0.8rem]",
+              "[&_.rdp-head_cell]:text-zinc-600 [&_.rdp-head_cell]:rounded-lg [&_.rdp-head_cell]:w-8 [&_.rdp-head_cell]:font-normal [&_.rdp-head_cell]:text-[0.8rem]",
               "[&_.rdp-row]:flex [&_.rdp-row]:w-full [&_.rdp-row]:mt-2",
               "[&_.rdp-cell]:relative [&_.rdp-cell]:p-0 [&_.rdp-cell]:text-center [&_.rdp-cell]:text-sm [&_.rdp-cell]:focus-within:relative [&_.rdp-cell]:focus-within:z-20",
               "[&_.rdp-day]:size-8 [&_.rdp-day]:p-0 [&_.rdp-day]:font-normal [&_.rdp-day]:aria-selected:opacity-100",
