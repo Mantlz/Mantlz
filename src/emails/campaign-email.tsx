@@ -34,31 +34,23 @@ export function CampaignEmail({
       trackingPixelUrl={trackingPixelUrl}
       clickTrackingUrl={clickTrackingUrl}
     >
-      <Heading style={styles.heading}>{subject}</Heading>
+      <Heading>{subject}</Heading>
       
-      <Text style={styles.content}>
+      <Text>
         {content}
       </Text>
       
       {ctaText && ctaUrl && (
-        <Section style={styles.ctaSection}>
-          <Button
-            href={ctaUrl}
-            style={styles.button}
-          >
-            {ctaText}
-          </Button>
-        </Section>
+        <Button href={ctaUrl}>
+          {ctaText}
+        </Button>
       )}
       
-      <Hr style={styles.divider} />
+      <Hr />
       
-      <Text style={styles.footer}>
+      <Text>
         If you have any questions, feel free to{' '}
-        <Link 
-          href={clickTrackingUrl ? `${clickTrackingUrl}&url=mailto:contact@mantlz.com` : "mailto:contact@mantlz.com"}
-          style={styles.link}
-        >
+        <Link href={clickTrackingUrl ? `${clickTrackingUrl}&url=mailto:contact@mantlz.com` : "mailto:contact@mantlz.com"}>
           contact us
         </Link>
         .
@@ -66,49 +58,3 @@ export function CampaignEmail({
     </BrandedEmailTemplate>
   );
 }
-
-const styles = {
-  heading: {
-    fontSize: '24px',
-    fontWeight: 'bold',
-    color: '#000000',
-    margin: '0 0 24px',
-    textAlign: 'center' as const,
-  },
-  content: {
-    fontSize: '16px',
-    lineHeight: '1.5',
-    color: '#333333',
-    margin: '0 0 30px',
-    textAlign: 'center' as const,
-  },
-  ctaSection: {
-    textAlign: 'center' as const,
-    margin: '32px 0',
-  },
-  button: {
-    backgroundColor: '#000000',
-    color: '#ffffff',
-    padding: '12px 24px',
-    borderRadius: '4px',
-    textDecoration: 'none',
-    display: 'inline-block',
-    fontSize: '16px',
-    fontWeight: '500',
-  },
-  divider: {
-    borderTop: '1px solid #eaeaea',
-    margin: '32px 0',
-  },
-  footer: {
-    fontSize: '14px',
-    color: '#666666',
-    margin: '0',
-    textAlign: 'center' as const,
-  },
-  link: {
-    color: '#000000',
-    textDecoration: 'none',
-    borderBottom: '1px solid #dddddd',
-  },
-}; 

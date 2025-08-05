@@ -33,113 +33,48 @@ export function FormSubmissionEmail({
       trackingPixelUrl={trackingPixelUrl}
       clickTrackingUrl={clickTrackingUrl}
     >
-      <Heading style={{ textAlign: 'center', marginBottom: '24px' }}>
+      <Heading>
         {heading}
       </Heading>
       
-      <Text style={{ textAlign: 'center', marginBottom: '16px' }}>
+      <Text>
         {message}
       </Text>
       
-      <Hr style={{ margin: '20px 0' }} />
+      <Hr />
       
-      <Text style={{ 
-        textAlign: 'center', 
-        marginBottom: '16px',
-        fontSize: '16px',
-        fontWeight: '500'
-      }}>
-        Submission details:
+      <Text>
+        Submission Details
       </Text>
       
-      <Section style={{ 
-        background: '#f8fafc', 
-        padding: '20px', 
-        borderRadius: '8px',
-        margin: '20px 0',
-        textAlign: 'center' as const
-      }}>
+      <Section>
         {Object.entries(submissionData)
           // Filter out internal fields that start with underscore
           .filter(([key]) => !key.startsWith('_'))
           .map(([key, value]) => (
-            <div key={key} style={{ 
-              marginBottom: '12px',
-              textAlign: 'center' as const
-            }}>
-              <Text style={{ 
-                fontSize: '14px',
-                color: '#666666',
-                margin: '0 0 4px 0',
-                textTransform: 'capitalize' as const
-              }}>
-                {key}
-              </Text>
-              <Text style={{ 
-                fontSize: '16px',
-                color: '#000000',
-                margin: 0
-              }}>
-                {String(value)}
+            <div key={key}>
+              <Text style={{ textTransform: 'capitalize' as const }}>
+                <strong>{key}:</strong> {String(value)}
               </Text>
             </div>
           ))}
       </Section>
       
-      {/* Form type-specific extra content */}
       {formType === FormType.ORDER && (
-        <Section style={{ 
-          textAlign: 'center', 
-          margin: '20px 0',
-          padding: '15px', 
-          borderRadius: '8px',
-          backgroundColor: '#f0f9ff' 
-        }}>
-          <Text style={{ 
-            fontSize: '15px',
-            fontWeight: '500',
-            color: '#0369a1'
-          }}>
-            Thank you for your order! We&apos;re processing it now.
-          </Text>
-        </Section>
+        <Text>
+          Thank you for your order! We&apos;re processing it now.
+        </Text>
       )}
       
       {formType === FormType.RSVP && (
-        <Section style={{ 
-          textAlign: 'center', 
-          margin: '20px 0',
-          padding: '15px', 
-          borderRadius: '8px',
-          backgroundColor: '#f0f9ff' 
-        }}>
-          <Text style={{ 
-            fontSize: '15px',
-            fontWeight: '500',
-            color: '#0369a1'
-          }}>
-            Your RSVP has been confirmed. We look forward to seeing you!
-          </Text>
-        </Section>
+        <Text>
+          Your RSVP has been confirmed. We look forward to seeing you!
+        </Text>
       )}
       
-      <Section style={{ textAlign: 'center', margin: '32px 0' }}>
-        <Button
-          href={clickTrackingUrl ? `${clickTrackingUrl}&url=https://mantlz.com` : "https://mantlz.com"}
-          style={{
-            backgroundColor: '#000000',
-            color: '#ffffff',
-            padding: '12px 24px',
-            borderRadius: '4px',
-            textDecoration: 'none',
-            display: 'inline-block',
-            fontSize: '16px',
-            fontWeight: '500',
-          }}
-        >
-          Visit Mantlz
-        </Button>
-      </Section>
+      <Button href={clickTrackingUrl ? `${clickTrackingUrl}&url=https://mantlz.com` : "https://mantlz.com"}>
+        Visit Mantlz
+      </Button>
     </BrandedEmailTemplate>
   );
 }
@@ -201,4 +136,4 @@ function getFormTypeSpecificContent(formType: FormType, formName: string) {
         message: `Thank you for submitting "${formName}". We've received your information.`
       };
   }
-} 
+}

@@ -6,7 +6,7 @@ export default function CustomerFeedbackPage() {
     <div className="min-h-screen w-full  flex items-center justify-center py-8 px-4">
       <div className="flex flex-row items-center justify-center gap-4 flex-wrap">
         <Mantlz
-          formId="cmcguvavf0014o7hnxi9kwweg"
+          formId="cmdxrin7m000do7l4dhg739a5"
           theme="neobrutalism"
           showUsersJoined={true}
           usersJoinedCount={100000}
