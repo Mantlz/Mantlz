@@ -425,7 +425,7 @@ export default function BillingSettings() {
               </CardHeader>
               <CardContent className="px-5 pb-4">
                 {isLoadingInvoices ? (
-                  <div className="flex items-center justify-center py-4">
+                  <div className="flex items-center justify-center py-2">
                     <Loader2 className="h-4 w-4 text-zinc-400 animate-spin" />
                     <span className="ml-2 text-sm text-zinc-600 dark:text-zinc-400">Loading invoices...</span>
                   </div>
@@ -476,7 +476,7 @@ export default function BillingSettings() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-4 text-sm text-zinc-600 dark:text-zinc-400">
+                  <div className="text-center py-2 text-sm text-zinc-600 dark:text-zinc-400">
                     No invoices found
                   </div>
                 )}

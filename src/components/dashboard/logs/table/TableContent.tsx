@@ -339,27 +339,27 @@ export function TableContent({
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent border-b border-zinc-200 dark:border-zinc-800">
-                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
+                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
                   <span className="hidden sm:inline">Submission ID</span>
                   <span className="sm:hidden">ID</span>
                 </TableHead>
-                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">Email</TableHead>
-                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
+                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">Email</TableHead>
+                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
                   <div className="flex items-center">
                     <span>Status</span>
                   </div>
                 </TableHead>
                 {isPremium && (
-                  <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4 hidden md:table-cell">
+                  <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2 hidden md:table-cell">
                     <div className="flex items-center">
                       <span>Analytics</span>
                     </div>
                   </TableHead>
                 )}
-                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
+                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
                   Submitted
                 </TableHead>
-                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4 text-right">
+                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2 text-right">
                   Actions
                 </TableHead>
               </TableRow>
@@ -370,13 +370,13 @@ export function TableContent({
                   key={submission.id}
                   className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 last:border-0"
                 >
-                  <TableCell className="py-3 sm:py-4">
+                  <TableCell className="py-3 sm:py-2">
                     <div className="flex items-center gap-2">
                       <div className="w-1.5 h-1.5 rounded-lg bg-zinc-300 dark:bg-zinc-600"></div>
                       <span className="font-mono text-xs text-gray-600 dark:text-zinc-300">{submission.id.slice(0, 8)}...</span>
                     </div>
                   </TableCell>
-                  <TableCell className="py-3 sm:py-4">
+                  <TableCell className="py-3 sm:py-2">
                     <div className="flex items-center gap-2">
                       <Mail className="h-3.5 w-3.5 text-gray-400" />
                       <span className="text-sm text-gray-600 dark:text-gray-300 truncate max-w-[150px] sm:max-w-[200px]">
@@ -384,13 +384,13 @@ export function TableContent({
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell className="py-3 sm:py-4">
+                  <TableCell className="py-3 sm:py-2">
                     <div className="flex flex-col gap-1">
                       <EmailStatusBadge submission={submission} isPremium={isPremium} />
                     </div>
                   </TableCell>
                   {isPremium && (
-                    <TableCell className="py-3 sm:py-4 hidden md:table-cell">
+                    <TableCell className="py-3 sm:py-2 hidden md:table-cell">
                       <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-2">
                           <Globe className="h-3.5 w-3.5 text-gray-400" />
@@ -407,7 +407,7 @@ export function TableContent({
                       </div>
                     </TableCell>
                   )}
-                  <TableCell className="py-3 sm:py-4">
+                  <TableCell className="py-3 sm:py-2">
                     <div className="flex items-center gap-2">
                       <CalendarIcon className="h-3.5 w-3.5 text-gray-400" />
                       <span className="text-xs text-gray-600 dark:text-gray-300">
@@ -415,7 +415,7 @@ export function TableContent({
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell className="py-3 sm:py-4 text-right">
+                  <TableCell className="py-3 sm:py-2 text-right">
                     <Button
                       variant="outline"
                       size="sm"
@@ -431,7 +431,7 @@ export function TableContent({
               
               {userPlan === 'FREE' && (freePlanLimitedCount > 0 || timeLimitedCount > 0) && (
                 <TableRow className="bg-zinc-50/50 dark:bg-zinc-800/20 border-b border-zinc-200 dark:border-zinc-800">
-                  <TableCell colSpan={5} className="py-4 text-center">
+                  <TableCell colSpan={5} className="py-2 text-center">
                     <div className="flex flex-col items-center justify-center gap-2">
                       <div className="flex items-center gap-2">
                         {timeLimitedCount > 0 ? (

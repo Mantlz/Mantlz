@@ -90,7 +90,7 @@ const mantlzPlans: Plan[] = [
 export default function PricingComparison() {
   return (
       <section className="py-16 md:py-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-4 lg:px-8">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Choose the plan that fits your needs</h1>
             <p className="mt-4 text-lg md:text-xl text-muted-foreground">Start for free, upgrade as you grow</p>

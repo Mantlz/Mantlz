@@ -50,7 +50,7 @@ export default function FormBuilderPage() {
       />
 
       {/* Main content */}
-      <div className="w-full max-w-5xl mx-auto px-6 py-8">
+      <div className="w-full max-w-5xl mx-auto px-4 py-8">
         <div className="mb-8 max-w-2xl">
           <h2 className="text-2xl font-semibold text-neutral-900 dark:text-white tracking-tight mb-3">
             Choose a template
@@ -164,7 +164,7 @@ export default function FormBuilderPage() {
           <div className="flex flex-col items-center justify-center py-16 text-center bg-background dark:bg-background rounded-lg border border-neutral-200 dark:border-zinc-800">
             <IconSearch className="h-12 w-12 text-neutral-300 dark:text-neutral-600 mb-4" />
             <h3 className="text-lg font-medium text-neutral-800 dark:text-neutral-200 mb-2">No matching templates</h3>
-            <p className="text-base text-neutral-500 dark:text-neutral-400 max-w-md px-6">Try adjusting your search or category filter</p>
+            <p className="text-base text-neutral-500 dark:text-neutral-400 max-w-md px-4">Try adjusting your search or category filter</p>
           </div>
         ) : (
           <>

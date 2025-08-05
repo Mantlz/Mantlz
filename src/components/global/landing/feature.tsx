@@ -5,7 +5,7 @@ import { Shield } from 'lucide-react'
 export default function FeaturesSection() {
     return (
         <section className="py-16 md:py-32 " id="features">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl px-4 sm:px-4 lg:px-8">
                 <div className="text-center mb-12 md:mb-16">
                     <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 leading-tight tracking-tight">Powerful form building features</h1>
                     <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">Everything you need to create, manage and analyze your forms</p>
@@ -48,7 +48,7 @@ export default function FeaturesSection() {
                         </Card>
                         <Card className="group relative col-span-full overflow-hidden sm:col-span-3 rounded-2xl border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-none transition-all duration-300 hover:shadow-sm hover:border-primary/30 lg:col-span-2">
                             <CardContent className="pt-6">
-                                <div className="pt-6 lg:px-6">
+                                <div className="pt-6 lg:px-4">
                                     <svg
                                         className="dark:text-muted-foreground w-full m-2 h-[200px]"
                                         viewBox="0 0 386 200"

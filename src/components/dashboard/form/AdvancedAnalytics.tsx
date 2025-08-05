@@ -161,7 +161,7 @@ export function AdvancedAnalytics({
             <CardHeader className="pb-2 pt-4 px-4 sm:px-5 flex flex-row items-start justify-center content-center space-y-0">
             </CardHeader>
             <CardContent className="text-center px-4 sm:px-5 pb-4">
-              <div className="py-4 sm:py-5 flex flex-col items-center">
+              <div className="py-2 sm:py-5 flex flex-col items-center">
                 <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-accent/80 flex items-center justify-center mb-2 ">
                   <Lock className="h-5 w-5 text-white" />
                 </div>

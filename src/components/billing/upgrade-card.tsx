@@ -67,7 +67,7 @@ export function UpgradeCard() {
           </div>
         </CardContent>
         
-        <CardFooter className="px-6 pb-2">
+        <CardFooter className="px-4 pb-2">
           <div className="w-full h-8 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse" />
         </CardFooter>
       </Card>
@@ -144,7 +144,7 @@ export function UpgradeCard() {
         </div>
       </CardContent>
       
-      <CardFooter className="px-6 pb-2">
+      <CardFooter className="px-4 pb-2">
         <Button 
           className="w-full h-8 bg-zinc-300 hover:bg-amber-600 dark:bg-zinc-600 dark:hover:bg-amber-600"
           onClick={() => router.push("/pricing")}

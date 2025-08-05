@@ -325,7 +325,7 @@ export function BrowserAndLocationStats({
         <Card
           className={` border shadow-none border-zinc-200 dark:border-zinc-800 rounded-xl lg:col-span-3 overflow-hidden transition-all duration-300 hover:shadow-sm  ${mobileView !== "map" ? "hidden lg:block" : ""}`}
         >
-          <CardHeader className="pb-3 px-6 pt-5">
+          <CardHeader className="pb-3 px-4 pt-5">
             <div className="flex justify-between items-center w-full">
               <CardTitleWithIcon
                 icon={MapPin}
@@ -349,7 +349,7 @@ export function BrowserAndLocationStats({
             )}
           </CardHeader>
 
-          <CardContent className="px-6 pb-6 pt-2 relative">
+          <CardContent className="px-4 pb-6 pt-2 relative">
             {locations.length > 0 ? (
               <div className="relative">
                 <div className="flex flex-col lg:flex-row gap-5">
@@ -556,7 +556,7 @@ export function BrowserAndLocationStats({
         <Card
           className={`shadow-none  border border-zinc-200 dark:border-zinc-800 rounded-xl lg:col-span-2 transition-all duration-300 hover:shadow-sm ${mobileView !== "list" ? "hidden lg:block" : ""}`}
         >
-          <CardHeader className="pb-3 px-6 pt-5">
+          <CardHeader className="pb-3 px-4 pt-5">
             <div className="flex justify-between items-center w-full">
               <CardTitleWithIcon icon={Globe} title="Browsers" />
               {maxBrowsersPages > 1 && (
@@ -594,7 +594,7 @@ export function BrowserAndLocationStats({
             )}
           </CardHeader>
 
-          <CardContent className="px-6 pb-6 pt-2 relative">
+          <CardContent className="px-4 pb-6 pt-2 relative">
             {browsers.length > 0 ? (
               <div>
                 {/* Progress bar with all browsers */}

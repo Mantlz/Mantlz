@@ -196,7 +196,7 @@ function PricingContent({
 
   return (
       <section className="py-12 sm:py-16 md:py-20 lg:py-32 bg-gradient-to-b from-background via-background/50 to-background" id="pricing">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-4 lg:px-8">
           <div className="text-center mb-12 sm:mb-16 md:mb-20">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
               <span className="text-sm font-medium text-primary">Pricing Plans</span>
@@ -259,7 +259,7 @@ function PricingContent({
                       <Button
                         onClick={() => handleCheckout(plan)}
                         disabled={processingPlan === plan.title || isCurrentUserPlan(plan.title)}
-                        className={`w-full py-4 text-sm sm:text-base font-semibold transition-all duration-300 rounded-xl ${plan.isPopular ? 'bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground shadow-lg hover:shadow-xl hover:scale-[1.02]' : 'bg-background border-2 border-border hover:border-primary/50 text-foreground hover:bg-primary/5 hover:scale-[1.02]'}`}
+                        className={`w-full py-2 text-sm sm:text-base font-semibold transition-all duration-300 rounded-xl ${plan.isPopular ? 'bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground shadow-lg hover:shadow-xl hover:scale-[1.02]' : 'bg-background border-2 border-border hover:border-primary/50 text-foreground hover:bg-primary/5 hover:scale-[1.02]'}`}
                         variant={plan.isPopular ? "default" : "outline"}
                         size="lg"
                       >

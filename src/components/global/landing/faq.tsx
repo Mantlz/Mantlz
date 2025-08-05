@@ -39,7 +39,7 @@ export default function Faq() {
 
     return (
         <section className="py-16 md:py-24 bg-gradient-to-br from-background via-background to-muted/20">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl px-4 sm:px-4 lg:px-8">
                 <div className="mx-auto max-w-2xl text-center">
                     <h2 className="text-balance text-3xl font-bold md:text-4xl lg:text-5xl bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">Frequently Asked Questions</h2>
                     <p className="text-muted-foreground mt-4 text-balance text-lg">Discover quick and comprehensive answers to common questions about our platform, services, and features.</p>

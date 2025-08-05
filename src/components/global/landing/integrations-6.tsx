@@ -7,9 +7,9 @@ export default function IntegrationsSection() {
     return (
         <section>
             <div className=" py-24 md:py-32">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-7xl px-4 sm:px-4 lg:px-8">
                     <div className="mx-auto max-w-md [mask-image:radial-gradient(ellipse_100%_100%_at_50%_0%,#000_70%,transparent_100%)]">
-                        <div className="bg-background dark:bg-muted/30 rounded-xl border dark:border-background px-6 pb-12 pt-3 shadow-2xl">
+                        <div className="bg-background dark:bg-muted/30 rounded-xl border dark:border-background px-4 pb-12 pt-3 shadow-2xl">
                             <Integration
                                 icon={<Slack />}
                                 name="Slack"

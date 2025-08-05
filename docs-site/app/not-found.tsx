@@ -10,7 +10,7 @@ export default function NotFound() {
       </div>
 
       <Link href="/" className={buttonVariants({
-        className: "px-6",
+        className: "px-4",
         size: "lg"
       })}>
         Back to homepage

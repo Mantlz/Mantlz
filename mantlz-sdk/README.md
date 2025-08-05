@@ -123,7 +123,7 @@ export default function CustomForm() {
           title: 'text-3xl font-bold text-gray-900 mb-6',
           description: 'text-gray-600 mb-8',
           input: 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent',
-          button: 'w-full bg-indigo-600 text-white py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors font-semibold',
+          button: 'w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 transition-colors font-semibold',
         }
       }}
     />

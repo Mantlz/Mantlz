@@ -80,12 +80,13 @@ export function DeleteForm({ formId, isOpen, onClose, onOpen }: DeleteFormProps)
                 <li>Email logs and analytics</li>
                 <li>All associated notifications</li>
               </ul>
-              <button 
+              <Button 
                 onClick={onOpen}
-                className="inline-flex items-center px-4 py-2.5 bg-white dark:bg-zinc-900 border border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 text-sm font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+                variant="outline"
+                className="inline-flex items-center px-4 py-2.5  bg-white dark:bg-zinc-900 border border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 text-sm font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
               >
                 Delete Everything
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -138,7 +139,7 @@ export function DeleteForm({ formId, isOpen, onClose, onOpen }: DeleteFormProps)
               <Button
                 variant="outline"
                 onClick={handleClose}
-                className="flex-1 py-2.5 font-medium border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+                className="flex-1 py-2.5 font-medium border-zinc-300 dark:border-zinc-600 hover:bg-amber-500 dark:hover:text-white dark:hover:bg-amber-500"
               >
                 Cancel
               </Button>
@@ -146,7 +147,7 @@ export function DeleteForm({ formId, isOpen, onClose, onOpen }: DeleteFormProps)
                 variant="destructive"
                 onClick={handleDelete}
                 disabled={deleteConfirmation !== 'delete' || isDeleting}
-                className="flex-1 py-2.5 font-medium bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 py-2.5  cursor-pointer font-medium bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isDeleting ? (
                   <div className="flex items-center gap-2">

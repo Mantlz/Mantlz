@@ -114,7 +114,7 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
                 <SidebarContent>
                   <SidebarGroup>
                     <SidebarGroupContent>
-                      <div className="px-6 py-6">
+                      <div className="px-4 py-6">
                         <h2 className="text-lg font-bold tracking-wide text-zinc-900 dark:text-white">
                           Settings
                         </h2>

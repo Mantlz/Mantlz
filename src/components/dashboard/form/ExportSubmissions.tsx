@@ -157,7 +157,7 @@ export function ExportSubmissions({ formId }: ExportSubmissionsProps) {
               disabled={isExporting}
               className={cn(
                 "text-sm sm:text-base lg:text-lg",
-                "px-4 py-2 sm:px-6 sm:py-2.5 lg:px-8 lg:py-3",
+                "px-4 py-2 sm:px-4 sm:py-2.5 lg:px-8 lg:py-3",
                 "bg-zinc-900 dark:bg-white",
                 "cursor-pointer",
                 "text-white dark:text-gray-900",

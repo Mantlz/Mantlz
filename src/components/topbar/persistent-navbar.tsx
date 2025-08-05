@@ -312,7 +312,7 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 right-0 z-50  flex h-16 items-center justify-between backdrop-blur-sm border-b px-3 sm:px-4 md:px-6 lg:px-8 text-foreground transition-all duration-300",
+        "fixed top-0 left-0 right-0 z-50  flex h-16 items-center justify-between backdrop-blur-sm border-b px-3 sm:px-4 md:px-4 lg:px-8 text-foreground transition-all duration-300",
         scrolled
           ? "bg-background border-border/70 "
           : "bg-background border-border/50"

@@ -6,11 +6,11 @@ export default function CustomerFeedbackPage() {
     <div className="min-h-screen w-full  flex items-center justify-center py-8 px-4">
       <div className="flex flex-row items-center justify-center gap-4 flex-wrap">
         <Mantlz
-          formId="cmdxtlwb7001eo7l4y4sxd30j"
+          formId="cmdyomlt20001o7ai6ttgrhw9"
           theme="neobrutalism"
-          showUsersJoined={true}
-          usersJoinedCount={100000}
-          usersJoinedLabel="Users already joined"
+          // showUsersJoined={true}
+          // usersJoinedCount={100000}
+          // usersJoinedLabel="Users already joined"
          // redirectUrl="https://example.com"
           appearance={{
             baseTheme: "light",
@@ -37,7 +37,7 @@ export default function CustomerFeedbackPage() {
               formInput:
                 "border-purple-300 focus:border-purple-500 focus:ring-purple-500 focus:ring-2 rounded-xl transition-all duration-200 bg-white/80 backdrop-blur-sm",
               formButton:
-                "bg-gradient-to-r from-purple-500 via-violet-500 to-purple-600 hover:from-purple-600 hover:via-violet-600 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-purple-500/25",
+                "bg-gradient-to-r from-purple-500 via-violet-500 to-purple-600 hover:from-purple-600 hover:via-violet-600 hover:to-purple-700 text-white font-bold py-2 px-8 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-purple-500/25",
               usersJoined:
                 "text-purple-700 font-bold bg-gradient-to-r from-purple-500 to-violet-900 px-2 py-1 rounded-lg inline-block shadow-sm border border-purple-200",
             },

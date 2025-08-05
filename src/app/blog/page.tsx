@@ -47,7 +47,7 @@ export default async function BlogPage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-4 lg:px-8 py-16">
         <div className="text-center space-y-4 relative mb-16">
           <div className="absolute inset-0 -z-10 -top-10 -bottom-20 -left-10 -right-10 bg-gradient-to-r from-gray-100 via-gray-50 to-gray-100 dark:from-zinc-900/50 dark:via-black/30 dark:to-zinc-900/50 rounded-3xl blur-3xl opacity-70"></div>
           <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-gray-900 to-black bg-clip-text text-transparent dark:from-white dark:to-gray-100">

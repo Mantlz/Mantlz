@@ -4,7 +4,7 @@ import { Smartphone, Laptop } from 'lucide-react'
 export default function CustomizeFormSection() {
     return (
         <section className="py-16 md:py-32 ">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl px-4 sm:px-4 lg:px-8">
                 <div className="text-center mb-12 md:mb-16">
                     <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 leading-tight tracking-tight">Customise forms to your needs</h1>
                     <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">Easily design and personalise forms to fit your brand&lsquo;s identity and look great on any device.</p>

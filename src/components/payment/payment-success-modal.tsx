@@ -106,7 +106,7 @@ export function PaymentSuccessModal() {
               <div className="flex justify-center w-full">
                 <Button 
                   onClick={handleClose}
-                  className="bg-slate-800 hover:bg-slate-700 dark:bg-zinc-950 dark:hover:bg-zinc-700 text-white transition-colors font-medium text-sm cursor-pointer px-6"
+                  className="bg-slate-800 hover:bg-slate-700 dark:bg-zinc-950 dark:hover:bg-zinc-700 text-white transition-colors font-medium text-sm cursor-pointer px-4"
                 >
                   Continue to Dashboard
                 </Button>

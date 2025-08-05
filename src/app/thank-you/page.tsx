@@ -11,7 +11,7 @@ export default function ThankYouPage() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="max-w-md w-full mx-auto py-12 sm:py-16 px-6 sm:px-10 text-center"
+        className="max-w-md w-full mx-auto py-12 sm:py-16 px-4 sm:px-10 text-center"
       >
         {/* Success Icon */}
         <motion.div

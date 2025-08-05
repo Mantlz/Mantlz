@@ -31,23 +31,23 @@ export function SubmissionTableSkeleton({ isPremium }: { isPremium: boolean }) {
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent border-b border-zinc-200 dark:border-zinc-800/50">
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
+              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
                 <span className="hidden sm:inline">Submission ID</span>
                 <span className="sm:hidden">ID</span>
               </TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">Email</TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
+              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">Email</TableHead>
+              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
                 Status
               </TableHead>
               {isPremium && (
-                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4 hidden md:table-cell">
+                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2 hidden md:table-cell">
                   Analytics
                 </TableHead>
               )}
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
+              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
                 Submitted
               </TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4 text-right">
+              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2 text-right">
                 Actions
               </TableHead>
             </TableRow>

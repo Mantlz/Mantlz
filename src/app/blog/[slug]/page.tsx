@@ -126,11 +126,11 @@ export default async function BlogPost({ params }: Props) {
   return (
     <div className="bg-white dark:bg-zinc-950 min-h-screen transition-colors duration-300">
       <Suspense>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-4 lg:px-8 py-20">
           <nav className="mb-16">
             <Link 
               href="/blog" 
-              className="inline-flex items-center text-sm font-medium bg-gray-50 hover:bg-gray-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 px-6 py-3 rounded-lg text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-zinc-800 transition-all duration-200 hover:shadow-md"
+              className="inline-flex items-center text-sm font-medium bg-gray-50 hover:bg-gray-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 px-4 py-3 rounded-lg text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-zinc-800 transition-all duration-200 hover:shadow-md"
             >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

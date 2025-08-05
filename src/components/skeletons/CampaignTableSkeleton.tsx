@@ -23,22 +23,22 @@ export function CampaignTableSkeleton() {
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent border-b border-zinc-200 dark:border-zinc-800">
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
+              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
                 Campaign Name
               </TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
+              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
                 Status
               </TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
+              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
                 Created
               </TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
+              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
                 Schedule/Sent Date
               </TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4">
+              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
                 Recipients
               </TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-4 text-right">
+              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2 text-right">
                 Actions
               </TableHead>
             </TableRow>
@@ -49,7 +49,7 @@ export function CampaignTableSkeleton() {
                 key={index} 
                 className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 last:border-0"
               >
-                <TableCell className="py-3 sm:py-4">
+                <TableCell className="py-3 sm:py-2">
                   <div className="flex items-center gap-2">
                     <div className="bg-zinc-50 dark:bg-zinc-900/20 p-2 rounded-md">
                       <Mail className="h-4 w-4 text-zinc-400 dark:text-zinc-600" />
@@ -60,28 +60,28 @@ export function CampaignTableSkeleton() {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="py-3 sm:py-4">
+                <TableCell className="py-3 sm:py-2">
                   <Skeleton className="h-6 w-20 rounded-full" />
                 </TableCell>
-                <TableCell className="py-3 sm:py-4">
+                <TableCell className="py-3 sm:py-2">
                   <div className="flex items-center gap-2">
                     <CalendarIcon className="h-3.5 w-3.5 text-gray-400" />
                     <Skeleton className="h-3 w-24" />
                   </div>
                 </TableCell>
-                <TableCell className="py-3 sm:py-4">
+                <TableCell className="py-3 sm:py-2">
                   <div className="flex items-center gap-2">
                     <CalendarIcon className="h-3.5 w-3.5 text-gray-400" />
                     <Skeleton className="h-3 w-24" />
                   </div>
                 </TableCell>
-                <TableCell className="py-3 sm:py-4">
+                <TableCell className="py-3 sm:py-2">
                   <div className="flex items-center gap-2">
                     <Mail className="h-3.5 w-3.5 text-gray-400" />
                     <Skeleton className="h-3 w-8" />
                   </div>
                 </TableCell>
-                <TableCell className="py-3 sm:py-4 text-right">
+                <TableCell className="py-3 sm:py-2 text-right">
                   <div className="flex justify-end items-center gap-2">
                     <Skeleton className="h-7 w-20" />
                     <Skeleton className="h-7 w-20" />

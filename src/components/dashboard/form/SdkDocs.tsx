@@ -29,20 +29,20 @@ export default function RootLayout({ children }) {
   );
 }`
 
-  const usageCode = `import { Mantlz } from '@mantlz/nextjs'; // Or FeedbackForm, WaitlistForm
+  const usageCode = `import { Mantlz } from '@mantlz/nextjs';
 
 export default function MyContactPage() {
   return (
     <Mantlz
-      formId={'${formId}'} // Your unique form ID
+      formId={'${formId}'}
     />
   );
 }`
 
   return (
-    <div className="w-full mx-auto bg-background dark:bg-background rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden">
+    <div className="w-full mx-auto bg-background dark:bg-background overflow-hidden">
       {/* Header */}
-      <div className="bg-background dark:bg-background border-b border-zinc-200 dark:border-zinc-800 px-6 py-4">
+      <div className="bg-background dark:bg-background border-b border-zinc-200 dark:border-zinc-800 px-4 py-2">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary/90 rounded-lg flex items-center justify-center">
             <BookOpen className="w-5 h-5 text-primary-foreground" />
@@ -55,7 +55,7 @@ export default function MyContactPage() {
       </div>
 
       {/* Content */}
-      <div className="px-6 py-6">
+      <div className="px-4 py-6">
         <div className="space-y-6">
           {/* Progress indicator */}
           <div className="flex items-center gap-2 mb-6">
