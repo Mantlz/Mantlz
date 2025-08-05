@@ -2,10 +2,11 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { CheckCircle } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 export default function ThankYouPage() {
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-950 flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen bg-background dark:bg-background flex flex-col items-center justify-center px-4">
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -33,12 +34,12 @@ export default function ThankYouPage() {
           </p>
 
           <div className="mt-6 sm:mt-8">
-            <Link
-              href="/"
-              className="inline-flex items-center justify-center rounded-lg px-5 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-white bg-zinc-800 hover:bg-zinc-700 dark:bg-zinc-200 dark:text-zinc-900 dark:hover:bg-zinc-300 transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-900"
-            >
+            <Button 
+              className="h-10 px-4 text-md bg-amber-500 text-black dark:text-white dark:border-background border text-sm shadow-sm shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95" 
+              size="lg" 
+            > 
               Return to website
-            </Link>
+            </Button>
           </div>
         </motion.div>
 
@@ -51,7 +52,7 @@ export default function ThankYouPage() {
         >
           <a href="https://mantlz.com" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center">
             <span className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mb-2">
-              Powered by <span className="text-zinc-950 dark:text-blue-400 font-bold">Mantlz</span>
+              Powered by <span className="text-amber-500 font-extrabold">Mantlz</span>
             </span>
           </a>
         </motion.div>
