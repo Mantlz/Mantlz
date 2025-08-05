@@ -41,54 +41,63 @@ export function BrandedEmailTemplate({
               padding: 0;
               width: 100% !important;
               -webkit-font-smoothing: antialiased;
-              background-color: #ffffff;
+              background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             }
             h1, h2, h3, h4, h5, h6 {
-              color: #1f2937;
+              color: #0f172a;
               font-weight: 600;
-              line-height: 1.3;
-              margin: 0 0 16px 0;
+              line-height: 1.4;
+              margin: 0 0 20px 0;
+              letter-spacing: -0.025em;
             }
-            h1 { font-size: 28px; }
-            h2 { font-size: 24px; }
-            h3 { font-size: 20px; }
+            h1 { font-size: 32px; font-weight: 700; }
+            h2 { font-size: 26px; }
+            h3 { font-size: 22px; }
             p {
-              color: #374151;
+              color: #475569;
               font-size: 16px;
-              line-height: 1.6;
-              margin: 0 0 16px 0;
+              line-height: 1.7;
+              margin: 0 0 18px 0;
             }
             a {
-              color: #1f2937;
+              color: #3b82f6;
               text-decoration: none;
+              transition: color 0.2s ease;
             }
             a:hover {
+              color: #1d4ed8;
               text-decoration: underline;
             }
             .button {
               display: inline-block;
-              padding: 12px 24px;
-              background-color: #1f2937;
+              padding: 14px 28px;
+              background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
               color: #ffffff !important;
               text-decoration: none;
-              border-radius: 6px;
-              font-weight: 500;
+              border-radius: 8px;
+              font-weight: 600;
               font-size: 16px;
-              margin: 16px 0;
+              margin: 20px 0;
+              box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+              transition: all 0.2s ease;
             }
             .button:hover {
-              background-color: #374151;
+              background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+              box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
               text-decoration: none;
+              transform: translateY(-1px);
             }
             @media only screen and (max-width: 600px) {
               .container {
                 width: 100% !important;
-                padding: 10px !important;
+                padding: 16px !important;
+                margin: 16px !important;
               }
-              h1 { font-size: 24px; }
-              h2 { font-size: 20px; }
-              h3 { font-size: 18px; }
+              h1 { font-size: 28px; }
+              h2 { font-size: 22px; }
+              h3 { font-size: 20px; }
               p { font-size: 15px; }
+              .button { padding: 12px 24px; font-size: 15px; }
             }
           `}
         </style>
@@ -154,7 +163,7 @@ export function BrandedEmailTemplate({
 // Simple Clean Styles
 const styles = {
   body: {
-    backgroundColor: '#ffffff',
+    background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     padding: '40px 20px',
     margin: 0,
@@ -163,50 +172,47 @@ const styles = {
     maxWidth: '600px',
     margin: '0 auto',
     backgroundColor: '#ffffff',
-    borderRadius: '8px',
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+    borderRadius: '16px',
+    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04)',
     overflow: 'hidden',
+    border: '1px solid rgba(226, 232, 240, 0.8)',
   },
   header: {
-    padding: '32px 40px 24px',
+    padding: '40px 40px 32px',
     textAlign: 'center' as const,
-    borderBottom: '1px solid #f1f3f4',
-    backgroundColor: '#ffffff',
+    borderBottom: '1px solid #e2e8f0',
+    background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
   },
   logo: {
     display: 'block',
-    margin: '0 auto 12px auto',
-  },
-  brandName: {
-    fontSize: '24px',
-    fontWeight: '700',
-    color: '#1a1a1a',
-    margin: '0',
-    letterSpacing: '-0.5px',
+    margin: '0 auto',
+    borderRadius: '12px',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
   },
   content: {
-    padding: '32px 40px',
-    lineHeight: '1.6',
-    color: '#374151',
+    padding: '40px 40px',
+    lineHeight: '1.7',
+    color: '#475569',
     backgroundColor: '#ffffff',
   },
   divider: {
-    borderTop: '1px solid #e5e7eb',
+    borderTop: '1px solid #e2e8f0',
     margin: '32px 0 24px 0',
   },
   footer: {
     textAlign: 'center' as const,
-    padding: '24px 40px 32px',
-    backgroundColor: '#ffffff',
+    padding: '32px 40px 40px',
+    background: '#ffffff',
+    borderTop: '1px solid #e2e8f0',
   },
   footerText: {
-    fontSize: '13px',
-    color: '#6b7280',
-    margin: '6px 0',
-    lineHeight: '1.5',
+    fontSize: '14px',
+    color: '#64748b',
+    margin: '8px 0',
+    lineHeight: '1.6',
   },
   link: {
-    color: '#374151',
+    color: '#3b82f6',
     textDecoration: 'none',
   },
 };
