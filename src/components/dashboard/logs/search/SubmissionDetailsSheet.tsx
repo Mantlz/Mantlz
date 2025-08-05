@@ -212,7 +212,7 @@ export function SubmissionDetailsSheet({
                   </div>
                   <div className="space-y-3">
                     {/* User Email Status */}
-                    <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900">
+                    <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-background dark:bg-background">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
                           <Mail className="h-3.5 w-3.5 text-zinc-600" />
@@ -241,7 +241,7 @@ export function SubmissionDetailsSheet({
                     </div>
                     
                     {/* Developer Email Status */}
-                    <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900">
+                    <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-background dark:bg-background">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
                           <Bell className="h-3.5 w-3.5 text-zinc-600" />
@@ -286,9 +286,9 @@ export function SubmissionDetailsSheet({
                       .filter(([key]) => key !== '_meta')
                       .map(([key, value]) => (
                       <div
-                        key={key}
-                        className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900"
-                      >
+                          key={key}
+                          className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-background dark:bg-background"
+                        >
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
                             {typeof value === 'string' && isFileUrl(value) ? (
@@ -354,7 +354,7 @@ export function SubmissionDetailsSheet({
                     </p>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                    <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900">
+                    <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-background dark:bg-background">
                       <div className="flex items-center gap-2 mb-2">
                         <Globe className="h-3.5 w-3.5 text-zinc-600" />
                         <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300">Browser</p>
@@ -363,7 +363,7 @@ export function SubmissionDetailsSheet({
                         {(submission.data as SubmissionData)._meta?.browser || 'Unknown'}
                       </p>
                     </div>
-                    <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-white dark:bg-zinc-900">
+                    <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-xl bg-background dark:bg-background">
                       <div className="flex items-center gap-2 mb-2">
                         <MapPin className="h-3.5 w-3.5 text-zinc-600" />
                         <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300">Location</p>
@@ -381,4 +381,4 @@ export function SubmissionDetailsSheet({
       </SheetContent>
     </Sheet>
   )
-} 
+}

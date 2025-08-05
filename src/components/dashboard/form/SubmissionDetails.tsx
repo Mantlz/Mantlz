@@ -143,80 +143,82 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
   return (
     <>
       <div className="flex flex-col h-full">
-        {/* Header Section */}
-        <div className="bg-gradient-to-br from-zinc-50 to-white dark:from-zinc-900 dark:to-zinc-800 p-4 sm:p-6 border-b border-zinc-200 dark:border-zinc-800">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="space-y-2">
-              <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 tracking-tight flex flex-wrap items-center gap-2">
-                <span>Submission Details</span>
-                <Badge
-                  variant="secondary"
-                  className="text-[10px] bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300"
-                >
-                  ID: {submission.id.slice(0, 8)}...
-                </Badge>
-              </h2>
-              <div className="flex items-center text-sm text-zinc-600 dark:text-zinc-400">
-                <Calendar className="h-3.5 w-3.5 mr-1.5 text-zinc-600" />
-                <span>Received {formatDistanceToNow(new Date(submission.submittedAt), { addSuffix: true })}</span>
+        {/* Content section */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-background dark:bg-background">
+          <div className="space-y-6">
+            {/* Header section with gradient background */}
+            <div className="bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 p-3 sm:p-6 border border-zinc-200 dark:border-zinc-800/50 rounded-lg">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="space-y-2">
+                  <h2 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white tracking-tight flex flex-wrap items-center gap-2">
+                    <span>Submission #{submission.id.slice(0, 8)}</span>
+                    
+                  </h2>
+                  <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-zinc-300">
+                    <Calendar className="h-3.5 w-3.5 mr-1.5 text-zinc-600" />
+                    <span>
+                      Received{" "}
+                      {formatDistanceToNow(new Date(submission.submittedAt), { addSuffix: true })}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 self-start sm:self-auto mt-2 sm:mt-0">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 text-xs bg-white cursor-pointer hover:bg-zinc-200 text-gray-600 dark:bg-zinc-950 dark:hover:bg-zinc-700 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                    onClick={() => copyToClipboard("id", submission.id)}
+                  >
+                    {copiedField === "id" ? (
+                      <CheckCheck className="h-3.5 w-3.5 mr-1.5 text-green-500" />
+                    ) : (
+                      <Copy className="h-3.5 w-3.5 mr-1.5" />
+                    )}
+                    <span className="text-xs">
+                      {copiedField === "id" ? "Copied!" : "Copy ID"}
+                    </span>
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="h-8 text-xs cursor-pointer bg-red-500 hover:bg-red-600 text-white dark:bg-red-600 dark:hover:bg-red-700 border border-red-600 dark:border-red-700 rounded-lg transition-all duration-200"
+                    onClick={handleDeleteClick}
+                    disabled={isDeleting}
+                  >
+                    {isDeleting ? (
+                      <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                    ) : (
+                      <Trash2 className="h-3.5 w-3.5 mr-1.5" />
+                    )}
+                    <span className="text-xs">{isDeleting ? "Deleting..." : "Delete"}</span>
+                  </Button>
+                </div>
               </div>
             </div>
-            <div className="flex items-center gap-2 self-start sm:self-auto mt-2 sm:mt-0">
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-8 text-xs bg-white cursor-pointer hover:bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
-                onClick={() => copyToClipboard("id", submission.id)}
-              >
-                {copiedField === "id" ? (
-                  <CheckCheck className="h-3.5 w-3.5 mr-1.5 text-green-500" />
-                ) : (
-                  <Copy className="h-3.5 w-3.5 mr-1.5" />
-                )}
-                <span className="text-xs">{copiedField === "id" ? "Copied!" : "Copy ID"}</span>
-              </Button>
-              <Button
-                variant="destructive"
-                size="sm"
-                className="h-8 text-xs cursor-pointer bg-red-500 hover:bg-red-600 text-white dark:bg-red-600 dark:hover:bg-red-700 border border-red-600 dark:border-red-700 rounded-lg transition-all duration-200"
-                onClick={handleDeleteClick}
-                disabled={isDeleting}
-              >
-                {isDeleting ? (
-                  <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
-                ) : (
-                  <Trash2 className="h-3.5 w-3.5 mr-1.5" />
-                )}
-                <span className="text-xs">{isDeleting ? "Deleting..." : "Delete"}</span>
-              </Button>
-            </div>
-          </div>
-        </div>
 
-        {/* Location information if available */}
-        {submission.location && (
-          <div className="p-4 sm:p-6 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50">
-            <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
-              <MapPin className="h-4 w-4 text-zinc-600" />
-              <span>
-                {submission.location.city && submission.location.country
-                  ? `${submission.location.city}, ${submission.location.country}`
-                  : submission.location.country || "Location recorded"}
-              </span>
-              <Badge variant="outline" className="ml-auto text-[10px] bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
-                Lat: {submission.location.lat.toFixed(4)}, Lng: {submission.location.lng.toFixed(4)}
-              </Badge>
-            </div>
-          </div>
-        )}
+            {/* Location information if available */}
+            {submission.location && (
+              <div className="p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-lg bg-background dark:bg-background">
+                <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
+                  <MapPin className="h-4 w-4 text-zinc-600" />
+                  <span>
+                    {submission.location.city && submission.location.country
+                      ? `${submission.location.city}, ${submission.location.country}`
+                      : submission.location.country || "Location recorded"}
+                  </span>
+                  <Badge variant="outline" className="ml-auto text-[10px] bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+                    Lat: {submission.location.lat.toFixed(4)}, Lng: {submission.location.lng.toFixed(4)}
+                  </Badge>
+                </div>
+              </div>
+            )}
 
-        {/* Content section */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-          <div className="space-y-6">
-            <div className="flex items-center mb-2">
-              <File className="h-3.5 w-3.5 mr-2 text-zinc-600" />
-              <h3 className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">Form Data</h3>
-            </div>
+            {/* Form Data Section */}
+            <div>
+              <div className="flex items-center mb-3">
+                <File className="h-3.5 w-3.5 mr-2 text-zinc-600" />
+                <h3 className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">Form Data</h3>
+              </div>
 
             <div className="grid gap-4">
               {Object.entries(submission.data)
@@ -224,7 +226,7 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
                 .map(([key, value]) => (
                   <div
                     key={key}
-                    className="group relative overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm transition-all duration-200 hover:shadow-md"
+                    className="group relative overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-background dark:bg-background transition-all duration-200 hover:shadow-md"
                   >
                     <div className="p-4">
                       <div className="flex items-center justify-between mb-3">
@@ -289,6 +291,7 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
                     </div>
                   </div>
                 ))}
+              </div>
             </div>
           </div>
         </div>
