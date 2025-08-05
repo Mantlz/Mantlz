@@ -146,7 +146,7 @@ export function TestEmailDialog({
       {isOpen && !showUpgradeModal && (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
           <DialogContent className="sm:max-w-[500px] bg-white dark:bg-background border-0 shadow-xl">
-            <DialogHeader className="p-6 pb-4 border-b border-gray-100 dark:border-gray-800">
+            <DialogHeader className="p-6 pb-4 border-b border-gray-100 dark:border-zinc-950/50">
               <div className="flex items-center gap-3 mb-2">
                 <DialogTitle className="text-xl font-semibold text-gray-900 dark:text-gray-100">
                   Send Test Email
@@ -159,7 +159,7 @@ export function TestEmailDialog({
 
             <div className="p-6 space-y-5">
               {/* Recipient Info */}
-              <div className="bg-gray-50 dark:bg-background/50 rounded-lg p-4 border border-gray-100 dark:border-gray-800">
+              <div className="bg-gray-50 dark:bg-background/10 rounded-lg p-4 border border-gray-100 dark:border-zinc-950/50">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="flex-shrink-0">
@@ -184,7 +184,7 @@ export function TestEmailDialog({
 
               {/* Status Messages */}
               {!isPaidUser && (
-                <div className="flex items-start gap-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 border border-gray-100 dark:border-gray-800">
+                <div className="flex items-start gap-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 border border-gray-100 dark:border-zinc-950/50">
                   <AlertCircle className="h-5 w-5 text-zinc-600 dark:text-zinc-300 flex-shrink-0" />
                   <div>
                     <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">
@@ -198,7 +198,7 @@ export function TestEmailDialog({
               )}
 
               {!isDraft && isPaidUser && (
-                <div className="flex items-start gap-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 border border-gray-100 dark:border-gray-800">
+                <div className="flex items-start gap-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 border border-gray-100 dark:border-zinc-950/50">
                   <AlertCircle className="h-5 w-5 text-zinc-600 dark:text-zinc-300 flex-shrink-0" />
                   <div>
                     <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">
@@ -212,7 +212,7 @@ export function TestEmailDialog({
               )}
             </div>
 
-            <div className="flex items-center justify-end gap-3 p-6 pt-2 border-t border-gray-100 dark:border-gray-800">
+            <div className="flex items-center justify-end gap-3 p-6 pt-2 border-t border-gray-100 dark:border-zinc-950/50">
               <Button
                 variant="outline"
                 onClick={onClose}
