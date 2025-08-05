@@ -353,7 +353,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
             {formsData.forms.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((form) => (
               <div
                 key={form.id}
-                className={` bg-white dark:bg-background border ${(form._count?.campaigns || 0) > 0 ? 'border-orange-100 dark:border-orange-800/30' : 'border-zinc-200 dark:border-zinc-800/50'} rounded-lg  hover:shadow-md transition-all duration-200 cursor-pointer`}
+                className={` bg-white dark:bg-background border ${(form._count?.campaigns || 0) > 0 ? 'border-amber-100 dark:border-amber-800/30' : 'border-zinc-200 dark:border-zinc-800/50'} rounded-lg  hover:shadow-md transition-all duration-200 cursor-pointer`}
                 onClick={() => handleFormClick(form.id)}
               >
                 {(() => {
@@ -376,15 +376,16 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                           </span>
                         </div>
                         <Button
-                          variant="ghost"
-                          size="sm"
-                          className={`h-7 px-2 text-xs ${(form._count?.campaigns || 0) > 0 
-                          ? 'bg-orange-50 hover:bg-orange-100 text-stone-800 dark:bg-background/50 dark:hover:bg-amber-700/30 dark:text-white' 
-
-                      : 'hover:bg-zinc-200 text-gray-600 dark:hover:bg-zinc-950 dark:text-gray-300'} rounded-lg`}
-                        >
-                          View Campaigns
-                        </Button>
+                        variant="default"
+                        size="sm"
+                        className={`h-7 px-2 text-xs ${
+                          (form._count?.campaigns || 0) > 0
+                            ? "bg-background hover:bg-background-100 text-stone-800 dark:bg-background-900/20 dark:hover:bg-amber-500 dark:text-white"
+                            : "hover:bg-zinc-200 text-gray-600 dark:hover:bg-amber-500 dark:text-gray-300"
+                        } rounded-lg`}
+                      >
+                        View Campaigns
+                      </Button>
                       </div>
                     </div>
                   );
@@ -397,7 +398,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
             {formsData.forms.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((form) => (
               <div
                 key={form.id}
-                className={` bg-white dark:bg-background border ${(form._count?.campaigns || 0) > 0 ? 'border-orange-100 dark:border-orange-500/30' : 'border-zinc-200 dark:border-zinc-800/50'} rounded-lg  hover:shadow-md transition-all duration-200 cursor-pointer`}
+                className={` bg-white dark:bg-background border ${(form._count?.campaigns || 0) > 0 ? 'border-amber-100 dark:border-amber-500/50' : 'border-zinc-200 dark:border-amber-500/50'} rounded-lg  hover:shadow-md transition-all duration-200 cursor-pointer`}
                 onClick={() => handleFormClick(form.id)}
               >
                 <div className="p-4 sm:p-5 flex items-center justify-between">
@@ -423,15 +424,16 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                     </div>
                   </div>
                   <Button
-                    variant="ghost"
-                    size="sm"
-                    className={`h-7 px-2 text-xs ${(form._count?.campaigns || 0) > 0 
-                      ? 'bg-orange-50 hover:bg-orange-100 text-stone-800 dark:bg-background/50 dark:hover:bg-amber-700/30 dark:text-white' 
-
-                      : 'hover:bg-zinc-200 text-gray-600 dark:hover:bg-zinc-950 dark:text-gray-300'} rounded-lg`}
-                  >
-                    View Campaigns
-                  </Button>
+                        variant="default"
+                        size="sm"
+                        className={`h-7 px-2 text-xs ${
+                          (form._count?.campaigns || 0) > 0
+                            ? "bg-background hover:bg-background-100 text-stone-800 dark:bg-background-900/20 dark:hover:bg-amber-500 dark:text-white"
+                            : "hover:bg-zinc-200 text-gray-600 dark:hover:bg-amber-500 dark:text-gray-300"
+                        } rounded-lg`}
+                      >
+                        View Campaigns
+                      </Button>
                 </div>
               </div>
             ))}
