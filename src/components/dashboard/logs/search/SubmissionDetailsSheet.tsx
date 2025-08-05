@@ -143,7 +143,7 @@ export function SubmissionDetailsSheet({
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetContent className="w-full max-w-md sm:max-w-lg p-0 overflow-y-auto">
         <div className="h-full flex flex-col">
-          <SheetHeader className="p-4 sm:p-6 border-b border-zinc-200 dark:border-zinc-800/50 sticky top-0 bg-white dark:bg-zinc-950 z-10">
+          <SheetHeader className="p-4 sm:p-6 border-b border-zinc-200 dark:border-zinc-800/50 sticky top-0 bg-background dark:bg-background z-10">
             <div className="flex items-center justify-between">
               <SheetTitle className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
                 Submission Details
@@ -155,9 +155,9 @@ export function SubmissionDetailsSheet({
           </SheetHeader>
 
           <ScrollArea className="h-[calc(100vh-120px)]"> 
-            <div className="p-4 sm:p-6 space-y-6">
+            <div className="p-2 sm:p-4 space-y-6">
               
-            <div className="bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 p-3 sm:p-6 border border-zinc-200 dark:border-zinc-800/50 rounded-lg">
+            <div className="bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 p-2 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-lg">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="space-y-2">
                     <h2 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white tracking-tight flex flex-wrap items-center gap-2">

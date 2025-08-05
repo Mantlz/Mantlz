@@ -147,7 +147,7 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-background dark:bg-background">
           <div className="space-y-6">
             {/* Header section with gradient background */}
-            <div className="bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 p-3 sm:p-6 border border-zinc-200 dark:border-zinc-800/50 rounded-lg">
+            <div className="bg-gradient-to-br from-gray-50 to-white dark:from-zinc-900 dark:to-zinc-800 p-2 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-lg">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="space-y-2">
                   <h2 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white tracking-tight flex flex-wrap items-center gap-2">
@@ -155,8 +155,8 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
                     
                   </h2>
                   <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-zinc-300">
-                    <Calendar className="h-3.5 w-3.5 mr-1.5 text-zinc-600" />
-                    <span>
+                    <Calendar className="h-3.5 w-3.5 mr-1.5  text-zinc-600 flex-shrink-0" />
+                    <span className="leading-none">
                       Received{" "}
                       {formatDistanceToNow(new Date(submission.submittedAt), { addSuffix: true })}
                     </span>

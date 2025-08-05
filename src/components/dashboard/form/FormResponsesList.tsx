@@ -312,7 +312,7 @@ export function FormResponsesList({
                     </SheetTrigger>
                     <SheetContent className="w-full max-w-md sm:max-w-lg p-0 overflow-y-auto">
                       <div className="h-full flex flex-col">
-                        <SheetHeader className="p-6 border-b border-zinc-200 dark:border-zinc-800 sticky top-0 bg-white dark:bg-zinc-950 z-10">
+                        <SheetHeader className="p-6 border-b border-zinc-200 dark:border-zinc-800 sticky top-0 bg-background dark:bg-background z-10">
                           <div className="flex items-center justify-between">
                             <SheetTitle className="text-base font-semibold text-zinc-900 dark:text-white">
                               Submission Details
