@@ -383,7 +383,7 @@ export function SearchDialog({
           
           <button 
             onClick={onClose}
-            className="ml-3 p-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-gray-400 dark:text-zinc-600 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            className="ml-3 p-1.5 rounded-lg hover:bg-amber-500 dark:hover:bg-amber-500 text-gray-400 dark:text-zinc-600 hover:text-white dark:hover:text-white transition-colors cursor-pointer"
           >
             <X className="h-4 w-4" />
           </button>
