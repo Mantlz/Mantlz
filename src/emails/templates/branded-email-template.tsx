@@ -41,12 +41,54 @@ export function BrandedEmailTemplate({
               padding: 0;
               width: 100% !important;
               -webkit-font-smoothing: antialiased;
+              background-color: #ffffff;
+            }
+            h1, h2, h3, h4, h5, h6 {
+              color: #1f2937;
+              font-weight: 600;
+              line-height: 1.3;
+              margin: 0 0 16px 0;
+            }
+            h1 { font-size: 28px; }
+            h2 { font-size: 24px; }
+            h3 { font-size: 20px; }
+            p {
+              color: #374151;
+              font-size: 16px;
+              line-height: 1.6;
+              margin: 0 0 16px 0;
+            }
+            a {
+              color: #1f2937;
+              text-decoration: none;
+            }
+            a:hover {
+              text-decoration: underline;
+            }
+            .button {
+              display: inline-block;
+              padding: 12px 24px;
+              background-color: #1f2937;
+              color: #ffffff !important;
+              text-decoration: none;
+              border-radius: 6px;
+              font-weight: 500;
+              font-size: 16px;
+              margin: 16px 0;
+            }
+            .button:hover {
+              background-color: #374151;
+              text-decoration: none;
             }
             @media only screen and (max-width: 600px) {
               .container {
                 width: 100% !important;
                 padding: 10px !important;
               }
+              h1 { font-size: 24px; }
+              h2 { font-size: 20px; }
+              h3 { font-size: 18px; }
+              p { font-size: 15px; }
             }
           `}
         </style>
@@ -54,7 +96,13 @@ export function BrandedEmailTemplate({
       <Body style={styles.body}>
         <Container style={styles.container}>
           <Section style={styles.header}>
-            <Text style={styles.brandName}>mantlz</Text>
+            <Img
+              src="https://ucarecdn.com/041a2a46-c97e-407a-a549-df40a13cac16/-/preview/500x500/"
+              alt="Manltz Logo"
+              width="48"
+              height="48"
+              style={styles.logo}
+            />
           </Section>
           
           <Section style={styles.content}>
@@ -108,44 +156,57 @@ const styles = {
   body: {
     backgroundColor: '#ffffff',
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    padding: '20px',
+    padding: '40px 20px',
     margin: 0,
   },
   container: {
     maxWidth: '600px',
     margin: '0 auto',
     backgroundColor: '#ffffff',
+    borderRadius: '8px',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+    overflow: 'hidden',
   },
   header: {
-    padding: '40px 0 20px',
+    padding: '32px 40px 24px',
     textAlign: 'center' as const,
+    borderBottom: '1px solid #f1f3f4',
+    backgroundColor: '#ffffff',
+  },
+  logo: {
+    display: 'block',
+    margin: '0 auto 12px auto',
   },
   brandName: {
-    fontSize: '20px',
-    fontWeight: '600',
-    color: '#000000',
+    fontSize: '24px',
+    fontWeight: '700',
+    color: '#1a1a1a',
     margin: '0',
+    letterSpacing: '-0.5px',
   },
   content: {
-    padding: '20px 0',
+    padding: '32px 40px',
     lineHeight: '1.6',
+    color: '#374151',
+    backgroundColor: '#ffffff',
   },
   divider: {
-    borderTop: '1px solid #e5e5e5',
-    margin: '30px 0 20px 0',
+    borderTop: '1px solid #e5e7eb',
+    margin: '32px 0 24px 0',
   },
   footer: {
     textAlign: 'center' as const,
-    paddingBottom: '20px',
+    padding: '24px 40px 32px',
+    backgroundColor: '#ffffff',
   },
   footerText: {
-    fontSize: '14px',
-    color: '#666666',
-    margin: '8px 0',
-    lineHeight: '1.4',
+    fontSize: '13px',
+    color: '#6b7280',
+    margin: '6px 0',
+    lineHeight: '1.5',
   },
   link: {
-    color: '#000000',
-    textDecoration: 'underline',
+    color: '#374151',
+    textDecoration: 'none',
   },
 };
