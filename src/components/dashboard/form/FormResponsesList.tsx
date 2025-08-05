@@ -141,7 +141,7 @@ export function FormResponsesList({
           <div className="w-24 h-9 bg-zinc-200 dark:bg-zinc-800 rounded-lg animate-pulse"></div>
         </div>
 
-        <Card className="border-zinc-200 dark:border-zinc-800  shadow-sm">
+        <Card className="border-zinc-200 dark:border-zinc-800  shadow-none">
           <CardContent className="p-0">
             <div className=" p-3 border-b border-zinc-200 dark:border-zinc-800 grid grid-cols-4 gap-4">
               {[...Array(4)].map((_, i) => (
@@ -167,7 +167,7 @@ export function FormResponsesList({
 
   if (isError) {
     return (
-      <Card className="border-zinc-200 dark:border-zinc-800">
+      <Card className="border-zinc-200 dark:border-zinc-800 shadow-none">
         <CardContent className="flex flex-col items-center text-center gap-4 py-16">
           <div className="rounded-lg bg-red-100 dark:bg-red-900/30 p-4 mb-2">
             <AlertCircle className="h-8 w-8 text-red-600 dark:text-red-400" />
@@ -214,12 +214,12 @@ export function FormResponsesList({
     <div className="flex flex-col space-y-4">
       <div className="flex justify-between items-center pb-4 border-b border-zinc-200 dark:border-zinc-800">
         <h3 className="text-lg font-medium text-zinc-900 dark:text-white">Form Responses</h3>
-        <Badge variant="secondary" className="text-xs bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+        <Badge variant="secondary" className="text-xs bg-amber-500 text-white dark:bg-amber-500">
           {localSubmissions.length} {localSubmissions.length === 1 ? "response" : "responses"}
         </Badge>
       </div>
 
-      <Card className="bg-background border-zinc-200 dark:border-zinc-800">
+      <Card className="bg-background border-zinc-200 dark:border-zinc-800 shadow-none">
         <CardContent className="p-0 bg-background">
           <div className="p-3 border-b border-zinc-200 dark:border-zinc-800 grid grid-cols-1 sm:grid-cols-4 gap-4">
             <div className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">Email</div>
