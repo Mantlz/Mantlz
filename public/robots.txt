@@ -4,7 +4,7 @@ Allow: /
 Allow: /forms/
 Allow: /templates/
 Allow: /features/
-Allow: /blog/
+
 Allow: /pricing/
 
 # Disallow admin and private routes
@@ -18,4 +18,4 @@ Disallow: /unsubscribe/
 Sitemap: https://mantlz.com/sitemap.xml
 
 # Crawl-delay
-Crawl-delay: 1 
+Crawl-delay: 1

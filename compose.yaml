@@ -27,9 +27,7 @@ services:
       # Database
       DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@localhost:5432/mantlz?schema=public}
       
-      # Sanity
-      NEXT_PUBLIC_SANITY_PROJECT_ID: ${NEXT_PUBLIC_SANITY_PROJECT_ID:-development}
-      NEXT_PUBLIC_SANITY_DATASET: ${NEXT_PUBLIC_SANITY_DATASET:-development}
+
       
       # Sentry
       NEXT_PUBLIC_SENTRY_DSN: ${NEXT_PUBLIC_SENTRY_DSN:-https://dummy@dummy.ingest.sentry.io/0}

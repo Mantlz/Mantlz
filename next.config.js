@@ -27,10 +27,7 @@ const nextConfig = {
   images: {
     formats: ['image/webp'],
     remotePatterns: [
-      {
-        hostname: 'cdn.sanity.io',
-        protocol: 'https',
-      },
+
       {
         hostname: 'avatars.githubusercontent.com',
         protocol: 'https',

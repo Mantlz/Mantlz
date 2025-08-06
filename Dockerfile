@@ -38,15 +38,14 @@ COPY public ./public
 COPY next.config.* .
 COPY tsconfig.json .
 COPY postcss.config.mjs .
-COPY sanity.config.ts .
+
 COPY sentry.edge.config.ts .
 COPY sentry.server.config.ts .
 
 # Set build-time environment variables with development defaults
 ENV NODE_ENV="development"
 ENV DATABASE_URL="postgresql://postgres:postgres@localhost:5432/mantlz?schema=public"
-ENV NEXT_PUBLIC_SANITY_PROJECT_ID="development"
-ENV NEXT_PUBLIC_SANITY_DATASET="development"
+
 ENV NEXT_PUBLIC_SENTRY_DSN="https://dummy@dummy.ingest.sentry.io/0"
 ENV RESEND_API_KEY="re_development_key"
 ENV UPSTASH_REDIS_REST_URL="https://dummy-redis-url"
@@ -75,8 +74,7 @@ ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 # Copy all environment variables from build stage
 ENV DATABASE_URL="postgresql://postgres:postgres@localhost:5432/mantlz?schema=public"
-ENV NEXT_PUBLIC_SANITY_PROJECT_ID="development"
-ENV NEXT_PUBLIC_SANITY_DATASET="development"
+
 ENV NEXT_PUBLIC_SENTRY_DSN="https://dummy@dummy.ingest.sentry.io/0"
 ENV RESEND_API_KEY="re_development_key"
 ENV UPSTASH_REDIS_REST_URL="https://dummy-redis-url"

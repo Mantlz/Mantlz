@@ -5,7 +5,7 @@ export default function CustomerFeedbackPage() {
   return (
     <div className="min-h-screen w-full  flex items-center justify-center py-8 px-4">
       <div className="flex flex-row items-center justify-center gap-4 flex-wrap">
-        <Mantlz
+        {/* <Mantlz
           formId="cmdyomlt20001o7ai6ttgrhw9"
           theme="neobrutalism"
           // showUsersJoined={true}
@@ -42,6 +42,11 @@ export default function CustomerFeedbackPage() {
                 "text-purple-700 font-bold bg-gradient-to-r from-purple-500 to-violet-900 px-2 py-1 rounded-lg inline-block shadow-sm border border-purple-200",
             },
           }}
+        /> */}
+
+        <Mantlz
+        formId="cmdyomlt20001o7ai6ttgrhw9"
+        theme="neobrutalism"
         />
 
 

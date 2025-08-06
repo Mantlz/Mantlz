@@ -160,11 +160,7 @@ Mantlz consists of two main components:
    NEXT_PUBLIC_STRIPE_PRO_PRICE_ID="price_your_pro_price_id"
    ```
 
-   **Content Management (Sanity):**
-   ```env
-   NEXT_PUBLIC_SANITY_PROJECT_ID="your_project_id"
-   NEXT_PUBLIC_SANITY_DATASET="production"
-   ```
+
 
    **File Uploads (Uploadcare):**
    ```env
@@ -243,10 +239,7 @@ This will start the application with a PostgreSQL database. The app will be avai
 - Create products and pricing plans
 - Set up webhooks for your local development
 
-**5. Content Management Setup (Sanity):**
-- Create a free account at [sanity.io](https://sanity.io)
-- Create a new project
-- Copy the project ID to your environment variables
+
 
 **6. File Upload Setup (Uploadcare):**
 - Create a free account at [uploadcare.com](https://uploadcare.com)
