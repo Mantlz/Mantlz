@@ -250,7 +250,7 @@ export function AdvancedSettings() {
                           onClick={() => updateSettings(settings)}
                           disabled={isUpdating}
                           size="sm"
-                          className="h-9"
+                          className="bg-amber-500 text-black dark:text-white dark:border-background border text-sm  shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
                         >
                           {isUpdating ? (
                             <RefreshCw className="h-4 w-4 animate-spin mr-2" />

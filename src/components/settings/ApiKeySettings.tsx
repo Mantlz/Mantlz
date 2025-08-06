@@ -146,7 +146,7 @@ export default function ApiKeySettings() {
 
                 onClick={() => revokeKeyMutation.mutate()}
                 disabled={revokeKeyMutation.isPending}
-                className="h-8 text-xs bg-red-500 hover:bg-red-800 cursor-pointer text-white dark:bg-red-950 dark:text-white dark:hover:bg-red-950"
+                className="h-8 text-xs bg-red-600 hover:bg-red-700 cursor-pointer text-white dark:bg-red-600 dark:text-white dark:hover:bg-red-700"
               >
                 {revokeKeyMutation.isPending ? (
                   <Loader2 className="h-3 w-3 mr-1 animate-spin" />
@@ -158,14 +158,14 @@ export default function ApiKeySettings() {
             <CardContent className="px-5 pb-4">
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <code className="flex-1 p-3 bg-zinc-100 dark:bg-zinc-800 rounded-lg text-sm ">
+                  <code className="flex-1 p-3 bg-zinc-100 dark:bg-zinc-950/20 rounded-lg text-sm ">
                     {showKey ? apiKey.key : '••••••••••••••••'}
                   </code>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => setShowKey(!showKey)}
-                    className="h-8"
+                    className="bg-zinc-100 dark:bg-zinc-800"
                   >
                     {showKey ? (
                       <EyeOff className="h-4 w-4" />
@@ -177,7 +177,7 @@ export default function ApiKeySettings() {
                     variant="outline"
                     size="sm"
                     onClick={() => copyToClipboard(apiKey.key)}
-                    className="h-8"
+                    className="bg-zinc-100 dark:bg-zinc-800"
                   >
                     <Copy className="h-4 w-4" />
                   </Button>

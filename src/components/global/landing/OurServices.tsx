@@ -7,9 +7,6 @@ export default function OurServices() {
         <section className="py-16 md:py-32">
             <div className="@container mx-auto max-w-6xl px-4 sm:px-4 lg:px-8">
                 <div className="text-center mb-12 md:mb-16">
-                    <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-                        <span className="text-sm font-medium text-primary">Our Services</span>
-                    </div>
                     <h2 className="text-balance text-3xl sm:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 leading-tight">Form solutions for every need</h2>
                     <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">Create, customize, and manage powerful forms with our intuitive platform</p>
                 </div>

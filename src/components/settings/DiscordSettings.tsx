@@ -326,6 +326,7 @@ export default function DiscordSettings() {
                           <Button
                             onClick={handleSaveConfig}
                             disabled={updateConfigMutation.isPending}
+                            className="bg-amber-500 text-black dark:text-white dark:border-background border text-sm  shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
                           >
                             {updateConfigMutation.isPending ? (
                               <>

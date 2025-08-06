@@ -323,7 +323,7 @@ export default function EmailSettings() {
                                 type="submit"
                                 disabled={isPending}
                                 size="sm"
-                                className="h-9 w-full sm:w-auto"
+                                className="bg-amber-500 text-black dark:text-white dark:border-background border text-sm  shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
                               >
                                 {isPending ? (
                                   <RefreshCw className="h-4 w-4 animate-spin mr-2" />
