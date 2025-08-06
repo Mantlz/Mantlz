@@ -45,7 +45,7 @@ const plans: Plan[] = [
       "Form validation",
       "Standard support",
     ],
-    buttonText: "Register For Free!",
+    buttonText: "Start for free",
     stripePriceIdMonthly: "",
     quota: FREE_QUOTA,
     icon: <Shield className="m-auto size-5" strokeWidth={1} />
@@ -195,97 +195,60 @@ function PricingContent({
   }
 
   return (
-      <section className="py-12 sm:py-16 md:py-20 lg:py-32 bg-gradient-to-b from-background via-background/50 to-background" id="pricing">
-        <div className="mx-auto max-w-7xl px-4 sm:px-4 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16 md:mb-20">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-              <span className="text-sm font-medium text-primary">Pricing Plans</span>
-            </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-foreground/70 leading-tight mb-6">Simple, transparent pricing</h1>
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">Choose the perfect plan for your needs. Start free, scale as you grow.</p>
+      <section className="py-16 bg-background" id="pricing">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="text-center mb-16">
+            <h1 className="text-4xl font-bold text-foreground mb-4">Simple, transparent pricing</h1>
+            <p className="text-lg text-muted-foreground">Choose the perfect plan for your needs. Start free, scale as you grow.</p>
           </div>
-          <div className="relative">           
-            
-            <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-8xl mx-auto">
               {plans.map((plan) => (
-                <Card key={plan.title} className={`group relative overflow-hidden rounded-2xl transition-all duration-500 hover:scale-[1.02] ${plan.isPopular ? 'border-0 bg-gradient-to-b from-primary/5 via-background to-background shadow-none ring-2 ring-primary/20 sm:col-span-2 lg:col-span-1' : 'border border-border/50 bg-gradient-to-b from-background to-muted/20 shadow-none hover:shadow-sm hover:border-primary/30'}`}>
-                  {plan.isPopular && (
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 opacity-50"></div>
-                  )}
-                  
-                  <CardContent className="relative flex h-full flex-col p-6 sm:p-8 lg:p-10">
-                    <div className="flex items-start justify-between mb-6 sm:mb-8">
-                      <div className={`relative flex aspect-square size-12 sm:size-14 lg:size-16 rounded-2xl items-center justify-center transition-all duration-300 group-hover:scale-110 ${plan.isPopular ? 'bg-gradient-to-br from-primary/20 to-primary/10 ring-2 ring-primary/30' : 'bg-gradient-to-br from-muted/40 to-muted/20 ring-1 ring-muted/30 group-hover:ring-primary/40'}`}>
-                        <div className={`size-5 sm:size-6 lg:size-7 transition-all duration-300 ${plan.isPopular ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'}`}>
-                          {plan.icon}
-                        </div>
-                      </div>
-                      {plan.isPopular && (
-                        <Badge className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-semibold px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm shadow-lg border-0">
-                          ✨ Most Popular
-                        </Badge>
-                      )}
-                    </div>
+                <Card key={plan.title} className="border border-amber-500/20 ring-2 ring-amber-500/10 rounded-lg p-6 bg-background  hover:ring-amber-500/30 transition-all duration-300 w-full shadow-none">
+                  <CardContent className="p-0">
+                    <div className="mb-8">
+                       <h2 className="text-2xl font-semibold text-black dark:text-white mb-2">{plan.title}</h2>
+                       <div className="flex items-baseline mb-1">
+                         <span className="text-4xl font-bold text-black dark:text-white">${plan.monthlyPrice}</span>
+                         <span className="ml-1 text-gray-600 dark:text-gray-400">per month.</span>
+                       </div>
+                       <p className="text-sm text-gray-600 dark:text-gray-400">
+                          {plan.title === "Starter" ? "For Hobbyists" : plan.title === "Standard" ? "For Small Teams" : "For Growing Businesses"}
+                        </p>
+                     </div>
                     
-                    <div className="flex flex-1 flex-col">
-                      <div className="mb-6 sm:mb-8">
-                        <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-foreground group-hover:text-primary transition-colors duration-300">{plan.title}</h2>
-                        <div className="flex items-baseline mb-3">
-                          <span className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">${plan.monthlyPrice}</span>
-                          <span className="ml-2 text-base sm:text-lg font-medium text-muted-foreground">/month</span>
+                    <Button
+                       onClick={() => handleCheckout(plan)}
+                       disabled={processingPlan === plan.title || isCurrentUserPlan(plan.title)}
+                       className="w-full mb-8 bg-amber-500 hover:bg-amber-600 text-black dark:text-white font-medium py-2 px-4 rounded transition-colors"
+                       size="lg"
+                     >
+                      {isCurrentUserPlan(plan.title) ? (
+                        <span>Current Plan</span>
+                      ) : processingPlan === plan.title ? (
+                        <div className="flex items-center gap-2">
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></div>
+                          <span>Processing...</span>
                         </div>
-                        {plan.monthlyPrice === 0 ? (
-                          <div className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800">
-                            <span className="text-xs font-medium text-green-700 dark:text-green-400">Forever free</span>
-                          </div>
-                        ) : (
-                          <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
-                            <span className="text-xs font-medium text-primary">Billed monthly</span>
-                          </div>
-                        )}
-                      </div>
-                      
-                      <ul className="flex-1 space-y-4 mb-8">
-                        {plan.features.map((feature, i) => (
-                          <li key={i} className="flex items-start gap-3 group/item">
-                            <div className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 transition-all duration-200 ${plan.isPopular ? 'bg-primary/20 text-primary' : 'bg-muted/40 text-muted-foreground group-hover/item:bg-primary/20 group-hover/item:text-primary'}`}>
-                              <Check className="h-3 w-3" />
-                            </div>
-                            <span className="text-sm leading-relaxed text-muted-foreground group-hover/item:text-foreground transition-colors duration-200">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      
-                      <Button
-                        onClick={() => handleCheckout(plan)}
-                        disabled={processingPlan === plan.title || isCurrentUserPlan(plan.title)}
-                        className={`w-full py-2 text-sm sm:text-base font-semibold transition-all duration-300 rounded-xl ${plan.isPopular ? 'bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground shadow-lg hover:shadow-xl hover:scale-[1.02]' : 'bg-background border-2 border-border hover:border-primary/50 text-foreground hover:bg-primary/5 hover:scale-[1.02]'}`}
-                        variant={plan.isPopular ? "default" : "outline"}
-                        size="lg"
-                      >
-                        {isCurrentUserPlan(plan.title) ? (
-                          <span className="flex items-center gap-2">
-                            <div className="w-4 h-4 rounded-full bg-green-500 flex items-center justify-center">
-                              <Check className="h-3 w-3 text-white" />
-                            </div>
-                            <span className="hidden sm:inline">Current Plan</span>
-                            <span className="sm:hidden">Active</span>
-                          </span>
-                        ) : processingPlan === plan.title ? (
-                          <div className="flex items-center gap-2">
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></div>
-                            <span>Processing...</span>
-                          </div>
-                        ) : (
-                          <span className="truncate">{plan.buttonText}</span>
-                        )}
-                      </Button>
-                    </div>
+                      ) : (
+                        <span>{plan.buttonText}</span>
+                      )}
+                    </Button>
+                    
+                    <ul className="space-y-4">
+                       {plan.features.map((feature, i) => (
+                         <li key={i} className="flex items-start gap-3">
+                           <div className="flex-shrink-0 w-4 h-4 rounded-sm bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mt-0.5">
+                             <Check className="h-3 w-3 text-amber-600 dark:text-amber-400" />
+                           </div>
+                           <span className="text-sm text-gray-600 dark:text-gray-400">{feature}</span>
+                         </li>
+                       ))}
+                     </ul>
                   </CardContent>
                 </Card>
               ))}
             </div>
-          </div>
         </div>
       </section>
   );

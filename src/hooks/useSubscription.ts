@@ -12,6 +12,16 @@ interface Subscription {
 export function useSubscription() {
   const { isSignedIn } = useUser()
   
+  // Auto-sync user before fetching plan
+  const { data: syncStatus } = useQuery({
+    queryKey: ["userSync"],
+    queryFn: async () => {
+      const response = await client.auth.getDatabaseSyncStatus.$get()
+      return response.json()
+    },
+    enabled: !!isSignedIn,
+  })
+  
   const { data: subscription, isLoading } = useQuery<Subscription>({
     queryKey: ["subscription"],
     queryFn: async () => {
@@ -26,7 +36,7 @@ export function useSubscription() {
     },
     retry: 2,
     staleTime: 30000,
-    enabled: !!isSignedIn,
+    enabled: !!isSignedIn && !!syncStatus?.isSynced,
   })
 
   const isPremium = subscription?.plan === 'PRO' || subscription?.plan === 'STANDARD'

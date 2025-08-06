@@ -90,39 +90,39 @@ const mantlzPlans: Plan[] = [
 export default function PricingComparison() {
   return (
       <section className="py-16 md:py-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-4 lg:px-8">
+        <div className="mx-auto max-w-8xl px-4 sm:px-4 lg:px-8">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Choose the plan that fits your needs</h1>
             <p className="mt-4 text-lg md:text-xl text-muted-foreground">Start for free, upgrade as you grow</p>
           </div>
-          <Card className="relative overflow-hidden">
+          <Card className="relative overflow-hidden border border-amber-500/20 ring-2 ring-amber-500/10 hover:ring-amber-500/30 transition-all duration-300 shadow-none">
             <CardContent className="p-0">
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b">
+                    <tr className="border-b border-gray-200 dark:border-zinc-950/20">
                       <th className="text-left p-6">
-                        <span className="text-lg font-semibold">Features</span>
+                        <span className="text-lg font-semibold text-black dark:text-white">Features</span>
                       </th>
                       {mantlzPlans.map((plan) => (
                         <th key={plan.name} className="p-6 text-center min-w-[240px]">
                           <div className="inline-flex items-center gap-3 mb-4">
                             {plan.icon}
-                            <h3 className="text-xl font-semibold">{plan.name}</h3>
+                            <h3 className="text-xl font-semibold text-black dark:text-white">{plan.name}</h3>
                           </div>
                           <div className="flex items-baseline justify-center gap-1 mb-2">
-                            <span className="text-3xl font-bold">{plan.price}</span>
-                            <span className="text-sm text-muted-foreground">/mo</span>
+                            <span className="text-3xl font-bold text-black dark:text-white">{plan.price}</span>
+                            <span className="text-sm text-gray-600 dark:text-gray-400">/mo</span>
                           </div>
-                          <p className="text-sm text-muted-foreground">{plan.description}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">{plan.description}</p>
                         </th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
                     {pricingFeatures.map((feature) => (
-                      <tr key={feature} className="border-b last:border-0">
-                        <td className="p-6 text-sm">
+                      <tr key={feature} className="border-b border-gray-200 dark:border-zinc-950/20 last:border-0">
+                        <td className="p-6 text-sm text-gray-600 dark:text-gray-400">
                           {feature}
                         </td>
                         {mantlzPlans.map((plan) => {
@@ -131,19 +131,19 @@ export default function PricingComparison() {
                             <td key={`${plan.name}-${feature}`} className="p-6 text-center">
                               {featureData && typeof featureData.value === 'boolean' ? (
                                 featureData.value ? (
-                                  <CheckIcon className="w-5 h-5 text-primary mx-auto" />
+                                  <CheckIcon className="w-5 h-5 text-amber-600 dark:text-amber-400 mx-auto" />
                                 ) : (
-                                  <X className="w-5 h-5 text-muted-foreground/50 mx-auto" />
+                                  <X className="w-5 h-5 text-gray-400 dark:text-gray-600 mx-auto" />
                                 )
                               ) : featureData ? (
                                 <div>
-                                  <span className={featureData.highlight ? 'font-medium' : 'text-muted-foreground'}>
-                                    {featureData.value}
-                                  </span>
+                                  <span className={featureData.highlight ? 'font-medium text-black dark:text-white' : 'text-gray-600 dark:text-gray-400'}>
+                                  {featureData.value}
+                                </span>
                                   {featureData.note && (
-                                    <div className="text-xs text-muted-foreground mt-1">
-                                      {featureData.note}
-                                    </div>
+                                    <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                                    {featureData.note}
+                                  </div>
                                   )}
                                 </div>
                               ) : null}
@@ -160,4 +160,4 @@ export default function PricingComparison() {
         </div>
       </section>
   );
-} 
+}
