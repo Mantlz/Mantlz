@@ -198,6 +198,8 @@ Mantlz consists of two main components:
    bun dev
    ```
 
+> **💡 Tip for New Developers**: If you're new to pull requests, this README change demonstrates the basic workflow: create a branch, make changes, commit them, and open a PR. Welcome to the Mantlz community!
+
    The application will be available at [http://localhost:3000](http://localhost:3000)
 
 ### Quick Start with Docker
