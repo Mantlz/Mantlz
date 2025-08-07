@@ -407,9 +407,10 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                         size="sm"
                         className={`h-7 px-2 text-xs ${
                           form.submissionCount > 0
-                            ? "bg-background hover:bg-background-100 text-stone-800 dark:bg-background-900/20 dark:hover:bg-amber-500 dark:text-white"
-                            : "hover:bg-zinc-200 text-gray-600 dark:hover:bg-amber-500 dark:text-gray-300"
+                           ? "bg-amber-500 hover:bg-amber-400 text-black dark:text-white dark:bg-background-900/20 dark:hover:bg-amber-400"
+                            : "hover:bg-amber-400 text-black dark:text-white dark:hover:bg-amber-400 "
                         } rounded-lg`}
+                         
                       >
                         View Logs
                       </Button>
@@ -453,8 +454,8 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                         size="sm"
                         className={`h-7 px-2 text-xs ${
                           form.submissionCount > 0
-                            ? "bg-background hover:bg-background-100 text-stone-800 dark:bg-background-900/20 dark:hover:bg-amber-500 dark:text-white"
-                            : "hover:bg-zinc-200 text-gray-600 dark:hover:bg-amber-500 dark:text-gray-300"
+                            ? "bg-amber-500 hover:bg-amber-400 text-black dark:text-white dark:bg-background-900/20 dark:hover:bg-amber-400"
+                            : "hover:bg-amber-400 text-black dark:text-white dark:hover:bg-amber-400 "
                         } rounded-lg`}
                       >
                         View Logs

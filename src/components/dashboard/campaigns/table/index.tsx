@@ -380,8 +380,8 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                         size="sm"
                         className={`h-7 px-2 text-xs ${
                           (form._count?.campaigns || 0) > 0
-                            ? "bg-background hover:bg-background-100 text-stone-800 dark:bg-background-900/20 dark:hover:bg-amber-500 dark:text-white"
-                            : "hover:bg-zinc-200 text-gray-600 dark:hover:bg-amber-500 dark:text-gray-300"
+                           ? "bg-amber-500 hover:bg-amber-400 text-black dark:text-white dark:bg-background-900/20 dark:hover:bg-amber-400"
+                            : "hover:bg-amber-400 text-black dark:text-white dark:hover:bg-amber-400 "
                         } rounded-lg`}
                       >
                         View Campaigns
@@ -428,8 +428,8 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                         size="sm"
                         className={`h-7 px-2 text-xs ${
                           (form._count?.campaigns || 0) > 0
-                            ? "bg-background hover:bg-background-100 text-stone-800 dark:bg-background-900/20 dark:hover:bg-amber-500 dark:text-white"
-                            : "hover:bg-zinc-200 text-gray-600 dark:hover:bg-amber-500 dark:text-gray-300"
+                            ? "bg-amber-500 hover:bg-amber-400 text-black dark:text-white dark:bg-background-900/20 dark:hover:bg-amber-400"
+                            : "hover:bg-amber-400 text-black dark:text-white dark:hover:bg-amber-400 "
                         } rounded-lg`}
                       >
                         View Campaigns

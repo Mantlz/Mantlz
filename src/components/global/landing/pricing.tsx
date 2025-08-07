@@ -65,7 +65,8 @@ const plans: Plan[] = [
     stripePriceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_STANDARD_PRICE_ID ?? "",
     includedPlans: [],
     quota: STANDARD_QUOTA,
-    icon: <Zap className="m-auto size-5" strokeWidth={1} />
+    icon: <Zap className="m-auto size-5" strokeWidth={1} />,
+    isPopular: true
   },
   {
     title: "Professional",
@@ -84,7 +85,7 @@ const plans: Plan[] = [
     quota: PRO_QUOTA,
     icon: <Users className="m-auto size-5" strokeWidth={1} />,
     isFeatured: true,
-    isPopular: true
+    isPopular: false
   },
 ]
 
@@ -204,10 +205,17 @@ function PricingContent({
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-8xl mx-auto">
               {plans.map((plan) => (
-                <Card key={plan.title} className="border border-amber-500/20 ring-2 ring-amber-500/10 rounded-lg p-6 bg-background  hover:ring-amber-500/30 transition-all duration-300 w-full shadow-none">
+                <Card key={plan.title} className="border border-amber-500/20 ring-2 ring-amber-500/50 rounded-lg p-6 hover:ring-amber-500/30 transition-all duration-300 w-full shadow-none">
                   <CardContent className="p-0">
                     <div className="mb-8">
-                       <h2 className="text-2xl font-semibold text-black dark:text-white mb-2">{plan.title}</h2>
+                       <div className="flex items-center justify-between mb-2">
+                         <h2 className="text-2xl font-semibold text-black dark:text-white">{plan.title}</h2>
+                         {plan.isPopular && (
+                           <Badge className="bg-amber-500 hover:bg-amber-500 text-black dark:text-white text-xs font-medium px-2 py-1">
+                             Most Popular
+                           </Badge>
+                         )}
+                       </div>
                        <div className="flex items-baseline mb-1">
                          <span className="text-4xl font-bold text-black dark:text-white">${plan.monthlyPrice}</span>
                          <span className="ml-1 text-gray-600 dark:text-gray-400">per month.</span>
@@ -238,7 +246,7 @@ function PricingContent({
                     <ul className="space-y-4">
                        {plan.features.map((feature, i) => (
                          <li key={i} className="flex items-start gap-3">
-                           <div className="flex-shrink-0 w-4 h-4 rounded-sm bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mt-0.5">
+                           <div className="flex-shrink-0 w-4 h-4 rounded-sm flex items-center justify-center mt-0.5">
                              <Check className="h-3 w-3 text-amber-600 dark:text-amber-400" />
                            </div>
                            <span className="text-sm text-gray-600 dark:text-gray-400">{feature}</span>
