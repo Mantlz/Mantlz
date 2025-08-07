@@ -86,22 +86,25 @@ export const useFormLogic = (
           validator = z.string().email(); 
           break;
         case 'file': 
-          validator = z.instanceof(File).optional(); 
+          // Handle file validation based on required status
+          if (field.required) {
+            validator = z.instanceof(File, { message: `${field.label || 'File'} is required` });
+          } else {
+            validator = z.instanceof(File).optional();
+          }
           break;
         default: 
           validator = z.string(); 
           break;
       }
 
-      if (field.required && field.type !== 'checkbox') {
+      if (field.required && field.type !== 'checkbox' && field.type !== 'file') {
         if (field.type === 'number') {
           validator = validator.min(1, { message: `${field.label} is required` });
-        } else if (field.type === 'file') {
-          validator = z.instanceof(File, { message: 'Please upload a file' });
         } else {
           validator = validator.min(1, { message: `${field.label} is required` });
         }
-      } else if (!field.required && field.type !== 'checkbox') {
+      } else if (!field.required && field.type !== 'checkbox' && field.type !== 'file') {
         validator = validator.optional();
       }
       
