@@ -204,7 +204,7 @@ export function FormsList({
       {/* View Toggle */}
       {forms.length > 0 && (
         <div className="flex justify-end mb-2">
-          <div className="bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-800/50 hover:border-zinc-200 dark:hover:border-zinc-700  rounded-lg p-1 gap-1 flex items-center">
+          <div className="bg-gray-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800/50 hover:border-zinc-200 dark:hover:border-zinc-700  rounded-lg p-1 gap-1 flex items-center">
             <Button
             variant="outline"
               onClick={() => handleViewModeChange('grid')}
