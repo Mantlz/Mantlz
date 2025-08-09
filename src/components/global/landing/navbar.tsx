@@ -134,7 +134,7 @@ export function Navbar() {
       <div className="flex items-center gap-4">
         <Link href="/sign-in">
          <Button size="sm" 
-            className="h-8 px-2 text-md bg-stone-200/20 text-black dark:bg-stone-950 dark:text-white dark:border-none border text-sm shadow-md shadow-zinc-950/30  dark:ring-none transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+            className="h-8 px-2 text-md bg-stone-200/20 text-black dark:bg-stone-950 dark:text-white dark:border-none border text-sm   dark:ring-none transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
 
           >
             Sign in
@@ -142,7 +142,7 @@ export function Navbar() {
         </Link>
         <Link href="/sign-up">
           <Button size="sm" 
-            className="h-8 px-2 text-md bg-amber-500 text-black dark:text-white dark:border-background border text-sm shadow-md shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+            className="h-8 px-2 text-md bg-amber-500 text-black dark:text-white dark:border-background border text-sm   ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
 
           >
             Sign up 
@@ -239,7 +239,7 @@ export function Navbar() {
                    <DrawerClose asChild>
                      <Link href="/sign-up">
                        <Button size="sm" 
-                       className="w-full flex items-center justify-center gap-1 dark:text-white bg-zinc-500 hover:bg-amber-600 dark:bg-orange-950 dark:hover:bg-amber-700 text-white border-zinc-200 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-200 text-sm ">
+                       className="w-full flex items-center justify-center gap-1 dark:text-white bg-zinc-500 hover:bg-amber-600 dark:bg-orange-950 dark:hover:bg-amber-700 text-white border-zinc-200 dark:border-zinc-800  transition-all duration-200 text-sm ">
                          Sign up 
                        </Button>
                      </Link>
