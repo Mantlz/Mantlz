@@ -123,7 +123,7 @@ function SheetDescription({
   return (
     <SheetPrimitive.Description
       data-slot="sheet-description"
-      className={cn("text-sm text-zinc-600 dark:text-zinc-300 ", className)}
+      className={cn("text-sm text-zinc-500 dark:text-zinc-500 ", className)}
       {...props}
     />
   )

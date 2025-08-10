@@ -29,7 +29,7 @@ export default function ThankYouPage() {
             Submission received
           </h1>
 
-          <p className="text-sm sm:text-base md:text-lg text-zinc-600 dark:text-zinc-300 mb-8 sm:mb-10">
+          <p className="text-sm sm:text-base md:text-lg text-zinc-500 dark:text-zinc-500 mb-8 sm:mb-10">
             Thank you for your submission. We&apos;ll be in touch shortly.
           </p>
 
@@ -53,7 +53,7 @@ export default function ThankYouPage() {
           className="mt-10 sm:mt-14 flex flex-col items-center justify-center"
         >
           <a href="https://mantlz.com" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center">
-            <span className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mb-2">
+            <span className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mb-2">
               Powered by <span className="text-amber-500 font-extrabold">Mantlz</span>
             </span>
           </a>

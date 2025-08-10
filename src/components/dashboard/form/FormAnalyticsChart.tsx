@@ -145,7 +145,7 @@ export function FormAnalyticsChart({
         <div className="relative p-6 sm:p-8 lg:p-12">
           <div className="flex flex-col items-center justify-center h-[400px] gap-4">
             <div className="w-8 h-8 animate-spin rounded-full border-4 border-black dark:border-white border-t-orange-300 dark:border-t-orange-600"></div>
-            <p className="text-sm text-zinc-600 dark:text-zinc-300">Loading analytics data...</p>
+            <p className="text-sm text-zinc-500 dark:text-zinc-500">Loading analytics data...</p>
           </div>
         </div>
       </div>
@@ -162,7 +162,7 @@ export function FormAnalyticsChart({
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
           <div className="space-y-1">
             <h2 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white">Analytics Overview</h2>
-            <p className="text-sm text-zinc-600 dark:text-zinc-300">{getTimeRangeLabel()}</p>
+            <p className="text-sm text-zinc-500 dark:text-zinc-500">{getTimeRangeLabel()}</p>
           </div>
           <div className="flex items-center gap-2">
             <Button
@@ -172,7 +172,7 @@ export function FormAnalyticsChart({
                 "rounded-lg cursor-pointer",
                 timeRange === 'day'
                   ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100"
-                  : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                  : "bg-zinc-200 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
               )}
               onClick={() => onTimeRangeChange('day')}
             >
@@ -185,7 +185,7 @@ export function FormAnalyticsChart({
                 "rounded-lg cursor-pointer",
                 timeRange === 'week'
                   ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100"
-                  : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                  : "bg-zinc-200 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
               )}
               onClick={() => onTimeRangeChange('week')}
             >
@@ -198,7 +198,7 @@ export function FormAnalyticsChart({
                 "rounded-lg cursor-pointer",
                 timeRange === 'month'
                   ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100"
-                  : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                  : "bg-zinc-200 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
               )}
               onClick={() => onTimeRangeChange('month')}
             >
@@ -216,7 +216,7 @@ export function FormAnalyticsChart({
               "rounded-lg cursor-pointer",
               activeTab === 'overview'
                 ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100"
-                : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                : "bg-zinc-200 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
             )}
             onClick={() => setActiveTab('overview')}
           >
@@ -229,7 +229,7 @@ export function FormAnalyticsChart({
               "rounded-lg cursor-pointer",
               activeTab === 'insights'
                 ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100"
-                : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                : "bg-zinc-200 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700"
             )}
             onClick={() => setActiveTab('insights')}
           >
@@ -243,10 +243,10 @@ export function FormAnalyticsChart({
             {!hasData ? (
               <div className="flex flex-col items-center justify-center h-[400px] gap-4">
                 <div className="w-12 h-12 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-                  <BarChart3 className="w-6 h-6 text-gray-400 dark:text-zinc-600" />
+                  <BarChart3 className="w-6 h-6 text-gray-400 dark:text-zinc-500" />
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 dark:text-white">No data yet</h3>
-                <p className="text-sm text-zinc-600 dark:text-zinc-300 max-w-sm text-center">
+                <p className="text-sm text-zinc-500 dark:text-zinc-500 max-w-sm text-center">
                   Once your form starts receiving submissions, you&apos;ll see analytics data here.
                 </p>
               </div>
@@ -261,10 +261,10 @@ export function FormAnalyticsChart({
                         <XAxis
                           dataKey="time"
                           tickFormatter={formatTimeLabel}
-                          className="text-xs text-zinc-600 dark:text-zinc-300"
+                          className="text-xs text-zinc-500 dark:text-zinc-500"
                         />
                         <YAxis
-                          className="text-xs text-zinc-600 dark:text-zinc-300"
+                          className="text-xs text-zinc-500 dark:text-zinc-500"
                         />
                         <Tooltip
                           content={({ active, payload, label }) => {
@@ -272,7 +272,7 @@ export function FormAnalyticsChart({
                               return (
                                 <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-3 border border-zinc-200 dark:border-zinc-800">
                                   <p className="text-sm font-medium text-gray-900 dark:text-white">{label}</p>
-                                  <p className="text-sm text-zinc-600 dark:text-zinc-300">
+                                  <p className="text-sm text-zinc-500 dark:text-zinc-500">
                                     {payload[0]?.value || 0} submissions
                                   </p>
                                 </div>

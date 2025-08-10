@@ -106,7 +106,7 @@ export default function ApiKeySettings() {
   //   return (
   //     <div className="flex flex-col items-center justify-center min-h-[40vh] w-full">
   //       <Loader2 className="h-6 w-6 text-zinc-400 animate-spin" />
-  //       <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+  //       <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
   //         Loading API key information...
   //       </p>
   //     </div>
@@ -133,10 +133,10 @@ export default function ApiKeySettings() {
             <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
               <div>
                 <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center gap-2">
-                  <Key className="h-4 w-4 text-zinc-600" />
+                  <Key className="h-4 w-4 text-zinc-500" />
                   {apiKey.name}
                 </CardTitle>
-                <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+                <CardDescription className="text-zinc-500 dark:text-zinc-400 text-xs">
                   Created on {new Date(apiKey.createdAt).toLocaleDateString()}
                 </CardDescription>
               </div>
@@ -195,7 +195,7 @@ export default function ApiKeySettings() {
               <CardTitle className="text-zinc-900 dark:text-white text-sm">
                 Create New API Key
               </CardTitle>
-              <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+              <CardDescription className="text-zinc-500 dark:text-zinc-400 text-xs">
                 Generate a new API key for programmatic access
               </CardDescription>
             </CardHeader>
@@ -246,7 +246,7 @@ export default function ApiKeySettings() {
               </Badge>
             </div>
           </div>
-          <p className="text-xs text-zinc-600 dark:text-zinc-400">
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
             Manage your API keys for programmatic access to your account
           </p>
         </header>

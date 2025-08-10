@@ -193,8 +193,8 @@ function CodeSnippet({ code, onCopy, language = "javascript" }: CodeSnippetProps
           size="sm"
           onClick={handleCopy}
           className={cn(
-            "h-7 w-7 p-0 hover:bg-zinc-700 dark:hover:bg-zinc-800",
-            isCopied ? "text-green-400" : "text-zinc-400 hover:text-zinc-300",
+            "h-7 w-7 p-0 hover:bg-zinc-700 dark:hover:bg-amber-500",
+            isCopied ? "text-green-400" : "text-zinc-400 hover:text-zinc-500",
           )}
         >
           {isCopied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
@@ -205,7 +205,7 @@ function CodeSnippet({ code, onCopy, language = "javascript" }: CodeSnippetProps
       {/* Code content */}
       <div className="overflow-x-auto">
         <pre className="p-4 text-sm leading-relaxed">
-          <code className="text-zinc-100 dark:text-zinc-300">{code}</code>
+          <code className="text-zinc-100 dark:text-zinc-500">{code}</code>
         </pre>
       </div>
       

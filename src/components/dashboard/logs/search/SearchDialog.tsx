@@ -108,7 +108,7 @@ export function SearchDialog({
 
   const renderSearchHint = () => {
     return (
-      <div className="pt-1 text-[10px] text-gray-400 dark:text-zinc-600 px-3">
+      <div className="pt-1 text-[10px] text-gray-400 dark:text-zinc-500 px-3">
         <span>Search tips: </span>
         <span className="px-1 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono mx-1">email@example.com</span>
         <span className="px-1 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono mx-1">abc123</span>
@@ -128,12 +128,12 @@ export function SearchDialog({
       <div className="relative z-50 bg-white dark:bg-zinc-900 rounded-lg max-w-[90vw] w-[550px] overflow-hidden border border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">
           <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700/50 rounded-lg flex items-center px-3 py-1.5 flex-1 transition-shadow hover:shadow-inner">
-            <Search className="mr-2 h-4 w-4 shrink-0 text-gray-400 dark:text-zinc-600" />
+            <Search className="mr-2 h-4 w-4 shrink-0 text-gray-400 dark:text-zinc-500" />
             <Input 
               placeholder={`${isProUser ? 'Search' : 'Search'} by email, ID${isProUser ? ', or content' : ''}...`}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="flex h-full w-full bg-transparent py-1 text-sm outline-none border-none placeholder:text-gray-400 dark:placeholder:text-zinc-600" 
+              className="flex h-full w-full bg-transparent py-1 text-sm outline-none border-none placeholder:text-gray-400 dark:placeholder:text-zinc-500" 
               autoFocus 
             />
           </div>
@@ -145,14 +145,14 @@ export function SearchDialog({
                 onValueChange={(value) => handleFormSelect(value)}
               >
                 <SelectTrigger 
-                  className="h-9 border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm text-gray-700 dark:text-gray-300 rounded-lg min-w-[140px] focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 dark:focus:ring-orange-400/20 dark:focus:border-orange-400 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all duration-200 "
+                  className="h-9 border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm text-gray-700 dark:text-gray-300 rounded-lg min-w-[140px] focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 dark:focus:ring-orange-400/20 dark:focus:border-orange-400 cursor-pointer hover:bg-zinc-50 dark:hover:bg-amber-500transition-all duration-200 "
                 >
                   <SelectValue placeholder="Choose a form" />
                 </SelectTrigger>
                 <SelectContent className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-sm rounded-xl overflow-hidden  min-w-[200px] max-w-[300px]">
                   <SelectGroup>
                     <div className="p-2 max-h-[300px] overflow-y-auto">
-                      <div className="text-xs font-medium text-zinc-600 dark:text-zinc-300 px-2 py-1 mb-1">
+                      <div className="text-xs font-medium text-zinc-500 dark:text-zinc-500 px-2 py-1 mb-1">
                         Available Forms ({formsData.forms.length})
                       </div>
                       <SelectItem 
@@ -161,7 +161,7 @@ export function SearchDialog({
                         className={`relative rounded-lg mb-1 px-3 py-2.5 cursor-pointer transition-all duration-200 ${
                           !isProUser 
                             ? "opacity-50 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20" 
-                            : "hover:bg-zinc-50 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-700"
+                            : "hover:bg-zinc-50 dark:hover:bg-amber-500focus:bg-zinc-100 dark:focus:bg-zinc-700"
                         }`}
                       >
                         <div className="flex items-center justify-between">
@@ -188,7 +188,7 @@ export function SearchDialog({
                           <SelectItem 
                             key={form.id} 
                             value={form.id} 
-                            className="rounded-lg mb-1 px-3 py-2.5 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800 focus:bg-zinc-100 dark:focus:bg-zinc-700 transition-all duration-200 group"
+                            className="rounded-lg mb-1 px-3 py-2.5 cursor-pointer hover:bg-zinc-50 dark:hover:bg-amber-500focus:bg-zinc-100 dark:focus:bg-zinc-700 transition-all duration-200 group"
                           >
                             <div className="flex items-center gap-2 min-w-0 w-full" title={form.name}>
                               <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
@@ -222,7 +222,7 @@ export function SearchDialog({
                   className={`ml-2 p-1.5 rounded-lg ${
                     Object.keys(advancedFilters || {}).length > 0 
                       ? "bg-zinc-50 dark:bg-zinc-900/30 border border-orange-200 dark:border-orange-700/50 text-orange-500" 
-                      : "bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300"
+                      : "bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 dark:text-zinc-500"
                   } transition-colors cursor-pointer`}
                   title="Advanced Filters"
                 >
@@ -232,15 +232,15 @@ export function SearchDialog({
               <PopoverContent className="w-80 p-0 rounded-lg border border-zinc-200 dark:border-zinc-700  bg-white dark:bg-zinc-900" align="end">
                 <div className="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">
                   <h3 className="font-medium text-sm text-gray-900 dark:text-gray-100">Advanced Search</h3>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-1">Pro users can filter with these advanced options</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-1">Pro users can filter with these advanced options</p>
                 </div>
                 
                 <div className="p-4 space-y-4 max-h-[60vh] overflow-y-auto">
                   <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="date-range" className="border-b border-zinc-200 dark:border-zinc-800">
-                      <AccordionTrigger className="text-sm py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
+                      <AccordionTrigger className="text-sm py-2 hover:bg-zinc-50 dark:hover:bg-amber-500/50 px-2 rounded-lg transition-colors">
                         <div className="flex items-center">
-                          <CalendarRange className="h-4 w-4 mr-2 text-zinc-600" />
+                          <CalendarRange className="h-4 w-4 mr-2 text-zinc-500" />
                           <span>Date Range</span>
                         </div>
                       </AccordionTrigger>
@@ -256,9 +256,9 @@ export function SearchDialog({
                     </AccordionItem>
                     
                     <AccordionItem value="quick-timeframe" className="border-b border-zinc-200 dark:border-zinc-800">
-                      <AccordionTrigger className="text-sm py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
+                      <AccordionTrigger className="text-sm py-2 hover:bg-zinc-50 dark:hover:bg-amber-500/50 px-2 rounded-lg transition-colors">
                         <div className="flex items-center">
-                          <Clock className="h-4 w-4 mr-2 text-zinc-600" />
+                          <Clock className="h-4 w-4 mr-2 text-zinc-500" />
                           <span>Time Frame</span>
                         </div>
                       </AccordionTrigger>
@@ -282,9 +282,9 @@ export function SearchDialog({
                     </AccordionItem>
                     
                     <AccordionItem value="sort-order" className="border-b border-zinc-200 dark:border-zinc-800">
-                      <AccordionTrigger className="text-sm py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
+                      <AccordionTrigger className="text-sm py-2 hover:bg-zinc-50 dark:hover:bg-amber-500/50 px-2 rounded-lg transition-colors">
                         <div className="flex items-center">
-                          <ArrowDownUp className="h-4 w-4 mr-2 text-zinc-600" />
+                          <ArrowDownUp className="h-4 w-4 mr-2 text-zinc-500" />
                           <span>Sort Order</span>
                         </div>
                       </AccordionTrigger>
@@ -315,9 +315,9 @@ export function SearchDialog({
                     </AccordionItem>
                     
                     <AccordionItem value="content-filters" className="border-b border-zinc-200 dark:border-zinc-800">
-                      <AccordionTrigger className="text-sm py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 px-2 rounded-lg transition-colors">
+                      <AccordionTrigger className="text-sm py-2 hover:bg-zinc-50 dark:hover:bg-amber-500/50 px-2 rounded-lg transition-colors">
                         <div className="flex items-center">
-                          <Filter className="h-4 w-4 mr-2 text-zinc-600" />
+                          <Filter className="h-4 w-4 mr-2 text-zinc-500" />
                           <span>Content Filters</span>
                         </div>
                       </AccordionTrigger>
@@ -369,7 +369,7 @@ export function SearchDialog({
           ) : (
             <div className="relative ml-2">
               <button
-                className="p-1.5 rounded-lg bg-zinc-50/50 dark:bg-zinc-800/50 border border-zinc-200/50 dark:border-zinc-700/50 text-gray-400/50 dark:text-zinc-600/50 cursor-not-allowed opacity-70"
+                className="p-1.5 rounded-lg bg-zinc-50/50 dark:bg-zinc-800/50 border border-zinc-200/50 dark:border-zinc-700/50 text-gray-400/50 dark:text-zinc-500/50 cursor-not-allowed opacity-70"
                 title="Advanced Filters (PRO)"
                 onClick={showUpgradeModal}
               >
@@ -383,7 +383,7 @@ export function SearchDialog({
           
           <button 
             onClick={onClose}
-            className="ml-3 p-1.5 rounded-lg hover:bg-amber-500 dark:hover:bg-amber-500 text-gray-400 dark:text-zinc-600 hover:text-white dark:hover:text-white transition-colors cursor-pointer"
+            className="ml-3 p-1.5 rounded-lg hover:bg-amber-500 dark:hover:bg-amber-500text-gray-400 dark:text-zinc-500 hover:text-white dark:hover:text-white transition-colors cursor-pointer"
           >
             <X className="h-4 w-4" />
           </button>
@@ -457,7 +457,7 @@ export function SearchDialog({
           />
         </div>
         
-        <div className="border-t border-zinc-200 dark:border-zinc-800 px-4 py-2.5 text-xs text-gray-400 dark:text-zinc-600">
+        <div className="border-t border-zinc-200 dark:border-zinc-800 px-4 py-2.5 text-xs text-gray-400 dark:text-zinc-500">
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               <span className="mr-1">Press</span>
@@ -467,7 +467,7 @@ export function SearchDialog({
               <span className="ml-1">to close</span>
             </div>
             {data?.submissions && data.submissions.length > 0 && (
-              <Badge variant="secondary" className="text-[10px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded-lg px-2.5">
+              <Badge variant="secondary" className="text-[10px] bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 rounded-lg px-2.5">
                 {!isProUser && data.submissions.length >= 10 ? "10+ results" : `${data.submissions.length} results`}
               </Badge>
             )}

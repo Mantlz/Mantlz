@@ -19,7 +19,7 @@ const TrustedCompanies = () => {
         <div className="flex flex-col items-center justify-center space-y-8">
           {/* Header section */}
           <div className="flex flex-col items-center space-y-4">
-            {/* <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 mb-2">
+            {/* <div className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-500 mb-2">
               <Sparkles className="h-4 w-4 mr-2" />
               <span>Powered by the best</span>
             </div> */}

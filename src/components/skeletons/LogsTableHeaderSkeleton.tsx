@@ -12,11 +12,11 @@ export function LogsTableHeaderSkeleton() {
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1">
               <div className="flex items-center gap-3">
-                <div className="h-8 text-xs cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg px-3 bg-zinc-50 dark:bg-zinc-800/50 flex items-center">
-                  <ChevronLeft className="h-3.5 w-3.5 mr-1 text-zinc-600 dark:text-zinc-400" />
-                  <span className="hidden xs:inline text-zinc-600 dark:text-zinc-400">Back to Forms</span>
+                <div className="h-8 text-xs cursor-pointer hover:bg-zinc-100 dark:hover:bg-amber-500rounded-lg px-3 bg-zinc-50 dark:bg-zinc-800/50 flex items-center">
+                  <ChevronLeft className="h-3.5 w-3.5 mr-1 text-zinc-500 dark:text-zinc-400" />
+                  <span className="hidden xs:inline text-zinc-500 dark:text-zinc-400">Back to Forms</span>
                 </div>
-                <Badge variant="secondary" className="bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+                <Badge variant="secondary" className="bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400">
                   Form ID: <Skeleton className="h-3 w-16 rounded-lg inline-block" />
                 </Badge>
               </div>
@@ -26,18 +26,18 @@ export function LogsTableHeaderSkeleton() {
             </div>
             <div className="flex items-center gap-3">
               {/* Search Button */}
-              <div className="h-9 gap-2 cursor-pointer rounded-lg bg-white/80 dark:bg-background hover:bg-zinc-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 backdrop-blur shadow-sm flex items-center px-3">
+              <div className="h-9 gap-2 cursor-pointer rounded-lg bg-white/80 dark:bg-background hover:bg-zinc-100 dark:hover:bg-amber-500text-gray-700 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 backdrop-blur shadow-sm flex items-center px-3">
                 <Search className="h-4 w-4 text-gray-400" />
-                <span className="text-sm font-normal hidden sm:inline-block text-zinc-600">Search submissions...</span>
+                <span className="text-sm font-normal hidden sm:inline-block text-zinc-500">Search submissions...</span>
                 <div className="hidden sm:flex items-center justify-center h-5 px-1.5 ml-1 rounded-lg bg-zinc-100 dark:bg-zinc-800">
-                  <kbd className="text-xs font-mono tracking-wider text-zinc-600 dark:text-zinc-300">⌘K</kbd>
+                  <kbd className="text-xs font-mono tracking-wider text-zinc-500 dark:text-zinc-500">⌘K</kbd>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Description */}
-          <div className="text-sm text-zinc-600 dark:text-zinc-300 max-w-2xl">
+          <div className="text-sm text-zinc-500 dark:text-zinc-500 max-w-2xl">
             <Skeleton className="h-4 w-full max-w-md rounded-lg" />
           </div>
 
@@ -46,13 +46,13 @@ export function LogsTableHeaderSkeleton() {
             <div className="bg-white dark:bg-background rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
-                  <Users className="h-5 w-5 text-gray-400 dark:text-zinc-600" />
+                  <Users className="h-5 w-5 text-gray-400 dark:text-zinc-500" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-gray-600 dark:text-zinc-300">
+                  <div className="text-sm font-medium text-gray-600 dark:text-zinc-500">
                     <Skeleton className="h-4 w-10 mb-1 rounded-lg" />
                   </div>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-300">Total Submissions</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-500">Total Submissions</p>
                 </div>
               </div>
               <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-background rounded-lg overflow-hidden">
@@ -63,13 +63,13 @@ export function LogsTableHeaderSkeleton() {
             <div className="bg-white dark:bg-background rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
-                  <Clock className="h-5 w-5 text-gray-400 dark:text-zinc-600" />
+                  <Clock className="h-5 w-5 text-gray-400 dark:text-zinc-500" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-gray-600 dark:text-zinc-300">
+                  <div className="text-sm font-medium text-gray-600 dark:text-zinc-500">
                     <Skeleton className="h-4 w-28 mb-1 rounded-lg" />
                   </div>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-300">Created</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-500">Created</p>
                 </div>
               </div>
             </div>
@@ -78,13 +78,13 @@ export function LogsTableHeaderSkeleton() {
             <div className="bg-white dark:bg-background rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
-                  <File className="h-5 w-5 text-gray-400 dark:text-zinc-600" />
+                  <File className="h-5 w-5 text-gray-400 dark:text-zinc-500" />
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-gray-600 dark:text-zinc-300">
+                  <div className="text-sm font-medium text-gray-600 dark:text-zinc-500">
                     <Skeleton className="h-4 w-28 mb-1 rounded-lg" />
                   </div>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-300">Last Submission</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-500">Last Submission</p>
                 </div>
               </div>
             </div>

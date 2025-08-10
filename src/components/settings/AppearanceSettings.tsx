@@ -42,7 +42,7 @@ export const AppearanceSettings = () => {
               </h2>
             </div>
           </div>
-          <p className="text-xs text-zinc-600 dark:text-zinc-400">
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
             Choose how Mantlz looks to you. Select a theme that matches your style.
           </p>
         </header>
@@ -56,7 +56,7 @@ export const AppearanceSettings = () => {
             <h3 className="text-base font-semibold text-zinc-900 dark:text-white mb-1">
               Font Family
             </h3>
-            <p className="text-xs text-zinc-600 dark:text-zinc-400 mb-4">
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-4">
               Choose your preferred font family for the application.
             </p>
             <Select value={fontFamily} onValueChange={handleFontChange}>

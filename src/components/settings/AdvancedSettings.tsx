@@ -158,7 +158,7 @@ export function AdvancedSettings() {
             )}
           </Button>
         </div>
-        <p className="text-xs text-zinc-600 dark:text-zinc-400">
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
           Configure advanced notification settings
         </p>
       </header>
@@ -187,10 +187,10 @@ export function AdvancedSettings() {
               <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
                 <div>
                   <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
-                    <Bell className="h-4 w-4 mr-2 text-zinc-600" />
+                    <Bell className="h-4 w-4 mr-2 text-zinc-500" />
                     Notification Frequency
                   </CardTitle>
-                  <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+                  <CardDescription className="text-zinc-500 dark:text-zinc-400 text-xs">
                     Set the maximum number of notifications you want to receive per hour
                   </CardDescription>
                 </div>
@@ -226,13 +226,13 @@ export function AdvancedSettings() {
                     <div className="flex flex-col sm:flex-row sm:items-center gap-3  px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
                       <div className="flex items-center gap-4 flex-1">
                         <div className="bg-white dark:bg-zinc-900 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
-                          <Bell className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+                          <Bell className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
                         </div>
                         <div className="flex flex-col gap-0.5">
                           <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                             Maximum Notifications per Hour
                           </span>
-                          <span className="text-xs text-zinc-600 dark:text-zinc-400">
+                          <span className="text-xs text-zinc-500 dark:text-zinc-400">
                             Current limit: {settings.maxNotificationsPerHour}
                           </span>
                         </div>

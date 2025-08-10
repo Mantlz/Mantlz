@@ -217,7 +217,7 @@ export function TableContent({
             <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">
               Submission Logs
             </h3>
-            <Badge className="ml-2 bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+            <Badge className="ml-2 bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-500">
               {submissions.length} submissions
             </Badge>
             {userPlan === 'FREE' && enhancedSubmissions.filter(sub => new Date(sub.createdAt) > standardTimeLimit).length > 20 && (
@@ -339,27 +339,27 @@ export function TableContent({
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent border-b border-zinc-200 dark:border-zinc-800">
-                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
+                <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2">
                   <span className="hidden sm:inline">Submission ID</span>
                   <span className="sm:hidden">ID</span>
                 </TableHead>
-                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">Email</TableHead>
-                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
+                <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2">Email</TableHead>
+                <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2">
                   <div className="flex items-center">
                     <span>Status</span>
                   </div>
                 </TableHead>
                 {isPremium && (
-                  <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2 hidden md:table-cell">
+                  <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2 hidden md:table-cell">
                     <div className="flex items-center">
                       <span>Analytics</span>
                     </div>
                   </TableHead>
                 )}
-                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
+                <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2">
                   Submitted
                 </TableHead>
-                <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2 text-right">
+                <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2 text-right">
                   Actions
                 </TableHead>
               </TableRow>
@@ -368,12 +368,12 @@ export function TableContent({
               {limitedSubmissions.map((submission) => (
                 <TableRow
                   key={submission.id}
-                  className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 last:border-0"
+                  className="hover:bg-zinc-50 dark:hover:bg-amber-500/50 border-b border-zinc-200 dark:border-zinc-800 last:border-0"
                 >
                   <TableCell className="py-3 sm:py-2">
                     <div className="flex items-center gap-2">
                       <div className="w-1.5 h-1.5 rounded-lg bg-zinc-300 dark:bg-zinc-600"></div>
-                      <span className="font-mono text-xs text-gray-600 dark:text-zinc-300">{submission.id.slice(0, 8)}...</span>
+                      <span className="font-mono text-xs text-gray-600 dark:text-zinc-500">{submission.id.slice(0, 8)}...</span>
                     </div>
                   </TableCell>
                   <TableCell className="py-3 sm:py-2">
@@ -420,7 +420,7 @@ export function TableContent({
                       variant="outline"
                       size="sm"
                       onClick={() => openSubmissionDetails(submission)}
-                      className="h-7 px-2 text-xs  cursor-pointer bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                      className="h-7 px-2 text-xs  cursor-pointer bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 dark:hover:bg-amber-500dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
                     >
                       <Maximize2 className="h-3 w-3 mr-1" />
                       <span>Details</span>
@@ -491,7 +491,7 @@ export function TableContent({
                 </span>
               </div>
             )}
-            <span className="text-xs text-zinc-600 dark:text-zinc-300">
+            <span className="text-xs text-zinc-500 dark:text-zinc-500">
               Page {pagination.currentPage} of {userPlan === 'FREE' ? Math.min(pagination.pages, 4) : pagination.pages}
               {!isPremium && " (Limited view)"}
             </span>
@@ -501,7 +501,7 @@ export function TableContent({
                 size="sm"
                 disabled={pagination.currentPage <= 1}
                 onClick={() => handlePaginationChange(pagination.currentPage - 1)}
-                className="h-8 text-xs bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 cursor-pointer dark:hover:bg-zinc-800 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="h-8 text-xs bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 cursor-pointer dark:hover:bg-amber-500dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Previous
               </Button>
@@ -511,7 +511,7 @@ export function TableContent({
                   size="sm"
                   disabled={pagination.currentPage >= (userPlan === 'FREE' ? Math.min(pagination.pages, 4) : pagination.pages)}
                   onClick={() => handlePaginationChange(pagination.currentPage + 1)}
-                  className="h-8 text-xs bg-white hover:bg-zinc-100 text-gray-600  dark:bg-zinc-900 cursor-pointer dark:hover:bg-zinc-800 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="h-8 text-xs bg-white hover:bg-zinc-100 text-gray-600  dark:bg-zinc-900 cursor-pointer dark:hover:bg-amber-500dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Next
                 </Button>
@@ -609,7 +609,7 @@ function getUserEmailStatus(submission: Submission) {
   if (!submission.email) {
     return {
       text: "No Email",
-      className: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700",
+      className: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-500 dark:text-zinc-500 border border-zinc-200 dark:border-zinc-700",
       variant: "outline" as const
     };
   }
@@ -650,7 +650,7 @@ function getUserEmailStatus(submission: Submission) {
   // Default case - pending
   return {
     text: "Pending",
-    className: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700",
+    className: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-500 dark:text-zinc-500 border border-zinc-200 dark:border-zinc-700",
     variant: "outline" as const
   };
 }
@@ -693,7 +693,7 @@ function getDeveloperEmailStatus(submission: Submission) {
   // Default case - pending
   return {
     text: "Pending",
-    className: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700",
+    className: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-500 dark:text-zinc-500 border border-zinc-200 dark:border-zinc-700",
     variant: "outline" as const
   };
 } 

@@ -18,7 +18,7 @@ export default function ThankYouPage() {
           <CardDescription>Your feedback has been submitted successfully</CardDescription>
         </CardHeader>
         <CardContent className="text-center">
-          <p className="text-zinc-600 dark:text-zinc-300">
+          <p className="text-zinc-500 dark:text-zinc-500">
             We appreciate you taking the time to share your thoughts with us. 
             Your feedback helps us improve our services and provide a better experience.
           </p>

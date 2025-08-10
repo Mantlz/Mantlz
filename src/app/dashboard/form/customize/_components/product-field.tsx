@@ -272,7 +272,7 @@ export default function ProductField({ field, onUpdate }: ProductFieldProps) {
                         </Badge>
                       </div>
                       {product.description && (
-                        <p className="text-xs text-zinc-600 truncate">
+                        <p className="text-xs text-zinc-500 truncate">
                           {product.description}
                         </p>
                       )}
@@ -291,7 +291,7 @@ export default function ProductField({ field, onUpdate }: ProductFieldProps) {
           </ScrollArea>
 
           <div className="pt-2">
-            <p className="text-sm text-zinc-600">
+            <p className="text-sm text-zinc-500">
               Selected products: {selectedProductIds.length}
             </p>
           </div>

@@ -236,7 +236,7 @@ export function FormSettings({
             <div className="px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-700">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-gray-600 dark:text-zinc-300" />
+                  <Mail className="h-4 w-4 text-gray-600 dark:text-zinc-500" />
                   <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Email Notifications</h4>
                 </div>
                 <div className="flex items-center">
@@ -249,7 +249,7 @@ export function FormSettings({
                     "text-xs px-2 py-0.5 rounded-lg",
                     emailEnabled 
                       ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400" 
-                      : "bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-300"
+                      : "bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-500"
                   )}>
                     {emailEnabled ? 'Enabled' : 'Disabled'}
                   </span>
@@ -318,7 +318,7 @@ export function FormSettings({
               <div className="px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-700">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Users className="h-4 w-4 text-gray-600 dark:text-zinc-300" />
+                    <Users className="h-4 w-4 text-gray-600 dark:text-zinc-500" />
                     <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Users Joined</h4>
                   </div>
                   <div className="flex items-center">
@@ -331,7 +331,7 @@ export function FormSettings({
                       "text-xs px-2 py-0.5 rounded-lg",
                       usersJoinedEnabled 
                         ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400" 
-                        : "bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-300"
+                        : "bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-500"
                     )}>
                       {usersJoinedEnabled ? 'Enabled' : 'Disabled'}
                     </span>
@@ -407,7 +407,7 @@ export function FormSettings({
             <div className="px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-700">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Download className="h-4 w-4 text-gray-600 dark:text-zinc-300" />
+                  <Download className="h-4 w-4 text-gray-600 dark:text-zinc-500" />
                   <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Export Submissions</h4>
                 </div>
                 <div className="flex items-center">

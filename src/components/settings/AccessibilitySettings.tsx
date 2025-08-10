@@ -155,7 +155,7 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
                 </h2>
               </div>
             </div>
-            <p className="text-xs text-zinc-600 dark:text-zinc-400">
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
               Customize your accessibility preferences
             </p>
           </header>
@@ -163,10 +163,10 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
           <Card className="border-zinc-200 dark:border-zinc-800 shadow-none">
             <CardHeader className="pb-3 pt-4 px-5">
               <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
-                <Eye className="h-4 w-4 mr-2 text-zinc-600" />
+                <Eye className="h-4 w-4 mr-2 text-zinc-500" />
                 Display Settings
               </CardTitle>
-              <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+              <CardDescription className="text-zinc-500 dark:text-zinc-400 text-xs">
                 Adjust display settings for better visibility
               </CardDescription>
             </CardHeader>
@@ -176,13 +176,13 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
               <div className="flex items-center justify-between gap-3  px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm opacity-75">
                 <div className="flex items-center gap-4">
                   <div className="bg-white/50 dark:bg-zinc-900/50 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
-                    <Eye className="h-4 w-4 text-zinc-400 dark:text-zinc-600" />
+                    <Eye className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                   </div>
                   <div className="flex flex-col gap-0.5">
-                    <Label htmlFor="highContrast" className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                    <Label htmlFor="highContrast" className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
                       High Contrast
                     </Label>
-                    <span className="text-xs text-zinc-600 dark:text-zinc-400">
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400">
                       Coming soon - Color scheme in development
                     </span>
                   </div>
@@ -199,19 +199,19 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
               <div className="flex items-center justify-between gap-3  px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800">
                 <div className="flex items-center gap-4">
                   <div className="bg-white dark:bg-zinc-900 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
-                    <Type className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+                    <Type className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
                   </div>
                   <div className="flex flex-col gap-0.5">
                     <Label htmlFor="largerText" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                       Larger Text
                     </Label>
-                    <span className="text-xs text-zinc-600 dark:text-zinc-400">
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400">
                       {settings.largerText ? (
                         <span className="text-emerald-600 dark:text-emerald-500 font-medium">
                           Enabled
                         </span>
                       ) : (
-                        <span className="text-zinc-600 dark:text-zinc-400">
+                        <span className="text-zinc-500 dark:text-zinc-400">
                           Disabled
                         </span>
                       )}
@@ -231,10 +231,10 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
           <Card className="border-zinc-200 dark:border-zinc-800 shadow-none">
             <CardHeader className="pb-3 pt-4 px-5">
               <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
-                <MousePointer2 className="h-4 w-4 mr-2 text-zinc-600" />
+                <MousePointer2 className="h-4 w-4 mr-2 text-zinc-500" />
                 Screen Reader Settings
               </CardTitle>
-              <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+              <CardDescription className="text-zinc-500 dark:text-zinc-400 text-xs">
                 Configure screen reader optimization
               </CardDescription>
             </CardHeader>
@@ -243,19 +243,19 @@ export function AccessibilitySettings({ className }: AccessibilitySettingsProps)
               <div className="flex items-center justify-between gap-3  px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800">
                 <div className="flex items-center gap-4">
                   <div className="bg-white dark:bg-zinc-900 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
-                    <MousePointer2 className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+                    <MousePointer2 className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
                   </div>
                   <div className="flex flex-col">
                     <Label htmlFor="screenReader" className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                       Screen Reader Optimization
                     </Label>
-                    <span className="text-xs text-zinc-600 dark:text-zinc-400">
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400">
                       {settings.screenReader ? (
                         <span className="text-emerald-600 dark:text-emerald-500 font-medium">
                           Enabled
                         </span>
                       ) : (
-                        <span className="text-zinc-600 dark:text-zinc-400">
+                        <span className="text-zinc-500 dark:text-zinc-400">
                           Disabled
                         </span>
                       )}

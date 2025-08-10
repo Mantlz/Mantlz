@@ -15,7 +15,7 @@ export function StatsGridSkeleton() {
                 <h1 className="text-2xl font-semibold text-gray-900 dark:text-white tracking-tight">
                   <Skeleton className="h-8 w-48 sm:w-64 rounded-lg" />
                 </h1>
-                <div className="text-sm text-zinc-600 dark:text-zinc-300">
+                <div className="text-sm text-zinc-500 dark:text-zinc-500">
                   <Skeleton className="h-4 w-32 rounded-lg" />
                 </div>
               </div>
@@ -25,16 +25,16 @@ export function StatsGridSkeleton() {
                   <div className="p-1.5 h-8 w-8 px-2 rounded-lg bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white border border-zinc-200 dark:border-zinc-800">
                     <LayoutGrid className="h-4 w-4" />
                   </div>
-                  <div className="p-1.5 h-8 w-8 rounded-lg text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800">
+                  <div className="p-1.5 h-8 w-8 rounded-lg text-zinc-500 dark:text-zinc-500 border border-zinc-200 dark:border-zinc-800">
                     <List className="h-4 w-4" />
                   </div>
                 </div>
                 {/* Search Button */}
-                <div className="h-9 gap-2 cursor-pointer rounded-lg bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 backdrop-blur flex items-center px-3">
+                <div className="h-9 gap-2 cursor-pointer rounded-lg bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-100 dark:hover:bg-amber-500text-gray-700 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 backdrop-blur flex items-center px-3">
                   <Search className="h-4 w-4 text-gray-400" />
-                  <span className="text-sm font-normal hidden sm:inline-block text-zinc-600">Search submissions...</span>
+                  <span className="text-sm font-normal hidden sm:inline-block text-zinc-500">Search submissions...</span>
                   <div className="hidden sm:flex items-center justify-center h-5 px-1.5 ml-1 rounded-lg bg-zinc-100 dark:bg-zinc-800">
-                    <kbd className="text-xs font-mono tracking-wider text-zinc-600 dark:text-zinc-300">⌘K</kbd>
+                    <kbd className="text-xs font-mono tracking-wider text-zinc-500 dark:text-zinc-500">⌘K</kbd>
                   </div>
                 </div>
               </div>
@@ -45,26 +45,26 @@ export function StatsGridSkeleton() {
               <div className=" rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
-                    <FileSpreadsheet className="h-5 w-5 text-gray-400 dark:text-zinc-600" />
+                    <FileSpreadsheet className="h-5 w-5 text-gray-400 dark:text-zinc-500" />
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-gray-600 dark:text-zinc-300">
+                    <div className="text-sm font-medium text-gray-600 dark:text-zinc-500">
                       <Skeleton className="h-4 w-10 rounded-lg" />
                     </div>
-                    <p className="text-xs text-zinc-600 dark:text-zinc-300">Total Forms</p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-500">Total Forms</p>
                   </div>
                 </div>
               </div>
               <div className=" rounded-xl p-4 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 transition-all duration-200">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
-                    <Users className="h-5 w-5 text-gray-400 dark:text-zinc-600" />
+                    <Users className="h-5 w-5 text-gray-400 dark:text-zinc-500" />
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-gray-600 dark:text-zinc-300">
+                    <div className="text-sm font-medium text-gray-600 dark:text-zinc-500">
                       <Skeleton className="h-4 w-12 rounded-lg" />
                     </div>
-                    <p className="text-xs text-zinc-600 dark:text-zinc-300">Total Submissions</p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-500">Total Submissions</p>
                   </div>
                 </div>
               </div>
@@ -83,11 +83,11 @@ export function StatsGridSkeleton() {
               <div className="flex justify-between items-center mt-4">
                 <div className="flex items-center gap-1">
                   <FileSpreadsheet className="h-4 w-4 text-gray-300 dark:text-gray-600" />
-                  <div className="text-xs text-gray-400 dark:text-zinc-600">
+                  <div className="text-xs text-gray-400 dark:text-zinc-500">
                     <Skeleton className="h-3 w-3 inline-block rounded-lg" /> submissions
                   </div>
                 </div>
-                <div className="h-7 w-20 bg-background dark:bg-background rounded-lg flex items-center justify-center text-xs text-zinc-400 dark:text-zinc-600">
+                <div className="h-7 w-20 bg-background dark:bg-background rounded-lg flex items-center justify-center text-xs text-zinc-400 dark:text-zinc-500">
                   View Logs
                 </div>
               </div>

@@ -18,17 +18,17 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
       <div className="p-4 sm:p-6">
         <div className="flex items-center justify-between mb-3 sm:mb-4">
           <Skeleton className="h-5 w-1/2 rounded-lg " />
-          <div className="text-xs sm:text-sm  text-gray-400 dark:text-zinc-600 px-2 sm:px-3 py-1 rounded-lg flex items-center justify-center">
+          <div className="text-xs sm:text-sm  text-gray-400 dark:text-zinc-500 px-2 sm:px-3 py-1 rounded-lg flex items-center justify-center">
             <span><Skeleton className="h-4 w-5 rounded-lg inline-block mr-1 mt-2" /></span> responses
           </div>
         </div>
         
         <div className="flex items-center justify-between">
-          <div className="flex items-center text-xs sm:text-sm text-gray-400 dark:text-zinc-600">
+          <div className="flex items-center text-xs sm:text-sm text-gray-400 dark:text-zinc-500">
             <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
             <Skeleton className="h-4 w-20 rounded-lg" />
           </div>
-          <div className="flex items-center gap-1 text-xs sm:text-sm font-medium text-gray-400 dark:text-zinc-600">
+          <div className="flex items-center gap-1 text-xs sm:text-sm font-medium text-gray-400 dark:text-zinc-500">
             <span>View</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3 sm:h-4 sm:w-4">
               <path d="M5 12h14"></path>
@@ -56,7 +56,7 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
                   <h1 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white tracking-tight">
                     Welcome back, <Skeleton className="h-6 w-16 rounded-lg inline-block align-middle" />
                   </h1>
-                  <div className="text-sm text-zinc-600 dark:text-zinc-300">
+                  <div className="text-sm text-zinc-500 dark:text-zinc-500">
                     You have <Skeleton className="h-4 w-5 rounded-lg inline-block align-middle mx-1" /> form
                     {/* <Skeleton className="h-4 w-3 rounded-lg inline-block align-middle" /> */}
                   </div>
@@ -67,7 +67,7 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
                 <div className="rounded-xl p-4 sm:p-5 border border-zinc-200 dark:border-zinc-800/50 transition-all duration-200">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-gray-400 dark:text-zinc-600">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-gray-400 dark:text-zinc-500">
                         <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
                         <polyline points="14 2 14 8 20 8"></polyline>
                         <path d="M8 13h2"></path>
@@ -77,10 +77,10 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
                       </svg>
                     </div>
                     <div>
-                      <div className="text-sm font-medium text-gray-600 dark:text-zinc-300">
+                      <div className="text-sm font-medium text-gray-600 dark:text-zinc-500">
                         <Skeleton className="h-5 w-5 rounded-lg" />
                       </div>
-                      <p className="text-xs text-zinc-600 dark:text-zinc-300">Total Forms</p>
+                      <p className="text-xs text-zinc-500 dark:text-zinc-500">Total Forms</p>
                     </div>
                   </div>
                   <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden">
@@ -91,7 +91,7 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
                 <div className="rounded-xl p-4 sm:p-5 border border-zinc-200 dark:border-zinc-800/50 transition-all duration-200">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-black/5 dark:bg-white/5 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-gray-400 dark:text-zinc-600">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-gray-400 dark:text-zinc-500">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
                         <circle cx="9" cy="7" r="4"></circle>
                         <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -99,10 +99,10 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
                       </svg>
                     </div>
                     <div>
-                      <div className="text-sm font-medium text-gray-600 dark:text-zinc-300">
+                      <div className="text-sm font-medium text-gray-600 dark:text-zinc-500">
                         <Skeleton className="h-5 w-5 rounded-lg" />
                       </div>
-                      <p className="text-xs text-zinc-600 dark:text-zinc-300">Total Submissions</p>
+                      <p className="text-xs text-zinc-500 dark:text-zinc-500">Total Submissions</p>
                     </div>
                   </div>
                   <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden">
@@ -131,7 +131,7 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
       <div className="flex justify-end mb-2">
         <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg p-1 gap-1 flex items-center">
           <div className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-700 border border-zinc-200 dark:border-zinc-800">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 dark:text-zinc-600">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 dark:text-zinc-500">
               <rect width="7" height="7" x="3" y="3" rx="1" />
               <rect width="7" height="7" x="14" y="3" rx="1" />
               <rect width="7" height="7" x="14" y="14" rx="1" />
@@ -139,7 +139,7 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
             </svg>
           </div>
           <div className="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 dark:text-zinc-600">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 dark:text-zinc-500">
               <line x1="3" x2="21" y1="6" y2="6" />
               <line x1="3" x2="21" y1="12" y2="12" />
               <line x1="3" x2="21" y1="18" y2="18" />

@@ -129,7 +129,7 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
             <File className="h-8 w-8 text-zinc-400" />
           </div>
           <h3 className="text-lg font-medium mb-2">No Submission Selected</h3>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 text-center max-w-md mb-6">
+          <p className="text-sm text-zinc-500 dark:text-zinc-400 text-center max-w-md mb-6">
             Please select a submission from the list to view details
           </p>
           <Button variant="default" onClick={onBack}>
@@ -154,8 +154,8 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
                     <span>Submission #{submission.id.slice(0, 8)}</span>
                     
                   </h2>
-                  <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-zinc-300">
-                    <Calendar className="h-3.5 w-3.5 mr-1.5  text-zinc-600 flex-shrink-0" />
+                  <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-zinc-500">
+                    <Calendar className="h-3.5 w-3.5 mr-1.5  text-zinc-500 flex-shrink-0" />
                     <span className="leading-none">
                       Received{" "}
                       {formatDistanceToNow(new Date(submission.submittedAt), { addSuffix: true })}
@@ -199,14 +199,14 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
             {/* Location information if available */}
             {submission.location && (
               <div className="p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-lg bg-background dark:bg-background">
-                <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
-                  <MapPin className="h-4 w-4 text-zinc-600" />
+                <div className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
+                  <MapPin className="h-4 w-4 text-zinc-500" />
                   <span>
                     {submission.location.city && submission.location.country
                       ? `${submission.location.city}, ${submission.location.country}`
                       : submission.location.country || "Location recorded"}
                   </span>
-                  <Badge variant="outline" className="ml-auto text-[10px] bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+                  <Badge variant="outline" className="ml-auto text-[10px] bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-500">
                     Lat: {submission.location.lat.toFixed(4)}, Lng: {submission.location.lng.toFixed(4)}
                   </Badge>
                 </div>
@@ -216,8 +216,8 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
             {/* Form Data Section */}
             <div>
               <div className="flex items-center mb-3">
-                <File className="h-3.5 w-3.5 mr-2 text-zinc-600" />
-                <h3 className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">Form Data</h3>
+                <File className="h-3.5 w-3.5 mr-2 text-zinc-500" />
+                <h3 className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Form Data</h3>
               </div>
 
             <div className="grid gap-4">
@@ -239,17 +239,17 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
                           <Button
                             variant="outline"
                             size="sm"
-                            className="h-8 text-xs cursor-pointer bg-white hover:bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                            className="h-8 text-xs cursor-pointer bg-white hover:bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-500 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
                             onClick={() => window.open(value, '_blank')}
                           >
-                            <Download className="h-3.5 w-3.5 mr-1.5 text-zinc-600" />
+                            <Download className="h-3.5 w-3.5 mr-1.5 text-zinc-500" />
                             {getFileNameFromUrl(value)}
                           </Button>
                         ) : (
                           <Button
                             variant="outline"
                             size="sm"
-                            className="h-8 text-xs cursor-pointer bg-white hover:bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                            className="h-8 text-xs cursor-pointer bg-white hover:bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-500 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
                             onClick={() => copyToClipboard(key, value)}
                           >
                             {copiedField === key ? (
@@ -263,7 +263,7 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
                       </div>
                       {typeof value === 'string' && isFileUrl(value) ? (
                         <div className="flex items-center gap-2 p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg border border-zinc-200 dark:border-zinc-700">
-                          <FileIcon className="h-5 w-5 text-zinc-600" />
+                          <FileIcon className="h-5 w-5 text-zinc-500" />
                           <a
                             href={value}
                             target="_blank"
@@ -275,10 +275,10 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-7 w-7 p-0 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                            className="h-7 w-7 p-0 hover:bg-zinc-100 dark:hover:bg-amber-500"
                             onClick={() => window.open(value, '_blank')}
                           >
-                            <Download className="h-4 w-4 text-zinc-600" />
+                            <Download className="h-4 w-4 text-zinc-500" />
                           </Button>
                         </div>
                       ) : (
@@ -302,13 +302,13 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
         <AlertDialogContent className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-zinc-900 dark:text-zinc-100">Delete Submission</AlertDialogTitle>
-            <AlertDialogDescription className="text-zinc-600 dark:text-zinc-400">
+            <AlertDialogDescription className="text-zinc-500 dark:text-zinc-400">
               Are you sure you want to delete this submission? This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel
-              className="bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-700"
+              className="bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-500 border border-zinc-300 dark:border-zinc-700"
               disabled={isDeleting}
             >
               Cancel

@@ -23,7 +23,7 @@ export function CampaignHeader({ campaign, onBackClick }: CampaignHeaderProps) {
           <Button
             variant="ghost"
             size="sm"
-            className="h-8 text-xs cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg px-3"
+            className="h-8 text-xs cursor-pointer hover:bg-zinc-100 dark:hover:bg-amber-500rounded-lg px-3"
             onClick={onBackClick}
           >
             <ChevronLeft className="h-3.5 w-3.5 mr-1" /> Back to Campaigns
@@ -53,7 +53,7 @@ export function CampaignHeader({ campaign, onBackClick }: CampaignHeaderProps) {
               <p className="text-sm font-medium text-gray-900 dark:text-white">
                 {campaign._count?.sentEmails || 0}
               </p>
-              <p className="text-xs text-zinc-600 dark:text-zinc-300">Total Emails</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-500">Total Emails</p>
             </div>
           </div>
         </div>
@@ -67,7 +67,7 @@ export function CampaignHeader({ campaign, onBackClick }: CampaignHeaderProps) {
               <p className="text-sm font-medium text-gray-900 dark:text-white">
                 {formatDistanceToNow(new Date(campaign.createdAt), { addSuffix: true })}
               </p>
-              <p className="text-xs text-zinc-600 dark:text-zinc-300">Created</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-500">Created</p>
             </div>
           </div>
         </div>
@@ -81,7 +81,7 @@ export function CampaignHeader({ campaign, onBackClick }: CampaignHeaderProps) {
               <p className="text-sm font-medium text-gray-900 dark:text-white">
                 {campaign._count?.recipients || 0}
               </p>
-              <p className="text-xs text-zinc-600 dark:text-zinc-300">Recipients</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-500">Recipients</p>
             </div>
           </div>
         </div>
@@ -98,7 +98,7 @@ export function CampaignHeader({ campaign, onBackClick }: CampaignHeaderProps) {
                   'Not sent'
                 }
               </p>
-              <p className="text-xs text-zinc-600 dark:text-zinc-300">Sent Date</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-500">Sent Date</p>
             </div>
           </div>
         </div>

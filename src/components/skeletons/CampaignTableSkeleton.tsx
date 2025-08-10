@@ -13,7 +13,7 @@ export function CampaignTableSkeleton() {
           <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">
             Campaign List
           </h3>
-          <Badge className="ml-2 bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+          <Badge className="ml-2 bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-500">
             <Skeleton className="h-4 w-8" />
           </Badge>
         </div>
@@ -23,22 +23,22 @@ export function CampaignTableSkeleton() {
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent border-b border-zinc-200 dark:border-zinc-800">
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
+              <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2">
                 Campaign Name
               </TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
+              <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2">
                 Status
               </TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
+              <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2">
                 Created
               </TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
+              <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2">
                 Schedule/Sent Date
               </TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
+              <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2">
                 Recipients
               </TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2 text-right">
+              <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2 text-right">
                 Actions
               </TableHead>
             </TableRow>
@@ -47,12 +47,12 @@ export function CampaignTableSkeleton() {
             {Array.from({ length: 5 }).map((_, index) => (
               <TableRow 
                 key={index} 
-                className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 last:border-0"
+                className="hover:bg-zinc-50 dark:hover:bg-amber-500/50 border-b border-zinc-200 dark:border-zinc-800 last:border-0"
               >
                 <TableCell className="py-3 sm:py-2">
                   <div className="flex items-center gap-2">
                     <div className="bg-zinc-50 dark:bg-zinc-900/20 p-2 rounded-md">
-                      <Mail className="h-4 w-4 text-zinc-400 dark:text-zinc-600" />
+                      <Mail className="h-4 w-4 text-zinc-400 dark:text-zinc-500" />
                     </div>
                     <div>
                       <Skeleton className="h-4 w-32 mb-1" />
@@ -97,7 +97,7 @@ export function CampaignTableSkeleton() {
       </div>
 
       <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
-        <span className="text-xs text-zinc-600 dark:text-zinc-300">
+        <span className="text-xs text-zinc-500 dark:text-zinc-500">
           Page <Skeleton className="h-4 w-8 inline-block mx-1" /> of <Skeleton className="h-4 w-8 inline-block ml-1" />
         </span>
         <div className="flex items-center gap-2">

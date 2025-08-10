@@ -197,7 +197,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                 <div className="space-y-3 sm:space-y-4 w-full sm:w-auto">
                   <div className="flex items-center gap-3">
                     <div>
-                      <p className="text-sm text-zinc-600 dark:text-zinc-300">
+                      <p className="text-sm text-zinc-500 dark:text-zinc-500">
                         Let&apos;s create your first form
                       </p>
                     </div>
@@ -220,7 +220,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
             <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">
               Ready to create your first form?
             </h3>
-            <p className="text-sm text-zinc-600 dark:text-zinc-300 mb-4 sm:mb-6 max-w-sm mx-auto px-4">
+            <p className="text-sm text-zinc-500 dark:text-zinc-500 mb-4 sm:mb-6 max-w-sm mx-auto px-4">
               Start collecting responses in minutes with our easy-to-use form
               builder
             </p>
@@ -260,7 +260,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                       onClick={() => handleViewModeChange('grid')}
                       className={`p-1.5 rounded-lg ${viewMode === 'grid' 
                         ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
-                        : 'text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                        : 'text-zinc-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-gray-300'}`}
                       aria-label="Grid view"
                     >
                       <LayoutGrid className="h-4 w-4" />
@@ -269,7 +269,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                       onClick={() => handleViewModeChange('list')}
                       className={`p-1.5 rounded-lg ${viewMode === 'list' 
                         ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
-                        : 'text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                        : 'text-zinc-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-gray-300'}`}
                       aria-label="List view"
                     >
                       <List className="h-4 w-4" />
@@ -282,7 +282,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                       className={`p-1 rounded-lg ${
                         viewMode === "grid"
                           ? "bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white "
-                          : "text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300"
+                          : "text-zinc-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-gray-300"
                       }`}
                       aria-label="Grid view"
                     >
@@ -309,7 +309,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                       className={`p-1 rounded-lg ${
                         viewMode === "list"
                           ? "bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white"
-                          : "text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300"
+                          : "text-zinc-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-gray-300"
                       }`}
                       aria-label="List view"
                     >
@@ -345,7 +345,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                       <p className="text-sm font-medium text-gray-900 dark:text-white">
                         {formsData.forms.length}
                       </p>
-                      <p className="text-xs text-zinc-600 dark:text-zinc-300">
+                      <p className="text-xs text-zinc-500 dark:text-zinc-500">
                         Total Forms
                       </p>
                     </div>
@@ -364,7 +364,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                           0
                         )}
                       </p>
-                      <p className="text-xs text-zinc-600 dark:text-zinc-300">
+                      <p className="text-xs text-zinc-500 dark:text-zinc-500">
                         Total Submissions
                       </p>
                     </div>
@@ -390,14 +390,14 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                       {form.name}
                     </h3>
                     {form.description && (
-                      <p className="text-sm text-zinc-600 dark:text-zinc-300 mb-3 line-clamp-2">
+                      <p className="text-sm text-zinc-500 dark:text-zinc-500 mb-3 line-clamp-2">
                         {form.description}
                       </p>
                     )}
                     <div className="flex justify-between items-center mt-4">
                       <div className="flex items-center gap-1">
                         <FileSpreadsheet className="h-4 w-4 text-gray-400" />
-                        <span className="text-xs text-zinc-600 dark:text-zinc-300">
+                        <span className="text-xs text-zinc-500 dark:text-zinc-500">
                           {form.submissionCount} submission
                           {form.submissionCount !== 1 ? "s" : ""}
                         </span>
@@ -407,8 +407,8 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                         size="sm"
                         className={`h-7 px-2 text-xs ${
                           form.submissionCount > 0
-                           ? "bg-amber-500 hover:bg-amber-400 text-black dark:text-white dark:bg-background-900/20 dark:hover:bg-amber-400"
-                            : "hover:bg-amber-400 text-black dark:text-white dark:hover:bg-amber-400 "
+                           ? "bg-amber-500 hover:bg-amber-400 text-black dark:text-white dark:bg-background-900/20 dark:hover:bg-amber-500"
+                            : "hover:bg-amber-400 text-black dark:text-white dark:hover:bg-amber-500 "
                         } rounded-lg`}
                          
                       >
@@ -438,7 +438,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                         <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
                           {form.name}
                         </h3>
-                        <div className="flex items-center gap-4 text-xs sm:text-sm text-zinc-600 dark:text-zinc-300">
+                        <div className="flex items-center gap-4 text-xs sm:text-sm text-zinc-500 dark:text-zinc-500">
                           <div className="flex items-center">
                             <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5" />
                             <span>
@@ -454,8 +454,8 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                         size="sm"
                         className={`h-7 px-2 text-xs ${
                           form.submissionCount > 0
-                            ? "bg-amber-500 hover:bg-amber-400 text-black dark:text-white dark:bg-background-900/20 dark:hover:bg-amber-400"
-                            : "hover:bg-amber-400 text-black dark:text-white dark:hover:bg-amber-400 "
+                            ? "bg-amber-500 hover:bg-amber-400 text-black dark:text-white dark:bg-background-900/20 dark:hover:bg-amber-500"
+                            : "hover:bg-amber-400 text-black dark:text-white dark:hover:bg-amber-500 "
                         } rounded-lg`}
                       >
                         View Logs
@@ -482,7 +482,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
             >
               Previous
             </Button>
-            <span className="text-sm text-zinc-600 dark:text-zinc-300">
+            <span className="text-sm text-zinc-500 dark:text-zinc-500">
               Page {page} of {totalFormsPages}
             </span>
             <Button

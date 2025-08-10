@@ -133,8 +133,8 @@ export function FormTemplateCard({ template, isSelected, onSelect, onContinue }:
               className={cn(
                 "mt-2 w-full text-xs rounded-lg h-8 cursor-pointer",
                 isLocked 
-                  ? "text-neutral-500 dark:text-neutral-500 border-neutral-200 dark:border-zinc-800 bg-transparent hover:bg-neutral-100 dark:hover:bg-zinc-800"
-                  : !isSelected && "text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-zinc-800 bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  ? "text-neutral-500 dark:text-neutral-500 border-neutral-200 dark:border-zinc-800 bg-transparent hover:bg-neutral-100 dark:hover:bg-amber-500"
+                  : !isSelected && "text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-zinc-800 bg-transparent hover:bg-zinc-100 dark:hover:bg-amber-500"
               )}
               onClick={(e) => {
                 e.stopPropagation();

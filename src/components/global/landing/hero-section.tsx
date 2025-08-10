@@ -11,7 +11,7 @@ export default function HeroSection() {
   return (
     <div className="relative isolate overflow-hidden min-h-screen">
       <div className="relative z-10 mx-auto max-w-8xl  mt-20  text-center">
-        <div className=" inline-flex items-center rounded-xl mb-2 bg-gradient-to-r from-zinc-100 to-zinc-50 px-4 py-2 text-sm font-light text-zinc-700 ring-1 ring-inset ring-zinc-200/50 dark:from-zinc-800/30 dark:to-zinc-500/20 dark:text-zinc-300 dark:ring-zinc-500/30">
+        <div className=" inline-flex items-center rounded-xl mb-2 bg-gradient-to-r from-zinc-100 to-zinc-50 px-4 py-2 text-sm font-light text-zinc-700 ring-1 ring-inset ring-zinc-200/50 dark:from-zinc-800/30 dark:to-zinc-500/20 dark:text-zinc-500 dark:ring-zinc-500/30">
           <Sparkles className="h-4 w-4 mr-2 text-orange-500 dark:text-white" />
           <span className="font-mono text-black dark:text-white">SDK</span>
           <span className="mx-2 h-4 w-px bg-zinc-700"></span>

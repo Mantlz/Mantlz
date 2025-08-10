@@ -174,7 +174,7 @@ export function FormResponsesList({
           </div>
           <div>
             <h3 className="text-lg font-medium text-zinc-900 dark:text-white mb-2">Failed to load responses</h3>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-6 max-w-md">
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6 max-w-md">
               There was an error loading the form responses. Please try again.
             </p>
             <Button variant="default" onClick={onRetry}>
@@ -195,7 +195,7 @@ export function FormResponsesList({
           </div>
           <div>
             <h3 className="text-lg font-medium text-zinc-900 dark:text-white mb-2">No responses yet</h3>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 max-w-md">
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-md">
               This form has not received any submissions yet.
             </p>
           </div>
@@ -222,14 +222,14 @@ export function FormResponsesList({
       <Card className="bg-background border-zinc-200 dark:border-zinc-800 shadow-none">
         <CardContent className="p-0 bg-background">
           <div className="p-3 border-b border-zinc-200 dark:border-zinc-800 grid grid-cols-1 sm:grid-cols-4 gap-4">
-            <div className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">Email</div>
-            <div className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wider hidden sm:block">
+            <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Email</div>
+            <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider hidden sm:block">
               Date
             </div>
-            <div className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wider hidden sm:block">
+            <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider hidden sm:block">
               Status
             </div>
-            <div className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wider text-right">
+            <div className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider text-right">
               Actions
             </div>
           </div>
@@ -237,14 +237,14 @@ export function FormResponsesList({
           {paginatedSubmissions.map((submission) => (
             <div
               key={submission.id}
-              className="p-4 border-b last:border-0 border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+              className="p-4 border-b last:border-0 border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-amber-500/50 transition-colors"
             >
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-center">
                 <div className="font-medium text-zinc-900 dark:text-white truncate flex items-center">
                   <Mail className="h-3.5 w-3.5 mr-2 text-zinc-400 sm:hidden" />
                   {submission.data?.email || "—"}
                 </div>
-                <div className="text-xs text-zinc-600 dark:text-zinc-400 flex items-center">
+                <div className="text-xs text-zinc-500 dark:text-zinc-400 flex items-center">
                   <Calendar className="h-3.5 w-3.5 mr-2 text-zinc-400 sm:hidden" />
                   {submission.createdAt ? format(new Date(submission.createdAt), "MMM d, yyyy h:mm a") : "—"}
                 </div>
@@ -260,7 +260,7 @@ export function FormResponsesList({
                       return (
                         <Badge
                           key={key}
-                          variant="outline"
+                          variant="secondary"
                           className="text-[10px] px-2 py-0.5 rounded-lg bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 flex items-center gap-1"
                         >
                           <FileIcon className="h-3 w-3" />
@@ -279,10 +279,10 @@ export function FormResponsesList({
                           key={key}
                           variant="outline"
                           size="sm"
-                          className="h-8 text-xs cursor-pointer bg-white hover:bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                          className="h-8 text-xs cursor-pointer bg-white hover:bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-500 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
                           onClick={() => window.open(value, '_blank')}
                         >
-                          <Download className="h-3.5 w-3.5 mr-1.5 text-zinc-600" />
+                          <Download className="h-3.5 w-3.5 mr-1.5 text-zinc-500" />
                           {getFileNameFromUrl(value)}
                         </Button>
                       );
@@ -300,13 +300,13 @@ export function FormResponsesList({
                       <Button
                         variant="outline"
                         size="sm"
-                        className="h-8 text-xs cursor-pointer bg-white hover:bg-zinc-100 text-zinc-600  dark:hover:bg-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                        className="h-8 text-xs cursor-pointer bg-white hover:bg-zinc-100 text-zinc-500  dark:hover:bg-zinc-700 dark:text-zinc-500 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
                         onClick={() => {
                           setSelectedSubmission(submission)
                           setSheetOpen(true)
                         }}
                       >
-                        <Eye className="h-3.5 w-3.5 mr-1.5 text-zinc-600" />
+                        <Eye className="h-3.5 w-3.5 mr-1.5 text-zinc-500" />
                         View
                       </Button>
                     </SheetTrigger>
@@ -362,7 +362,7 @@ export function FormResponsesList({
               </PaginationItem>
 
               {/* Mobile: Show current page info */}
-              <div className="flex items-center px-3 py-2 text-xs text-zinc-600 dark:text-zinc-400 sm:hidden">
+              <div className="flex items-center px-3 py-2 text-xs text-zinc-500 dark:text-zinc-400 sm:hidden">
                 Page {currentPage} of {totalPages}
               </div>
 

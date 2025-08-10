@@ -204,8 +204,8 @@ export function TableSubmissionSheet({
                         {userEmailStatus.type === 'SENT' ? "Email Sent" : "No Email Sent"}
                       </Badge>
                     </h2>
-                    <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-zinc-300">
-                      <Calendar className="h-3.5 w-3.5 mr-1.5 text-zinc-600" />
+                    <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-zinc-500">
+                      <Calendar className="h-3.5 w-3.5 mr-1.5 text-zinc-500" />
                       <span>
                         Received{" "}
                         {formatDistanceToNow(new Date(submission.createdAt), { addSuffix: true })}
@@ -237,8 +237,8 @@ export function TableSubmissionSheet({
                 {submission.email && (
                   <div>
                     <div className="flex items-center mb-3">
-                      <Mail className="h-3.5 w-3.5 mr-2 text-zinc-600" />
-                      <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300 uppercase tracking-wider">
+                      <Mail className="h-3.5 w-3.5 mr-2 text-zinc-500" />
+                      <p className="text-xs font-medium text-zinc-500 dark:text-zinc-500 uppercase tracking-wider">
                         Email Status
                       </p>
                     </div>
@@ -247,8 +247,8 @@ export function TableSubmissionSheet({
                       <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-lg bg-background dark:bg-background">
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
-                            <Mail className="h-3.5 w-3.5 text-zinc-600" />
-                            <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300">User Email</p>
+                            <Mail className="h-3.5 w-3.5 text-zinc-500" />
+                            <p className="text-xs font-medium text-zinc-500 dark:text-zinc-500">User Email</p>
                           </div>
                           <Badge
                             variant="secondary"
@@ -277,8 +277,8 @@ export function TableSubmissionSheet({
                         <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-lg bg-background dark:bg-background">
                           <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
-                              <Bell className="h-3.5 w-3.5 text-zinc-600" />
-                              <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300">Developer Email</p>
+                              <Bell className="h-3.5 w-3.5 text-zinc-500" />
+                              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-500">Developer Email</p>
                             </div>
                             <Badge
                               variant="secondary"
@@ -311,8 +311,8 @@ export function TableSubmissionSheet({
                           </div>
                           <div className="flex items-center justify-between mb-2 blur-sm">
                             <div className="flex items-center gap-2">
-                              <Bell className="h-3.5 w-3.5 text-zinc-600" />
-                              <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300">Developer Email</p>
+                              <Bell className="h-3.5 w-3.5 text-zinc-500" />
+                              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-500">Developer Email</p>
                             </div>
                             <Badge
                               variant="secondary"
@@ -336,8 +336,8 @@ export function TableSubmissionSheet({
                 {submission.data && typeof submission.data === 'object' && (
                   <div>
                     <div className="flex items-center mb-3">
-                      <File className="h-3.5 w-3.5 mr-2 text-zinc-600" />
-                      <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300 uppercase tracking-wider">
+                      <File className="h-3.5 w-3.5 mr-2 text-zinc-500" />
+                      <p className="text-xs font-medium text-zinc-500 dark:text-zinc-500 uppercase tracking-wider">
                         Form Data
                       </p>
                     </div>
@@ -352,11 +352,11 @@ export function TableSubmissionSheet({
                           <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
                               {typeof value === 'string' && isFileUrl(value) ? (
-                                <FileIcon className="h-3.5 w-3.5 text-zinc-600" />
+                                <FileIcon className="h-3.5 w-3.5 text-zinc-500" />
                               ) : (
                                 <div className="w-2 h-2 bg-zinc-300 dark:bg-zinc-600 rounded-lg"></div>
                               )}
-                              <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300 uppercase tracking-wider">
+                              <p className="text-xs font-medium text-zinc-500 dark:text-zinc-500 uppercase tracking-wider">
                                 {key}
                               </p>
                             </div>
@@ -365,7 +365,7 @@ export function TableSubmissionSheet({
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  className="h-7 px-2 text-zinc-600 cursor-pointer dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
+                                  className="h-7 px-2 text-zinc-500 cursor-pointer dark:text-zinc-500 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-zinc-100 dark:hover:bg-amber-500rounded-lg"
                                   onClick={() => window.open(value, '_blank')}
                                 >
                                   <Download className="h-3.5 w-3.5 mr-1.5" />
@@ -375,7 +375,7 @@ export function TableSubmissionSheet({
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  className="h-7 px-2 text-zinc-600 cursor-pointer dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
+                                  className="h-7 px-2 text-zinc-500 cursor-pointer dark:text-zinc-500 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-zinc-100 dark:hover:bg-amber-500rounded-lg"
                                   onClick={() => copyToClipboard(key, value)}
                                 >
                                   {copiedField === key ? (
@@ -408,8 +408,8 @@ export function TableSubmissionSheet({
                 {submission.data && typeof submission.data === 'object' && '_meta' in submission.data && (
                   <div>
                     <div className="flex items-center mb-3">
-                      <BarChart className="h-3.5 w-3.5 mr-2 text-zinc-600" />
-                      <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300 uppercase tracking-wider">
+                      <BarChart className="h-3.5 w-3.5 mr-2 text-zinc-500" />
+                      <p className="text-xs font-medium text-zinc-500 dark:text-zinc-500 uppercase tracking-wider">
                         Analytics
                         {/* Only show premium badge for non-premium users */}
                         {!isPremium && (
@@ -423,8 +423,8 @@ export function TableSubmissionSheet({
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                         <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-lg bg-background dark:bg-background">
                           <div className="flex items-center gap-2 mb-2">
-                            <Globe className="h-3.5 w-3.5 text-zinc-600" />
-                            <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300">Browser</p>
+                            <Globe className="h-3.5 w-3.5 text-zinc-500" />
+                            <p className="text-xs font-medium text-zinc-500 dark:text-zinc-500">Browser</p>
                           </div>
                           <p className="text-xs sm:text-sm text-gray-900 dark:text-white">
                             {typeof submission.data._meta === 'object' && submission.data._meta !== null && 
@@ -435,8 +435,8 @@ export function TableSubmissionSheet({
                         </div>
                         <div className="p-3 sm:p-4 border border-zinc-200 dark:border-zinc-800/50 rounded-lg bg-background dark:bg-background">
                           <div className="flex items-center gap-2 mb-2">
-                            <MapPin className="h-3.5 w-3.5 text-zinc-600" />
-                            <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300">Location</p>
+                            <MapPin className="h-3.5 w-3.5 text-zinc-500" />
+                            <p className="text-xs font-medium text-zinc-500 dark:text-zinc-500">Location</p>
                           </div>
                           <p className="text-xs sm:text-sm text-gray-900 dark:text-white">
                             {typeof submission.data._meta === 'object' && submission.data._meta !== null && 
@@ -451,7 +451,7 @@ export function TableSubmissionSheet({
                         <div className="text-center">
                           <Lock className="h-6 w-6 text-amber-500 mx-auto mb-2" />
                           <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Advanced Analytics</h4>
-                          <p className="text-xs text-zinc-600 dark:text-zinc-300 mb-3">
+                          <p className="text-xs text-zinc-500 dark:text-zinc-500 mb-3">
                             Unlock detailed submission analytics with our premium plan
                           </p>
                           <Button

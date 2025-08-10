@@ -68,7 +68,7 @@ export default function BillingHistoryPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[40vh] w-full">
         <Loader2 className="h-6 w-6 text-zinc-400 animate-spin" />
-        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
           Loading billing history...
         </p>
       </div>
@@ -79,7 +79,7 @@ export default function BillingHistoryPage() {
     return (
       <div className="flex flex-col items-center justify-center py-8 text-center">
         <AlertCircle className="h-6 w-6 text-red-500" />
-        <p className="mt-2 text-sm text-zinc-800 dark:text-zinc-300">
+        <p className="mt-2 text-sm text-zinc-800 dark:text-zinc-500">
           Could not load your billing history.
         </p>
       </div>
@@ -95,7 +95,7 @@ export default function BillingHistoryPage() {
             <h1 className="text-2xl font-semibold text-zinc-900 dark:text-white">
               Billing History
             </h1>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
               View and download your complete billing history
             </p>
           </div>
@@ -107,7 +107,7 @@ export default function BillingHistoryPage() {
             <CardTitle className="text-zinc-900 dark:text-white text-sm">
               All Invoices
             </CardTitle>
-            <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+            <CardDescription className="text-zinc-500 dark:text-zinc-400 text-xs">
               Your complete invoice history
             </CardDescription>
           </CardHeader>
@@ -118,13 +118,13 @@ export default function BillingHistoryPage() {
                   {invoices.map((invoice) => (
                     <div
                       key={invoice.id}
-                      className="flex items-center justify-between p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+                      className="flex items-center justify-between p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-50 dark:hover:bg-amber-500/50 transition-colors"
                     >
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-zinc-900 dark:text-white">
                           Invoice #{invoice.number}
                         </span>
-                        <span className="text-xs text-zinc-600 dark:text-zinc-400">
+                        <span className="text-xs text-zinc-500 dark:text-zinc-400">
                           {new Date(invoice.created * 1000).toLocaleDateString()}
                         </span>
                       </div>
@@ -171,7 +171,7 @@ export default function BillingHistoryPage() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-8 text-sm text-zinc-600 dark:text-zinc-400">
+                <div className="text-center py-8 text-sm text-zinc-500 dark:text-zinc-400">
                   No invoices found
                 </div>
               )}

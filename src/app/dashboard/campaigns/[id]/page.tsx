@@ -93,7 +93,7 @@ export default function CampaignDetailPage() {
                 variant="ghost" 
                 size="sm" 
                 onClick={handleBackClick}
-                className="mb-6 h-8 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg px-3"
+                className="mb-6 h-8 text-xs hover:bg-zinc-100 dark:hover:bg-amber-500rounded-lg px-3"
               >
                 <ChevronLeft className="h-3.5 w-3.5 mr-1" />
                 <span className="hidden xs:inline">Back to Campaigns</span>
@@ -147,7 +147,7 @@ export default function CampaignDetailPage() {
                         variant="outline" 
                         size="sm"
                         onClick={() => setShowUpgradeModal(true)}
-                        className="h-7 px-2 text-xs cursor-pointer gap-1 bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                        className="h-7 px-2 text-xs cursor-pointer gap-1 bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 dark:hover:bg-amber-500dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
                       >
                         Upgrade for Analytics
                       </Button>

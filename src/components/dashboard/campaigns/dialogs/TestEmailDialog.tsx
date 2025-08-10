@@ -152,7 +152,7 @@ export function TestEmailDialog({
                   Send Test Email
                 </DialogTitle>
               </div>
-              <DialogDescription className="text-sm text-gray-600 dark:text-zinc-300">
+              <DialogDescription className="text-sm text-gray-600 dark:text-zinc-500">
                 Verify your campaign content and settings before sending to your audience.
               </DialogDescription>
             </DialogHeader>
@@ -163,13 +163,13 @@ export function TestEmailDialog({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="flex-shrink-0">
-                      <Mail className="h-5 w-5 text-zinc-600 dark:text-zinc-300" />
+                      <Mail className="h-5 w-5 text-zinc-500 dark:text-zinc-500" />
                     </div>
                     <div>
                       <p className="font-medium text-gray-900 dark:text-gray-100 text-sm">
                         Test Recipient
                       </p>
-                      <p className="text-gray-600 dark:text-zinc-300 text-sm mt-0.5">
+                      <p className="text-gray-600 dark:text-zinc-500 text-sm mt-0.5">
                         {user?.emailAddresses[0]?.emailAddress}
                       </p>
                     </div>
@@ -185,12 +185,12 @@ export function TestEmailDialog({
               {/* Status Messages */}
               {!isPaidUser && (
                 <div className="flex items-start gap-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 border border-gray-100 dark:border-zinc-950/50">
-                  <AlertCircle className="h-5 w-5 text-zinc-600 dark:text-zinc-300 flex-shrink-0" />
+                  <AlertCircle className="h-5 w-5 text-zinc-500 dark:text-zinc-500 flex-shrink-0" />
                   <div>
                     <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">
                       Upgrade Required
                     </h4>
-                    <p className="mt-1 text-sm text-gray-600 dark:text-zinc-300">
+                    <p className="mt-1 text-sm text-gray-600 dark:text-zinc-500">
                       Test emails are available on Standard and Pro plans
                     </p>
                   </div>
@@ -199,12 +199,12 @@ export function TestEmailDialog({
 
               {!isDraft && isPaidUser && (
                 <div className="flex items-start gap-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 border border-gray-100 dark:border-zinc-950/50">
-                  <AlertCircle className="h-5 w-5 text-zinc-600 dark:text-zinc-300 flex-shrink-0" />
+                  <AlertCircle className="h-5 w-5 text-zinc-500 dark:text-zinc-500 flex-shrink-0" />
                   <div>
                     <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">
                       Campaign Not in Draft
                     </h4>
-                    <p className="mt-1 text-sm text-gray-600 dark:text-zinc-300">
+                    <p className="mt-1 text-sm text-gray-600 dark:text-zinc-500">
                       Test emails can only be sent for draft campaigns
                     </p>
                   </div>

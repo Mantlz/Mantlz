@@ -20,7 +20,7 @@ export function NoCampaignsView({ isPremium = false, }: NoCampaignsViewProps) {
         <h3 className="text-xl font-medium text-gray-900 dark:text-white">
           {isPremium ? "No campaigns yet" : "Upgrade to create campaigns"}
         </h3>
-        <p className="text-sm text-zinc-600 dark:text-zinc-300">
+        <p className="text-sm text-zinc-500 dark:text-zinc-500">
           {isPremium 
             ? "Create your first campaign to start sending emails to your form submissions."
             : "Create and manage email campaigns with advanced features like scheduling, analytics, and more. Available on Standard and Pro plans."}

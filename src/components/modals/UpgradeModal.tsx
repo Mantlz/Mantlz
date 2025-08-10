@@ -80,7 +80,7 @@ export function UpgradeModal({
               </div>
               <div className="min-w-0 flex-1">
                 <h3 className="text-lg font-medium text-black dark:text-white truncate">{featureName}</h3>
-                <p className="text-sm text-gray-600 dark:text-zinc-300 mt-1 break-words">
+                <p className="text-sm text-gray-600 dark:text-zinc-500 mt-1 break-words">
                   {featureDescription}
                 </p>
               </div>
@@ -93,25 +93,25 @@ export function UpgradeModal({
               </div>
               
               <div className="divide-y divide-slate-200 dark:divide-zinc-800">
-                <div className="flex justify-between py-3 px-4 items-center hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors cursor-default">
+                <div className="flex justify-between py-3 px-4 items-center hover:bg-slate-50 dark:hover:bg-amber-500/50 transition-colors cursor-default">
                   <span className="font-medium text-black dark:text-white text-sm">FREE</span>
-                  <span className="text-gray-600 dark:text-zinc-300 flex items-center text-sm">
+                  <span className="text-gray-600 dark:text-zinc-500 flex items-center text-sm">
                     <span className="rounded-lg h-2 w-2 bg-slate-300 dark:bg-zinc-700 mr-2"></span>
                     Basic form features
                   </span>
                 </div>
                 
-                <div className="flex justify-between py-3 px-4 items-center hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors cursor-default">
+                <div className="flex justify-between py-3 px-4 items-center hover:bg-slate-50 dark:hover:bg-amber-500/50 transition-colors cursor-default">
                   <span className="font-medium text-black dark:text-white text-sm">STANDARD</span>
-                  <span className="text-gray-600 dark:text-zinc-300 flex items-center text-sm">
+                  <span className="text-gray-600 dark:text-zinc-500 flex items-center text-sm">
                     <span className="rounded-lg h-2 w-2 bg-slate-800 dark:bg-white mr-2"></span>
                     Advanced features & analytics
                   </span>
                 </div>
                 
-                <div className="flex justify-between py-3 px-4 items-center hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors cursor-default">
+                <div className="flex justify-between py-3 px-4 items-center hover:bg-slate-50 dark:hover:bg-amber-500/50 transition-colors cursor-default">
                   <span className="font-medium text-black dark:text-white text-sm">PRO</span>
-                  <span className="text-gray-600 dark:text-zinc-300 flex items-center text-sm">
+                  <span className="text-gray-600 dark:text-zinc-500 flex items-center text-sm">
                     <span className="rounded-lg h-2 w-2 bg-slate-800 dark:bg-white mr-2"></span>
                     Everything in Standard
                   </span>
@@ -125,13 +125,13 @@ export function UpgradeModal({
             <Button 
               variant="outline" 
               onClick={onClose}
-              className="border border-slate-200 dark:border-zinc-800 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors font-medium text-sm cursor-pointer"
+              className="border border-slate-200 dark:border-zinc-800 hover:bg-slate-100 dark:hover:bg-amber-500transition-colors font-medium text-sm cursor-pointer"
             >
               Cancel
             </Button>
             <Button 
               onClick={() => window.location.href = '/pricing'}
-              className="bg-amber-500 hover:bg-amber-500 dark:hover:bg-amber-600 text-white transition-colors font-medium text-sm cursor-pointer"
+              className="bg-amber-500 hover:bg-amber-500 dark:hover:bg-amber-500 text-white transition-colors font-medium text-sm cursor-pointer"
             >
               Upgrade Plan
             </Button>

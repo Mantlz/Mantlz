@@ -225,7 +225,7 @@ export function formatCampaignStatus(
     case "DRAFT":
       return {
         label: "Draft",
-        color: "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300",
+        color: "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-500",
       };
     case "SCHEDULED":
       return {

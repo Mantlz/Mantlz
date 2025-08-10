@@ -203,7 +203,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                 <div className="space-y-3 sm:space-y-4 w-full sm:w-auto">
                   <div className="flex items-center gap-3">
                     <div>
-                      <p className="text-sm text-zinc-600 dark:text-zinc-300">
+                      <p className="text-sm text-zinc-500 dark:text-zinc-500">
                         {isPremium ? "Let's create your first form" : "Upgrade to create email campaigns"}
                       </p>
                     </div>
@@ -226,7 +226,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
             <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">
               {isPremium ? "Ready to create your first form?" : "Upgrade to access email campaigns"}
             </h3>
-            <p className="text-sm text-zinc-600 dark:text-zinc-300 mb-4 sm:mb-6 max-w-sm mx-auto px-4">
+            <p className="text-sm text-zinc-500 dark:text-zinc-500 mb-4 sm:mb-6 max-w-sm mx-auto px-4">
               {isPremium 
                 ? "Start collecting responses in minutes with our easy-to-use form builder"
                 : "Create and manage email campaigns with advanced features like scheduling, analytics, and more"}
@@ -266,7 +266,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                       onClick={() => handleViewModeChange('grid')}
                       className={`p-1.5 rounded-lg ${viewMode === 'grid' 
                         ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
-                        : 'text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                        : 'text-zinc-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-gray-300'}`}
                       aria-label="Grid view"
                     >
                       <LayoutGrid className="h-4 w-4" />
@@ -275,7 +275,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                       onClick={() => handleViewModeChange('list')}
                       className={`p-1.5 rounded-lg ${viewMode === 'list' 
                         ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
-                        : 'text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                        : 'text-zinc-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-gray-300'}`}
                       aria-label="List view"
                     >
                       <List className="h-4 w-4" />
@@ -287,7 +287,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
               onClick={() => handleViewModeChange('grid')}
               className={`p-1.5 rounded-lg ${viewMode === 'grid' 
                 ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white ' 
-                : 'text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                : 'text-zinc-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-gray-300'}`}
               aria-label="Grid view"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -303,7 +303,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
               onClick={() => handleViewModeChange('list')}
               className={`p-1.5 rounded-lg ${viewMode === 'list' 
                 ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
-                : 'text-zinc-600 dark:text-zinc-300 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                : 'text-zinc-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-gray-300'}`}
               aria-label="List view"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -325,7 +325,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">{formsData.forms.length}</p>
-                      <p className="text-xs text-zinc-600 dark:text-zinc-300">Total Forms</p>
+                      <p className="text-xs text-zinc-500 dark:text-zinc-500">Total Forms</p>
                     </div>
                   </div>
                 </div>
@@ -339,7 +339,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                       <p className="text-sm font-medium text-gray-900 dark:text-white">
                         {formsData.forms.reduce((total, form) => total + (form._count?.campaigns || 0), 0)}
                       </p>
-                      <p className="text-xs text-zinc-600 dark:text-zinc-300">Total Campaigns</p>
+                      <p className="text-xs text-zinc-500 dark:text-zinc-500">Total Campaigns</p>
                     </div>
                   </div>
                 </div>
@@ -364,14 +364,14 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                         <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate">
                           {form.name}
                         </h3>
-                        <p className="text-sm text-zinc-600 dark:text-zinc-300 line-clamp-2">
+                        <p className="text-sm text-zinc-500 dark:text-zinc-500 line-clamp-2">
                           {form.description || "No description available"}
                         </p>
                       </div>
                       <div className="flex justify-between items-center mt-4">
                         <div className="flex items-center gap-1">
                           <Mail className="h-4 w-4 text-gray-400" />
-                          <span className="text-xs text-zinc-600 dark:text-zinc-300">
+                          <span className="text-xs text-zinc-500 dark:text-zinc-500">
                             <strong>{form._count?.campaigns || 0}</strong> campaign{(form._count?.campaigns || 0) !== 1 ? 's' : ''}
                           </span>
                         </div>
@@ -380,8 +380,8 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                         size="sm"
                         className={`h-7 px-2 text-xs ${
                           (form._count?.campaigns || 0) > 0
-                           ? "bg-amber-500 hover:bg-amber-400 text-black dark:text-white dark:bg-background-900/20 dark:hover:bg-amber-400"
-                            : "hover:bg-amber-400 text-black dark:text-white dark:hover:bg-amber-400 "
+                           ? "bg-amber-500 hover:bg-amber-400 text-black dark:text-white dark:bg-background-900/20 dark:hover:bg-amber-500"
+                            : "hover:bg-amber-400 text-black dark:text-white dark:hover:bg-amber-500 "
                         } rounded-lg`}
                       >
                         View Campaigns
@@ -411,11 +411,11 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                         <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
                           {form.name}
                         </h3>
-                        <p className="text-sm text-zinc-600 dark:text-zinc-300 line-clamp-1">
+                        <p className="text-sm text-zinc-500 dark:text-zinc-500 line-clamp-1">
                           {form.description || "No description available"}
                         </p>
                       </div>
-                      <div className="flex items-center gap-4 text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-2">
+                      <div className="flex items-center gap-4 text-xs sm:text-sm text-zinc-500 dark:text-zinc-500 mt-2">
                         <div className="flex items-center">
                           <Mail className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5" />
                           <span>{form._count?.campaigns || 0} campaign{(form._count?.campaigns || 0) !== 1 ? 's' : ''}</span>
@@ -428,8 +428,8 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                         size="sm"
                         className={`h-7 px-2 text-xs ${
                           (form._count?.campaigns || 0) > 0
-                            ? "bg-amber-500 hover:bg-amber-400 text-black dark:text-white dark:bg-background-900/20 dark:hover:bg-amber-400"
-                            : "hover:bg-amber-400 text-black dark:text-white dark:hover:bg-amber-400 "
+                            ? "bg-amber-500 hover:bg-amber-400 text-black dark:text-white dark:bg-background-900/20 dark:hover:bg-amber-500"
+                            : "hover:bg-amber-400 text-black dark:text-white dark:hover:bg-amber-500 "
                         } rounded-lg`}
                       >
                         View Campaigns
@@ -456,7 +456,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
             >
               Previous
             </Button>
-            <span className="text-sm text-zinc-600 dark:text-zinc-300">
+            <span className="text-sm text-zinc-500 dark:text-zinc-500">
               Page {page} of {totalFormsPages}
             </span>
             <Button

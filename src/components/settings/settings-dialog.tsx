@@ -130,7 +130,7 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
                                 "w-full text-sm font-medium rounded-lg",
                                 "transition-all duration-150",
                                 "border",
-                                "text-zinc-700 dark:text-zinc-300",
+                                "text-zinc-700 dark:text-zinc-500",
                                 "border-transparent",
                                 "hover:bg-accent/50 hover:text-accent-foreground",
                                 item.name === selectedTab && [
@@ -146,7 +146,7 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
                                       "h-4 w-4",
                                       item.name === selectedTab 
                                         ? "text-accent-foreground" 
-                                        : "text-zinc-600 dark:text-zinc-400"
+                                        : "text-zinc-500 dark:text-zinc-400"
                                     )} />
                                   ) : null
                                 })()}

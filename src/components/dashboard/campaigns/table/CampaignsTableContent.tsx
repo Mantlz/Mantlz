@@ -129,7 +129,7 @@ export function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onU
               <div className="space-y-3 sm:space-y-4 w-full sm:w-auto">
                 <div className="flex items-center gap-3">
                   <div>
-                    <p className="text-sm text-zinc-600 dark:text-zinc-300">
+                    <p className="text-sm text-zinc-500 dark:text-zinc-500">
                       {isPremium ? "Let's create your first form" : "Upgrade to create email campaigns"}
                     </p>
                   </div>
@@ -153,7 +153,7 @@ export function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onU
           <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">
             {isPremium ? "Ready to create your first form?" : "Upgrade to access email campaigns"}
           </h3>
-          <p className="text-sm text-zinc-600 dark:text-zinc-300 mb-4 sm:mb-6 max-w-sm mx-auto px-4">
+          <p className="text-sm text-zinc-500 dark:text-zinc-500 mb-4 sm:mb-6 max-w-sm mx-auto px-4">
             {isPremium 
               ? "Create your first form to start collecting responses and sending email campaigns."
               : "Upgrade your account to unlock email campaigns and start engaging with your audience."

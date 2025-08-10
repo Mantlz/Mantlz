@@ -147,22 +147,22 @@ export function TableContent({
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent border-b border-zinc-200 dark:border-zinc-800">
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
+              <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2">
                 Campaign Name
               </TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
+              <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2">
                 Status
               </TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
+              <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2">
                 Created
               </TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
+              <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2">
                 Schedule/Sent Date
               </TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2">
+              <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2">
                 Recipients
               </TableHead>
-              <TableHead className="text-xs font-medium text-zinc-600 dark:text-zinc-300 py-3 sm:py-2 text-right">
+              <TableHead className="text-xs font-medium text-zinc-500 dark:text-zinc-500 py-3 sm:py-2 text-right">
                 Actions
               </TableHead>
             </TableRow>
@@ -174,12 +174,12 @@ export function TableContent({
               return (
                 <TableRow
                   key={campaign.id}
-                  className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 last:border-0"
+                  className="hover:bg-zinc-50 dark:hover:bg-amber-500/50 border-b border-zinc-200 dark:border-zinc-800 last:border-0"
                 >
                   <TableCell className="py-3 sm:py-2">
                     <div className="flex items-center gap-2">
                       <div className="bg-zinc-50 dark:bg-zinc-900/20 p-2 rounded-md">
-                        <Mail className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+                        <Mail className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
                       </div>
                       <div>
                         <div className="font-medium text-gray-700 dark:text-gray-300">
@@ -188,7 +188,7 @@ export function TableContent({
                         {campaign.description && (
                           <Popover>
                             <PopoverTrigger asChild>
-                              <div className="text-xs text-zinc-600 dark:text-zinc-300 cursor-pointer hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
+                              <div className="text-xs text-zinc-500 dark:text-zinc-500 cursor-pointer hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
                                 {campaign.description.length > 50
                                   ? `${campaign.description.substring(0, 50)}...`
                                   : campaign.description}
@@ -284,7 +284,7 @@ export function TableContent({
                         title={new Date(campaign.sentAt).toLocaleString()}
                       >
                         <div className="shrink-0">
-                          <CalendarIcon className="h-3.5 w-3.5 text-gray-400 group-hover:text-zinc-600 transition-colors" />
+                          <CalendarIcon className="h-3.5 w-3.5 text-gray-400 group-hover:text-zinc-500 transition-colors" />
                         </div>
                         <span className="text-xs text-gray-600 dark:text-gray-300 group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors">
                           {formatDistanceToNow(new Date(campaign.sentAt), {
@@ -297,7 +297,7 @@ export function TableContent({
                         <div className="shrink-0">
                           <CalendarIcon className="h-3.5 w-3.5 text-gray-400" />
                         </div>
-                        <span className="text-xs text-zinc-600 dark:text-zinc-300">
+                        <span className="text-xs text-zinc-500 dark:text-zinc-500">
                           Not sent
                         </span>
                       </div>
@@ -349,7 +349,7 @@ export function TableContent({
                             <Button
                               variant="outline"
                               size="sm"
-                              className="h-7 px-2 text-xs cursor-pointer gap-1 bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+                              className="h-7 px-2 text-xs cursor-pointer gap-1 bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 dark:hover:bg-amber-500dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
                               disabled={!isPremium}
                               onClick={() => !isPremium && onUpgradeClick?.()}
                             >
@@ -403,7 +403,7 @@ export function TableContent({
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
+                            className="h-8 w-8 hover:bg-zinc-100 dark:hover:bg-amber-500rounded-lg"
                           >
                             <MoreHorizontal className="h-4 w-4" />
                             <span className="sr-only">More options</span>
@@ -463,7 +463,7 @@ export function TableContent({
                                 <AlertDialogTitle className="text-gray-900 dark:text-gray-100">
                                   Delete Campaign
                                 </AlertDialogTitle>
-                                <AlertDialogDescription className="text-gray-600 dark:text-zinc-300">
+                                <AlertDialogDescription className="text-gray-600 dark:text-zinc-500">
                                   Are you sure you want to delete this campaign?
                                   This action cannot be undone.
                                 </AlertDialogDescription>
@@ -509,7 +509,7 @@ export function TableContent({
       {/* Pagination */}
       {pagination.totalPages > 1 && (
         <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
-          <span className="text-xs text-zinc-600 dark:text-zinc-300">
+          <span className="text-xs text-zinc-500 dark:text-zinc-500">
             Page {pagination.currentPage} of {pagination.totalPages}
           </span>
           <div className="flex items-center gap-2">
@@ -518,7 +518,7 @@ export function TableContent({
               size="sm"
               disabled={pagination.currentPage <= 1}
               onClick={() => handlePaginationChange(pagination.currentPage - 1)}
-              className="h-8 text-xs bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 cursor-pointer dark:hover:bg-zinc-800 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-8 text-xs bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 cursor-pointer dark:hover:bg-amber-500dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Previous
             </Button>
@@ -527,7 +527,7 @@ export function TableContent({
               size="sm"
               disabled={pagination.currentPage >= pagination.totalPages}
               onClick={() => handlePaginationChange(pagination.currentPage + 1)}
-              className="h-8 text-xs bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 cursor-pointer dark:hover:bg-zinc-800 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-8 text-xs bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 cursor-pointer dark:hover:bg-amber-500dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Next
             </Button>

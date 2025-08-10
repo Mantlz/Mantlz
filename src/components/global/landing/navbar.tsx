@@ -232,7 +232,7 @@ export function Navbar() {
                  // Render SignedOut content if auth is loaded and user is out
                  <div className="flex flex-col space-y-3 mt-2">
                    <DrawerClose asChild>
-                     <Link href="/sign-in" className="text-base py-2 text-gray-600 dark:text-zinc-300">
+                     <Link href="/sign-in" className="text-base py-2 text-gray-600 dark:text-zinc-500">
                        Sign in
                      </Link>
                    </DrawerClose>
@@ -286,7 +286,7 @@ function NavLink({ href, children, active, target, ...props }: NavLinkProps) {
       className={`text-sm font-medium transition-colors hover:text-black dark:hover:text-white ${
         active
           ? "text-black dark:text-white"
-          : "text-zinc-600 dark:text-zinc-400"
+          : "text-zinc-500 dark:text-zinc-400"
       }`}
       {...props}
     >
@@ -317,7 +317,7 @@ function MobileNavLink({
         className={`block px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
           isActive
             ? "bg-orange-100 text-orange-600 dark:bg-amber-700/20 dark:text-orange-400"
-            : "text-zinc-600 hover:text-orange-600 dark:text-zinc-400 dark:hover:text-orange-400"
+            : "text-zinc-500 hover:text-orange-600 dark:text-zinc-400 dark:hover:text-orange-400"
         }`}
         {...props}
       >

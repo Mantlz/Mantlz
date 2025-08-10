@@ -46,14 +46,14 @@ export function TableHeader({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 text-xs cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg px-3"
+                  className="h-8 text-xs cursor-pointer hover:bg-zinc-100 dark:hover:bg-amber-500rounded-lg px-3"
                   onClick={handleBackClick}
                 >
                   <ChevronLeft className="h-3.5 w-3.5 mr-1" />
                   <span className="hidden xs:inline">Back to Forms</span>
                 </Button>
                 {selectedForm && (
-                  <Badge variant="secondary" className="bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
+                  <Badge variant="secondary" className="bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-500">
                     Form ID: {selectedForm?.id.slice(0, 8)}...
                   </Badge>
                 )}
@@ -87,7 +87,7 @@ export function TableHeader({
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-900 dark:text-white">{campaignCount}</p>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-300">Total Campaigns</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-500">Total Campaigns</p>
                 </div>
               </div>
             </div>
@@ -101,7 +101,7 @@ export function TableHeader({
                   <p className="text-sm font-medium text-gray-900 dark:text-white">
                     {selectedForm?.createdAt ? formatDistanceToNow(new Date(selectedForm.createdAt), { addSuffix: true }) : 'N/A'}
                   </p>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-300">Form Created</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-500">Form Created</p>
                 </div>
               </div>
             </div>
@@ -115,7 +115,7 @@ export function TableHeader({
                   <p className="text-sm font-medium text-gray-900 dark:text-white">
                     {selectedForm?._count?.submissions || 0}
                   </p>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-300">Total Submissions</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-500">Total Submissions</p>
                 </div>
               </div>
             </div>
@@ -129,7 +129,7 @@ export function TableHeader({
                   <p className="text-sm font-medium text-gray-900 dark:text-white">
                     {selectedForm?._count?.unsubscribed || 0}
                   </p>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-300">Unsubscribed</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-500">Unsubscribed</p>
                 </div>
               </div>
             </div>

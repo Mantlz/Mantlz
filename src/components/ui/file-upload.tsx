@@ -34,7 +34,7 @@ export function FileUpload({
         )}
       >
         <Upload className="w-10 h-10 mb-3 text-zinc-400" />
-        <p className="text-sm text-center text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-center text-zinc-500 dark:text-zinc-400">
           Drag & drop a file here, or click to select
           {accept && (
             <span className="block text-xs mt-2">
@@ -50,7 +50,7 @@ export function FileUpload({
       </div>
 
       {value && (
-        <div className="mt-3 text-sm text-center text-zinc-600 dark:text-zinc-400">
+        <div className="mt-3 text-sm text-center text-zinc-500 dark:text-zinc-400">
           Selected file: {value}
         </div>
       )}

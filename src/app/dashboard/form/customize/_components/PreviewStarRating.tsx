@@ -28,7 +28,7 @@ export function PreviewStarRating({ label, required }: PreviewStarRatingProps) {
               key={ratingValue}
               className={cn(
                 "h-8 w-8 cursor-pointer transition-colors",
-                isFilled ? "text-yellow-400 fill-yellow-400" : "text-gray-300 dark:text-zinc-600"
+                isFilled ? "text-yellow-400 fill-yellow-400" : "text-gray-300 dark:text-zinc-500"
               )}
               onMouseEnter={() => setHoveredRating(ratingValue)}
               onMouseLeave={() => setHoveredRating(null)}

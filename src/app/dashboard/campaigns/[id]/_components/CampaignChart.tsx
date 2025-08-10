@@ -98,7 +98,7 @@ export function CampaignChart({ data }: CampaignChartProps) {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
           <div className="space-y-1">
             <h2 className="text-lg font-medium text-gray-900 dark:text-white">Campaign Analytics</h2>
-            <p className="text-sm text-zinc-600 dark:text-zinc-300">Monthly email campaign performance metrics</p>
+            <p className="text-sm text-zinc-500 dark:text-zinc-500">Monthly email campaign performance metrics</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             {(['opens', 'clicks', 'bounces'] as const).map((key) => (
@@ -110,7 +110,7 @@ export function CampaignChart({ data }: CampaignChartProps) {
                   className="w-2.5 h-2.5 rounded-full"
                   style={{ backgroundColor: chartConfig[key].color }}
                 />
-                <span className="text-xs text-zinc-600 dark:text-zinc-400">
+                <span className="text-xs text-zinc-500 dark:text-zinc-400">
                   {chartConfig[key].label}:
                   <span className="ml-1 font-medium text-zinc-900 dark:text-white">
                     {totals[key].toLocaleString()}
@@ -137,13 +137,13 @@ export function CampaignChart({ data }: CampaignChartProps) {
                   angle={-45}
                   textAnchor="end"
                   height={60}
-                  className="text-xs text-zinc-600 dark:text-zinc-300"
+                  className="text-xs text-zinc-500 dark:text-zinc-500"
                 />
                 <YAxis
                   tickLine={false}
                   axisLine={false}
                   tickMargin={8}
-                  className="text-xs text-zinc-600 dark:text-zinc-300"
+                  className="text-xs text-zinc-500 dark:text-zinc-500"
                 />
                 <ChartTooltip
                   content={({ active, payload, label }) => {
@@ -159,7 +159,7 @@ export function CampaignChart({ data }: CampaignChartProps) {
                             return (
                               <p
                                 key={metricName}
-                                className="text-sm text-zinc-600 dark:text-zinc-300"
+                                className="text-sm text-zinc-500 dark:text-zinc-500"
                                 style={{ color: chartConfig[metricName].color }}
                               >
                                 {chartConfig[metricName].label}: {value.toLocaleString()}

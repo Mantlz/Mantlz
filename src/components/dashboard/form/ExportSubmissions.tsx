@@ -103,7 +103,7 @@ export function ExportSubmissions({ formId }: ExportSubmissionsProps) {
             <DialogDescription className={cn(
               "mt-2",
               "text-xs sm:text-sm lg:text-base",
-              "text-gray-600 dark:text-zinc-300"
+              "text-gray-600 dark:text-zinc-500"
             )}>
               Export your form submissions as a CSV file
             </DialogDescription>
@@ -147,7 +147,7 @@ export function ExportSubmissions({ formId }: ExportSubmissionsProps) {
                 "cursor-pointer",
                 "border border-zinc-200 dark:border-zinc-800",
                 "text-gray-700 dark:text-gray-300",
-                "hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                "hover:bg-zinc-50 dark:hover:bg-amber-500"
               )}
             >
               Cancel

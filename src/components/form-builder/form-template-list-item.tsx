@@ -34,7 +34,7 @@ export function FormTemplateListItem({ template, isSelected, onSelect, onContinu
       onClick={() => !isComingSoon && !isLocked && onSelect()}
       className={cn(
         "relative rounded-lg overflow-hidden transition-all duration-150 px-4 py-3",
-        !isComingSoon && !isLocked && "cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800",
+        !isComingSoon && !isLocked && "cursor-pointer hover:bg-zinc-100 dark:hover:bg-amber-500",
         isSelected && !isComingSoon && !isLocked && "bg-primary/5 dark:bg-primary/10",
         (isComingSoon || isLocked) && "opacity-75"
       )}
@@ -116,8 +116,8 @@ export function FormTemplateListItem({ template, isSelected, onSelect, onContinu
             className={cn(
               "text-xs h-8 rounded-lg",
               isLocked 
-                ? "text-neutral-500 dark:text-neutral-500 border-neutral-200 dark:border-zinc-800 bg-transparent hover:bg-neutral-100 dark:hover:bg-zinc-800"
-                : !isSelected && "text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-zinc-800 bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                ? "text-neutral-500 dark:text-neutral-500 border-neutral-200 dark:border-zinc-800 bg-transparent hover:bg-neutral-100 dark:hover:bg-amber-500"
+                : !isSelected && "text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-zinc-800 bg-transparent hover:bg-zinc-100 dark:hover:bg-amber-500"
             )}
             onClick={(e) => {
               e.stopPropagation();

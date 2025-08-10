@@ -188,7 +188,7 @@ export default function DiscordSettings() {
             )}
           </Button>
         </div>
-        <p className="text-xs text-zinc-600 dark:text-zinc-400">
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
           Receive form submission notifications in your Discord server
         </p>
       </header>
@@ -220,10 +220,10 @@ export default function DiscordSettings() {
               <CardHeader className="pb-3 pt-4 px-5 flex flex-row items-start justify-between space-y-0">
                 <div>
                   <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
-                    <Plug className="h-4 w-4 mr-2 text-zinc-600" />
+                    <Plug className="h-4 w-4 mr-2 text-zinc-500" />
                     Discord Notifications
                   </CardTitle>
-                  <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+                  <CardDescription className="text-zinc-500 dark:text-zinc-400 text-xs">
                     Get notified in Discord when you receive new form submissions
                   </CardDescription>
                 </div>

@@ -31,7 +31,7 @@ export function TableHeader({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 text-xs cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg px-3"
+                  className="h-8 text-xs cursor-pointer hover:bg-zinc-100 dark:hover:bg-amber-500rounded-lg px-3"
                   onClick={() => {
                     const newParams = new URLSearchParams(searchParams)
                     newParams.delete("formId")
@@ -41,7 +41,7 @@ export function TableHeader({
                   <ChevronLeft className="h-3.5 w-3.5 mr-1" />
                   <span className="hidden xs:inline">Back to Forms</span>
                 </Button>
-                <Badge variant="secondary" className="bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
+                <Badge variant="secondary" className="bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-500">
                   Form ID: {selectedForm?.id.slice(0, 8)}...
                 </Badge>
               </div>
@@ -68,7 +68,7 @@ export function TableHeader({
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-900 dark:text-white">{selectedForm?.submissionCount || 0}</p>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-300">Total Submissions</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-500">Total Submissions</p>
                 </div>
               </div>
               <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden">
@@ -88,7 +88,7 @@ export function TableHeader({
                   <p className="text-sm font-medium text-gray-900 dark:text-white">
                     {selectedForm?.createdAt ? formatDistanceToNow(new Date(selectedForm.createdAt), { addSuffix: true }) : 'N/A'}
                   </p>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-300">Created</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-500">Created</p>
                 </div>
               </div>
             </div>
@@ -103,7 +103,7 @@ export function TableHeader({
                   <p className="text-sm font-medium text-gray-900 dark:text-white">
                     {lastSubmission ? formatDistanceToNow(new Date(lastSubmission.createdAt), { addSuffix: true }) : 'No submissions yet'}
                   </p>
-                  <p className="text-xs text-zinc-600 dark:text-zinc-300">Last Submission</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-500">Last Submission</p>
                 </div>
               </div>
             </div>

@@ -63,7 +63,7 @@ const ThemeOption: React.FC<ThemeOptionProps> = React.memo(({ type, isSelected, 
         )}>
           <div className="flex items-center gap-2">
             {type === 'System' && (
-              <Sparkles className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+              <Sparkles className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
             )}
             <span className={cn(
               "text-sm font-medium",

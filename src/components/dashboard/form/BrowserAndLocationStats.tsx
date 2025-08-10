@@ -101,7 +101,7 @@ const StatItem = ({
             "text-xs font-medium min-w-[20px] text-center rounded-lg py-0.5 px-1",
             rank <= 3
               ? "bg-zinc-100 dark:bg-zinc-900/40 text-orange-700 dark:text-orange-300"
-              : "bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-300"
+              : "bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-500"
           )}
         >
           {rank}
@@ -116,7 +116,7 @@ const StatItem = ({
       <span
         className={cn(
           "text-xs py-0.5 px-1.5 rounded-lg",
-          "bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-300"
+          "bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-500"
         )}
       >
         {Math.round(percentage * 100)}%
@@ -139,7 +139,7 @@ const EmptyState = ({
       <Icon className="h-5 w-5 text-black dark:text-white" />
     </div>
     <p className="text-lg font-medium">{title}</p>
-    <p className="text-sm text-zinc-600 dark:text-zinc-300 mt-2 text-center max-w-[280px] leading-relaxed">
+    <p className="text-sm text-zinc-500 dark:text-zinc-500 mt-2 text-center max-w-[280px] leading-relaxed">
       {description}
     </p>
   </div>
@@ -342,7 +342,7 @@ export function BrowserAndLocationStats({
               </button>
             </div>
             {locations.length > 0 && (
-              <CardDescription className="text-zinc-600 dark:text-gray-200 text-sm mt-1.5">
+              <CardDescription className="text-zinc-500 dark:text-gray-200 text-sm mt-1.5">
                 {totalVisitors.toLocaleString()} visitors from{" "}
                 {locations.length} countries
               </CardDescription>
@@ -479,7 +479,7 @@ export function BrowserAndLocationStats({
                             <span className="text-xs font-medium">
                               {sortedLocations[0]?.name}
                             </span>
-                            <span className="text-xs text-zinc-600">
+                            <span className="text-xs text-zinc-500">
                               {sortedLocations[0]
                                 ? Math.round(
                                     sortedLocations[0].percentage * 100
@@ -504,11 +504,11 @@ export function BrowserAndLocationStats({
                               setCountriesPage((prev) => Math.max(prev - 1, 1))
                             }
                             disabled={countriesPage === 1}
-                            className="p-1 rounded-lg disabled:opacity-50 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                            className="p-1 rounded-lg disabled:opacity-50 hover:bg-zinc-100 dark:hover:bg-amber-500"
                           >
                             <ChevronRight className="h-3 w-3 transform rotate-180" />
                           </button>
-                          <span className="text-xs text-zinc-600">
+                          <span className="text-xs text-zinc-500">
                             {countriesPage}/{maxCountriesPages}
                           </span>
                           <button
@@ -518,7 +518,7 @@ export function BrowserAndLocationStats({
                               )
                             }
                             disabled={countriesPage === maxCountriesPages}
-                            className="p-1 rounded-lg disabled:opacity-50 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                            className="p-1 rounded-lg disabled:opacity-50 hover:bg-zinc-100 dark:hover:bg-amber-500"
                           >
                             <ChevronRight className="h-3 w-3" />
                           </button>
@@ -566,11 +566,11 @@ export function BrowserAndLocationStats({
                       setBrowsersPage((prev) => Math.max(prev - 1, 1))
                     }
                     disabled={browsersPage === 1}
-                    className="p-1 rounded-lg disabled:opacity-50 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    className="p-1 rounded-lg disabled:opacity-50 hover:bg-zinc-100 dark:hover:bg-amber-500"
                   >
                     <ChevronRight className="h-3 w-3 transform rotate-180" />
                   </button>
-                  <span className="text-xs text-zinc-600">
+                  <span className="text-xs text-zinc-500">
                     {browsersPage}/{maxBrowsersPages}
                   </span>
                   <button
@@ -580,7 +580,7 @@ export function BrowserAndLocationStats({
                       )
                     }
                     disabled={browsersPage === maxBrowsersPages}
-                    className="p-1 rounded-lg disabled:opacity-50 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    className="p-1 rounded-lg disabled:opacity-50 hover:bg-zinc-100 dark:hover:bg-amber-500"
                   >
                     <ChevronRight className="h-3 w-3" />
                   </button>
@@ -588,7 +588,7 @@ export function BrowserAndLocationStats({
               )}
             </div>
             {browsers.length > 0 && (
-              <CardDescription className="text-zinc-600 text-sm mt-1.5">
+              <CardDescription className="text-zinc-500 text-sm mt-1.5">
                 {totalBrowsers.toLocaleString()} visitors tracked
               </CardDescription>
             )}
@@ -823,7 +823,7 @@ export function BrowserAndLocationStats({
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className="text-sm">{country.count}</span>
-                        <span className="text-xs py-0.5 px-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-300">
+                        <span className="text-xs py-0.5 px-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-500">
                           {Math.round(country.percentage * 100)}%
                         </span>
                       </div>

@@ -142,7 +142,7 @@ export function FormsList({
                   <h1 className="text-2xl sm:text-3xl font-medium text-gray-900 dark:text-white tracking-tight">
                     Welcome back, {user?.firstName || 'there'}
                   </h1>
-                  <p className="text-sm text-zinc-600 dark:text-zinc-200">
+                  <p className="text-sm text-zinc-500 dark:text-zinc-200">
                     {forms.length > 0 
                       ? `You have ${forms.length} form${forms.length !== 1 ? 's' : ''}`
                       : "Let's create your first form"}
@@ -159,7 +159,7 @@ export function FormsList({
                       </div>
                       <div>
                         <p className="text-sm font-medium text-gray-900 dark:text-white">{forms.length}</p>
-                        <p className="text-xs text-zinc-600 dark:text-zinc-200">Total Forms</p>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-200">Total Forms</p>
                       </div>
                     </div>
                     <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden">
@@ -177,7 +177,7 @@ export function FormsList({
                       </div>
                       <div>
                         <p className="text-sm font-medium text-gray-900 dark:text-white">{totalResponses}</p>
-                        <p className="text-xs text-zinc-600 dark:text-zinc-200">Total Submissions</p>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-200">Total Submissions</p>
                       </div>
                     </div>
                     <div className="mt-2 h-1 w-full bg-zinc-100 dark:bg-zinc-800 rounded-lg overflow-hidden">
@@ -210,7 +210,7 @@ export function FormsList({
               onClick={() => handleViewModeChange('grid')}
               className={`p-1.5 rounded-lg ${viewMode === 'grid' 
                 ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white ' 
-                : 'text-zinc-600 dark:text-zinc-200 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                : 'text-zinc-500 dark:text-zinc-200 hover:text-gray-700 dark:hover:text-gray-300'}`}
               aria-label="Grid view"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -226,7 +226,7 @@ export function FormsList({
               onClick={() => handleViewModeChange('list')}
               className={`p-1.5 rounded-lg ${viewMode === 'list' 
                 ? 'bg-zinc-100 dark:bg-zinc-700 text-gray-900 dark:text-white' 
-                : 'text-zinc-600 dark:text-zinc-200 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                : 'text-zinc-500 dark:text-zinc-200 hover:text-gray-700 dark:hover:text-gray-300'}`}
               aria-label="List view"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -259,11 +259,11 @@ export function FormsList({
                 </div>
                 
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center text-xs sm:text-sm text-zinc-600 dark:text-zinc-200">
+                  <div className="flex items-center text-xs sm:text-sm text-zinc-500 dark:text-zinc-200">
                     <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
                     <span>{format(new Date(form.createdAt), "MMM d, yyyy")}</span>
                   </div>
-                  <div className="flex items-center gap-1 text-xs sm:text-sm font-medium text-zinc-600 dark:text-zinc-200 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                  <div className="flex items-center gap-1 text-xs sm:text-sm font-medium text-zinc-500 dark:text-zinc-200 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
                     <span>View</span>
                     <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 transform translate-x-0 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -289,7 +289,7 @@ export function FormsList({
                     <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
                       {form.name.length > 8 ? `${form.name.slice(0, 8)}...` : form.name}
                     </h3>
-                    <div className="flex items-center gap-4 text-xs sm:text-sm text-zinc-600 dark:text-zinc-200">
+                    <div className="flex items-center gap-4 text-xs sm:text-sm text-zinc-500 dark:text-zinc-200">
                       <div className="flex items-center">
                         <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5" />
                         <span>{format(new Date(form.createdAt), "MMM d, yyyy")}</span>
@@ -301,7 +301,7 @@ export function FormsList({
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-1 text-xs sm:text-sm font-medium text-zinc-600 dark:text-zinc-200 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                <div className="flex items-center gap-1 text-xs sm:text-sm font-medium text-zinc-500 dark:text-zinc-200 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
                   <span>View</span>
                   <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 transform translate-x-0 group-hover:translate-x-1 transition-transform" />
                 </div>
@@ -320,7 +320,7 @@ export function FormsList({
           <h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">
             No forms yet
           </h3>
-          <p className="text-sm text-zinc-600 dark:text-zinc-200 max-w-sm mx-auto mb-6 sm:mb-8">
+          <p className="text-sm text-zinc-500 dark:text-zinc-200 max-w-sm mx-auto mb-6 sm:mb-8">
             Create your first form to start collecting submissions and managing your data.
           </p>
           <Button
@@ -347,7 +347,7 @@ export function FormsList({
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <span className="text-sm text-zinc-600 dark:text-zinc-200">
+          <span className="text-sm text-zinc-500 dark:text-zinc-200">
             Page {currentPage} of {totalPages}
           </span>
           <Button

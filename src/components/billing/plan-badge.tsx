@@ -26,7 +26,7 @@ export function PlanBadge({ plan }: PlanBadgeProps) {
     case Plan.FREE:
     default:
       return (
-        <Badge className="ml-2 bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 border-none">
+        <Badge className="ml-2 bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-500 border-none">
           FREE
         </Badge>
       );

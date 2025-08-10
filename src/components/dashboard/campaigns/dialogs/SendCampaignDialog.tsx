@@ -80,7 +80,7 @@ export function SendCampaignDialog({
       <Button 
         variant="outline" 
         size="sm" 
-        className="h-7 px-2 text-xs cursor-pointer gap-1 bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
+        className="h-7 px-2 text-xs cursor-pointer gap-1 bg-white hover:bg-zinc-100 text-gray-600 dark:bg-zinc-900 dark:hover:bg-amber-500dark:text-gray-300 border border-zinc-200 dark:border-zinc-700 rounded-lg transition-all duration-200"
         onClick={handleSendClick}
       >
         <Send className="h-3.5 w-3.5" />
@@ -92,7 +92,7 @@ export function SendCampaignDialog({
         <DialogContent className="sm:max-w-[400px] p-0">
           <DialogHeader className="p-4 border-b border-zinc-200 dark:border-zinc-800">
             <DialogTitle className="text-lg font-medium text-gray-900 dark:text-white">Send Campaign</DialogTitle>
-            <DialogDescription className="text-sm text-zinc-600 dark:text-zinc-300">
+            <DialogDescription className="text-sm text-zinc-500 dark:text-zinc-500">
               Choose your recipients and send your campaign
             </DialogDescription>
           </DialogHeader>
@@ -143,7 +143,7 @@ export function SendCampaignDialog({
                         }}
                         className="w-24 h-8 text-sm"
                       />
-                      <span className="text-sm text-zinc-600 dark:text-zinc-300">
+                      <span className="text-sm text-zinc-500 dark:text-zinc-500">
                         subscribers (max 200)
                       </span>
                     </div>

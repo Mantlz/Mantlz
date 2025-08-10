@@ -119,10 +119,10 @@ type PlanBadgeProps = {
 
 const PlanBadge: React.FC<PlanBadgeProps> = ({ plan }) => {
   const badgeStyles = {
-    FREE: "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300",
+    FREE: "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-500",
     STANDARD: "bg-zinc-100 text-blue-800 dark:bg-zinc-900 dark:text-blue-200",
     PRO: "bg-orange-100 text-orange-800 dark:bg-amber-700 dark:text-orange-200",
-  }[plan?.toUpperCase() || 'FREE'] || "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300";
+  }[plan?.toUpperCase() || 'FREE'] || "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-500";
 
   return (
     <Badge className={cn("ml-2 font-medium", badgeStyles)}>
@@ -276,7 +276,7 @@ export default function BillingSettings() {
             )}
           </Button>
         </div>
-        <p className="text-xs text-zinc-600 dark:text-zinc-400">
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
           Manage your subscription and billing information
         </p>
       </header>
@@ -305,7 +305,7 @@ export default function BillingSettings() {
             <Card className="border-zinc-200 dark:border-zinc-800 shadow-none">
               <CardHeader className="pb-2 pt-4 px-5">
                 <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                   Current Plan
@@ -314,7 +314,7 @@ export default function BillingSettings() {
               <CardContent className="px-5 pb-4">
                 <div className="space-y-4">
                   <div className="p-3 border border-zinc-200 dark:border-zinc-800 rounded-lg">
-                    <p className="text-xs text-zinc-600 dark:text-zinc-400">Price</p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400">Price</p>
                     <p className="text-sm font-medium text-zinc-900 dark:text-white">
                       {subscriptionData?.price 
                         ? `${formatCurrency(subscriptionData.price.amount, subscriptionData.price.currency)}/${subscriptionData.price.interval}`
@@ -324,8 +324,8 @@ export default function BillingSettings() {
                   
                   {/* Plan Features */}
                   <div className="p-3 border border-zinc-200 dark:border-zinc-800 rounded-lg">
-                    <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-2">Plan Features</p>
-                    <ul className="space-y-1.5 text-xs text-zinc-700 dark:text-zinc-300">
+                    <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">Plan Features</p>
+                    <ul className="space-y-1.5 text-xs text-zinc-700 dark:text-zinc-500">
                       {userPlan === "PRO" && (
                         <>
                           <li className="flex items-center">
@@ -406,10 +406,10 @@ export default function BillingSettings() {
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle className="text-zinc-900 dark:text-white text-sm flex items-center">
-                      <FileText className="h-3.5 w-3.5 mr-1.5 text-zinc-600" />
+                      <FileText className="h-3.5 w-3.5 mr-1.5 text-zinc-500" />
                       Recent Invoices
                     </CardTitle>
-                    <CardDescription className="text-zinc-600 dark:text-zinc-400 text-xs">
+                    <CardDescription className="text-zinc-500 dark:text-zinc-400 text-xs">
                       View and download your recent invoices
                     </CardDescription>
                   </div>
@@ -427,20 +427,20 @@ export default function BillingSettings() {
                 {isLoadingInvoices ? (
                   <div className="flex items-center justify-center py-2">
                     <Loader2 className="h-4 w-4 text-zinc-400 animate-spin" />
-                    <span className="ml-2 text-sm text-zinc-600 dark:text-zinc-400">Loading invoices...</span>
+                    <span className="ml-2 text-sm text-zinc-500 dark:text-zinc-400">Loading invoices...</span>
                   </div>
                 ) : invoices && invoices.length > 0 ? (
                   <div className="space-y-2">
                     {invoices.slice(0, 3).map((invoice) => (
                       <div
                         key={invoice.id}
-                        className="flex items-center justify-between p-3 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+                        className="flex items-center justify-between p-3 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-50 dark:hover:bg-amber-500/50 transition-colors"
                       >
                         <div className="flex flex-col">
                           <span className="text-sm font-medium text-zinc-900 dark:text-white">
                             Invoice #{invoice.number}
                           </span>
-                          <span className="text-xs text-zinc-600 dark:text-zinc-400">
+                          <span className="text-xs text-zinc-500 dark:text-zinc-400">
                             {new Date(invoice.created * 1000).toLocaleDateString()}
                           </span>
                         </div>
@@ -476,7 +476,7 @@ export default function BillingSettings() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-2 text-sm text-zinc-600 dark:text-zinc-400">
+                  <div className="text-center py-2 text-sm text-zinc-500 dark:text-zinc-400">
                     No invoices found
                   </div>
                 )}
@@ -496,7 +496,7 @@ export default function BillingSettings() {
                   onClick={() => window.location.href = '/pricing'} 
                   variant="link"
                   size="sm"
-                  className="h-6 text-xs p-0 text-zinc-950 dark:text-zinc-300 hover:underline"
+                  className="h-6 text-xs p-0 text-zinc-950 dark:text-zinc-500 hover:underline"
                 >
                   View Plans
                 </Button>
