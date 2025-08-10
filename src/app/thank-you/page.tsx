@@ -34,12 +34,14 @@ export default function ThankYouPage() {
           </p>
 
           <div className="mt-6 sm:mt-8">
-            <Button 
-              className="h-10 px-4 text-md bg-amber-500 text-black dark:text-white dark:border-background border text-sm shadow-sm shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95" 
-              size="lg" 
-            > 
-              Return to website
-            </Button>
+            <Link href="https://mantlz.com" target="_blank" rel="noopener noreferrer">
+              <Button 
+                className="h-10 px-4 text-md bg-amber-500 text-black dark:text-white dark:border-background border text-sm shadow-sm shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95" 
+                size="lg" 
+              > 
+                Return to website
+              </Button>
+            </Link>
           </div>
         </motion.div>
 

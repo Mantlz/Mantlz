@@ -45,7 +45,7 @@ export default function CustomerFeedbackPage() {
         /> */}
 
         <Mantlz
-        formId="cmdyomlt20001o7ai6ttgrhw9"
+        formId="cmdxtlwb7001eo7l4y4sxd30j"
         theme="neobrutalism"
         />
 
