@@ -36,7 +36,7 @@ export function GitHubStarBanner({ className }: GitHubStarBannerProps) {
   };
 
   const handleStarClick = () => {
-    window.open('https://github.com/your-repo', '_blank', 'noopener,noreferrer');
+    window.open('https://github.com/Mantlz/mantlz', '_blank', 'noopener,noreferrer');
   };
 
   return (
