@@ -166,8 +166,8 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
         return (
           <div className="p-5 bg-white dark:bg-zinc-800 rounded-b-lg">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 bg-orange-50 dark:bg-amber-700/20 flex items-center justify-center rounded-full">
-                <Users className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+              <div className="w-8 h-8 bg-amber-50 dark:bg-amber-700/20 flex items-center justify-center rounded-full">
+                  <Users className="h-4 w-4 text-amber-600 dark:text-amber-400" />
               </div>
               <Label className="text-base font-medium text-gray-900 dark:text-white">
                 Select Recipients
@@ -188,13 +188,13 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                   className={cn(
                     "flex items-start p-3 rounded-lg transition-all duration-200 cursor-pointer border",
                     recipientType === value 
-                      ? "bg-orange-50 dark:bg-amber-700/20 border-orange-200 dark:border-orange-800 shadow-sm"
+                      ? "bg-amber-50 dark:bg-amber-700/20 border-amber-200 dark:border-amber-800 shadow-sm"
                       : "hover:bg-gray-50 dark:hover:bg-zinc-700 border-gray-100 dark:border-zinc-700 hover:border-gray-200 dark:hover:border-zinc-600"
                   )}
                   onClick={() => setRecipientType(value as "first" | "last" | "custom")}
                 >
                   <div className="flex items-center h-5 mr-3">
-                    <RadioGroupItem value={value} id={value} className="text-orange-600 dark:text-orange-400 cursor-pointer" />
+                    <RadioGroupItem value={value} id={value} className="text-amber-600 dark:text-amber-400 cursor-pointer" />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
@@ -205,7 +205,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                         {label}
                       </Label>
                       {recipientType === value && (
-                        <CheckCircle2 className="h-4 w-4 text-orange-600 dark:text-orange-400 ml-auto" />
+                        <CheckCircle2 className="h-4 w-4 text-amber-600 dark:text-amber-400 ml-auto" />
                       )}
                     </div>
                     <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-1 ml-9">{description}</p>
@@ -227,7 +227,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                         const value = Number(e.target.value);
                         setCustomRecipientCount(Math.min(Math.max(value, 1), 200));
                       }}
-                      className="w-28 h-9 text-sm rounded-md border-gray-200 dark:border-zinc-700 focus:ring-orange-500 dark:focus:ring-orange-400 pl-8"
+                      className="w-28 h-9 text-sm rounded-md border-gray-200 dark:border-zinc-700 focus:ring-amber-500 dark:focus:ring-amber-400 pl-8"
                     />
                     <div className="absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center text-zinc-600">
                       <span>#</span>
@@ -254,8 +254,8 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
         return (
           <div className="p-5 bg-white dark:bg-zinc-800 rounded-b-lg">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 bg-orange-50 dark:bg-amber-700/20 flex items-center justify-center rounded-full">
-                <CalendarDays className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+              <div className="w-8 h-8 bg-amber-50 dark:bg-amber-700/20 flex items-center justify-center rounded-full">
+                  <CalendarDays className="h-4 w-4 text-amber-600 dark:text-amber-400" />
               </div>
               <Label className="text-base font-medium text-gray-900 dark:text-white">
                 Select Date
@@ -276,8 +276,8 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
             </div>
             
             {date && (
-              <div className="mt-4 p-3 bg-orange-50 dark:bg-amber-700/20 rounded-lg border border-orange-100 dark:border-orange-800 text-center">
-                <p className="text-sm font-medium text-orange-700 dark:text-orange-300 flex items-center justify-center gap-2">
+              <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-700/20 rounded-lg border border-amber-100 dark:border-amber-800 text-center">
+                <p className="text-sm font-medium text-amber-700 dark:text-amber-300 flex items-center justify-center gap-2">
                   <CheckCircle2 className="h-4 w-4" />
                   {format(date, "EEEE, MMMM d, yyyy")}
                 </p>
@@ -290,8 +290,8 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
         return (
           <div className="p-5 bg-white dark:bg-zinc-800 rounded-b-lg">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 bg-orange-50 dark:bg-amber-700/20 flex items-center justify-center rounded-full">
-                <Clock className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+              <div className="w-8 h-8 bg-amber-50 dark:bg-amber-700/20 flex items-center justify-center rounded-full">
+                  <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400" />
               </div>
               <Label className="text-base font-medium text-gray-900 dark:text-white">
                 Select Time

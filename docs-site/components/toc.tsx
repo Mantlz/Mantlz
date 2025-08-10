@@ -12,8 +12,8 @@ export default async function Toc({ path }: { path: string }) {
 
   return (
     <div className="hidden lg:flex toc flex-1 min-w-[250px] max-w-[300px] py-8 sticky top-16 h-[calc(100vh-4rem)]">
-      <div className="w-full bg-card/50 backdrop-blur-sm rounded-lg border shadow-sm p-6">
-        <h3 className="font-semibold text-base mb-4 pb-2 border-b">On this page</h3>
+      <div className="w-full bg-background backdrop-blur-sm rounded-lg shadow-sm p-6">
+        <h3 className="font-semibold text-base mb-4 pb-2">On this page</h3>
         <ScrollArea className="h-[calc(100vh-18rem)]">
           <div className="flex flex-col gap-2 text-sm">
             {tocs.map(({ href, level, text }) => (
@@ -37,4 +37,4 @@ export default async function Toc({ path }: { path: string }) {
       </div>
     </div>
   );
-} 
+}
