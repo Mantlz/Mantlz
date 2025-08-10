@@ -11,6 +11,7 @@ import { Suspense } from 'react'
 import ClientWrapper from "@/components/global/client-wrapper"
 import { FONT_FAMILIES, type FontFamily } from "@/lib/fonts"
 import { FontInitializer } from "@/components/global/font-initializer"
+import { GitHubStarBanner } from "@/components/global/github-star-banner"
 import Script from "next/script"
 import { SeoConfig, generateMetadata } from "@/types/seo"
 
@@ -116,6 +117,7 @@ export default function RootLayout({
                 <Suspense fallback={null}>
                   <ClientWrapper>
                     <FontInitializer />
+                    <GitHubStarBanner />
                     {children}
                     <Toaster richColors position="top-center" theme="system" />
                     <SpeedInsights />
