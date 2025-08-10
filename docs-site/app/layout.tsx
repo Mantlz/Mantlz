@@ -48,14 +48,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://docs.mantlz.com"),
+  metadataBase: new URL("https://doc.mantlz.com/"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://docs.mantlz.com",
+    url: "https://doc.mantlz.com/",
     title: "Mantlz Documentation",
     description:
       "Complete documentation for Mantlz - The ultimate form solution platform for building customizable feedback, contact, and waitlist forms.",
@@ -75,7 +75,7 @@ export const metadata: Metadata = {
     description:
       "Complete documentation for Mantlz - The ultimate form solution platform for building customizable forms.",
     images: ["/og-image.svg"],
-    creator: "@mantlz",
+    creator: "@trymantlz",
   },
   robots: {
     index: true,
@@ -89,7 +89,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "your-google-verification-code",
+    google: "lTqIuvXz5sq4jT9YOLyja5LLMfvKAiZF3g5fTEa70fI",
   },
 };
 
@@ -101,16 +101,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/logo.png" />
-        <link rel="apple-touch-icon" href="/logo.png" />
         <meta name="theme-color" content="#f59e0b" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Mantlz Docs" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="msapplication-TileColor" content="#f59e0b" />
-        <meta name="msapplication-config" content="/browserconfig.xml" />
       </head>
       <body
         className={`${regularFont.variable} ${codeFont.variable} font-regular tracking-wide`}

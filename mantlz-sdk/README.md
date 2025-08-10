@@ -217,11 +217,11 @@ Mantlz supports various form types that you can configure in your dashboard:
 
 ## Documentation
 
-For detailed documentation and examples, visit: [https://docs.mantlz.com](https://docs.mantlz.com)
+For detailed documentation and examples, visit: [https://doc.mantlz.com/](https://doc.mantlz.com/)
 
 ## Getting Help
 
-- 📖 [Documentation](https://docs.mantlz.com)
+- 📖 [Documentation](https://doc.mantlz.com/)
 - 💬 [Discord Community](https://discord.gg/mantlz)
 - 🐛 [Report Issues](https://github.com/mantlz/mantlz/issues)
 - 📧 [Email Support](mailto:support@mantlz.com)

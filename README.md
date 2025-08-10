@@ -280,7 +280,7 @@ This will start the application with a PostgreSQL database. The app will be avai
 **Getting Help:**
 - Check the [GitHub Issues](https://github.com/mantlz/mantlz/issues) for known problems
 - Join our [Discord community](https://discord.gg/mantlz) for support
-- Review the [documentation](https://docs.mantlz.com) for detailed guides
+- Review the [documentation](https://doc.mantlz.com/) for detailed guides
 
 
 
@@ -296,7 +296,7 @@ This will start the application with a PostgreSQL database. The app will be avai
 
 ## API Reference
 
-For detailed API documentation, visit: [https://docs.mantlz.com](https://docs.mantlz.com)
+For detailed API documentation, visit: [https://doc.mantlz.com/](https://doc.mantlz.com/)
 
 ## Tech Stack
 

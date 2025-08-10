@@ -6,7 +6,7 @@ export function StructuredData() {
     '@type': 'WebSite',
     name: 'Mantlz Documentation',
     description: 'Complete documentation for Mantlz - The ultimate form solution platform for building customizable feedback, contact, and waitlist forms.',
-    url: 'https://docs.mantlz.com',
+    url: 'https://doc.mantlz.com/',
     publisher: {
       '@type': 'Organization',
       name: 'Mantlz',
@@ -20,7 +20,7 @@ export function StructuredData() {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://doc.mantlz.com/search?q={search_term_string}'
+        urlTemplate: 'https://doc.mantlz.com//search?q={search_term_string}'
       },
       'query-input': 'required name=search_term_string'
     },
