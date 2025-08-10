@@ -48,7 +48,7 @@ export const AppearanceSettings = () => {
         </header>
 
         <div className="space-y-4">
-          <div className="p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg">
+          <div className="p-6 border border-zinc-200 dark:border-zinc-800/70 rounded-lg">
             <DarkModeToggle />
           </div>
 

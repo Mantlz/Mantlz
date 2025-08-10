@@ -91,7 +91,7 @@ export function Navbar() {
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-50 mt-2 p-2 bg-background border border-zinc-200 dark:border-zinc-800 rounded-lg">
+            <DropdownMenuContent align="end" className="w-52 mt-2 p-2 bg-background border border-zinc-200 dark:border-zinc-800 rounded-lg">
               <div className="flex items-center justify-start gap-2 p-2 rounded-lg bg-background">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={user?.imageUrl} alt={user?.fullName || ""} />
