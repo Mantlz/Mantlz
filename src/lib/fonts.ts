@@ -49,6 +49,11 @@ export const FONT_FAMILIES: Record<string, FontConfig> = {
     className: 'font-mono',
     font: null, // Will be loaded dynamically
     loadFont: loadMonoFont
+  },
+  opendyslexic: {
+    name: 'OpenDyslexic',
+    className: 'font-dyslexic',
+    font: null // Will use web font
   }
 };
 
@@ -63,4 +68,4 @@ export const getFontVariable = (fontFamily: FontFamily) => {
   const fontConfig = FONT_FAMILIES[fontFamily];
   const font = fontConfig?.font;
   return font && 'variable' in font ? font.variable : '';
-}; 
+};

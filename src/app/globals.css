@@ -8,6 +8,21 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Import OpenDyslexic font */
+@font-face {
+  font-family: 'OpenDyslexic';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/OpenDyslexic-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/OpenDyslexic-Bold.woff') format('woff');
+}
+
 /* Font family data attribute handling */
 html[data-font="inter"] {
   --font-sans: var(--font-geist-sans), Inter, sans-serif;
@@ -19,6 +34,15 @@ html[data-font="system"] {
 
 html[data-font="mono"] {
   --font-sans: var(--font-geist-mono), 'JetBrains Mono', monospace;
+}
+
+html[data-font="opendyslexic"] {
+  --font-sans: 'OpenDyslexic', sans-serif;
+}
+
+/* Font class utilities */
+.font-dyslexic {
+  font-family: 'OpenDyslexic', sans-serif;
 }
 
 @layer base {
@@ -82,7 +106,6 @@ html[data-font="mono"] {
   --sidebar-accent-foreground: oklch(0.4732 0.1247 46.2007);
   --sidebar-border: oklch(0.9276 0.0058 264.5313);
   --sidebar-ring: oklch(0.7686 0.1647 70.0804);
-  --font-sans: Inter, sans-serif;
   --font-serif: Source Serif 4, serif;
   --font-mono: JetBrains Mono, monospace;
   --radius: 0.425rem;
@@ -129,7 +152,6 @@ html[data-font="mono"] {
   --sidebar-accent-foreground: oklch(0.9243 0.1151 95.7459);
   --sidebar-border: oklch(0.3715 0 0);
   --sidebar-ring: oklch(0.7686 0.1647 70.0804);
-  --font-sans: Inter, sans-serif;
   --font-serif: Source Serif 4, serif;
   --font-mono: JetBrains Mono, monospace;
   --radius: 0.425rem;
@@ -180,7 +202,6 @@ html[data-font="mono"] {
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --font-sans: Inter, sans-serif;
   --font-mono: JetBrains Mono, monospace;
   --font-serif: Source Serif 4, serif;
 
