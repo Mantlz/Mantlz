@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     siteName: "Mantlz Documentation",
     images: [
       {
-        url: "/og-image.svg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Mantlz Documentation",
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     title: "Mantlz Documentation",
     description:
       "Complete documentation for Mantlz - The ultimate form solution platform for building customizable forms.",
-    images: ["/og-image.svg"],
+    images: ["/og-image.png"],
     creator: "@trymantlz",
   },
   robots: {
