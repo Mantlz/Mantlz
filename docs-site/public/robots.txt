@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://doc.mantlz.com/sitemap.xml
+
+# Disallow crawling of API routes and internal files
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Allow crawling of documentation
+Allow: /docs/
+Allow: /
+
+# Crawl delay (optional)
+Crawl-delay: 1
