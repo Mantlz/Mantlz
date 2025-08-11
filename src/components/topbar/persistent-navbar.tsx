@@ -51,7 +51,7 @@ const UserDropdown = memo(function UserDropdown() {
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
-          className="w-[220px] p-2 m-1 mt-2 bg-popover/95 backdrop-blur-sm border border-border shadow-lg rounded-xl"
+          className="w-[220px] p-2  backdrop-blur-sm border border-border rounded-xl"
         >
           <DropdownMenuItem className="hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-lg transition-all duration-200 my-0.5" onClick={() => openUserProfile()}>
             <User className="h-4 w-4 mr-2" />
@@ -346,7 +346,7 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="start"
-              className="w-[220px] p-2 m-1  bg-popover/95 backdrop-blur-sm border border-border shadow-lg rounded-lg"
+              className="w-[220px] p-2  backdrop-blur-sm border border-border rounded-lg"
             >
               <DropdownMenuItem asChild className="hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-lg transition-all duration-200 my-0.5">
                 <Link href="/dashboard" className="flex items-center gap-2.5 py-1.5 cursor-pointer">
