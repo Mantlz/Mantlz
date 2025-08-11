@@ -149,7 +149,7 @@ export function TableSubmissionSheet({
                 <SheetTitle className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
                   Submission Details
                   {!isPremium && (
-                    <Badge variant="outline" className="ml-2 text-[10px] border-amber-200 dark:border-amber-800 text-amber-600 dark:text-amber-400">
+                    <Badge variant="outline" className="ml-2 text-[10px] border-amber-200 dark:border-amber-800 text-amber-600 dark:text-amber-500">
                       Limited View
                     </Badge>
                   )}
@@ -169,10 +169,10 @@ export function TableSubmissionSheet({
                       <Lock className="h-5 w-5 text-amber-500" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-sm font-medium text-amber-800 dark:text-amber-400 mb-1">
+                      <h4 className="text-sm font-medium text-amber-800 dark:text-amber-500 mb-1">
                         Limited Preview Mode
                       </h4>
-                      <p className="text-xs text-amber-700 dark:text-amber-300 mb-3">
+                      <p className="text-xs text-amber-500 dark:text-amber-300 mb-3">
                         Upgrade to premium for email tracking and analytics.
                       </p>
                       <Button
@@ -306,7 +306,7 @@ export function TableSubmissionSheet({
                           <div className="absolute inset-0 flex items-center justify-center">
                             <div className="bg-white/80 dark:bg-black/80 px-3 py-1 rounded-lg flex items-center gap-1">
                               <Lock className="h-3 w-3 text-amber-500" />
-                              <span className="text-xs font-medium text-amber-600 dark:text-amber-400">Premium Only</span>
+                              <span className="text-xs font-medium text-amber-600 dark:text-amber-500">Premium Only</span>
                             </div>
                           </div>
                           <div className="flex items-center justify-between mb-2 blur-sm">
@@ -393,7 +393,7 @@ export function TableSubmissionSheet({
                           <div className="h-px w-full bg-zinc-100 dark:bg-zinc-800 mb-3"></div>
                           <p className="text-xs sm:text-sm text-gray-900 dark:text-white break-words">
                             {typeof value === 'string' && isFileUrl(value) ? (
-                              <span className="text-blue-500 dark:text-blue-400">{getFileNameFromUrl(value)}</span>
+                              <span className="text-blue-500 dark:text-amber-500">{getFileNameFromUrl(value)}</span>
                             ) : (
                               typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value)
                             )}
@@ -413,7 +413,7 @@ export function TableSubmissionSheet({
                         Analytics
                         {/* Only show premium badge for non-premium users */}
                         {!isPremium && (
-                          <Badge variant="outline" className="ml-2 text-[10px] border-amber-200 dark:border-amber-800 text-amber-600 dark:text-amber-400">
+                          <Badge variant="outline" className="ml-2 text-[10px] border-amber-200 dark:border-amber-800 text-amber-600 dark:text-amber-500">
                             Premium
                           </Badge>
                         )}

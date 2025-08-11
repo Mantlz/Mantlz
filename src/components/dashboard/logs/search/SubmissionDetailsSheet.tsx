@@ -333,7 +333,7 @@ export function SubmissionDetailsSheet({
                         <div className="h-px w-full bg-zinc-100 dark:bg-zinc-800 mb-3"></div>
                         <p className="text-xs sm:text-sm text-gray-900 dark:text-white break-words">
                           {typeof value === 'string' && isFileUrl(value) ? (
-                            <span className="text-blue-500 dark:text-blue-400">{getFileNameFromUrl(value)}</span>
+                            <span className="text-blue-500 dark:text-amber-500">{getFileNameFromUrl(value)}</span>
                           ) : (
                             typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value)
                           )}

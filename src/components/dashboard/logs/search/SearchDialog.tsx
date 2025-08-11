@@ -431,8 +431,8 @@ export function SearchDialog({
         {!isProUser && selectedFormId === null && (
           <div className="mx-4 my-2 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/40 rounded-lg flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Lock className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-              <span className="text-sm text-amber-700 dark:text-amber-300">Select a form to search</span>
+              <Lock className="h-4 w-4 text-amber-600 dark:text-amber-500" />
+              <span className="text-sm text-amber-500 dark:text-amber-300">Select a form to search</span>
             </div>
             {showUpgradeModal && (
               <button 

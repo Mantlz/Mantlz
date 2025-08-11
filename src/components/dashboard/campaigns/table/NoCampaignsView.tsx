@@ -14,7 +14,7 @@ export function NoCampaignsView({ isPremium = false, }: NoCampaignsViewProps) {
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 text-center space-y-6 rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800">
       <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
-        <Mail className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+        <Mail className="h-8 w-8 text-amber-500 dark:text-amber-500" />
       </div>
       <div className="space-y-2 max-w-md mx-auto">
         <h3 className="text-xl font-medium text-gray-900 dark:text-white">

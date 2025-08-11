@@ -236,18 +236,18 @@ export default function DiscordSettings() {
                 {!isPremium ? (
                   <div className="rounded-lg bg-amber-50 border border-amber-200 p-3 sm:p-4 dark:bg-amber-900/20 dark:border-amber-800/30">
                     <div className="flex gap-2 sm:gap-3">
-                      <AlertCircle className="h-4 w-4 text-amber-500 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                      <AlertCircle className="h-4 w-4 text-amber-500 dark:text-amber-500 flex-shrink-0 mt-0.5" />
                       <div className="space-y-1">
                         <p className="text-xs font-medium text-amber-800 dark:text-amber-300">
                           Standard or Pro Plan Required
                         </p>
-                        <p className="text-xs text-amber-700 dark:text-amber-400">
+                        <p className="text-xs text-amber-500 dark:text-amber-500">
                           Upgrade to Standard or Pro to enable Discord notifications for form submissions.
                         </p>
                         <Button 
                           size="sm" 
                           variant="outline" 
-                          className="h-7 px-2 py-1 text-xs border-amber-300 text-amber-700 bg-amber-50 cursor-pointer hover:bg-amber-100 dark:border-amber-700 dark:text-amber-400 dark:bg-amber-900/30 dark:hover:bg-amber-800/30 mt-2"
+                          className="h-7 px-2 py-1 text-xs border-amber-300 text-amber-500 bg-amber-50 cursor-pointer hover:bg-amber-100 dark:border-amber-700 dark:text-amber-500 dark:bg-amber-900/30 dark:hover:bg-amber-800/30 mt-2"
                         >
                           Upgrade Plan
                         </Button>

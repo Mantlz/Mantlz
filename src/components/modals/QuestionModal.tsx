@@ -20,7 +20,7 @@ const helpOptions = [
     label: "Documentation",
     description: "Learn how to use Mantlz",
     href: "https://doc.mantlz.com",
-    color: "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+    color: "bg-blue-500/10 text-amber-500 dark:text-amber-500"
   },
   {
     id: "support",

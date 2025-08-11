@@ -268,7 +268,7 @@ export function SubmissionDetails({ submission, isLoading, onBack, onDelete }: S
                             href={value}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-sm text-blue-600 dark:text-blue-400 hover:underline flex-1 truncate"
+                            className="text-sm text-amber-500 dark:text-amber-500 hover:underline flex-1 truncate"
                           >
                             {getFileNameFromUrl(value)}
                           </a>

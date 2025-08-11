@@ -226,7 +226,7 @@ export function TableContent({
               </Badge>
             )}
             {isPremium && isDateFilterActive && (
-              <Badge className="ml-2 bg-zinc-100 text-blue-800 dark:bg-zinc-900/30 dark:text-blue-400">
+              <Badge className="ml-2 bg-zinc-100 text-amber-500 dark:bg-zinc-900/30 dark:text-amber-500">
                 Date Filtered
               </Badge>
             )}
@@ -305,8 +305,8 @@ export function TableContent({
         
         {/* Include active filter info when filter is applied */}
         {isPremium && isProPlan && isDateFilterActive && (
-          <div className="px-4 py-2 bg-zinc-50 dark:bg-zinc-950/20 border-b border-blue-200 dark:border-zinc-800/50 flex items-center justify-between">
-            <div className="flex items-center gap-2 text-sm text-blue-700 dark:text-blue-400">
+          <div className="px-4 py-2 bg-zinc-50 dark:bg-zinc-950/20 border-b border-amber-200 dark:border-zinc-800/50 flex items-center justify-between">
+            <div className="flex items-center gap-2 text-sm text-amber-500 dark:text-amber-500">
               <CalendarRange className="h-4 w-4" />
               <span>
                 Showing filtered submissions
@@ -328,7 +328,7 @@ export function TableContent({
               variant="ghost"
               size="sm"
               onClick={handleClearFilter}
-              className="h-7 text-xs text-blue-600 dark:text-blue-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/20"
+              className="h-7 text-xs text-amber-500 dark:text-amber-500 hover:bg-zinc-100 dark:hover:bg-zinc-900/20"
             >
               Clear Filter
             </Button>
@@ -451,11 +451,11 @@ export function TableContent({
                         ) : null}
                       </div>
                       <div className="bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-900/30 border border-amber-200 dark:border-amber-800 rounded-lg p-2 mt-2 max-w-lg">
-                        <h4 className="text-sm font-semibold text-amber-800 dark:text-amber-400 mb-1 flex items-center">
+                        <h4 className="text-sm font-semibold text-amber-800 dark:text-amber-500 mb-1 flex items-center">
                           <Sparkles className="h-3.5 w-3.5 mr-1.5" />
                           Premium Plan Features
                         </h4>
-                        <ul className="text-xs text-amber-700 dark:text-amber-300 space-y-1 pl-5 list-disc">
+                        <ul className="text-xs text-amber-500 dark:text-amber-300 space-y-1 pl-5 list-disc">
                           <li><strong>Full Data Access:</strong> See all historical submissions (not just 30 days)</li>
                           <li><strong>Detailed View:</strong> Access complete submission details and analytics</li>
                           <li><strong>Advanced Filtering:</strong> Filter and search by date, status, and more</li>
@@ -486,7 +486,7 @@ export function TableContent({
             {!isPremium && (
               <div className="flex items-center gap-1 mr-2">
                 <AlertCircle className="h-3.5 w-3.5 text-amber-500" />
-                <span className="text-[10px] text-amber-600 dark:text-amber-400">
+                <span className="text-[10px] text-amber-600 dark:text-amber-500">
                   {userPlan === 'FREE' ? 'Free users: 20 submissions from last 30 days only' : 'Standard users: last 30 days only'}
                 </span>
               </div>

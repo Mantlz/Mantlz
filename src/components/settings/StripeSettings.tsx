@@ -15,7 +15,7 @@ export default function StripeSettings() {
               <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
                 Stripe Integration
               </h2>
-              <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 rounded-full border border-amber-200 dark:border-amber-800">
+              <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-500 rounded-full border border-amber-200 dark:border-amber-800">
                 Coming Soon
               </span>
             </div>

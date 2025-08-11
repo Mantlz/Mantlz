@@ -191,7 +191,7 @@ export default function UsageSettings() {
         </p>
         
         {(planData?.usage.forms.percentage ?? 0) >= 80 && (
-          <div className="mt-2 p-2 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 dark:bg-amber-900/30 dark:border-amber-800/30 dark:text-amber-400 text-xs flex items-center">
+          <div className="mt-2 p-2 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 dark:bg-amber-900/30 dark:border-amber-800/30 dark:text-amber-500 text-xs flex items-center">
             <AlertCircle className="h-3.5 w-3.5 mr-1.5 flex-shrink-0" />
             <span>You&apos;re approaching your form limit. Consider upgrading your plan for more forms.</span>
           </div>
@@ -269,7 +269,7 @@ export default function UsageSettings() {
                         planData.usage.forms.percentage > 90
                           ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400" 
                           : planData.usage.forms.percentage > 70
-                            ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
+                            ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-500"
                             : "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
                       )}>
                         {planData.usage.forms.percentage.toFixed(1)}%
@@ -324,7 +324,7 @@ export default function UsageSettings() {
                         planData.usage.submissions.percentage > 90
                           ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400" 
                           : planData.usage.submissions.percentage > 70
-                            ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
+                            ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-500"
                             : "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
                       )}>
                         {planData.usage.submissions.percentage.toFixed(1)}%
@@ -379,7 +379,7 @@ export default function UsageSettings() {
                         planData.usage.campaigns.percentage > 90
                           ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400" 
                           : planData.usage.campaigns.percentage > 70
-                            ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400"
+                            ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-500"
                             : "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
                       )}>
                         {planData.usage.campaigns.percentage.toFixed(1)}%

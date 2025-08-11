@@ -67,7 +67,7 @@ export function FormTemplateListItem({ template, isSelected, onSelect, onContinu
             <div className="flex gap-1.5">
               {isPopular && !isComingSoon && (
                 <Badge 
-                  className="bg-amber-50 hover:bg-amber-50 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400 flex items-center gap-1 text-xs font-medium py-0.5 h-5 px-2"
+                  className="bg-amber-50 hover:bg-amber-50 text-amber-600 dark:bg-amber-400/10 dark:text-amber-500 flex items-center gap-1 text-xs font-medium py-0.5 h-5 px-2"
                 >
                   <IconStar className="h-3 w-3" />
                   Popular
@@ -80,7 +80,7 @@ export function FormTemplateListItem({ template, isSelected, onSelect, onContinu
                     "flex items-center gap-1 text-xs font-medium py-0.5 h-5 px-2",
                     isProPlan 
                       ? "bg-orange-50 hover:bg-orange-50 text-orange-600 dark:bg-orange-400/10 dark:text-orange-400"
-                      : "bg-blue-50 hover:bg-blue-50 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400"
+                      : "bg-blue-50 hover:bg-blue-50 text-amber-500 dark:bg-blue-400/10 dark:text-amber-500"
                   )}
                 >
                   <IconLock className="h-3 w-3" />

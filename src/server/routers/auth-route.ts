@@ -25,7 +25,7 @@ export const authRouter = j.router({
         where: { clerkId: auth.id },
       }) as { id: string; email: string; clerkId: string; firstName: string | null; lastName: string | null; imageUrl: string | null; quotaLimit: number; plan: string } | null
 
-      console.log('User in Database 👨:', user)
+      // console.log('User in Database 👨:', user)
 
       if (!user) {
         // Get current month and year for quota

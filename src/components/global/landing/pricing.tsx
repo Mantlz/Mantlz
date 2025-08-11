@@ -247,7 +247,7 @@ function PricingContent({
                        {plan.features.map((feature, i) => (
                          <li key={i} className="flex items-start gap-3">
                            <div className="flex-shrink-0 w-4 h-4 rounded-sm flex items-center justify-center mt-0.5">
-                             <Check className="h-3 w-3 text-amber-600 dark:text-amber-400" />
+                             <Check className="h-3 w-3 text-amber-600 dark:text-amber-500" />
                            </div>
                            <span className="text-sm text-gray-600 dark:text-gray-400">{feature}</span>
                          </li>

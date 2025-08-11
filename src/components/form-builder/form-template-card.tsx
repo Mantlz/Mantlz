@@ -71,7 +71,7 @@ export function FormTemplateCard({ template, isSelected, onSelect, onContinue }:
             <div className="flex gap-1">
               {isPopular && !isComingSoon && (
                 <Badge 
-                  className="bg-amber-50 hover:bg-amber-50 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400 flex items-center gap-0.5 text-[10px] font-medium py-0 h-4 px-1.5"
+                  className="bg-amber-50 hover:bg-amber-50 text-amber-600 dark:bg-amber-400/10 dark:text-amber-500 flex items-center gap-0.5 text-[10px] font-medium py-0 h-4 px-1.5"
                 >
                   <IconStar className="h-2.5 w-2.5" />
                   Popular
@@ -84,7 +84,7 @@ export function FormTemplateCard({ template, isSelected, onSelect, onContinue }:
                     "flex items-center gap-0.5 text-[10px] font-medium py-0 h-4 px-1.5",
                     isProPlan 
                       ? "bg-orange-50 hover:bg-orange-50 text-orange-600 dark:bg-orange-400/10 dark:text-orange-400"
-                      : "bg-blue-50 hover:bg-blue-50 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400"
+                      : "bg-blue-50 hover:bg-blue-50 text-amber-500 dark:bg-blue-400/10 dark:text-amber-500"
                   )}
                 >
                   <IconLock className="h-2.5 w-2.5" />

@@ -261,7 +261,7 @@ export function FormResponsesList({
                         <Badge
                           key={key}
                           variant="secondary"
-                          className="text-[10px] px-2 py-0.5 rounded-lg bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 flex items-center gap-1"
+                          className="text-[10px] px-2 py-0.5 rounded-lg bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-amber-500 flex items-center gap-1"
                         >
                           <FileIcon className="h-3 w-3" />
                           {key}

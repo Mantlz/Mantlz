@@ -241,7 +241,7 @@ export function FormSettings({
                 </div>
                 <div className="flex items-center">
                   {userPlan === 'FREE' && !emailEnabled && (
-                    <div className="mr-3 px-2 py-0.5 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded-lg border border-amber-200 dark:border-amber-800/50">
+                    <div className="mr-3 px-2 py-0.5 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-500 rounded-lg border border-amber-200 dark:border-amber-800/50">
                       Premium Feature
                     </div>
                   )}
@@ -264,7 +264,7 @@ export function FormSettings({
                     Get notified via email when someone submits your form.
                   </p>
                   {userPlan === 'FREE' && !emailEnabled && (
-                    <p className="mt-1.5 text-xs text-amber-600 dark:text-amber-400">
+                    <p className="mt-1.5 text-xs text-amber-600 dark:text-amber-500">
                       Available on Standard and Pro plans
                     </p>
                   )}
@@ -323,7 +323,7 @@ export function FormSettings({
                   </div>
                   <div className="flex items-center">
                     {userPlan === 'FREE' && !usersJoinedEnabled && (
-                      <div className="mr-3 px-2 py-0.5 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded-lg border border-amber-200 dark:border-amber-800/50">
+                      <div className="mr-3 px-2 py-0.5 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-500 rounded-lg border border-amber-200 dark:border-amber-800/50">
                         Premium Feature
                       </div>
                     )}
@@ -347,14 +347,14 @@ export function FormSettings({
                     </p>
                     {usersJoinedEnabled && usersJoinedSettings?.count !== undefined && (
                       <div className="mt-2 flex items-center">
-                        <div className="inline-flex items-center px-3 py-1 text-sm bg-zinc-50 dark:bg-zinc-900/20 text-blue-700 dark:text-blue-400 rounded-lg border border-blue-100 dark:border-blue-800/50">
+                        <div className="inline-flex items-center px-3 py-1 text-sm bg-zinc-50 dark:bg-zinc-900/20 text-blue-700 dark:text-amber-500 rounded-lg border border-blue-100 dark:border-blue-800/50">
                           <Users className="w-3.5 h-3.5 mr-1.5" />
                           <span>{usersJoinedSettings.count.toLocaleString()} users joined</span>
                         </div>
                       </div>
                     )}
                     {userPlan === 'FREE' && !usersJoinedEnabled && (
-                      <p className="mt-1.5 text-xs text-amber-600 dark:text-amber-400">
+                      <p className="mt-1.5 text-xs text-amber-600 dark:text-amber-500">
                         Available on Standard and Pro plans
                       </p>
                     )}
@@ -412,7 +412,7 @@ export function FormSettings({
                 </div>
                 <div className="flex items-center">
                   {userPlan === 'FREE' && (
-                    <div className="mr-3 px-2 py-0.5 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded-lg border border-amber-200 dark:border-amber-800/50">
+                    <div className="mr-3 px-2 py-0.5 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-500 rounded-lg border border-amber-200 dark:border-amber-800/50">
                       Premium Feature
                     </div>
                   )}
@@ -427,7 +427,7 @@ export function FormSettings({
                     Export your form submissions to CSV format for advanced analysis and record keeping.
                   </p>
                   {userPlan === 'FREE' && (
-                    <p className="mt-1.5 text-xs text-amber-600 dark:text-amber-400">
+                    <p className="mt-1.5 text-xs text-amber-600 dark:text-amber-500">
                       Available on Standard and Pro plans
                     </p>
                   )}
