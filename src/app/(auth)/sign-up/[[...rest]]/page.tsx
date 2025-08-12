@@ -9,6 +9,7 @@ const Page = () => {
       <div className="w-full max-w-md">
         <div className="flex text-center justify-center">
           <SignUp 
+            fallbackRedirectUrl="/welcome-back"
             appearance={{
               baseTheme: dark,
               variables: {
