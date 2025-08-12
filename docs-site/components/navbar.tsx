@@ -43,6 +43,14 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
+          <Link
+            href="https://mantlz.com/dashboard"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:flex bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 px-3 py-1.5 rounded-lg border border-amber-500/20 text-sm font-medium transition-colors"
+          >
+            Dashboard
+          </Link>
           <SearchButton />
           <ModeToggle />
         </div>

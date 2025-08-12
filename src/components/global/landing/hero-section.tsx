@@ -44,7 +44,7 @@ export default function HeroSection() {
         </p>
         <div className="mx-auto mt-8 flex justify-center items-center w-full sm:mt-14 lg:mt-10">
           <div className="w-full max-w-7xl">
-            <div className="rounded-xl bg-amber-500/5 dark:bg-orange-100/5 p-2 ring-1 ring-inset ring-orange-900/10 dark:ring-orange/10 lg:rounded-2xl lg:p-4">
+            <div className="rounded-xl bg-amber-500/5 dark:bg-orange-100/5 p-2 ring-2 ring-inset ring-orange-900/10 dark:ring-orange/10 lg:rounded-2xl lg:p-4">
               <Image
                 src="/preview1.png"
                 alt="App screenshot"

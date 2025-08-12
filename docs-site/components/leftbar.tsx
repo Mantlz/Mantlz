@@ -9,6 +9,7 @@ import {
 import { Button } from "./ui/button";
 import { AlignLeftIcon } from "lucide-react";
 import DocsMenu from "./docs-menu";
+import Link from "next/link";
 
 export function Leftbar() {
   return (
@@ -33,6 +34,16 @@ export function SheetLeftbar() {
         <SheetHeader>
           <h2 className="font-extrabold text-start px-8">Menu</h2>
         </SheetHeader>
+        <div className="px-8 pb-4">
+          <Link
+            href="https://mantlz.com/dashboard"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex w-full bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 px-3 py-2 rounded-lg border border-amber-500/20 text-sm font-medium transition-colors justify-center"
+          >
+            Dashboard
+          </Link>
+        </div>
         <ScrollArea className="flex flex-col gap-4">
           <div className="mx-2 px-5">
             <DocsMenu isSheet />
