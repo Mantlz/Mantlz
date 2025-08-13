@@ -1,27 +1,25 @@
+---
+title: File Upload
+description: Handle file uploads in your forms with built-in validation and automatic handling
+---
+
 # File Upload
 
-The Mantlz SDK provides robust file upload capabilities with built-in validation, size restrictions, and type checking.
+The Mantlz SDK provides built-in support for file uploads with drag-and-drop functionality, validation, and automatic handling.
 
 ## Basic Usage
 
+File upload fields are configured in your Mantlz dashboard and automatically rendered by the SDK:
+
 ```tsx
-<Mantlz 
-  formId="your_form_id"
-  fields={[
-    {
-      id: 'document',
-      name: 'document',
-      type: 'file',
-      label: 'Upload Document',
-      required: true,
-      accept: ['.pdf', '.doc', '.docx'],
-      maxSize: 5 * 1024 * 1024 // 5MB
-    }
-  ]}
-/>
+import { Mantlz } from '@mantlz/nextjs';
+
+<Mantlz formId="your-form-id" />
 ```
 
 ## Configuration Options
+
+File upload fields support several configuration options that can be set in your dashboard:
 
 ### Field Properties
 
@@ -30,171 +28,179 @@ interface FileField extends FormField {
   type: 'file';
   accept?: string[];        // Allowed file types
   maxSize?: number;         // Maximum file size in bytes
-  multiple?: boolean;       // Allow multiple file uploads
   required?: boolean;       // Is the field required?
 }
 ```
 
-### Accepted File Types
-You can specify allowed file types using standard MIME types or file extensions:
+### Accept Types
 
-```typescript
-const field: FileField = {
-  // ...
-  accept: [
-    '.pdf',                 // By extension
-    '.doc', '.docx',        // Multiple extensions
-    'image/*',             // All image types
-    'application/pdf',      // By MIME type
-  ]
-};
+Specify which file types are allowed using the `accept` array:
+
+```json
+{
+  "type": "file",
+  "name": "document",
+  "label": "Upload Document",
+  "accept": [".pdf", ".doc", ".docx"]
+}
 ```
 
-### Size Restrictions
-Set maximum file size in bytes:
+You can use file extensions or MIME types:
 
-```typescript
-const field: FileField = {
-  // ...
-  maxSize: 5 * 1024 * 1024  // 5MB
-};
+```json
+{
+  "type": "file",
+  "name": "image",
+  "label": "Upload Image",
+  "accept": [".jpg", ".jpeg", ".png", "image/*"]
+}
 ```
 
-## Validation
+### File Size Limits
 
-File uploads include built-in validation:
+Set maximum file size in bytes using the `maxSize` property:
 
-```typescript
-const fileValidation = {
-  // Size validation
-  maxSize: (file: File, maxSize: number) => {
-    if (file.size > maxSize) {
-      throw new Error(`File size must be less than ${maxSize / 1024 / 1024}MB`);
-    }
-  },
-  
-  // Type validation
-  fileType: (file: File, accept: string[]) => {
-    const isValid = accept.some(type => {
-      if (type.startsWith('.')) {
-        return file.name.toLowerCase().endsWith(type.toLowerCase());
-      }
-      return file.type.match(new RegExp(type.replace('*', '.*')));
-    });
-    
-    if (!isValid) {
-      throw new Error(`File type must be: ${accept.join(', ')}`);
-    }
-  }
-};
+```json
+{
+  "type": "file",
+  "name": "image",
+  "label": "Upload Image",
+  "maxSize": 5242880,
+  "accept": [".jpg", ".jpeg", ".png"]
+}
 ```
 
-## Handling File Uploads
+### Required Files
 
-The SDK handles file uploads automatically:
+Make file upload mandatory using the `required` property:
 
-1. **Client-side Validation**
-   - File type checking
-   - Size validation
-   - Required field validation
+```json
+{
+  "type": "file",
+  "name": "resume",
+  "label": "Upload Resume",
+  "required": true,
+  "accept": [".pdf"]
+}
+```
 
-2. **Upload Process**
-   - Automatic multipart/form-data handling
-   - Progress tracking
-   - Error handling
+## Built-in Validation
 
-3. **Server Integration**
-   - Secure upload endpoints
-   - File processing
-   - Storage management
+The SDK automatically validates file uploads with the following checks:
+
+### File Size Validation
+- Validates against the `maxSize` property (default: 10MB)
+- Shows user-friendly error messages
+- Prevents upload if file exceeds limit
+
+### File Type Validation
+- Validates against the `accept` array
+- Supports both file extensions (`.pdf`) and MIME types (`image/*`)
+- Blocks unsupported file types
+
+### Required Field Validation
+- Ensures required file fields are not empty
+- Integrates with form validation system
+- Shows appropriate error states
+
+## How File Uploads Work
+
+The SDK handles file uploads seamlessly:
+
+1. **Drag & Drop Interface**
+   - Users can drag files directly onto the upload area
+   - Click to browse and select files
+   - Visual feedback during file selection
+
+2. **Automatic Validation**
+   - Real-time file type and size checking
+   - User-friendly error messages
+   - Integration with form validation
+
+3. **Upload Processing**
+   - Files are processed when the form is submitted
+   - Secure handling and storage
+   - Automatic integration with form data
 
 ## Examples
 
 ### Basic Document Upload
 
-```tsx
-const documentField: FileField = {
-  id: 'document',
-  name: 'document',
-  type: 'file',
-  label: 'Upload Document',
-  required: true,
-  accept: ['.pdf', '.doc', '.docx'],
-  maxSize: 5 * 1024 * 1024
-};
+```json
+{
+  "id": "document",
+  "name": "document",
+  "type": "file",
+  "label": "Upload Document",
+  "required": true,
+  "accept": [".pdf", ".doc", ".docx"],
+  "maxSize": 5242880
+}
 ```
 
 ### Image Upload
 
-```tsx
-const imageField: FileField = {
-  id: 'profile',
-  name: 'profile',
-  type: 'file',
-  label: 'Profile Picture',
-  required: true,
-  accept: ['image/*'],
-  maxSize: 2 * 1024 * 1024
-};
+```json
+{
+  "id": "profile",
+  "name": "profile",
+  "type": "file",
+  "label": "Profile Picture",
+  "required": true,
+  "accept": ["image/*"],
+  "maxSize": 2097152
+}
 ```
 
-### Multiple File Upload
+### Optional File Upload
 
-```tsx
-const attachmentsField: FileField = {
-  id: 'attachments',
-  name: 'attachments',
-  type: 'file',
-  label: 'Additional Documents',
-  required: false,
-  multiple: true,
-  accept: ['.pdf', '.doc', '.docx', '.txt'],
-  maxSize: 10 * 1024 * 1024
-};
+```json
+{
+  "id": "attachment",
+  "name": "attachment",
+  "type": "file",
+  "label": "Additional Document",
+  "required": false,
+  "accept": [".pdf", ".doc", ".docx", ".txt"],
+  "maxSize": 10485760
+}
 ```
 
 ## Best Practices
 
-1. **File Size**
-   - Set appropriate size limits
-   - Consider bandwidth and storage
-   - Provide clear size guidelines
+1. **File Size Limits**
+   - Set reasonable size limits based on your use case
+   - Consider user bandwidth and storage requirements
+   - Default limit is 10MB, adjust as needed
 
-2. **File Types**
-   - Restrict to necessary file types
-   - Use both extensions and MIME types
-   - Consider security implications
+2. **File Type Restrictions**
+   - Only allow necessary file types for security
+   - Use specific extensions (`.pdf`) for strict validation
+   - Use MIME types (`image/*`) for broader categories
 
 3. **User Experience**
-   - Show upload progress
-   - Provide clear error messages
-   - Allow retry on failure
+   - Provide clear labels and instructions
+   - Show accepted file types and size limits
+   - Use descriptive error messages
 
-4. **Performance**
-   - Optimize file handling
-   - Consider chunked uploads
-   - Implement proper error handling
+4. **Form Design**
+   - Place file uploads logically in your form
+   - Make required file fields clearly marked
+   - Test with various file types and sizes
 
 ## Error Handling
 
-The SDK provides comprehensive error handling for file uploads:
+The SDK automatically handles common file upload errors:
 
-```typescript
-try {
-  await form.submit();
-} catch (error) {
-  if (error.code === 'FILE_TOO_LARGE') {
-    // Handle file size error
-  } else if (error.code === 'INVALID_FILE_TYPE') {
-    // Handle file type error
-  } else if (error.code === 'UPLOAD_FAILED') {
-    // Handle upload failure
-  }
-}
-```
+- **File too large**: Shows size limit message
+- **Invalid file type**: Lists accepted file types
+- **Required field empty**: Standard form validation error
+- **Upload failure**: Network or server error handling
+
+All errors are displayed inline with the file upload field and integrate with the form's validation system.
 
 ## Next Steps
 
 - Learn about [Form Types](/docs/features/form-types)
 - Explore [Validation](/docs/features/validation)
-- Check out [Error Handling](/docs/features/error-handling) 
+- Check out [Error Handling](/docs/features/error-handling)

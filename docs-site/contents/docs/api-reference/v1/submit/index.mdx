@@ -9,14 +9,14 @@ The Mantlz SDK handles form submissions automatically. You don't need to impleme
 
 ## Basic Usage
 
-The simplest way to submit a form is to use the `MantlzForm` component:
+The simplest way to submit a form is to use the `Mantlz` component:
 
 ```tsx
-import { MantlzForm } from '@mantlz/sdk';
+import { Mantlz } from '@mantlz/nextjs';
 
-function ContactForm() {
+function MyForm() {
   return (
-    <MantlzForm
+    <Mantlz
       formId="your-form-id"
       onSuccess={(response) => {
         console.log('Form submitted successfully!', response);
@@ -63,11 +63,11 @@ interface FormSubmitResponse {
 While the SDK handles everything automatically, you can customize the submission behavior if needed:
 
 ```tsx
-import { MantlzForm } from '@mantlz/sdk';
+import { Mantlz } from '@mantlz/nextjs';
 
-function CustomForm() {
+function MyForm() {
   return (
-    <MantlzForm
+    <Mantlz
       formId="your-form-id"
     />
   );
@@ -79,7 +79,7 @@ function CustomForm() {
 The SDK automatically handles file uploads:
 
 ```tsx
-<MantlzForm
+<Mantlz
   formId="your-form-id"
   onSuccess={(response) => {
     // File URLs are included in the response
@@ -117,7 +117,7 @@ Common error scenarios handled automatically:
 
 ## Best Practices
 
-1. **Use the Built-in Component**: Let the `MantlzForm` component handle submissions
+1. **Use the Built-in Component**: Let the `Mantlz` component handle submissions
 2. **Implement Success Handlers**: Add `onSuccess` handlers for post-submission logic
 3. **Trust the SDK**: Allow the SDK to manage validation and error handling
 4. **Handle Redirects**: Use the provided redirect information for navigation
@@ -134,15 +134,15 @@ The SDK automatically handles rate limiting:
 ## Example: Complete Implementation
 
 ```tsx
-import { MantlzForm } from '@mantlz/sdk';
+import { Mantlz } from '@mantlz/nextjs';
 
 function ContactForm() {
   return (
-    <MantlzForm
+    <Mantlz
       formId="contact-form"
     />
   );
 }
 ```
 
-Remember: The Mantlz SDK is designed to handle all form submission complexities automatically. You don't need to worry about the submission process, validation, or error handling - just use our components and let the SDK manage everything for you! 
+Remember: The Mantlz SDK is designed to handle all form submission complexities automatically. You don't need to worry about the submission process, validation, or error handling - just use our components and let the SDK manage everything for you!

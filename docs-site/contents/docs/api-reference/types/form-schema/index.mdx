@@ -23,11 +23,11 @@ When you use the Mantlz SDK, forms are automatically configured and managed base
 Using a form is as simple as:
 
 ```tsx
-import { MantlzForm } from '@mantlz/sdk';
+import { Mantlz } from '@mantlz/nextjs';
 
 function MyForm() {
   return (
-    <MantlzForm 
+    <Mantlz 
       formId="your-form-id"
       onSuccess={(data) => {
         console.log('Form submitted successfully!', data);
@@ -98,11 +98,11 @@ The SDK automatically handles:
 Here's all you need to implement a complete form:
 
 ```tsx
-import { MantlzForm } from '@mantlz/sdk';
+import { Mantlz } from '@mantlz/nextjs';
 
 function ContactForm() {
   return (
-    <MantlzForm
+    <Mantlz
       formId="contact-form"
       }}
     />
@@ -127,4 +127,4 @@ The SDK handles everything else:
 3. **Trust the SDK**: Let the SDK handle validation and error states
 4. **Use TypeScript**: The SDK provides full type safety automatically
 
-Remember: The Mantlz SDK is designed to handle all the complex form management for you. You don't need to worry about schema implementation, validation logic, or state management - just use our components and let the SDK do the heavy lifting! 
+Remember: The Mantlz SDK is designed to handle all the complex form management for you. You don't need to worry about schema implementation, validation logic, or state management - just use our components and let the SDK do the heavy lifting!
