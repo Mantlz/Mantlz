@@ -12,9 +12,9 @@ The Mantlz SDK provides React components for creating dynamic forms. All form co
 The main component that dynamically renders any type of form based on its configuration:
 
 ```tsx
-import { mantlz } from '@mantlz/nextjs';
+import { Mantlz } from '@mantlz/nextjs';
 
-<mantlz 
+<Mantlz 
   formId="your-form-id"
   title="Form Title"
   description="Form description"
@@ -38,7 +38,7 @@ Depending on the form type configured in the dashboard, additional features are 
 #### Waitlist Forms
 For forms configured as waitlist type:
 ```tsx
-<mantlz
+<Mantlz
   formId="your-waitlist-form-id"
   showUsersJoined={true} // Show number of users who joined
   usersJoinedLabel="people on the waitlist" // Custom label
@@ -49,7 +49,7 @@ For forms configured as waitlist type:
 #### Feedback Forms
 For forms configured as feedback type:
 ```tsx
-<mantlz
+<Mantlz
   formId="your-feedback-form-id"
   showRating={true} // Show star rating input
   ratingLabel="Rate your experience" // Custom rating label
@@ -124,6 +124,6 @@ To get started with dynamic forms:
 
 1. [Install the SDK](/docs/getting-started/installation)
 2. Create and configure your form in the Mantlz dashboard
-3. Copy your form ID and implement the mantlz component
+3. Copy your form ID and implement the Mantlz component
 4. Add form submission handlers
 5. Deploy your form!
