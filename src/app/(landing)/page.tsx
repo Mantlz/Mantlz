@@ -13,26 +13,22 @@ import { Suspense } from "react";
 import IntegrationsSection from "@/components/global/landing/integrations-6";
 import CustomizeFormSection from "@/components/global/landing/customizeform";
 import SecuritySection from "@/components/global/landing/security";
-// import LogoCloud from "@/components/global/landing/logo-cloud";
+
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen ">
       <Container>
         <Navbar />
-
         <HeroSection />
-        <div className="mt-20">
-          {/* <LogoCloud /> */}
+        <div className="mt-10">
           <IntegrationsSection />
         </div>
-
         <OurServices />
         <CustomizeFormSection />
         <FeaturesSection />
         <SecuritySection />
       </Container>
-
       <Suspense>
         <Pricing />
       </Suspense>

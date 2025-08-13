@@ -5,11 +5,14 @@ import { Button } from "@/components/ui/button";
 import {  Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Meteors } from "@/components/ui/meteors";
+import { Highlighter } from "@/components/ui/highlighter";
 
 export default function HeroSection() {
   const isMobile = useIsMobile();
   return (
     <div className="relative isolate overflow-hidden min-h-screen">
+      <Meteors />
       <div className="relative z-10 mx-auto max-w-8xl  mt-20  text-center">
         <div className=" inline-flex items-center rounded-xl mb-2 bg-gradient-to-r from-zinc-100 to-zinc-50 px-4 py-2 text-sm font-light text-zinc-700 ring-1 ring-inset ring-zinc-200/50 dark:from-zinc-800/30 dark:to-zinc-500/20 dark:text-zinc-500 dark:ring-zinc-500/30">
           <Sparkles className="h-4 w-4 mr-2 text-orange-500 dark:text-white" />
@@ -18,9 +21,15 @@ export default function HeroSection() {
           <span className="text-stone-900 dark:text-stone-300">npm install Mantlz/nextjs</span>
         </div>
         <h1 className="text-4xl mt-4 font-bold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
-          <span className="block bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">Manage All of Your Forms</span>
-          <span className="block bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent mt-2">
-            In One Place Efficiently
+          <span className="block text-black dark:text-white">
+            <Highlighter action="highlight" color="#fbbf24" animationDuration={800}>
+              Manage All of Your Forms
+            </Highlighter>
+          </span>
+          <span className="block text-orange-500 mt-4">
+            <Highlighter action="underline" color="#f97316" animationDuration={1000}>
+              In One Place Efficiently
+            </Highlighter>
           </span>
         </h1>
         <p className="mt-6 text-base leading-7 text-muted-foreground max-w-2xl mx-auto">
