@@ -19,7 +19,7 @@ const helpOptions = [
     icon: <Book className="h-5 w-5" />,
     label: "Documentation",
     description: "Learn how to use Mantlz",
-    href: "https://doc.mantlz.com",
+    href: "https://docs.mantlz.com",
     color: "bg-blue-500/10 text-amber-500 dark:text-amber-500"
   },
   {

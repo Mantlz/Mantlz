@@ -6,21 +6,21 @@ export function StructuredData() {
     '@type': 'WebSite',
     name: 'Mantlz Documentation',
     description: 'Complete documentation for Mantlz - The ultimate form solution platform for building customizable feedback, contact, and waitlist forms.',
-    url: 'https://doc.mantlz.com/',
+    url: 'https://docs.mantlz.com/',
     publisher: {
       '@type': 'Organization',
       name: 'Mantlz',
       url: 'https://mantlz.com',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://doc.mantlz.com/logo.png'
+        url: 'https://docs.mantlz.com/logo.png'
       }
     },
     potentialAction: {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://doc.mantlz.com//search?q={search_term_string}'
+        urlTemplate: 'https://docs.mantlz.com//search?q={search_term_string}'
       },
       'query-input': 'required name=search_term_string'
     },
@@ -73,7 +73,7 @@ export function DocumentationStructuredData({ title, description, url }: {
       name: 'Mantlz',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://doc.mantlz.com/logo.png'
+        url: 'https://docs.mantlz.com/logo.png'
       }
     },
     dateModified: new Date().toISOString(),

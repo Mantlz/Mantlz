@@ -182,7 +182,7 @@ export function Navbar() {
               <MobileNavLink href="#features">Features</MobileNavLink>
               <MobileNavLink href="#pricing">Pricing</MobileNavLink>
               <MobileNavLink href="#faq">FAQ</MobileNavLink>
-              <MobileNavLink href="https://doc.mantlz.com" target="_blank">
+              <MobileNavLink href="https://docs.mantlz.com" target="_blank">
                 Docs
               </MobileNavLink>
               <MobileNavLink href="https://mantlz.featurebase.app/changelog" target="_blank">
@@ -260,7 +260,7 @@ export function Navbar() {
             <NavLink href="#features">Features</NavLink>
             <NavLink href="#pricing">Pricing</NavLink>
             <NavLink href="#faq">FAQ</NavLink>
-            <NavLink href="https://doc.mantlz.com" target="_blank">Docs</NavLink>
+            <NavLink href="https://docs.mantlz.com" target="_blank">Docs</NavLink>
             <NavLink href="https://mantlz.featurebase.app" target="_blank">Changelog</NavLink>
           </div>
           {/* Render Auth Section using the refined logic */}

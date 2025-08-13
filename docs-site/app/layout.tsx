@@ -48,14 +48,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://doc.mantlz.com/"),
+  metadataBase: new URL("https://docs.mantlz.com/"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://doc.mantlz.com/",
+    url: "https://docs.mantlz.com/",
     title: "Mantlz Documentation",
     description:
       "Complete documentation for Mantlz - The ultimate form solution platform for building customizable feedback, contact, and waitlist forms.",

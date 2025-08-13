@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://doc.mantlz.com/sitemap.xml
+Sitemap: https://docs.mantlz.com/sitemap.xml
 
 # Disallow crawling of API routes and internal files
 Disallow: /api/

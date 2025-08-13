@@ -27,7 +27,7 @@ export function WelcomeEmail({ userName }: WelcomeEmailProps) {
         To help you get started, we've prepared comprehensive documentation that covers everything from basic setup to advanced features.
       </Text>
       
-      <Button href="https://doc.mantlz.com">
+      <Button href="https://docs.mantlz.com">
         View Documentation
       </Button>
       
