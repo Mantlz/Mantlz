@@ -3,8 +3,7 @@ import { type SVGProps } from "react";
 export default function Discord(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      
-       width="24"
+      width="24"
       height="24"
       viewBox="0 -28.5 256 256"
       version="1.1"
@@ -12,10 +11,6 @@ export default function Discord(props: SVGProps<SVGSVGElement>) {
       preserveAspectRatio="xMidYMid"
       {...props}
       className="fill-current"
-
-
-
-
     >
       <g>
         <path
