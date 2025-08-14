@@ -3,8 +3,6 @@ import { createRouteMatcher } from "@clerk/nextjs/server";
 // Define protected routes that require authentication
 export const isProtectedRoute = createRouteMatcher([
   '/dashboard(.*)',
-  '/chat(.*)',
-  '/chat-history(.*)',
   '/settings(.*)',
   '/profile(.*)',
   '/dashboard/settings(.*)',
