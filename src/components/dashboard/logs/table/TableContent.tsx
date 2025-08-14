@@ -106,14 +106,14 @@ export function TableContent({
     } else {
       // For non-premium users, show limited data preview
       setSelectedSubmission(submission) 
-      toast("Limited View Mode", {
-        description: "Upgrade to premium for complete submission details and analytics.",
-        action: {
-          label: "Upgrade",
-          onClick: () => setShowUpgradeModal(true)
-        },
-        duration: 2000,
-      })
+      // toast("Limited View Mode", {
+      //   description: "Upgrade to premium for complete submission details and analytics.",
+      //   action: {
+      //     label: "Upgrade",
+      //     onClick: () => setShowUpgradeModal(true)
+      //   },
+      //   duration: 2000,
+      // })
     }
   }
 
