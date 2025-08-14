@@ -249,7 +249,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                     Your Forms
                   </h1>
                   <p className="text-sm text-gray-600 dark:text-gray-300">
-                    {formsData.forms.length} form
+                    {formsData.forms.length.toLocaleString()} form
                     {formsData.forms.length !== 1 ? "s" : ""} available
                   </p>
                 </div>
@@ -343,7 +343,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">
-                        {formsData.forms.length}
+                        {formsData.forms.length.toLocaleString()}
                       </p>
                       <p className="text-xs text-zinc-500 dark:text-zinc-500">
                         Total Forms
@@ -362,7 +362,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                         {formsData.forms.reduce(
                           (total, form) => total + (form.submissionCount || 0),
                           0
-                        )}
+                        ).toLocaleString()}
                       </p>
                       <p className="text-xs text-zinc-500 dark:text-zinc-500">
                         Total Submissions
@@ -398,7 +398,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                       <div className="flex items-center gap-1">
                         <FileSpreadsheet className="h-4 w-4 text-gray-400" />
                         <span className="text-xs text-zinc-500 dark:text-zinc-500">
-                          {form.submissionCount} submission
+                          {form.submissionCount.toLocaleString()} submission
                           {form.submissionCount !== 1 ? "s" : ""}
                         </span>
                       </div>
@@ -442,7 +442,7 @@ function LogsTableContent({ itemsPerPage = 8 }: LogsTableProps) {
                           <div className="flex items-center">
                             <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5" />
                             <span>
-                              {form.submissionCount} submission
+                              {form.submissionCount.toLocaleString()} submission
                               {form.submissionCount !== 1 ? "s" : ""}
                             </span>
                           </div>

@@ -256,7 +256,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                     Your Forms
                   </h1>
                   <p className="text-sm text-gray-600 dark:text-gray-300">
-                    {formsData.forms.length} form{formsData.forms.length !== 1 ? 's' : ''} available
+                    {formsData.forms.length.toLocaleString()} form{formsData.forms.length !== 1 ? 's' : ''} available
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -324,7 +324,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                       <FileSpreadsheet className="h-5 w-5 text-gray-900 dark:text-white" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{formsData.forms.length}</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">{formsData.forms.length.toLocaleString()}</p>
                       <p className="text-xs text-zinc-500 dark:text-zinc-500">Total Forms</p>
                     </div>
                   </div>
@@ -337,7 +337,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">
-                        {formsData.forms.reduce((total, form) => total + (form._count?.campaigns || 0), 0)}
+                        {formsData.forms.reduce((total, form) => total + (form._count?.campaigns || 0), 0).toLocaleString()}
                       </p>
                       <p className="text-xs text-zinc-500 dark:text-zinc-500">Total Campaigns</p>
                     </div>
@@ -372,7 +372,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                         <div className="flex items-center gap-1">
                           <Mail className="h-4 w-4 text-gray-400" />
                           <span className="text-xs text-zinc-500 dark:text-zinc-500">
-                            <strong>{form._count?.campaigns || 0}</strong> campaign{(form._count?.campaigns || 0) !== 1 ? 's' : ''}
+                            <strong>{(form._count?.campaigns || 0).toLocaleString()}</strong> campaign{(form._count?.campaigns || 0) !== 1 ? 's' : ''}
                           </span>
                         </div>
                         <Button
@@ -418,7 +418,7 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
                       <div className="flex items-center gap-4 text-xs sm:text-sm text-zinc-500 dark:text-zinc-500 mt-2">
                         <div className="flex items-center">
                           <Mail className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5" />
-                          <span>{form._count?.campaigns || 0} campaign{(form._count?.campaigns || 0) !== 1 ? 's' : ''}</span>
+                          <span>{(form._count?.campaigns || 0).toLocaleString()} campaign{(form._count?.campaigns || 0) !== 1 ? 's' : ''}</span>
                         </div>
                       </div>
                     </div>
@@ -477,4 +477,4 @@ function CampaignsTableContent({ itemsPerPage = 8, isPremium = false, onUpgradeC
       </div>
     );
   }
-} 
+}

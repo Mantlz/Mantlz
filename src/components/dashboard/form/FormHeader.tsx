@@ -171,7 +171,7 @@ export function FormHeader({
                   <Users className="h-4 w-4 xs:h-4.5 xs:w-4.5 sm:h-5 sm:w-5 text-gray-900 dark:text-white" />
                 </div>
                 <div>
-                  <p className="text-sm xs:text-base font-medium text-gray-900 dark:text-white">{responsesCount || 0}</p>
+                  <p className="text-sm xs:text-base font-medium text-gray-900 dark:text-white">{(responsesCount || 0).toLocaleString()}</p>
                   <p className="text-xs xs:text-sm text-zinc-500 dark:text-zinc-500">Total Submissions</p>
                 </div>
               </div>
@@ -190,7 +190,7 @@ export function FormHeader({
                 </div>
                 <div>
                   <p className="text-sm xs:text-base font-medium text-gray-900 dark:text-white">
-                    {analytics?.last24HoursSubmissions || 0}
+                    {(analytics?.last24HoursSubmissions || 0).toLocaleString()}
                   </p>
                   <p className="text-xs xs:text-sm text-zinc-500 dark:text-zinc-500">Last 24h</p>
                 </div>

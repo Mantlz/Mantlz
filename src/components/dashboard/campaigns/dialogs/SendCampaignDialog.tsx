@@ -156,7 +156,7 @@ export function SendCampaignDialog({
             <div className="flex items-center gap-2 p-3 bg-orange-50 dark:bg-amber-700/20 rounded-lg border border-orange-100 dark:border-orange-800/50">
               <Send className="h-4 w-4 text-orange-500" />
               <p className="text-sm text-orange-900 dark:text-orange-300">
-                Sending to {recipientType === "custom" ? customRecipientCount : 100} {recipientType === "first" ? "first" : recipientType === "last" ? "last" : ""} subscribers
+                Sending to {recipientType === "custom" ? customRecipientCount.toLocaleString() : "100"} {recipientType === "first" ? "first" : recipientType === "last" ? "last" : ""} subscribers
               </p>
             </div>
           </div>
@@ -192,4 +192,4 @@ export function SendCampaignDialog({
       />
     </>
   )
-} 
+}

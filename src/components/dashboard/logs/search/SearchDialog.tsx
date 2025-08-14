@@ -153,7 +153,7 @@ export function SearchDialog({
                   <SelectGroup>
                     <div className="p-2 max-h-[300px] overflow-y-auto">
                       <div className="text-xs font-medium text-zinc-500 dark:text-zinc-500 px-2 py-1 mb-1">
-                        Available Forms ({formsData.forms.length})
+                        Available Forms ({formsData.forms.length.toLocaleString()})
                       </div>
                       <SelectItem 
                         value="all" 
@@ -468,7 +468,7 @@ export function SearchDialog({
             </div>
             {data?.submissions && data.submissions.length > 0 && (
               <Badge variant="secondary" className="text-[10px] bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 rounded-lg px-2.5">
-                {!isProUser && data.submissions.length >= 10 ? "10+ results" : `${data.submissions.length} results`}
+                {!isProUser && data.submissions.length >= 10 ? "10+ results" : `${data.submissions.length.toLocaleString()} results`}
               </Badge>
             )}
           </div>

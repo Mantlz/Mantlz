@@ -358,7 +358,7 @@ export function ScheduleCampaignDialog({ campaignId, onScheduled, onUpgradeClick
                     <div>
                       <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">Campaign Schedule Summary</h4>
                       <p className="text-sm text-orange-700 dark:text-orange-300 flex flex-wrap gap-1">
-                        <span className="font-medium">{recipientType === "custom" ? customRecipientCount : 100}</span> 
+                        <span className="font-medium">{recipientType === "custom" ? customRecipientCount.toLocaleString() : "100"}</span> 
                         {recipientType === "first" ? "first" : recipientType === "last" ? "last" : ""} subscribers on 
                         <span className="font-medium">{format(date, "MMM d")}</span> at 
                         <span className="font-medium">{selectedTime}</span>

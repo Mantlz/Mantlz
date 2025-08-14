@@ -138,7 +138,7 @@ export function TableContent({
             Campaign List
           </h3>
           <Badge className="ml-2" variant="default">
-            {data.campaigns.length} campaigns
+            {data.campaigns.length.toLocaleString()} campaigns
           </Badge>
         </div>
       </div>
@@ -310,7 +310,7 @@ export function TableContent({
                           <div className="flex items-center gap-2 cursor-help">
                             <Mail className="h-3.5 w-3.5 text-gray-400" />
                             <span className="text-xs text-gray-600 dark:text-gray-300">
-                              {campaign._count?.sentEmails || 0}
+                              {(campaign._count?.sentEmails || 0).toLocaleString()}
                             </span>
                           </div>
                         </PopoverTrigger>

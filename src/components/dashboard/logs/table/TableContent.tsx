@@ -216,11 +216,11 @@ export function TableContent({
               Submission Logs
             </h3>
             <Badge className="ml-2 bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-500">
-              {submissions.length} submissions
+              {submissions.length.toLocaleString()} submissions
             </Badge>
             {userPlan === 'FREE' && enhancedSubmissions.filter(sub => new Date(sub.createdAt) > standardTimeLimit).length > 20 && (
               <Badge variant="outline" className="ml-1 text-[10px] border-red-200 dark:border-red-800 text-red-600 dark:text-red-400">
-                Showing 20 of {enhancedSubmissions.filter(sub => new Date(sub.createdAt) > standardTimeLimit).length} submissions
+                Showing 20 of {enhancedSubmissions.filter(sub => new Date(sub.createdAt) > standardTimeLimit).length.toLocaleString()} submissions
               </Badge>
             )}
             {isPremium && isDateFilterActive && (
@@ -694,4 +694,4 @@ function getDeveloperEmailStatus(submission: Submission) {
     className: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-500 dark:text-zinc-500 border border-zinc-200 dark:border-zinc-700",
     variant: "outline" as const
   };
-} 
+}

@@ -113,7 +113,7 @@ export function TableHeader({
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-900 dark:text-white">
-                    {selectedForm?._count?.submissions || 0}
+                    {(selectedForm?._count?.submissions || 0).toLocaleString()}
                   </p>
                   <p className="text-xs text-zinc-500 dark:text-zinc-500">Total Submissions</p>
                 </div>
@@ -127,7 +127,7 @@ export function TableHeader({
                 </div>
                 <div>
                   <p className="text-sm font-medium text-gray-900 dark:text-white">
-                    {selectedForm?._count?.unsubscribed || 0}
+                    {(selectedForm?._count?.unsubscribed || 0).toLocaleString()}
                   </p>
                   <p className="text-xs text-zinc-500 dark:text-zinc-500">Unsubscribed</p>
                 </div>
@@ -146,4 +146,4 @@ export function TableHeader({
       />
     </div>
   )
-} 
+}

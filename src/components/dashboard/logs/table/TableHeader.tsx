@@ -67,7 +67,7 @@ export function TableHeader({
                   <Users className="h-5 w-5 text-gray-900 dark:text-white" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{selectedForm?.submissionCount || 0}</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">{(selectedForm?.submissionCount || 0).toLocaleString()}</p>
                   <p className="text-xs text-zinc-500 dark:text-zinc-500">Total Submissions</p>
                 </div>
               </div>
@@ -112,4 +112,4 @@ export function TableHeader({
       </div>
     </div>
   )
-} 
+}

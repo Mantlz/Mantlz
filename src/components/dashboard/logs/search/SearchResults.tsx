@@ -108,7 +108,7 @@ export function SearchResults({
               PRO Feature
             </Badge>
             <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">
-              Upgrade to see all {data.submissions.length} results
+              Upgrade to see all {data.submissions.length.toLocaleString()} results
             </h4>
             <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-1">
               Standard users are limited to 10 results per search

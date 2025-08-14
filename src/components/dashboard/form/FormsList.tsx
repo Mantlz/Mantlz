@@ -144,7 +144,7 @@ export function FormsList({
                   </h1>
                   <p className="text-sm text-zinc-500 dark:text-zinc-200">
                     {forms.length > 0 
-                      ? `You have ${forms.length} form${forms.length !== 1 ? 's' : ''}`
+                      ? `You have ${forms.length.toLocaleString()} form${forms.length !== 1 ? 's' : ''}`
                       : "Let's create your first form"}
                   </p>
                 </div>
@@ -158,7 +158,7 @@ export function FormsList({
                         <FileSpreadsheet className="h-5 w-5 text-gray-900 dark:text-white" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-900 dark:text-white">{forms.length}</p>
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">{forms.length.toLocaleString()}</p>
                         <p className="text-xs text-zinc-500 dark:text-zinc-200">Total Forms</p>
                       </div>
                     </div>
@@ -176,7 +176,7 @@ export function FormsList({
                         <Users className="h-5 w-5 text-gray-900 dark:text-white" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-900 dark:text-white">{totalResponses}</p>
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">{totalResponses.toLocaleString()}</p>
                         <p className="text-xs text-zinc-500 dark:text-zinc-200">Total Submissions</p>
                       </div>
                     </div>
@@ -254,7 +254,7 @@ export function FormsList({
                     {form.name.length > 8 ? `${form.name.slice(0, 8)}...` : form.name}
                   </h3>
                   <span className="text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-800/50 text-gray-900 dark:text-white px-2 sm:px-3 py-1 rounded-lg">
-                    {form.responsesCount} responses
+                    {form.responsesCount.toLocaleString()} responses
                   </span>
                 </div>
                 
@@ -296,7 +296,7 @@ export function FormsList({
                       </div>
                       <div className="flex items-center">
                         <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5" />
-                        <span>{form.responsesCount} responses</span>
+                        <span>{form.responsesCount.toLocaleString()} responses</span>
                       </div>
                     </div>
                   </div>

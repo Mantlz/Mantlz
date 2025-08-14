@@ -112,7 +112,7 @@ const StatItem = ({
       <span className="text-sm font-medium">{name}</span>
     </div>
     <div className="flex items-center gap-2">
-      <span className="text-sm font-medium">{count}</span>
+      <span className="text-sm font-medium">{count.toLocaleString()}</span>
       <span
         className={cn(
           "text-xs py-0.5 px-1.5 rounded-lg",
@@ -344,7 +344,7 @@ export function BrowserAndLocationStats({
             {locations.length > 0 && (
               <CardDescription className="text-zinc-500 dark:text-gray-200 text-sm mt-1.5">
                 {totalVisitors.toLocaleString()} visitors from{" "}
-                {locations.length} countries
+                {locations.length.toLocaleString()} countries
               </CardDescription>
             )}
           </CardHeader>
@@ -691,7 +691,7 @@ export function BrowserAndLocationStats({
             </DialogTitle>
             <DialogDescription>
               {totalVisitors.toLocaleString()} Submissions from{" "}
-              {locations.length} countries
+              {locations.length.toLocaleString()} countries
             </DialogDescription>
           </DialogHeader>
 
@@ -822,7 +822,7 @@ export function BrowserAndLocationStats({
                         </span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <span className="text-sm">{country.count}</span>
+                        <span className="text-sm">{country.count.toLocaleString()}</span>
                         <span className="text-xs py-0.5 px-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-500">
                           {Math.round(country.percentage * 100)}%
                         </span>

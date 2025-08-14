@@ -273,7 +273,7 @@ export function FormAnalyticsChart({
                                 <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-3 border border-zinc-200 dark:border-zinc-800">
                                   <p className="text-sm font-medium text-gray-900 dark:text-white">{label}</p>
                                   <p className="text-sm text-zinc-500 dark:text-zinc-500">
-                                    {payload[0]?.value || 0} submissions
+                                    {(payload[0]?.value || 0).toLocaleString()} submissions
                                   </p>
                                 </div>
                               )

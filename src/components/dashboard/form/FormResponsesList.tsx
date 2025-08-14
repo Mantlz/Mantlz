@@ -215,7 +215,7 @@ export function FormResponsesList({
       <div className="flex justify-between items-center pb-4 border-b border-zinc-200 dark:border-zinc-800">
         <h3 className="text-lg font-medium text-zinc-900 dark:text-white">Form Responses</h3>
         <Badge variant="secondary" className="text-xs bg-amber-500 text-white dark:bg-amber-500">
-          {localSubmissions.length} {localSubmissions.length === 1 ? "response" : "responses"}
+          {localSubmissions.length.toLocaleString()} {localSubmissions.length === 1 ? "response" : "responses"}
         </Badge>
       </div>
 
