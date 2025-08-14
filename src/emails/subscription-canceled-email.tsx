@@ -19,7 +19,7 @@ const SubscriptionCanceledEmail: React.FC<SubscriptionCanceledEmailProps> = ({ c
     </Heading>
     
     <Text>
-      Your Mantle subscription has been canceled due to failed payment attempts.
+      Your Mantlz subscription has been canceled due to failed payment attempts.
     </Text>
     
     <Text>

@@ -25,7 +25,7 @@ const SubscriptionUpgradeSuccessEmail: React.FC<SubscriptionUpgradeSuccessEmailP
     </Heading>
     
     <Text>
-      Thank you for upgrading your Mantle subscription to the <b>{plan}</b> plan.
+      Thank you for upgrading your Mantlz subscription to the <b>{plan}</b> plan.
     </Text>
     
     <Section>

@@ -106,15 +106,14 @@ export function TableContent({
     } else {
       // For non-premium users, show limited data preview
       setSelectedSubmission(submission) 
-      // toast("Limited View Mode", {
-      //   description: "Upgrade to premium for complete submission details and analytics.",
-      //   action: {
-      //     label: "Upgrade",
-      //     onClick: () => setShowUpgradeModal(true)
-      //   },
-      //   icon: <Lock className="h-4 w-4 text-amber-500" />,
-      //   duration: 5000,
-      // })
+      toast("Limited View Mode", {
+        description: "Upgrade to premium for complete submission details and analytics.",
+        action: {
+          label: "Upgrade",
+          onClick: () => setShowUpgradeModal(true)
+        },
+        duration: 2000,
+      })
     }
   }
 
@@ -140,8 +139,7 @@ export function TableContent({
           label: "Upgrade",
           onClick: () => setShowUpgradeModal(true)
         },
-        icon: <Sparkles className="h-4 w-4 text-amber-500" />,
-        duration: 5000,
+        duration: 2000,
       });
       setIsCalendarOpen(false);
       return;
@@ -245,7 +243,7 @@ export function TableContent({
                     label: "Upgrade",
                     onClick: () => setShowUpgradeModal(true)
                   },
-                  icon: <Sparkles className="h-4 w-4 text-amber-500" />,
+                  duration: 2000,
                 });
                 return;
               }

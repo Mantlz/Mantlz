@@ -22,7 +22,7 @@ function WelcomeContent() {
 
   return (
     <SyncMessage 
-      title="Welcome to Mantle"
+      title="Welcome to Mantlz"
       message="Setting up your workspace for the first time. This should only take a moment..."
       syncStatus={isSynced}
       syncTime={syncTime}

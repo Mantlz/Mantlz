@@ -119,7 +119,6 @@ export function BrandedEmailTemplate({
           </Section>
           
           <Section style={styles.footer}>
-            <Hr style={styles.divider} />
             <Text style={styles.footerText}>
               © {new Date().getFullYear()} Mantlz
             </Text>

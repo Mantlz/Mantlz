@@ -24,7 +24,7 @@ export function Logo({
 </svg>
       {withText && (
         <span className="ml-2 font-bold text-xl bg-gradient-to-r from-orange-500 to-orange-700 bg-clip-text text-transparent">
-          Mantle
+          Mantlz
         </span>
       )}
     </div>

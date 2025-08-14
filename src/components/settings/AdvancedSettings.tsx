@@ -18,6 +18,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSubscription } from "@/hooks/useSubscription";
 import { useLoading } from "@/contexts/LoadingContext";
+import { getQuotaByPlan } from "@/config/usage";
 
 interface AdvancedSettings {
   maxNotificationsPerHour: number;
@@ -28,6 +29,12 @@ export function AdvancedSettings() {
   const queryClient = useQueryClient();
   const { userPlan } = useSubscription();
   const isProUser = userPlan === 'PRO';
+  const isStandardUser = userPlan === 'STANDARD';
+  const isFreeUser = userPlan === 'FREE';
+  
+  // Get plan-specific notification limits
+  const planQuota = getQuotaByPlan(userPlan || 'FREE');
+  const maxAllowedNotifications = planQuota.maxNotificationsPerHour;
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [settings, setSettings] = useState<AdvancedSettings>({
     maxNotificationsPerHour: 10,
@@ -113,8 +120,12 @@ export function AdvancedSettings() {
   };
 
   const handleSettingChange = (value: string) => {
-    if (!isProUser) {
-      toast.error('You need to upgrade to PRO to modify notification settings');
+    if (isFreeUser) {
+      toast.error('Free plan users cannot receive notifications. Upgrade to Standard or Pro.');
+      return;
+    }
+    if (!isProUser && !isStandardUser) {
+      toast.error('You need to upgrade to Standard or Pro to modify notification settings');
       return;
     }
     
@@ -122,8 +133,9 @@ export function AdvancedSettings() {
     const numValue = parseInt(value, 10);
     if (isNaN(numValue)) return;
     
-    // Ensure the value is within bounds
-    const boundedValue = Math.min(Math.max(numValue, 1), 100);
+    // Ensure the value is within bounds based on plan
+    const minValue = isFreeUser ? 0 : 1;
+    const boundedValue = Math.min(Math.max(numValue, minValue), maxAllowedNotifications);
     setSettings(prev => ({ ...prev, maxNotificationsPerHour: boundedValue }));
   };
 
@@ -142,7 +154,7 @@ export function AdvancedSettings() {
             variant="outline" 
             size="sm" 
             onClick={handleRefresh}
-            disabled={isRefreshing || !isProUser || isLoadingSettings}
+            disabled={isRefreshing || isLoadingSettings}
             className="h-8 text-xs"
           >
             {isRefreshing ? (
@@ -194,36 +206,42 @@ export function AdvancedSettings() {
                     Set the maximum number of notifications you want to receive per hour
                   </CardDescription>
                 </div>
-                <Badge className="bg-orange-100 text-orange-800 dark:bg-amber-700/30 dark:text-orange-200 w-fit">
-                  PRO
+                <Badge className={`w-fit ${
+                  isProUser 
+                    ? "bg-purple-100 text-purple-800 dark:bg-purple-700/30 dark:text-purple-200" 
+                    : isStandardUser 
+                    ? "bg-blue-100 text-blue-800 dark:bg-blue-700/30 dark:text-blue-200"
+                    : "bg-gray-100 text-gray-800 dark:bg-gray-700/30 dark:text-gray-200"
+                }`}>
+                  {userPlan || 'FREE'}
                 </Badge>
               </CardHeader>
               
               <CardContent className="px-5 pb-4">
-                {!isProUser ? (
-                  <div className="rounded-lg bg-amber-50 border border-amber-200 p-3 sm:p-4 dark:bg-amber-900/20 dark:border-amber-800/30">
-                    <div className="flex gap-2 sm:gap-3">
-                      <AlertCircle className="h-4 w-4 text-amber-500 dark:text-amber-500 flex-shrink-0 mt-0.5" />
-                      <div className="space-y-1">
-                        <p className="text-xs font-medium text-amber-800 dark:text-amber-300">
-                          Pro Plan Required
-                        </p>
-                        <p className="text-xs text-amber-500 dark:text-amber-500">
-                          Upgrade to Pro to customize your notification frequency.
-                        </p>
-                        <Button 
-                          size="sm" 
-                          variant="outline" 
-                          className="h-7 px-2 py-1 text-xs border-amber-300 text-amber-500 bg-amber-50 cursor-pointer hover:bg-amber-100 dark:border-amber-700 dark:text-amber-500 dark:bg-amber-900/30 dark:hover:bg-amber-800/30 mt-2"
-                        >
-                          Upgrade to Pro
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
+                {isFreeUser ? (
+                   <div className="rounded-lg bg-amber-50 border border-amber-200 p-3 sm:p-4 dark:bg-amber-900/20 dark:border-amber-800/30">
+                     <div className="flex gap-2 sm:gap-3">
+                       <AlertCircle className="h-4 w-4 text-amber-500 dark:text-amber-500 flex-shrink-0 mt-0.5" />
+                       <div className="space-y-1">
+                         <p className="text-xs font-medium text-amber-800 dark:text-amber-300">
+                           Standard or Pro Plan Required
+                         </p>
+                         <p className="text-xs text-amber-500 dark:text-amber-500">
+                           Free plan users do not receive notifications. Upgrade to Standard (100/hour) or Pro (200/hour) to enable notifications.
+                         </p>
+                         <Button 
+                           size="sm" 
+                           variant="outline" 
+                           className="h-7 px-2 py-1 text-xs border-amber-300 text-amber-500 bg-amber-50 cursor-pointer hover:bg-amber-100 dark:border-amber-700 dark:text-amber-500 dark:bg-amber-900/30 dark:hover:bg-amber-800/30 mt-2"
+                         >
+                           Upgrade Plan
+                         </Button>
+                       </div>
+                     </div>
+                   </div>
+                 ) : (
                   <div className="space-y-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-3  px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3  px-4 py-3 rounded-lg border border-zinc-200 dark:border-zinc-800">
                       <div className="flex items-center gap-4 flex-1">
                         <div className="bg-white dark:bg-zinc-900 rounded-lg p-2 border border-zinc-200 dark:border-zinc-800">
                           <Bell className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
@@ -233,24 +251,25 @@ export function AdvancedSettings() {
                             Maximum Notifications per Hour
                           </span>
                           <span className="text-xs text-zinc-500 dark:text-zinc-400">
-                            Current limit: {settings.maxNotificationsPerHour}
+                            Current: {settings.maxNotificationsPerHour} | Plan limit: {maxAllowedNotifications}
                           </span>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
                         <Input
                           type="number"
-                          min={1}
-                          max={100}
+                          min={isFreeUser ? 0 : 1}
+                          max={maxAllowedNotifications}
                           value={String(settings.maxNotificationsPerHour)}
                           onChange={(e) => handleSettingChange(e.target.value)}
                           className="h-9 w-24 border-zinc-200 dark:border-zinc-800"
+                          disabled={isFreeUser}
                         />
                         <Button
                           onClick={() => updateSettings(settings)}
                           disabled={isUpdating}
                           size="sm"
-                          className="bg-amber-500 text-black dark:text-white dark:border-background border text-sm  shadow-zinc-950/30 ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
+                          className="bg-amber-500 text-black dark:text-white dark:border-background border text-sm  ring ring-inset ring-white/20 transition-[filter] duration-200 hover:brightness-125 active:brightness-95"
                         >
                           {isUpdating ? (
                             <RefreshCw className="h-4 w-4 animate-spin mr-2" />
@@ -268,7 +287,5 @@ export function AdvancedSettings() {
       </div>
     );
   };
-
-  // Return the renderContent result instead of conditional rendering
   return renderContent();
 }

@@ -190,7 +190,7 @@ export default function SlackSettings() {
           </Button>
         </div>
         <p className="text-sm text-zinc-500 dark:text-zinc-400">
-          Configure Slack notifications for your Mantle account
+          Configure Slack notifications for your Mantlz account
         </p>
       </header>
     );

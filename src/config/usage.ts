@@ -2,6 +2,7 @@
 export const FREE_QUOTA = {
   maxForms: 1,
   maxSubmissionsPerMonth: 200,
+  maxNotificationsPerHour: 0,
   campaigns: {
     enabled: false,
     maxCampaignsPerMonth: 0,
@@ -16,6 +17,7 @@ export const FREE_QUOTA = {
 } as {
   maxForms: number;
   maxSubmissionsPerMonth: number;
+  maxNotificationsPerHour: number;
   campaigns: {
     enabled: boolean;
     maxCampaignsPerMonth: number;
@@ -32,10 +34,11 @@ export const FREE_QUOTA = {
 export const STANDARD_QUOTA = {
   maxForms: 5,
   maxSubmissionsPerMonth: 5000,
+  maxNotificationsPerHour: 100,
   campaigns: {
     enabled: true,
     maxCampaignsPerMonth: 3,
-    maxRecipientsPerCampaign: 500,
+    maxRecipientsPerCampaign: 200,
     features: {
       analytics: false,
       scheduling: true,
@@ -46,6 +49,7 @@ export const STANDARD_QUOTA = {
 } as {
   maxForms: number;
   maxSubmissionsPerMonth: number;
+  maxNotificationsPerHour: number;
   campaigns: {
     enabled: boolean;
     maxCampaignsPerMonth: number;
@@ -62,10 +66,11 @@ export const STANDARD_QUOTA = {
 export const PRO_QUOTA = {
   maxForms: 10,
   maxSubmissionsPerMonth: 10000,
+  maxNotificationsPerHour: 200,
   campaigns: {
     enabled: true,
     maxCampaignsPerMonth: 10,
-    maxRecipientsPerCampaign: 10000,
+    maxRecipientsPerCampaign: 500,
     features: {
       analytics: true,
       scheduling: true,
@@ -76,6 +81,7 @@ export const PRO_QUOTA = {
 } as {
   maxForms: number;
   maxSubmissionsPerMonth: number;
+  maxNotificationsPerHour: number;
   campaigns: {
     enabled: boolean;
     maxCampaignsPerMonth: number;
@@ -99,4 +105,4 @@ export function getQuotaByPlan(plan: string) {
     default:
       return FREE_QUOTA
   }
-} 
+}

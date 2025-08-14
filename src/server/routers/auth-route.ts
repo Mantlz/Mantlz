@@ -46,7 +46,7 @@ export const authRouter = j.router({
             globalSettings: {
               create: {
                 developerNotificationsEnabled: false,
-                maxNotificationsPerHour: FREE_QUOTA.maxSubmissionsPerMonth
+                maxNotificationsPerHour: FREE_QUOTA.maxNotificationsPerHour
               }
             },
             // Create initial quota for current month

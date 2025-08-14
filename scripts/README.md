@@ -1,6 +1,6 @@
-# Mantle Scripts
+# Mantlz Scripts
 
-Utility scripts for managing the Mantle application.
+Utility scripts for managing the Mantlz application.
 
 ## Delete User Script
 

@@ -21,7 +21,7 @@ const PaymentFailureEmail: React.FC<PaymentFailureEmailProps> = ({ attemptNumber
     </Heading>
     
     <Text>
-      We were unable to process your payment for your Mantle subscription.
+      We were unable to process your payment for your Mantlz subscription.
     </Text>
     
     <Section>

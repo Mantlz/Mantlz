@@ -7,12 +7,12 @@ import { FREE_QUOTA } from "@/config/usage"
 
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", {
-  apiVersion: "2025-05-28.basil",
+  apiVersion: "2025-06-30.basil",
   typescript: true,
 })
 
 
-  // apiVersion: "2025-05-28.basil",
+  // apiVersion: "2025-06-30.basil",
 
 // Get price IDs from environment variables
 const STRIPE_PRICE_IDS = {
@@ -283,7 +283,7 @@ export async function handleSubscriptionUpdate(subscription: StripeSubscription)
         "5,000 submissions per month",
         "Advanced analytics",
         "Form campaigns (3/month)",
-        "Up to 500 recipients per campaign",
+        "Up to 200 recipients per campaign",
         "Priority support",
         "Custom branding"
       ] : [

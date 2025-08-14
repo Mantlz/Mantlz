@@ -5,89 +5,36 @@ import { Button } from "@/components/ui/button"
 import { useUser } from "@clerk/nextjs"
 import { toast } from "sonner"
 import { useRouter, useSearchParams } from "next/navigation"
-import { FREE_QUOTA, STANDARD_QUOTA, PRO_QUOTA } from "@/config/usage"
 import { client } from "@/lib/client"
 import { useMutation } from "@tanstack/react-query"
 import Canceled from "./canceled"
 import { useSubscription } from "@/hooks/useSubscription"
 import { Check, Shield, Zap, Users } from "lucide-react"
+import { pricingPlans, Plan as PricingPlan, Subscription } from "@/config/pricing-plans"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import React from "react"
 import "@/styles/animations.css"
 
-// Define subscription type
-type Subscription = {
-  plan: "FREE" | "STANDARD" | "PRO" | null;
-}
 
-type Plan = {
-  title: string
-  monthlyPrice: number
-  features: string[]
-  buttonText: string
-  isFeatured?: boolean
-  stripePriceIdMonthly: string
-  includedPlans?: string[]
-  quota: typeof FREE_QUOTA | typeof STANDARD_QUOTA | typeof PRO_QUOTA
-  isPopular?: boolean
-  icon?: React.ReactNode
-}
+// Helper function to render icons based on iconName
+const renderIcon = (iconName: 'Shield' | 'Zap' | 'Users') => {
+  const iconProps = { className: "m-auto size-5", strokeWidth: 1 };
+  
+  switch (iconName) {
+    case 'Shield':
+      return <Shield {...iconProps} />;
+    case 'Zap':
+      return <Zap {...iconProps} />;
+    case 'Users':
+      return <Users {...iconProps} />;
+    default:
+      return <Shield {...iconProps} />;
+  }
+};
 
-const plans: Plan[] = [
-  {
-    title: "Starter",
-    monthlyPrice: 0,
-    features: [
-      "1 Form",
-      "200 submissions per month",
-      "Basic form analytics",
-      "Form validation",
-      "Standard support",
-    ],
-    buttonText: "Start for free",
-    stripePriceIdMonthly: "",
-    quota: FREE_QUOTA,
-    icon: <Shield className="m-auto size-5" strokeWidth={1} />
-  },
-  {
-    title: "Standard",
-    monthlyPrice: 8,
-    features: [
-      "5 Forms",
-      "5,000 submissions per month",
-      "Advanced analytics",
-      "Form campaigns (3/month)",
-      "Up to 500 recipients per campaign",
-      "Priority support",
-    ],
-    buttonText: "Get Standard",
-    stripePriceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_STANDARD_PRICE_ID ?? "",
-    includedPlans: [],
-    quota: STANDARD_QUOTA,
-    icon: <Zap className="m-auto size-5" strokeWidth={1} />,
-    isPopular: true
-  },
-  {
-    title: "Professional",
-    monthlyPrice: 15,
-    features: [
-      "10 Forms",
-      "10,000 submissions per month",
-      "Complete analytics suite",
-      "Form campaigns (10/month)",
-      "Up to 2,000 recipients per campaign",
-      "Premium support",
-    ],
-    buttonText: "Get Pro",
-    stripePriceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID ?? "",
-    includedPlans: [],
-    quota: PRO_QUOTA,
-    icon: <Users className="m-auto size-5" strokeWidth={1} />,
-    isFeatured: true,
-    isPopular: false
-  },
-]
+// Use the imported pricing plans
+const plans = pricingPlans;
 
 export default function Pricing() {
   const { isSignedIn, user } = useUser()
@@ -152,19 +99,18 @@ function PricingContent({
 
   // Helper function to check if the current subscription matches the plan
   const isCurrentUserPlan = (planTitle: string) => {
-    if (!isSignedIn || !subscription?.plan) return false
+    if (!subscription?.plan) return false
     
-    // Map UI plan titles to subscription plan values
-    const planMapping: Record<string, string> = {
-      "Starter": "FREE",
-      "Standard": "STANDARD",
-      "Professional": "PRO"
+    const planMap: Record<string, PricingPlan['title']> = {
+      'FREE': 'Starter',
+      'STANDARD': 'Standard', 
+      'PRO': 'Professional'
     }
     
-    return subscription.plan === planMapping[planTitle]
+    return planMap[subscription.plan] === planTitle
   }
 
-  const handleCheckout = async (plan: Plan) => {
+  const handleCheckout = async (plan: PricingPlan) => {
     if (!isSignedIn) {
       toast.info("Please login or sign up to purchase", {
         action: {
@@ -209,7 +155,12 @@ function PricingContent({
                   <CardContent className="p-0">
                     <div className="mb-8">
                        <div className="flex items-center justify-between mb-2">
-                         <h2 className="text-2xl font-semibold text-black dark:text-white">{plan.title}</h2>
+                         <div className="flex items-center gap-3">
+                           <div className="bg-muted border-foreground/5 flex size-10 items-center justify-center rounded-lg border">
+                             {renderIcon(plan.iconName)}
+                           </div>
+                           <h2 className="text-2xl font-semibold text-black dark:text-white">{plan.title}</h2>
+                         </div>
                          {plan.isPopular && (
                            <Badge className="bg-amber-500 hover:bg-amber-500 text-black dark:text-white text-xs font-medium px-2 py-1">
                              Most Popular

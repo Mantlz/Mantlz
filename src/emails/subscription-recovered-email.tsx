@@ -19,7 +19,7 @@ const SubscriptionRecoveredEmail: React.FC<SubscriptionRecoveredEmailProps> = ({
     </Heading>
     
     <Text>
-      Your Mantle subscription has been successfully reactivated!
+      Your Mantlz subscription has been successfully reactivated!
     </Text>
     
     <Section>
