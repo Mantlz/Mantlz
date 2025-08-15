@@ -13,6 +13,7 @@ const routerImports = {
   stripeRouter: () => import("./routers/stripe-router").then(m => m.stripeRouter),
   slackRouter: () => import("./routers/slack-router").then(m => m.slackRouter),
   discordRouter: () => import("./routers/discord-router").then(m => m.discordRouter),
+  chatRouter: () => import("./routers/chat-router").then(m => m.chatRouter),
 }
 
 const api = j
@@ -34,6 +35,7 @@ const appRouter = j.mergeRouters(api, {
   stripe: routerImports.stripeRouter,
   slack: routerImports.slackRouter,
   discord: routerImports.discordRouter,
+  chat: routerImports.chatRouter,
 })
 
 export type AppRouter = typeof appRouter
