@@ -128,7 +128,7 @@ const MobileNavMenu = memo(function MobileNavMenu() {
                   alt="Mantlz Logo" 
                   width={24} 
                   height={24} 
-                  className="mb-0.5" 
+                  className="mb-0" 
                 />
                 <span className="text-sm sm:text-base">Mantlz</span>
               </Link>
@@ -327,7 +327,7 @@ export const PersistentNavbar = memo(function PersistentNavbar() {
           alt="Mantlz Logo" 
           width={24} 
           height={24} 
-          className="mb-0.5 " 
+          className="mb-0" 
         />
 
           <span className="text-sm sm:text-base group-hover:text-muted-foreground transition-colors duration-200">Mantlz</span>

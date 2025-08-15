@@ -161,7 +161,7 @@ export function Navbar() {
             alt="Mantlz Logo" 
             width={28} 
             height={28} 
-            className="mb-0.5 mr-1" 
+            className="mb-0 mr-1" 
           />
           <span className="font-semibold text-lg">Mantlz</span>
         </Link>
