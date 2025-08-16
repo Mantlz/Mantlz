@@ -16,10 +16,13 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
       className="group bg-white dark:bg-background border border-zinc-200 dark:border-zinc-800/50 transition-all duration-200 shadow-none"
     >
       <div className="p-4 sm:p-6">
-        <div className="flex items-center justify-between mb-3 sm:mb-4">
-          <Skeleton className="h-5 w-1/2 rounded-lg " />
-          <div className="text-xs sm:text-sm  text-gray-400 dark:text-zinc-500 px-2 sm:px-3 py-1 rounded-lg flex items-center justify-center">
-            <span><Skeleton className="h-4 w-5 rounded-lg inline-block mr-1 mt-2" /></span> responses
+        <div className="flex items-start justify-between mb-3 sm:mb-4 gap-2">
+          <Skeleton className="h-5 w-1/2 rounded-lg flex-1 min-w-0" />
+          <div className="flex flex-col items-end gap-1 flex-shrink-0">
+            <div className="text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-800/50 text-gray-400 dark:text-zinc-500 px-2 py-1 rounded-lg">
+              <Skeleton className="h-4 w-8 rounded-lg" />
+            </div>
+            <span className="text-xs text-zinc-400 dark:text-zinc-500">responses</span>
           </div>
         </div>
         
@@ -154,4 +157,4 @@ export function FormCardSkeleton({ count = 1 }: FormCardSkeletonProps) {
       </div>
     </div>
   );
-} 
+}

@@ -249,13 +249,18 @@ export function FormsList({
               onClick={() => window.location.href = `/dashboard/form/${form.id}`}
             >
               <div className="p-4 sm:p-6">
-                <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base">
-                    {form.name.length > 8 ? `${form.name.slice(0, 8)}...` : form.name}
+                <div className="flex items-start justify-between mb-3 sm:mb-4 gap-2">
+                  <h3 className="font-medium text-gray-900 dark:text-white truncate text-sm sm:text-base flex-1 min-w-0">
+                    {form.name.length > 20 ? `${form.name.slice(0, 20)}...` : form.name}
                   </h3>
-                  <span className="text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-800/50 text-gray-900 dark:text-white px-2 sm:px-3 py-1 rounded-lg">
-                    {form.responsesCount.toLocaleString()} responses
-                  </span>
+                  <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                    <span className="text-xs sm:text-sm bg-zinc-50 dark:bg-zinc-800/50 text-gray-900 dark:text-white px-2 py-1 rounded-lg whitespace-nowrap">
+                      {form.responsesCount >= 100000 
+                        ? `${Math.floor(form.responsesCount / 1000)}k` 
+                        : form.responsesCount.toLocaleString()}
+                    </span>
+                    <span className="text-xs text-zinc-400 dark:text-zinc-500">responses</span>
+                  </div>
                 </div>
                 
                 <div className="flex items-center justify-between">
@@ -296,7 +301,11 @@ export function FormsList({
                       </div>
                       <div className="flex items-center">
                         <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5" />
-                        <span>{form.responsesCount.toLocaleString()} responses</span>
+                        <span className="whitespace-nowrap">
+                          {form.responsesCount >= 100000 
+                            ? `${Math.floor(form.responsesCount / 1000)}k` 
+                            : form.responsesCount.toLocaleString()} responses
+                        </span>
                       </div>
                     </div>
                   </div>
